@@ -14,7 +14,6 @@ export default function KeebType() {
     const [activeWordIndex, setActiveWordIndex] = useState(0);
     const [typedWord, setTypedWord] = useState("");
 
-    // Sample words for the game
     const sampleWords = [
         "and",
         "leave",
@@ -63,18 +62,18 @@ export default function KeebType() {
     };
 
     return (
-        <div className="bg-red-900 p-10">
+        <div className="bg-red-900 p-10 text-green-400">
             <div
                 id="words"
                 className="highlight-letter blurred"
-                style={{
-                    fontSize: "1.5rem",
-                    height: "156px",
-                    overflow: "hidden",
-                    width: "100%",
-                    marginLeft: "unset",
-                    transition: "all 0.25s ease 0s",
-                }}
+                // style={{
+                //     fontSize: "1.5rem",
+                //     height: "156px",
+                //     overflow: "hidden",
+                //     width: "100%",
+                //     marginLeft: "unset",
+                //     transition: "all 0.25s ease 0s",
+                // }}
             >
                 {words.map((word, index) => (
                     <EachWord
@@ -84,12 +83,19 @@ export default function KeebType() {
                         activeWordIndex={activeWordIndex}
                     />
                 ))}
-                <input
-                    type="text"
-                    value={typedWord}
-                    onChange={handleInputChange}
-                    autoFocus
-                />
+                {activeWordIndex === words.length ? (
+                    <div>
+                        <p>Congratulations! You completed the game.</p>
+                        <button>Play Again</button>
+                    </div>
+                ) : (
+                    <input
+                        type="text"
+                        value={typedWord}
+                        onChange={handleInputChange}
+                        autoFocus
+                    />
+                )}
             </div>
         </div>
     );

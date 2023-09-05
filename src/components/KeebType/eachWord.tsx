@@ -13,11 +13,11 @@ export default function EachWord({
 }: EachWordProps) {
     return (
         <div
-            className={`word ${index === activeWordIndex ? "active" : ""}`}
+            className={`flex word ${index === activeWordIndex ? "active" : ""}`}
             key={index}
         >
             {word.split("").map((letter, i) => (
-                <EachLetter key={i} letter={letter} i={i} />
+                <EachLetter key={i} letter={letter} i={i} isActive={index === activeWordIndex} />
             ))}
         </div>
     );
