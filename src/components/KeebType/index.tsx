@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import EachWord from "./eachWord";
 
 export default function KeebType() {
     // todo randomly selecting sentences or words for users to type
@@ -6,55 +7,90 @@ export default function KeebType() {
     // educational modes will just grab from an array full of them.
     // Comparing the user's input to the target text to calculate accuracy and WPM.
 
-    const wordsArray = [
-        "apple",
-        "banana",
-        "cherry",
-        "date",
-        "elderberry",
-        "fig",
-        "grape",
-        "honeydew",
-        "kiwi",
-        "lemon",
-        // Add more words to your array
+    // Going to need a bunch of words flexed next to each other
+    // Each word is made up of letters
+
+    const [words, setWords] = useState([]);
+    const [activeWordIndex, setActiveWordIndex] = useState(0);
+    const [typedWord, setTypedWord] = useState("");
+
+    // Sample words for the game
+    const sampleWords = [
+        "and",
+        "leave",
+        "line",
+        "this",
+        "tell",
+        "more",
+        "course",
+        "they",
+        "give",
+        "what",
+        "over",
+        "should",
+        "from",
+        "move",
+        "down",
+        "and",
+        "most",
+        "general",
+        "about",
+        "large",
+        "through",
+        "move",
+        "thing",
+        "part",
+        "group",
     ];
-    const [sentence, setSentence] = useState("");
-    const [typeText, setTypeText] = useState("");
 
-    // Function to generate a random sentence
-    const generateRandomSentence = () => {
-        const sentenceLength = Math.floor(Math.random() * 5) + 3; // Random sentence length between 3 and 7 words
-        const randomWords = [];
-
-        for (let i = 0; i < sentenceLength; i++) {
-            const randomIndex = Math.floor(Math.random() * wordsArray.length);
-            randomWords.push(wordsArray[randomIndex]);
-        }
-
-        return randomWords.join(" ");
-    };
-
+    // Initialize the game with words
     useEffect(() => {
-        const randomSentence = generateRandomSentence();
-        setSentence(randomSentence);
-        setTypeText(""); // Clear the input field when a new sentence is generated
+        setWords(sampleWords);
     }, []);
 
+    // Handle user input
+    const handleInputChange = (e) => {
+        const inputValue = e.target.value;
+        setTypedWord(inputValue);
+
+        // Check if the typed word matches the active word
+        const activeWord = words[activeWordIndex];
+        if (inputValue === activeWord) {
+            // Word typed correctly, move to the next word
+            setActiveWordIndex(activeWordIndex + 1);
+            setTypedWord("");
+        }
+    };
+
     return (
-        <form className="flex w-3/4 items-center justify-center  p-20">
-            <div className="relative w-full">
-                <label className="pointer-events-none absolute left-0 top-0 z-10 text-gray-400 transition-all duration-200">
-                    {sentence}
-                </label>
+        <div className="bg-red-900 p-10">
+            <div
+                id="words"
+                className="highlight-letter blurred"
+                style={{
+                    fontSize: "1.5rem",
+                    height: "156px",
+                    overflow: "hidden",
+                    width: "100%",
+                    marginLeft: "unset",
+                    transition: "all 0.25s ease 0s",
+                }}
+            >
+                {words.map((word, index) => (
+                    <EachWord
+                        word={word}
+                        key={index}
+                        index={index}
+                        activeWordIndex={activeWordIndex}
+                    />
+                ))}
                 <input
                     type="text"
-                    value={typeText}
-                    className="z-10 w-full border-b border-green-400 bg-transparent text-white z-20"
-                    placeholder="" // Empty placeholder to hide the default placeholder text
-                    onChange={(e) => setTypeText(e.target.value)}
+                    value={typedWord}
+                    onChange={handleInputChange}
+                    autoFocus
                 />
             </div>
-        </form>
+        </div>
     );
 }
