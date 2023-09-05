@@ -16,19 +16,20 @@ export default function NavBar() {
             <ul className="flex flex-grow justify-around text-2xl">
                 <li>
                     <Link href="/posts" aria-label="Posts">
-                        Posts
+                        Market
                     </Link>
                 </li>
                 <li>
                     <Link href="/bookings" aria-label="Bookings">
-                        Bookings
+                        My Profile
                     </Link>
                 </li>
                 <li>
                     <Link href="/images" aria-label="Images">
-                        Images
+                        My Listings
                     </Link>
                 </li>
+               
             </ul>
             <AuthController />
         </nav>

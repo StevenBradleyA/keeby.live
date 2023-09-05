@@ -116,7 +116,12 @@ Fun yet threatening. See this cyberboard someone sent a buyer a box of tissues i
 I don't have the time nor care to deal with disputes so play by the rules and trust one another or you can fuck off. :D
 Basically a skycorp video 
 
-
+---user ----
+purchase history with order number # 
+going to need some stripe payment info
+ - going to need a ispaymentverified on here
+ - going to need a email verified as well 
+ - 
 
 Home page will be typing game with banner ads 
 really clean UI like monkey type
@@ -150,7 +155,7 @@ thock god (top .2%)
 Hackerman(0.1%)
 based off of top wpm? 
 
-
+How keeby works? or About Keeby? 
 
 What's unique about keeby typing game? 
 
@@ -169,7 +174,6 @@ Could add a community page where users can submit picuters and talk about their 
 r/mk already exists 
 
 Could just have an inspiration page that shows gorgeous builds
-
 
 
  -->
