@@ -12,7 +12,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <div className="min-h-screen bg-dark text-white">
+            <div className="min-h-screen bg-dark text-white -z-30">
                 <NavBar />
                 <main className="flex  flex-col items-center justify-center">
                     {children}
