@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 
 export default function KeebType() {
-
-// TODO add vertical bars left side different modes. Right side basic functions restart test, new test, stats
-
-
-
+    // TODO add vertical bars left side different modes. Right side basic functions restart test, new test, stats
+    // todo randomly selecting sentences or words for users to type
+    // TODO select phrases between 10, 25, 50 words
+    // educational modes will just grab from an array full of them.
+    // Comparing the user's input to the target text to calculate accuracy and WPM.
 
     const [paragraphs] = useState([
         "keys typing qwerty layout letters spacebar backspace shift enter capslock function arrow control alt command escape delete tab home numeric",
@@ -95,8 +95,8 @@ export default function KeebType() {
     };
 
     return (
-        <div className="bg-red-800 flex justify-center ">
-            <div className=" w-3/4 flex flex-wrap wrapper ">
+        <div className="flex justify-center ">
+            <div className=" wrapper flex w-3/4 flex-wrap ">
                 <div className="content-box">
                     <div className="typing-text break-words">
                         <p>
@@ -164,6 +164,7 @@ export default function KeebType() {
         </div>
     );
 }
+
 /*
 
 
