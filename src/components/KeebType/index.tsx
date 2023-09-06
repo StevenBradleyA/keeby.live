@@ -24,12 +24,14 @@ export default function KeebType() {
     const [letterIndex, setLetterIndex] = useState<number>(0);
     const [mistakes, setMistakes] = useState<number>(0);
     const [hits, setHits] = useState<number>(0);
-
+    const [isFocused, setIsFocused] = useState<boolean>(false);
     const [isTyping, setIsTyping] = useState<boolean>(false);
     const [totalTime, setTotalTime] = useState<number>(0);
     const [timer, setTimer] = useState<number | null>(null);
     const [isTestFinished, setIsTestFinished] = useState<boolean>(false);
+
     const inputRef = useRef<HTMLInputElement | null>(null);
+    const wrapperRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
         loadParagraph();
@@ -58,7 +60,7 @@ export default function KeebType() {
         }
 
         if (letterIndex < currentParagraph.length) {
-            if (typedChar == null) {
+            if (!typedChar) {
                 if (letterIndex > 0) {
                     setLetterIndex((prevCharIndex) => prevCharIndex - 1);
 
@@ -94,6 +96,44 @@ export default function KeebType() {
             inputRef.current.focus();
         }
     };
+    // const newGame = () => {
+    //     setIsTestFinished(false);
+    //     // resetGame();
+    // };
+
+    useEffect(() => {
+        const handleDocumentClick = (e: MouseEvent) => {
+            if (inputRef.current && wrapperRef.current) {
+                if (wrapperRef.current.contains(e.target as Node)) {
+                    // Clicked inside the wrapper, focus the input
+                    setIsFocused(true);
+                } else {
+                    // Clicked outside the wrapper, blur the input
+                    setIsFocused(false);
+                }
+            }
+        };
+
+        // Add a click event listener to the document
+        document.addEventListener("click", handleDocumentClick);
+
+        return () => {
+            // Remove the event listener when the component unmounts
+            document.removeEventListener("click", handleDocumentClick);
+        };
+    }, []);
+
+    useEffect(() => {
+        if (inputRef.current) {
+            if (isFocused) {
+                inputRef.current.focus();
+            } else {
+                inputRef.current.blur();
+            }
+        }
+    }, [isFocused]);
+
+    console.log(isFocused);
 
     return !isTestFinished ? (
         <div className="flex justify-center ">
@@ -102,8 +142,11 @@ export default function KeebType() {
                 <button>20</button>
                 <button>50</button>
             </div>
-            <div className=" wrapper flex w-3/4 flex-wrap ">
-                <div className="content-box">
+            <div
+                className=" wrapper relative flex w-3/4 flex-wrap "
+                ref={wrapperRef}
+            >
+                <div className="content-box relative z-10">
                     <TypingText
                         currentParagraph={currentParagraph}
                         letterIndex={letterIndex}
@@ -119,9 +162,16 @@ export default function KeebType() {
                         />
                     </div>
                 </div>
+                {!isFocused && (
+                    <div className="absolute inset-0 z-20 flex items-center justify-center backdrop-blur-sm">
+                        <div className="text-2xl font-bold text-white">
+                            Paused
+                        </div>
+                    </div>
+                )}
             </div>
             <div className="flex flex-col">
-                <button onClick={resetGame}>Try Again</button>
+                <button>Next</button>
             </div>
         </div>
     ) : (
@@ -136,7 +186,9 @@ export default function KeebType() {
             />
 
             <div className="flex flex-col">
-                <button onClick={resetGame}>Try Again</button>
+                <button onClick={newGame} autoFocus>
+                    Try Again
+                </button>
             </div>
         </>
     );
