@@ -110,25 +110,19 @@ export default function KeebType() {
                                 const typedChar = typedText[index];
 
                                 const isCorrectChar =
-                                    isCurrentChar && typedChar === char;
-                                const isIncorrectChar =
-                                    isCurrentChar && typedChar !== char;
-
-                                const charStyle = {
-                                    color: isCorrectChar
-                                        ? "white"
-                                        : isIncorrectChar
-                                        ? "red"
-                                        : "", // Set color based on correctness
-                                };
+                                    isTyped && typedChar === char;
 
                                 return (
                                     <span
                                         key={index}
-                                        className={
+                                        className={`${
                                             isCurrentChar ? "active" : ""
-                                        }
-                                        style={charStyle} // Apply inline style
+                                        } ${isCorrectChar ? "correct" : ""}`}
+                                        style={{
+                                            color: isCorrectChar
+                                                ? "white"
+                                                : "inherit",
+                                        }}
                                     >
                                         {isTyped ? typedChar : char}
                                     </span>
