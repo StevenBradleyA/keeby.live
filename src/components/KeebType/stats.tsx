@@ -6,6 +6,8 @@ export default function TypingStats({
     hits,
     totalCharacters,
 }) {
+
+    // TODO implement rank system here if user is signed in...
     // wpm - total amount of characters in the correctly typed words (including spaces), divided by 5 and normalised to 60 seconds.
 
     // raw wpm - calculated just like wpm, but also includes incorrect words.

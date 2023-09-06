@@ -9,7 +9,8 @@ import Post from "./posts";
 export default function Home() {
 
 // Todo going to need different components for different games 
-// quote type 
+// speed (word count changes)
+// Quote (punctuation)
 // paragraph type
 // lets just start with paragraph type for now and try to get it working 
 

@@ -5,7 +5,7 @@ import TypingStats from "./stats";
 export default function KeebType() {
     // TODO add vertical bars left side different modes. Right side basic functions restart test, new test, stats
 
-    const [paragraphs] = useState([
+    const [paragraphs] = useState<string[]>([
         "keys typing qwerty layout letters spacebar backspace shift enter capslock function arrow control alt command escape delete tab home numeric",
         "keyboards typing keys qwerty spacebar layout letters backspace shift enter capslock function arrow control alt command escape delete tab home numeric",
         "typing qwerty keys layout letters spacebar backspace shift enter capslock function arrow control alt command escape delete tab home numeric keyboards",
@@ -17,19 +17,19 @@ export default function KeebType() {
         "keycaps enthusiasts qwerty layout typing keys mechanical keyboard switches artisan letters enthusiasts spacebar backspace enthusiast function arrow control alt custom command escape hobby delete tab numeric",
     ]);
 
-    const [currentParagraph, setCurrentParagraph] = useState("");
-    const [totalCharacters, setTotalCharacters] = useState(0);
-    const [typedText, setTypedText] = useState("");
-    const [typedCorrectText, setTypedCorrectText] = useState("");
-    const [letterIndex, setLetterIndex] = useState(0);
-    const [mistakes, setMistakes] = useState(0);
-    const [hits, setHits] = useState(0);
+    const [currentParagraph, setCurrentParagraph] = useState<string>("");
+    const [totalCharacters, setTotalCharacters] = useState<number>(0);
+    const [typedText, setTypedText] = useState<string>("");
+    const [typedCorrectText, setTypedCorrectText] = useState<string>("");
+    const [letterIndex, setLetterIndex] = useState<number>(0);
+    const [mistakes, setMistakes] = useState<number>(0);
+    const [hits, setHits] = useState<number>(0);
 
-    const [isTyping, setIsTyping] = useState(false);
-    const [totalTime, setTotalTime] = useState(0);
-    const [timer, setTimer] = useState(null);
-    const [isTestFinished, setIsTestFinished] = useState(false);
-    const inputRef = useRef(null);
+    const [isTyping, setIsTyping] = useState<boolean>(false);
+    const [totalTime, setTotalTime] = useState<number>(0);
+    const [timer, setTimer] = useState<number | null>(null);
+    const [isTestFinished, setIsTestFinished] = useState<boolean>(false);
+    const inputRef = useRef<HTMLInputElement | null>(null);
 
     useEffect(() => {
         loadParagraph();
@@ -37,7 +37,8 @@ export default function KeebType() {
 
     const loadParagraph = () => {
         const randomIndex = Math.floor(Math.random() * paragraphs.length);
-        setCurrentParagraph(paragraphs[randomIndex]);
+        const newParagraph = paragraphs[randomIndex] || "";
+        setCurrentParagraph(newParagraph);
         setTypedText("");
         setLetterIndex(0);
         setMistakes(0);
@@ -47,8 +48,8 @@ export default function KeebType() {
         setTotalCharacters(currentParagraph.length);
     };
 
-    const handleInputChange = (event) => {
-        const typedChar = event.target.value[letterIndex];
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const typedChar = e.target.value[letterIndex];
 
         if (!isTyping) {
             const startTime = Date.now();
@@ -69,30 +70,30 @@ export default function KeebType() {
                 if (currentParagraph[letterIndex] !== typedChar) {
                     setMistakes((prevMistakes) => prevMistakes + 1);
                 } else {
-                    setHits((prevHits) => prevHits + 1); // Increment hits when a character is typed correctly
+                    setHits((prevHits) => prevHits + 1);
                 }
 
                 setLetterIndex((prevCharIndex) => prevCharIndex + 1);
             }
         }
 
-        if (letterIndex === currentParagraph.length - 1) {
+        if (letterIndex === currentParagraph.length - 1 && timer) {
             const endTime = Date.now();
             const elapsedTime = (endTime - timer) / 1000;
             setTotalTime(elapsedTime);
             setIsTestFinished(true);
         }
 
-        setTypedText(event.target.value);
+        setTypedText(e.target.value);
     };
 
     const resetGame = () => {
         loadParagraph();
         setIsTestFinished(false);
-        inputRef.current.focus();
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
     };
-
-    console.log("yo", hits);
 
     return !isTestFinished ? (
         <div className="flex justify-center ">
