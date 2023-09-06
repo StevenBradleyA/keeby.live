@@ -31,28 +31,28 @@ export default function NavBar() {
                 </li>
                
             </ul>
-            <AuthController />
+            {/* <AuthController /> */}
         </nav>
     );
 }
 
-function AuthController() {
-    const { data: sessionData } = useSession();
+// function AuthController() {
+//     const { data: sessionData } = useSession();
 
-    return (
-        <div className="flex flex-col items-center justify-center gap-1 rounded-md border-l-2 px-10 py-2 text-base">
-            <p className="text-center">
-                {sessionData && <span>Hello {sessionData.user?.name}!</span>}
-            </p>
-            <button
-                aria-label={sessionData ? "Sign out" : "Sign in"}
-                className="rounded-full bg-white/10 px-4 py-2 font-semibold no-underline transition hover:bg-white/20"
-                onClick={
-                    sessionData ? () => void signOut() : () => void signIn()
-                }
-            >
-                {sessionData ? "Sign out" : "Sign in"}
-            </button>
-        </div>
-    );
-}
+//     return (
+//         <div className="flex flex-col items-center justify-center gap-1 rounded-md border-l-2 px-10 py-2 text-base">
+//             <p className="text-center">
+//                 {sessionData && <span>Hello {sessionData.user?.name}!</span>}
+//             </p>
+//             <button
+//                 aria-label={sessionData ? "Sign out" : "Sign in"}
+//                 className="rounded-full bg-white/10 px-4 py-2 font-semibold no-underline transition hover:bg-white/20"
+//                 onClick={
+//                     sessionData ? () => void signOut() : () => void signIn()
+//                 }
+//             >
+//                 {sessionData ? "Sign out" : "Sign in"}
+//             </button>
+//         </div>
+//     );
+// }
