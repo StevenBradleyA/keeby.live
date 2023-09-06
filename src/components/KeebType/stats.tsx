@@ -1,52 +1,44 @@
-export default function TypingStats() {
-    // const words = typedCorrectText.split(' ');
-    // const wpm = Math.round((words.length / totalTime) * 60);
+export default function TypingStats({
+    totalTime,
+    typedCorrectText,
+    typedText,
+    mistakes,
+    hits,
+    totalCharacters,
+}) {
+    // wpm - total amount of characters in the correctly typed words (including spaces), divided by 5 and normalised to 60 seconds.
 
-    // Display WPM in your component
-    // <p>
-    //   Words Per Minute (WPM): <b>{wpm}</b>
-    // </p>
+    // raw wpm - calculated just like wpm, but also includes incorrect words.
 
-    //     const allWords = typedText.split(' ');
-    // const rawWpm = Math.round((allWords.length / totalTime) * 60);
-    {
-        /* <p>
-  Raw Words Per Minute (Raw WPM): <b>{rawWpm}</b>
-</p> */
-    }
+    // acc - percentage of correctly pressed keys.
 
-    // const totalCharacters = typedText.length; // Total characters typed
-    // const correctCharacters = typedCorrectText.length; // Correctly typed characters
+    // char - correct characters / incorrect characters. Calculated after the test has ended.
 
-    // const accuracy = ((correctCharacters / totalCharacters) * 100).toFixed(2);
+    // consistency - based on the variance of your raw wpm. Closer to 100% is better. Calculated using the coefficient of variation of raw wpm and mapped onto a scale from 0 to 100.
 
-    // // Display Accuracy in your component
-    // <p>
-    //   Accuracy: <b>{accuracy}%</b>
-    // </p>
+    // const words = typedCorrectText.split(" ");
+    const wpm = Math.round(hits / 5 / (totalTime / 60));
+
+    const rawWpm = Math.round(totalCharacters / 5 / (totalTime / 60));
+
+    const accuracy = ((hits / totalCharacters) * 100).toFixed(2);
 
     return (
-        <ul className="">
-            <li>
-                <p>
-                    Time: <b>{totalTime.toFixed(1)}</b> s
-                </p>
-            </li>
-            <li>
-                <p>
-                    Mistakes: <b>{mistakes}</b>
-                </p>
-            </li>
-            <li>
-                <p>
-                    Words Per Minute (WPM): <b>{wpm}</b>
-                </p>
-            </li>
-            <li>
-                <p>
-                    Characters Per Minute (CPM): <b>{charIndex - mistakes}</b>
-                </p>
-            </li>
-        </ul>
+        <div className="flex flex-col">
+            <p>
+                Words Per Minute (WPM): <b>{wpm}</b>
+            </p>
+            <p>
+                Raw Words Per Minute (Raw WPM): <b>{rawWpm}</b>
+            </p>
+
+            <p>
+                Accuracy: <b>{accuracy}%</b>
+            </p>
+
+            <p>
+                Time: <b>{totalTime.toFixed(1)}</b> s
+            </p>
+        </div>
     );
 }

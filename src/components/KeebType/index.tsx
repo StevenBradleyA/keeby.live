@@ -16,17 +16,19 @@ export default function KeebType() {
         "backspace switches mechanical typing keys enthusiasts qwerty layout artisan letters enthusiasts spacebar enthusiast keycaps function arrow control alt custom command hobby escape delete tab home numeric",
         "keycaps enthusiasts qwerty layout typing keys mechanical keyboard switches artisan letters enthusiasts spacebar backspace enthusiast function arrow control alt custom command escape hobby delete tab numeric",
     ]);
+
     const [currentParagraph, setCurrentParagraph] = useState("");
+    const [totalCharacters, setTotalCharacters] = useState(0);
     const [typedText, setTypedText] = useState("");
     const [typedCorrectText, setTypedCorrectText] = useState("");
-    const [charIndex, setCharIndex] = useState(0);
+    const [letterIndex, setLetterIndex] = useState(0);
     const [mistakes, setMistakes] = useState(0);
+    const [hits, setHits] = useState(0);
+
     const [isTyping, setIsTyping] = useState(false);
     const [totalTime, setTotalTime] = useState(0);
     const [timer, setTimer] = useState(null);
-    const [wpm, setWPM] = useState(0);
     const [isTestFinished, setIsTestFinished] = useState(false);
-
     const inputRef = useRef(null);
 
     useEffect(() => {
@@ -37,14 +39,16 @@ export default function KeebType() {
         const randomIndex = Math.floor(Math.random() * paragraphs.length);
         setCurrentParagraph(paragraphs[randomIndex]);
         setTypedText("");
-        setCharIndex(0);
+        setLetterIndex(0);
         setMistakes(0);
+        setHits(0);
         setIsTyping(false);
         setTotalTime(0);
-        setWPM(0);
+        setTotalCharacters(currentParagraph.length);
     };
+
     const handleInputChange = (event) => {
-        const typedChar = event.target.value[charIndex];
+        const typedChar = event.target.value[letterIndex];
 
         if (!isTyping) {
             const startTime = Date.now();
@@ -52,25 +56,27 @@ export default function KeebType() {
             setTimer(startTime);
         }
 
-        if (charIndex < currentParagraph.length) {
+        if (letterIndex < currentParagraph.length) {
             if (typedChar == null) {
-                if (charIndex > 0) {
-                    setCharIndex((prevCharIndex) => prevCharIndex - 1);
+                if (letterIndex > 0) {
+                    setLetterIndex((prevCharIndex) => prevCharIndex - 1);
 
-                    if (currentParagraph[charIndex - 1] !== " ") {
+                    if (currentParagraph[letterIndex - 1] !== " ") {
                         setMistakes((prevMistakes) => prevMistakes - 1);
                     }
                 }
             } else {
-                if (currentParagraph[charIndex] !== typedChar) {
+                if (currentParagraph[letterIndex] !== typedChar) {
                     setMistakes((prevMistakes) => prevMistakes + 1);
+                } else {
+                    setHits((prevHits) => prevHits + 1); // Increment hits when a character is typed correctly
                 }
 
-                setCharIndex((prevCharIndex) => prevCharIndex + 1);
+                setLetterIndex((prevCharIndex) => prevCharIndex + 1);
             }
         }
 
-        if (charIndex === currentParagraph.length - 1) {
+        if (letterIndex === currentParagraph.length - 1) {
             const endTime = Date.now();
             const elapsedTime = (endTime - timer) / 1000;
             setTotalTime(elapsedTime);
@@ -86,8 +92,7 @@ export default function KeebType() {
         inputRef.current.focus();
     };
 
-    const words = typedCorrectText.split(" ");
-    const wpm = Math.round((words.length / totalTime) * 60);
+    console.log("yo", hits);
 
     return !isTestFinished ? (
         <div className="flex justify-center ">
@@ -100,7 +105,7 @@ export default function KeebType() {
                 <div className="content-box">
                     <TypingText
                         currentParagraph={currentParagraph}
-                        charIndex={charIndex}
+                        letterIndex={letterIndex}
                         typedText={typedText}
                     />
                     <div className="content">
@@ -120,13 +125,22 @@ export default function KeebType() {
         </div>
     ) : (
         <>
-            <TypingStats totalTime={totalTime} />
+            <TypingStats
+                totalTime={totalTime}
+                typedCorrectText={typedCorrectText}
+                typedText={typedText}
+                mistakes={mistakes}
+                hits={hits}
+                totalCharacters={totalCharacters}
+            />
+
             <div className="flex flex-col">
                 <button onClick={resetGame}>Try Again</button>
             </div>
         </>
     );
 }
+
 /*
 
 
@@ -698,7 +712,7 @@ const paragraphs = [
     const [currentParagraph, setCurrentParagraph] = useState("");
     const [timer, setTimer] = useState(null);
     const [timeLeft, setTimeLeft] = useState(60);
-    const [charIndex, setCharIndex] = useState(0);
+    const [charIndex, setLetterIndex] = useState(0);
     const [mistakes, setMistakes] = useState(0);
     const [isTyping, setIsTyping] = useState(false);
 
@@ -714,7 +728,7 @@ const paragraphs = [
 
         if (typedChar === targetChar) {
             if (charIndex < currentParagraph.length - 1) {
-                setCharIndex(charIndex + 1);
+                setLetterIndex(charIndex + 1);
             } else {
                 resetGame();
             }
@@ -735,7 +749,7 @@ const paragraphs = [
         loadParagraph();
         clearInterval(timer);
         setTimeLeft(60);
-        setCharIndex(0);
+        setLetterIndex(0);
         setMistakes(0);
         setIsTyping(false);
     };
@@ -747,7 +761,7 @@ const paragraphs = [
     const loadParagraph = () => {
         const randomIndex = Math.floor(Math.random() * paragraphs.length);
         setCurrentParagraph(paragraphs[randomIndex]);
-        setCharIndex(0);
+        setLetterIndex(0);
     };
 
     return (
