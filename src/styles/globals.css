@@ -46,6 +46,8 @@
     text-align: justify;
     letter-spacing: 1px;
     word-break: break-all;
+    color: #646669;
+
 }
 .typing-text p span {
     position: relative;
@@ -57,9 +59,9 @@
     color: #ca4754;
     border-radius: 4px;
 }
-/* .typing-text p span.active {
+.typing-text p span.active {
     color: #17A2B8;
-} */
+}
 .typing-text p span.active::before {
     position: absolute;
     content: "";

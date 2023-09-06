@@ -102,23 +102,41 @@ export default function KeebType() {
         <div className="KeebType">
             <div className="wrapper">
                 <div className="content-box">
-                    <div
-                        className="typing-text"
-                        onClick={() => inputRef.current.focus()} // Focus the input field when clicking the paragraph
-                    >
+                    <div className="typing-text">
                         <p>
-                            {currentParagraph.split("").map((char, index) => (
-                                <span
-                                    key={index}
-                                    className={
-                                        index === charIndex ? "active" : ""
-                                    }
-                                >
-                                    {char}
-                                </span>
-                            ))}
+                            {currentParagraph.split("").map((char, index) => {
+                                const isCurrentChar = index === charIndex;
+                                const isTyped = index < typedText.length;
+                                const typedChar = typedText[index];
+
+                                const isCorrectChar =
+                                    isCurrentChar && typedChar === char;
+                                const isIncorrectChar =
+                                    isCurrentChar && typedChar !== char;
+
+                                const charStyle = {
+                                    color: isCorrectChar
+                                        ? "white"
+                                        : isIncorrectChar
+                                        ? "red"
+                                        : "", // Set color based on correctness
+                                };
+
+                                return (
+                                    <span
+                                        key={index}
+                                        className={
+                                            isCurrentChar ? "active" : ""
+                                        }
+                                        style={charStyle} // Apply inline style
+                                    >
+                                        {isTyped ? typedChar : char}
+                                    </span>
+                                );
+                            })}
                         </p>
                     </div>
+
                     <div className="content">
                         <input
                             ref={inputRef} // Assign the input field reference
