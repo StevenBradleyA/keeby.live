@@ -24,7 +24,7 @@ export default function KeebType() {
     const [letterIndex, setLetterIndex] = useState<number>(0);
     const [mistakes, setMistakes] = useState<number>(0);
     const [hits, setHits] = useState<number>(0);
-    const [isFocused, setIsFocused] = useState<boolean>(false);
+    const [isFocused, setIsFocused] = useState<boolean>(true);
     const [isTyping, setIsTyping] = useState<boolean>(false);
     const [totalTime, setTotalTime] = useState<number>(0);
     const [timer, setTimer] = useState<number | null>(null);
@@ -35,6 +35,9 @@ export default function KeebType() {
 
     useEffect(() => {
         loadParagraph();
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
     }, []);
 
     const loadParagraph = () => {
@@ -89,9 +92,11 @@ export default function KeebType() {
         setTypedText(e.target.value);
     };
 
-    const resetGame = () => {
+    const nextGame = () => {
+        setIsFocused(true);
         loadParagraph();
-        setIsTestFinished(false);
+        // setIsTestFinished(false);
+
         if (inputRef.current) {
             inputRef.current.focus();
         }
@@ -143,7 +148,7 @@ export default function KeebType() {
                 <button>50</button>
             </div>
             <div
-                className=" wrapper relative flex w-3/4 flex-wrap "
+                className=" wrapper relative flex w-3/4 flex-wrap bg-red-200 "
                 ref={wrapperRef}
             >
                 <div className="content-box relative z-10">
@@ -171,7 +176,7 @@ export default function KeebType() {
                 )}
             </div>
             <div className="flex flex-col">
-                <button>Next</button>
+                <button onClick={nextGame}>Next</button>
             </div>
         </div>
     ) : (
@@ -186,9 +191,7 @@ export default function KeebType() {
             />
 
             <div className="flex flex-col">
-                <button onClick={newGame} autoFocus>
-                    Try Again
-                </button>
+                <button>Try Again</button>
             </div>
         </>
     );
