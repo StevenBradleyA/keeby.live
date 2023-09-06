@@ -15,14 +15,14 @@
 }
 ::selection {
     color: #fff;
-    background: #007acc;
+    background: #58cc00;
 }
 .wrapper {
-    width: 700px;
+    /* width: 700px; */
     padding: 35px;
-    background: #1e1e1e;
+    /* background: #1e1e1e; */
     border-radius: 10px;
-    box-shadow: 0 10px 15px rgba(0,0,0,0.05);
+    /* box-shadow: 0 10px 15px rgba(0,0,0,0.05); */
 }
 .wrapper .input-field {
     opacity: 0;
@@ -31,8 +31,8 @@
 }
 .wrapper .content-box {
     padding: 13px 20px 0;
-    border-radius: 10px;
-    border: 4px solid #007acc;
+    /* border-radius: 10px; */
+    /* border: 4px solid #36cc00; */
 }
 .content-box .typing-text {
     overflow: hidden;
@@ -42,10 +42,10 @@
     width: 0;
 }
 .typing-text p {
-    font-size: 21px;
+    font-size: 1.5rem;
     text-align: justify;
     letter-spacing: 1px;
-    word-break: break-all;
+    /* word-break: break-all; */
     color: #646669;
 
 }
@@ -57,10 +57,9 @@
 }
 .typing-text p span.incorrect {
     color: #ca4754;
-    border-radius: 4px;
 }
 .typing-text p span.active {
-    color: #17A2B8;
+    color: #81f36f;
 }
 .typing-text p span.active::before {
     position: absolute;
@@ -71,7 +70,7 @@
     left: 0;
     opacity: 0;
     border-radius: 5px;
-    background: #007acc;
+    background: #1bcc00;
     animation: blink 1s ease-in-out infinite;
 }
 @keyframes blink {
@@ -86,19 +85,19 @@
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    border-top: 3px solid #007acc;
+    border-top: 3px solid #1bcc00;
 }
 .content button {
     outline: none;
     border: none;
     width: 105px;
-    color: #007acc;
+    color: #1bcc00;
     padding: 8px 0;
     font-size: 17px;
     font-weight: 600;
     cursor: pointer;
     border-radius: 15px;
-    border: 3px solid #007acc;
+    border: 3px solid #1bcc00;
     background: none;
     transition: transform 0.2s ease;
 }
