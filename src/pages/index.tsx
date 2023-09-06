@@ -5,7 +5,7 @@ import Post from "./posts";
 export default function Home() {
     return (
         <>
-            <div className="w-full px-10">
+            <div className="w-full p-10">
                 <KeebType />
             </div>
         </>

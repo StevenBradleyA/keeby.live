@@ -1,11 +1,9 @@
 import { useEffect, useRef, useState } from "react";
+import TypingText from "./typingText";
+import TypingStats from "./stats";
 
 export default function KeebType() {
-
-// TODO add vertical bars left side different modes. Right side basic functions restart test, new test, stats
-
-
-
+    // TODO add vertical bars left side different modes. Right side basic functions restart test, new test, stats
 
     const [paragraphs] = useState([
         "keys typing qwerty layout letters spacebar backspace shift enter capslock function arrow control alt command escape delete tab home numeric",
@@ -20,12 +18,14 @@ export default function KeebType() {
     ]);
     const [currentParagraph, setCurrentParagraph] = useState("");
     const [typedText, setTypedText] = useState("");
+    const [typedCorrectText, setTypedCorrectText] = useState("");
     const [charIndex, setCharIndex] = useState(0);
     const [mistakes, setMistakes] = useState(0);
     const [isTyping, setIsTyping] = useState(false);
-    const [timeLeft, setTimeLeft] = useState(60);
+    const [totalTime, setTotalTime] = useState(0);
     const [timer, setTimer] = useState(null);
     const [wpm, setWPM] = useState(0);
+    const [isTestFinished, setIsTestFinished] = useState(false);
 
     const inputRef = useRef(null);
 
@@ -40,20 +40,19 @@ export default function KeebType() {
         setCharIndex(0);
         setMistakes(0);
         setIsTyping(false);
-        setTimeLeft(60);
+        setTotalTime(0);
         setWPM(0);
     };
-
     const handleInputChange = (event) => {
         const typedChar = event.target.value[charIndex];
 
         if (!isTyping) {
-            const newTimer = setInterval(initTimer, 1000);
+            const startTime = Date.now();
             setIsTyping(true);
-            setTimer(newTimer);
+            setTimer(startTime);
         }
 
-        if (charIndex < currentParagraph.length && timeLeft > 0) {
+        if (charIndex < currentParagraph.length) {
             if (typedChar == null) {
                 if (charIndex > 0) {
                     setCharIndex((prevCharIndex) => prevCharIndex - 1);
@@ -69,63 +68,41 @@ export default function KeebType() {
 
                 setCharIndex((prevCharIndex) => prevCharIndex + 1);
             }
-        } else {
-            clearInterval(timer);
+        }
+
+        if (charIndex === currentParagraph.length - 1) {
+            const endTime = Date.now();
+            const elapsedTime = (endTime - timer) / 1000;
+            setTotalTime(elapsedTime);
+            setIsTestFinished(true);
         }
 
         setTypedText(event.target.value);
     };
 
-    const initTimer = () => {
-        if (timeLeft > 0) {
-            setTimeLeft((prevTimeLeft) => prevTimeLeft - 1);
-
-            const calculatedWPM = Math.round(
-                ((charIndex - mistakes) / 5 / (60 - timeLeft)) * 60
-            );
-            setWPM(calculatedWPM);
-        } else {
-            clearInterval(timer);
-        }
-    };
-
     const resetGame = () => {
         loadParagraph();
-        inputRef.current.focus(); // Focus the input field when resetting the game
+        setIsTestFinished(false);
+        inputRef.current.focus();
     };
 
-    return (
-        <div className="bg-red-800 flex justify-center ">
-            <div className=" w-3/4 flex flex-wrap wrapper ">
+    const words = typedCorrectText.split(" ");
+    const wpm = Math.round((words.length / totalTime) * 60);
+
+    return !isTestFinished ? (
+        <div className="flex justify-center ">
+            <div className="flex flex-col  ">
+                <button>10</button>
+                <button>20</button>
+                <button>50</button>
+            </div>
+            <div className=" wrapper flex w-3/4 flex-wrap ">
                 <div className="content-box">
-                    <div className="typing-text break-words">
-                        <p>
-                            {currentParagraph.split("").map((char, index) => {
-                                const isCurrentChar = index === charIndex;
-                                const isTyped = index < typedText.length;
-                                const typedChar = typedText[index];
-
-                                const isCorrectChar =
-                                    isTyped && typedChar === char;
-                                const isIncorrectChar =
-                                    isTyped && typedChar !== char;
-
-                                return (
-                                    <span
-                                        key={index}
-                                        className={`${
-                                            isCurrentChar ? "active" : ""
-                                        } ${isCorrectChar ? "correct" : ""} ${
-                                            isIncorrectChar ? "incorrect" : ""
-                                        }`}
-                                    >
-                                        {isTyped ? typedChar : char}
-                                    </span>
-                                );
-                            })}
-                        </p>
-                    </div>
-
+                    <TypingText
+                        currentParagraph={currentParagraph}
+                        charIndex={charIndex}
+                        typedText={typedText}
+                    />
                     <div className="content">
                         <input
                             ref={inputRef}
@@ -134,34 +111,20 @@ export default function KeebType() {
                             value={typedText}
                             onChange={handleInputChange}
                         />
-                        <button onClick={resetGame}>Try Again</button>
-                        <ul className="result-details">
-                            <li>
-                                <p>
-                                    Time Left: <b>{timeLeft}</b> s
-                                </p>
-                            </li>
-                            <li>
-                                <p>
-                                    Mistakes: <b>{mistakes}</b>
-                                </p>
-                            </li>
-                            <li>
-                                <p>
-                                    Words Per Minute (WPM): <b>{wpm}</b>
-                                </p>
-                            </li>
-                            <li>
-                                <p>
-                                    Characters Per Minute (CPM):{" "}
-                                    <b>{charIndex - mistakes}</b>
-                                </p>
-                            </li>
-                        </ul>
                     </div>
                 </div>
             </div>
+            <div className="flex flex-col">
+                <button onClick={resetGame}>Try Again</button>
+            </div>
         </div>
+    ) : (
+        <>
+            <TypingStats totalTime={totalTime} />
+            <div className="flex flex-col">
+                <button onClick={resetGame}>Try Again</button>
+            </div>
+        </>
     );
 }
 /*
