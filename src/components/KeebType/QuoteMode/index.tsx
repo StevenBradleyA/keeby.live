@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import TypingText from "../typingText";
 import TypingStats from "../stats";
+import TypeMechanics from "../typeMechanics";
 
 interface QuoteTypeProps {
     currentParagraph: string;
@@ -27,7 +28,6 @@ export default function QuoteType({
     const [hits, setHits] = useState<number>(0);
     const [isTyping, setIsTyping] = useState<boolean>(false);
     const [totalTime, setTotalTime] = useState<number>(0);
-    const [timer, setTimer] = useState<number | null>(null);
     const [isTestFinished, setIsTestFinished] = useState<boolean>(false);
 
     const inputRef = useRef<HTMLInputElement | null>(null);
@@ -48,45 +48,6 @@ export default function QuoteType({
             inputRef.current.focus();
         }
     }, [currentParagraph]);
-
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const typedChar = e.target.value[letterIndex];
-
-        if (!isTyping) {
-            const startTime = Date.now();
-            setIsTyping(true);
-            setTimer(startTime);
-        }
-
-        if (letterIndex < totalCharacters) {
-            if (!typedChar) {
-                if (letterIndex > 0) {
-                    setLetterIndex((prevCharIndex) => prevCharIndex - 1);
-
-                    if (currentParagraph[letterIndex - 1] !== " ") {
-                        setMistakes((prevMistakes) => prevMistakes - 1);
-                    }
-                }
-            } else {
-                if (currentParagraph[letterIndex] !== typedChar) {
-                    setMistakes((prevMistakes) => prevMistakes + 1);
-                } else {
-                    setHits((prevHits) => prevHits + 1);
-                }
-
-                setLetterIndex((prevCharIndex) => prevCharIndex + 1);
-            }
-        }
-
-        if (letterIndex === currentParagraph.length - 1 && timer) {
-            const endTime = Date.now();
-            const elapsedTime = (endTime - timer) / 1000;
-            setTotalTime(elapsedTime);
-            setIsTestFinished(true);
-        }
-
-        setTypedText(e.target.value);
-    };
 
     useEffect(() => {
         const handleDocumentClick = (e: MouseEvent) => {
@@ -112,6 +73,7 @@ export default function QuoteType({
             document.removeEventListener("click", handleDocumentClick);
         };
     }, [isFocused, setIsFocused]);
+
     // oldest
     useEffect(() => {
         if (inputRef.current) {
@@ -123,19 +85,6 @@ export default function QuoteType({
         }
     }, [isFocused]);
 
-    // second
-    // useEffect(() => {
-    //     if (inputRef.current && isFocused) {
-    //         inputRef.current.focus();
-    //     }
-    // }, [isFocused]);
-    // new
-    // useEffect(() => {
-    //     if (inputRef.current && !isFocused) {
-    //         inputRef.current.focus();
-    //     }
-    // }, [isFocused]);
-
     const nextGame = () => {
         setIsTestFinished(false);
         setIsFocused(true);
@@ -145,7 +94,8 @@ export default function QuoteType({
         }
     };
 
-    console.log(isFocused);
+    const isInputFocused = document.activeElement === inputRef.current;
+    console.log(isInputFocused);
 
     return !isTestFinished ? (
         <div className="flex justify-center ">
@@ -158,30 +108,21 @@ export default function QuoteType({
                 className=" wrapper relative flex w-3/4 flex-wrap bg-red-200 "
                 ref={wrapperRef}
             >
-                <div
-                    className="content-box relative z-10"
-                    style={{ pointerEvents: "none", userSelect: "none" }}
-                >
-                    <TypingText
-                        currentParagraph={currentParagraph}
-                        letterIndex={letterIndex}
-                        typedText={typedText}
-                    />
-                    <div
-                        className="content"
-                        style={{ pointerEvents: "none", userSelect: "none" }}
-                    >
-                        <input
-                            ref={inputRef}
-                            className="input-field "
-                            type="text"
-                            value={typedText}
-                            onChange={handleInputChange}
-                            onCopy={(e) => e.preventDefault()}
-                            onPaste={(e) => e.preventDefault()}
-                        />
-                    </div>
-                </div>
+                <TypeMechanics
+                    totalCharacters={totalCharacters}
+                    currentParagraph={currentParagraph}
+                    letterIndex={letterIndex}
+                    typedText={typedText}
+                    setTypedText={setTypedText}
+                    inputRef={inputRef}
+                    isTyping={isTyping}
+                    setIsTyping={setIsTyping}
+                    setHits={setHits}
+                    setLetterIndex={setLetterIndex}
+                    setTotalTime={setTotalTime}
+                    setIsTestFinished={setIsTestFinished}
+                    setMistakes={setMistakes}
+                />
                 {!isFocused && (
                     <div className="absolute inset-0 z-20 flex items-center justify-center backdrop-blur-sm">
                         <div className="text-2xl font-bold text-white">
