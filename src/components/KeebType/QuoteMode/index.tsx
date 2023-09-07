@@ -122,6 +122,7 @@ export default function QuoteType({
             }
         }
     }, [isFocused]);
+
     // second
     // useEffect(() => {
     //     if (inputRef.current && isFocused) {
@@ -157,19 +158,27 @@ export default function QuoteType({
                 className=" wrapper relative flex w-3/4 flex-wrap bg-red-200 "
                 ref={wrapperRef}
             >
-                <div className="content-box relative z-10">
+                <div
+                    className="content-box relative z-10"
+                    style={{ pointerEvents: "none", userSelect: "none" }}
+                >
                     <TypingText
                         currentParagraph={currentParagraph}
                         letterIndex={letterIndex}
                         typedText={typedText}
                     />
-                    <div className="content">
+                    <div
+                        className="content"
+                        style={{ pointerEvents: "none", userSelect: "none" }}
+                    >
                         <input
                             ref={inputRef}
-                            className="input-field"
+                            className="input-field "
                             type="text"
                             value={typedText}
                             onChange={handleInputChange}
+                            onCopy={(e) => e.preventDefault()}
+                            onPaste={(e) => e.preventDefault()}
                         />
                     </div>
                 </div>
