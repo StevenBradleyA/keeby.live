@@ -5,6 +5,8 @@ import TypingStats from "./stats";
 export default function KeebType() {
     // TODO add vertical bars left side different modes. Right side basic functions restart test, new test, stats
 
+    // TODO having a lot of issues with out timing. Becuase we are randomly selected a phrase so things need to load so lets make a parent that lets them.
+
     const [paragraphs] = useState<string[]>([
         "keys typing qwerty layout letters spacebar backspace shift enter capslock function arrow control alt command escape delete tab home numeric",
         "keyboards typing keys qwerty spacebar layout letters backspace shift enter capslock function arrow control alt command escape delete tab home numeric",
@@ -20,7 +22,6 @@ export default function KeebType() {
     const [currentParagraph, setCurrentParagraph] = useState<string>("");
     const [totalCharacters, setTotalCharacters] = useState<number>(0);
     const [typedText, setTypedText] = useState<string>("");
-    const [typedCorrectText, setTypedCorrectText] = useState<string>("");
     const [letterIndex, setLetterIndex] = useState<number>(0);
     const [mistakes, setMistakes] = useState<number>(0);
     const [hits, setHits] = useState<number>(0);
@@ -93,26 +94,27 @@ export default function KeebType() {
     };
 
     const nextGame = () => {
-        setIsFocused(true);
+        // setIsFocused(true);
         loadParagraph();
         // setIsTestFinished(false);
+        // setTotalCharacters(currentParagraph.length);
+
 
         if (inputRef.current) {
             inputRef.current.focus();
         }
     };
-    // const newGame = () => {
-    //     setIsTestFinished(false);
-    //     // resetGame();
-    // };
 
     useEffect(() => {
         const handleDocumentClick = (e: MouseEvent) => {
             if (inputRef.current && wrapperRef.current) {
                 if (wrapperRef.current.contains(e.target as Node)) {
-                    // Clicked inside the wrapper, focus the input
-                    setIsFocused(true);
-                } else {
+                    // Clicked inside the wrapper
+                    if (!isFocused) {
+                        // Only set isFocused to true if it's currently false
+                        setIsFocused(true);
+                    }
+                } else if (isFocused) {
                     // Clicked outside the wrapper, blur the input
                     setIsFocused(false);
                 }
@@ -126,7 +128,7 @@ export default function KeebType() {
             // Remove the event listener when the component unmounts
             document.removeEventListener("click", handleDocumentClick);
         };
-    }, []);
+    }, [isFocused]);
 
     useEffect(() => {
         if (inputRef.current) {
@@ -139,6 +141,7 @@ export default function KeebType() {
     }, [isFocused]);
 
     console.log(isFocused);
+    console.log(totalCharacters)
 
     return !isTestFinished ? (
         <div className="flex justify-center ">
@@ -183,15 +186,13 @@ export default function KeebType() {
         <>
             <TypingStats
                 totalTime={totalTime}
-                typedCorrectText={typedCorrectText}
-                typedText={typedText}
-                mistakes={mistakes}
+                // mistakes={mistakes}
                 hits={hits}
                 totalCharacters={totalCharacters}
             />
 
             <div className="flex flex-col">
-                <button>Try Again</button>
+                <button onClick={nextGame}>Try Again</button>
             </div>
         </>
     );
