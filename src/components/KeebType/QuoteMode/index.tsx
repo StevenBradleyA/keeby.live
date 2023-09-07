@@ -4,20 +4,27 @@ import TypingStats from "../stats";
 
 interface QuoteTypeProps {
     currentParagraph: string;
-    setIsNewParagraph: (paragraph: boolean) => void;
+    setIsNewParagraph: (isNewParagraph: boolean) => void;
+    isFocused: boolean;
+    setIsFocused: (isFocused: boolean) => void;
 }
 
 export default function QuoteType({
     currentParagraph,
     setIsNewParagraph,
+    isFocused,
+    setIsFocused,
 }: QuoteTypeProps) {
     // TODO add vertical bars left side different modes. Right side basic functions restart test, new test, stats
+    // TODO fix double click breaks the typing focus not poggers should be able to click inifite and stay focused
+    // TODO cool ideas warmup mode qwerty asdf zxcv etc...
+    // TODO code mode {} ; : "" () = special characters <> etc
+    // ! new idea can we make it so that when isFocused clicking on the wrapper sets the focus everytime to it always works. double cliking still breaks
 
     const [typedText, setTypedText] = useState<string>("");
     const [letterIndex, setLetterIndex] = useState<number>(0);
     const [mistakes, setMistakes] = useState<number>(0);
     const [hits, setHits] = useState<number>(0);
-    const [isFocused, setIsFocused] = useState<boolean>(true);
     const [isTyping, setIsTyping] = useState<boolean>(false);
     const [totalTime, setTotalTime] = useState<number>(0);
     const [timer, setTimer] = useState<number | null>(null);
@@ -29,20 +36,18 @@ export default function QuoteType({
     const totalCharacters = currentParagraph.length;
 
     useEffect(() => {
-        loadParagraph();
-        if (inputRef.current) {
-            inputRef.current.focus();
-        }
-    }, []);
-
-    const loadParagraph = () => {
+        setIsFocused(true);
         setTypedText("");
         setLetterIndex(0);
         setMistakes(0);
         setHits(0);
-        setIsTyping(false);
         setTotalTime(0);
-    };
+        setIsTyping(false);
+
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, [currentParagraph]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const typedChar = e.target.value[letterIndex];
@@ -53,7 +58,7 @@ export default function QuoteType({
             setTimer(startTime);
         }
 
-        if (letterIndex < currentParagraph.length) {
+        if (letterIndex < totalCharacters) {
             if (!typedChar) {
                 if (letterIndex > 0) {
                     setLetterIndex((prevCharIndex) => prevCharIndex - 1);
@@ -83,17 +88,6 @@ export default function QuoteType({
         setTypedText(e.target.value);
     };
 
-    const nextGame = () => {
-        // setIsFocused(true);
-        // loadParagraph();
-        // setIsTestFinished(false);
-        // setTotalCharacters(currentParagraph.length);
-        setIsNewParagraph(true);
-        if (inputRef.current) {
-            inputRef.current.focus();
-        }
-    };
-
     useEffect(() => {
         const handleDocumentClick = (e: MouseEvent) => {
             if (inputRef.current && wrapperRef.current) {
@@ -117,8 +111,8 @@ export default function QuoteType({
             // Remove the event listener when the component unmounts
             document.removeEventListener("click", handleDocumentClick);
         };
-    }, [isFocused]);
-
+    }, [isFocused, setIsFocused]);
+    // oldest
     useEffect(() => {
         if (inputRef.current) {
             if (isFocused) {
@@ -128,9 +122,29 @@ export default function QuoteType({
             }
         }
     }, [isFocused]);
+    // second
+    // useEffect(() => {
+    //     if (inputRef.current && isFocused) {
+    //         inputRef.current.focus();
+    //     }
+    // }, [isFocused]);
+    // new
+    // useEffect(() => {
+    //     if (inputRef.current && !isFocused) {
+    //         inputRef.current.focus();
+    //     }
+    // }, [isFocused]);
+
+    const nextGame = () => {
+        setIsTestFinished(false);
+        setIsFocused(true);
+        setIsNewParagraph(true);
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
+    };
 
     console.log(isFocused);
-    console.log(totalCharacters);
 
     return !isTestFinished ? (
         <div className="flex justify-center ">

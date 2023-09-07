@@ -17,7 +17,11 @@ export default function TypingStats({
 
     const rawWpm = Math.round(totalCharacters / 5 / (totalTime / 60));
 
-    const accuracy = ((hits / totalCharacters) * 100).toFixed(2);
+    const accuracy = ((hits / totalCharacters) * 100).toFixed(0);
+
+    // seen accuracy be 100.67 somehow?? 
+    console.log(hits) 
+    // todo hits have been higher than total characters???
 
     return (
         <div className="flex flex-col">

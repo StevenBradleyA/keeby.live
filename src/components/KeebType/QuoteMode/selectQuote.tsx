@@ -16,6 +16,8 @@ export default function SelectQuote() {
 
     const [currentParagraph, setCurrentParagraph] = useState<string>("");
     const [isNewParagraph, setIsNewParagraph] = useState<boolean>(false);
+    const [isFocused, setIsFocused] = useState<boolean>(false);
+
 
     useEffect(() => {
         setIsNewParagraph(false);
@@ -32,6 +34,8 @@ export default function SelectQuote() {
             <QuoteType
                 currentParagraph={currentParagraph}
                 setIsNewParagraph={setIsNewParagraph}
+                isFocused={isFocused}
+                setIsFocused={setIsFocused}
             />
         </>
     );
