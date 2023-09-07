@@ -21,6 +21,7 @@ export default function QuoteType({
     // TODO cool ideas warmup mode qwerty asdf zxcv etc...
     // TODO code mode {} ; : "" () = special characters <> etc
     // ! new idea can we make it so that when isFocused clicking on the wrapper sets the focus everytime to it always works. double cliking still breaks
+    // refactor on event listerner to on clicks
 
     const [typedText, setTypedText] = useState<string>("");
     const [letterIndex, setLetterIndex] = useState<number>(0);
@@ -74,7 +75,6 @@ export default function QuoteType({
         };
     }, [isFocused, setIsFocused]);
 
-    // oldest
     useEffect(() => {
         if (inputRef.current) {
             if (isFocused) {
@@ -85,6 +85,12 @@ export default function QuoteType({
         }
     }, [isFocused]);
 
+    const handleTypeActive = () => {
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
+    };
+
     const nextGame = () => {
         setIsTestFinished(false);
         setIsFocused(true);
@@ -93,9 +99,6 @@ export default function QuoteType({
             inputRef.current.focus();
         }
     };
-
-    const isInputFocused = document.activeElement === inputRef.current;
-    console.log(isInputFocused);
 
     return !isTestFinished ? (
         <div className="flex justify-center ">
@@ -107,6 +110,7 @@ export default function QuoteType({
             <div
                 className=" wrapper relative flex w-3/4 flex-wrap bg-red-200 "
                 ref={wrapperRef}
+                onClick={handleTypeActive}
             >
                 <TypeMechanics
                     totalCharacters={totalCharacters}
@@ -122,6 +126,7 @@ export default function QuoteType({
                     setTotalTime={setTotalTime}
                     setIsTestFinished={setIsTestFinished}
                     setMistakes={setMistakes}
+                    isFocused={isFocused}
                 />
                 {!isFocused && (
                     <div className="absolute inset-0 z-20 flex items-center justify-center backdrop-blur-sm">
@@ -152,6 +157,52 @@ export default function QuoteType({
 }
 
 /*
+
+
+  useEffect(() => {
+        const handleDocumentClick = (e: MouseEvent) => {
+            if (inputRef.current && wrapperRef.current) {
+                console.log("praise the whatev");
+                if (wrapperRef.current.contains(e.target as Node)) {
+                    // Clicked inside the wrapper
+                    if (!isFocused) {
+                        // Only set isFocused to true if it's currently false
+                        setIsFocused(true);
+                    }
+                } else if (isFocused) {
+                    // Clicked outside the wrapper, blur the input
+                    setIsFocused(false);
+                }
+            }
+        };
+
+        // Add a click event listener to the document
+        document.addEventListener("click", handleDocumentClick);
+
+        return () => {
+            // Remove the event listener when the component unmounts
+            document.removeEventListener("click", handleDocumentClick);
+        };
+    }, [isFocused, setIsFocused]);
+
+
+
+ useEffect(() => {
+        if (inputRef.current) {
+            if (isFocused) {
+                inputRef.current.focus();
+            } else {
+                inputRef.current.blur();
+            }
+        }
+    }, [isFocused]);
+
+
+
+
+
+
+
 
 
   const [sentenceLength, setSentenceLength] = useState(10); // Default sentence length

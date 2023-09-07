@@ -13,11 +13,13 @@ interface TypeMechanicsProps {
     setIsTyping: (isTyping: boolean) => void;
     setIsTestFinished: (isTestFinished: boolean) => void;
     setHits: (hits: number) => void;
-    setTotalTime: (time: date) => void;
+    setTotalTime: (time: number) => void;
     setMistakes: (mistakes: number) => void;
+    isFocused: boolean;
 }
 
 export default function TypeMechanics({
+    isFocused,
     currentParagraph,
     letterIndex,
     typedText,
@@ -89,6 +91,34 @@ export default function TypeMechanics({
             >
                 <input
                     ref={inputRef}
+                    // onFocus={(e) => {
+                    //     console.log("Focused on input");
+                    // }}
+                    // onBlur={(e) => {
+                    //     console.log("Triggered because this input lost focus");
+                    // }}
+                    onFocus={(e) => {
+                        if (e.currentTarget === e.target) {
+                            console.log("focused self");
+                        } else {
+                            console.log("focused child", e.target);
+                        }
+                        if (!e.currentTarget.contains(e.relatedTarget)) {
+                            // Not triggered when swapping focus between children
+                            console.log("focus entered self");
+                        }
+                    }}
+                    onBlur={(e) => {
+                        if (e.currentTarget === e.target) {
+                            console.log("unfocused self");
+                        } else {
+                            console.log("unfocused child", e.target);
+                        }
+                        if (!e.currentTarget.contains(e.relatedTarget)) {
+                            // Not triggered when swapping focus between children
+                            console.log("focus left self");
+                        }
+                    }}
                     className="input-field "
                     type="text"
                     value={typedText}
