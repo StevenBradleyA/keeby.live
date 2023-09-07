@@ -1,26 +1,18 @@
 import { useEffect, useRef, useState } from "react";
-import TypingText from "./typingText";
-import TypingStats from "./stats";
+import TypingText from "../typingText";
+import TypingStats from "../stats";
 
-export default function KeebType() {
+interface QuoteTypeProps {
+    currentParagraph: string;
+    setIsNewParagraph: (paragraph: boolean) => void;
+}
+
+export default function QuoteType({
+    currentParagraph,
+    setIsNewParagraph,
+}: QuoteTypeProps) {
     // TODO add vertical bars left side different modes. Right side basic functions restart test, new test, stats
 
-    // TODO having a lot of issues with out timing. Becuase we are randomly selected a phrase so things need to load so lets make a parent that lets them.
-
-    const [paragraphs] = useState<string[]>([
-        "keys typing qwerty layout letters spacebar backspace shift enter capslock function arrow control alt command escape delete tab home numeric",
-        "keyboards typing keys qwerty spacebar layout letters backspace shift enter capslock function arrow control alt command escape delete tab home numeric",
-        "typing qwerty keys layout letters spacebar backspace shift enter capslock function arrow control alt command escape delete tab home numeric keyboards",
-        "enter typing keys qwerty layout letters spacebar backspace shift capslock function arrow control alt command escape delete tab home numeric keyboards",
-        "qwerty layout typing keys letters spacebar backspace shift enter capslock function arrow control alt command escape delete tab home numeric keyboards",
-        "numeric keyboards typing keys qwerty layout letters spacebar backspace shift enter capslock function arrow control alt command escape delete tab home",
-        "letters spacebar enthusiasts qwerty layout mechanical keyboard typing enthusiasts artisan backspace enthusiast switches keycaps function arrow control alt command escape delete custom hobby tab numeric",
-        "backspace switches mechanical typing keys enthusiasts qwerty layout artisan letters enthusiasts spacebar enthusiast keycaps function arrow control alt custom command hobby escape delete tab home numeric",
-        "keycaps enthusiasts qwerty layout typing keys mechanical keyboard switches artisan letters enthusiasts spacebar backspace enthusiast function arrow control alt custom command escape hobby delete tab numeric",
-    ]);
-
-    const [currentParagraph, setCurrentParagraph] = useState<string>("");
-    const [totalCharacters, setTotalCharacters] = useState<number>(0);
     const [typedText, setTypedText] = useState<string>("");
     const [letterIndex, setLetterIndex] = useState<number>(0);
     const [mistakes, setMistakes] = useState<number>(0);
@@ -34,6 +26,8 @@ export default function KeebType() {
     const inputRef = useRef<HTMLInputElement | null>(null);
     const wrapperRef = useRef<HTMLDivElement | null>(null);
 
+    const totalCharacters = currentParagraph.length;
+
     useEffect(() => {
         loadParagraph();
         if (inputRef.current) {
@@ -42,16 +36,12 @@ export default function KeebType() {
     }, []);
 
     const loadParagraph = () => {
-        const randomIndex = Math.floor(Math.random() * paragraphs.length);
-        const newParagraph = paragraphs[randomIndex] || "";
-        setCurrentParagraph(newParagraph);
         setTypedText("");
         setLetterIndex(0);
         setMistakes(0);
         setHits(0);
         setIsTyping(false);
         setTotalTime(0);
-        setTotalCharacters(currentParagraph.length);
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -95,11 +85,10 @@ export default function KeebType() {
 
     const nextGame = () => {
         // setIsFocused(true);
-        loadParagraph();
+        // loadParagraph();
         // setIsTestFinished(false);
         // setTotalCharacters(currentParagraph.length);
-
-
+        setIsNewParagraph(true);
         if (inputRef.current) {
             inputRef.current.focus();
         }
@@ -141,7 +130,7 @@ export default function KeebType() {
     }, [isFocused]);
 
     console.log(isFocused);
-    console.log(totalCharacters)
+    console.log(totalCharacters);
 
     return !isTestFinished ? (
         <div className="flex justify-center ">
