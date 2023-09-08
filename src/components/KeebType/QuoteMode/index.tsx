@@ -27,6 +27,11 @@ export default function QuoteType({
     const [isTyping, setIsTyping] = useState<boolean>(false);
     const [totalTime, setTotalTime] = useState<number>(0);
     const [isTestFinished, setIsTestFinished] = useState<boolean>(false);
+   
+
+
+
+
     const inputRef = useRef<HTMLInputElement | null>(null);
     const wrapperRef = useRef<HTMLDivElement | null>(null);
     const totalCharacters = currentParagraph.length;
@@ -126,6 +131,7 @@ export default function QuoteType({
                     setTotalTime={setTotalTime}
                     setIsTestFinished={setIsTestFinished}
                     setMistakes={setMistakes}
+                    
                 />
                 {!isFocused && (
                     <div className="absolute inset-0 z-20 flex items-center justify-center backdrop-blur-sm">
