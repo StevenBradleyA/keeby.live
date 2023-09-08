@@ -20,7 +20,6 @@ export default function QuoteType({
     // TODO fix double click breaks the typing focus not poggers should be able to click inifite and stay focused
     // TODO cool ideas warmup mode qwerty asdf zxcv etc...
     // TODO code mode {} ; : "" () = special characters <> etc
-    // ! new idea can we make it so that when isFocused clicking on the wrapper sets the focus everytime to it always works. double cliking still breaks
     // refactor on event listerner to on clicks
 
     const [typedText, setTypedText] = useState<string>("");
@@ -30,10 +29,8 @@ export default function QuoteType({
     const [isTyping, setIsTyping] = useState<boolean>(false);
     const [totalTime, setTotalTime] = useState<number>(0);
     const [isTestFinished, setIsTestFinished] = useState<boolean>(false);
-
     const inputRef = useRef<HTMLInputElement | null>(null);
     const wrapperRef = useRef<HTMLDivElement | null>(null);
-
     const totalCharacters = currentParagraph.length;
 
     useEffect(() => {
@@ -50,11 +47,24 @@ export default function QuoteType({
         }
     }, [currentParagraph]);
 
+    // todo refactor to not use event listener problem is onBlur is running when wrapper is clicked
+    // todo this causes pausing toggle effect
+    // const handleWrapperClick = () => {
+    //     if (!isFocused) {
+    //         setIsFocused(true);
+    //     }
+    // };
+
+    const handleTypeActive = () => {
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
+    };
+
     useEffect(() => {
         const handleDocumentClick = (e: MouseEvent) => {
             if (inputRef.current && wrapperRef.current) {
                 if (wrapperRef.current.contains(e.target as Node)) {
-                    // Clicked inside the wrapper
                     if (!isFocused) {
                         // Only set isFocused to true if it's currently false
                         setIsFocused(true);
@@ -66,11 +76,9 @@ export default function QuoteType({
             }
         };
 
-        // Add a click event listener to the document
         document.addEventListener("click", handleDocumentClick);
 
         return () => {
-            // Remove the event listener when the component unmounts
             document.removeEventListener("click", handleDocumentClick);
         };
     }, [isFocused, setIsFocused]);
@@ -84,12 +92,6 @@ export default function QuoteType({
             }
         }
     }, [isFocused]);
-
-    const handleTypeActive = () => {
-        if (inputRef.current) {
-            inputRef.current.focus();
-        }
-    };
 
     const nextGame = () => {
         setIsTestFinished(false);
@@ -111,6 +113,8 @@ export default function QuoteType({
                 className=" wrapper relative flex w-3/4 flex-wrap bg-red-200 "
                 ref={wrapperRef}
                 onClick={handleTypeActive}
+                // onClick={handleWrapperClick}
+                // onBlur={() => setIsFocused(false)}
             >
                 <TypeMechanics
                     totalCharacters={totalCharacters}
@@ -126,7 +130,6 @@ export default function QuoteType({
                     setTotalTime={setTotalTime}
                     setIsTestFinished={setIsTestFinished}
                     setMistakes={setMistakes}
-                    isFocused={isFocused}
                 />
                 {!isFocused && (
                     <div className="absolute inset-0 z-20 flex items-center justify-center backdrop-blur-sm">
@@ -157,6 +160,28 @@ export default function QuoteType({
 }
 
 /*
+
+    useEffect(() => {
+        if (inputRef.current) {
+            if (isFocused) {
+                inputRef.current.focus();
+            } else {
+                inputRef.current.blur();
+            }
+        }
+    }, [isFocused]);
+
+    const handleTypeActive = () => {
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
+    };
+
+
+
+
+
+
 
 
   useEffect(() => {

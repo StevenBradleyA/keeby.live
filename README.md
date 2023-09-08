@@ -143,13 +143,17 @@ Typing game should defo have a rank based on the top percentage of users
 -later on season (implementation)
 - could either do season 1 hackerman tag
 (unranked till you typed 10 times)
+HotSwap Hero
 
 (bronze - plat are switches colored)
 Bronze Switch (I, II, III) 
 Silver 
 Gold
 Platinum  (top 50%)
-Artisan (top 75%) ---- 
+ClackChampion
+ThockMaster III (top 75%) ---- 
+
+
 ---
 thock god (top .2%)
 Hackerman(0.1%)
