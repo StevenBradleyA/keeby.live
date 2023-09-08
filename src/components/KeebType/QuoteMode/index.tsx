@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import TypingText from "../typingText";
 import TypingStats from "../stats";
 import TypeMechanics from "../typeMechanics";
 
@@ -17,7 +16,6 @@ export default function QuoteType({
     setIsFocused,
 }: QuoteTypeProps) {
     // TODO add vertical bars left side different modes. Right side basic functions restart test, new test, stats
-    // TODO fix double click breaks the typing focus not poggers should be able to click inifite and stay focused
     // TODO cool ideas warmup mode qwerty asdf zxcv etc...
     // TODO code mode {} ; : "" () = special characters <> etc
     // refactor on event listerner to on clicks
@@ -66,11 +64,9 @@ export default function QuoteType({
             if (inputRef.current && wrapperRef.current) {
                 if (wrapperRef.current.contains(e.target as Node)) {
                     if (!isFocused) {
-                        // Only set isFocused to true if it's currently false
                         setIsFocused(true);
                     }
                 } else if (isFocused) {
-                    // Clicked outside the wrapper, blur the input
                     setIsFocused(false);
                 }
             }
@@ -147,7 +143,7 @@ export default function QuoteType({
         <>
             <TypingStats
                 totalTime={totalTime}
-                // mistakes={mistakes}
+                mistakes={mistakes}
                 hits={hits}
                 totalCharacters={totalCharacters}
             />
@@ -160,74 +156,6 @@ export default function QuoteType({
 }
 
 /*
-
-    useEffect(() => {
-        if (inputRef.current) {
-            if (isFocused) {
-                inputRef.current.focus();
-            } else {
-                inputRef.current.blur();
-            }
-        }
-    }, [isFocused]);
-
-    const handleTypeActive = () => {
-        if (inputRef.current) {
-            inputRef.current.focus();
-        }
-    };
-
-
-
-
-
-
-
-
-  useEffect(() => {
-        const handleDocumentClick = (e: MouseEvent) => {
-            if (inputRef.current && wrapperRef.current) {
-                console.log("praise the whatev");
-                if (wrapperRef.current.contains(e.target as Node)) {
-                    // Clicked inside the wrapper
-                    if (!isFocused) {
-                        // Only set isFocused to true if it's currently false
-                        setIsFocused(true);
-                    }
-                } else if (isFocused) {
-                    // Clicked outside the wrapper, blur the input
-                    setIsFocused(false);
-                }
-            }
-        };
-
-        // Add a click event listener to the document
-        document.addEventListener("click", handleDocumentClick);
-
-        return () => {
-            // Remove the event listener when the component unmounts
-            document.removeEventListener("click", handleDocumentClick);
-        };
-    }, [isFocused, setIsFocused]);
-
-
-
- useEffect(() => {
-        if (inputRef.current) {
-            if (isFocused) {
-                inputRef.current.focus();
-            } else {
-                inputRef.current.blur();
-            }
-        }
-    }, [isFocused]);
-
-
-
-
-
-
-
 
 
   const [sentenceLength, setSentenceLength] = useState(10); // Default sentence length

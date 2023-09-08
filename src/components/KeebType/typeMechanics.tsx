@@ -8,13 +8,13 @@ interface TypeMechanicsProps {
     typedText: string;
     setTypedText: (typedText: string) => void;
     letterIndex: number;
-    setLetterIndex: (letterIndex: number) => void;
+    setLetterIndex: React.Dispatch<React.SetStateAction<number>>;
     isTyping: boolean;
     setIsTyping: (isTyping: boolean) => void;
     setIsTestFinished: (isTestFinished: boolean) => void;
-    setHits: (hits: number) => void;
+    setHits: React.Dispatch<React.SetStateAction<number>>;
     setTotalTime: (time: number) => void;
-    setMistakes: (mistakes: number) => void;
+    setMistakes: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export default function TypeMechanics({

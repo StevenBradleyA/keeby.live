@@ -1,17 +1,24 @@
+interface TypingStats {
+    totalTime: number;
+    hits: number;
+    totalCharacters: number;
+    mistakes: number;
+}
+
 export default function TypingStats({
     totalTime,
     hits,
     totalCharacters,
-}) {
-
+    mistakes,
+}: TypingStats) {
     // TODO implement rank system here if user is signed in...
     // wpm - total amount of characters in the correctly typed words (including spaces), divided by 5 and normalised to 60 seconds.
     // raw wpm - calculated just like wpm, but also includes incorrect words.
     // acc - percentage of correctly pressed keys.
     // char - correct characters / incorrect characters. Calculated after the test has ended.
     // consistency - based on the variance of your raw wpm. Closer to 100% is better. Calculated using the coefficient of variation of raw wpm and mapped onto a scale from 0 to 100.
-    console.log("hits", hits)
-    console.log("total", totalCharacters)
+    console.log("hits", hits);
+    console.log("total", totalCharacters);
 
     const wpm = Math.round(hits / 5 / (totalTime / 60));
 
@@ -19,8 +26,8 @@ export default function TypingStats({
 
     const accuracy = ((hits / totalCharacters) * 100).toFixed(0);
 
-    // seen accuracy be 100.67 somehow?? 
-    console.log(hits) 
+    // seen accuracy be 100.67 somehow??
+    console.log(hits);
     // todo hits have been higher than total characters???
 
     return (
