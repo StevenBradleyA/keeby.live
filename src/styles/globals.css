@@ -2,15 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
-
 /* -----------test  */
 
-#paragraph{
+#paragraph {
     color: #646669;
 }
-.result-details{
+.result-details {
     color: white;
 }
 ::selection {
@@ -47,7 +44,6 @@
     letter-spacing: 1px;
     /* word-break: break-all; */
     color: #646669;
-
 }
 .typing-text p span {
     position: relative;
@@ -105,7 +101,7 @@
     transform: scale(0.89);
 }
 .content button:hover {
-    background: #FFFFFF;
+    background: #ffffff;
 }
 .content .result-details {
     display: flex;
