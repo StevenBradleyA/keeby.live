@@ -3,6 +3,7 @@ export default function TypingText({
     letterIndex,
     typedText,
 }) {
+    
     return (
         <div className="typing-text break-words">
             <p>

@@ -27,10 +27,6 @@ export default function QuoteType({
     const [isTyping, setIsTyping] = useState<boolean>(false);
     const [totalTime, setTotalTime] = useState<number>(0);
     const [isTestFinished, setIsTestFinished] = useState<boolean>(false);
-   
-
-
-
 
     const inputRef = useRef<HTMLInputElement | null>(null);
     const wrapperRef = useRef<HTMLDivElement | null>(null);
@@ -52,11 +48,11 @@ export default function QuoteType({
 
     // todo refactor to not use event listener problem is onBlur is running when wrapper is clicked
     // todo this causes pausing toggle effect
-    // const handleWrapperClick = () => {
-    //     if (!isFocused) {
-    //         setIsFocused(true);
-    //     }
-    // };
+    const handleWrapperClick = () => {
+        if (!isFocused) {
+            setIsFocused(true);
+        }
+    };
 
     const handleTypeActive = () => {
         if (inputRef.current) {
@@ -113,26 +109,27 @@ export default function QuoteType({
             <div
                 className=" wrapper relative flex w-3/4 flex-wrap bg-red-200 "
                 ref={wrapperRef}
-                onClick={handleTypeActive}
+                // onClick={handleTypeActive}
                 // onClick={handleWrapperClick}
                 // onBlur={() => setIsFocused(false)}
             >
-                <TypeMechanics
-                    totalCharacters={totalCharacters}
-                    currentParagraph={currentParagraph}
-                    letterIndex={letterIndex}
-                    typedText={typedText}
-                    setTypedText={setTypedText}
-                    inputRef={inputRef}
-                    isTyping={isTyping}
-                    setIsTyping={setIsTyping}
-                    setHits={setHits}
-                    setLetterIndex={setLetterIndex}
-                    setTotalTime={setTotalTime}
-                    setIsTestFinished={setIsTestFinished}
-                    setMistakes={setMistakes}
-                    
-                />
+                {currentParagraph && (
+                    <TypeMechanics
+                        totalCharacters={totalCharacters}
+                        currentParagraph={currentParagraph}
+                        letterIndex={letterIndex}
+                        typedText={typedText}
+                        setTypedText={setTypedText}
+                        inputRef={inputRef}
+                        isTyping={isTyping}
+                        setIsTyping={setIsTyping}
+                        setHits={setHits}
+                        setLetterIndex={setLetterIndex}
+                        setTotalTime={setTotalTime}
+                        setIsTestFinished={setIsTestFinished}
+                        setMistakes={setMistakes}
+                    />
+                )}
                 {!isFocused && (
                     <div className="absolute inset-0 z-20 flex items-center justify-center backdrop-blur-sm">
                         <div className="text-2xl font-bold text-white">
