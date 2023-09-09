@@ -2,7 +2,6 @@ export default function TypingText({
     currentParagraph,
     letterIndex,
     typedText,
-    correctlySpelledWords,
 }) {
     return (
         <div className="typing-text break-words">
@@ -14,18 +13,13 @@ export default function TypingText({
 
                     const isCorrectChar = isTyped && typedChar === char;
                     const isIncorrectChar = isTyped && typedChar !== char;
-                    const isLocked = correctlySpelledWords.includes(
-                        typedText.split(" ")[index]
-                    );
 
                     return (
                         <span
                             key={index}
                             className={`${isCurrentChar ? "active" : ""} ${
                                 isCorrectChar ? "correct" : ""
-                            } ${isIncorrectChar ? "incorrect" : ""} ${
-                                isLocked ? "locked" : ""
-                            }`}
+                            } ${isIncorrectChar ? "incorrect" : ""}`}
                         >
                             {isTyped ? typedChar : char}
                         </span>
