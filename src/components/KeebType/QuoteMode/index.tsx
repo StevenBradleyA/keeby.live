@@ -1,167 +1,158 @@
 import { useEffect, useRef, useState } from "react";
+import TypingStats from "../stats";
+import TypeMechanics from "../typeMechanics";
 
-export default function KeebType() {
+interface QuoteTypeProps {
+    currentParagraph: string;
+    setIsNewParagraph: (isNewParagraph: boolean) => void;
+    isFocused: boolean;
+    setIsFocused: (isFocused: boolean) => void;
+}
+
+export default function QuoteType({
+    currentParagraph,
+    setIsNewParagraph,
+    isFocused,
+    setIsFocused,
+}: QuoteTypeProps) {
     // TODO add vertical bars left side different modes. Right side basic functions restart test, new test, stats
-    // todo randomly selecting sentences or words for users to type
-    // TODO select phrases between 10, 25, 50 words
-    // educational modes will just grab from an array full of them.
-    // Comparing the user's input to the target text to calculate accuracy and WPM.
+    // TODO cool ideas warmup mode qwerty asdf zxcv etc...
+    // TODO code mode {} ; : "" () = special characters <> etc
+    // refactor on event listerner to on clicks
 
-    const [paragraphs] = useState([
-        "keys typing qwerty layout letters spacebar backspace shift enter capslock function arrow control alt command escape delete tab home numeric",
-        "keyboards typing keys qwerty spacebar layout letters backspace shift enter capslock function arrow control alt command escape delete tab home numeric",
-        "typing qwerty keys layout letters spacebar backspace shift enter capslock function arrow control alt command escape delete tab home numeric keyboards",
-        "enter typing keys qwerty layout letters spacebar backspace shift capslock function arrow control alt command escape delete tab home numeric keyboards",
-        "qwerty layout typing keys letters spacebar backspace shift enter capslock function arrow control alt command escape delete tab home numeric keyboards",
-        "numeric keyboards typing keys qwerty layout letters spacebar backspace shift enter capslock function arrow control alt command escape delete tab home",
-        "letters spacebar enthusiasts qwerty layout mechanical keyboard typing enthusiasts artisan backspace enthusiast switches keycaps function arrow control alt command escape delete custom hobby tab numeric",
-        "backspace switches mechanical typing keys enthusiasts qwerty layout artisan letters enthusiasts spacebar enthusiast keycaps function arrow control alt custom command hobby escape delete tab home numeric",
-        "keycaps enthusiasts qwerty layout typing keys mechanical keyboard switches artisan letters enthusiasts spacebar backspace enthusiast function arrow control alt custom command escape hobby delete tab numeric",
-    ]);
-    const [currentParagraph, setCurrentParagraph] = useState("");
-    const [typedText, setTypedText] = useState("");
-    const [charIndex, setCharIndex] = useState(0);
-    const [mistakes, setMistakes] = useState(0);
-    const [isTyping, setIsTyping] = useState(false);
-    const [timeLeft, setTimeLeft] = useState(60);
-    const [timer, setTimer] = useState(null);
-    const [wpm, setWPM] = useState(0);
+    const [typedText, setTypedText] = useState<string>("");
+    const [letterIndex, setLetterIndex] = useState<number>(0);
+    const [mistakes, setMistakes] = useState<number>(0);
+    const [hits, setHits] = useState<number>(0);
+    const [isTyping, setIsTyping] = useState<boolean>(false);
+    const [totalTime, setTotalTime] = useState<number>(0);
+    const [isTestFinished, setIsTestFinished] = useState<boolean>(false);
 
-    const inputRef = useRef(null);
+    const inputRef = useRef<HTMLInputElement | null>(null);
+    const wrapperRef = useRef<HTMLDivElement | null>(null);
+    const totalCharacters = currentParagraph.length;
 
     useEffect(() => {
-        loadParagraph();
-    }, []);
-
-    const loadParagraph = () => {
-        const randomIndex = Math.floor(Math.random() * paragraphs.length);
-        setCurrentParagraph(paragraphs[randomIndex]);
+        setIsFocused(true);
         setTypedText("");
-        setCharIndex(0);
+        setLetterIndex(0);
         setMistakes(0);
+        setHits(0);
+        setTotalTime(0);
         setIsTyping(false);
-        setTimeLeft(60);
-        setWPM(0);
+
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, [currentParagraph]);
+
+    // todo refactor to not use event listener problem is onBlur is running when wrapper is clicked
+    // todo this causes pausing toggle effect
+    // const handleWrapperClick = () => {
+    //     if (!isFocused) {
+    //         setIsFocused(true);
+    //     }
+    // };
+
+    const handleTypeActive = () => {
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
     };
 
-    const handleInputChange = (event) => {
-        const typedChar = event.target.value[charIndex];
-
-        if (!isTyping) {
-            const newTimer = setInterval(initTimer, 1000);
-            setIsTyping(true);
-            setTimer(newTimer);
-        }
-
-        if (charIndex < currentParagraph.length && timeLeft > 0) {
-            if (typedChar == null) {
-                if (charIndex > 0) {
-                    setCharIndex((prevCharIndex) => prevCharIndex - 1);
-
-                    if (currentParagraph[charIndex - 1] !== " ") {
-                        setMistakes((prevMistakes) => prevMistakes - 1);
+    useEffect(() => {
+        const handleDocumentClick = (e: MouseEvent) => {
+            if (inputRef.current && wrapperRef.current) {
+                if (wrapperRef.current.contains(e.target as Node)) {
+                    if (!isFocused) {
+                        setIsFocused(true);
                     }
+                } else if (isFocused) {
+                    setIsFocused(false);
                 }
-            } else {
-                if (currentParagraph[charIndex] !== typedChar) {
-                    setMistakes((prevMistakes) => prevMistakes + 1);
-                }
-
-                setCharIndex((prevCharIndex) => prevCharIndex + 1);
             }
-        } else {
-            clearInterval(timer);
+        };
+
+        document.addEventListener("click", handleDocumentClick);
+
+        return () => {
+            document.removeEventListener("click", handleDocumentClick);
+        };
+    }, [isFocused, setIsFocused]);
+
+    useEffect(() => {
+        if (inputRef.current) {
+            if (isFocused) {
+                inputRef.current.focus();
+            } else {
+                inputRef.current.blur();
+            }
         }
+    }, [isFocused]);
 
-        setTypedText(event.target.value);
-    };
-
-    const initTimer = () => {
-        if (timeLeft > 0) {
-            setTimeLeft((prevTimeLeft) => prevTimeLeft - 1);
-
-            const calculatedWPM = Math.round(
-                ((charIndex - mistakes) / 5 / (60 - timeLeft)) * 60
-            );
-            setWPM(calculatedWPM);
-        } else {
-            clearInterval(timer);
+    const nextGame = () => {
+        setIsTestFinished(false);
+        setIsFocused(true);
+        setIsNewParagraph(true);
+        if (inputRef.current) {
+            inputRef.current.focus();
         }
     };
 
-    const resetGame = () => {
-        loadParagraph();
-        inputRef.current.focus(); // Focus the input field when resetting the game
-    };
-
-    return (
+    return !isTestFinished ? (
         <div className="flex justify-center ">
-            <div className=" wrapper flex w-3/4 flex-wrap ">
-                <div className="content-box">
-                    <div className="typing-text break-words">
-                        <p>
-                            {currentParagraph.split("").map((char, index) => {
-                                const isCurrentChar = index === charIndex;
-                                const isTyped = index < typedText.length;
-                                const typedChar = typedText[index];
-
-                                const isCorrectChar =
-                                    isTyped && typedChar === char;
-                                const isIncorrectChar =
-                                    isTyped && typedChar !== char;
-
-                                return (
-                                    <span
-                                        key={index}
-                                        className={`${
-                                            isCurrentChar ? "active" : ""
-                                        } ${isCorrectChar ? "correct" : ""} ${
-                                            isIncorrectChar ? "incorrect" : ""
-                                        }`}
-                                    >
-                                        {isTyped ? typedChar : char}
-                                    </span>
-                                );
-                            })}
-                        </p>
+            <div className="flex flex-col  ">
+                <button>10</button>
+                <button>20</button>
+                <button>50</button>
+            </div>
+            <div
+                className=" wrapper relative flex w-3/4 flex-wrap "
+                ref={wrapperRef}
+                onClick={handleTypeActive}
+                // onClick={handleWrapperClick}
+                // onBlur={() => setIsFocused(false)}
+            >
+                <TypeMechanics
+                    totalCharacters={totalCharacters}
+                    currentParagraph={currentParagraph}
+                    letterIndex={letterIndex}
+                    typedText={typedText}
+                    setTypedText={setTypedText}
+                    inputRef={inputRef}
+                    isTyping={isTyping}
+                    setIsTyping={setIsTyping}
+                    setHits={setHits}
+                    setLetterIndex={setLetterIndex}
+                    setTotalTime={setTotalTime}
+                    setIsTestFinished={setIsTestFinished}
+                    setMistakes={setMistakes}
+                />
+                {!isFocused && (
+                    <div className="absolute inset-0 z-20 flex items-center justify-center backdrop-blur-sm">
+                        <div className="text-2xl font-bold text-white">
+                            Paused
+                        </div>
                     </div>
-
-                    <div className="content">
-                        <input
-                            ref={inputRef}
-                            className="input-field"
-                            type="text"
-                            value={typedText}
-                            onChange={handleInputChange}
-                        />
-                        <button onClick={resetGame}>Try Again</button>
-                        <ul className="result-details">
-                            <li>
-                                <p>
-                                    Time Left: <b>{timeLeft}</b> s
-                                </p>
-                            </li>
-                            <li>
-                                <p>
-                                    Mistakes: <b>{mistakes}</b>
-                                </p>
-                            </li>
-                            <li>
-                                <p>
-                                    Words Per Minute (WPM): <b>{wpm}</b>
-                                </p>
-                            </li>
-                            <li>
-                                <p>
-                                    Characters Per Minute (CPM):{" "}
-                                    <b>{charIndex - mistakes}</b>
-                                </p>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+                )}
+            </div>
+            <div className="flex flex-col">
+                <button onClick={nextGame}>Next</button>
             </div>
         </div>
+    ) : (
+        <>
+            <TypingStats
+                totalTime={totalTime}
+                mistakes={mistakes}
+                hits={hits}
+                totalCharacters={totalCharacters}
+            />
+
+            <div className="flex flex-col">
+                <button onClick={nextGame}>Try Again</button>
+            </div>
+        </>
     );
 }
 
@@ -736,7 +727,7 @@ const paragraphs = [
     const [currentParagraph, setCurrentParagraph] = useState("");
     const [timer, setTimer] = useState(null);
     const [timeLeft, setTimeLeft] = useState(60);
-    const [charIndex, setCharIndex] = useState(0);
+    const [charIndex, setLetterIndex] = useState(0);
     const [mistakes, setMistakes] = useState(0);
     const [isTyping, setIsTyping] = useState(false);
 
@@ -752,7 +743,7 @@ const paragraphs = [
 
         if (typedChar === targetChar) {
             if (charIndex < currentParagraph.length - 1) {
-                setCharIndex(charIndex + 1);
+                setLetterIndex(charIndex + 1);
             } else {
                 resetGame();
             }
@@ -773,7 +764,7 @@ const paragraphs = [
         loadParagraph();
         clearInterval(timer);
         setTimeLeft(60);
-        setCharIndex(0);
+        setLetterIndex(0);
         setMistakes(0);
         setIsTyping(false);
     };
@@ -785,7 +776,7 @@ const paragraphs = [
     const loadParagraph = () => {
         const randomIndex = Math.floor(Math.random() * paragraphs.length);
         setCurrentParagraph(paragraphs[randomIndex]);
-        setCharIndex(0);
+        setLetterIndex(0);
     };
 
     return (
