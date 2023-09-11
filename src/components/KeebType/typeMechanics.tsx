@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TypingText from "./typingText";
+import EachWord from "./eachWord";
 
 interface TypeMechanicsProps {
     currentParagraph: string;
@@ -33,58 +34,51 @@ export default function TypeMechanics({
     setMistakes,
 }: TypeMechanicsProps) {
     const [timer, setTimer] = useState<number | null>(null);
+    const [activeWordIndex, setActiveWordIndex] = useState<number>(0);
 
-    const handleCharacterTyping = (typedChar: string | undefined) => {
-        if (letterIndex < totalCharacters) {
-            // Check if the typedChar is empty (user pressed backspace)
-            if (!typedChar) {
-                if (letterIndex > 0) {
-                    // Decrement letterIndex
-                    setLetterIndex((prevCharIndex) => prevCharIndex - 1);
-
-                    // Check if the previous character was not a space, decrement mistakes
-                    if (currentParagraph[letterIndex - 1] !== " ") {
-                        setMistakes((prevMistakes) => prevMistakes - 1);
-                    }
-                }
-            } else {
-                // Check if the typed character matches the current paragraph character
-                if (currentParagraph[letterIndex] !== typedChar) {
-                    // Check if the typed character matches the current paragraph character
-                    setMistakes((prevMistakes) => prevMistakes + 1);
-                } else {
-                    // Increment hits for correct typing
-                    setHits((prevHits) => prevHits + 1);
-                }
-                // Increment letterIndex
-                setLetterIndex((prevCharIndex) => prevCharIndex + 1);
-            }
-        }
-    };
+    const allWords = currentParagraph.split(" ");
 
     const checkTestCompletion = () => {
-        if (letterIndex === totalCharacters - 1 && timer) {
-            const endTime = Date.now();
-            const elapsedTime = (endTime - timer) / 1000;
-            setTotalTime(elapsedTime);
-            setIsTestFinished(true);
-        }
+        const endTime = Date.now();
+        const elapsedTime = (endTime - timer) / 1000;
+        setTotalTime(elapsedTime);
+        setIsTestFinished(true);
     };
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const typedChar = e.target.value[letterIndex];
-        // When the user starts typing --- start the timer, set boolean
+    const handleType = (e) => {
+        setTypedText(e.target.value)
+
         if (!isTyping) {
             const startTime = Date.now();
             setIsTyping(true);
             setTimer(startTime);
         }
-        // Check if the letterIndex is within the paragraph length.
-        handleCharacterTyping(typedChar);
 
-        checkTestCompletion();
-        // Update the typedText state with the current input value
-        setTypedText(e.target.value);
+        // Split the current word to count the number of characters
+        const currentWord = allWords[activeWordIndex];
+
+        
+        const charactersInCurrentWord = currentWord.length;
+
+        if (
+            e.nativeEvent instanceof KeyboardEvent &&
+            e.nativeEvent.key === " " &&
+            typedText.length > 0
+        ) {
+            // Move to the next word index, but ensure it's within bounds
+            setActiveWordIndex((prevIndex) =>
+                Math.min(prevIndex + 1, allWords.length - 1)
+            );
+
+         
+
+            // Update letterIndex and hits if needed
+            // setLetterIndex(0);
+            // setHits((prevHits) => prevHits + charactersInCurrentWord);
+        }
+
+        // need keydown " " to increase to the next index after at least one character in the word is typed.
+     
     };
 
     return (
@@ -92,11 +86,18 @@ export default function TypeMechanics({
             className="content-box relative z-10"
             style={{ pointerEvents: "none", userSelect: "none" }}
         >
-            <TypingText
-                currentParagraph={currentParagraph}
-                letterIndex={letterIndex}
-                typedText={typedText}
-            />
+            <div className="flex gap-2">
+                {allWords.map((word, wordIndex) => (
+                    <EachWord
+                        key={wordIndex}
+                        word={word}
+                        activeWordIndex={activeWordIndex}
+                        typedText={typedText}
+                        wordIndex={wordIndex}
+                    />
+                ))}
+            </div>
+
             <div
                 className="content"
                 style={{ pointerEvents: "none", userSelect: "none" }}
@@ -106,7 +107,7 @@ export default function TypeMechanics({
                     className="input-field "
                     type="text"
                     value={typedText}
-                    onChange={handleInputChange}
+                    onChange={handleType}
                     onCopy={(e) => e.preventDefault()}
                     onPaste={(e) => e.preventDefault()}
                 />
@@ -185,6 +186,62 @@ export default function TypeMechanics({
 
         setTypedText(e.target.value);
     };
+
+
+
+  // on key down " "
+    // const handleCharacterTyping = (typedChar: string | undefined) => {
+    //     if (letterIndex < totalCharacters) {
+    //         // Check if the typedChar is empty (user pressed backspace)
+    //         if (!typedChar) {
+    //             if (letterIndex > 0) {
+    //                 // Decrement letterIndex
+    //                 setLetterIndex((prevCharIndex) => prevCharIndex - 1);
+
+    //                 // Check if the previous character was not a space, decrement mistakes
+    //                 if (currentParagraph[letterIndex - 1] !== " ") {
+    //                     setMistakes((prevMistakes) => prevMistakes - 1);
+    //                 }
+    //             }
+    //         } else {
+    //             // Check if the typed character matches the current paragraph character
+    //             if (currentParagraph[letterIndex] !== typedChar) {
+    //                 // Check if the typed character matches the current paragraph character
+    //                 setMistakes((prevMistakes) => prevMistakes + 1);
+    //             } else {
+    //                 // Increment hits for correct typing
+    //                 setHits((prevHits) => prevHits + 1);
+    //             }
+    //             // Increment letterIndex
+    //             setLetterIndex((prevCharIndex) => prevCharIndex + 1);
+    //         }
+    //     }
+    // };
+
+    // const checkTestCompletion = () => {
+    //     if (letterIndex === totalCharacters - 1 && timer) {
+    //         const endTime = Date.now();
+    //         const elapsedTime = (endTime - timer) / 1000;
+    //         setTotalTime(elapsedTime);
+    //         setIsTestFinished(true);
+    //     }
+    // };
+
+    // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     const typedChar = e.target.value[letterIndex];
+    //     // When the user starts typing --- start the timer, set boolean
+    //     if (!isTyping) {
+    //         const startTime = Date.now();
+    //         setIsTyping(true);
+    //         setTimer(startTime);
+    //     }
+    //     // Check if the letterIndex is within the paragraph length.
+    //     handleCharacterTyping(typedChar);
+
+    //     checkTestCompletion();
+    //     // Update the typedText state with the current input value
+    //     setTypedText(e.target.value);
+    // };
 
 
 

@@ -2,22 +2,30 @@ import EachLetter from "./eachLetter";
 
 type EachWordProps = {
     word: string;
-    index: number;
     activeWordIndex: number;
+    wordIndex: number;
+    typedText: string;
 };
 
 export default function EachWord({
     word,
-    index,
     activeWordIndex,
+    wordIndex,
+    typedText,
 }: EachWordProps) {
+    const activeWordLength = word.length
+
+
     return (
-        <div
-            className={`flex word ${index === activeWordIndex ? "active" : ""}`}
-            key={index}
-        >
-            {word.split("").map((letter, i) => (
-                <EachLetter key={i} letter={letter} i={i} isActive={index === activeWordIndex} />
+        <div className="typing-text flex">
+            {word.split("").map((letter, letterIndex) => (
+                <EachLetter
+                    key={letterIndex}
+                    letter={letter}
+                    letterIndex={letterIndex}
+                    typedText={typedText}
+                    activeWordLength={activeWordLength}
+                />
             ))}
         </div>
     );
