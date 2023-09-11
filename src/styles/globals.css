@@ -181,3 +181,29 @@ li:not(:first-child) span {
         margin-top: 10px;
     }
 }
+
+.keeb-type-text {
+
+}
+.blink {
+    width: 2px; /* Adjust the cursor width as needed */
+    height: 1rem; /* Adjust the cursor height as needed */
+    background-color: black; /* Cursor color */
+    display: inline-block; /* Ensure the cursor doesn't overlap text */
+    animation: blink 1s step-end infinite;
+  }
+  
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+  
+  /* Other styles for correct, incorrect, and extra-incorrect letters */
+  .correct {
+    color: #1bcc00; /* Green color for correct letters */
+  }
+  
+  .incorrect, .extra-incorrect {
+    color: red; /* Red color for incorrect letters and extra-incorrect letters */
+  }

@@ -46,7 +46,7 @@ export default function TypeMechanics({
     };
 
     const handleType = (e) => {
-        setTypedText(e.target.value)
+        setTypedText(e.target.value);
 
         if (!isTyping) {
             const startTime = Date.now();
@@ -57,7 +57,6 @@ export default function TypeMechanics({
         // Split the current word to count the number of characters
         const currentWord = allWords[activeWordIndex];
 
-        
         const charactersInCurrentWord = currentWord.length;
 
         if (
@@ -70,15 +69,12 @@ export default function TypeMechanics({
                 Math.min(prevIndex + 1, allWords.length - 1)
             );
 
-         
-
             // Update letterIndex and hits if needed
             // setLetterIndex(0);
             // setHits((prevHits) => prevHits + charactersInCurrentWord);
         }
 
         // need keydown " " to increase to the next index after at least one character in the word is typed.
-     
     };
 
     return (
@@ -86,7 +82,7 @@ export default function TypeMechanics({
             className="content-box relative z-10"
             style={{ pointerEvents: "none", userSelect: "none" }}
         >
-            <div className="flex gap-2">
+            <div className="flex gap-2 text-slate-500">
                 {allWords.map((word, wordIndex) => (
                     <EachWord
                         key={wordIndex}

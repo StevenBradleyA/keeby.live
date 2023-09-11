@@ -2,6 +2,7 @@ interface EachLetterProps {
     letter: string;
     letterIndex: number;
     typedText: string;
+    activeWordLength: number;
 }
 export default function EachLetter({
     letter,
@@ -16,11 +17,28 @@ export default function EachLetter({
     // Check if the letter is correct (newest input === letter)
     const isCorrect = typedText[letterIndex] === letter;
 
-    // Check if the letter is incorrect (newest input !== letter)
-    const isIncorrect = !isCorrect && letterIndex < typedText.length;
-
+    // console.log(typedText.length);
     // Check if the letter is incorrect extra (user types more than the index of the word)
-    const isExtraIncorrect = !isCorrect && letterIndex >= typedText.length;
+    const isExtraIncorrect = !isCorrect && letterIndex >= activeWordLength;
 
-    return <div className="">{letter}</div>;
+    let letterStyling = "keeb-type-text";
+    if (isCorrect) {
+        letterStyling = "correct";
+    } else if (!isCorrect) {
+        letterStyling = "incorrect";
+    } else if (isExtraIncorrect) {
+        letterStyling = "extra-incorrect";
+    }
+
+    // could only show it when letterIndex === typedText.length and the word is active
+    // const showCursor = letterIndex === typedText.length;
+// problem is that letter index resets with each word 
+
+
+    return (
+        <div className={`relative flex`}>
+            <div className={letterStyling}>{letter}</div>
+            {/* {showCursor && <div className="cursor blink">|</div>} */}
+        </div>
+    );
 }

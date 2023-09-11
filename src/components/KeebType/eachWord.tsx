@@ -13,11 +13,10 @@ export default function EachWord({
     wordIndex,
     typedText,
 }: EachWordProps) {
-    const activeWordLength = word.length
-
+    const activeWordLength = word.length;
 
     return (
-        <div className="typing-text flex">
+        <div className="flex">
             {word.split("").map((letter, letterIndex) => (
                 <EachLetter
                     key={letterIndex}
