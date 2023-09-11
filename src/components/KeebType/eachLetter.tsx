@@ -3,12 +3,14 @@ interface EachLetterProps {
     letterIndex: number;
     typedText: string;
     activeWordLength: number;
+    activeWordIndex: number
 }
 export default function EachLetter({
     letter,
     letterIndex,
     typedText,
     activeWordLength,
+    activeWordIndex
 }: EachLetterProps) {
     // need to check if the letter is correct... newest input === letter "text should turn white"
     // need to check if the letter is incorrect ... newest input !== letter "text should turn red"
@@ -34,7 +36,7 @@ export default function EachLetter({
     // const showCursor = letterIndex === typedText.length;
 // problem is that letter index resets with each word 
 
-
+    // console.log(activeWordIndex)
     return (
         <div className={`relative flex`}>
             <div className={letterStyling}>{letter}</div>

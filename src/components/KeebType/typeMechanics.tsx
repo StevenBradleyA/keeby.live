@@ -35,15 +35,16 @@ export default function TypeMechanics({
 }: TypeMechanicsProps) {
     const [timer, setTimer] = useState<number | null>(null);
     const [activeWordIndex, setActiveWordIndex] = useState<number>(0);
+    const [hasTypedCharacter, setHasTypedCharacter] = useState<boolean>(false);
 
     const allWords = currentParagraph.split(" ");
 
-    const checkTestCompletion = () => {
-        const endTime = Date.now();
-        const elapsedTime = (endTime - timer) / 1000;
-        setTotalTime(elapsedTime);
-        setIsTestFinished(true);
-    };
+    // const checkTestCompletion = () => {
+    //     const endTime = Date.now();
+    //     const elapsedTime = (endTime - timer) / 1000;
+    //     setTotalTime(elapsedTime);
+    //     setIsTestFinished(true);
+    // };
 
     const handleType = (e) => {
         setTypedText(e.target.value);
@@ -53,29 +54,34 @@ export default function TypeMechanics({
             setIsTyping(true);
             setTimer(startTime);
         }
+        // Check if a character was typed for the current word
+    };
 
-        // Split the current word to count the number of characters
-        const currentWord = allWords[activeWordIndex];
+    const handleKeyDown = (e: KeyboardEvent) => {
+        console.log(e.key, "yoyoyo");
+        // e.key tells me
 
-        const charactersInCurrentWord = currentWord.length;
+        if (e.key !== " ") {
+            setHasTypedCharacter(true);
+        }
 
-        if (
-            e.nativeEvent instanceof KeyboardEvent &&
-            e.nativeEvent.key === " " &&
-            typedText.length > 0
-        ) {
+        if (e.key === " " && hasTypedCharacter) {
             // Move to the next word index, but ensure it's within bounds
             setActiveWordIndex((prevIndex) =>
                 Math.min(prevIndex + 1, allWords.length - 1)
             );
-
-            // Update letterIndex and hits if needed
-            // setLetterIndex(0);
-            // setHits((prevHits) => prevHits + charactersInCurrentWord);
         }
 
-        // need keydown " " to increase to the next index after at least one character in the word is typed.
+        // Reset the flag after processing space key press
+        if (e.key === " ") {
+            setHasTypedCharacter(false);
+        }
     };
+    console.log(activeWordIndex);
+    // everytime a user hits space it should add to hits
+    // evertime a user hits backspace it should subtract hits
+
+    // set the activeWordIndex(true) when the user types a character for the current word index
 
     return (
         <div
@@ -104,6 +110,7 @@ export default function TypeMechanics({
                     type="text"
                     value={typedText}
                     onChange={handleType}
+                    onKeyDown={handleKeyDown} // Use onKeyPress instead of onChange
                     onCopy={(e) => e.preventDefault()}
                     onPaste={(e) => e.preventDefault()}
                 />

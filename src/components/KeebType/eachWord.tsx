@@ -15,6 +15,7 @@ export default function EachWord({
 }: EachWordProps) {
     const activeWordLength = word.length;
 
+
     return (
         <div className="flex">
             {word.split("").map((letter, letterIndex) => (
@@ -24,6 +25,7 @@ export default function EachWord({
                     letterIndex={letterIndex}
                     typedText={typedText}
                     activeWordLength={activeWordLength}
+                    activeWordIndex={activeWordIndex}
                 />
             ))}
         </div>
