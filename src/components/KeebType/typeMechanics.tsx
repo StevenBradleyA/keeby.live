@@ -38,7 +38,7 @@ export default function TypeMechanics({
     const [hasTypedCharacter, setHasTypedCharacter] = useState<boolean>(false);
 
     const allWords = currentParagraph.split(" ");
-
+    
     // const checkTestCompletion = () => {
     //     const endTime = Date.now();
     //     const elapsedTime = (endTime - timer) / 1000;
@@ -78,9 +78,13 @@ export default function TypeMechanics({
         }
     };
     console.log(activeWordIndex);
+
+    // TODO awesome so everytime a user presses a key other than " " they can use space to increase the active word index
+    // TODO what needs to happen next is if the word is spelled correctly it needs to be locked
+    // TODO if the word is spelled incorrectly we want the user to be able to go back to the incorrect class to fix the mistake.
+
     // everytime a user hits space it should add to hits
     // evertime a user hits backspace it should subtract hits
-
     // set the activeWordIndex(true) when the user types a character for the current word index
 
     return (

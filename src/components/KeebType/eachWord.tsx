@@ -1,3 +1,4 @@
+import { useState } from "react";
 import EachLetter from "./eachLetter";
 
 type EachWordProps = {
@@ -14,7 +15,9 @@ export default function EachWord({
     typedText,
 }: EachWordProps) {
     const activeWordLength = word.length;
+    const [isCorrectWord, setIsCorrectWord] = useState<boolean>(false)
 
+// ! need to add the class word, active, incorrect 
 
     return (
         <div className="flex">
@@ -26,6 +29,7 @@ export default function EachWord({
                     typedText={typedText}
                     activeWordLength={activeWordLength}
                     activeWordIndex={activeWordIndex}
+                    wordIndex={wordIndex}
                 />
             ))}
         </div>
