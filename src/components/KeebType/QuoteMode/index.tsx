@@ -21,6 +21,8 @@ export default function QuoteType({
     // refactor on event listerner to on clicks
 
     const [typedText, setTypedText] = useState<string>("");
+    const [totalTyped, setTotalTyped] = useState<string>("");
+
     const [letterIndex, setLetterIndex] = useState<number>(0);
     const [mistakes, setMistakes] = useState<number>(0);
     const [hits, setHits] = useState<number>(0);
@@ -119,6 +121,8 @@ export default function QuoteType({
                     letterIndex={letterIndex}
                     typedText={typedText}
                     setTypedText={setTypedText}
+                    totalTyped={totalTyped}
+                    setTotalTyped={setTotalTyped}
                     inputRef={inputRef}
                     isTyping={isTyping}
                     setIsTyping={setIsTyping}

@@ -76,13 +76,7 @@ export default function EachLetter({
     }, [isWordCorrect, setIsCorrectWord]);
 
     // console.log(word)
-useEffect(()=> {
-    if(typedText === word){
-        console.log('noice')
-    }
 
-
-})
 
     return (
         <div className={`relative flex`}>

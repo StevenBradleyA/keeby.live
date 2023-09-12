@@ -16,6 +16,8 @@ interface TypeMechanicsProps {
     setHits: React.Dispatch<React.SetStateAction<number>>;
     setTotalTime: (time: number) => void;
     setMistakes: React.Dispatch<React.SetStateAction<number>>;
+    totalTyped: string;
+    setTotalTyped: (totalTyped: string) => void;
 }
 
 export default function TypeMechanics({
@@ -32,10 +34,13 @@ export default function TypeMechanics({
     setTotalTime,
     setIsTestFinished,
     setMistakes,
+    totalTyped,
+    setTotalTyped,
 }: TypeMechanicsProps) {
     const [timer, setTimer] = useState<number | null>(null);
     const [activeWordIndex, setActiveWordIndex] = useState<number>(0);
     const [hasTypedCharacter, setHasTypedCharacter] = useState<boolean>(false);
+    const [flawless, setFlawless] = useState<boolean>(false);
 
     const allWords = currentParagraph.split(" ");
 
@@ -47,6 +52,8 @@ export default function TypeMechanics({
     // };
 
     const handleType = (e) => {
+        if (e.target.value.at(-1) === " ") return;
+
         setTypedText(e.target.value);
 
         if (!isTyping) {
@@ -57,9 +64,12 @@ export default function TypeMechanics({
         // Check if a character was typed for the current word
     };
 
+    // TODO need a way to keep track of if a word is correct we save the input and reset the typed Text
+    console.log(flawless);
     const handleKeyDown = (e: KeyboardEvent) => {
-        console.log(e.key, "yoyoyo");
+        // console.log(e.key, "yoyoyo");
         // e.key tells me
+        
 
         if (e.key !== " ") {
             setHasTypedCharacter(true);
@@ -67,6 +77,13 @@ export default function TypeMechanics({
 
         if (e.key === " " && hasTypedCharacter) {
             // Move to the next word index, but ensure it's within bounds
+            if (flawless) {
+                setTotalTyped((prevTotalTyped) =>
+                    prevTotalTyped.concat(" ", typedText)
+                );
+                setTypedText("");
+                setFlawless(false);
+            }
             setActiveWordIndex((prevIndex) =>
                 Math.min(prevIndex + 1, allWords.length - 1)
             );
@@ -77,7 +94,10 @@ export default function TypeMechanics({
             setHasTypedCharacter(false);
         }
     };
-    console.log(activeWordIndex);
+
+    // console.log('hello', totalTyped);
+
+    console.log("typed", typedText);
 
     // TODO awesome so everytime a user presses a key other than " " they can use space to increase the active word index
     // TODO what needs to happen next is if the word is spelled correctly it needs to be locked
@@ -86,7 +106,6 @@ export default function TypeMechanics({
     // everytime a user hits space it should add to hits
     // evertime a user hits backspace it should subtract hits
     // set the activeWordIndex(true) when the user types a character for the current word index
-
 
 
     return (
@@ -103,6 +122,7 @@ export default function TypeMechanics({
                         typedText={typedText}
                         wordIndex={wordIndex}
                         wordCount={allWords.length}
+                        setFlawless={setFlawless}
                     />
                 ))}
             </div>

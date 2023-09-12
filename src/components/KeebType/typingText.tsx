@@ -22,8 +22,8 @@ export default function TypingText({
 
 
 
-    console.log(words);
-    console.log(currentParagraph)
+    // console.log(words);
+    // console.log(currentParagraph)
 
     
 
