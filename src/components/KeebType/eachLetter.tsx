@@ -34,13 +34,18 @@ export default function EachLetter({
     const [isActiveLetter, setIsActiveLetter] = useState<boolean>(false);
     const [hasBeenHit, setHasBeenHit] = useState<boolean>(false);
     // use letter index and inputLength to
-
+// skip isnt working becuase we need to apply logic that allows us to go back and fix incorrect words
     useEffect(() => {
         setIsActiveWord(wordIndex === activeWordIndex);
     }, [activeWordIndex, wordIndex]);
 
     useEffect(() => {
-        if (isActiveWord && letter === currentTypedLetter) {
+        setIsActiveLetter(letterIndex === inputLength);
+    }, [inputLength, letterIndex]);
+
+
+    useEffect(() => {
+        if (isActiveWord && isActiveLetter && letter === currentTypedLetter) {
             setHasBeenHit(true);
         }
     }, [isActiveWord, letter, currentTypedLetter]);
