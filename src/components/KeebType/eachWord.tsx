@@ -6,6 +6,7 @@ type EachWordProps = {
     activeWordIndex: number;
     wordIndex: number;
     typedText: string;
+    wordCount: number;
 };
 
 export default function EachWord({
@@ -13,14 +14,17 @@ export default function EachWord({
     activeWordIndex,
     wordIndex,
     typedText,
+    wordCount,
 }: EachWordProps) {
     const activeWordLength = word.length;
-    const [isCorrectWord, setIsCorrectWord] = useState<boolean>(false)
 
-// ! need to add the class word, active, incorrect 
+    // ! need to add the class word, active, incorrect
+    const [isAccepted, setIsAccepted] = useState<boolean>(false);
 
     return (
-        <div className="flex">
+        <div
+            className={`flex ${isAccepted ? "word-correct" : ""}`}
+        >
             {word.split("").map((letter, letterIndex) => (
                 <EachLetter
                     key={letterIndex}
@@ -30,6 +34,9 @@ export default function EachWord({
                     activeWordLength={activeWordLength}
                     activeWordIndex={activeWordIndex}
                     wordIndex={wordIndex}
+                    wordCount={wordCount}
+                    word={word}
+                    setIsAccepted={setIsAccepted}
                 />
             ))}
         </div>

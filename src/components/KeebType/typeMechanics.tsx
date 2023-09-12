@@ -38,7 +38,7 @@ export default function TypeMechanics({
     const [hasTypedCharacter, setHasTypedCharacter] = useState<boolean>(false);
 
     const allWords = currentParagraph.split(" ");
-    
+
     // const checkTestCompletion = () => {
     //     const endTime = Date.now();
     //     const elapsedTime = (endTime - timer) / 1000;
@@ -87,12 +87,14 @@ export default function TypeMechanics({
     // evertime a user hits backspace it should subtract hits
     // set the activeWordIndex(true) when the user types a character for the current word index
 
+
+
     return (
         <div
             className="content-box relative z-10"
             style={{ pointerEvents: "none", userSelect: "none" }}
         >
-            <div className="flex gap-2 text-slate-500">
+            <div className={`flex gap-2 text-slate-500  `}>
                 {allWords.map((word, wordIndex) => (
                     <EachWord
                         key={wordIndex}
@@ -100,6 +102,7 @@ export default function TypeMechanics({
                         activeWordIndex={activeWordIndex}
                         typedText={typedText}
                         wordIndex={wordIndex}
+                        wordCount={allWords.length}
                     />
                 ))}
             </div>

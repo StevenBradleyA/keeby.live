@@ -207,3 +207,14 @@ li:not(:first-child) span {
   .incorrect, .extra-incorrect {
     color: red; /* Red color for incorrect letters and extra-incorrect letters */
   }
+
+
+  .word-correct {
+    /* Define styles for a single word or inline elements */
+    color: #1bcc00; /* Green color for correct letters */
+  }
+  .word-error {
+    /* Define styles for a single word or inline elements */
+    color: #d80bef; /* Green color for correct letters */
+  }
+  
