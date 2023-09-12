@@ -10,7 +10,8 @@ interface EachLetterProps {
     isCorrectWord: boolean;
     setIsAccepted: (isAccepted: boolean) => void;
     wordCount: number;
-    word: string
+    word: string;
+    currentTypedLetter: string;
 }
 export default function EachLetter({
     letter,
@@ -21,21 +22,27 @@ export default function EachLetter({
     wordIndex,
     wordCount,
     setIsAccepted,
-    word
+    word,
+    currentTypedLetter,
 }: EachLetterProps) {
     const [isActive, setIsActive] = useState<boolean>(false);
+    const [hasTyped, setHasTyped] = useState<boolean>(false);
+
     const [isCorrectWord, setIsCorrectWord] = useState<boolean>(false);
     const [isWordCorrect, setIsWordCorrect] = useState<boolean>(false);
 
+
+
+
     useEffect(() => {
         setIsActive(wordIndex === activeWordIndex);
+        setHasTyped(wordIndex <= activeWordIndex)
     }, [activeWordIndex, wordIndex]);
 
-    // const isCorrect = isActive && typedText[letterIndex] === letter;
-    // ! if all the inputs in a word match then we want to setIsCorrectWord true
-    // console.log(typedText.length);
-    // Check if the letter is incorrect extra (user types more than the index of the word)
-    // const isExtraIncorrect = !isCorrect && letterIndex >= activeWordLength;
+    // TODO once correct it stays correct doesn't reset to the " "
+// has typed could be a range variable. If the wordIndex is <= activeWordIndex it is true
+
+
     const isTyped = isActive && typedText[letterIndex] !== undefined; // Check if the letter has been typed
     const isExpectedLetter = isActive && typedText[letterIndex] === letter; // Check if the typed letter matches the expected letter
 
@@ -46,18 +53,9 @@ export default function EachLetter({
         isTyped &&
         letterIndex >= activeWordLength;
 
-    // const letterStyling = isTyped
-    //     ? isExpectedLetter
-    //         ? "correct"
-    //         : isExtraIncorrect
-    //         ? "extra-incorrect"
-    //         : "incorrect"
-    //     : ""; // Default styling when not typed
-    // ! I don't want a letter to be red until the user spells that letter incorrect.
-
     // If the word is correct, set isCorrectWord to true
     const letterStyling =
-        isWordCorrect || (isActive && isCorrectWord)
+        isActive && isCorrectWord
             ? "correct"
             : isTyped
             ? isExpectedLetter
@@ -66,17 +64,6 @@ export default function EachLetter({
                 ? "extra-incorrect"
                 : "incorrect"
             : "";
-
-
-    useEffect(() => {
-        // Set isCorrectWord when the entire word is correct
-        if (isWordCorrect) {
-            setIsCorrectWord(true);
-        }
-    }, [isWordCorrect, setIsCorrectWord]);
-
-    // console.log(word)
-
 
     return (
         <div className={`relative flex`}>

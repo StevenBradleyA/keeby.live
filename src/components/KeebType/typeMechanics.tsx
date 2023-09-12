@@ -41,6 +41,7 @@ export default function TypeMechanics({
     const [activeWordIndex, setActiveWordIndex] = useState<number>(0);
     const [hasTypedCharacter, setHasTypedCharacter] = useState<boolean>(false);
     const [flawless, setFlawless] = useState<boolean>(false);
+    const [currentTypedLetter, setCurrentTypedLetter] = useState<string>("");
 
     const allWords = currentParagraph.split(" ");
 
@@ -65,14 +66,16 @@ export default function TypeMechanics({
     };
 
     // TODO need a way to keep track of if a word is correct we save the input and reset the typed Text
+    // TODO instead of passing the entire typed text just send last letter.
+
     console.log(flawless);
     const handleKeyDown = (e: KeyboardEvent) => {
         // console.log(e.key, "yoyoyo");
         // e.key tells me
-        
 
         if (e.key !== " ") {
             setHasTypedCharacter(true);
+            setCurrentTypedLetter(e.key);
         }
 
         if (e.key === " " && hasTypedCharacter) {
@@ -85,8 +88,9 @@ export default function TypeMechanics({
                 setFlawless(false);
             }
             setActiveWordIndex((prevIndex) =>
-                Math.min(prevIndex + 1, allWords.length - 1)
+            Math.min(prevIndex + 1, allWords.length - 1)
             );
+            setCurrentTypedLetter('')
         }
 
         // Reset the flag after processing space key press
@@ -97,7 +101,7 @@ export default function TypeMechanics({
 
     // console.log('hello', totalTyped);
 
-    console.log("typed", typedText);
+    console.log("typed", currentTypedLetter);
 
     // TODO awesome so everytime a user presses a key other than " " they can use space to increase the active word index
     // TODO what needs to happen next is if the word is spelled correctly it needs to be locked
@@ -106,7 +110,6 @@ export default function TypeMechanics({
     // everytime a user hits space it should add to hits
     // evertime a user hits backspace it should subtract hits
     // set the activeWordIndex(true) when the user types a character for the current word index
-
 
     return (
         <div
@@ -123,6 +126,7 @@ export default function TypeMechanics({
                         wordIndex={wordIndex}
                         wordCount={allWords.length}
                         setFlawless={setFlawless}
+                        currentTypedLetter={currentTypedLetter}
                     />
                 ))}
             </div>
