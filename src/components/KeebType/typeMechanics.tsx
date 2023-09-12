@@ -6,8 +6,6 @@ interface TypeMechanicsProps {
     currentParagraph: string;
     inputRef: React.RefObject<HTMLInputElement>;
     totalCharacters: number;
-    typedText: string;
-    setTypedText: React.Dispatch<React.SetStateAction<string>>;
     letterIndex: number;
     setLetterIndex: React.Dispatch<React.SetStateAction<number>>;
     isTyping: boolean;
@@ -23,8 +21,6 @@ interface TypeMechanicsProps {
 export default function TypeMechanics({
     currentParagraph,
     letterIndex,
-    typedText,
-    setTypedText,
     totalCharacters,
     inputRef,
     isTyping,
@@ -42,8 +38,14 @@ export default function TypeMechanics({
     const [hasTypedCharacter, setHasTypedCharacter] = useState<boolean>(false);
     const [flawless, setFlawless] = useState<boolean>(false);
     const [currentTypedLetter, setCurrentTypedLetter] = useState<string>("");
+    const [inputLength, setInputLength] = useState<number>(0);
+    const [typedText, setTypedText] = useState<string>("");
 
     const allWords = currentParagraph.split(" ");
+
+    useEffect(() => {
+        setInputLength(typedText.length);
+    }, [typedText]);
 
     // const checkTestCompletion = () => {
     //     const endTime = Date.now();
@@ -88,9 +90,9 @@ export default function TypeMechanics({
                 setFlawless(false);
             }
             setActiveWordIndex((prevIndex) =>
-            Math.min(prevIndex + 1, allWords.length - 1)
+                Math.min(prevIndex + 1, allWords.length - 1)
             );
-            setCurrentTypedLetter('')
+            setCurrentTypedLetter("");
         }
 
         // Reset the flag after processing space key press
@@ -116,13 +118,14 @@ export default function TypeMechanics({
             className="content-box relative z-10"
             style={{ pointerEvents: "none", userSelect: "none" }}
         >
-            <div className={`flex gap-2 text-slate-500  `}>
+            <div className={`flex gap-2`}>
                 {allWords.map((word, wordIndex) => (
                     <EachWord
                         key={wordIndex}
                         word={word}
                         activeWordIndex={activeWordIndex}
                         typedText={typedText}
+                        inputLength={inputLength}
                         wordIndex={wordIndex}
                         wordCount={allWords.length}
                         setFlawless={setFlawless}

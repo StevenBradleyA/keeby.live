@@ -20,7 +20,6 @@ export default function QuoteType({
     // TODO code mode {} ; : "" () = special characters <> etc
     // refactor on event listerner to on clicks
 
-    const [typedText, setTypedText] = useState<string>("");
     const [totalTyped, setTotalTyped] = useState<string>("");
 
     const [letterIndex, setLetterIndex] = useState<number>(0);
@@ -36,7 +35,6 @@ export default function QuoteType({
 
     useEffect(() => {
         setIsFocused(true);
-        setTypedText("");
         setLetterIndex(0);
         setMistakes(0);
         setHits(0);
@@ -119,8 +117,6 @@ export default function QuoteType({
                     totalCharacters={totalCharacters}
                     currentParagraph={currentParagraph}
                     letterIndex={letterIndex}
-                    typedText={typedText}
-                    setTypedText={setTypedText}
                     totalTyped={totalTyped}
                     setTotalTyped={setTotalTyped}
                     inputRef={inputRef}

@@ -9,6 +9,7 @@ type EachWordProps = {
     wordCount: number;
     setFlawless: (flawless: boolean) => void;
     currentTypedLetter: string;
+    inputLength: number
 };
 
 export default function EachWord({
@@ -18,7 +19,8 @@ export default function EachWord({
     typedText,
     wordCount,
     setFlawless,
-    currentTypedLetter
+    currentTypedLetter,
+    inputLength
 }: EachWordProps) {
     const activeWordLength = word.length;
 
@@ -44,6 +46,7 @@ export default function EachWord({
                     word={word}
                     setIsAccepted={setIsAccepted}
                     currentTypedLetter={currentTypedLetter}
+                    inputLength={inputLength}
                 />
             ))}
         </div>
