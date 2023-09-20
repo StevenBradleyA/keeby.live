@@ -181,3 +181,15 @@ Could just have an inspiration page that shows gorgeous builds
 
 
  -->
+
+
+
+<!-- COsts
+  Stripe 
+  Domain cost 
+  Resend for emails $ they are def better than the others
+  confirmation emails and newsletter emails 
+  
+
+
+ -->
