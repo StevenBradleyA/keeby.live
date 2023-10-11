@@ -42,6 +42,19 @@ model Comment {
     post Post @relation(fields: [postId], references: [id])
 }
 
+model Typing {
+    id        String   @id @default(cuid())
+    wpmValues String
+    rank      String
+    mode      String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    userId String
+
+    user User @relation(fields: [userId], references: [id])
+}
+
 model Review {
     id         String   @id @default(cuid())
     text       String
@@ -56,31 +69,18 @@ model Review {
     post Post @relation(fields: [postId], references: [id])
 }
 
-model GCHBooking {
+model Transaction {
     id        String   @id @default(cuid())
-    date      DateTime
-    status    String
+    cost      Int
     type      String
+    status    String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-
-    userId String
-
-    user           User             @relation(fields: [userId], references: [id])
-    GCHTransaction GCHTransaction[]
-}
-
-model GCHTransaction {
-    id     String @id @default(cuid())
-    cost   Int
-    type   String
-    status String
 
     userId    String
     bookingId String
 
-    user    User       @relation(fields: [userId], references: [id])
-    booking GCHBooking @relation(fields: [bookingId], references: [id])
+    user User @relation(fields: [userId], references: [id])
 }
 
 model Images {
@@ -131,15 +131,16 @@ model User {
     emailVerified DateTime?
     image         String?
     notes         String?
+    isVerified    Boolean
 
     accounts     Account[]
     sessions     Session[]
     posts        Post[]
     comments     Comment[]
     reviews      Review[]
-    bookings     GCHBooking[]
-    transactions GCHTransaction[]
-    GCHImages    Images[]
+    transactions Transaction[]
+    images       Images[]
+    typing       Typing[]
 }
 
 model VerificationToken {
