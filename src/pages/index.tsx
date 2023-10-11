@@ -15,13 +15,22 @@ export default function Home() {
     // lets just start with paragraph type for now and try to get it working
 
     // for generate type we are going to need a first parent component that generates the sentence then passes it to another component that uses it.
-    const [mode, setMode] = useState<string>("normal");
+    const [mode, setMode] = useState<string>("speed");
+    const [normalModeLength, setNormalModeLength] = useState<string>("25");
+    const [theme, setTheme] = useState<string>("keeby");
 
     return (
         <>
             <div className="flex w-full p-10">
-                <LeftMenu mode={mode} setMode={setMode} />
-                {mode === "normal" && <NormalMode />}
+                <LeftMenu
+                    mode={mode}
+                    setMode={setMode}
+                    normalModeLength={normalModeLength}
+                    setNormalModeLength={setNormalModeLength}
+                    theme={theme}
+                    setTheme={setTheme}
+                />
+                {mode === "speed" && <NormalMode />}
                 {mode === "quote" && <SelectQuote />}
                 <RightMenu />
             </div>
