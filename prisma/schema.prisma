@@ -42,17 +42,30 @@ model Comment {
     post Post @relation(fields: [postId], references: [id])
 }
 
-model Typing {
+model Game {
     id        String   @id @default(cuid())
-    wpmValues String
-    rank      String
+    wpm       Int
     mode      String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
     userId String
+    keebId String?
 
-    user User @relation(fields: [userId], references: [id])
+    user User  @relation(fields: [userId], references: [id])
+    keeb Keeb? @relation(fields: [keebId], references: [id])
+}
+
+model Keeb {
+    id       String  @id @default(cuid())
+    name     String
+    switches String
+    keycaps  String?
+
+    userId String
+
+    user User   @relation(fields: [userId], references: [id])
+    Game Game[]
 }
 
 model Review {
@@ -131,6 +144,7 @@ model User {
     emailVerified DateTime?
     image         String?
     notes         String?
+    rank          String?
     isVerified    Boolean
 
     accounts     Account[]
@@ -140,7 +154,8 @@ model User {
     reviews      Review[]
     transactions Transaction[]
     images       Images[]
-    typing       Typing[]
+    games        Game[]
+    keebs        Keeb[]
 }
 
 model VerificationToken {
