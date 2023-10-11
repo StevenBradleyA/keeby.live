@@ -143,9 +143,11 @@ model User {
     email         String?   @unique
     emailVerified DateTime?
     image         String?
-    notes         String?
+    about         String?
     rank          String?
-    isVerified    Boolean
+    username      String?
+    isVerified    Boolean   @default(false)
+    isNewsletter  Boolean   @default(false)
 
     accounts     Account[]
     sessions     Session[]

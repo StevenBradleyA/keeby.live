@@ -194,6 +194,7 @@ so that users can store a keeb
   Resend for emails $ they are def better than the others
   confirmation emails and newsletter emails
 
-
+TODO cookie warning modal 
+TODO epilepsy warning modal 
 
  -->
