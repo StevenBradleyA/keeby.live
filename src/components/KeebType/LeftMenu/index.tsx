@@ -15,34 +15,23 @@ export default function LeftMenu({
     theme,
     setTheme,
 }: LeftMenuProps) {
-    // ideas we might want dropdowns so you can just select ur mode then the
-    // mode: then below you have a dropdown
-    // speed:
-    // want these bars to be super clean yet fun
+    // todo refactor theme to be session so its accessible in nav
 
     return (
         <div className="flex flex-col rounded-2xl border border-green-500 bg-black p-10">
+            {/* <button>Rank</button> */}
             <div className="flex justify-center">Mode</div>
             <select
-                className={`
-                    bg-black px-2 py-1 text-green-300 `}
+                className=" bg-black px-2 py-1 text-green-500"
                 value={mode}
                 onChange={(e) => setMode(e.target.value)}
             >
                 <option value="speed">Speed</option>
                 <option value="quote">Quote</option>
+                <option value="hacktime">It&apos;s Hacking Time</option>
             </select>
-            <div className="flex justify-center">Theme</div>
 
-            {/* <button
-                className={` ${
-                    mode === "normal" ? "text-green-300" : "text-white"
-                }`}
-                onClick={() => changeMode("normal")}
-            >
-                speedy
-            </button>
-            {mode === "normal" && (
+            {mode === "speed" && (
                 <div className="flex gap-5">
                     <div
                         className={` ${
@@ -73,16 +62,19 @@ export default function LeftMenu({
                     </div>
                 </div>
             )}
-            <button
-                className={` ${
-                    mode === "quote" ? "text-green-300" : "text-white"
-                }`}
-                onClick={() => changeMode("quote")}
+            <div className="flex justify-center">Theme</div>
+            <select
+                className={`
+                    bg-black px-2 py-1 text-green-500 `}
+                value={theme}
+                onChange={(e) => setTheme(e.target.value)}
             >
-                quote
-            </button> */}
-            <button>theme</button>
-            <button>Rank</button>
+                <option value="keeby">keeby</option>
+                <option value="pastel-blue">blue</option>
+                <option value="pastel-pink">pink</option>
+                <option value="pastel-pink">primeagen</option>
+                <option value="pastel-pink">hipyo</option>
+            </select>
         </div>
     );
 }

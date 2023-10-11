@@ -10,7 +10,7 @@ export default function Home() {
     // Quote mode (punctuation) (can select to learn about things... - keyboards -fun facts - biology - finance etc... )
     // hackerman mode (normal typing but with binary code falling in the background)
     // I want to add actual fun typing games later...
-
+    //!  theme might also have to be passed to navbar might have to just make it its own session so its accessible everywhere doe
     // paragraph type
     // lets just start with paragraph type for now and try to get it working
 
