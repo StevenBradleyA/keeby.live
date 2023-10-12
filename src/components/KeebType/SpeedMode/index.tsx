@@ -1,7 +1,7 @@
 
 
 
-export default function NormalMode (){
+export default function SpeedMode (){
 
 
     return (<>
@@ -9,7 +9,7 @@ export default function NormalMode (){
     <div>
 
 
-        
+
     </div>
     </>)
 }

@@ -18,7 +18,6 @@ export default function LeftMenu({
     // todo refactor theme to be session so its accessible in nav
     // todo add cookeis to keep track of selected mode/ settings
 
-    console.log(gameLength);
     return (
         <div className="flex flex-col rounded-2xl border border-green-500 bg-black p-10">
             {/* <button>Rank</button> */}

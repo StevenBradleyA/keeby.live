@@ -2,7 +2,7 @@ import { useState } from "react";
 import SelectQuote from "~/components/KeebType/QuoteMode/selectQuote";
 import LeftMenu from "~/components/KeebType/LeftMenu";
 import RightMenu from "~/components/KeebType/RightMenu";
-import NormalMode from "~/components/KeebType/NormalMode";
+import SpeedMode from "~/components/KeebType/SpeedMode";
 
 export default function Home() {
     // Todo going to need different components for different games
@@ -30,7 +30,7 @@ export default function Home() {
                     theme={theme}
                     setTheme={setTheme}
                 />
-                {mode === "speed" && <NormalMode />}
+                {mode === "speed" && <SpeedMode />}
                 {mode === "quote" && <SelectQuote />}
                 <RightMenu />
             </div>

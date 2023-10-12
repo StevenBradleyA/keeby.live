@@ -1,7 +1,9 @@
 export default function RightMenu() {
     return (
-        <>
-            <div>this will have photos at some point</div>
-        </>
+        <div className="flex flex-col rounded-2xl border border-green-500 bg-black p-10">
+            <div>three</div>
+            <div>vertical</div>
+            <div>listings</div>
+        </div>
     );
 }
