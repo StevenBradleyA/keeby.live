@@ -1,7 +1,85 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
+// import { useRouter } from "next/router";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { motion, useAnimation } from "framer-motion";
+import Image from "next/image";
+import menuPog from "../../../public/Nav/menu.png";
 
 export default function NavBar() {
+    const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+    const menuRef = useRef<HTMLDivElement | null>(null);
+    const menuButtonRef = useRef<HTMLButtonElement | null>(null);
+
+    // todo maybe want a different nav for typing game to keep things clean
+    // const router = useRouter();
+
+    // const [isHome, setIsHome] = useState(false);
+    // const [isAboutUs, setIsAboutUs] = useState(false);
+    // const [isProjects, setIsProjects] = useState(false);
+    // const [isContactUs, setIsContactUs] = useState(false);
+    // const [isSteven, setIsSteven] = useState(false);
+    // const [isZaviar, setIsZaviar] = useState(false);
+
+    // useEffect(() => {
+    //   setIsHome(router.pathname === "/");
+    //   setIsAboutUs(router.pathname === "/about-us");
+    //   setIsProjects(router.pathname === "/projects");
+    //   setIsContactUs(router.pathname === "/contact");
+    //   setIsSteven(router.pathname === "/steven");
+    //   setIsZaviar(router.pathname === "/zaviar");
+
+    //   const handleRouteChange = (url: string) => {
+    //     setIsHome(url === "/");
+    //     setIsAboutUs(url === "/about-us");
+    //     setIsProjects(url === "/projects");
+    //     setIsContactUs(url === "/contact");
+    //     setIsSteven(url === "/steven");
+    //     setIsZaviar(url === "/zaviar");
+    //   };
+
+    //   router.events.on("routeChangeComplete", handleRouteChange);
+
+    //   return () => {
+    //     router.events.off("routeChangeComplete", handleRouteChange);
+    //   };
+    // }, [router.pathname]);
+
+    // const toggleMenu = () => {
+    //     setIsMenuOpen(!isMenuOpen);
+    // };
+
+    const handleClose = useCallback(() => {
+        setIsMenuOpen(false);
+    }, []);
+
+    const toggleMenu = useCallback(() => {
+        setIsMenuOpen((prevIsMenuOpen) => !prevIsMenuOpen);
+    }, []);
+
+    const handleOutsideClick = useCallback(
+        (e: MouseEvent) => {
+            if (
+                isMenuOpen &&
+                menuRef.current &&
+                !menuRef.current.contains(e.target as Node) &&
+                menuButtonRef.current &&
+                !menuButtonRef.current.contains(e.target as Node)
+            ) {
+                handleClose();
+            }
+        },
+        [isMenuOpen, handleClose]
+    );
+
+    useEffect(() => {
+        window.addEventListener("mousedown", handleOutsideClick);
+
+        return () => {
+            window.removeEventListener("mousedown", handleOutsideClick);
+        };
+    }, [isMenuOpen, handleClose, handleOutsideClick]);
+
     return (
         <nav
             className="sticky top-0 z-10 mb-10 flex items-center justify-between 
@@ -29,9 +107,67 @@ export default function NavBar() {
                         My Listings
                     </Link>
                 </li>
-               
             </ul>
-            <AuthController />
+            {/* <AuthController /> */}
+
+            <motion.button
+                onClick={toggleMenu}
+                ref={menuButtonRef}
+                className="mr-5 w-36 rounded-3xl px-6 py-2"
+                animate={
+                    isMenuOpen ? { rotate: [0, 5, 10, 90] } : { rotate: 0 }
+                }
+                transition={{ duration: 0.5 }}
+            >
+                <Image
+                    alt="menu-burger"
+                    src={menuPog}
+                    width={menuPog.width}
+                    height={menuPog.height}
+                />
+            </motion.button>
+
+            {isMenuOpen && (
+                <motion.div
+                    animate={{ scale: [0, 1], y: [-150, 0] }}
+                    transition={{ delay: 0.5, duration: 0.5 }}
+                    ref={menuRef}
+                    className="absolute right-0 top-40 bg-red-600 p-10"
+                >
+                    <Link href="/" aria-label="Home" onClick={handleClose}>
+                        <motion.button className="flex justify-start">
+                            HOME
+                        </motion.button>
+                    </Link>
+                    <Link
+                        href="/about-us"
+                        aria-label="projects"
+                        onClick={handleClose}
+                    >
+                        <motion.button className="flex justify-start">
+                            ABOUT US
+                        </motion.button>
+                    </Link>
+                    <Link
+                        href="/projects"
+                        aria-label="projects"
+                        onClick={handleClose}
+                    >
+                        <motion.button className="flex justify-start">
+                            PROJECTS
+                        </motion.button>
+                    </Link>
+                    <Link
+                        href="/contact"
+                        aria-label="contact"
+                        onClick={handleClose}
+                    >
+                        <motion.button className="flex justify-start">
+                            CONTACT
+                        </motion.button>
+                    </Link>
+                </motion.div>
+            )}
         </nav>
     );
 }
