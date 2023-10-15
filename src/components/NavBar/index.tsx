@@ -6,9 +6,12 @@ import { motion, useAnimation } from "framer-motion";
 import Image from "next/image";
 import menuBurger from "../../../public/Nav/menu.png";
 import menuBurgerGif from "../../../public/Gifs/menu-glitch.gif";
+import menuBurgerRotate from "../../../public/Gifs/menu-glitch.gif";
 
 export default function NavBar() {
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+    const [isMenuGif, setIsMenuGif] = useState<boolean>(false);
+
     const menuRef = useRef<HTMLDivElement | null>(null);
     const menuButtonRef = useRef<HTMLButtonElement | null>(null);
 
@@ -57,6 +60,7 @@ export default function NavBar() {
     const toggleMenu = useCallback(() => {
         setIsMenuOpen((prevIsMenuOpen) => !prevIsMenuOpen);
     }, []);
+    console.log(isMenuGif);
 
     const handleOutsideClick = useCallback(
         (e: MouseEvent) => {
@@ -75,6 +79,17 @@ export default function NavBar() {
 
     useEffect(() => {
         window.addEventListener("mousedown", handleOutsideClick);
+        if (isMenuOpen) {
+            const timer = setTimeout(() => {
+                setIsMenuGif(true);
+            }, 800);
+
+            return () => {
+                clearTimeout(timer); // Clear the timer if the menu is closed before the timeout
+            };
+        } else {
+            setIsMenuGif(false);
+        }
 
         return () => {
             window.removeEventListener("mousedown", handleOutsideClick);
@@ -116,24 +131,18 @@ export default function NavBar() {
                 ref={menuButtonRef}
                 className="mr-5 w-36 rounded-3xl px-6 py-2"
                 animate={
-                    isMenuOpen ? { rotate: [0, 5, 10, 90] } : { rotate: 0 }
+                    isMenuOpen
+                        ? { rotate: [0, 5, 10, isMenuGif ? 0 : 90] }
+                        : { rotate: 0 }
                 }
-                transition={{ duration: 0.5 }}
+                transition={{ duration: isMenuGif ? 0 : 0.5 }}
             >
                 <Image
                     alt="menu-burger"
-                    src={menuBurger}
+                    src={isMenuGif ? menuBurgerGif : menuBurger}
                     width={menuBurger.width}
                     height={menuBurger.height}
                 />
-                {isMenuOpen && (
-                    <Image
-                        alt="menu-burger"
-                        src={menuBurgerGif}
-                        width={menuBurgerGif.width}
-                        height={menuBurgerGif.height}
-                    />
-                )}
             </motion.button>
 
             {isMenuOpen && (
