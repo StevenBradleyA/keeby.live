@@ -4,7 +4,8 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, useAnimation } from "framer-motion";
 import Image from "next/image";
-import menuPog from "../../../public/Nav/menu.png";
+import menuBurger from "../../../public/Nav/menu.png";
+import menuBurgerGif from "../../../public/Gifs/menu-glitch.gif";
 
 export default function NavBar() {
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -121,10 +122,18 @@ export default function NavBar() {
             >
                 <Image
                     alt="menu-burger"
-                    src={menuPog}
-                    width={menuPog.width}
-                    height={menuPog.height}
+                    src={menuBurger}
+                    width={menuBurger.width}
+                    height={menuBurger.height}
                 />
+                {isMenuOpen && (
+                    <Image
+                        alt="menu-burger"
+                        src={menuBurgerGif}
+                        width={menuBurgerGif.width}
+                        height={menuBurgerGif.height}
+                    />
+                )}
             </motion.button>
 
             {isMenuOpen && (
