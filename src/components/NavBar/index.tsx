@@ -16,6 +16,9 @@ export default function NavBar() {
     const menuRef = useRef<HTMLDivElement | null>(null);
     const menuButtonRef = useRef<HTMLButtonElement | null>(null);
 
+    // todo maybe add scrip to add different nav gifs and box-shadows
+    // todo maybe do a pixel neon town for dropdown and the options are neon signs
+
     // todo maybe want a different nav for typing game to keep things clean
     // const router = useRouter();
 
@@ -109,7 +112,7 @@ export default function NavBar() {
         >
             <h1 className="rounded-md border-r-2 px-10 py-6 text-3xl">
                 <Link href="/" aria-label="Home">
-                    Starter Clone Jutsu
+                    KEEBY
                 </Link>
             </h1>
             <ul className="flex flex-grow justify-around text-2xl">
@@ -160,38 +163,44 @@ export default function NavBar() {
                             type: "easeIn",
                         }}
                         ref={menuRef}
-                        className="dropdown-menu-gif absolute right-5 top-40 flex w-60 flex-col rounded-lg py-10"
+                        className="dropdown-menu-gif absolute right-5 top-40 flex w-80 rounded-lg px-5 py-10"
                     >
-                        <Link href="/" aria-label="Home" onClick={handleClose}>
-                            <motion.button className="flex justify-start">
-                                HOME
-                            </motion.button>
-                        </Link>
+                        <div className="flex flex-col">
+                            <Link
+                                href="/about-us"
+                                aria-label="projects"
+                                onClick={handleClose}
+                            >
+                                <motion.button className="flex justify-start">
+                                    KEEB SHOP
+                                </motion.button>
+                            </Link>
+                            <Link
+                                href="/projects"
+                                aria-label="projects"
+                                onClick={handleClose}
+                            >
+                                <motion.button className="flex justify-start">
+                                    LISTINGS
+                                </motion.button>
+                            </Link>
+                            <Link
+                                href="/contact"
+                                aria-label="contact"
+                                onClick={handleClose}
+                            >
+                                <motion.button className="flex justify-start">
+                                    NEWSLETTER
+                                </motion.button>
+                            </Link>
+                        </div>
                         <Link
                             href="/about-us"
                             aria-label="projects"
                             onClick={handleClose}
                         >
                             <motion.button className="flex justify-start">
-                                ABOUT US
-                            </motion.button>
-                        </Link>
-                        <Link
-                            href="/projects"
-                            aria-label="projects"
-                            onClick={handleClose}
-                        >
-                            <motion.button className="flex justify-start">
-                                PROJECTS
-                            </motion.button>
-                        </Link>
-                        <Link
-                            href="/contact"
-                            aria-label="contact"
-                            onClick={handleClose}
-                        >
-                            <motion.button className="flex justify-start">
-                                CONTACT
+                                PROFILE
                             </motion.button>
                         </Link>
                     </motion.div>
