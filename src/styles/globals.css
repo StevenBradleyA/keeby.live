@@ -182,9 +182,12 @@ li:not(:first-child) span {
     }
 }
 
-
-
-
-
 /* --------------     Navbar     --------------  */
 
+.dropdown-menu-gif {
+    background-image: url("../../public/Gifs/green-grid.gif");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    box-shadow: 0 0 10px #32ab36;
+}

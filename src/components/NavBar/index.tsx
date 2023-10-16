@@ -160,7 +160,7 @@ export default function NavBar() {
                             type: "easeIn",
                         }}
                         ref={menuRef}
-                        className="absolute right-5 top-40 bg-red-600 p-10"
+                        className="dropdown-menu-gif absolute right-5 top-40 flex w-60 flex-col rounded-lg py-10"
                     >
                         <Link href="/" aria-label="Home" onClick={handleClose}>
                             <motion.button className="flex justify-start">
