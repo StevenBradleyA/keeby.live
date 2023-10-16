@@ -2,7 +2,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 // import { useRouter } from "next/router";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { motion, useAnimation } from "framer-motion";
+import { AnimatePresence, motion, useAnimation } from "framer-motion";
 import Image from "next/image";
 import menuBurger from "../../../public/Nav/menu.png";
 import menuBurgerGif from "../../../public/Gifs/menu-glitch.gif";
@@ -149,48 +149,54 @@ export default function NavBar() {
                     height={menuBurger.height}
                 />
             </motion.button>
-
-            {isMenuOpen && (
-                <motion.div
-                    animate={{ scale: [0, 1], y: [-150, 0] }}
-                    transition={{ delay: 0.5, duration: 0.5 }}
-                    ref={menuRef}
-                    className="absolute right-0 top-40 bg-red-600 p-10"
-                >
-                    <Link href="/" aria-label="Home" onClick={handleClose}>
-                        <motion.button className="flex justify-start">
-                            HOME
-                        </motion.button>
-                    </Link>
-                    <Link
-                        href="/about-us"
-                        aria-label="projects"
-                        onClick={handleClose}
+            <AnimatePresence>
+                {isMenuOpen && (
+                    <motion.div
+                        animate={{ scale: [0, 1], y: [-150, 0] }}
+                        exit={{ scale: 0, y: -150 }}
+                        transition={{
+                            delay: 0.5,
+                            duration: 0.5,
+                            type: "easeIn",
+                        }}
+                        ref={menuRef}
+                        className="absolute right-5 top-40 bg-red-600 p-10"
                     >
-                        <motion.button className="flex justify-start">
-                            ABOUT US
-                        </motion.button>
-                    </Link>
-                    <Link
-                        href="/projects"
-                        aria-label="projects"
-                        onClick={handleClose}
-                    >
-                        <motion.button className="flex justify-start">
-                            PROJECTS
-                        </motion.button>
-                    </Link>
-                    <Link
-                        href="/contact"
-                        aria-label="contact"
-                        onClick={handleClose}
-                    >
-                        <motion.button className="flex justify-start">
-                            CONTACT
-                        </motion.button>
-                    </Link>
-                </motion.div>
-            )}
+                        <Link href="/" aria-label="Home" onClick={handleClose}>
+                            <motion.button className="flex justify-start">
+                                HOME
+                            </motion.button>
+                        </Link>
+                        <Link
+                            href="/about-us"
+                            aria-label="projects"
+                            onClick={handleClose}
+                        >
+                            <motion.button className="flex justify-start">
+                                ABOUT US
+                            </motion.button>
+                        </Link>
+                        <Link
+                            href="/projects"
+                            aria-label="projects"
+                            onClick={handleClose}
+                        >
+                            <motion.button className="flex justify-start">
+                                PROJECTS
+                            </motion.button>
+                        </Link>
+                        <Link
+                            href="/contact"
+                            aria-label="contact"
+                            onClick={handleClose}
+                        >
+                            <motion.button className="flex justify-start">
+                                CONTACT
+                            </motion.button>
+                        </Link>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </nav>
     );
 }
