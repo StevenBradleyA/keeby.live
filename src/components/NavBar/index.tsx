@@ -16,6 +16,8 @@ export default function NavBar() {
     const menuRef = useRef<HTMLDivElement | null>(null);
     const menuButtonRef = useRef<HTMLButtonElement | null>(null);
 
+    const { data: sessionData } = useSession();
+
     // todo maybe add scrip to add different nav gifs and box-shadows
     // todo maybe do a pixel neon town for dropdown and the options are neon signs
 
@@ -132,7 +134,6 @@ export default function NavBar() {
                     </Link>
                 </li>
             </ul>
-            {/* <AuthController /> */}
 
             <motion.button
                 onClick={toggleMenu}
@@ -167,7 +168,7 @@ export default function NavBar() {
                     >
                         <div className="flex flex-col">
                             <Link
-                                href="/about-us"
+                                href="/shop"
                                 aria-label="projects"
                                 onClick={handleClose}
                             >
@@ -176,7 +177,7 @@ export default function NavBar() {
                                 </motion.button>
                             </Link>
                             <Link
-                                href="/projects"
+                                href="/"
                                 aria-label="projects"
                                 onClick={handleClose}
                             >
@@ -185,7 +186,7 @@ export default function NavBar() {
                                 </motion.button>
                             </Link>
                             <Link
-                                href="/contact"
+                                href="/"
                                 aria-label="contact"
                                 onClick={handleClose}
                             >
@@ -194,15 +195,31 @@ export default function NavBar() {
                                 </motion.button>
                             </Link>
                         </div>
-                        <Link
-                            href="/about-us"
-                            aria-label="projects"
-                            onClick={handleClose}
-                        >
-                            <motion.button className="flex justify-start">
-                                PROFILE
-                            </motion.button>
-                        </Link>
+                        <div className="flex flex-col">
+                            <Link
+                                href="/profile"
+                                aria-label="projects"
+                                onClick={handleClose}
+                            >
+                                <motion.button className="flex justify-start">
+                                    PROFILE
+                                </motion.button>
+                            </Link>
+
+                            <button
+                                aria-label={
+                                    sessionData ? "Sign out" : "Sign in"
+                                }
+                                className="rounded-2xl bg-white/20 px-6 py-2  "
+                                onClick={
+                                    sessionData
+                                        ? () => void signOut()
+                                        : () => void signIn()
+                                }
+                            >
+                                {sessionData ? "Sign out" : "Sign in"}
+                            </button>
+                        </div>
                     </motion.div>
                 )}
             </AnimatePresence>
@@ -210,23 +227,9 @@ export default function NavBar() {
     );
 }
 
-function AuthController() {
-    const { data: sessionData } = useSession();
+// function AuthController() {
 
-    return (
-        <div className="flex flex-col items-center justify-center gap-1 rounded-md border-l-2 px-10 py-2 text-base">
-            <p className="text-center">
-                {sessionData && <span>Hello {sessionData.user?.name}!</span>}
-            </p>
-            <button
-                aria-label={sessionData ? "Sign out" : "Sign in"}
-                className="rounded-full bg-white/10 px-4 py-2 font-semibold no-underline transition hover:bg-white/20"
-                onClick={
-                    sessionData ? () => void signOut() : () => void signIn()
-                }
-            >
-                {sessionData ? "Sign out" : "Sign in"}
-            </button>
-        </div>
-    );
-}
+//     return (
+
+//     );
+// }
