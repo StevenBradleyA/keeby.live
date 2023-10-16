@@ -11,7 +11,7 @@ import menuBurgerRotate from "../../../public/Gifs/menu-glitch.gif";
 export default function NavBar() {
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
     const [isMenuGif, setIsMenuGif] = useState<boolean>(false);
-    const [isClosingMenu, setIsClosingMenu] = useState(false);
+    const [isClosingMenu, setIsClosingMenu] = useState<boolean>(false);
 
     const menuRef = useRef<HTMLDivElement | null>(null);
     const menuButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -53,6 +53,7 @@ export default function NavBar() {
     // const toggleMenu = () => {
     //     setIsMenuOpen(!isMenuOpen);
     // };
+    console.log(isClosingMenu);
 
     const handleClose = useCallback(() => {
         setIsMenuOpen(false);
@@ -61,7 +62,6 @@ export default function NavBar() {
     const toggleMenu = useCallback(() => {
         setIsMenuOpen((prevIsMenuOpen) => !prevIsMenuOpen);
     }, []);
-    console.log(isMenuGif);
 
     const handleOutsideClick = useCallback(
         (e: MouseEvent) => {
@@ -81,24 +81,25 @@ export default function NavBar() {
     useEffect(() => {
         window.addEventListener("mousedown", handleOutsideClick);
         if (isMenuOpen) {
+            setIsClosingMenu(false);
             const timer = setTimeout(() => {
                 setIsMenuGif(true);
-                setIsClosingMenu(false);
             }, 500);
 
             return () => {
                 clearTimeout(timer);
-                setIsClosingMenu(false); // Clear the timer if the menu is closed before the timeout
             };
         } else {
+            if (isMenuGif) {
+                setIsClosingMenu(true);
+            }
             setIsMenuGif(false);
-            setIsClosingMenu(true);
         }
 
         return () => {
             window.removeEventListener("mousedown", handleOutsideClick);
         };
-    }, [isMenuOpen, handleClose, handleOutsideClick]);
+    }, [isMenuOpen, handleClose, handleOutsideClick, isMenuGif]);
 
     return (
         <nav
