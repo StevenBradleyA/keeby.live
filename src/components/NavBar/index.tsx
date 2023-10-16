@@ -11,6 +11,7 @@ import menuBurgerRotate from "../../../public/Gifs/menu-glitch.gif";
 export default function NavBar() {
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
     const [isMenuGif, setIsMenuGif] = useState<boolean>(false);
+    const [isClosingMenu, setIsClosingMenu] = useState(false);
 
     const menuRef = useRef<HTMLDivElement | null>(null);
     const menuButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -82,13 +83,16 @@ export default function NavBar() {
         if (isMenuOpen) {
             const timer = setTimeout(() => {
                 setIsMenuGif(true);
-            }, 800);
+                setIsClosingMenu(false);
+            }, 500);
 
             return () => {
-                clearTimeout(timer); // Clear the timer if the menu is closed before the timeout
+                clearTimeout(timer);
+                setIsClosingMenu(false); // Clear the timer if the menu is closed before the timeout
             };
         } else {
             setIsMenuGif(false);
+            setIsClosingMenu(true);
         }
 
         return () => {
@@ -133,7 +137,7 @@ export default function NavBar() {
                 animate={
                     isMenuOpen
                         ? { rotate: [0, 5, 10, isMenuGif ? 0 : 90] }
-                        : { rotate: 0 }
+                        : { rotate: isClosingMenu ? [90, 85, 80, 0] : 0 }
                 }
                 transition={{ duration: isMenuGif ? 0 : 0.5 }}
             >
