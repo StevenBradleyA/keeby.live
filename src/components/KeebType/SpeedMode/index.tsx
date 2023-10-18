@@ -27,7 +27,7 @@ export default function SpeedMode({ gameLength }: SpeedModeProps) {
         if (e.key === " ") {
             const activeWord = prompt[activeWordIndex] ?? "";
 
-            const isCorrect = activeWord.startsWith(userInput);
+            const isCorrect = activeWord === userInput;
 
             if (isCorrect) {
                 // Update word status if the word is correctly spelled
@@ -60,19 +60,37 @@ export default function SpeedMode({ gameLength }: SpeedModeProps) {
                         key={index}
                     >
                         {word.split("").map((letter, letterIndex) => {
-                            const hit =
+                            const wordHit =
                                 wordStatus[index] && index < activeWordIndex;
-                            const miss =
+                            const wordMiss =
                                 !wordStatus[index] && index < activeWordIndex;
+
                             const isCurrentWord = index === activeWordIndex;
-                            const isLetterCorrect =
+                            const letterHit =
+                                isCurrentWord &&
                                 letter === userInput[letterIndex];
+                            const letterMiss =
+                                isCurrentWord &&
+                                userInput[letterIndex] !== undefined &&
+                                letter !== userInput[letterIndex];
+
+                            // const isIncorrectExtra =
+                            // isCurrentWord && letterIndex < userInput.length;
 
                             return (
                                 <div
                                     className={`${
-                                        hit ? "text-green-500" : ""
-                                    } ${miss ? "text-red-500" : ""}`}
+                                        wordHit ? "text-green-500" : ""
+                                    } ${wordMiss ? "text-red-500" : ""}
+                                    ${letterHit ? "text-green-500" : ""}
+                                    ${
+                                        isCurrentWord && letterMiss
+                                            ? "text-red-500"
+                                            : ""
+                                    }
+                                    
+                                    
+                                    `}
                                     key={letterIndex}
                                 >
                                     {letter}
