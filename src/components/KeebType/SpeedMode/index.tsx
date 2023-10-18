@@ -14,10 +14,13 @@ export default function SpeedMode({ gameLength }: SpeedModeProps) {
     const [wordStatus, setWordStatus] = useState<boolean[]>(
         new Array(gameLength).fill(false)
     );
-    console.log(wordStatus);
-    // console.log("userInput", userInput);
-    // console.log("activeWordIndex", activeWordIndex);
-    // console.log("totalInput", totalUserInput);
+    const [extraCharacters, setExtraCharacters] = useState<string[]>(
+        new Array(gameLength).fill("")
+    );
+    // todo implement cursor
+    // todo implement incorrect letters adding
+    // todo study monkey type somemore
+    // after game is working flawless then implement styling / pausing / end game stats etc.....
 
     const handleInputChange = (inputValue: string) => {
         setUserInput(inputValue);
@@ -35,6 +38,19 @@ export default function SpeedMode({ gameLength }: SpeedModeProps) {
                 newWordStatus[activeWordIndex] = true;
                 setWordStatus(newWordStatus);
             }
+
+            if (
+                prompt[activeWordIndex] &&
+                userInput.length > prompt[activeWordIndex].length
+            ) {
+                const newExtraCharacters = [...extraCharacters];
+                newExtraCharacters[activeWordIndex] = `${userInput.substring(
+                    prompt[activeWordIndex].length
+                )}`;
+                setExtraCharacters(newExtraCharacters);
+            }
+            console.log(extraCharacters);
+            console.log(wordStatus);
 
             // Add userInput to totalUserInput and clear userInput
             setTotalUserInput(totalUserInput + userInput + " ");
@@ -74,26 +90,34 @@ export default function SpeedMode({ gameLength }: SpeedModeProps) {
                                 userInput[letterIndex] !== undefined &&
                                 letter !== userInput[letterIndex];
 
-                            // const isIncorrectExtra =
-                            // isCurrentWord && letterIndex < userInput.length;
+                            const extra =
+                                isCurrentWord &&
+                                letterIndex === word.length - 1;
 
                             return (
                                 <div
-                                    className={`${
-                                        wordHit ? "text-green-500" : ""
-                                    } ${wordMiss ? "text-red-500" : ""}
+                                    className={`flex 
+                                    ${wordHit ? "text-green-500" : ""}
+                                    ${wordMiss ? "text-red-500" : ""}
                                     ${letterHit ? "text-green-500" : ""}
-                                    ${
-                                        isCurrentWord && letterMiss
-                                            ? "text-red-500"
-                                            : ""
-                                    }
+                                    ${letterMiss ? "text-red-500" : ""}
                                     
                                     
                                     `}
                                     key={letterIndex}
                                 >
                                     {letter}
+                                    {extra && (
+                                        <div>
+                                            {userInput.substring(word.length)}
+                                        </div>
+                                    )}
+                                    {extraCharacters[index] &&
+                                        letterIndex === word.length - 1 && (
+                                            <div className={`text-red-500`}>
+                                                {extraCharacters[index]}
+                                            </div>
+                                        )}
                                 </div>
                             );
                         })}
