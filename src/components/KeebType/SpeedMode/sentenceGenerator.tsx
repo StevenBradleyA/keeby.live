@@ -1911,23 +1911,16 @@ export default function SentenceGenerator({
             "ocean",
         ];
 
-        // const lengthAsNumber: number = parseInt(gameLength, 10);
-        // if (!isNaN(lengthAsNumber) && lengthAsNumber > 0) {
         const randomWords: string[] = [];
         for (let i = 0; i < gameLength; i++) {
             const randomIndex = Math.floor(Math.random() * wordBank.length);
             const randomWord: string | undefined = wordBank[randomIndex];
             if (randomWord) {
-                randomWords.push(randomWord); // Type assertion here
+                randomWords.push(randomWord);
             }
         }
         setPrompt(randomWords);
-        // }
     }, [gameLength, setPrompt]);
 
-    return (
-        <>
-            <div></div>
-        </>
-    );
+    return <></>;
 }
