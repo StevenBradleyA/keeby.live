@@ -19,7 +19,7 @@ export default function LeftMenu({
     // todo add cookeis to keep track of selected mode/ settings
 
     return (
-        <div className="flex flex-col rounded-2xl border border-green-500 bg-black p-10">
+        <div className="flex w-36 flex-col rounded-2xl border border-green-500 bg-black px-3 py-2">
             {/* <button>Rank</button> */}
             <div className="flex justify-center">Mode</div>
             <select
@@ -38,10 +38,10 @@ export default function LeftMenu({
                     <select
                         className=" bg-black px-2 py-1 text-green-500"
                         value={gameLength}
-                        onChange={(e) => setGameLength(e.target.value)}
+                        onChange={(e) => setGameLength(+e.target.value)}
                     >
                         <option value={10}>10</option>
-                        <option value={20} defaultValue={"20"}>
+                        <option value={20} defaultValue={20}>
                             20
                         </option>
                         <option value={50}>50</option>

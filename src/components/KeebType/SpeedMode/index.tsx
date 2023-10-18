@@ -38,14 +38,11 @@ export default function SpeedMode({ gameLength }: SpeedModeProps) {
                 newWordStatus[activeWordIndex] = true;
                 setWordStatus(newWordStatus);
             }
-
-            if (
-                prompt[activeWordIndex] &&
-                userInput.length > prompt[activeWordIndex].length
-            ) {
+            const activePrompt = prompt[activeWordIndex];
+            if (activePrompt && userInput.length > activePrompt.length) {
                 const newExtraCharacters = [...extraCharacters];
                 newExtraCharacters[activeWordIndex] = `${userInput.substring(
-                    prompt[activeWordIndex].length
+                    activePrompt.length
                 )}`;
                 setExtraCharacters(newExtraCharacters);
             }
@@ -61,13 +58,11 @@ export default function SpeedMode({ gameLength }: SpeedModeProps) {
             e.preventDefault();
         }
     };
-    // incorrect
-    // incorrect extra
 
     return (
         <div className="flex flex-col">
             <SentenceGenerator gameLength={gameLength} setPrompt={setPrompt} />
-            <div className={`flex w-2/3 gap-2 text-gray-400 `}>
+            <div className={`flex w-full flex-wrap gap-2 text-gray-400 px-10 text-2xl `}>
                 {prompt.map((word, index) => (
                     <div
                         className={`flex ${
@@ -80,7 +75,6 @@ export default function SpeedMode({ gameLength }: SpeedModeProps) {
                                 wordStatus[index] && index < activeWordIndex;
                             const wordMiss =
                                 !wordStatus[index] && index < activeWordIndex;
-
                             const isCurrentWord = index === activeWordIndex;
                             const letterHit =
                                 isCurrentWord &&
@@ -89,7 +83,6 @@ export default function SpeedMode({ gameLength }: SpeedModeProps) {
                                 isCurrentWord &&
                                 userInput[letterIndex] !== undefined &&
                                 letter !== userInput[letterIndex];
-
                             const extra =
                                 isCurrentWord &&
                                 letterIndex === word.length - 1;
@@ -97,18 +90,16 @@ export default function SpeedMode({ gameLength }: SpeedModeProps) {
                             return (
                                 <div
                                     className={`flex 
-                                    ${wordHit ? "text-green-500" : ""}
+                                    ${wordHit ? "text-white" : ""}
                                     ${wordMiss ? "text-red-500" : ""}
-                                    ${letterHit ? "text-green-500" : ""}
+                                    ${letterHit ? "text-white" : ""}
                                     ${letterMiss ? "text-red-500" : ""}
-                                    
-                                    
                                     `}
                                     key={letterIndex}
                                 >
                                     {letter}
                                     {extra && (
-                                        <div>
+                                        <div className="text-red-500">
                                             {userInput.substring(word.length)}
                                         </div>
                                     )}

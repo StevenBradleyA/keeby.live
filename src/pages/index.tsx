@@ -21,7 +21,7 @@ export default function Home() {
 
     return (
         <>
-            <div className="flex w-full p-10">
+            <div className="flex w-full items-center justify-between p-10">
                 <LeftMenu
                     mode={mode}
                     setMode={setMode}
