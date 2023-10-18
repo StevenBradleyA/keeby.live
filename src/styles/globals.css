@@ -191,3 +191,36 @@ li:not(:first-child) span {
     background-position: center;
     box-shadow: 0 0 10px #32ab36;
 }
+
+
+
+
+/* --------------     game     --------------  */
+
+/* word */
+.active{
+    
+}
+
+.word{
+
+
+}
+
+.wordError{
+
+
+}
+
+/* letter */
+.correct{
+    color: #58cc00;
+}
+.correct-typing{
+    color: #58cc00;
+
+}
+
+.incorrect{
+    color: red
+}
