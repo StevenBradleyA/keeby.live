@@ -226,10 +226,3 @@ export default function NavBar() {
         </nav>
     );
 }
-
-// function AuthController() {
-
-//     return (
-
-//     );
-// }

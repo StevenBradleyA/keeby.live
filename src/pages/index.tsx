@@ -16,7 +16,7 @@ export default function Home() {
 
     // for generate type we are going to need a first parent component that generates the sentence then passes it to another component that uses it.
     const [mode, setMode] = useState<string>("speed");
-    const [gameLength, setGameLength] = useState<string>("20");
+    const [gameLength, setGameLength] = useState<number>(20);
     const [theme, setTheme] = useState<string>("keeby");
 
     return (
@@ -30,7 +30,7 @@ export default function Home() {
                     theme={theme}
                     setTheme={setTheme}
                 />
-                {mode === "speed" && <SpeedMode />}
+                {mode === "speed" && <SpeedMode gameLength={gameLength} />}
                 {mode === "quote" && <SelectQuote />}
                 <RightMenu />
             </div>

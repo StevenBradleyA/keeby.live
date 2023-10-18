@@ -1,8 +1,8 @@
 interface LeftMenuProps {
     mode: string;
     setMode: (mode: string) => void;
-    gameLength: string;
-    setGameLength: (gameLength: string) => void;
+    gameLength: number;
+    setGameLength: (gameLength: number) => void;
     theme: string;
     setTheme: (theme: string) => void;
 }
@@ -40,11 +40,11 @@ export default function LeftMenu({
                         value={gameLength}
                         onChange={(e) => setGameLength(e.target.value)}
                     >
-                        <option value="10">10</option>
-                        <option value="20" defaultValue={"20"}>
+                        <option value={10}>10</option>
+                        <option value={20} defaultValue={"20"}>
                             20
                         </option>
-                        <option value="50">50</option>
+                        <option value={50}>50</option>
                     </select>
                 </div>
             )}
