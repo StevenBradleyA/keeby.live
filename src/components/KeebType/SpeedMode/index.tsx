@@ -4,6 +4,7 @@ import SentenceGenerator from "./sentenceGenerator";
 interface SpeedModeProps {
     gameLength: number;
 }
+type ColorClass = "correct" | "correct-typing" | "";
 
 export default function SpeedMode({ gameLength }: SpeedModeProps) {
     const [prompt, setPrompt] = useState<string[]>([]);
@@ -11,20 +12,30 @@ export default function SpeedMode({ gameLength }: SpeedModeProps) {
     const [userInput, setUserInput] = useState<string>("");
     const [activeWordIndex, setActiveWordIndex] = useState<number>(0);
     const [wordStatus, setWordStatus] = useState<boolean[]>(
-        new Array(prompt.length).fill(false)
+        new Array(gameLength).fill(false)
     );
-
+    console.log(wordStatus);
     // console.log("userInput", userInput);
     // console.log("activeWordIndex", activeWordIndex);
     // console.log("totalInput", totalUserInput);
 
     const handleInputChange = (inputValue: string) => {
         setUserInput(inputValue);
-       
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === " ") {
+            const activeWord = prompt[activeWordIndex] ?? "";
+
+            const isCorrect = activeWord.startsWith(userInput);
+
+            if (isCorrect) {
+                // Update word status if the word is correctly spelled
+                const newWordStatus = [...wordStatus];
+                newWordStatus[activeWordIndex] = true;
+                setWordStatus(newWordStatus);
+            }
+
             // Add userInput to totalUserInput and clear userInput
             setTotalUserInput(totalUserInput + userInput + " ");
             setUserInput("");
@@ -49,18 +60,19 @@ export default function SpeedMode({ gameLength }: SpeedModeProps) {
                         key={index}
                     >
                         {word.split("").map((letter, letterIndex) => {
-                            const isCorrect = userInput[letterIndex] === letter;
-                            const isWordCorrect = wordStatus[index];
+                            const hit =
+                                wordStatus[index] && index < activeWordIndex;
+                            const miss =
+                                !wordStatus[index] && index < activeWordIndex;
+                            const isCurrentWord = index === activeWordIndex;
+                            const isLetterCorrect =
+                                letter === userInput[letterIndex];
 
                             return (
                                 <div
                                     className={`${
-                                        isCorrect
-                                            ? isWordCorrect
-                                                ? "correct"
-                                                : "correct-typing"
-                                            : ""
-                                    }`}
+                                        hit ? "text-green-500" : ""
+                                    } ${miss ? "text-red-500" : ""}`}
                                     key={letterIndex}
                                 >
                                     {letter}
