@@ -16,9 +16,7 @@ export default function SpeedMode({ gameLength }: SpeedModeProps) {
     const [extraCharacters, setExtraCharacters] = useState<string[]>(
         new Array(gameLength).fill("")
     );
-    // todo implement cursor
-    // todo study monkey type somemore
-    // todo set a limit on extra characters typed
+
     // after game is working flawless then implement styling / pausing / end game stats etc.....
 
     const handleInputChange = (inputValue: string) => {
@@ -89,10 +87,6 @@ export default function SpeedMode({ gameLength }: SpeedModeProps) {
                             const isCursor =
                                 isCurrentWord &&
                                 userInput.length === letterIndex;
-                            // const isExtraCursor =
-                            //     isCurrentWord &&
-                            //     userInput.length > letterIndex &&
-                            //     userInput[userInput.length - 1];
                             const isExtraCursor =
                                 isCurrentWord &&
                                 userInput.length === letterIndex + 1;
@@ -117,17 +111,6 @@ export default function SpeedMode({ gameLength }: SpeedModeProps) {
                                     key={letterIndex}
                                 >
                                     {letter}
-                                    {/* {extra && (
-                                        <div
-                                            className={`text-red-500  ${
-                                                isExtraCursor
-                                                    ? "border-l-2 border-blue-500"
-                                                    : ""
-                                            }  `}
-                                        >
-                                            {userInput.substring(word.length)}
-                                        </div>
-                                    )} */}
                                     {extra && (
                                         <div
                                             className={`text-red-500  ${

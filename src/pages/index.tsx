@@ -3,6 +3,7 @@ import SelectQuote from "~/components/KeebType/QuoteMode/selectQuote";
 import LeftMenu from "~/components/KeebType/LeftMenu";
 import RightMenu from "~/components/KeebType/RightMenu";
 import SpeedMode from "~/components/KeebType/SpeedMode";
+import HomepageFooter from "~/components/Footer";
 
 export default function Home() {
     // Todo going to need different components for different games
@@ -21,7 +22,7 @@ export default function Home() {
 
     return (
         <>
-            <div className="flex w-full items-center justify-between p-10">
+            <div className="flex w-full items-center justify-between p-10 mb-28">
                 <LeftMenu
                     mode={mode}
                     setMode={setMode}
@@ -34,6 +35,7 @@ export default function Home() {
                 {mode === "quote" && <SelectQuote />}
                 <RightMenu />
             </div>
+            <HomepageFooter />
         </>
     );
 }
