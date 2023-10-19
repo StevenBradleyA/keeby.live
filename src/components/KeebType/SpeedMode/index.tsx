@@ -95,36 +95,73 @@ export default function SpeedMode({ gameLength }: SpeedModeProps) {
                             const isCursor =
                                 isCurrentWord &&
                                 userInput.length === letterIndex;
+                            // const isExtraCursor =
+                            //     isCurrentWord &&
+                            //     userInput.length > letterIndex &&
+                            //     userInput[userInput.length - 1];
+                            const isExtraCursor =
+                                isCurrentWord &&
+                                userInput.length === letterIndex + 1;
 
-                            // console.log('yo', isCurrentIndex)
-
+                            // todo we have a problem where the input border is no longer for each letter thers only one for the whole input
+                            const characters = userInput
+                                .substring(word.length)
+                                .split("");
                             return (
                                 <div
-                                    className={`flex 
+                                    className={`flex
                                     ${wordHit ? "text-white" : ""}
                                     ${wordMiss ? "text-red-500" : ""}
                                     ${letterHit ? "text-white" : ""}
                                     ${letterMiss ? "text-red-500" : ""}
                                     ${
                                         isCursor
-                                            ? "border-l-8 border-blue-500"
+                                            ? "border-l-2 border-blue-500"
                                             : ""
                                     }
-
-
-
                                     `}
                                     key={letterIndex}
                                 >
                                     {letter}
-                                    {extra && (
-                                        <div className="text-red-500">
+                                    {/* {extra && (
+                                        <div
+                                            className={`text-red-500  ${
+                                                isExtraCursor
+                                                    ? "border-l-2 border-blue-500"
+                                                    : ""
+                                            }  `}
+                                        >
                                             {userInput.substring(word.length)}
+                                        </div>
+                                    )} */}
+                                    {extra && (
+                                        <div
+                                            className={`text-red-500  ${
+                                                isExtraCursor
+                                                    ? "border-l-2 border-blue-500"
+                                                    : ""
+                                            }  `}
+                                        >
+                                            {characters.map((char, index) => (
+                                                <span
+                                                    key={index}
+                                                    className={`  ${
+                                                        index ===
+                                                        userInput.length -
+                                                            word.length -
+                                                            1
+                                                            ? "border-r-2 border-blue-500"
+                                                            : ""
+                                                    }  `}
+                                                >
+                                                    {char}
+                                                </span>
+                                            ))}
                                         </div>
                                     )}
                                     {extraCharacters[index] &&
                                         letterIndex === word.length - 1 && (
-                                            <div className={`text-red-500`}>
+                                            <div className={`text-red-500 `}>
                                                 {extraCharacters[index]}
                                             </div>
                                         )}
