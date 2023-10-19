@@ -22,7 +22,7 @@ export default function Home() {
 
     return (
         <>
-            <div className="flex w-full items-center justify-between p-10 mb-28">
+            <div className="mt-40 flex w-full items-center justify-between overflow-hidden p-10">
                 <LeftMenu
                     mode={mode}
                     setMode={setMode}
