@@ -56,12 +56,6 @@ export default function SpeedMode({ gameLength }: SpeedModeProps) {
         }
     };
 
-    // const cursorVisible = activeWordIndex < prompt.length;
-    // const activeWord = prompt[activeWordIndex] || "";
-    // const cursorPosition = userInput.length - activeWord.length;
-
-    // console.log("hi", cursorVisible);
-
     return (
         <div className="flex w-2/3 flex-col">
             <SentenceGenerator gameLength={gameLength} setPrompt={setPrompt} />
@@ -103,10 +97,10 @@ export default function SpeedMode({ gameLength }: SpeedModeProps) {
                                 isCurrentWord &&
                                 userInput.length === letterIndex + 1;
 
-                            // todo we have a problem where the input border is no longer for each letter thers only one for the whole input
-                            const characters = userInput
+                            const extraInput = userInput
                                 .substring(word.length)
                                 .split("");
+
                             return (
                                 <div
                                     className={`flex
@@ -142,21 +136,23 @@ export default function SpeedMode({ gameLength }: SpeedModeProps) {
                                                     : ""
                                             }  `}
                                         >
-                                            {characters.map((char, index) => (
-                                                <span
-                                                    key={index}
-                                                    className={`  ${
-                                                        index ===
-                                                        userInput.length -
-                                                            word.length -
-                                                            1
-                                                            ? "border-r-2 border-blue-500"
-                                                            : ""
-                                                    }  `}
-                                                >
-                                                    {char}
-                                                </span>
-                                            ))}
+                                            {extraInput.map(
+                                                (eachExtra, index) => (
+                                                    <span
+                                                        key={index}
+                                                        className={`  ${
+                                                            index ===
+                                                            userInput.length -
+                                                                word.length -
+                                                                1
+                                                                ? "border-r-2 border-blue-500"
+                                                                : ""
+                                                        }  `}
+                                                    >
+                                                        {eachExtra}
+                                                    </span>
+                                                )
+                                            )}
                                         </div>
                                     )}
                                     {extraCharacters[index] &&
@@ -177,6 +173,7 @@ export default function SpeedMode({ gameLength }: SpeedModeProps) {
                     onChange={(e) => handleInputChange(e.target.value)}
                     onKeyDown={(e) => handleKeyDown(e)}
                     className="w-full bg-dark text-red-600 "
+                    maxLength={30}
                 />
             </div>
         </div>
