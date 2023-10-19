@@ -224,3 +224,13 @@ li:not(:first-child) span {
 .incorrect{
     color: red
 }
+
+.cursor-blink {
+    animation: blink-animation 0.8s step-end infinite;
+}
+
+@keyframes blink-animation {
+    to {
+        visibility: hidden;
+    }
+}

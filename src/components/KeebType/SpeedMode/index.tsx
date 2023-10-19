@@ -4,7 +4,6 @@ import SentenceGenerator from "./sentenceGenerator";
 interface SpeedModeProps {
     gameLength: number;
 }
-type ColorClass = "correct" | "correct-typing" | "";
 
 export default function SpeedMode({ gameLength }: SpeedModeProps) {
     const [prompt, setPrompt] = useState<string[]>([]);
@@ -18,8 +17,8 @@ export default function SpeedMode({ gameLength }: SpeedModeProps) {
         new Array(gameLength).fill("")
     );
     // todo implement cursor
-    // todo implement incorrect letters adding
     // todo study monkey type somemore
+    // todo set a limit on extra characters typed
     // after game is working flawless then implement styling / pausing / end game stats etc.....
 
     const handleInputChange = (inputValue: string) => {
@@ -46,8 +45,6 @@ export default function SpeedMode({ gameLength }: SpeedModeProps) {
                 )}`;
                 setExtraCharacters(newExtraCharacters);
             }
-            console.log(extraCharacters);
-            console.log(wordStatus);
 
             // Add userInput to totalUserInput and clear userInput
             setTotalUserInput(totalUserInput + userInput + " ");
@@ -59,10 +56,18 @@ export default function SpeedMode({ gameLength }: SpeedModeProps) {
         }
     };
 
+    // const cursorVisible = activeWordIndex < prompt.length;
+    // const activeWord = prompt[activeWordIndex] || "";
+    // const cursorPosition = userInput.length - activeWord.length;
+
+    // console.log("hi", cursorVisible);
+
     return (
-        <div className="flex flex-col">
+        <div className="flex w-2/3 flex-col">
             <SentenceGenerator gameLength={gameLength} setPrompt={setPrompt} />
-            <div className={`flex w-full flex-wrap gap-2 text-gray-400 px-10 text-2xl `}>
+            <div
+                className={`flex w-full flex-wrap gap-2 px-10 text-2xl text-gray-400 `}
+            >
                 {prompt.map((word, index) => (
                     <div
                         className={`flex ${
@@ -87,6 +92,12 @@ export default function SpeedMode({ gameLength }: SpeedModeProps) {
                                 isCurrentWord &&
                                 letterIndex === word.length - 1;
 
+                            const isCursor =
+                                isCurrentWord &&
+                                userInput.length === letterIndex;
+
+                            // console.log('yo', isCurrentIndex)
+
                             return (
                                 <div
                                     className={`flex 
@@ -94,6 +105,14 @@ export default function SpeedMode({ gameLength }: SpeedModeProps) {
                                     ${wordMiss ? "text-red-500" : ""}
                                     ${letterHit ? "text-white" : ""}
                                     ${letterMiss ? "text-red-500" : ""}
+                                    ${
+                                        isCursor
+                                            ? "border-l-8 border-blue-500"
+                                            : ""
+                                    }
+
+
+
                                     `}
                                     key={letterIndex}
                                 >
