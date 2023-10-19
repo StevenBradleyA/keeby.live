@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 export default function HomepageFooter() {
     // todo support a modal with a link to yt and a link to kofi and link to hacktime and a column that says im looking for work
@@ -9,7 +10,7 @@ export default function HomepageFooter() {
             <div>
                 Powered by <button>Hacktime</button>{" "}
             </div>
-            <div>Support</div>
+            <button>Support</button>
             <Link href="/privacy-policy" aria-label="Privacy Policy">
                 Privacy
             </Link>
