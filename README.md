@@ -203,6 +203,8 @@ TODO epilepsy warning modal
 
 
 If successful ideas
+KEEB SHARE - a community page with cards like arbnb where people can share builds for inspiration 
+
 Store
 - sell merch - maybe develop a keyboard - maybe make a marketplace that shows products from other sites and links to them 
 

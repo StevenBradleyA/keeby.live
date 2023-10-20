@@ -3,9 +3,10 @@ import SentenceGenerator from "./sentenceGenerator";
 
 interface SpeedModeProps {
     gameLength: number;
+    setGameOver: (gameOver: boolean) => void;
 }
 
-export default function SpeedMode({ gameLength }: SpeedModeProps) {
+export default function SpeedMode({ gameLength, setGameOver }: SpeedModeProps) {
     const [prompt, setPrompt] = useState<string[]>([]);
     const [totalUserInput, setTotalUserInput] = useState<string>("");
     const [userInput, setUserInput] = useState<string>("");
@@ -18,6 +19,20 @@ export default function SpeedMode({ gameLength }: SpeedModeProps) {
     );
 
     // after game is working flawless then implement styling / pausing / end game stats etc.....
+    // todo test out bottom margin idea might be clean?
+    // todo saving stats when finished
+
+    useEffect(() => {
+        // Check if the game is over
+        if (
+            activeWordIndex === gameLength - 1 &&
+            userInput === prompt[activeWordIndex]
+        ) {
+            // If activeWordIndex matches the length of the prompt
+            // and the last word is spelled correctly, setGameOver to true
+            setGameOver(true);
+        }
+    }, [activeWordIndex, userInput, gameLength, setGameOver, prompt]);
 
     const handleInputChange = (inputValue: string) => {
         setUserInput(inputValue);
@@ -49,6 +64,9 @@ export default function SpeedMode({ gameLength }: SpeedModeProps) {
             setUserInput("");
             // Increase activeWordIndex by one
             setActiveWordIndex(activeWordIndex + 1);
+            if (activeWordIndex === gameLength - 1) {
+                setGameOver(true);
+            }
             // Prevent the space key from being input into the text field
             e.preventDefault();
         }
@@ -58,7 +76,7 @@ export default function SpeedMode({ gameLength }: SpeedModeProps) {
         <div className="flex w-2/3 flex-col">
             <SentenceGenerator gameLength={gameLength} setPrompt={setPrompt} />
             <div
-                className={`flex w-full flex-wrap gap-2 px-10 text-2xl text-gray-400 `}
+                className={`flex w-full flex-wrap gap-2 px-10 text-2xl text-white/30 `}
             >
                 {prompt.map((word, index) => (
                     <div

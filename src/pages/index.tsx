@@ -19,7 +19,10 @@ export default function Home() {
     const [mode, setMode] = useState<string>("speed");
     const [gameLength, setGameLength] = useState<number>(20);
     const [theme, setTheme] = useState<string>("keeby");
-
+    const [gameOver, setGameOver] = useState<boolean>(false);
+    const [isFocused, setIsFocused] = useState<boolean>(false);
+    // gameOver will display if we show a mode or stats...
+    console.log(gameOver);
     return (
         <>
             <div className="mt-40 flex w-full items-center justify-between overflow-hidden p-10">
@@ -31,7 +34,12 @@ export default function Home() {
                     theme={theme}
                     setTheme={setTheme}
                 />
-                {mode === "speed" && <SpeedMode gameLength={gameLength} />}
+                {mode === "speed" && (
+                    <SpeedMode
+                        gameLength={gameLength}
+                        setGameOver={setGameOver}
+                    />
+                )}
                 {mode === "quote" && <SelectQuote />}
                 <RightMenu />
             </div>
