@@ -6,7 +6,8 @@ import { AnimatePresence, motion, useAnimation } from "framer-motion";
 import Image from "next/image";
 import menuBurger from "../../../public/Nav/menu.png";
 import menuBurgerGif from "../../../public/Gifs/menu-glitch.gif";
-import menuBurgerRotate from "../../../public/Gifs/menu-glitch.gif";
+import homeButton from "../../../public/Nav/home-test.png";
+import homeGreenButton from "../../../public/Nav/home-green-test.png";
 
 export default function NavBar() {
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -109,120 +110,112 @@ export default function NavBar() {
     return (
         <nav
             className="sticky top-0 z-10 mb-10 flex items-center justify-between 
-            rounded-b-3xl  bg-black bg-opacity-40 py-4 text-white backdrop-blur-md"
+              bg-testFive  py-4 text-white"
             aria-label="Main Navigation"
         >
-            <h1 className="rounded-md border-r-2 px-10 py-6 text-3xl">
-                <Link href="/" aria-label="Home">
-                    KEEBY
-                </Link>
-            </h1>
-            <ul className="flex flex-grow justify-around text-2xl">
-                <li>
-                    <Link href="/posts" aria-label="Posts">
-                        Market
-                    </Link>
-                </li>
-                <li>
-                    <Link href="/bookings" aria-label="Bookings">
-                        My Profile
-                    </Link>
-                </li>
-                <li>
-                    <Link href="/images" aria-label="Images">
-                        My Listings
-                    </Link>
-                </li>
-            </ul>
-
-            <motion.button
-                onClick={toggleMenu}
-                ref={menuButtonRef}
-                className="mr-5 w-36 rounded-3xl px-6 py-2"
-                animate={
-                    isMenuOpen
-                        ? { rotate: [0, 5, 10, isMenuGif ? 0 : 90] }
-                        : { rotate: isClosingMenu ? [90, 85, 80, 0] : 0 }
-                }
-                transition={{ duration: isMenuGif ? 0 : 0.5 }}
-            >
+            <Link href="/" aria-label="Home">
                 <Image
-                    alt="menu-burger"
-                    src={isMenuGif ? menuBurgerGif : menuBurger}
-                    width={menuBurger.width}
-                    height={menuBurger.height}
+                    src={homeButton}
+                    alt="home"
+                    width={homeButton.width}
+                    height={homeButton.height}
+                    className="ml-10 w-72"
                 />
-            </motion.button>
-            <AnimatePresence>
-                {isMenuOpen && (
-                    <motion.div
-                        animate={{ scale: [0, 1], y: [-150, 0] }}
-                        exit={{ scale: 0, y: -150 }}
-                        transition={{
-                            delay: 0.5,
-                            duration: 0.5,
-                            type: "easeIn",
-                        }}
-                        ref={menuRef}
-                        className="dropdown-menu-gif absolute right-5 top-40 flex w-80 rounded-lg px-5 py-10"
-                    >
-                        <div className="flex flex-col">
-                            <Link
-                                href="/shop"
-                                aria-label="projects"
-                                onClick={handleClose}
-                            >
-                                <motion.button className="flex justify-start">
-                                    KEEB SHOP
-                                </motion.button>
-                            </Link>
-                            <Link
-                                href="/"
-                                aria-label="projects"
-                                onClick={handleClose}
-                            >
-                                <motion.button className="flex justify-start">
-                                    LISTINGS
-                                </motion.button>
-                            </Link>
-                            <Link
-                                href="/"
-                                aria-label="contact"
-                                onClick={handleClose}
-                            >
-                                <motion.button className="flex justify-start">
-                                    NEWSLETTER
-                                </motion.button>
-                            </Link>
-                        </div>
-                        <div className="flex flex-col">
-                            <Link
-                                href="/profile"
-                                aria-label="projects"
-                                onClick={handleClose}
-                            >
-                                <motion.button className="flex justify-start">
-                                    PROFILE
-                                </motion.button>
-                            </Link>
+            </Link>
+            <div className="flex items-center gap-32">
+                <Link href="/shop" aria-label="shop">
+                    KEEB SHOP
+                </Link>
 
-                            <button
-                                aria-label={
-                                    sessionData ? "Sign out" : "Sign in"
-                                }
-                                className="rounded-2xl bg-white/20 px-6 py-2  "
-                                onClick={
-                                    sessionData
-                                        ? () => void signOut()
-                                        : () => void signIn()
-                                }
-                            >
-                                {sessionData ? "Sign out" : "Sign in"}
-                            </button>
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+                <motion.button
+                    onClick={toggleMenu}
+                    ref={menuButtonRef}
+                    className="mr-10 w-36 rounded-3xl px-6 py-2"
+                    animate={
+                        isMenuOpen
+                            ? { rotate: [0, 5, 10, isMenuGif ? 0 : 90] }
+                            : { rotate: isClosingMenu ? [90, 85, 80, 0] : 0 }
+                    }
+                    transition={{ duration: isMenuGif ? 0 : 0.5 }}
+                >
+                    <Image
+                        alt="menu-burger"
+                        src={isMenuGif ? menuBurgerGif : menuBurger}
+                        width={menuBurger.width}
+                        height={menuBurger.height}
+                    />
+                </motion.button>
+                <AnimatePresence>
+                    {isMenuOpen && (
+                        <motion.div
+                            animate={{ scale: [0, 1], y: [-150, 0] }}
+                            exit={{ scale: 0, y: -150 }}
+                            transition={{
+                                delay: 0.5,
+                                duration: 0.5,
+                                type: "easeIn",
+                            }}
+                            ref={menuRef}
+                            className="dropdown-menu-gif absolute right-5 top-40 flex w-80 rounded-lg px-5 py-10"
+                        >
+                            <div className="flex flex-col">
+                                <Link
+                                    href="/shop"
+                                    aria-label="projects"
+                                    onClick={handleClose}
+                                >
+                                    <motion.button className="flex justify-start">
+                                        KEEB SHOP
+                                    </motion.button>
+                                </Link>
+                                <Link
+                                    href="/"
+                                    aria-label="projects"
+                                    onClick={handleClose}
+                                >
+                                    <motion.button className="flex justify-start">
+                                        LISTINGS
+                                    </motion.button>
+                                </Link>
+                                <Link
+                                    href="/"
+                                    aria-label="contact"
+                                    onClick={handleClose}
+                                >
+                                    <motion.button className="flex justify-start">
+                                        NEWSLETTER
+                                    </motion.button>
+                                </Link>
+                            </div>
+                            <div className="flex flex-col">
+                                <Link
+                                    href="/profile"
+                                    aria-label="projects"
+                                    onClick={handleClose}
+                                >
+                                    <motion.button className="flex justify-start">
+                                        PROFILE
+                                    </motion.button>
+                                </Link>
+
+                                <button
+                                    aria-label={
+                                        sessionData ? "Sign out" : "Sign in"
+                                    }
+                                    className="rounded-2xl bg-white/20 px-6 py-2  "
+                                    onClick={
+                                        sessionData
+                                            ? () => void signOut()
+                                            : () => void signIn()
+                                    }
+                                >
+                                    {sessionData ? "Sign out" : "Sign in"}
+                                </button>
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </div>
         </nav>
     );
 }
