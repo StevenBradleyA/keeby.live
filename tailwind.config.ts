@@ -6,7 +6,7 @@ export default {
         extend: {
             backgroundColor: {
                 dark: "#222",
-                testOne: "#0A0A0A",
+                keebyGray: "#2f2f2f",
                 testTwo: "#121212",
                 testFour: "#161618",
                 testFive: "#181818",
