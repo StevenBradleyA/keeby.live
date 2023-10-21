@@ -192,37 +192,28 @@ li:not(:first-child) span {
     box-shadow: 0 0 10px #32ab36;
 }
 
-
-
-
 /* --------------     game     --------------  */
 
 /* word */
-.active{
-    
+.active {
 }
 
-.word{
-
-
+.word {
 }
 
-.wordError{
-
-
+.wordError {
 }
 
 /* letter */
-.correct{
+.correct {
     color: #58cc00;
 }
-.correct-typing{
+.correct-typing {
     color: #58cc00;
-
 }
 
-.incorrect{
-    color: red
+.incorrect {
+    color: red;
 }
 
 .cursor-blink {
@@ -233,4 +224,24 @@ li:not(:first-child) span {
     to {
         visibility: hidden;
     }
+}
+
+/* matrix */
+
+circlec {
+    overflow: hidden;
+}
+body {
+    background: #000;
+}
+circlec {
+    margin: auto;
+    width: 630px;
+    height: 330px;
+    border-radius: 50%;
+    top: calc(50% - 165px);
+    left: calc(50% - 165px);
+    background-color: #000;
+    position: absolute;
+    z-index: 10;
 }

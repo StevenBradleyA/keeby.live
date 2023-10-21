@@ -6,14 +6,16 @@ import { getProviders, signIn } from "next-auth/react";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "~/server/auth";
 import { authSvg } from "~/components/Svgs/auth";
+import CanvasComponent from "./matrix";
 
 export default function SignIn({
     providers,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
     return (
-        <>
+        <div className="flex flex-col w-1/2 items-center">
             <div>Im In</div>
-            <div className="rounded-2xl bg-testFour p-10">
+            <CanvasComponent />
+            <div className="z-30 rounded-2xl p-10">
                 {Object.values(providers).map((provider) => (
                     <div key={provider.name}>
                         <button
@@ -30,7 +32,7 @@ export default function SignIn({
                     </div>
                 ))}
             </div>
-        </>
+        </div>
     );
 }
 

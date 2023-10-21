@@ -41,7 +41,7 @@ export const authSvg = (provider: string) => {
                     stroke="none"
                     stroke-width="1"
                     fill="#38a169"
-                    fill-rule="evenodd"
+                    fillRule="evenodd"
                 >
                     <g
                         id="Dribbble-Light-Preview"
