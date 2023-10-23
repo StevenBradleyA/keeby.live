@@ -7,6 +7,8 @@ import Image from "next/image";
 import menuBurger from "../../../public/Nav/menu.png";
 import menuBurgerGif from "../../../public/Gifs/menu-glitch.gif";
 import homeButton from "../../../public/Nav/home-test.png";
+import keebo from "../../../public/Nav/bmo-test.jpg";
+
 import homeGreenButton from "../../../public/Nav/home-green-test.png";
 
 export default function NavBar() {
@@ -156,16 +158,33 @@ export default function NavBar() {
                                 type: "easeIn",
                             }}
                             ref={menuRef}
-                            className="dropdown-menu-gif absolute right-5 top-40 flex w-80 rounded-lg px-5 py-10"
+                            className="dropdown-menu-gif absolute right-5 top-40 flex w-80 justify-between rounded-lg px-5 py-10"
                         >
-                            <div className="flex flex-col">
+                            <div className="flex flex-col gap-2">
                                 <Link
                                     href="/shop"
                                     aria-label="projects"
                                     onClick={handleClose}
                                 >
-                                    <motion.button className="flex justify-start">
+                                    <motion.button
+                                        className="flex justify-start rounded-md bg-white/10 px-4 py-1 hover:bg-black/50 hover:text-green-500"
+                                        whileHover={{ scale: 1.1 }}
+                                        whileTap={{ scale: 0.95 }}
+                                    >
                                         KEEB SHOP
+                                    </motion.button>
+                                </Link>
+                                <Link
+                                    href="/"
+                                    aria-label="contact"
+                                    onClick={handleClose}
+                                >
+                                    <motion.button
+                                        className="flex justify-start rounded-md bg-white/10 px-4 py-1 hover:bg-black/50 hover:text-green-500"
+                                        whileHover={{ scale: 1.1 }}
+                                        whileTap={{ scale: 0.95 }}
+                                    >
+                                        KEEB TYPE
                                     </motion.button>
                                 </Link>
                                 <Link
@@ -173,7 +192,11 @@ export default function NavBar() {
                                     aria-label="projects"
                                     onClick={handleClose}
                                 >
-                                    <motion.button className="flex justify-start">
+                                    <motion.button
+                                        className="flex justify-start rounded-md bg-white/10 px-4 py-1 hover:bg-black/50 hover:text-green-500"
+                                        whileHover={{ scale: 1.1 }}
+                                        whileTap={{ scale: 0.95 }}
+                                    >
                                         LISTINGS
                                     </motion.button>
                                 </Link>
@@ -182,8 +205,12 @@ export default function NavBar() {
                                     aria-label="contact"
                                     onClick={handleClose}
                                 >
-                                    <motion.button className="flex justify-start">
-                                        NEWSLETTER
+                                    <motion.button
+                                        className="flex justify-start rounded-md bg-white/10 px-4 py-1 hover:bg-black/50 hover:text-green-500"
+                                        whileHover={{ scale: 1.1 }}
+                                        whileTap={{ scale: 0.95 }}
+                                    >
+                                        ABOUT
                                     </motion.button>
                                 </Link>
                             </div>
@@ -194,7 +221,11 @@ export default function NavBar() {
                                     onClick={handleClose}
                                 >
                                     <motion.button className="flex justify-start">
-                                        PROFILE
+                                        <Image
+                                            alt="profile"
+                                            src={keebo}
+                                            className="w-20"
+                                        />
                                     </motion.button>
                                 </Link>
 
@@ -202,7 +233,7 @@ export default function NavBar() {
                                     aria-label={
                                         sessionData ? "Sign out" : "Sign in"
                                     }
-                                    className="rounded-2xl bg-white/20 px-6 py-2  "
+                                    className=" bg-white/10 px-4 py-1 hover:bg-black/50 hover:text-green-500  "
                                     onClick={
                                         sessionData
                                             ? () => void signOut()

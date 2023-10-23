@@ -8,7 +8,6 @@ export default function TitleScripts({ page }: TitleScriptsProps) {
     const [title, setTitle] = useState("");
     // 01101000 01100001 01100011 01101011 00100000 01110100 01101001 01101101 01100101 --- hacktime in binary
     // 01101000 01100001 01100011 01101011 -- hack
-
     // "Quantum Computing in 3, 2, 1...",
     // "C:\\> Hello, World!",
     // "Syntax Error: 8-bit Love Not Found",
@@ -19,7 +18,6 @@ export default function TitleScripts({ page }: TitleScriptsProps) {
     // "Pogchamp Error 404: Cringe Not Found",
     //  "Welcome, Time Traveler! Please Prove Your Identity",
     //   "Initiating Login Sequence... Brace for Time Travel",
-
     // "Loading 8-bit Security Wall... Please Authenticate",
     //  "Initiating Login Sequence... Brace for Time Travel",
     // "Ctrl + Alt + Authenticate: What's the Magic Word?",

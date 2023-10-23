@@ -13,23 +13,7 @@ import TitleScripts from "~/components/TitleScripts";
 export default function SignIn({
     providers,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-    const [title, setTitle] = useState("");
-
-    useEffect(() => {
-        const phrases = [
-            "Please Stand By",
-            "Scanning for Thock",
-            "ಠ_ಠ none found",
-            "Create a Listing",
-        ];
-        const delay = [0, 2000, 4000, 6000];
-
-        phrases.forEach((phrase, i) =>
-            setTimeout(() => {
-                setTitle(phrase);
-            }, delay[i])
-        );
-    }, []);
+   
 
     return (
         <>

@@ -210,4 +210,13 @@ Store
 
 Add achievements - allow people to select tags - their rank or when they buy a keyboard they get a tag etc. 
 
+
+
+
+
+------ MASCOT
+
+KEEBO
+
+
  -->
