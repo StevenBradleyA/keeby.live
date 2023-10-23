@@ -5,8 +5,6 @@ import ModalDialog from "../Modal";
 import SupportMe from "./support";
 
 export default function HomepageFooter() {
-  
-
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     const openModal = () => {
@@ -20,8 +18,11 @@ export default function HomepageFooter() {
     return (
         <div className="mt-96 flex gap-5 text-white/30">
             <div>
-                Powered by <button>Hacktime</button>{" "}
+                Powered by <button>Hacktime</button>
             </div>
+            <Link href="/about" aria-label="About">
+                About
+            </Link>
             <button onClick={openModal}>Support</button>
 
             <ModalDialog isOpen={isModalOpen} onClose={closeModal}>

@@ -158,7 +158,7 @@ export default function NavBar() {
                                 type: "easeIn",
                             }}
                             ref={menuRef}
-                            className="dropdown-menu-gif absolute right-5 top-40 flex w-80 justify-between rounded-lg px-5 py-10"
+                            className="dropdown-menu-gif absolute right-5 top-40 flex w-80 justify-between rounded-lg px-5 py-5"
                         >
                             <div className="flex flex-col gap-2">
                                 <Link
@@ -210,11 +210,11 @@ export default function NavBar() {
                                         whileHover={{ scale: 1.1 }}
                                         whileTap={{ scale: 0.95 }}
                                     >
-                                        ABOUT
+                                        KEEBDEX
                                     </motion.button>
                                 </Link>
                             </div>
-                            <div className="flex flex-col">
+                            <div className="flex flex-col justify-between">
                                 <Link
                                     href="/profile"
                                     aria-label="projects"
@@ -233,7 +233,7 @@ export default function NavBar() {
                                     aria-label={
                                         sessionData ? "Sign out" : "Sign in"
                                     }
-                                    className=" bg-white/10 px-4 py-1 hover:bg-black/50 hover:text-green-500  "
+                                    className=" rounded-md bg-white/10 px-4 py-1 hover:bg-black/50 hover:text-green-500  "
                                     onClick={
                                         sessionData
                                             ? () => void signOut()
