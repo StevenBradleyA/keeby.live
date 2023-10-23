@@ -256,7 +256,7 @@ li:not(:first-child) span {
 /* ----------             Moving Title         --------------- */
 
 .moving-title {
-    color: #00dd00;
+    /* color: #00dd00; */
     position: relative;
 }
 

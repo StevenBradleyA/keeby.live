@@ -16,6 +16,9 @@ export default {
                 testTwelve: "#3A3B3C",
                 testThirteen: "#404040",
             },
+            textColor: {
+                hack: "#00dd00",
+            },
         },
     },
     plugins: [],
