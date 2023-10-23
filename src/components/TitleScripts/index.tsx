@@ -27,11 +27,11 @@ export default function TitleScripts({ page }: TitleScriptsProps) {
     useEffect(() => {
         if (page === "signin") {
             const phrases = [
+                "Initiating Login Sequence",
                 "Accessing Mainframe",
                 "Authorization Required",
                 "Access Granted",
-                "Just Remember To Say",
-                "I'm In",
+                "Prove Your Identity - Then Announce, Im In",
             ];
             const delay = [0, 2000, 4000, 6000, 8000];
 
@@ -46,7 +46,7 @@ export default function TitleScripts({ page }: TitleScriptsProps) {
     return (
         <h1
             className={`moving-title mb-10 text-4xl text-green-500  ${
-                title === "Authorization Required" ? "text-red-500" : ""
+                title === "Authorization Required" ? "text-red-600" : ""
             }`}
         >
             {title}

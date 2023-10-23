@@ -18,6 +18,7 @@ export default {
             },
             textColor: {
                 hack: "#00dd00",
+                failure: "#ff0000",
             },
         },
     },
