@@ -6,21 +6,42 @@ import { getProviders, signIn } from "next-auth/react";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "~/server/auth";
 import { authSvg } from "~/components/Svgs/auth";
-import CanvasComponent from "./matrix";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import TitleScripts from "~/components/TitleScripts";
 
 export default function SignIn({
     providers,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+    const [title, setTitle] = useState("");
+
+    useEffect(() => {
+        const phrases = [
+            "Please Stand By",
+            "Scanning for Thock",
+            "ಠ_ಠ none found",
+            "Create a Listing",
+        ];
+        const delay = [0, 2000, 4000, 6000];
+
+        phrases.forEach((phrase, i) =>
+            setTimeout(() => {
+                setTitle(phrase);
+            }, delay[i])
+        );
+    }, []);
+
     return (
-        <div className="flex flex-col w-1/2 items-center">
-            <div>Im In</div>
-            <CanvasComponent />
-            <div className="z-30 rounded-2xl p-10">
+        <>
+            <TitleScripts page={"signin"} />
+            <div className="z-30  rounded-3xl bg-keebyGray px-20 py-10">
                 {Object.values(providers).map((provider) => (
                     <div key={provider.name}>
-                        <button
+                        <motion.button
                             onClick={() => void signIn(provider.id)}
-                            className="mb-5 rounded-2xl bg-black px-6 py-2 text-green-500"
+                            className="button-hover-effect mb-5 rounded-2xl bg-black px-6 py-2 text-green-500"
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.95 }}
                         >
                             <div className="flex items-center gap-5">
                                 <div className="w-10">
@@ -28,11 +49,11 @@ export default function SignIn({
                                 </div>
                                 <div>Sign in with {provider.name}</div>
                             </div>
-                        </button>
+                        </motion.button>
                     </div>
                 ))}
             </div>
-        </div>
+        </>
     );
 }
 
