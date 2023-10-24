@@ -66,7 +66,7 @@ export default function ProfilePlus() {
 
     return (
         <>
-            <form className="flex flex-col items-center  rounded-2xl bg-keebyGray p-20 text-3xl text-white shadow-xl">
+            <form className="mb-20 flex flex-col  items-center rounded-2xl bg-keebyGray p-20 text-3xl text-white shadow-xl">
                 <div className="mb-5 flex justify-center text-xl">
                     Please choose a username
                 </div>
@@ -82,11 +82,38 @@ export default function ProfilePlus() {
                     <p className="text-xl text-red-400">{errors.username}</p>
                 )} */}
 
+                <div className="mb-5 flex justify-center text-xl">
+                    Create a Keyboard profile
+                </div>
+                <div className="mb-5 flex justify-center text-xl">
+                    (can add more later)
+                </div>
+                <div className=" mb-10 flex gap-5">
+                    <input
+                        value={keyboard}
+                        onChange={(e) => setKeyboard(e.target.value)}
+                        className=" rounded-md p-2 text-xl text-purple-300 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-200"
+                        placeholder="Keyboard"
+                    ></input>
+                    <input
+                        value={switches}
+                        onChange={(e) => setSwitches(e.target.value)}
+                        className=" rounded-md p-2 text-xl text-purple-300 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-200"
+                        placeholder="Switches"
+                    ></input>
+                    <input
+                        value={keycaps}
+                        onChange={(e) => setKeycaps(e.target.value)}
+                        className=" rounded-md p-2 text-xl text-purple-300 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-200"
+                        placeholder="Keycaps"
+                    ></input>
+                </div>
+
                 <div className="mt-5 flex justify-center text-4xl">
                     Upload a custom profile picture
                 </div>
                 <div className=" flex justify-center text-xl">
-                    (this will be visible by other users)
+                    (optional ++ will be visible by other users)
                 </div>
                 <div className="py-4">
                     <label className="relative inline-block h-40 w-40">
