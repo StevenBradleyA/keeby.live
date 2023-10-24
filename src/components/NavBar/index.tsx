@@ -201,7 +201,7 @@ export default function NavBar() {
                                     </motion.button>
                                 </Link>
                                 <Link
-                                    href="/"
+                                    href="/keebdex"
                                     aria-label="keebdex"
                                     onClick={handleClose}
                                 >
