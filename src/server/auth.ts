@@ -22,6 +22,12 @@ declare module "next-auth" {
     interface Session extends DefaultSession {
         user: {
             id: string;
+            username: string;
+            profile: string;
+            tag: string;
+            isVerified: boolean;
+            isNew: boolean;
+
             // ...other properties
             // role: UserRole;
         } & DefaultSession["user"];
@@ -43,17 +49,16 @@ export const authOptions: NextAuthOptions = {
         session: ({ session, user }) => ({
             ...session,
             user: {
-                ...session.user,
-                id: user.id,
+                ...user,
             },
         }),
     },
     pages: {
-        signIn: '/auth/signin',
+        signIn: "/auth/signin",
         // signOut: '/auth/signout',
         // error: '/auth/error', // Error code passed in query string as ?error=
         // verifyRequest: '/auth/verify-request', // (used for check email message)
-      },
+    },
     adapter: PrismaAdapter(prisma),
     providers: [
         GoogleProvider({

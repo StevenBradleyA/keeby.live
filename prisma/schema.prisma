@@ -146,9 +146,12 @@ model User {
     profile       String?
     about         String?
     rank          String?
+    tag           String?
     username      String?
-    isVerified    Boolean   @default(false)
-    isNewsletter  Boolean   @default(false)
+
+    isVerified   Boolean @default(false)
+    isNew   Boolean @default(false)
+    isNewsletter Boolean @default(false)
 
     accounts     Account[]
     sessions     Session[]
