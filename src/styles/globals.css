@@ -181,3 +181,101 @@ li:not(:first-child) span {
         margin-top: 10px;
     }
 }
+
+/* --------------     Navbar     --------------  */
+
+.dropdown-menu-gif {
+    background-image: url("../../public/Gifs/green-grid.gif");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    box-shadow: 0 0 10px #32ab36;
+}
+
+/* --------------     game     --------------  */
+
+/* word */
+.active {
+}
+
+.word {
+}
+
+.wordError {
+}
+
+/* letter */
+.correct {
+    color: #58cc00;
+}
+.correct-typing {
+    color: #58cc00;
+}
+
+.incorrect {
+    color: red;
+}
+
+.cursor-blink {
+    animation: blink-animation 0.8s step-end infinite;
+}
+
+@keyframes blink-animation {
+    to {
+        visibility: hidden;
+    }
+}
+
+/* rando */
+.button-hover-effect {
+    position: relative;
+    overflow: hidden;
+}
+
+.button-hover-effect::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("../../public/Gifs/matrix.gif"); /* Add your desired image path */
+    background-size: 200%;
+    background-repeat: no-repeat;
+    background-position: right center;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    /* opacity: 0.7; */
+}
+
+.button-hover-effect:hover::before {
+    transform: translateX(-18%);
+}
+
+/*  moving title */
+
+/* ----------             Moving Title         --------------- */
+
+.moving-title {
+    /* color: #00dd00; */
+    position: relative;
+}
+
+.moving-title::after {
+    content: "";
+    position: absolute;
+    animation: periods 1s linear infinite;
+}
+
+@keyframes periods {
+    25% {
+        content: ".";
+    }
+
+    50% {
+        content: "..";
+    }
+
+    75% {
+        content: "...";
+    }
+}

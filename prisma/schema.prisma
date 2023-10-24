@@ -42,6 +42,32 @@ model Comment {
     post Post @relation(fields: [postId], references: [id])
 }
 
+model Game {
+    id        String   @id @default(cuid())
+    wpm       Int
+    mode      String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    userId String
+    keebId String?
+
+    user User  @relation(fields: [userId], references: [id])
+    keeb Keeb? @relation(fields: [keebId], references: [id])
+}
+
+model Keeb {
+    id       String  @id @default(cuid())
+    name     String
+    switches String
+    keycaps  String?
+
+    userId String
+
+    user User   @relation(fields: [userId], references: [id])
+    Game Game[]
+}
+
 model Review {
     id         String   @id @default(cuid())
     text       String
@@ -56,31 +82,18 @@ model Review {
     post Post @relation(fields: [postId], references: [id])
 }
 
-model GCHBooking {
+model Transaction {
     id        String   @id @default(cuid())
-    date      DateTime
-    status    String
+    cost      Int
     type      String
+    status    String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-
-    userId String
-
-    user           User             @relation(fields: [userId], references: [id])
-    GCHTransaction GCHTransaction[]
-}
-
-model GCHTransaction {
-    id     String @id @default(cuid())
-    cost   Int
-    type   String
-    status String
 
     userId    String
     bookingId String
 
-    user    User       @relation(fields: [userId], references: [id])
-    booking GCHBooking @relation(fields: [bookingId], references: [id])
+    user User @relation(fields: [userId], references: [id])
 }
 
 model Images {
@@ -130,16 +143,22 @@ model User {
     email         String?   @unique
     emailVerified DateTime?
     image         String?
-    notes         String?
+    profile       String?
+    about         String?
+    rank          String?
+    username      String?
+    isVerified    Boolean   @default(false)
+    isNewsletter  Boolean   @default(false)
 
     accounts     Account[]
     sessions     Session[]
     posts        Post[]
     comments     Comment[]
     reviews      Review[]
-    bookings     GCHBooking[]
-    transactions GCHTransaction[]
-    GCHImages    Images[]
+    transactions Transaction[]
+    images       Images[]
+    games        Game[]
+    keebs        Keeb[]
 }
 
 model VerificationToken {

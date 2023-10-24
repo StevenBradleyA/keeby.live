@@ -8,6 +8,7 @@ import {
 import DiscordProvider from "next-auth/providers/discord";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
+import RedditProvider from "next-auth/providers/reddit";
 import { env } from "~/env.mjs";
 import { prisma } from "~/server/db";
 
@@ -47,12 +48,14 @@ export const authOptions: NextAuthOptions = {
             },
         }),
     },
+    pages: {
+        signIn: '/auth/signin',
+        // signOut: '/auth/signout',
+        // error: '/auth/error', // Error code passed in query string as ?error=
+        // verifyRequest: '/auth/verify-request', // (used for check email message)
+      },
     adapter: PrismaAdapter(prisma),
     providers: [
-        DiscordProvider({
-            clientId: env.DISCORD_CLIENT_ID,
-            clientSecret: env.DISCORD_CLIENT_SECRET,
-        }),
         GoogleProvider({
             clientId: env.GOOGLE_CLIENT_ID,
             clientSecret: env.GOOGLE_CLIENT_SECRET,
@@ -61,6 +64,15 @@ export const authOptions: NextAuthOptions = {
             clientId: env.GITHUB_CLIENT_ID,
             clientSecret: env.GITHUB_CLIENT_SECRET,
         }),
+        DiscordProvider({
+            clientId: env.DISCORD_CLIENT_ID,
+            clientSecret: env.DISCORD_CLIENT_SECRET,
+        }),
+        RedditProvider({
+            clientId: env.REDDIT_CLIENT_ID,
+            clientSecret: env.REDDIT_CLIENT_SECRET,
+        }),
+
         /**
          * ...add more providers here.
          *

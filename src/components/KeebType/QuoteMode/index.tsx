@@ -15,9 +15,12 @@ export default function QuoteType({
     isFocused,
     setIsFocused,
 }: QuoteTypeProps) {
+
     // TODO add vertical bars left side different modes. Right side basic functions restart test, new test, stats
     // TODO cool ideas warmup mode qwerty asdf zxcv etc...
     // TODO code mode {} ; : "" () = special characters <> etc
+    // TODO select keyboard 
+    // TODO using router monitor the path when on home page give simple icon dropdowns for things like selecting a keyboard, leaderboard
     // refactor on event listerner to on clicks
 
     const [typedText, setTypedText] = useState<string>("");
