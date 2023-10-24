@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import TitleScripts from "~/components/TitleScripts";
 
 export default function KeebDex() {
-    // do a different gif than the matrix and make it transparent
+    // do a different gif than the matrix and make it transparent or with text in front would be poggin
 
     return (
         <>

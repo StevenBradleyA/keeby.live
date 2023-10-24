@@ -22,7 +22,7 @@ export default function Home() {
     const [gameOver, setGameOver] = useState<boolean>(false);
     const [isFocused, setIsFocused] = useState<boolean>(false);
     // gameOver will display if we show a mode or stats...
-    console.log(gameOver);
+    // console.log(gameOver);
     return (
         <>
             <div className="mt-40 flex w-full items-center justify-between overflow-hidden p-10">
