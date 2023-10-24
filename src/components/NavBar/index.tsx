@@ -150,8 +150,12 @@ export default function NavBar() {
                 <AnimatePresence>
                     {isMenuOpen && (
                         <motion.div
-                            animate={{ scale: [0, 1], y: [-150, 0] }}
-                            exit={{ scale: 0, y: -150 }}
+                            animate={{
+                                scale: [0, 1],
+                                y: [-150, 0],
+                                x: [90, 0],
+                            }}
+                            exit={{ scale: 0, y: -170, x: 60 }}
                             transition={{
                                 delay: 0.5,
                                 duration: 0.5,
