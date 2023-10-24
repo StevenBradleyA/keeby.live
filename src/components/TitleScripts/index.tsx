@@ -39,6 +39,21 @@ export default function TitleScripts({ page }: TitleScriptsProps) {
                 }, delay[i])
             );
         }
+        if (page === "keebdex") {
+            const phrases = [
+                "Insert Coin to Continue",
+                "Defragmenting Memories",
+                "Calculating Quantum KeebDex",
+                "Pogchamp Error 404: Cringe Not Found",
+            ];
+            const delay = [0, 2000, 4000, 6000];
+
+            phrases.forEach((phrase, i) =>
+                setTimeout(() => {
+                    setTitle(phrase);
+                }, delay[i])
+            );
+        }
     }, [page]);
 
     return (
