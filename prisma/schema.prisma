@@ -60,7 +60,7 @@ model Keeb {
     id       String  @id @default(cuid())
     name     String
     switches String
-    keycaps  String?
+    keycaps  String
 
     userId String
 
@@ -144,13 +144,12 @@ model User {
     emailVerified DateTime?
     image         String?
     profile       String?
-    about         String?
     rank          String?
     tag           String?
-    username      String?
+    username      String?   @unique
 
     isVerified   Boolean @default(false)
-    isNew   Boolean @default(false)
+    isNew        Boolean @default(false)
     isNewsletter Boolean @default(false)
 
     accounts     Account[]
