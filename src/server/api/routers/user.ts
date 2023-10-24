@@ -6,19 +6,12 @@ import {
 } from "~/server/api/trpc";
 
 export const userRouter = createTRPCRouter({
-    getAllUsers: publicProcedure.query(({ ctx }) => {
-        return ctx.prisma.user.findMany({
-            where: { isNew: false },
-            include: {
-                images: {
-                    select: {
-                        link: true,
-                    },
-                },
-            },
-            orderBy: {
-                name: "asc",
-            },
-        });
-    }),
+    usernameCheck: publicProcedure
+        .input(z.string())
+        .query(async ({ input, ctx }) => {
+            const user = await ctx.prisma.user.findFirst({
+                where: { username: input },
+            });
+            return Boolean(user);
+        }),
 });
