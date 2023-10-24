@@ -160,14 +160,14 @@ export default function NavBar() {
                             ref={menuRef}
                             className="dropdown-menu-gif absolute right-5 top-40 flex w-80 justify-between rounded-lg px-5 py-5"
                         >
-                            <div className="flex flex-col gap-2">
+                            <div className="flex flex-col justify-between">
                                 <Link
                                     href="/shop"
                                     aria-label="projects"
                                     onClick={handleClose}
                                 >
                                     <motion.button
-                                        className="flex justify-start rounded-md bg-white/10 px-4 py-1 hover:bg-black/50 hover:text-green-500"
+                                        className="flex w-32 justify-center rounded-md bg-white/10 px-4 py-1 hover:bg-black/50 hover:text-green-500"
                                         whileHover={{ scale: 1.1 }}
                                         whileTap={{ scale: 0.95 }}
                                     >
@@ -180,7 +180,7 @@ export default function NavBar() {
                                     onClick={handleClose}
                                 >
                                     <motion.button
-                                        className="flex justify-start rounded-md bg-white/10 px-4 py-1 hover:bg-black/50 hover:text-green-500"
+                                        className="flex w-32 justify-center rounded-md bg-white/10 px-4 py-1 hover:bg-black/50 hover:text-green-500"
                                         whileHover={{ scale: 1.1 }}
                                         whileTap={{ scale: 0.95 }}
                                     >
@@ -188,25 +188,25 @@ export default function NavBar() {
                                     </motion.button>
                                 </Link>
                                 <Link
-                                    href="/"
-                                    aria-label="projects"
+                                    href="/share"
+                                    aria-label="keeb share"
                                     onClick={handleClose}
                                 >
                                     <motion.button
-                                        className="flex justify-start rounded-md bg-white/10 px-4 py-1 hover:bg-black/50 hover:text-green-500"
+                                        className="flex w-32 justify-center rounded-md bg-white/10 px-4 py-1 hover:bg-black/50 hover:text-green-500"
                                         whileHover={{ scale: 1.1 }}
                                         whileTap={{ scale: 0.95 }}
                                     >
-                                        LISTINGS
+                                        KEEB SHARE
                                     </motion.button>
                                 </Link>
                                 <Link
                                     href="/"
-                                    aria-label="contact"
+                                    aria-label="keebdex"
                                     onClick={handleClose}
                                 >
                                     <motion.button
-                                        className="flex justify-start rounded-md bg-white/10 px-4 py-1 hover:bg-black/50 hover:text-green-500"
+                                        className="flex w-32 justify-center rounded-md bg-white/10 px-4 py-1 hover:bg-black/50 hover:text-green-500"
                                         whileHover={{ scale: 1.1 }}
                                         whileTap={{ scale: 0.95 }}
                                     >
@@ -214,34 +214,44 @@ export default function NavBar() {
                                     </motion.button>
                                 </Link>
                             </div>
-                            <div className="flex flex-col justify-between">
+                            <div className="flex flex-col gap-2">
                                 <Link
                                     href="/profile"
                                     aria-label="projects"
                                     onClick={handleClose}
                                 >
-                                    <motion.button className="flex justify-start">
+                                    <motion.button
+                                        className="flex justify-start"
+                                        whileHover={{
+                                            scale: 1.1,
+                                        }}
+                                        whileTap={{ scale: 0.95 }}
+                                    >
                                         <Image
                                             alt="profile"
                                             src={keebo}
-                                            className="w-20"
+                                            className="w-28"
                                         />
                                     </motion.button>
                                 </Link>
 
-                                <button
+                                <motion.button
                                     aria-label={
                                         sessionData ? "Sign out" : "Sign in"
                                     }
-                                    className=" rounded-md bg-white/10 px-4 py-1 hover:bg-black/50 hover:text-green-500  "
+                                    className=" w-28 rounded-md bg-white/10 px-4 py-1 hover:bg-black/50 hover:text-green-500 "
                                     onClick={
                                         sessionData
                                             ? () => void signOut()
                                             : () => void signIn()
                                     }
+                                    whileHover={{
+                                        scale: 1.1,
+                                    }}
+                                    whileTap={{ scale: 0.95 }}
                                 >
                                     {sessionData ? "Sign out" : "Sign in"}
-                                </button>
+                                </motion.button>
                             </div>
                         </motion.div>
                     )}
