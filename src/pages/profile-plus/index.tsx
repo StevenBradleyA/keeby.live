@@ -60,26 +60,26 @@ export default function ProfilePlus() {
 
     const { data: usernameCheck } = api.user.usernameCheck.useQuery(username);
 
-    const { mutate } = api.user.updateUser.useMutation({
-        onSuccess: () => console.log("bigpogtime"),
-
-        //     try {
-        //         toast.success("First time client form complete!", {
-        //             icon: "👏",
-        //             style: {
-        //                 borderRadius: "10px",
-        //                 background: "#333",
-        //                 color: "#fff",
-        //             },
-        //         });
-        //         void ctx.user.invalidate();
-        //         await update();
-        //         await router.push("/");
-        //     } catch (error) {
-        //         console.error("Error while navigating:", error);
-        //     }
-        // },
+    const { mutate } = api.user.updateNewUser.useMutation({
+        onSuccess: async () => {
+            try {
+                toast.success("Profile complete!", {
+                    icon: "👏",
+                    style: {
+                        borderRadius: "10px",
+                        background: "#333",
+                        color: "#fff",
+                    },
+                });
+                void ctx.user.invalidate();
+                await update();
+                await router.push("/");
+            } catch (error) {
+                console.error("Error while navigating:", error);
+            }
+        },
     });
+    // todo something is wrong with react toast not sure what...
 
     // const { mutate: createKeeb } = api.keeb.create.useMutation({
     //     onSuccess: () => {

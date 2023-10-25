@@ -14,52 +14,7 @@ export const userRouter = createTRPCRouter({
             });
             return Boolean(user);
         }),
-
     updateNewUser: protectedProcedure
-        .input(
-            z.object({
-                userId: z.string(),
-                username: z.string(),
-                images: z
-                    .array(
-                        z.object({
-                            link: z.string(),
-                        })
-                    )
-                    .optional(),
-            })
-        )
-        .mutation(async ({ input, ctx }) => {
-            const { userId, username, images } = input;
-            if (ctx.session.user.id === userId) {
-                // if (images && images[0]) {
-                //     const profile = images[0].link;
-
-                //     const updateUser = await ctx.prisma.user.update({
-                //         where: { id: ctx.session.user.id },
-                //         data: {
-                //             username,
-                //             hasProfile: true,
-                //             profile,
-                //         },
-                //     });
-                //     return { updateUser };
-                // }
-
-                const updatedUser = await ctx.prisma.user.update({
-                    where: { id: userId },
-                    data: {
-                        username,
-                        hasProfile: true,
-                    },
-                });
-
-                return { updatedUser };
-            }
-
-            throw new Error("Invalid userId");
-        }),
-    updateUser: protectedProcedure
         .input(
             z.object({
                 userId: z.string(),
