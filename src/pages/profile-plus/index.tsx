@@ -9,6 +9,7 @@ interface ErrorsObj {
     imageExcess?: string;
     imageLarge?: string;
     username?: string;
+    taken?: string;
     keyboard?: string;
     switches?: string;
     keycaps?: string;
@@ -29,8 +30,40 @@ export default function ProfilePlus() {
 
     const [imageFiles, setImageFiles] = useState<File[]>([]);
     const [errors, setErrors] = useState<ErrorsObj>({});
+    const [enableErrorDisplay, setEnableErrorDisplay] =
+        useState<boolean>(false);
     const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const [isAvailable, setIsAvailable] = useState<boolean>(false);
+
+    const { data: usernameCheck } = api.user.usernameCheck.useQuery(username);
+
+    // const { mutate } = api.user.updateNewUser.useMutation({
+    //     onSuccess: async () => {
+    //         try {
+    //             // toast.success("First time client form complete!", {
+    //             //     icon: "👏",
+    //             //     style: {
+    //             //         borderRadius: "10px",
+    //             //         background: "#333",
+    //             //         color: "#fff",
+    //             //     },
+    //             // });
+    //             void ctx.user.getAllUsers.invalidate();
+    //             void ctx.user.invalidate();
+    //             await update();
+    //             await router.push("/");
+    //         } catch (error) {
+    //             console.error("Error while navigating:", error);
+    //         }
+    //     },
+    // });
+
+    // const { mutate: usernameCheck } = api.user.usernameCheck.useMutation({
+    //     onSuccess: async () => {
+    //         console.log("poggers");
+    //     },
+    // });
 
     useEffect(() => {
         const maxFileSize = 6 * 1024 * 1024;
@@ -38,6 +71,9 @@ export default function ProfilePlus() {
 
         if (!username.length) {
             errorsObj.username = "Please provide a username";
+        }
+        if (!isAvailable) {
+            errorsObj.taken = "Username already exists";
         }
         if (!keyboard.length) {
             errorsObj.keyboard = "Please provide your keyboard";
@@ -49,20 +85,87 @@ export default function ProfilePlus() {
             errorsObj.keycaps = "Please provide your keycaps";
         }
 
-        if (imageFiles.length > 5) {
-            errorsObj.imageExcess = "Cannot provide more than 5 photos";
+        if (imageFiles.length > 1) {
+            errorsObj.imageExcess = "Cannot provide more than 1 photo";
         }
 
         for (const file of imageFiles) {
             if (file.size > maxFileSize) {
-                errorsObj.imageLarge =
-                    "One or more images exceeds the max 6 MB file size";
+                errorsObj.imageLarge = "Image exceeds the max 6 MB file size";
                 break;
             }
         }
 
         setErrors(errorsObj);
     }, [imageFiles, username, keyboard, switches, keycaps]);
+
+    const submit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        setIsAvailable(!usernameCheck);
+        setEnableErrorDisplay(true);
+
+        // if (!Object.values(errors).length && isAvailable && !isSubmitting) {
+        //     try {
+        //         const sessionUserId = session?.user?.id;
+
+        //         if (!sessionUserId) {
+        //             throw new Error("Session expired");
+        //         }
+
+        //         const data: UserData = {
+        //             userId: sessionUserId,
+        //             username,
+        //         };
+
+        //         setIsSubmitting(true);
+
+        //         if (imageFiles.length > 0) {
+        //             const imagePromises = imageFiles.map((file) => {
+        //                 return new Promise<string>((resolve, reject) => {
+        //                     const reader = new FileReader();
+        //                     reader.readAsDataURL(file);
+        //                     reader.onloadend = () => {
+        //                         if (typeof reader.result === "string") {
+        //                             const base64Data =
+        //                                 reader.result.split(",")[1];
+        //                             if (base64Data) {
+        //                                 resolve(base64Data);
+        //                             }
+        //                         } else {
+        //                             reject(new Error("Failed to read file"));
+        //                         }
+        //                     };
+        //                     reader.onerror = () => {
+        //                         reject(new Error("Failed to read file"));
+        //                     };
+        //                 });
+        //             });
+
+        //             const base64DataArray = await Promise.all(imagePromises);
+        //             const imageUrlArr: string[] = [];
+
+        //             for (const base64Data of base64DataArray) {
+        //                 const buffer = Buffer.from(base64Data, "base64");
+        //                 const imageUrl = await uploadFileToS3(buffer);
+        //                 imageUrlArr.push(imageUrl);
+        //             }
+
+        //             data.images = imageUrlArr.map((imageUrl) => ({
+        //                 link: imageUrl || "",
+        //             }));
+        //         }
+
+        //         mutate(data);
+        //         setImageFiles([]);
+        //         setHasSubmitted(true);
+        //         setIsSubmitting(false);
+        //     } catch (error) {
+        //         console.error("Submission failed:", error);
+        //         setIsSubmitting(false);
+        //     }
+        // }
+    };
 
     return (
         <>
@@ -78,9 +181,12 @@ export default function ProfilePlus() {
                         placeholder="Username"
                     ></input>
                 </div>
-                {/* {errors.username && (
+                {errors.username && (
                     <p className="text-xl text-red-400">{errors.username}</p>
-                )} */}
+                )}
+                {errors.taken && (
+                    <p className="text-xl text-red-400">{errors.username}</p>
+                )}
 
                 <div className="mb-5 flex justify-center text-xl">
                     Create a Keyboard profile
@@ -176,7 +282,7 @@ export default function ProfilePlus() {
                 <button
                     onClick={(e) => {
                         e.preventDefault();
-                        // void submit(e);
+                        void submit(e);
                     }}
                     disabled={
                         (hasSubmitted && Object.values(errors).length > 0) ||
