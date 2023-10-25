@@ -2,6 +2,7 @@ import { api } from "~/utils/api";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { uploadFileToS3 } from "~/utils/aws";
 import Image from "next/image";
 
 interface ErrorsObj {
@@ -105,66 +106,66 @@ export default function ProfilePlus() {
         setIsAvailable(!usernameCheck);
         setEnableErrorDisplay(true);
 
-        // if (!Object.values(errors).length && isAvailable && !isSubmitting) {
-        //     try {
-        //         const sessionUserId = session?.user?.id;
+        if (!Object.values(errors).length && isAvailable && !isSubmitting) {
+            try {
+                const sessionUserId = session?.user?.id;
 
-        //         if (!sessionUserId) {
-        //             throw new Error("Session expired");
-        //         }
+                if (!sessionUserId) {
+                    throw new Error("Session expired");
+                }
 
-        //         const data: UserData = {
-        //             userId: sessionUserId,
-        //             username,
-        //         };
+                const data: UserData = {
+                    userId: sessionUserId,
+                    username,
+                };
 
-        //         setIsSubmitting(true);
+                setIsSubmitting(true);
 
-        //         if (imageFiles.length > 0) {
-        //             const imagePromises = imageFiles.map((file) => {
-        //                 return new Promise<string>((resolve, reject) => {
-        //                     const reader = new FileReader();
-        //                     reader.readAsDataURL(file);
-        //                     reader.onloadend = () => {
-        //                         if (typeof reader.result === "string") {
-        //                             const base64Data =
-        //                                 reader.result.split(",")[1];
-        //                             if (base64Data) {
-        //                                 resolve(base64Data);
-        //                             }
-        //                         } else {
-        //                             reject(new Error("Failed to read file"));
-        //                         }
-        //                     };
-        //                     reader.onerror = () => {
-        //                         reject(new Error("Failed to read file"));
-        //                     };
-        //                 });
-        //             });
+                if (imageFiles.length > 0) {
+                    const imagePromises = imageFiles.map((file) => {
+                        return new Promise<string>((resolve, reject) => {
+                            const reader = new FileReader();
+                            reader.readAsDataURL(file);
+                            reader.onloadend = () => {
+                                if (typeof reader.result === "string") {
+                                    const base64Data =
+                                        reader.result.split(",")[1];
+                                    if (base64Data) {
+                                        resolve(base64Data);
+                                    }
+                                } else {
+                                    reject(new Error("Failed to read file"));
+                                }
+                            };
+                            reader.onerror = () => {
+                                reject(new Error("Failed to read file"));
+                            };
+                        });
+                    });
 
-        //             const base64DataArray = await Promise.all(imagePromises);
-        //             const imageUrlArr: string[] = [];
+                    const base64DataArray = await Promise.all(imagePromises);
+                    const imageUrlArr: string[] = [];
 
-        //             for (const base64Data of base64DataArray) {
-        //                 const buffer = Buffer.from(base64Data, "base64");
-        //                 const imageUrl = await uploadFileToS3(buffer);
-        //                 imageUrlArr.push(imageUrl);
-        //             }
+                    for (const base64Data of base64DataArray) {
+                        const buffer = Buffer.from(base64Data, "base64");
+                        const imageUrl = await uploadFileToS3(buffer);
+                        imageUrlArr.push(imageUrl);
+                    }
 
-        //             data.images = imageUrlArr.map((imageUrl) => ({
-        //                 link: imageUrl || "",
-        //             }));
-        //         }
+                    data.images = imageUrlArr.map((imageUrl) => ({
+                        link: imageUrl || "",
+                    }));
+                }
 
-        //         mutate(data);
-        //         setImageFiles([]);
-        //         setHasSubmitted(true);
-        //         setIsSubmitting(false);
-        //     } catch (error) {
-        //         console.error("Submission failed:", error);
-        //         setIsSubmitting(false);
-        //     }
-        // }
+                // mutate(data);
+                setImageFiles([]);
+                setHasSubmitted(true);
+                setIsSubmitting(false);
+            } catch (error) {
+                console.error("Submission failed:", error);
+                setIsSubmitting(false);
+            }
+        }
     };
 
     return (
@@ -181,11 +182,11 @@ export default function ProfilePlus() {
                         placeholder="Username"
                     ></input>
                 </div>
-                {errors.username && (
+                {enableErrorDisplay && errors.username && (
                     <p className="text-xl text-red-400">{errors.username}</p>
                 )}
-                {errors.taken && (
-                    <p className="text-xl text-red-400">{errors.username}</p>
+                {enableErrorDisplay && errors.taken && (
+                    <p className="text-xl text-red-400">{errors.taken}</p>
                 )}
 
                 <div className="mb-5 flex justify-center text-xl">
@@ -214,6 +215,15 @@ export default function ProfilePlus() {
                         placeholder="Keycaps"
                     ></input>
                 </div>
+                {enableErrorDisplay && errors.keyboard && (
+                    <p className="text-xl text-red-400">{errors.keyboard}</p>
+                )}
+                {enableErrorDisplay && errors.switches && (
+                    <p className="text-xl text-red-400">{errors.switches}</p>
+                )}
+                {enableErrorDisplay && errors.keycaps && (
+                    <p className="text-xl text-red-400">{errors.keycaps}</p>
+                )}
 
                 <div className="mt-5 flex justify-center text-4xl">
                     Upload a custom profile picture
@@ -284,26 +294,26 @@ export default function ProfilePlus() {
                         e.preventDefault();
                         void submit(e);
                     }}
-                    disabled={
-                        (hasSubmitted && Object.values(errors).length > 0) ||
-                        isSubmitting ||
-                        (imageFiles.length > 0 &&
-                            (hasSubmitted ||
-                                Object.values(errors).length > 0)) ||
-                        (!isSubmitting &&
-                            (!username || !keyboard || !switches || !keycaps))
-                    }
-                    className={`bg-glass transform rounded-md px-4 py-2 shadow-md transition-transform hover:scale-105 active:scale-95 ${
-                        (hasSubmitted && Object.values(errors).length > 0) ||
-                        isSubmitting ||
-                        (imageFiles.length > 0 &&
-                            (hasSubmitted ||
-                                Object.values(errors).length > 0)) ||
-                        (!isSubmitting &&
-                            (!username || !keyboard || !switches || !keycaps))
-                            ? "text-slate-300"
-                            : "text-purple-300"
-                    }`}
+                    // disabled={
+                    //     (hasSubmitted && Object.values(errors).length > 0) ||
+                    //     isSubmitting ||
+                    //     (imageFiles.length > 0 &&
+                    //         (hasSubmitted ||
+                    //             Object.values(errors).length > 0)) ||
+                    //     (!isSubmitting &&
+                    //         (!username || !keyboard || !switches || !keycaps))
+                    // }
+                    // className={`bg-glass transform rounded-md px-4 py-2 shadow-md transition-transform hover:scale-105 active:scale-95 ${
+                    //     (hasSubmitted && Object.values(errors).length > 0) ||
+                    //     isSubmitting ||
+                    //     (imageFiles.length > 0 &&
+                    //         (hasSubmitted ||
+                    //             Object.values(errors).length > 0)) ||
+                    //     (!isSubmitting &&
+                    //         (!username || !keyboard || !switches || !keycaps))
+                    //         ? "text-slate-300"
+                    //         : "text-purple-300"
+                    // }`}
                 >
                     {isSubmitting ? "Uploading..." : "Submit"}
                 </button>
