@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { uploadFileToS3 } from "~/utils/aws";
 import Image from "next/image";
+import toast from "react-hot-toast";
 
 interface ErrorsObj {
     image?: string;
@@ -20,15 +21,15 @@ interface Image {
 }
 interface KeebData {
     userId: string;
-    name: string;
-    switches: string;
-    keycaps: string;
 }
 
 interface UserData {
     userId: string;
     username: string;
     images?: Image[];
+    name: string;
+    switches: string;
+    keycaps: string;
 }
 
 export default function ProfilePlus() {
@@ -39,9 +40,6 @@ export default function ProfilePlus() {
     // todo create user update route after bucket is setup to test
     // todo only allow png or jpg
     // todo update new disable logic to prevent submittion isSubmitting etc
-
-    // ! keeb mutate --- running a create
-    // ! user --- running an update
 
     const { data: session, update } = useSession();
     const ctx = api.useContext();
@@ -62,32 +60,32 @@ export default function ProfilePlus() {
 
     const { data: usernameCheck } = api.user.usernameCheck.useQuery(username);
 
-    // const { mutate } = api.user.updateNewUser.useMutation({
-    //     onSuccess: async () => {
-    //         try {
-    //             // toast.success("First time client form complete!", {
-    //             //     icon: "👏",
-    //             //     style: {
-    //             //         borderRadius: "10px",
-    //             //         background: "#333",
-    //             //         color: "#fff",
-    //             //     },
-    //             // });
-    //             void ctx.user.getAllUsers.invalidate();
-    //             void ctx.user.invalidate();
-    //             await update();
-    //             await router.push("/");
-    //         } catch (error) {
-    //             console.error("Error while navigating:", error);
-    //         }
+    const { mutate } = api.user.updateUser.useMutation({
+        onSuccess: () => console.log("bigpogtime"),
+
+        //     try {
+        //         toast.success("First time client form complete!", {
+        //             icon: "👏",
+        //             style: {
+        //                 borderRadius: "10px",
+        //                 background: "#333",
+        //                 color: "#fff",
+        //             },
+        //         });
+        //         void ctx.user.invalidate();
+        //         await update();
+        //         await router.push("/");
+        //     } catch (error) {
+        //         console.error("Error while navigating:", error);
+        //     }
+        // },
+    });
+
+    // const { mutate: createKeeb } = api.keeb.create.useMutation({
+    //     onSuccess: () => {
+    //         void ctx.keeb.getAll.invalidate();
     //     },
     // });
-
-    const { mutate: createKeeb } = api.keeb.create.useMutation({
-        onSuccess: async () => {
-            
-        },
-    });
 
     useEffect(() => {
         const maxFileSize = 6 * 1024 * 1024;
@@ -140,9 +138,20 @@ export default function ProfilePlus() {
                 const data: UserData = {
                     userId: sessionUserId,
                     username,
+                    name: keyboard,
+                    switches: switches,
+                    keycaps: keycaps,
                 };
 
+                // const keebData: KeebData = {
+                //     userId: sessionUserId,
+                //     name: keyboard,
+                //     keycaps: keycaps,
+                //     switches: switches,
+                // };
+
                 setIsSubmitting(true);
+                // createKeeb(keebData);
 
                 if (imageFiles.length > 0) {
                     const imagePromises = imageFiles.map((file) => {
@@ -179,8 +188,8 @@ export default function ProfilePlus() {
                         link: imageUrl || "",
                     }));
                 }
+                mutate(data);
 
-                // mutate(data);
                 setImageFiles([]);
                 setHasSubmitted(true);
                 setIsSubmitting(false);

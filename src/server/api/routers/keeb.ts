@@ -20,7 +20,11 @@ export const keebRouter = createTRPCRouter({
         )
         .mutation(async ({ input, ctx }) => {
             if (ctx.session.user.id === input.userId) {
-                return await ctx.prisma.keeb.create({ data: input });
+                const createKeeb = await ctx.prisma.keeb.create({
+                    data: input,
+                });
+
+                return { createKeeb };
             }
             throw new Error("Invalid userId");
         }),
