@@ -57,7 +57,7 @@ model Game {
 }
 
 model Keeb {
-    id       String  @id @default(cuid())
+    id       String @id @default(cuid())
     name     String
     switches String
     keycaps  String
@@ -149,7 +149,7 @@ model User {
     username      String?   @unique
 
     isVerified   Boolean @default(false)
-    isNew        Boolean @default(false)
+    hasProfile   Boolean @default(false)
     isNewsletter Boolean @default(false)
 
     accounts     Account[]
