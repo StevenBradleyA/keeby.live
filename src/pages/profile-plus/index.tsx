@@ -15,11 +15,34 @@ interface ErrorsObj {
     switches?: string;
     keycaps?: string;
 }
+interface Image {
+    link: string;
+}
+interface KeebData {
+    userId: string;
+    name: string;
+    switches: string;
+    keycaps: string;
+}
+
+interface UserData {
+    userId: string;
+    username: string;
+    images?: Image[];
+}
 
 export default function ProfilePlus() {
     // todo username ++ error handling to make sure unique
     // todo keeboard info  ++ error handling
     // todo profile pic (optional ) ++ error handling
+    // todo create new keeby.live aws bucket
+    // todo create user update route after bucket is setup to test
+    // todo only allow png or jpg
+    // todo update new disable logic to prevent submittion isSubmitting etc
+
+    // ! keeb mutate --- running a create
+    // ! user --- running an update
+
     const { data: session, update } = useSession();
     const ctx = api.useContext();
     const router = useRouter();
@@ -294,26 +317,10 @@ export default function ProfilePlus() {
                         e.preventDefault();
                         void submit(e);
                     }}
-                    // disabled={
-                    //     (hasSubmitted && Object.values(errors).length > 0) ||
-                    //     isSubmitting ||
-                    //     (imageFiles.length > 0 &&
-                    //         (hasSubmitted ||
-                    //             Object.values(errors).length > 0)) ||
-                    //     (!isSubmitting &&
-                    //         (!username || !keyboard || !switches || !keycaps))
-                    // }
-                    // className={`bg-glass transform rounded-md px-4 py-2 shadow-md transition-transform hover:scale-105 active:scale-95 ${
-                    //     (hasSubmitted && Object.values(errors).length > 0) ||
-                    //     isSubmitting ||
-                    //     (imageFiles.length > 0 &&
-                    //         (hasSubmitted ||
-                    //             Object.values(errors).length > 0)) ||
-                    //     (!isSubmitting &&
-                    //         (!username || !keyboard || !switches || !keycaps))
-                    //         ? "text-slate-300"
-                    //         : "text-purple-300"
-                    // }`}
+                    disabled={hasSubmitted || isSubmitting}
+                    className={`rounded-2xl bg-black px-6 py-2 ${
+                        hasSubmitted ? "text-red-500" : ""
+                    } ${isSubmitting ? "text-red-500" : ""}`}
                 >
                     {isSubmitting ? "Uploading..." : "Submit"}
                 </button>
