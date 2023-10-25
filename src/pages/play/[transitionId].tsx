@@ -4,13 +4,11 @@ import { useEffect } from "react";
 import Image from "next/image";
 import profilePlay from "../../../public/Gifs/profile-page.gif";
 
-interface KeebPlayProps {
-    page: string;
-}
-
-export default function KeebPlay({ page }: KeebPlayProps) {
+export default function KeebPlay() {
     const router = useRouter();
     const { data: session } = useSession();
+
+    const page = router.query.transitionId;
 
     useEffect(() => {
         const pogPlay = setTimeout(() => {

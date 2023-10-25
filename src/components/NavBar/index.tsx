@@ -22,7 +22,7 @@ export default function NavBar() {
     const { data: sessionData } = useSession();
 
     console.log(sessionData);
-// todo figure out potential userID hash for the session so we never actually give userId
+    // todo figure out potential userID hash for the session so we never actually give userId
     // todo if !session profile takes you to sign in otherwise display user profile if they have one else display keebo. Profile pictures are optional.
     // todo maybe want a different nav for typing game to keep things clean
 
@@ -242,7 +242,8 @@ export default function NavBar() {
                                     </motion.button>
                                 ) : (
                                     <Link
-                                        href={`/profile/${sessionData.user.id}`}
+                                        // href={`/profile/${sessionData.user.id}`}
+                                        href={`/play/profile`}
                                         aria-label="projects"
                                         onClick={handleClose}
                                     >
