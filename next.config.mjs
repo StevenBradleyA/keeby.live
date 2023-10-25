@@ -22,6 +22,7 @@ const config = {
         domains: [
             // "scontent.cdninstagram.com",
             // "genevieveclairehair.s3.us-west-2.amazonaws.com",
+            "s3.us-west-2.amazonaws.com",
             "lh3.googleusercontent.com",
         ],
     },
