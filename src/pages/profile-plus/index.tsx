@@ -64,9 +64,6 @@ export default function ProfilePlus() {
     const { mutate } = api.user.updateNewUser.useMutation({
         onSuccess: async () => {
             try {
-                void ctx.user.invalidate();
-                await update();
-                await router.push("/");
                 toast.success("Profile complete!", {
                     icon: "👏",
                     style: {
@@ -75,18 +72,14 @@ export default function ProfilePlus() {
                         color: "#fff",
                     },
                 });
+                void ctx.user.invalidate();
+                await update();
+                await router.push("/play/profile");
             } catch (error) {
                 console.error("Error while navigating:", error);
             }
         },
     });
-    // todo something is wrong with react toast not sure what...
-
-    // const { mutate: createKeeb } = api.keeb.create.useMutation({
-    //     onSuccess: () => {
-    //         void ctx.keeb.getAll.invalidate();
-    //     },
-    // });
 
     useEffect(() => {
         const maxFileSize = 6 * 1024 * 1024;

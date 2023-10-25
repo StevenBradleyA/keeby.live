@@ -242,8 +242,7 @@ export default function NavBar() {
                                     </motion.button>
                                 ) : (
                                     <Link
-                                        // href={`/profile/${sessionData.user.id}`}
-                                        href={`/play/profile`}
+                                        href="/play/profile"
                                         aria-label="projects"
                                         onClick={handleClose}
                                     >

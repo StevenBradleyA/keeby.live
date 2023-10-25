@@ -23,6 +23,14 @@ export default function KeebPlay() {
     }, [page]);
 
     return (
-        <>{page === "profile" && <Image alt="profile" src={profilePlay} />}</>
+        <>
+            {page === "profile" && (
+                <Image
+                    alt="profile"
+                    src={profilePlay}
+                    className="fixed inset-0 z-50 h-full w-full object-cover"
+                />
+            )}
+        </>
     );
 }
