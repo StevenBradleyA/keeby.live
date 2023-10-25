@@ -6,6 +6,9 @@ import {
 } from "~/server/api/trpc";
 
 export const keebRouter = createTRPCRouter({
+    getAll: publicProcedure.query(({ ctx }) => {
+        return ctx.prisma.keeb.findMany();
+    }),
     create: protectedProcedure
         .input(
             z.object({

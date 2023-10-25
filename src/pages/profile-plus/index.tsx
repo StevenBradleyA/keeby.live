@@ -83,11 +83,11 @@ export default function ProfilePlus() {
     //     },
     // });
 
-    // const { mutate: usernameCheck } = api.user.usernameCheck.useMutation({
-    //     onSuccess: async () => {
-    //         console.log("poggers");
-    //     },
-    // });
+    const { mutate: createKeeb } = api.keeb.create.useMutation({
+        onSuccess: async () => {
+            
+        },
+    });
 
     useEffect(() => {
         const maxFileSize = 6 * 1024 * 1024;
