@@ -3,14 +3,36 @@ import { api } from "~/utils/api";
 
 interface DeleteKeebProps {
     keeb: Keeb;
+    closeModal: () => void;
 }
-
-export default function DeleteKeeb({ keeb }: DeleteKeebProps) {
+interface KeebData {
+    id: string;
+    userId: string;
+}
+export default function DeleteKeeb({ keeb, closeModal }: DeleteKeebProps) {
     const ctx = api.useContext();
 
-    // const {mutate} = api.keeb
+    const { mutate } = api.keeb.delete.useMutation({
+        onSuccess: () => {
+            void ctx.keeb.getAll.invalidate();
+            closeModal();
+        },
+    });
 
-    const deleteKeeb = () => {};
+    const deleteKeeb = (e: React.FormEvent) => {
+        e.preventDefault();
+        const keebData: KeebData = {
+            id: keeb.id,
+            userId: keeb.userId,
+        };
+
+        mutate(keebData);
+    };
+
+    const cancelDelete = (e: React.FormEvent) => {
+        e.preventDefault();
+        closeModal();
+    };
 
     return (
         <>
@@ -18,13 +40,22 @@ export default function DeleteKeeb({ keeb }: DeleteKeebProps) {
             <div>{keeb.name}</div>
 
             <div>
-                {" "}
                 Deleting a keyboard will permanently delete the typing data
-                associated with it{" "}
+                associated with it
             </div>
 
-            <button>GoodBye Forever </button>
-            <button>Cancel </button>
+            <button
+                onClick={deleteKeeb}
+                className="rounded-2xl bg-black px-6 py-2"
+            >
+                GoodBye Forever{" "}
+            </button>
+            <button
+                onClick={cancelDelete}
+                className="rounded-2xl bg-black px-6 py-2"
+            >
+                Cancel{" "}
+            </button>
         </>
     );
 }

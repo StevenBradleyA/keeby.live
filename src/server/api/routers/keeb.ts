@@ -28,4 +28,22 @@ export const keebRouter = createTRPCRouter({
             }
             throw new Error("Invalid userId");
         }),
+
+    delete: protectedProcedure
+        .input(
+            z.object({
+                id: z.string(),
+                userId: z.string(),
+            })
+        )
+        .mutation(async ({ input, ctx }) => {
+            if (ctx.session.user.id === input.userId) {
+                await ctx.prisma.keeb.delete({
+                    where: { id: input.id },
+                });
+                return "Successfully deleted";
+            }
+
+            throw new Error("Invalid userId");
+        }),
 });
