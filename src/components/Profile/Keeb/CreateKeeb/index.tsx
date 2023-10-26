@@ -1,13 +1,20 @@
 import { useEffect, useState } from "react";
+import { api } from "~/utils/api";
 
 interface CreateKeebProps {
-    closeModal: (isCreateKeebModalOpen: boolean) => void;
+    closeModal: () => void;
     userId: string;
 }
 interface ErrorsObj {
     keyboard?: string;
     switches?: string;
     keycaps?: string;
+}
+interface KeebData {
+    name: string;
+    switches: string;
+    keycaps: string;
+    userId: string;
 }
 
 export default function CreateKeeb({ closeModal, userId }: CreateKeebProps) {
@@ -16,6 +23,14 @@ export default function CreateKeeb({ closeModal, userId }: CreateKeebProps) {
     const [keycaps, setKeycaps] = useState("");
     const [errors, setErrors] = useState<ErrorsObj>({});
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const ctx = api.useContext();
+
+    const { mutate } = api.keeb.create.useMutation({
+        onSuccess: () => {
+            void ctx.keeb.getAll.invalidate();
+            closeModal();
+        },
+    });
 
     useEffect(() => {
         const errorsObj: ErrorsObj = {};
@@ -32,6 +47,22 @@ export default function CreateKeeb({ closeModal, userId }: CreateKeebProps) {
 
         setErrors(errorsObj);
     }, [keyboard, switches, keycaps]);
+
+    const submit = (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if (!Object.values(errors).length) {
+            setIsSubmitting(true);
+            const keebData: KeebData = {
+                name: keyboard,
+                switches,
+                keycaps,
+                userId,
+            };
+
+            mutate(keebData);
+        }
+    };
 
     return (
         <>
@@ -58,12 +89,10 @@ export default function CreateKeeb({ closeModal, userId }: CreateKeebProps) {
                 <button
                     onClick={(e) => {
                         e.preventDefault();
-                        // void submit(e);
+                        void submit(e);
                     }}
-                    // disabled={isSubmitting}
-                    className={`rounded-2xl bg-black px-6 py-2 ${
-                        isSubmitting ? "text-red-500" : ""
-                    }`}
+                    disabled={isSubmitting}
+                    className={`rounded-2xl bg-black px-6 py-2 `}
                 >
                     {isSubmitting ? "Uploading..." : "Submit"}
                 </button>
