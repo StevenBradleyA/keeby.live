@@ -8,7 +8,6 @@ import menuBurger from "../../../public/Nav/menu.png";
 import menuBurgerGif from "../../../public/Gifs/menu-glitch.gif";
 import homeButton from "../../../public/Nav/home-test.png";
 import keebo from "../../../public/Nav/bmo-test.jpg";
-
 import homeGreenButton from "../../../public/Nav/home-green-test.png";
 
 export default function NavBar() {

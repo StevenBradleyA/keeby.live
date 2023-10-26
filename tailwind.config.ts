@@ -16,6 +16,9 @@ export default {
                 testTwelve: "#3A3B3C",
                 testThirteen: "#404040",
             },
+            fontFamily: {
+                retro: ["VT323", "monospace"],
+            },
             textColor: {
                 hack: "#00dd00",
                 failure: "#ff0000",

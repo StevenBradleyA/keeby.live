@@ -21,6 +21,11 @@ export default function TitleScripts({ page }: TitleScriptsProps) {
     // "Loading 8-bit Security Wall... Please Authenticate",
     //  "Initiating Login Sequence... Brace for Time Travel",
     // "Ctrl + Alt + Authenticate: What's the Magic Word?",
+    // "Time Hack Sequence Complete",
+    //             "checking systems",
+    //             "deleting hard drive",
+    //             "jk",
+    //             "your profile",
 
     useEffect(() => {
         if (page === "signin") {
@@ -47,6 +52,23 @@ export default function TitleScripts({ page }: TitleScriptsProps) {
                 "Pogchamp Error 404: Cringe Not Found",
             ];
             const delay = [0, 2000, 4000, 6000];
+
+            phrases.forEach((phrase, i) =>
+                setTimeout(() => {
+                    setTitle(phrase);
+                }, delay[i])
+            );
+        }
+
+        if (page === "profile") {
+            const phrases = [
+                "Time Hack Sequence Complete",
+                "checking systems",
+                "deleting hard drive",
+                "jk",
+                "Profile",
+            ];
+            const delay = [0, 2000, 4000, 6000, 8000];
 
             phrases.forEach((phrase, i) =>
                 setTimeout(() => {
