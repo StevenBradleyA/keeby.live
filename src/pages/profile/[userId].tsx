@@ -9,6 +9,7 @@ import RotatingSphere from "~/components/Profile/ThreeScenes/RotatingSphere";
 import DisplayKeebs from "~/components/Profile/Keeb/DisplayKeeb";
 import ModalDialog from "~/components/Modal";
 import CreateKeeb from "~/components/Profile/Keeb/CreateKeeb";
+import ManageKeeb from "~/components/Profile/Keeb/ManageKeeb";
 
 export default function UserProfile() {
     // todo consider hashing or some simple change that doesn't display the correct userID
@@ -26,12 +27,22 @@ export default function UserProfile() {
     const [isCreateKeebModalOpen, setIsCreateKeebModalOpen] =
         useState<boolean>(false);
 
+    const [isManageKeebModalOpen, setIsManageKeebModalOpen] =
+        useState<boolean>(false);
+
     const openCreateKeebModal = () => {
         setIsCreateKeebModalOpen(true);
     };
 
     const closeCreateKeebModalModal = () => {
         setIsCreateKeebModalOpen(false);
+    };
+    const openManageKeebModal = () => {
+        setIsManageKeebModalOpen(true);
+    };
+
+    const closeManageKeebModalModal = () => {
+        setIsManageKeebModalOpen(false);
     };
 
     return (
@@ -101,12 +112,20 @@ export default function UserProfile() {
                         </div>
 
                         <div className="text-3xl">Keebs</div>
-                        <button
-                            className="rounded-2xl bg-green-600 px-6 py-2"
-                            onClick={openCreateKeebModal}
-                        >
-                            add a keeb
-                        </button>
+                        <div className="flex">
+                            <button
+                                className="rounded-2xl bg-green-600 px-6 py-2"
+                                onClick={openCreateKeebModal}
+                            >
+                                add a keeb
+                            </button>
+                            <button
+                                className="rounded-2xl bg-green-600 px-6 py-2"
+                                onClick={openManageKeebModal}
+                            >
+                                manage
+                            </button>
+                        </div>
 
                         <ModalDialog
                             isOpen={isCreateKeebModalOpen}
@@ -114,6 +133,16 @@ export default function UserProfile() {
                         >
                             <CreateKeeb
                                 closeModal={closeCreateKeebModalModal}
+                                userId={sessionData.user.id}
+                            />
+                        </ModalDialog>
+
+                        <ModalDialog
+                            isOpen={isManageKeebModalOpen}
+                            onClose={closeManageKeebModalModal}
+                        >
+                            <ManageKeeb
+                                closeModal={closeManageKeebModalModal}
                                 userId={sessionData.user.id}
                             />
                         </ModalDialog>
