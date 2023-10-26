@@ -6,6 +6,7 @@ import Image from "next/image";
 import TitleScripts from "~/components/TitleScripts";
 import keebo from "../../../public/Nav/bmo-test.jpg";
 import RotatingSphere from "~/components/Profile/ThreeScenes/RotatingSphere";
+import DisplayKeebs from "~/components/Profile/Keeb/DisplayKeeb";
 
 export default function UserProfile() {
     // todo consider hashing or some simple change that doesn't display the correct userID
@@ -22,7 +23,7 @@ export default function UserProfile() {
 
     return (
         <div className="flex w-3/4 flex-col items-center font-retro text-green-500">
-            {isRetro && <div className="retro-scanlines"></div>}
+            {/* {isRetro && <div className="retro-scanlines"></div>} */}
 
             <TitleScripts page="profile" />
             <div className="mb-10 flex w-full justify-center gap-10">
@@ -82,17 +83,15 @@ export default function UserProfile() {
                     </div>
 
                     <div className="text-3xl">Keebs</div>
-                    {keebData?.map((keeb, i) => (
-                        <div key={i}>
-                            <div>name: {keeb.name}</div>
-                            <div>switches: {keeb.switches}</div>
-                            <div>keycaps: {keeb.keycaps}</div>
-                        </div>
-                    ))}
+
+                    <div>
+                        {keebData?.map((keeb, i) => (
+                            <DisplayKeebs key={i} keeb={keeb} />
+                        ))}
+                    </div>
 
                     <div>clicking on a keeb will show data for that keeb </div>
                     <div>create update and delete for keebs</div>
-
                 </>
             )}
 
