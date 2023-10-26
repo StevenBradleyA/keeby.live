@@ -1,10 +1,11 @@
+import { api } from "~/utils/api";
+import { Canvas } from "@react-three/fiber";
 import { useSession } from "next-auth/react";
+import { useState } from "react";
 import Image from "next/image";
 import TitleScripts from "~/components/TitleScripts";
 import keebo from "../../../public/Nav/bmo-test.jpg";
-import { Canvas } from "@react-three/fiber";
-import RotatingSphere from "~/components/Profile/RotatingSphere";
-import { useState } from "react";
+import RotatingSphere from "~/components/Profile/ThreeScenes/RotatingSphere";
 
 export default function UserProfile() {
     // todo consider hashing or some simple change that doesn't display the correct userID
@@ -14,7 +15,10 @@ export default function UserProfile() {
     // npm install three @types/three @react-three/fiber
 
     const { data: sessionData } = useSession();
+    const { data: keebData, isLoading } = api.keeb.getAll.useQuery();
+
     const [isRetro, setIsRetro] = useState<boolean>(true);
+    const [toggle, setToggle] = useState<string>("KeebType");
 
     return (
         <div className="flex w-3/4 flex-col items-center font-retro text-green-500">
@@ -62,28 +66,62 @@ export default function UserProfile() {
             </div>
 
             <div className="flex gap-5">
-                <button>KeebType</button>
-                <button>KeebShop</button>
-                <button>KeebShare</button>
+                <button onClick={() => setToggle("KeebType")}>KeebType</button>
+                <button onClick={() => setToggle("KeebShop")}>KeebShop</button>
+                <button onClick={() => setToggle("KeebShare")}>
+                    KeebShare
+                </button>
             </div>
+            {toggle === "KeebType" && (
+                <>
+                    <div>graph with wpm date and keeb etc</div>
+                    <div>next to graph is a list of ten fastest wpm</div>
+                    <div>
+                        Rank information maybe link to a page that explains
+                        ranking system
+                    </div>
 
-            <button className="rounded-2xl bg-green-600 px-6 py-2">
-                isVerifiedSeller
-            </button>
-            <button className="rounded-2xl bg-red-600 px-6 py-2">
-                or show dis Register to Sell a KEEB
-            </button>
-            <button className="rounded-2xl bg-green-600 px-6 py-2">
-                My Listings
-            </button>
-            <button className="rounded-2xl bg-green-600 px-6 py-2">
-                My Posts
-            </button>
-            <div>graph with wpm date and keeb etc</div>
-            <div>Keeb Information and highest avg wpm</div>
-            <div>user only -- show 10 highest wpm</div>
-            <div>Rank information</div>
-            <div>Seller Reputation aka reviews with average star rating</div>
+                    <div className="text-3xl">Keebs</div>
+                    {keebData?.map((keeb, i) => (
+                        <div key={i}>
+                            <div>name: {keeb.name}</div>
+                            <div>switches: {keeb.switches}</div>
+                            <div>keycaps: {keeb.keycaps}</div>
+                        </div>
+                    ))}
+
+                    <div>clicking on a keeb will show data for that keeb </div>
+                    <div>create update and delete for keebs</div>
+
+                </>
+            )}
+
+            {toggle === "KeebShop" && (
+                <>
+                    <button className="rounded-2xl bg-green-600 px-6 py-2">
+                        isVerifiedSeller
+                    </button>
+                    <button className="rounded-2xl bg-red-600 px-6 py-2">
+                        or show dis Register to Sell a KEEB
+                    </button>
+                    <button className="rounded-2xl bg-green-600 px-6 py-2">
+                        My Listings
+                    </button>
+                    <div>
+                        Seller Reputation aka reviews with average star rating
+                    </div>
+                </>
+            )}
+
+            {toggle === "KeebShare" && (
+                <>
+                    <button className="rounded-2xl bg-green-600 px-6 py-2">
+                        My Posts
+                    </button>
+
+                    <div>Internet Points counter --total likes</div>
+                </>
+            )}
         </div>
     );
 }
