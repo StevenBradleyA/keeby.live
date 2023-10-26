@@ -312,6 +312,10 @@ li:not(:first-child) span {
     font-family: "retro", sans-serif;
 }
 
+/* canvas {
+    width: 400px;
+} */
+
 /* Scanlines && Flicker  */
 
 @keyframes blink {
