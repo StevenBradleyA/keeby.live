@@ -2,13 +2,14 @@ import { useState } from "react";
 import { api } from "~/utils/api";
 import type { Keeb } from "@prisma/client";
 import DeleteKeeb from "../DeleteKeeb";
+import UpdateKeeb from "../UpdateKeeb";
 
 interface ManageKeebProps {
     closeModal: () => void;
     userId: string;
 }
 
-export default function ManageKeeb({ closeModal}: ManageKeebProps) {
+export default function ManageKeeb({ closeModal }: ManageKeebProps) {
     const ctx = api.useContext();
     const { data: keebData, isLoading } = api.keeb.getAll.useQuery();
     const [selectedKeeb, setSelectedKeeb] = useState<object>({});
@@ -53,7 +54,12 @@ export default function ManageKeeb({ closeModal}: ManageKeebProps) {
                             </button>
                         </div>
                     )}
-                    {keebDirect === "update" && <div>pog update</div>}
+                    {keebDirect === "update" && (
+                        <UpdateKeeb
+                            keeb={selectedKeeb as Keeb}
+                            closeModal={closeModal}
+                        />
+                    )}
                     {keebDirect === "delete" && (
                         <DeleteKeeb
                             keeb={selectedKeeb as Keeb}
