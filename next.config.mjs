@@ -14,6 +14,22 @@ const config = {
      *
      * @see https://github.com/vercel/next.js/issues/41980
      */
+
+    webpack: (config, { isServer }) => {
+        // Add a new rule to handle .glb files
+        config.module.rules.push({
+            test: /\.(glb|gltf)$/,
+            use: {
+                loader: "file-loader",
+                options: {
+                    publicPath: "/_next",
+                    name: "static/media/[name].[hash].[ext]",
+                },
+            },
+        });
+
+        return config;
+    },
     i18n: {
         locales: ["en"],
         defaultLocale: "en",

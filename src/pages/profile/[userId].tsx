@@ -10,6 +10,7 @@ import DisplayKeebs from "~/components/Profile/Keeb/DisplayKeeb";
 import ModalDialog from "~/components/Modal";
 import CreateKeeb from "~/components/Profile/Keeb/CreateKeeb";
 import ManageKeeb from "~/components/Profile/Keeb/ManageKeeb";
+import RotatingKeeb from "~/components/Profile/ThreeScenes/RotatingKeeb";
 
 export default function UserProfile() {
     // todo consider hashing or some simple change that doesn't display the correct userID
@@ -48,7 +49,7 @@ export default function UserProfile() {
     return (
         sessionData && (
             <div className="flex w-3/4 flex-col items-center font-retro text-green-500">
-                {/* {isRetro && <div className="retro-scanlines"></div>} */}
+                {isRetro && <div className="retro-scanlines"></div>}
 
                 <TitleScripts page="profile" />
                 <div className="mb-10 flex w-full justify-center gap-10">
@@ -79,10 +80,12 @@ export default function UserProfile() {
                             <Canvas
                                 className="h-full w-full cursor-pointer"
                                 onClick={() => setIsRetro(!isRetro)}
+                                camera={{ position: [0, 400, 200] }}
                             >
                                 <ambientLight intensity={0.5} />
                                 <pointLight position={[10, 10, 10]} />
-                                <RotatingSphere />
+                                {/* <RotatingSphere /> */}
+                                <RotatingKeeb />
                             </Canvas>
                         </div>
                         <div className=" p-10 outline outline-1 outline-green-500">
@@ -156,7 +159,6 @@ export default function UserProfile() {
                         <div>
                             clicking on a keeb will show data for that keeb{" "}
                         </div>
-                        <div>create update and delete for keebs</div>
                     </>
                 )}
 
