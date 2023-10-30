@@ -5,17 +5,44 @@ import { MeshStandardMaterial } from "three";
 // import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader";
 
-import model from "@public/3DModels/commodore_64.glb";
+// import model from "@public/3DModels/commodore_64.glb";
+import model from "@public/3DModels/mech.glb";
 
 // npm install @react-three/fiber three @react-three/drei
 // npm install file-loader --save-dev
+
+// export default function RotatingKeeb() {
+//     const keebRef = useRef();
+//     const { scene } = useGLTF(model); // Use the scene property with useGLTF
+
+//     useFrame(() => {
+//         if (keebRef.current) {
+//             keebRef.current.rotation.y += 0.008;
+//         }
+//     });
+
+//     // Apply wireframe material to all meshes in the scene
+//     if (scene) {
+//         scene.traverse((child) => {
+//             if (child.isMesh) {
+//                 child.material = new MeshStandardMaterial({
+//                     color: 0x92ff38,
+//                     wireframe: true,
+//                 });
+//             }
+//         });
+//     }
+
+//     return <primitive object={scene} ref={keebRef} />;
+// }
 export default function RotatingKeeb() {
     const keebRef = useRef();
     const { scene } = useGLTF(model); // Use the scene property with useGLTF
 
     useFrame(() => {
         if (keebRef.current) {
-            keebRef.current.rotation.y += 0.008;
+            keebRef.current.rotation.x = -Math.PI / 2; // Correct X rotation to prop up the model
+            keebRef.current.rotation.z += 0.008;
         }
     });
 

@@ -18,6 +18,7 @@ export default function UserProfile() {
     // todo could make a simple button to turn off scanlines
     // mdn digest() -- might be useful for us here
     // npm install three @types/three @react-three/fiber
+    // todo don't want the userId in the url personal can just grab from session and we will have a separate profile for viewing other users. 
 
     const { data: sessionData } = useSession();
     const { data: keebData, isLoading } = api.keeb.getAll.useQuery();
@@ -80,12 +81,13 @@ export default function UserProfile() {
                             <Canvas
                                 className="h-full w-full cursor-pointer"
                                 onClick={() => setIsRetro(!isRetro)}
-                                camera={{ position: [0, 400, 200] }}
+                                // camera={{ position: [0, 400, 200] }}
+                                camera={{ position: [1, 0, 1] }}
                             >
                                 <ambientLight intensity={0.5} />
                                 <pointLight position={[10, 10, 10]} />
                                 {/* <RotatingSphere /> */}
-                                <RotatingKeeb />
+                                {/* <RotatingKeeb /> */}
                             </Canvas>
                         </div>
                         <div className=" p-10 outline outline-1 outline-green-500">
