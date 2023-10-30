@@ -1,3 +1,6 @@
+import { useSession } from "next-auth/react";
+import { api } from "~/utils/api";
+
 interface LeftMenuProps {
     mode: string;
     setMode: (mode: string) => void;
@@ -5,6 +8,8 @@ interface LeftMenuProps {
     setGameLength: (gameLength: number) => void;
     theme: string;
     setTheme: (theme: string) => void;
+    keeb: string;
+    setKeeb: (keeb: string) => void;
 }
 
 export default function LeftMenu({
@@ -14,9 +19,18 @@ export default function LeftMenu({
     setGameLength,
     theme,
     setTheme,
+    keeb,
+    setKeeb,
 }: LeftMenuProps) {
     // todo refactor theme to be session so its accessible in nav
     // todo add cookeis to keep track of selected mode/ settings
+
+    const { data: keebData, isLoading } = api.keeb.getAll.useQuery();
+    const { data: session } = useSession();
+
+    console.log(keebData);
+
+    console.log(keeb, "here");
 
     return (
         <div className="flex w-36 flex-col rounded-2xl border border-green-500 bg-black px-3 py-2">
@@ -61,6 +75,26 @@ export default function LeftMenu({
                 <option value="pastel-pink">primeagen</option>
                 <option value="pastel-pink">hipyo</option>
             </select>
+            {session &&
+                session.user.hasProfile &&
+                keebData &&
+                keebData.length > 0 && (
+                    <>
+                        <div className="flex justify-center">Keeb</div>
+                        <select
+                            className={`
+                    bg-black px-2 py-1 text-green-500 `}
+                            value={keeb}
+                            onChange={(e) => setKeeb(e.target.value)}
+                        >
+                            {keebData.map((e, i) => (
+                                <option key={i} value={`${e.name}`}>
+                                    {e.name}
+                                </option>
+                            ))}
+                        </select>
+                    </>
+                )}
         </div>
     );
 }

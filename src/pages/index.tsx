@@ -4,6 +4,7 @@ import LeftMenu from "~/components/KeebType/LeftMenu";
 import RightMenu from "~/components/KeebType/RightMenu";
 import SpeedMode from "~/components/KeebType/SpeedMode";
 import HomepageFooter from "~/components/Footer";
+import { api } from "~/utils/api";
 
 export default function Home() {
     // Todo going to need different components for different games
@@ -21,6 +22,8 @@ export default function Home() {
     const [theme, setTheme] = useState<string>("keeby");
     const [gameOver, setGameOver] = useState<boolean>(false);
     const [isFocused, setIsFocused] = useState<boolean>(false);
+    const [keeb, setKeeb] = useState<string>("");
+
     // gameOver will display if we show a mode or stats...
     // console.log(gameOver);
     return (
@@ -33,6 +36,8 @@ export default function Home() {
                     setGameLength={setGameLength}
                     theme={theme}
                     setTheme={setTheme}
+                    keeb={keeb}
+                    setKeeb={setKeeb}
                 />
                 {mode === "speed" && (
                     <SpeedMode
