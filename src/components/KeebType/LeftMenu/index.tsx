@@ -1,4 +1,5 @@
 import { useSession } from "next-auth/react";
+import { useEffect } from "react";
 import { api } from "~/utils/api";
 
 interface LeftMenuProps {
@@ -25,12 +26,17 @@ export default function LeftMenu({
     // todo refactor theme to be session so its accessible in nav
     // todo add cookeis to keep track of selected mode/ settings
 
-    const { data: keebData, isLoading } = api.keeb.getAll.useQuery();
+    const { data: keebData } = api.keeb.getAll.useQuery();
     const { data: session } = useSession();
 
-    console.log(keebData);
+    useEffect(() => {
+        if (session && keebData && keebData[0] && keeb === "") {
+            setKeeb(keebData[0].name);
+        }
+    }, [session, keebData, keeb, setKeeb]);
 
-    console.log(keeb, "here");
+
+
 
     return (
         <div className="flex w-36 flex-col rounded-2xl border border-green-500 bg-black px-3 py-2">
@@ -77,6 +83,7 @@ export default function LeftMenu({
             </select>
             {session &&
                 session.user.hasProfile &&
+                keeb.length > 0 &&
                 keebData &&
                 keebData.length > 0 && (
                     <>

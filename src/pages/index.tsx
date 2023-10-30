@@ -5,6 +5,10 @@ import RightMenu from "~/components/KeebType/RightMenu";
 import SpeedMode from "~/components/KeebType/SpeedMode";
 import HomepageFooter from "~/components/Footer";
 import { api } from "~/utils/api";
+import { useSession } from "next-auth/react";
+import { DotLoader } from "react-spinners";
+
+// npm install --save cookies-next
 
 export default function Home() {
     // Todo going to need different components for different games
@@ -24,8 +28,17 @@ export default function Home() {
     const [isFocused, setIsFocused] = useState<boolean>(false);
     const [keeb, setKeeb] = useState<string>("");
 
-    // gameOver will display if we show a mode or stats...
-    // console.log(gameOver);
+    // const { data: session } = useSession();
+
+    // if (isLoading)
+    //     return (
+    //         <div className=" mt-10 flex flex-col items-center justify-center gap-16">
+    //             <DotLoader size={50} color={"#ffffff"} loading={isLoading} />
+    //         </div>
+    //     );
+
+    console.log("pogsworth", keeb);
+
     return (
         <>
             <div className="mt-40 flex w-full items-center justify-between overflow-hidden p-10">
@@ -39,6 +52,7 @@ export default function Home() {
                     keeb={keeb}
                     setKeeb={setKeeb}
                 />
+
                 {mode === "speed" && (
                     <SpeedMode
                         gameLength={gameLength}
