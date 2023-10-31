@@ -46,6 +46,8 @@ export default function Home() {
         }
     }, [cookies]);
 
+    // todo if they delete a keeb we should delete a cookie if it matches... on the server
+
     // const { data: session } = useSession();
 
     // if (isLoading)
@@ -55,7 +57,7 @@ export default function Home() {
     //         </div>
     //     );
 
-    console.log("pogsworth", keeb);
+    console.log( cookies);
 
     return (
         <>

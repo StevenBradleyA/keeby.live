@@ -1,5 +1,8 @@
 import type { Keeb } from "@prisma/client";
+import { deleteCookie, hasCookie } from "cookies-next";
 import { api } from "~/utils/api";
+
+// todo update delete domain when live
 
 interface DeleteKeebProps {
     keeb: Keeb;
@@ -25,6 +28,14 @@ export default function DeleteKeeb({ keeb, closeModal }: DeleteKeebProps) {
             id: keeb.id,
             userId: keeb.userId,
         };
+        const keebCookie = hasCookie("keeb");
+
+        if (keebCookie) {
+            deleteCookie("keeb", {
+                path: "/",
+                // domain: ".keeb.live", will need to update when live
+            });
+        }
 
         mutate(keebData);
     };
