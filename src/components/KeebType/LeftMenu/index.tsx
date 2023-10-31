@@ -1,6 +1,8 @@
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
+import type { ChangeEvent } from "react";
 import { api } from "~/utils/api";
+import { setCookie } from "cookies-next";
 
 interface LeftMenuProps {
     mode: string;
@@ -35,8 +37,12 @@ export default function LeftMenu({
         }
     }, [session, keebData, keeb, setKeeb]);
 
+    const handleModeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+        const newMode: string = e.target.value;
 
-
+        setMode(newMode);
+        setCookie("mode", newMode);
+    };
 
     return (
         <div className="flex w-36 flex-col rounded-2xl border border-green-500 bg-black px-3 py-2">
@@ -45,7 +51,8 @@ export default function LeftMenu({
             <select
                 className=" bg-black px-2 py-1 text-green-500"
                 value={mode}
-                onChange={(e) => setMode(e.target.value)}
+                // onChange={(e) => setMode(e.target.value)}
+                onChange={handleModeChange}
             >
                 <option value="speed">Speed</option>
                 <option value="quote">Quote</option>
