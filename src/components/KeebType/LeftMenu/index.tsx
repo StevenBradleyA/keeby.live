@@ -37,12 +37,18 @@ export default function LeftMenu({
         }
     }, [session, keebData, keeb, setKeeb]);
 
+
     const handleModeChange = (e: ChangeEvent<HTMLSelectElement>) => {
         const newMode: string = e.target.value;
 
         setMode(newMode);
-        setCookie("mode", newMode);
+        setCookie("mode", newMode, {
+            maxAge: 60 * 60 * 24 * 365,
+            path: "/",
+        });
     };
+
+    
 
     return (
         <div className="flex w-36 flex-col rounded-2xl border border-green-500 bg-black px-3 py-2">

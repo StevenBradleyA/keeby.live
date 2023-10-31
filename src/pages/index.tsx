@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SelectQuote from "~/components/KeebType/QuoteMode/selectQuote";
 import LeftMenu from "~/components/KeebType/LeftMenu";
 import RightMenu from "~/components/KeebType/RightMenu";
@@ -7,6 +7,7 @@ import HomepageFooter from "~/components/Footer";
 import { api } from "~/utils/api";
 import { useSession } from "next-auth/react";
 import { DotLoader } from "react-spinners";
+import { getCookies } from "cookies-next";
 
 // npm install --save cookies-next
 
@@ -21,12 +22,29 @@ export default function Home() {
     // lets just start with paragraph type for now and try to get it working
 
     // for generate type we are going to need a first parent component that generates the sentence then passes it to another component that uses it.
+    const cookies = getCookies();
+    console.log(cookies.mode);
     const [mode, setMode] = useState<string>("speed");
     const [gameLength, setGameLength] = useState<number>(20);
     const [theme, setTheme] = useState<string>("keeby");
     const [gameOver, setGameOver] = useState<boolean>(false);
     const [isFocused, setIsFocused] = useState<boolean>(false);
     const [keeb, setKeeb] = useState<string>("");
+
+    useEffect(() => {
+        if (cookies.mode) {
+            setMode(cookies.mode);
+        }
+        if (cookies.gameLength) {
+            setGameLength(+cookies.gameLength);
+        }
+        if (cookies.keeb) {
+            setKeeb(cookies.keeb);
+        }
+        if (cookies.theme) {
+            setTheme(cookies.theme);
+        }
+    }, [cookies]);
 
     // const { data: session } = useSession();
 
