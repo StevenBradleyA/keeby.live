@@ -18,7 +18,9 @@ export default function UserProfile() {
     // todo could make a simple button to turn off scanlines
     // mdn digest() -- might be useful for us here
     // npm install three @types/three @react-three/fiber
-    // todo don't want the userId in the url personal can just grab from session and we will have a separate profile for viewing other users. 
+    // todo don't want the userId in the url personal can just grab from session and we will have a separate profile for viewing other users.
+
+    //todo set cookies for retro theme plus make separate button
 
     const { data: sessionData } = useSession();
     const { data: keebData, isLoading } = api.keeb.getAll.useQuery();
@@ -61,6 +63,7 @@ export default function UserProfile() {
                                 src={sessionData?.user.profile}
                                 width={300}
                                 height={300}
+                                priority={true}
                             />
                         ) : (
                             <Image
@@ -68,6 +71,7 @@ export default function UserProfile() {
                                 src={keebo}
                                 width={300}
                                 height={300}
+                                priority={true}
                             />
                         )}
                         <div className=" mt-5 p-5 outline outline-1 outline-green-500">

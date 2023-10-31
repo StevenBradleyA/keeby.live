@@ -55,7 +55,6 @@ export default function Home() {
     //         </div>
     //     );
 
-    console.log('what are you old boy', keeb);
 
     return (
         <>

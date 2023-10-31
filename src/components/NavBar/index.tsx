@@ -9,6 +9,7 @@ import menuBurgerGif from "../../../public/Gifs/menu-glitch.gif";
 import homeButton from "../../../public/Nav/home-test.png";
 import keebo from "../../../public/Nav/bmo-test.jpg";
 import homeGreenButton from "../../../public/Nav/home-green-test.png";
+import { useRouter } from "next/router";
 
 export default function NavBar() {
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -17,6 +18,7 @@ export default function NavBar() {
 
     const menuRef = useRef<HTMLDivElement | null>(null);
     const menuButtonRef = useRef<HTMLButtonElement | null>(null);
+    const router = useRouter();
 
     const { data: sessionData } = useSession();
 
@@ -130,9 +132,15 @@ export default function NavBar() {
                 />
             </Link>
             <div className="flex items-center gap-32">
-                <Link href="/shop" aria-label="shop">
-                    KEEB SHOP
-                </Link>
+                {router.asPath === "/shop" ? (
+                    <Link href="/shop" aria-label="shop">
+                        LIST YOUR KEEB
+                    </Link>
+                ) : (
+                    <Link href="/shop" aria-label="shop">
+                        KEEB SHOP
+                    </Link>
+                )}
 
                 <motion.button
                     onClick={toggleMenu}
