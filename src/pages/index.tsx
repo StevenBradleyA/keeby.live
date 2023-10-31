@@ -23,7 +23,6 @@ export default function Home() {
 
     // for generate type we are going to need a first parent component that generates the sentence then passes it to another component that uses it.
     const cookies = getCookies();
-    console.log(cookies.mode);
     const [mode, setMode] = useState<string>("speed");
     const [gameLength, setGameLength] = useState<number>(20);
     const [theme, setTheme] = useState<string>("keeby");
@@ -46,7 +45,6 @@ export default function Home() {
         }
     }, [cookies]);
 
-    // todo if they delete a keeb we should delete a cookie if it matches... on the server
 
     // const { data: session } = useSession();
 
@@ -57,7 +55,7 @@ export default function Home() {
     //         </div>
     //     );
 
-    console.log( cookies);
+    console.log('what are you old boy', keeb);
 
     return (
         <>

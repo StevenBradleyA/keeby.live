@@ -26,7 +26,7 @@ export default function LeftMenu({
     setKeeb,
 }: LeftMenuProps) {
     // todo refactor theme to be session so its accessible in nav
-    // theme needs to have context... 
+    // theme needs to have context...
 
     const { data: keebData } = api.keeb.getAll.useQuery();
     const { data: session } = useSession();
@@ -37,7 +37,7 @@ export default function LeftMenu({
         }
     }, [session, keebData, keeb, setKeeb]);
 
-//      ------ Setting Cookies && State -------
+    //      ------ Setting Cookies && State -------
     const handleModeChange = (e: ChangeEvent<HTMLSelectElement>) => {
         const newMode: string = e.target.value;
 
@@ -73,7 +73,6 @@ export default function LeftMenu({
             path: "/",
         });
     };
-
 
     return (
         <div className="flex w-36 flex-col rounded-2xl border border-green-500 bg-black px-3 py-2">
@@ -116,8 +115,8 @@ export default function LeftMenu({
                 <option value="keeby">keeby</option>
                 <option value="pastel-blue">blue</option>
                 <option value="pastel-pink">pink</option>
-                <option value="pastel-pink">primeagen</option>
-                <option value="pastel-pink">hipyo</option>
+                <option value="primeagen">primeagen</option>
+                <option value="hipyo">hipyo</option>
             </select>
             {session &&
                 session.user.hasProfile &&
