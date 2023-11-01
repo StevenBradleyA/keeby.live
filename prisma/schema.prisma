@@ -26,9 +26,9 @@ model Listing {
 
     userId String
 
-    user     User      @relation(fields: [userId], references: [id])
-    comments Comment[]
-    reviews  Review[]
+    user    User     @relation(fields: [userId], references: [id])
+    // comments Comment[]
+    reviews Review[]
 }
 
 model Post {
@@ -40,24 +40,22 @@ model Post {
 
     userId String
 
-    user     User      @relation(fields: [userId], references: [id])
-    comments Comment[]
-    reviews  Review[]
+    user User @relation(fields: [userId], references: [id])
+    // comments Comment[]
 }
 
 model Comment {
     id   String @id @default(cuid())
     text String
 
-    userId    String
-    type      String
-    postId    String?
-    listingId String?
+    userId String
+    type   String
+    typeId String
 
-    user    User     @relation(fields: [userId], references: [id])
-    listing Listing? @relation(fields: [listingId], references: [id])
-    post    Post?    @relation(fields: [postId], references: [id])
-    Like    Like[]
+    user User   @relation(fields: [userId], references: [id])
+    // listing Listing? @relation(fields: [listingId], references: [id])
+    // post    Post?    @relation(fields: [postId], references: [id])
+    Like Like[]
 }
 
 model Game {
@@ -110,9 +108,6 @@ model Review {
 
     user    User    @relation(fields: [userId], references: [id])
     listing Listing @relation(fields: [listingId], references: [id])
-    shareId String?
-    Post    Post?   @relation(fields: [postId], references: [id])
-    postId  String?
 }
 
 model Transaction {
