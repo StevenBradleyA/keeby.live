@@ -13,7 +13,16 @@ export default function CreateListingModal() {
             {sessionData === null && (
                 <div className="flex flex-col ">
                     SIgn in to list your keeb
-                    <button onClick={() => void signIn()}>sign in</button>
+                    <motion.button
+                        whileHover={{
+                            scale: 1.1,
+                        }}
+                        whileTap={{ scale: 0.95 }}
+                        className="rounded-2xl bg-black px-6 py-2"
+                        onClick={() => void signIn()}
+                    >
+                        sign in
+                    </motion.button>
                 </div>
             )}
 

@@ -28,6 +28,22 @@ export default function TitleScripts({ page }: TitleScriptsProps) {
     //             "your profile",
 
     useEffect(() => {
+        if (page === "createListing") {
+            const phrases = [
+                "Please Stand By",
+                "Scanning for Thock",
+                "ಠ_ಠ none found",
+                "Create a Listing",
+            ];
+            const delay = [0, 2000, 4000, 6000, 8000];
+
+            phrases.forEach((phrase, i) =>
+                setTimeout(() => {
+                    setTitle(phrase);
+                }, delay[i])
+            );
+        }
+
         if (page === "signin") {
             const phrases = [
                 "Initiating Login Sequence",
