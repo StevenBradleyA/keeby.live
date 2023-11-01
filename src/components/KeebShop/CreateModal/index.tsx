@@ -1,5 +1,7 @@
 import { useSession } from "next-auth/react";
 import { signIn } from "next-auth/react";
+import { motion } from "framer-motion";
+import Link from "next/link";
 
 export default function CreateListingModal() {
     const { data: sessionData } = useSession();
@@ -18,15 +20,38 @@ export default function CreateListingModal() {
             {sessionData && isVerifiedSeller && (
                 <div>
                     <div> Would you like to list a keyboard? </div>
-                    <button>Yuup</button>
+                    <motion.button
+                        whileHover={{
+                            scale: 1.1,
+                        }}
+                        whileTap={{ scale: 0.95 }}
+                        className="rounded-2xl bg-black px-6 py-2"
+                    >
+                        <Link
+                            href="/create-listing"
+                            aria-label="create listing"
+                        >
+                            {`Let's go`}
+                        </Link>
+                    </motion.button>
                 </div>
             )}
             {sessionData && !isVerifiedSeller && (
-                <div>
+                <div className="flex flex-col items-center">
                     <div>
-                        to list a keeb you need to get verified as a seller
+                        To list a keeb you need to get verified as a seller
                     </div>
-                    <button>{`Let's go`}</button>
+                    <motion.button
+                        whileHover={{
+                            scale: 1.1,
+                        }}
+                        whileTap={{ scale: 0.95 }}
+                        className="rounded-2xl bg-black px-6 py-2"
+                    >
+                        <Link href="/verification" aria-label="verification">
+                            {`Let's go`}
+                        </Link>
+                    </motion.button>
                 </div>
             )}
 

@@ -10,6 +10,7 @@ export default function KeebShop() {
     // svg logos next to filters
     // search by linear or tactile tags
     // budget or ballin  under or above 250
+    // filters and search need to be sticky
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     const openModal = () => {
@@ -60,7 +61,7 @@ export default function KeebShop() {
                     </motion.button>
                 </div>
                 <ModalDialog isOpen={isModalOpen} onClose={closeModal}>
-                    <CreateListingModal closeModal={closeModal} />
+                    <CreateListingModal />
                 </ModalDialog>
 
                 <div className="mt-36 flex flex-col">
