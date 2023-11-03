@@ -10,54 +10,10 @@ export const listingRouter = createTRPCRouter({
     // getAll: publicProcedure.query(({ ctx }) => {
     //     return ctx.prisma.listing.findMany();
     // }),
+    
     getAll: publicProcedure.query(({ ctx }) => {
         return ctx.prisma.listing.findMany();
     }),
-
-    // create: protectedProcedure
-    // .input(
-    //     z.object({
-    //         text: z.string(),
-    //         starRating: z.number(),
-    //         userId: z.string(),
-    //         bookingId: z.string(),
-    //         images: z
-    //             .array(
-    //                 z.object({
-    //                     link: z.string(),
-    //                 })
-    //             )
-    //             .optional(),
-    //     })
-    // )
-    // .mutation(async ({ input, ctx }) => {
-    //     const { text, starRating, userId, bookingId, images } = input;
-    //     if (ctx.session.user.id === userId) {
-    //         const newReview = await ctx.prisma.review.create({
-    //             data: { text, starRating, userId, bookingId },
-    //         });
-    //         if (images) {
-    //             const createdImages = images.map(async (image) => {
-    //                 return ctx.prisma.images.create({
-    //                     data: {
-    //                         link: image.link,
-    //                         resourceType: "REVIEW",
-    //                         resourceId: newReview.id,
-    //                         userId: newReview.userId,
-    //                     },
-    //                 });
-    //             });
-    //             return {
-    //                 newReview,
-    //                 createdImages,
-    //             };
-    //         }
-    //         return { newReview };
-    //     }
-
-    //     throw new Error("Invalid userId");
-    // }),
-
     create: protectedProcedure
         .input(
             z.object({
@@ -78,7 +34,7 @@ export const listingRouter = createTRPCRouter({
 
             if (ctx.session.user.id === userId) {
                 const newListing = await ctx.prisma.listing.create({
-                    data: { title, text, price, userId },
+                    data: { title, text, price, userId, active: true },
                 });
 
                 const createdImages = await Promise.all(

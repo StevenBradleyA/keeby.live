@@ -9,7 +9,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     const router = useRouter();
     const hasProfile = session?.user.hasProfile;
 
-    console.log(router.asPath);
+    // console.log(router.asPath);
     useEffect(() => {
         const isProfilePlus = router.asPath === "/profile-plus";
         if (session && hasProfile === false && !isProfilePlus) {

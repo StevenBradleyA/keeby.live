@@ -7,6 +7,7 @@ import Image from "next/image";
 import toast from "react-hot-toast";
 import TitleScripts from "~/components/TitleScripts";
 import { useRouter } from "next/router";
+import Custom404 from "../404";
 
 interface ErrorsObj {
     image?: string;
@@ -34,18 +35,17 @@ interface ListingData {
 
 export default function CreateListing() {
     // instead of directing to page it might be nice to have pricing/scams in modals so they don't have to navigate back to page
-    // todo change redirect to my listings page??? or shoppp??
     //todo what about filters and tags when creating a listing... Maybe an array with tags?
-    // todo preview image selection
+    // todo change redirect to my listings page??? or shoppp??
     // todo admin ability to delete other listings
     // todo maybe listings needs an isActive boolean so when when sold the photos can be auto deleted or kept for a lil bit idk
-    // that way I can reference non active listings and delete them two weeks after being active or something to close
-
-    // save an id or string of the image in a preview variable but keep all in loop if that string matches preview then it gets a separate db save with preview resource type
     //todo  price going to have to save in pennies i think but we can do that later with stripe
+
     const { data: session } = useSession();
     const ctx = api.useContext();
     const router = useRouter();
+
+    const accessDenied = !session || !session.user.isVerified;
 
     const [text, setText] = useState<string>("");
     const [title, setTitle] = useState<string>("");
@@ -87,7 +87,7 @@ export default function CreateListing() {
             errorsObj.text =
                 "Please provide a description of at least 200 words";
         }
-        if (title.length === 0) {
+        if (!title.length) {
             errorsObj.title = "Please provide a title for your listing";
         }
 
@@ -111,7 +111,6 @@ export default function CreateListing() {
 
     const submit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log("helloooo");
 
         setEnableErrorDisplay(true);
 
@@ -177,6 +176,10 @@ export default function CreateListing() {
             }
         }
     };
+
+    if (accessDenied) {
+        return <Custom404 />;
+    }
 
     return (
         <>

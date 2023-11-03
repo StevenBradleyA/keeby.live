@@ -20,6 +20,7 @@ model Listing {
     title     String
     text      String
     price     Int
+    active    Boolean  @default(false)
     favorite  Boolean  @default(false)
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt

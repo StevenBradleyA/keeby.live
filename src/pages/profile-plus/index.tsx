@@ -33,13 +33,8 @@ interface UserData {
 }
 
 export default function ProfilePlus() {
-    // todo username ++ error handling to make sure unique
-    // todo keeboard info  ++ error handling
-    // todo profile pic (optional ) ++ error handling
-    // todo create new keeby.live aws bucket
-    // todo create user update route after bucket is setup to test
     // todo only allow png or jpg
-    // todo update new disable logic to prevent submittion isSubmitting etc
+    // todo style ++ double check weird error handling for username check
 
     const { data: session, update } = useSession();
     const hasProfile = session?.user.hasProfile;
