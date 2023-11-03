@@ -1,9 +1,11 @@
+import { api } from "~/utils/api";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { motion } from "framer-motion";
 import ModalDialog from "~/components/Modal";
 import CreateListingModal from "~/components/KeebShop/CreateModal";
+import EachListingCard from "~/components/KeebShop/DisplayKeebs";
 export default function KeebShop() {
     // big cards like bring a trailer  or like this
     // https://codepen.io/TurkAysenur/pen/BavLzPj
@@ -11,6 +13,9 @@ export default function KeebShop() {
     // search by linear or tactile tags
     // budget or ballin  under or above 250
     // filters and search need to be sticky
+    // maybe break up in groups of six?
+    const { data: keebData } = api.listing.getAll.useQuery();
+
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     const openModal = () => {
@@ -64,8 +69,28 @@ export default function KeebShop() {
                     <CreateListingModal />
                 </ModalDialog>
 
-                <div className="mt-36 flex flex-col">
-                    <div>cool listing cards here</div>
+                <div className="mt-36 flex flex-col items-start">
+                    {keebData ? (
+                        <div className="flex gap-5">
+                            {keebData.map((keeb, i) => (
+                                <EachListingCard key={i} keeb={keeb} />
+                            ))}
+                        </div>
+                    ) : (
+                        <>
+                            <div>{`There are currently no listings, but you could be the first :D `}</div>
+                            <motion.button
+                                whileHover={{
+                                    scale: 1.1,
+                                }}
+                                whileTap={{ scale: 0.95 }}
+                                onClick={openModal}
+                                className="rounded-2xl bg-black px-6 py-2 text-green-500 "
+                            >
+                                create a listing
+                            </motion.button>
+                        </>
+                    )}
                 </div>
             </div>
         </div>
