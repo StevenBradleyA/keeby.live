@@ -22,7 +22,11 @@ export default function EachListingCard({
         });
 
     const cardClick = () => {
-        setIsClicked(keeb.id);
+        if (keeb.id === isClicked) {
+            setIsClicked("");
+        } else {
+            setIsClicked(keeb.id);
+        }
     };
 
     // todo maybe we push info absolutely positioned to the left of the card could be clean doe
@@ -37,7 +41,7 @@ export default function EachListingCard({
                         width={600}
                         height={600}
                         onClick={cardClick}
-                        className="h-72 w-72 rounded-3xl object-cover"
+                        className="h-80 w-80 rounded-3xl object-cover"
                     />
                 </div>
             ) : (

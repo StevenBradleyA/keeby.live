@@ -14,6 +14,7 @@ export default function KeebShop() {
     // budget or ballin  under or above 250
     // filters and search need to be sticky
     // maybe break up in groups of six?
+
     const { data: keebData } = api.listing.getAll.useQuery();
 
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -72,7 +73,7 @@ export default function KeebShop() {
 
                 <div className="mt-10 flex flex-col items-start">
                     {keebData ? (
-                        <div className="flex w-full gap-5">
+                        <div className="flex w-full gap-5 flex-wrap pr-20">
                             {keebData.map((keeb, i) => (
                                 <EachListingCard
                                     key={i}
