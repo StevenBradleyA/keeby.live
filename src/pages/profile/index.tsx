@@ -12,6 +12,8 @@ import CreateKeeb from "~/components/Profile/Keeb/CreateKeeb";
 import ManageKeeb from "~/components/Profile/Keeb/ManageKeeb";
 import RotatingKeeb from "~/components/Profile/ThreeScenes/RotatingKeeb";
 import { getCookies, setCookie } from "cookies-next";
+import { motion } from "framer-motion";
+import Link from "next/link";
 
 export default function UserProfile() {
     // todo consider hashing or some simple change that doesn't display the correct userID
@@ -63,22 +65,25 @@ export default function UserProfile() {
         if (cookies.RetroProfile) {
             setIsRetro(cookies.RetroProfile === "true");
         }
-
-        
     }, [cookies]);
 
     return (
         sessionData && (
-            <div className="flex w-3/4 flex-col items-center font-retro text-green-500">
+            <div className="flex w-3/4 flex-col font-retro text-green-500">
                 {isRetro && <div className="retro-scanlines"></div>}
-
-                <TitleScripts page="profile" />
-                <button
-                    className="rounded-2xl bg-black px-6 py-2"
-                    onClick={handleRetroMode}
-                >
-                    Hack me back
-                </button>
+                <div className="flex justify-center">
+                    <TitleScripts page="profile" />
+                </div>
+                <div className="flex justify-end">
+                    <button
+                        className="rounded-2xl bg-black px-6 py-2"
+                        onClick={handleRetroMode}
+                    >
+                        {`${
+                            isRetro ? "to the future" : "hack me back in time"
+                        } `}
+                    </button>
+                </div>
 
                 <div className="mb-10 flex w-full justify-center gap-10">
                     <div className="flex flex-col">
@@ -110,11 +115,11 @@ export default function UserProfile() {
                             <Canvas
                                 className="h-full w-full cursor-pointer"
                                 // camera={{ position: [0, 400, 200] }}
-                                camera={{ position: [1, 0, 1] }}
+                                camera={{ position: [4, 0, 1] }}
                             >
                                 <ambientLight intensity={0.5} />
                                 <pointLight position={[10, 10, 10]} />
-                                {/* <RotatingSphere /> */}
+                                <RotatingSphere />
                                 {/* <RotatingKeeb /> */}
                             </Canvas>
                         </div>
@@ -124,19 +129,40 @@ export default function UserProfile() {
                     </div>
                 </div>
 
-                <div className="flex gap-5">
-                    <button onClick={() => setToggle("KeebType")}>
+                <div className="flex justify-center gap-5">
+                    <motion.button
+                        onClick={() => setToggle("KeebType")}
+                        className="rounded-2xl bg-black px-6 py-2"
+                        whileHover={{
+                            scale: 1.1,
+                        }}
+                        whileTap={{ scale: 0.95 }}
+                    >
                         KeebType
-                    </button>
-                    <button onClick={() => setToggle("KeebShop")}>
+                    </motion.button>
+                    <motion.button
+                        onClick={() => setToggle("KeebShop")}
+                        className="rounded-2xl bg-black px-6 py-2"
+                        whileHover={{
+                            scale: 1.1,
+                        }}
+                        whileTap={{ scale: 0.95 }}
+                    >
                         KeebShop
-                    </button>
-                    <button onClick={() => setToggle("KeebShare")}>
+                    </motion.button>
+                    <motion.button
+                        onClick={() => setToggle("KeebShare")}
+                        className="rounded-2xl bg-black px-6 py-2"
+                        whileHover={{
+                            scale: 1.1,
+                        }}
+                        whileTap={{ scale: 0.95 }}
+                    >
                         KeebShare
-                    </button>
+                    </motion.button>
                 </div>
                 {toggle === "KeebType" && (
-                    <>
+                    <div className=" flex flex-col items-center">
                         <div>graph with wpm date and keeb etc</div>
                         <div>next to graph is a list of ten fastest wpm</div>
                         <div>
@@ -189,35 +215,78 @@ export default function UserProfile() {
                         <div>
                             clicking on a keeb will show data for that keeb{" "}
                         </div>
-                    </>
+                    </div>
                 )}
 
                 {toggle === "KeebShop" && (
-                    <>
-                        <button className="rounded-2xl bg-green-600 px-6 py-2">
-                            isVerifiedSeller
-                        </button>
-                        <button className="rounded-2xl bg-red-600 px-6 py-2">
-                            or show dis Register to Sell a KEEB
-                        </button>
-                        <button className="rounded-2xl bg-green-600 px-6 py-2">
-                            My Listings
-                        </button>
-                        <div>
-                            Seller Reputation aka reviews with average star
+                    <div className="mb-20 mt-10 flex flex-col items-center">
+                        {sessionData.user.isVerified ? (
+                            <div>You are verified :D</div>
+                        ) : (
+                            <>
+                                <div>
+                                    To list a keeb you need to get verified as a
+                                    seller
+                                </div>
+                                <motion.button
+                                    whileHover={{
+                                        scale: 1.1,
+                                    }}
+                                    whileTap={{ scale: 0.95 }}
+                                    className="rounded-2xl bg-black px-6 py-2"
+                                >
+                                    <Link
+                                        href="/verification"
+                                        aria-label="verification"
+                                    >
+                                        {`Let's go`}
+                                    </Link>
+                                </motion.button>
+                            </>
+                        )}
+
+                        <motion.button
+                            whileHover={{
+                                scale: 1.1,
+                            }}
+                            whileTap={{ scale: 0.95 }}
+                            className="mt-10 rounded-2xl bg-black px-6 py-2"
+                        >
+                            <Link
+                                href="/manage-listings"
+                                aria-label="manage listings"
+                            >
+                                {`My Listings`}
+                            </Link>
+                        </motion.button>
+
+                        <div className="mt-10">
+                            MY Seller Reputation aka reviews with average star
                             rating
                         </div>
-                    </>
+                    </div>
                 )}
 
                 {toggle === "KeebShare" && (
-                    <>
-                        <button className="rounded-2xl bg-green-600 px-6 py-2">
-                            My Posts
-                        </button>
-
+                    <div className="mb-20 mt-10 flex flex-col items-center">
                         <div>Internet Points counter --total likes</div>
-                    </>
+                        
+                        <motion.button
+                            whileHover={{
+                                scale: 1.1,
+                            }}
+                            whileTap={{ scale: 0.95 }}
+                            className="mt-10 rounded-2xl bg-black px-6 py-2"
+                        >
+                            <Link
+                                href="/manage-posts"
+                                aria-label="manage posts"
+                            >
+                                {`Manage my posts`}
+                            </Link>
+                        </motion.button>
+
+                    </div>
                 )}
             </div>
         )

@@ -96,7 +96,7 @@ export default function TitleScripts({ page }: TitleScriptsProps) {
 
     return (
         <h1
-            className={`moving-title mb-10 text-4xl text-green-500  ${
+            className={`moving-title text-4xl text-green-500  ${
                 title === "Authorization Required" ? "text-red-600" : ""
             }`}
         >
