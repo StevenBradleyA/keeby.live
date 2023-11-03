@@ -13,9 +13,9 @@ export default function KeebPlay() {
     useEffect(() => {
         const pogPlay = setTimeout(() => {
             if (page === "profile" && session) {
-                void router.push(`/profile/${session.user.id}`);
+                void router.push(`/profile`);
             }
-        }, 3500);
+        }, 3000);
 
         return () => {
             clearTimeout(pogPlay);

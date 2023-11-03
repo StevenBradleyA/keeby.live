@@ -17,7 +17,7 @@ export default function KeebShop() {
     const { data: keebData } = api.listing.getAll.useQuery();
 
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const [isClicked, setIsClicked] = useState<boolean>(false);
+    const [isClicked, setIsClicked] = useState<string>("false");
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -70,9 +70,9 @@ export default function KeebShop() {
                     <CreateListingModal />
                 </ModalDialog>
 
-                <div className="mt-36 flex flex-col items-start">
+                <div className="mt-10 flex flex-col items-start">
                     {keebData ? (
-                        <div className="flex gap-5">
+                        <div className="flex w-full gap-5">
                             {keebData.map((keeb, i) => (
                                 <EachListingCard
                                     key={i}

@@ -6,8 +6,8 @@ import { motion } from "framer-motion";
 
 interface EachListingCardProps {
     keeb: Listing;
-    isClicked: boolean;
-    setIsClicked: (isClicked: boolean) => void;
+    isClicked: string;
+    setIsClicked: (isClicked: string) => void;
 }
 
 export default function EachListingCard({
@@ -22,26 +22,28 @@ export default function EachListingCard({
         });
 
     const cardClick = () => {
-        setIsClicked(!isClicked);
+        setIsClicked(keeb.id);
     };
 
+    // todo maybe we push info absolutely positioned to the left of the card could be clean doe
+
     return (
-        <div className={`flex ${isClicked ? "w-96" : "w-60"} flex-col`}>
+        <div className={`flex flex-col`}>
             {previewImage && previewImage[0] && previewImage[0].link ? (
-                <div className="cursor-pointer">
+                <div className="w-full cursor-pointer">
                     <Image
                         alt="preview"
                         src={previewImage[0].link}
                         width={600}
                         height={600}
                         onClick={cardClick}
-                        className=" w-full rounded-3xl"
+                        className="h-72 w-72 rounded-3xl object-cover"
                     />
                 </div>
             ) : (
                 <Image alt="preview" src={matrix} width={200} height={200} />
             )}
-            {isClicked && (
+            {isClicked === keeb.id && (
                 <div className="flex flex-col px-2 ">
                     <div className="flex justify-between">
                         <div>{keeb.title}</div>

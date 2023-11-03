@@ -1,7 +1,7 @@
 import { api } from "~/utils/api";
 import { Canvas } from "@react-three/fiber";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import TitleScripts from "~/components/TitleScripts";
 import keebo from "../../../public/Nav/bmo-test.jpg";
@@ -11,6 +11,7 @@ import ModalDialog from "~/components/Modal";
 import CreateKeeb from "~/components/Profile/Keeb/CreateKeeb";
 import ManageKeeb from "~/components/Profile/Keeb/ManageKeeb";
 import RotatingKeeb from "~/components/Profile/ThreeScenes/RotatingKeeb";
+import { getCookies, setCookie } from "cookies-next";
 
 export default function UserProfile() {
     // todo consider hashing or some simple change that doesn't display the correct userID
@@ -24,6 +25,7 @@ export default function UserProfile() {
 
     const { data: sessionData } = useSession();
     const { data: keebData, isLoading } = api.keeb.getAll.useQuery();
+    const cookies = getCookies();
 
     const [isRetro, setIsRetro] = useState<boolean>(true);
     const [toggle, setToggle] = useState<string>("KeebType");
@@ -49,12 +51,35 @@ export default function UserProfile() {
         setIsManageKeebModalOpen(false);
     };
 
+    const handleRetroMode = () => {
+        setIsRetro(!isRetro);
+        setCookie("RetroProfile", !isRetro, {
+            maxAge: 60 * 60 * 24 * 365,
+            path: "/profile",
+        });
+    };
+
+    useEffect(() => {
+        if (cookies.RetroProfile) {
+            setIsRetro(cookies.RetroProfile === "true");
+        }
+
+        
+    }, [cookies]);
+
     return (
         sessionData && (
             <div className="flex w-3/4 flex-col items-center font-retro text-green-500">
                 {isRetro && <div className="retro-scanlines"></div>}
 
                 <TitleScripts page="profile" />
+                <button
+                    className="rounded-2xl bg-black px-6 py-2"
+                    onClick={handleRetroMode}
+                >
+                    Hack me back
+                </button>
+
                 <div className="mb-10 flex w-full justify-center gap-10">
                     <div className="flex flex-col">
                         {sessionData && sessionData.user.profile ? (
@@ -84,7 +109,6 @@ export default function UserProfile() {
                         <div className="h-72 outline outline-1 outline-green-500 ">
                             <Canvas
                                 className="h-full w-full cursor-pointer"
-                                onClick={() => setIsRetro(!isRetro)}
                                 // camera={{ position: [0, 400, 200] }}
                                 camera={{ position: [1, 0, 1] }}
                             >
