@@ -57,9 +57,10 @@ export const listingRouter = createTRPCRouter({
 
     //     throw new Error("Invalid userId");
     // }),
-    create: protectedProcedure.input(
-        z
-            .object({
+
+    create: protectedProcedure
+        .input(
+            z.object({
                 title: z.string(),
                 text: z.string(),
                 price: z.number(),
@@ -71,49 +72,39 @@ export const listingRouter = createTRPCRouter({
                     })
                 ),
             })
-            .mutation(async ({ input, ctx }) => {
-                const { title, text, price, preview, userId, images } = input;
+        )
+        .mutation(async ({ input, ctx }) => {
+            const { title, text, price, preview, userId, images } = input;
 
-                if (ctx.session.user.id === userId) {
-                    const newListing = await ctx.prisma.listing.create({
-                        data: { title, text, price, userId },
-                    });
+            if (ctx.session.user.id === userId) {
+                const newListing = await ctx.prisma.listing.create({
+                    data: { title, text, price, userId },
+                });
 
-                    const createdImages = await Promise.all(
-                        images.map(async (image, i) => {
-                            const imageType =
-                                i === preview ? "LISTINGPREVIEW" : "LISTING";
+                const createdImages = await Promise.all(
+                    images.map(async (image, i) => {
+                        const imageType =
+                            i === preview ? "LISTINGPREVIEW" : "LISTING";
 
-                            return ctx.prisma.images.create({
-                                data: {
-                                    link: image.link,
-                                    resourceType: imageType,
-                                    resourceId: newListing.id,
-                                    userId: newListing.userId,
-                                },
-                            });
-                        })
-                        
-                    );
+                        return ctx.prisma.images.create({
+                            data: {
+                                link: image.link,
+                                resourceType: imageType,
+                                resourceId: newListing.id,
+                                userId: newListing.userId,
+                            },
+                        });
+                    })
+                );
 
-                    return {
-                        newListing,
-                        createdImages,
-                    };
-                }
+                return {
+                    newListing,
+                    createdImages,
+                };
+            }
 
-                throw new Error("Invalid userId");
-            })
-    ),
-    //     .mutation(async ({ input, ctx }) => {
-    //         if (ctx.session.user.id === input.userId) {
-    //             const newPost = await ctx.prisma.post.create({ data: input });
-
-    //             return newPost;
-    //         }
-
-    //         throw new Error("Invalid userId");
-    //     }),
+            throw new Error("Invalid userId");
+        }),
 
     // update: protectedProcedure
     //     .input(

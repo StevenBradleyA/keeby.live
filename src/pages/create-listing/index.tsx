@@ -1,9 +1,11 @@
-import TitleScripts from "~/components/TitleScripts";
+import { api } from "~/utils/api";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { uploadFileToS3 } from "~/utils/aws";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import toast from "react-hot-toast";
+import TitleScripts from "~/components/TitleScripts";
 
 interface ErrorsObj {
     image?: string;
@@ -50,6 +52,26 @@ export default function CreateListing() {
         useState<boolean>(false);
     const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+    const { mutate } = api.listing.create.useMutation({
+        onSuccess: async () => {
+            try {
+                toast.success("Profile complete!", {
+                    icon: "👏",
+                    style: {
+                        borderRadius: "10px",
+                        background: "#333",
+                        color: "#fff",
+                    },
+                });
+                void ctx.listing.getAll.invalidate();
+                // await update();
+                // await router.push("/play/profile");
+            } catch (error) {
+                console.error("Error while navigating:", error);
+            }
+        },
+    });
 
     useEffect(() => {
         const maxFileSize = 8 * 1024 * 1024;
