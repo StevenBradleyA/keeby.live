@@ -88,9 +88,6 @@ export default function ProfilePlus() {
         if (!username.length) {
             errorsObj.username = "Please provide a username";
         }
-        if (!isAvailable) {
-            errorsObj.taken = "Username already exists";
-        }
         if (!keyboard.length) {
             errorsObj.keyboard = "Please provide your keyboard";
         }

@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import TitleScripts from "~/components/TitleScripts";
+import { useRouter } from "next/router";
 
 interface ErrorsObj {
     image?: string;
@@ -13,6 +14,7 @@ interface ErrorsObj {
     imageShortage?: string;
     imageLarge?: string;
     text?: string;
+    title?: string;
     priceNone?: string;
     priceExcess?: string;
 }
@@ -26,12 +28,13 @@ interface ListingData {
     title: string;
     price: number;
     text: string;
-    images?: Image[];
+    preview: number;
+    images: Image[];
 }
 
 export default function CreateListing() {
     // instead of directing to page it might be nice to have pricing/scams in modals so they don't have to navigate back to page
-
+    // todo change redirect to my listings page??? or shoppp??
     //todo what about filters and tags when creating a listing... Maybe an array with tags?
     // todo preview image selection
     // todo admin ability to delete other listings
@@ -39,8 +42,10 @@ export default function CreateListing() {
     // that way I can reference non active listings and delete them two weeks after being active or something to close
 
     // save an id or string of the image in a preview variable but keep all in loop if that string matches preview then it gets a separate db save with preview resource type
-
+    //todo  price going to have to save in pennies i think but we can do that later with stripe
     const { data: session } = useSession();
+    const ctx = api.useContext();
+    const router = useRouter();
 
     const [text, setText] = useState<string>("");
     const [title, setTitle] = useState<string>("");
@@ -55,21 +60,16 @@ export default function CreateListing() {
 
     const { mutate } = api.listing.create.useMutation({
         onSuccess: async () => {
-            try {
-                toast.success("Profile complete!", {
-                    icon: "👏",
-                    style: {
-                        borderRadius: "10px",
-                        background: "#333",
-                        color: "#fff",
-                    },
-                });
-                void ctx.listing.getAll.invalidate();
-                // await update();
-                // await router.push("/play/profile");
-            } catch (error) {
-                console.error("Error while navigating:", error);
-            }
+            toast.success("Listing Complete!", {
+                icon: "👏",
+                style: {
+                    borderRadius: "10px",
+                    background: "#333",
+                    color: "#fff",
+                },
+            });
+            void ctx.listing.getAll.invalidate();
+            await router.push("/shop");
         },
     });
 
@@ -86,6 +86,9 @@ export default function CreateListing() {
         if (text.length < 1) {
             errorsObj.text =
                 "Please provide a description of at least 200 words";
+        }
+        if (title.length === 0) {
+            errorsObj.title = "Please provide a title for your listing";
         }
 
         if (price < 10) {
@@ -104,10 +107,11 @@ export default function CreateListing() {
         }
 
         setErrors(errorsObj);
-    }, [imageFiles]);
+    }, [imageFiles, price, text, title]);
 
     const submit = async (e: React.FormEvent) => {
         e.preventDefault();
+        console.log("helloooo");
 
         setEnableErrorDisplay(true);
 
@@ -124,47 +128,46 @@ export default function CreateListing() {
                     title,
                     text,
                     price,
+                    preview,
+                    images: [],
                 };
 
                 setIsSubmitting(true);
 
-                if (imageFiles.length > 0) {
-                    const imagePromises = imageFiles.map((file) => {
-                        return new Promise<string>((resolve, reject) => {
-                            const reader = new FileReader();
-                            reader.readAsDataURL(file);
-                            reader.onloadend = () => {
-                                if (typeof reader.result === "string") {
-                                    const base64Data =
-                                        reader.result.split(",")[1];
-                                    if (base64Data) {
-                                        resolve(base64Data);
-                                    }
-                                } else {
-                                    reject(new Error("Failed to read file"));
+                const imagePromises = imageFiles.map((file) => {
+                    return new Promise<string>((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.readAsDataURL(file);
+                        reader.onloadend = () => {
+                            if (typeof reader.result === "string") {
+                                const base64Data = reader.result.split(",")[1];
+                                if (base64Data) {
+                                    resolve(base64Data);
                                 }
-                            };
-                            reader.onerror = () => {
+                            } else {
                                 reject(new Error("Failed to read file"));
-                            };
-                        });
+                            }
+                        };
+                        reader.onerror = () => {
+                            reject(new Error("Failed to read file"));
+                        };
                     });
+                });
 
-                    const base64DataArray = await Promise.all(imagePromises);
-                    const imageUrlArr: string[] = [];
+                const base64DataArray = await Promise.all(imagePromises);
+                const imageUrlArr: string[] = [];
 
-                    for (const base64Data of base64DataArray) {
-                        const buffer = Buffer.from(base64Data, "base64");
-                        const imageUrl = await uploadFileToS3(buffer);
-                        imageUrlArr.push(imageUrl);
-                    }
-
-                    data.images = imageUrlArr.map((imageUrl) => ({
-                        link: imageUrl || "",
-                    }));
+                for (const base64Data of base64DataArray) {
+                    const buffer = Buffer.from(base64Data, "base64");
+                    const imageUrl = await uploadFileToS3(buffer);
+                    imageUrlArr.push(imageUrl);
                 }
-                // mutate(data);
 
+                data.images = imageUrlArr.map((imageUrl) => ({
+                    link: imageUrl || "",
+                }));
+
+                mutate(data);
                 setImageFiles([]);
                 setHasSubmitted(true);
                 setIsSubmitting(false);
@@ -209,6 +212,9 @@ export default function CreateListing() {
                         className="bg-black"
                         placeholder="title"
                     />
+                    {enableErrorDisplay && errors.title && (
+                        <p className="text-xl text-red-400">{errors.title}</p>
+                    )}
 
                     <div> Write a lengthy description of your keyboard </div>
                     <textarea
@@ -218,6 +224,9 @@ export default function CreateListing() {
                         placeholder="Description"
                     ></textarea>
 
+                    {enableErrorDisplay && errors.text && (
+                        <p className="text-xl text-red-400">{errors.text}</p>
+                    )}
                     <input
                         value={price === 0 ? "" : price}
                         onChange={(e) => setPrice(+e.target.value)}
@@ -225,16 +234,16 @@ export default function CreateListing() {
                         placeholder="price"
                     />
 
-                    {/* {enableErrorDisplay && errors.keyboard && (
+                    {enableErrorDisplay && errors.priceNone && (
                         <p className="text-xl text-red-400">
-                            {errors.keyboard}
+                            {errors.priceNone}
                         </p>
                     )}
-                    {enableErrorDisplay && errors.switches && (
+                    {enableErrorDisplay && errors.priceExcess && (
                         <p className="text-xl text-red-400">
-                            {errors.switches}
+                            {errors.priceExcess}
                         </p>
-                    )} */}
+                    )}
 
                     <div className="mt-5 flex justify-center text-4xl">
                         Upload Images for your listing
@@ -306,16 +315,28 @@ export default function CreateListing() {
                             {errors.imageLarge}
                         </p>
                     )}
+                    {enableErrorDisplay && errors.imageShortage && (
+                        <p className="text-xl text-red-400">
+                            {errors.imageShortage}
+                        </p>
+                    )}
 
-                    <button
-                        onClick={void submit}
+                    <motion.button
+                        whileHover={{
+                            scale: 1.1,
+                        }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            void submit(e);
+                        }}
                         disabled={hasSubmitted || isSubmitting}
                         className={`rounded-2xl bg-black px-6 py-2 ${
                             hasSubmitted ? "text-red-500" : ""
                         } ${isSubmitting ? "text-red-500" : ""}`}
                     >
                         {isSubmitting ? "Uploading..." : "Submit"}
-                    </button>
+                    </motion.button>
                 </form>
             </div>
         </>
