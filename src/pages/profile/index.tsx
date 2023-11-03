@@ -270,7 +270,7 @@ export default function UserProfile() {
                 {toggle === "KeebShare" && (
                     <div className="mb-20 mt-10 flex flex-col items-center">
                         <div>Internet Points counter --total likes</div>
-                        
+
                         <motion.button
                             whileHover={{
                                 scale: 1.1,
@@ -285,7 +285,6 @@ export default function UserProfile() {
                                 {`Manage my posts`}
                             </Link>
                         </motion.button>
-
                     </div>
                 )}
             </div>
