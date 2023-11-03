@@ -5,7 +5,7 @@ import { signIn } from "next-auth/react";
 import { motion } from "framer-motion";
 import ModalDialog from "~/components/Modal";
 import CreateListingModal from "~/components/KeebShop/CreateModal";
-import EachListingCard from "~/components/KeebShop/DisplayKeebs";
+import EachListingCard from "~/components/KeebShop/DisplayListings";
 export default function KeebShop() {
     // big cards like bring a trailer  or like this
     // https://codepen.io/TurkAysenur/pen/BavLzPj
@@ -17,6 +17,7 @@ export default function KeebShop() {
     const { data: keebData } = api.listing.getAll.useQuery();
 
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [isClicked, setIsClicked] = useState<boolean>(false);
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -73,7 +74,12 @@ export default function KeebShop() {
                     {keebData ? (
                         <div className="flex gap-5">
                             {keebData.map((keeb, i) => (
-                                <EachListingCard key={i} keeb={keeb} />
+                                <EachListingCard
+                                    key={i}
+                                    keeb={keeb}
+                                    isClicked={isClicked}
+                                    setIsClicked={setIsClicked}
+                                />
                             ))}
                         </div>
                     ) : (
