@@ -73,7 +73,11 @@ export default function KeebShop() {
 
                 <div className="mt-10 flex flex-col items-start">
                     {keebData ? (
-                        <div className="flex w-full gap-5 flex-wrap pr-20">
+                        <div
+                            className={`w-full gap-5 pr-20 ${
+                                isClicked ? "expanded-listing" : "listing"
+                            }`}
+                        >
                             {keebData.map((keeb, i) => (
                                 <EachListingCard
                                     key={i}
