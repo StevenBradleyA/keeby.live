@@ -32,10 +32,14 @@ export default function EachListingCard({
             resourceId: keeb.id,
         });
 
+    const isMain = activeIndex === index;
+    const isSide = nextFiveIndexes.includes(index);
+    const isNormal = !isMain && !isSide
+
     const cardClick = () => {
         if (keeb.id === isClicked) {
             setIsClicked("");
-            setActiveIndex(0);
+            setActiveIndex(null);
             setNextFiveIndexes([]);
         } else {
             setIsClicked(keeb.id);
@@ -52,18 +56,18 @@ export default function EachListingCard({
 
     // todo maybe we push info absolutely positioned to the left of the card could be clean doe
 
-    // console.log("here", isClicked);
+    console.log(isSide);
     return (
         <div className={`flex flex-col`}>
             {previewImage && previewImage[0] && previewImage[0].link ? (
-                <div className="w-full cursor-pointer">
+                <div className=" cursor-pointer">
                     <Image
                         alt="preview"
                         src={previewImage[0].link}
                         width={600}
                         height={600}
                         onClick={cardClick}
-                        className="h-80 w-80 rounded-3xl object-cover"
+                        className={`${ isMain? "w-96 h-96": ""} ${ isSide? "w-80 h-10": ""} ${ isNormal? "w-80 h-80": ""}  rounded-3xl object-cover`}
                     />
                 </div>
             ) : (

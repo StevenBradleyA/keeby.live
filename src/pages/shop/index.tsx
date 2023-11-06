@@ -22,7 +22,6 @@ export default function KeebShop() {
     const [activeIndex, setActiveIndex] = useState<number>(0);
     const [nextFiveIndexes, setNextFiveIndexes] = useState<number[]>([]);
 
-
     const openModal = () => {
         setIsModalOpen(true);
     };
@@ -76,7 +75,7 @@ export default function KeebShop() {
 
                 <div className="mt-10 flex flex-col items-start">
                     {keebData ? (
-                        <div className={`flex w-full flex-wrap gap-5 pr-20 ${isClicked.length? activeIndex? "flex flex-col": "flex flex-wrap" : "flex flex-wrap"}`}>
+                        <div className={`flex w-full flex-wrap gap-5 pr-20 `}>
                             {keebData.map((keeb, i) => (
                                 <EachListingCard
                                     key={i}
