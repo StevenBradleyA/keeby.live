@@ -19,8 +19,11 @@ export default function KeebShop() {
 
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [isClicked, setIsClicked] = useState<string>("false");
-    const [activeIndex, setActiveIndex] = useState<number>(0);
+    const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const [nextFiveIndexes, setNextFiveIndexes] = useState<number[]>([]);
+    const [isMain, setIsMain] = useState<boolean>(false);
+    const [isSide, setIsSide] = useState<boolean>(false);
+    const [isNormal, setIsNormal] = useState<boolean>(false);
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -30,6 +33,7 @@ export default function KeebShop() {
         setIsModalOpen(false);
     };
     const [filter, setFilter] = useState<string>("hot");
+    console.log(isMain)
 
     return (
         <div className="mx-5 flex w-full">
@@ -75,7 +79,7 @@ export default function KeebShop() {
 
                 <div className="mt-10 flex flex-col items-start">
                     {keebData ? (
-                        <div className={`flex w-full flex-wrap gap-5 pr-20 `}>
+                        <div className={`${isSide? "flex flex-col":""} ${isNormal? "flex flex-wrap": ""} ${isMain? "flex flex-wrap": ""}  w-full  gap-5 pr-20 `}>
                             {keebData.map((keeb, i) => (
                                 <EachListingCard
                                     key={i}
@@ -87,6 +91,12 @@ export default function KeebShop() {
                                     setActiveIndex={setActiveIndex}
                                     nextFiveIndexes={nextFiveIndexes}
                                     setNextFiveIndexes={setNextFiveIndexes}
+                                    isMain={isMain}
+                                    setIsMain={setIsMain}
+                                    isSide={isSide}
+                                    setIsSide={setIsSide}
+                                    isNormal={isNormal}
+                                    setIsNormal={setIsNormal}
                                 />
                             ))}
                         </div>

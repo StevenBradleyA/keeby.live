@@ -4,16 +4,23 @@ import Image from "next/image";
 import matrix from "@public/Gifs/matrix.gif";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { ConfigurationServicePlaceholders } from "aws-sdk/lib/config_service_placeholders";
 
 interface EachListingCardProps {
     keeb: Listing;
     index: number;
     isClicked: string;
     setIsClicked: (isClicked: string) => void;
-    activeIndex: number;
-    setActiveIndex: (activeIndex: number) => void;
+    activeIndex: number | null;
+    setActiveIndex: (activeIndex: number | null) => void;
     nextFiveIndexes: number[];
     setNextFiveIndexes: (nextFiveIndexes: number[]) => void;
+    isMain: boolean;
+    setIsMain: (isMain: boolean) => void;
+    isSide: boolean;
+    setIsSide: (isSide: boolean) => void;
+    isNormal: boolean;
+    setIsNormal: (isNormal: boolean) => void;
 }
 
 export default function EachListingCard({
@@ -25,6 +32,9 @@ export default function EachListingCard({
     setActiveIndex,
     nextFiveIndexes,
     setNextFiveIndexes,
+    setIsMain,
+    setIsNormal,
+    setIsSide,
 }: EachListingCardProps) {
     const { data: previewImage, isLoading } =
         api.image.getAllByResourceId.useQuery({
@@ -32,9 +42,19 @@ export default function EachListingCard({
             resourceId: keeb.id,
         });
 
-    const isMain = activeIndex === index;
-    const isSide = nextFiveIndexes.includes(index);
-    const isNormal = !isMain && !isSide
+    const isMainn = activeIndex === index;
+    const isSidee = nextFiveIndexes.includes(index);
+    const isNormall = !isMainn && !isSidee;
+
+    // setIsMain(isMainn);
+    // setIsSide(isSidee);
+    // setIsNormal(isNormall);
+
+    useEffect(() => {
+        setIsMain(isMainn);
+        setIsSide(isSidee);
+        setIsNormal(isNormall);
+    }, [isMainn, isSidee, isNormall]);
 
     const cardClick = () => {
         if (keeb.id === isClicked) {
@@ -56,7 +76,6 @@ export default function EachListingCard({
 
     // todo maybe we push info absolutely positioned to the left of the card could be clean doe
 
-    console.log(isSide);
     return (
         <div className={`flex flex-col`}>
             {previewImage && previewImage[0] && previewImage[0].link ? (
@@ -67,14 +86,22 @@ export default function EachListingCard({
                         width={600}
                         height={600}
                         onClick={cardClick}
-                        className={`${ isMain? "w-96 h-96": ""} ${ isSide? "w-80 h-10": ""} ${ isNormal? "w-80 h-80": ""}  rounded-3xl object-cover`}
+                        className={`${isMainn ? "h-96 w-96" : ""} ${
+                            isSidee ? "h-10 w-80" : ""
+                        } ${
+                            isNormall ? "h-80 w-80" : ""
+                        }  rounded-3xl object-cover`}
                     />
                 </div>
             ) : (
                 <Image alt="preview" src={matrix} width={200} height={200} />
             )}
             {isClicked === keeb.id && (
-                <div className="flex flex-col px-2 ">
+                <div
+                    className={`${isMainn ? " w-96" : ""} ${
+                        isSidee ? " w-80" : ""
+                    } ${isNormall ? " w-80" : ""}   flex flex-col px-2`}
+                >
                     <div className="flex justify-between">
                         <div>{keeb.title}</div>
                         <div>{keeb.price}</div>
