@@ -19,6 +19,9 @@ export default function KeebShop() {
 
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [isClicked, setIsClicked] = useState<string>("false");
+    const [activeIndex, setActiveIndex] = useState<number>(0);
+    const [nextFiveIndexes, setNextFiveIndexes] = useState<number[]>([]);
+
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -73,17 +76,18 @@ export default function KeebShop() {
 
                 <div className="mt-10 flex flex-col items-start">
                     {keebData ? (
-                        <div
-                            className={`w-full gap-5 pr-20 ${
-                                isClicked ? "expanded-listing" : "listing"
-                            }`}
-                        >
+                        <div className={`flex w-full flex-wrap gap-5 pr-20 ${isClicked.length? activeIndex? "flex flex-col": "flex flex-wrap" : "flex flex-wrap"}`}>
                             {keebData.map((keeb, i) => (
                                 <EachListingCard
                                     key={i}
                                     keeb={keeb}
+                                    index={i}
                                     isClicked={isClicked}
                                     setIsClicked={setIsClicked}
+                                    activeIndex={activeIndex}
+                                    setActiveIndex={setActiveIndex}
+                                    nextFiveIndexes={nextFiveIndexes}
+                                    setNextFiveIndexes={setNextFiveIndexes}
                                 />
                             ))}
                         </div>

@@ -3,17 +3,28 @@ import type { Listing } from "@prisma/client";
 import Image from "next/image";
 import matrix from "@public/Gifs/matrix.gif";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 interface EachListingCardProps {
     keeb: Listing;
+    index: number;
     isClicked: string;
     setIsClicked: (isClicked: string) => void;
+    activeIndex: number;
+    setActiveIndex: (activeIndex: number) => void;
+    nextFiveIndexes: number[];
+    setNextFiveIndexes: (nextFiveIndexes: number[]) => void;
 }
 
 export default function EachListingCard({
     keeb,
+    index,
     isClicked,
     setIsClicked,
+    activeIndex,
+    setActiveIndex,
+    nextFiveIndexes,
+    setNextFiveIndexes,
 }: EachListingCardProps) {
     const { data: previewImage, isLoading } =
         api.image.getAllByResourceId.useQuery({
@@ -24,13 +35,24 @@ export default function EachListingCard({
     const cardClick = () => {
         if (keeb.id === isClicked) {
             setIsClicked("");
+            setActiveIndex(0);
+            setNextFiveIndexes([]);
         } else {
             setIsClicked(keeb.id);
+            setActiveIndex(index);
+            setNextFiveIndexes([
+                index + 1,
+                index + 2,
+                index + 3,
+                index + 4,
+                index + 5,
+            ]);
         }
     };
 
     // todo maybe we push info absolutely positioned to the left of the card could be clean doe
 
+    // console.log("here", isClicked);
     return (
         <div className={`flex flex-col`}>
             {previewImage && previewImage[0] && previewImage[0].link ? (
