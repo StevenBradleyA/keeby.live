@@ -1,9 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SelectQuote from "~/components/KeebType/QuoteMode/selectQuote";
 import LeftMenu from "~/components/KeebType/LeftMenu";
 import RightMenu from "~/components/KeebType/RightMenu";
 import SpeedMode from "~/components/KeebType/SpeedMode";
 import HomepageFooter from "~/components/Footer";
+import { api } from "~/utils/api";
+import { useSession } from "next-auth/react";
+import { DotLoader } from "react-spinners";
+import { getCookies } from "cookies-next";
+
+// npm install --save cookies-next
 
 export default function Home() {
     // Todo going to need different components for different games
@@ -16,13 +22,40 @@ export default function Home() {
     // lets just start with paragraph type for now and try to get it working
 
     // for generate type we are going to need a first parent component that generates the sentence then passes it to another component that uses it.
+    const cookies = getCookies();
     const [mode, setMode] = useState<string>("speed");
     const [gameLength, setGameLength] = useState<number>(20);
     const [theme, setTheme] = useState<string>("keeby");
     const [gameOver, setGameOver] = useState<boolean>(false);
     const [isFocused, setIsFocused] = useState<boolean>(false);
-    // gameOver will display if we show a mode or stats...
-    console.log(gameOver);
+    const [keeb, setKeeb] = useState<string>("");
+
+    useEffect(() => {
+        if (cookies.mode) {
+            setMode(cookies.mode);
+        }
+        if (cookies.gameLength) {
+            setGameLength(+cookies.gameLength);
+        }
+        if (cookies.keeb) {
+            setKeeb(cookies.keeb);
+        }
+        if (cookies.theme) {
+            setTheme(cookies.theme);
+        }
+    }, [cookies]);
+
+
+    // const { data: session } = useSession();
+
+    // if (isLoading)
+    //     return (
+    //         <div className=" mt-10 flex flex-col items-center justify-center gap-16">
+    //             <DotLoader size={50} color={"#ffffff"} loading={isLoading} />
+    //         </div>
+    //     );
+
+
     return (
         <>
             <div className="mt-40 flex w-full items-center justify-between overflow-hidden p-10">
@@ -33,7 +66,10 @@ export default function Home() {
                     setGameLength={setGameLength}
                     theme={theme}
                     setTheme={setTheme}
+                    keeb={keeb}
+                    setKeeb={setKeeb}
                 />
+
                 {mode === "speed" && (
                     <SpeedMode
                         gameLength={gameLength}

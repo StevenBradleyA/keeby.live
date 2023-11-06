@@ -8,8 +8,8 @@ import menuBurger from "../../../public/Nav/menu.png";
 import menuBurgerGif from "../../../public/Gifs/menu-glitch.gif";
 import homeButton from "../../../public/Nav/home-test.png";
 import keebo from "../../../public/Nav/bmo-test.jpg";
-
 import homeGreenButton from "../../../public/Nav/home-green-test.png";
+import { useRouter } from "next/router";
 
 export default function NavBar() {
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -18,13 +18,20 @@ export default function NavBar() {
 
     const menuRef = useRef<HTMLDivElement | null>(null);
     const menuButtonRef = useRef<HTMLButtonElement | null>(null);
+    const router = useRouter();
 
     const { data: sessionData } = useSession();
 
-    // todo maybe add scrip to add different nav gifs and box-shadows
-    // todo maybe do a pixel neon town for dropdown and the options are neon signs
-
+    // console.log(sessionData);
+    // todo figure out potential userID hash for the session so we never actually give userId
+    // todo if !session profile takes you to sign in otherwise display user profile if they have one else display keebo. Profile pictures are optional.
     // todo maybe want a different nav for typing game to keep things clean
+
+    // KEEB Shop should switch with create a listing if on keebshop
+    // same with on keeb share
+
+    // want different home buttons for each page because poggers
+
     // const router = useRouter();
 
     // const [isHome, setIsHome] = useState(false);
@@ -61,7 +68,7 @@ export default function NavBar() {
     // const toggleMenu = () => {
     //     setIsMenuOpen(!isMenuOpen);
     // };
-    console.log(isClosingMenu);
+    // console.log(isClosingMenu);
 
     const handleClose = useCallback(() => {
         setIsMenuOpen(false);
@@ -125,9 +132,15 @@ export default function NavBar() {
                 />
             </Link>
             <div className="flex items-center gap-32">
-                <Link href="/shop" aria-label="shop">
-                    KEEB SHOP
-                </Link>
+                {router.asPath === "/shop" ? (
+                    <Link href="/share" aria-label="share">
+                        KEEB SHARE
+                    </Link>
+                ) : (
+                    <Link href="/shop" aria-label="shop">
+                        KEEB SHOP
+                    </Link>
+                )}
 
                 <motion.button
                     onClick={toggleMenu}
@@ -219,17 +232,14 @@ export default function NavBar() {
                                 </Link>
                             </div>
                             <div className="flex flex-col gap-2">
-                                <Link
-                                    href="/profile"
-                                    aria-label="projects"
-                                    onClick={handleClose}
-                                >
+                                {sessionData === null ? (
                                     <motion.button
                                         className="flex justify-start"
                                         whileHover={{
                                             scale: 1.1,
                                         }}
                                         whileTap={{ scale: 0.95 }}
+                                        onClick={() => void signIn()}
                                     >
                                         <Image
                                             alt="profile"
@@ -237,7 +247,27 @@ export default function NavBar() {
                                             className="w-28"
                                         />
                                     </motion.button>
-                                </Link>
+                                ) : (
+                                    <Link
+                                        href="/play/profile"
+                                        aria-label="projects"
+                                        onClick={handleClose}
+                                    >
+                                        <motion.button
+                                            className="flex justify-start"
+                                            whileHover={{
+                                                scale: 1.1,
+                                            }}
+                                            whileTap={{ scale: 0.95 }}
+                                        >
+                                            <Image
+                                                alt="profile"
+                                                src={keebo}
+                                                className="w-28"
+                                            />
+                                        </motion.button>
+                                    </Link>
+                                )}
 
                                 <motion.button
                                     aria-label={

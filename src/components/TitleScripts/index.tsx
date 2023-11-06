@@ -21,8 +21,29 @@ export default function TitleScripts({ page }: TitleScriptsProps) {
     // "Loading 8-bit Security Wall... Please Authenticate",
     //  "Initiating Login Sequence... Brace for Time Travel",
     // "Ctrl + Alt + Authenticate: What's the Magic Word?",
+    // "Time Hack Sequence Complete",
+    //             "checking systems",
+    //             "deleting hard drive",
+    //             "jk",
+    //             "your profile",
 
     useEffect(() => {
+        if (page === "createListing") {
+            const phrases = [
+                "Please Stand By",
+                "Scanning for Thock",
+                "ಠ_ಠ none found",
+                "Create a Listing",
+            ];
+            const delay = [0, 2000, 4000, 6000, 8000];
+
+            phrases.forEach((phrase, i) =>
+                setTimeout(() => {
+                    setTitle(phrase);
+                }, delay[i])
+            );
+        }
+
         if (page === "signin") {
             const phrases = [
                 "Initiating Login Sequence",
@@ -39,11 +60,43 @@ export default function TitleScripts({ page }: TitleScriptsProps) {
                 }, delay[i])
             );
         }
+        if (page === "keebdex") {
+            const phrases = [
+                "Insert Coin to Continue",
+                "Defragmenting Memories",
+                "Calculating Quantum KeebDex",
+                "Pogchamp Error 404: Cringe Not Found",
+            ];
+            const delay = [0, 2000, 4000, 6000];
+
+            phrases.forEach((phrase, i) =>
+                setTimeout(() => {
+                    setTitle(phrase);
+                }, delay[i])
+            );
+        }
+
+        if (page === "profile") {
+            const phrases = [
+                "Time Hack Sequence Complete",
+                "checking systems",
+                "deleting hard drive",
+                "jk",
+                "Profile",
+            ];
+            const delay = [0, 2000, 4000, 6000, 8000];
+
+            phrases.forEach((phrase, i) =>
+                setTimeout(() => {
+                    setTitle(phrase);
+                }, delay[i])
+            );
+        }
     }, [page]);
 
     return (
         <h1
-            className={`moving-title mb-10 text-4xl text-green-500  ${
+            className={`moving-title text-4xl text-green-500  ${
                 title === "Authorization Required" ? "text-red-600" : ""
             }`}
         >

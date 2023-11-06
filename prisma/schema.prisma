@@ -15,20 +15,34 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Post {
+model Listing {
     id        String   @id @default(cuid())
     title     String
     text      String
     price     Int
-    stock     Int
+    active    Boolean  @default(false)
+    favorite  Boolean  @default(false)
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
     userId String
 
-    user     User      @relation(fields: [userId], references: [id])
-    comments Comment[]
-    reviews  Review[]
+    user    User     @relation(fields: [userId], references: [id])
+    // comments Comment[]
+    reviews Review[]
+}
+
+model Post {
+    id        String   @id @default(cuid())
+    title     String
+    text      String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    userId String
+
+    user User @relation(fields: [userId], references: [id])
+    // comments Comment[]
 }
 
 model Comment {
@@ -36,10 +50,13 @@ model Comment {
     text String
 
     userId String
-    postId String
+    type   String
+    typeId String
 
-    user User @relation(fields: [userId], references: [id])
-    post Post @relation(fields: [postId], references: [id])
+    user User   @relation(fields: [userId], references: [id])
+    // listing Listing? @relation(fields: [listingId], references: [id])
+    // post    Post?    @relation(fields: [postId], references: [id])
+    Like Like[]
 }
 
 model Game {
@@ -57,15 +74,27 @@ model Game {
 }
 
 model Keeb {
-    id       String  @id @default(cuid())
+    id       String @id @default(cuid())
     name     String
     switches String
-    keycaps  String?
+    keycaps  String
 
     userId String
 
     user User   @relation(fields: [userId], references: [id])
     Game Game[]
+}
+
+model Like {
+    id        String @id @default(cuid())
+    userId    String
+    commentId String
+
+    user    User    @relation(fields: [userId], references: [id])
+    comment Comment @relation(fields: [commentId], references: [id])
+
+    // This unique constraint prevents duplicate likes from the same user on the same comment.
+    @@unique([userId, commentId], name: "unique_user_comment_like")
 }
 
 model Review {
@@ -75,11 +104,11 @@ model Review {
     createdAt  DateTime @default(now())
     updatedAt  DateTime @updatedAt
 
-    userId String
-    postId String
+    userId    String
+    listingId String
 
-    user User @relation(fields: [userId], references: [id])
-    post Post @relation(fields: [postId], references: [id])
+    user    User    @relation(fields: [userId], references: [id])
+    listing Listing @relation(fields: [listingId], references: [id])
 }
 
 model Transaction {
@@ -144,14 +173,17 @@ model User {
     emailVerified DateTime?
     image         String?
     profile       String?
-    about         String?
     rank          String?
-    username      String?
-    isVerified    Boolean   @default(false)
-    isNewsletter  Boolean   @default(false)
+    tag           String?
+    username      String?   @unique
+
+    isVerified   Boolean @default(false)
+    hasProfile   Boolean @default(false)
+    isNewsletter Boolean @default(false)
 
     accounts     Account[]
     sessions     Session[]
+    listings     Listing[]
     posts        Post[]
     comments     Comment[]
     reviews      Review[]
@@ -159,6 +191,7 @@ model User {
     images       Images[]
     games        Game[]
     keebs        Keeb[]
+    Like         Like[]
 }
 
 model VerificationToken {
