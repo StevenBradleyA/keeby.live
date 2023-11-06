@@ -33,7 +33,46 @@ export default function KeebShop() {
         setIsModalOpen(false);
     };
     const [filter, setFilter] = useState<string>("hot");
-    console.log(isMain)
+
+    console.log(isMain);
+
+    const stackedListings = keebData
+        .filter((_, i) => nextFiveIndexes.includes(i))
+        .map((keeb, i) => (
+            <EachListingCard
+                keeb={keeb}
+                key={i}
+                index={i}
+                isClicked={isClicked}
+                setIsClicked={setIsClicked}
+                activeIndex={activeIndex}
+                setActiveIndex={setActiveIndex}
+                nextFiveIndexes={nextFiveIndexes}
+                setNextFiveIndexes={setNextFiveIndexes}
+                setIsMain={setIsMain}
+                setIsSide={setIsSide}
+                setIsNormal={setIsNormal}
+            />
+        ));
+
+    const listings = keebData
+        .filter((_, i) => !nextFiveIndexes.includes(i))
+        .map((keeb, i) => (
+            <EachListingCard
+                key={i}
+                keeb={keeb}
+                index={i}
+                isClicked={isClicked}
+                setIsClicked={setIsClicked}
+                activeIndex={activeIndex}
+                setActiveIndex={setActiveIndex}
+                nextFiveIndexes={nextFiveIndexes}
+                setNextFiveIndexes={setNextFiveIndexes}
+                setIsMain={setIsMain}
+                setIsSide={setIsSide}
+                setIsNormal={setIsNormal}
+            />
+        ));
 
     return (
         <div className="mx-5 flex w-full">
@@ -77,9 +116,9 @@ export default function KeebShop() {
                     <CreateListingModal />
                 </ModalDialog>
 
-                <div className="mt-10 flex flex-col items-start">
+                <div>
                     {keebData ? (
-                        <div className={`${isSide? "flex flex-col":""} ${isNormal? "flex flex-wrap": ""} ${isMain? "flex flex-wrap": ""}  w-full  gap-5 pr-20 `}>
+                        <div className={`flex w-full flex-wrap gap-5 pr-20`}>
                             {keebData.map((keeb, i) => (
                                 <EachListingCard
                                     key={i}
@@ -91,11 +130,8 @@ export default function KeebShop() {
                                     setActiveIndex={setActiveIndex}
                                     nextFiveIndexes={nextFiveIndexes}
                                     setNextFiveIndexes={setNextFiveIndexes}
-                                    isMain={isMain}
                                     setIsMain={setIsMain}
-                                    isSide={isSide}
                                     setIsSide={setIsSide}
-                                    isNormal={isNormal}
                                     setIsNormal={setIsNormal}
                                 />
                             ))}
@@ -120,3 +156,7 @@ export default function KeebShop() {
         </div>
     );
 }
+
+
+
+

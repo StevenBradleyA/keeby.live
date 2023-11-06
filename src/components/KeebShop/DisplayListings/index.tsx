@@ -15,11 +15,8 @@ interface EachListingCardProps {
     setActiveIndex: (activeIndex: number | null) => void;
     nextFiveIndexes: number[];
     setNextFiveIndexes: (nextFiveIndexes: number[]) => void;
-    isMain: boolean;
     setIsMain: (isMain: boolean) => void;
-    isSide: boolean;
     setIsSide: (isSide: boolean) => void;
-    isNormal: boolean;
     setIsNormal: (isNormal: boolean) => void;
 }
 
@@ -45,10 +42,6 @@ export default function EachListingCard({
     const isMainn = activeIndex === index;
     const isSidee = nextFiveIndexes.includes(index);
     const isNormall = !isMainn && !isSidee;
-
-    // setIsMain(isMainn);
-    // setIsSide(isSidee);
-    // setIsNormal(isNormall);
 
     useEffect(() => {
         setIsMain(isMainn);
