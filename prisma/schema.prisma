@@ -25,9 +25,12 @@ model Listing {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    userId String
+    userId  String
+    // buyerId String
 
-    user    User     @relation(fields: [userId], references: [id])
+    user  User @relation(fields: [userId], references: [id])
+    // buyer User @relation(fields: [buyerId], references: [id])
+
     // comments Comment[]
     reviews Review[]
 }
@@ -89,6 +92,7 @@ model Like {
     id        String @id @default(cuid())
     userId    String
     commentId String
+    // todo we also want posts to have likes too so we may just want a reference type here
 
     user    User    @relation(fields: [userId], references: [id])
     comment Comment @relation(fields: [commentId], references: [id])
@@ -178,6 +182,7 @@ model User {
     username      String?   @unique
 
     isVerified   Boolean @default(false)
+    isAdmin      Boolean @default(false)
     hasProfile   Boolean @default(false)
     isNewsletter Boolean @default(false)
 
