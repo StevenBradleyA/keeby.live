@@ -8,7 +8,7 @@ import {
 export const reviewRouter = createTRPCRouter({
     getByPostId: publicProcedure.input(z.string()).query(({ input, ctx }) => {
         return ctx.prisma.review.findMany({
-            where: { postId: input },
+            where: { listingId: input },
             include: {
                 user: { select: { name: true } },
             },
@@ -20,10 +20,10 @@ export const reviewRouter = createTRPCRouter({
     }),
 
     hasReviewed: publicProcedure
-        .input(z.object({ postId: z.string(), userId: z.string().optional() }))
-        .query(({ input: { postId, userId }, ctx }) => {
+        .input(z.object({ listingId: z.string(), userId: z.string().optional() }))
+        .query(({ input: { listingId, userId }, ctx }) => {
             if (!userId) return null;
-            return ctx.prisma.review.findFirst({ where: { postId, userId } });
+            return ctx.prisma.review.findFirst({ where: { listingId, userId } });
         }),
 
     create: protectedProcedure
@@ -32,11 +32,11 @@ export const reviewRouter = createTRPCRouter({
                 text: z.string(),
                 starRating: z.number(),
                 userId: z.string(),
-                postId: z.string(),
+                listingId: z.string(),
             })
         )
         .mutation(async ({ input, ctx }) => {
-            //TODO: Add extra check that user has purchased this product
+        
             if (ctx.session.user.id === input.userId) {
                 const newReview = await ctx.prisma.review.create({
                     data: input,
@@ -53,7 +53,7 @@ export const reviewRouter = createTRPCRouter({
             z.object({
                 id: z.string(),
                 userId: z.string(),
-                postId: z.string(),
+                listingId: z.string(),
                 text: z.string().optional(),
                 starRating: z.number().optional(),
             })
