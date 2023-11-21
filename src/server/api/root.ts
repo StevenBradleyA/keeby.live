@@ -6,6 +6,7 @@ import { postRouter } from "./routers/post";
 import { reviewRouter } from "./routers/review";
 import { userRouter } from "./routers/user";
 import { listingRouter } from "./routers/listing";
+import { gameRouter } from "./routers/game";
 
 /**
  * This is the primary router for your server.
@@ -14,12 +15,14 @@ import { listingRouter } from "./routers/listing";
  */
 export const appRouter = createTRPCRouter({
     comment: commentRouter,
+    game: gameRouter,
     image: imageRouter,
     keeb: keebRouter,
+    listing: listingRouter,
     post: postRouter,
     review: reviewRouter,
     user: userRouter,
-    listing: listingRouter,
+
 });
 
 // export type definition of API

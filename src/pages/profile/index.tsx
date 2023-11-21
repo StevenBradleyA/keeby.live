@@ -14,6 +14,7 @@ import RotatingKeeb from "~/components/Profile/ThreeScenes/RotatingKeeb";
 import { getCookies, setCookie } from "cookies-next";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import DisplayReviews from "~/components/Reviews/DisplayReviews";
 
 export default function UserProfile() {
     // todo consider hashing or some simple change that doesn't display the correct userID
@@ -22,11 +23,13 @@ export default function UserProfile() {
     // mdn digest() -- might be useful for us here
     // npm install three @types/three @react-three/fiber
     // todo don't want the userId in the url personal can just grab from session and we will have a separate profile for viewing other users.
-
+    // TODO Listing might need a purchased by userId category
+    // that way it is easy to see who has purchased and query for that
     //todo set cookies for retro theme plus make separate button
 
     const { data: sessionData } = useSession();
-    const { data: keebData, isLoading } = api.keeb.getAll.useQuery();
+    const { data: keebData } = api.keeb.getAll.useQuery();
+
     const cookies = getCookies();
 
     const [isRetro, setIsRetro] = useState<boolean>(true);
@@ -244,7 +247,6 @@ export default function UserProfile() {
                                 </motion.button>
                             </>
                         )}
-
                         <motion.button
                             whileHover={{
                                 scale: 1.1,
@@ -259,11 +261,15 @@ export default function UserProfile() {
                                 {`My Listings`}
                             </Link>
                         </motion.button>
-
                         <div className="mt-10">
                             MY Seller Reputation aka reviews with average star
                             rating
                         </div>
+                        <div> Lets add purchase history here</div>
+                        <div>ability to leave reviews on these purchases</div>
+                        
+                        <DisplayReviews userId={sessionData.user.id} />
+                        Ability to leave reviews
                     </div>
                 )}
 
