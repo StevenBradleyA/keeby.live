@@ -34,45 +34,13 @@ export default function KeebShop() {
     };
     const [filter, setFilter] = useState<string>("hot");
 
-    console.log(isMain);
 
-    const stackedListings = keebData
-        .filter((_, i) => nextFiveIndexes.includes(i))
-        .map((keeb, i) => (
-            <EachListingCard
-                keeb={keeb}
-                key={i}
-                index={i}
-                isClicked={isClicked}
-                setIsClicked={setIsClicked}
-                activeIndex={activeIndex}
-                setActiveIndex={setActiveIndex}
-                nextFiveIndexes={nextFiveIndexes}
-                setNextFiveIndexes={setNextFiveIndexes}
-                setIsMain={setIsMain}
-                setIsSide={setIsSide}
-                setIsNormal={setIsNormal}
-            />
-        ));
-
-    const listings = keebData
-        .filter((_, i) => !nextFiveIndexes.includes(i))
-        .map((keeb, i) => (
-            <EachListingCard
-                key={i}
-                keeb={keeb}
-                index={i}
-                isClicked={isClicked}
-                setIsClicked={setIsClicked}
-                activeIndex={activeIndex}
-                setActiveIndex={setActiveIndex}
-                nextFiveIndexes={nextFiveIndexes}
-                setNextFiveIndexes={setNextFiveIndexes}
-                setIsMain={setIsMain}
-                setIsSide={setIsSide}
-                setIsNormal={setIsNormal}
-            />
-        ));
+    // todo if isClicked then we need completely separate parent divs
+    // need a map of all indexes before 5 indexes 
+    // could do grid parent of 5 selected
+    // then need a map of all indexes after. 
+    // not efficient code by any means but I want it 
+    // will need to save the keebs in a prev and post index to the six in question
 
     return (
         <div className="mx-5 flex w-full">
@@ -156,7 +124,3 @@ export default function KeebShop() {
         </div>
     );
 }
-
-
-
-
