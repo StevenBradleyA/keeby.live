@@ -3,7 +3,7 @@ import { api } from "~/utils/api";
 import { motion } from "framer-motion";
 import ModalDialog from "~/components/Modal";
 import CreateListingModal from "~/components/KeebShop/CreateModal";
-import EachListingCard from "~/components/KeebShop/DisplayListings";
+import EachListingCardPreview from "~/components/KeebShop/DisplayListings";
 
 export default function Home() {
     // big cards like bring a trailer  or like this
@@ -39,12 +39,16 @@ export default function Home() {
     //  or big single cards
 
     return (
-        <div className="mx-5 flex w-full">
-            <div className="flex w-1/3 justify-center">Search here</div>
+        <div className=" flex w-full gap-5">
+            <div className="ml-16 flex w-1/3 flex-col bg-green-200">
+                <div>Search Here</div>
+                <div>Filter selection here</div>
+                <div>Tactile, linear, clicky, topre, other</div>
+            </div>
 
-            <div className="mr-20 flex w-full flex-col">
-                <div className="flex w-full justify-between">
-                    <div className="flex gap-5 text-white/40">
+            <div className="mr-16 flex w-full flex-col">
+                <div className=" flex w-full justify-between">
+                    <div className="mb-5 flex gap-5 text-white/40">
                         <button
                             className={`${
                                 filter === "hot"
@@ -84,7 +88,7 @@ export default function Home() {
                     {keebData ? (
                         <div className={`flex w-full flex-wrap gap-5 pr-20`}>
                             {keebData.map((keeb, i) => (
-                                <EachListingCard
+                                <EachListingCardPreview
                                     key={i}
                                     keeb={keeb}
                                     index={i}
