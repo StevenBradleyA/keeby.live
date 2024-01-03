@@ -7,10 +7,20 @@ import {
 import { removeFileFromS3 } from "../utils";
 
 export const listingRouter = createTRPCRouter({
-    // getAll: publicProcedure.query(({ ctx }) => {
-    //     return ctx.prisma.listing.findMany();
-    // }),
-    
+    getOne: publicProcedure
+        .input(
+            z.object({
+                id: z.string(),
+            })
+        )
+        .query(({ input, ctx }) => {
+            return ctx.prisma.listing.findUnique({
+                where: {
+                    id: input.id,
+                },
+            });
+        }),
+
     getAll: publicProcedure.query(({ ctx }) => {
         return ctx.prisma.listing.findMany();
     }),
@@ -62,50 +72,49 @@ export const listingRouter = createTRPCRouter({
             throw new Error("Invalid userId");
         }),
 
-
     delete: protectedProcedure
-    .input(
-        z.object({
-            id: z.string(),
-            userId: z.string(),
-            imageIds: z.array(z.string()),
-        })
-    )
-    .mutation(async ({ input, ctx }) => {
-        const { id, imageIds, userId } = input;
-        if (ctx.session.user.id === userId || ctx.session.user.isAdmin) {
-            if (imageIds.length > 0) {
-                const images = await ctx.prisma.images.findMany({
-                    where: {
-                        id: { in: imageIds },
-                    },
-                });
-                const removeFilePromises = images.map(async (image) => {
-                    try {
-                        await removeFileFromS3(image.link);
-                    } catch (err) {
-                        console.error(
-                            `Failed to remove file from S3: `,
-                            err
-                        );
-                        throw new Error(`Failed to remove file from S3: `);
-                    }
-                });
+        .input(
+            z.object({
+                id: z.string(),
+                userId: z.string(),
+                imageIds: z.array(z.string()),
+            })
+        )
+        .mutation(async ({ input, ctx }) => {
+            const { id, imageIds, userId } = input;
+            if (ctx.session.user.id === userId || ctx.session.user.isAdmin) {
+                if (imageIds.length > 0) {
+                    const images = await ctx.prisma.images.findMany({
+                        where: {
+                            id: { in: imageIds },
+                        },
+                    });
+                    const removeFilePromises = images.map(async (image) => {
+                        try {
+                            await removeFileFromS3(image.link);
+                        } catch (err) {
+                            console.error(
+                                `Failed to remove file from S3: `,
+                                err
+                            );
+                            throw new Error(`Failed to remove file from S3: `);
+                        }
+                    });
 
-                await Promise.all(removeFilePromises);
+                    await Promise.all(removeFilePromises);
 
-                await ctx.prisma.images.deleteMany({
-                    where: {
-                        id: { in: imageIds },
-                    },
-                });
+                    await ctx.prisma.images.deleteMany({
+                        where: {
+                            id: { in: imageIds },
+                        },
+                    });
+                }
+
+                await ctx.prisma.listing.delete({ where: { id: id } });
+
+                return "Successfully deleted";
             }
 
-            await ctx.prisma.listing.delete({ where: { id: id } });
-
-            return "Successfully deleted";
-        }
-
-        throw new Error("Invalid userId");
-    }),
+            throw new Error("Invalid userId");
+        }),
 });

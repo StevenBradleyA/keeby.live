@@ -4,6 +4,7 @@ import Image from "next/image";
 import matrix from "@public/Gifs/matrix.gif";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 interface EachListingCardProps {
     keeb: Listing;
@@ -21,21 +22,33 @@ export default function EachListingCardPreview({ keeb }: EachListingCardProps) {
 
     return (
         <div className="flex w-[30%] flex-col">
-            {previewImage && previewImage[0] && previewImage[0].link ? (
-                <div className="cursor-pointer">
+            <Link
+                href={{
+                    pathname: "/keebshop/[listingId]",
+                    query: { listingId: keeb.id },
+                }}
+            >
+                {previewImage && previewImage[0] && previewImage[0].link ? (
+                    <div className="cursor-pointer">
+                        <Image
+                            alt="preview"
+                            src={previewImage[0].link}
+                            width={600}
+                            height={600}
+                            className={`h-[250px] w-full rounded-3xl object-cover`}
+                        />
+                    </div>
+                ) : (
                     <Image
                         alt="preview"
-                        src={previewImage[0].link}
-                        width={600}
-                        height={600}
-                        className={`h-[250px] w-full rounded-3xl object-cover`}
+                        src={matrix}
+                        width={200}
+                        height={200}
                     />
-                </div>
-            ) : (
-                <Image alt="preview" src={matrix} width={200} height={200} />
-            )}
-            <div>{keeb.title}</div>
-            <div className="text-green-500">{`$${keeb.price}`}</div>
+                )}
+                <div>{keeb.title}</div>
+                <div className="text-green-500">{`$${keeb.price}`}</div>
+            </Link>
         </div>
     );
 }
