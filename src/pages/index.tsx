@@ -3,7 +3,7 @@ import { api } from "~/utils/api";
 import { motion } from "framer-motion";
 import ModalDialog from "~/components/Modal";
 import CreateListingModal from "~/components/KeebShop/CreateModal";
-import EachListingCardPreview from "~/components/KeebShop/DisplayListings";
+import EachListingCardPreview from "~/components/KeebShop/DisplayListingsPreview";
 
 export default function Home() {
     // big cards like bring a trailer  or like this
