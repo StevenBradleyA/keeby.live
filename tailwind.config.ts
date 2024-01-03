@@ -17,6 +17,8 @@ export default {
                 testThirteen: "#404040",
             },
             fontFamily: {
+                mrDafoe: ["Mr Dafoe", "cursive"],
+                titillium: ["Titillium Web", "sans-serif"],
                 retro: ["VT323", "monospace"],
             },
             textColor: {

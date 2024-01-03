@@ -226,36 +226,28 @@ li:not(:first-child) span {
     }
 }
 
-
-
 /* --------------     Scrollbar    --------------  */
-
-
 
 /* Hide the default scrollbar */
 ::-webkit-scrollbar {
     width: 10px;
-  }
-  
-  /* Track */
-  ::-webkit-scrollbar-track {
+}
+
+/* Track */
+::-webkit-scrollbar-track {
     background: #1c1c1c;
-  }
-  
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
     background: #606060;
     border-radius: 5px;
-  }
-  
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
     background: #888;
-  }
-
-
-
-
+}
 
 /* --------------     Sign In      --------------  */
 
@@ -342,15 +334,75 @@ li:not(:first-child) span {
     flex-wrap: wrap;
 }
 
-
-
 .expanded-listing {
-    grid-column: 1 / 2; 
+    grid-column: 1 / 2;
     grid-row: 1 / 3;
 }
 
+/* ------    shop listing title   ------  */
 
+.mrDafoe {
+    font-family: "dafoe";
+}
 
+@font-face {
+    font-family: "Titillium Web";
+    src: url("/Fonts/TitilliumWeb-Black.ttf") format("truetype");
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Mr Dafoe";
+    src: url("/Fonts/MrDafoe-Regular.ttf") format("truetype");
+    font-style: normal;
+}
+
+.listing-page-title-big {
+    background-image: -webkit-linear-gradient(
+        #378dbc 0%,
+        #b6e8f1 46%,
+        #ffffff 50%,
+        #32120e 54%,
+        #e692eb 58%,
+        #1c0466 90%,
+        #f284f8 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke: 1.5px #f5f5f5;
+    font-style: italic;
+    /* margin: 0; */
+    line-height: 1.2;
+    /* font-weight: 900; */
+}
+
+.listing-page-title-small {
+    color: #f975e7;
+    transform: rotate(-20deg);
+    -webkit-transform: rotate(-20deg);
+    -webkit-text-stroke: 0.5px #f008e4;
+    -webkit-filter: drop-shadow(2px 2px 20px#f008e4);
+}
+
+.pog-title {
+    transition: all 0.5s;
+    -webkit-text-stroke: 4px #d6f4f4;
+    font-variation-settings: "wght" 900, "ital" 1;
+    font-size: 15rem;
+    text-align: center;
+    color: transparent;
+    font-family: "Meta", sans-serif;
+    text-shadow: 10px 10px 0px #07bccc, 15px 15px 0px #e601c0,
+        20px 20px 0px #e9019a, 25px 25px 0px #f40468, 45px 45px 10px #482896;
+    cursor: pointer;
+}
+
+.pog-title:hover {
+    font-variation-settings: "wght" 100, "ital" 0;
+    text-shadow: none;
+}
+
+/* background-color: #8357eb; */
 
 /* --------------     Profile    --------------  */
 

@@ -11,23 +11,25 @@ export default function ListingPage() {
         id: listingId,
     });
 
-
-// TODO add seller rating info 
-// TODO add comments, seller profile info, seller ratings, public profiels clickable, 
-// TODO add youtube api video integration optional()
-
-
-
-
+    // TODO add seller rating info
+    // TODO add comments, seller profile info, seller ratings, public profiels clickable,
+    // TODO add youtube api video integration optional()
+    const currentListingNameArr = keeb?.title.split(" ");
+    const smallTitle = currentListingNameArr?.pop();
+    const bigTitle = currentListingNameArr?.join(" ");
     return (
-
-
-
-
         <>
             {keeb ? (
                 <div>
-                    <div className=" flex justify-center mb-10 text-4xl text-green-500">{keeb.title}</div>
+                    <div className="  mb-10 flex justify-center">
+                        <h1 className=" listing-page-title-big  font-titillium text-7xl ">
+                            {bigTitle}
+                        </h1>
+                        <h1 className=" listing-page-title-small font-mrDafoe text-5xl">
+                            {smallTitle}
+                        </h1>
+                    </div>
+                    <div className="pog-title">{keeb.title}</div>
                     <DisplayListingPhotos keeb={keeb} />
                 </div>
             ) : (
