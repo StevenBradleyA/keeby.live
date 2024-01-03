@@ -10,18 +10,16 @@ interface DisplayListingPhotosProps {
 export default function DisplayListingPhotos({
     keeb,
 }: DisplayListingPhotosProps) {
-    const { data: keebImages, isLoading } =
-        api.image.getAllByResourceId.useQuery({
-            resourceType: "LISTING",
+    const { data: allKeebImages, isLoading } =
+        api.image.getCombinedListingImages.useQuery({
             resourceId: keeb.id,
         });
 
     return (
         <>
-            <div></div>
-            {keebImages ? (
+            {allKeebImages ? (
                 <>
-                    {keebImages.map((e, i) => (
+                    {allKeebImages.map((e, i) => (
                         <Image
                             key={i}
                             src={e.link}
@@ -33,7 +31,7 @@ export default function DisplayListingPhotos({
                 </>
             ) : (
                 <>
-                    <div>Loading imagessss</div>
+                    <div>Loading previewwww</div>
                 </>
             )}
         </>

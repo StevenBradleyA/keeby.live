@@ -15,7 +15,7 @@ export default function ListingPage() {
         <>
             {keeb ? (
                 <div>
-                    <div>{keeb.title}</div>
+                    <div className=" flex justify-center mb-10 text-4xl text-green-500">{keeb.title}</div>
                     <DisplayListingPhotos keeb={keeb} />
                 </div>
             ) : (
