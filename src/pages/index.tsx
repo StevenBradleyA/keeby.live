@@ -1,64 +1,113 @@
 import { useEffect, useState } from "react";
-import SelectQuote from "~/components/KeebType/QuoteMode/selectQuote";
-import LeftMenu from "~/components/KeebType/LeftMenu";
-import RightMenu from "~/components/KeebType/RightMenu";
-import SpeedMode from "~/components/KeebType/SpeedMode";
-import HomepageFooter from "~/components/Footer";
 import { api } from "~/utils/api";
-import { useSession } from "next-auth/react";
-import { DotLoader } from "react-spinners";
-import { getCookies } from "cookies-next";
-
-// npm install --save cookies-next
+import { motion } from "framer-motion";
+import ModalDialog from "~/components/Modal";
+import CreateListingModal from "~/components/KeebShop/CreateModal";
+import EachListingCard from "~/components/KeebShop/DisplayListings";
 
 export default function Home() {
-    // Todo going to need different components for different games
-    // normal mode aka speedy speed boi (word count changes)
-    // Quote mode (punctuation) (can select to learn about things... - keyboards -fun facts - biology - finance etc... )
-    // hackerman mode (normal typing but with binary code falling in the background)
-    // I want to add actual fun typing games later...
-    //!  theme might also have to be passed to navbar might have to just make it its own session so its accessible everywhere doe
-    // paragraph type
-    // lets just start with paragraph type for now and try to get it working
+    // big cards like bring a trailer  or like this
+    // https://codepen.io/TurkAysenur/pen/BavLzPj
+    // svg logos next to filters
+    // search by linear or tactile tags
+    // budget or ballin  under or above 250
+    // filters and search need to be sticky
+    // maybe break up in groups of six?
 
-    // for generate type we are going to need a first parent component that generates the sentence then passes it to another component that uses it.
-    // const cookies = getCookies();
-    // const [mode, setMode] = useState<string>("speed");
-    // const [gameLength, setGameLength] = useState<number>(20);
-    // const [theme, setTheme] = useState<string>("keeby");
-    // const [gameOver, setGameOver] = useState<boolean>(false);
-    // const [isFocused, setIsFocused] = useState<boolean>(false);
-    // const [keeb, setKeeb] = useState<string>("");
+    const { data: keebData } = api.listing.getAll.useQuery();
 
-    // useEffect(() => {
-    //     if (cookies.mode) {
-    //         setMode(cookies.mode);
-    //     }
-    //     if (cookies.gameLength) {
-    //         setGameLength(+cookies.gameLength);
-    //     }
-    //     if (cookies.keeb) {
-    //         setKeeb(cookies.keeb);
-    //     }
-    //     if (cookies.theme) {
-    //         setTheme(cookies.theme);
-    //     }
-    // }, [cookies]);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
 
-    // const { data: session } = useSession();
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+    const [filter, setFilter] = useState<string>("hot");
 
-    // if (isLoading)
-    //     return (
-    //         <div className=" mt-10 flex flex-col items-center justify-center gap-16">
-    //             <DotLoader size={50} color={"#ffffff"} loading={isLoading} />
-    //         </div>
-    //     );
+    // todo if isClicked then we need completely separate parent divs
+    // need a map of all indexes before 5 indexes
+    // could do grid parent of 5 selected
+    // then need a map of all indexes after.
+    // not efficient code by any means but I want it
+    // will need to save the keebs in a prev and post index to the six in question
 
+    // cards with info like air bnb which I kinda like
+
+    //  or big single cards
 
     return (
-        <>
-            hey there
-        </>
+        <div className="mx-5 flex w-full">
+            <div className="flex w-1/3 justify-center">Search here</div>
+
+            <div className="mr-20 flex w-full flex-col">
+                <div className="flex w-full justify-between">
+                    <div className="flex gap-5 text-white/40">
+                        <button
+                            className={`${
+                                filter === "hot"
+                                    ? "border-b border-white text-white"
+                                    : ""
+                            }`}
+                            onClick={() => setFilter("hot")}
+                        >
+                            Hot
+                        </button>
+                        <button
+                            className={`${
+                                filter === "new"
+                                    ? "border-b border-white text-white"
+                                    : ""
+                            }`}
+                            onClick={() => setFilter("new")}
+                        >
+                            New
+                        </button>
+                    </div>
+                    <motion.button
+                        whileHover={{
+                            scale: 1.1,
+                        }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={openModal}
+                    >
+                        plus
+                    </motion.button>
+                </div>
+                <ModalDialog isOpen={isModalOpen} onClose={closeModal}>
+                    <CreateListingModal />
+                </ModalDialog>
+
+                <div>
+                    {keebData ? (
+                        <div className={`flex w-full flex-wrap gap-5 pr-20`}>
+                            {keebData.map((keeb, i) => (
+                                <EachListingCard
+                                    key={i}
+                                    keeb={keeb}
+                                    index={i}
+                                />
+                            ))}
+                        </div>
+                    ) : (
+                        <>
+                            <div>{`There are currently no listings, but you could be the first :D `}</div>
+                            <motion.button
+                                whileHover={{
+                                    scale: 1.1,
+                                }}
+                                whileTap={{ scale: 0.95 }}
+                                onClick={openModal}
+                                className="rounded-2xl bg-black px-6 py-2 text-green-500 "
+                            >
+                                create a listing
+                            </motion.button>
+                        </>
+                    )}
+                </div>
+            </div>
+        </div>
     );
 }

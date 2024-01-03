@@ -4,73 +4,21 @@ import Image from "next/image";
 import matrix from "@public/Gifs/matrix.gif";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { ConfigurationServicePlaceholders } from "aws-sdk/lib/config_service_placeholders";
 
 interface EachListingCardProps {
     keeb: Listing;
     index: number;
-    isClicked: string;
-    setIsClicked: (isClicked: string) => void;
-    activeIndex: number | null;
-    setActiveIndex: (activeIndex: number | null) => void;
-    nextFiveIndexes: number[];
-    setNextFiveIndexes: (nextFiveIndexes: number[]) => void;
-    setIsMain: (isMain: boolean) => void;
-    setIsSide: (isSide: boolean) => void;
-    setIsNormal: (isNormal: boolean) => void;
 }
 
-export default function EachListingCard({
-    keeb,
-    index,
-    isClicked,
-    setIsClicked,
-    activeIndex,
-    setActiveIndex,
-    nextFiveIndexes,
-    setNextFiveIndexes,
-    setIsMain,
-    setIsNormal,
-    setIsSide,
-}: EachListingCardProps) {
+export default function EachListingCard({ keeb }: EachListingCardProps) {
     const { data: previewImage, isLoading } =
         api.image.getAllByResourceId.useQuery({
             resourceType: "LISTINGPREVIEW",
             resourceId: keeb.id,
         });
 
-    const isMainn = activeIndex === index;
-    const isSidee = nextFiveIndexes.includes(index);
-    const isNormall = !isMainn && !isSidee;
-
-    useEffect(() => {
-        setIsMain(isMainn);
-        setIsSide(isSidee);
-        setIsNormal(isNormall);
-    }, [isMainn, isSidee, isNormall]);
-
-    const cardClick = () => {
-        if (keeb.id === isClicked) {
-            setIsClicked("");
-            setActiveIndex(null);
-            setNextFiveIndexes([]);
-        } else {
-            setIsClicked(keeb.id);
-            setActiveIndex(index);
-            setNextFiveIndexes([
-                index + 1,
-                index + 2,
-                index + 3,
-                index + 4,
-                index + 5,
-            ]);
-        }
-    };
-
-    // todo maybe we push info absolutely positioned to the left of the card could be clean doe
-
     return (
-        <div className={`flex flex-col`}>
+        <div className="flex flex-col w-full">
             {previewImage && previewImage[0] && previewImage[0].link ? (
                 <div className=" cursor-pointer">
                     <Image
@@ -78,36 +26,16 @@ export default function EachListingCard({
                         src={previewImage[0].link}
                         width={600}
                         height={600}
-                        onClick={cardClick}
-                        className={`${isMainn ? "h-96 w-96" : ""} ${
-                            isSidee ? "h-10 w-80" : ""
-                        } ${
-                            isNormall ? "h-80 w-80" : ""
-                        }  rounded-3xl object-cover`}
+                        className={`rounded-3xl object-cover`}
                     />
                 </div>
             ) : (
                 <Image alt="preview" src={matrix} width={200} height={200} />
             )}
-            {isClicked === keeb.id && (
-                <div
-                    className={`${isMainn ? " w-96" : ""} ${
-                        isSidee ? " w-80" : ""
-                    } ${isNormall ? " w-80" : ""}   flex flex-col px-2`}
-                >
-                    <div className="flex justify-between">
-                        <div>{keeb.title}</div>
-                        <div>{keeb.price}</div>
-                    </div>
-                    <div className="flex justify-center">
-                        <motion.button
-                            className=" w-28 rounded-2xl bg-black px-6 py-2"
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.95 }}
-                        >{`let's go`}</motion.button>
-                    </div>
-                </div>
-            )}
+            <div className="">
+                <div>{keeb.title}</div>
+                <div>{keeb.price}</div>
+            </div>
         </div>
     );
 }
