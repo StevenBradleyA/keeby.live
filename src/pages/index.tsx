@@ -22,28 +22,28 @@ export default function Home() {
     // lets just start with paragraph type for now and try to get it working
 
     // for generate type we are going to need a first parent component that generates the sentence then passes it to another component that uses it.
-    const cookies = getCookies();
-    const [mode, setMode] = useState<string>("speed");
-    const [gameLength, setGameLength] = useState<number>(20);
-    const [theme, setTheme] = useState<string>("keeby");
-    const [gameOver, setGameOver] = useState<boolean>(false);
-    const [isFocused, setIsFocused] = useState<boolean>(false);
-    const [keeb, setKeeb] = useState<string>("");
+    // const cookies = getCookies();
+    // const [mode, setMode] = useState<string>("speed");
+    // const [gameLength, setGameLength] = useState<number>(20);
+    // const [theme, setTheme] = useState<string>("keeby");
+    // const [gameOver, setGameOver] = useState<boolean>(false);
+    // const [isFocused, setIsFocused] = useState<boolean>(false);
+    // const [keeb, setKeeb] = useState<string>("");
 
-    useEffect(() => {
-        if (cookies.mode) {
-            setMode(cookies.mode);
-        }
-        if (cookies.gameLength) {
-            setGameLength(+cookies.gameLength);
-        }
-        if (cookies.keeb) {
-            setKeeb(cookies.keeb);
-        }
-        if (cookies.theme) {
-            setTheme(cookies.theme);
-        }
-    }, [cookies]);
+    // useEffect(() => {
+    //     if (cookies.mode) {
+    //         setMode(cookies.mode);
+    //     }
+    //     if (cookies.gameLength) {
+    //         setGameLength(+cookies.gameLength);
+    //     }
+    //     if (cookies.keeb) {
+    //         setKeeb(cookies.keeb);
+    //     }
+    //     if (cookies.theme) {
+    //         setTheme(cookies.theme);
+    //     }
+    // }, [cookies]);
 
 
     // const { data: session } = useSession();
@@ -58,28 +58,7 @@ export default function Home() {
 
     return (
         <>
-            <div className="mt-40 flex w-full items-center justify-between overflow-hidden p-10">
-                <LeftMenu
-                    mode={mode}
-                    setMode={setMode}
-                    gameLength={gameLength}
-                    setGameLength={setGameLength}
-                    theme={theme}
-                    setTheme={setTheme}
-                    keeb={keeb}
-                    setKeeb={setKeeb}
-                />
-
-                {mode === "speed" && (
-                    <SpeedMode
-                        gameLength={gameLength}
-                        setGameOver={setGameOver}
-                    />
-                )}
-                {mode === "quote" && <SelectQuote />}
-                <RightMenu />
-            </div>
-            <HomepageFooter />
+            hey there
         </>
     );
 }

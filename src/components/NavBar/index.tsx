@@ -137,7 +137,7 @@ export default function NavBar() {
                         KEEB SHARE
                     </Link>
                 ) : (
-                    <Link href="/shop" aria-label="shop">
+                    <Link href="/" aria-label="shop">
                         KEEB SHOP
                     </Link>
                 )}
@@ -179,7 +179,7 @@ export default function NavBar() {
                         >
                             <div className="flex flex-col justify-between">
                                 <Link
-                                    href="/shop"
+                                    href="/"
                                     aria-label="projects"
                                     onClick={handleClose}
                                 >
@@ -192,7 +192,7 @@ export default function NavBar() {
                                     </motion.button>
                                 </Link>
                                 <Link
-                                    href="/"
+                                    href="/keebtype"
                                     aria-label="contact"
                                     onClick={handleClose}
                                 >
@@ -205,7 +205,7 @@ export default function NavBar() {
                                     </motion.button>
                                 </Link>
                                 <Link
-                                    href="/share"
+                                    href="/keebshare"
                                     aria-label="keeb share"
                                     onClick={handleClose}
                                 >

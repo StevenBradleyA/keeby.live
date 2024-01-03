@@ -5,7 +5,6 @@ import Link from "next/link";
 
 export default function CreateListingModal() {
     const { data: sessionData } = useSession();
-
     const isVerifiedSeller = sessionData?.user.isVerified === true;
 
     return (
