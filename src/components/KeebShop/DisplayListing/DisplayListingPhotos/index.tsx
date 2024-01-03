@@ -1,6 +1,8 @@
 import type { Listing } from "@prisma/client";
 import { api } from "~/utils/api";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import ListingGallery from "./listingGallery";
 
 interface DisplayListingPhotosProps {
     keeb: Listing;
@@ -19,15 +21,7 @@ export default function DisplayListingPhotos({
         <>
             {allKeebImages ? (
                 <>
-                    {allKeebImages.map((e, i) => (
-                        <Image
-                            key={i}
-                            src={e.link}
-                            alt="keeb"
-                            width={1000}
-                            height={1000}
-                        />
-                    ))}
+                    <ListingGallery allKeebImages={allKeebImages} />
                 </>
             ) : (
                 <>

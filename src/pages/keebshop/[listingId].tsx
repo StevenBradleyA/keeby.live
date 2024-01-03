@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import DisplayListingPhotos from "~/components/KeebShop/DisplayListing";
+import DisplayListingPhotos from "~/components/KeebShop/DisplayListing/DisplayListingPhotos";
 import { api } from "~/utils/api";
 
 export default function ListingPage() {
@@ -11,7 +11,19 @@ export default function ListingPage() {
         id: listingId,
     });
 
+
+// TODO add seller rating info 
+// TODO add comments, seller profile info, seller ratings, public profiels clickable, 
+// TODO add youtube api video integration optional()
+
+
+
+
     return (
+
+
+
+
         <>
             {keeb ? (
                 <div>
