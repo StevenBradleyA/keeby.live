@@ -114,10 +114,12 @@ model Review {
     createdAt  DateTime @default(now())
     updatedAt  DateTime @updatedAt
 
+    sellerId  String
     userId    String
     listingId String
 
-    user    User    @relation(fields: [userId], references: [id])
+    seller  User    @relation("SellerRelation", fields: [sellerId], references: [id])
+    user    User    @relation("UserRelation", fields: [userId], references: [id])
     listing Listing @relation(fields: [listingId], references: [id])
 }
 
@@ -192,17 +194,18 @@ model User {
     hasProfile   Boolean @default(false)
     isNewsletter Boolean @default(false)
 
-    accounts     Account[]
-    sessions     Session[]
-    listings     Listing[]
-    posts        Post[]
-    comments     Comment[]
-    reviews      Review[]
-    transactions Transaction[]
-    images       Images[]
-    games        Game[]
-    keebs        Keeb[]
-    Like         Like[]
+    accounts        Account[]
+    sessions        Session[]
+    listings        Listing[]
+    posts           Post[]
+    comments        Comment[]
+    transactions    Transaction[]
+    images          Images[]
+    games           Game[]
+    keebs           Keeb[]
+    Like            Like[]
+    Review          Review[]      @relation("UserRelation")
+    reviewsReceived Review[]      @relation("SellerRelation")
 }
 
 model VerificationToken {
