@@ -12,7 +12,6 @@ interface EachListingCardProps {
 }
 
 export default function EachListingCardPreview({ keeb }: EachListingCardProps) {
-    // would we want seller stars on listing display?
 
     const { data: previewImage, isLoading } =
         api.image.getAllByResourceId.useQuery({

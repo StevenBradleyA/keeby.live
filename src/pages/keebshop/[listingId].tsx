@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import DisplayListingPhotos from "~/components/KeebShop/DisplayListing/DisplayListingPhotos";
+import SellerPublicProfile from "~/components/Profile/ListingPublicProfile";
 import { api } from "~/utils/api";
 
 export default function ListingPage() {
@@ -10,6 +11,9 @@ export default function ListingPage() {
     const { data: keeb, isLoading } = api.listing.getOne.useQuery({
         id: listingId,
     });
+
+    console.log("goodmorning", keeb);
+    // accsess to the userId
 
     // TODO add seller rating info
     // TODO add comments, seller profile info, seller ratings, public profiels clickable,
@@ -46,7 +50,7 @@ export default function ListingPage() {
                     <p className="mt-5 text-2xl">{keeb.text}</p>
 
                     <div className="mt-20 flex w-full justify-center ">
-                        <div className="flex w-1/2 flex-col bg-black px-10 rounded-xl">
+                        <div className="flex w-1/2 flex-col rounded-xl bg-black px-10">
                             <div className="flex justify-between">
                                 <div className="text-4xl">{`Price: $${keeb.price}`}</div>
                                 <div className="flex flex-col">
@@ -58,18 +62,16 @@ export default function ListingPage() {
                                     </button>
                                 </div>
                             </div>
-                            <div className="flex justify-between">
-                                <div> seller clickable profile here</div>
-                                <div> seller rating</div>
-                            </div>
+                                <SellerPublicProfile userId={keeb.userId} />
+                                {/* <div> seller clickable profile here</div>
+                                <div> seller rating</div> */}
                         </div>
                     </div>
-                    <div className="flex justify-center text-5xl mt-10"> Sound Test</div>
+                    <div className="mt-10 flex justify-center text-5xl">
+                        {" "}
+                        Sound Test
+                    </div>
                     <div> youtube embed link here optional pog</div>
-
-
-
-
 
                     <div className="mt-32"> comments</div>
                     {/* lets integrate replys but keep keeby styling looks great */}
