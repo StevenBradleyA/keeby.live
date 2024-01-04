@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import DisplayComments from "~/components/Comments/Display";
 import DisplayListingPhotos from "~/components/KeebShop/DisplayListing/DisplayListingPhotos";
 import SellerPublicProfile from "~/components/Profile/ListingPublicProfile";
 import { api } from "~/utils/api";
@@ -73,7 +74,11 @@ export default function ListingPage() {
                     </div>
                     <div> youtube embed link here optional pog</div>
 
-                    <div className="mt-32"> comments</div>
+                    {/* <div className="mt-32"> comments</div> */}
+                    <div className="w-full">
+                    <DisplayComments typeId={keeb.id}/>
+
+                    </div>
                     {/* lets integrate replys but keep keeby styling looks great */}
                 </div>
             ) : (

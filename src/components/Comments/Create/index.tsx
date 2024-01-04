@@ -3,15 +3,29 @@ import { useState } from "react";
 import { api } from "~/utils/api";
 import React from "react";
 
-export default function CreateComment({ postId }: { postId: string }) {
+interface CreateCommentProps {
+    typeId: string;
+    type: string;
+}
+
+interface CommentData {
+    text: string;
+    userId: string;
+    type: string;
+    typeId: string;
+}
+
+export default function CreateComment({ typeId, type }: CreateCommentProps) {
     const [text, setText] = useState("");
     const { data: session } = useSession();
+
+    // send to log in page if not logged in
 
     const ctx = api.useContext();
 
     const { mutate } = api.comment.create.useMutation({
         onSuccess: () => {
-            void ctx.comment.getByPostId.invalidate();
+            void ctx.comment.getAllByTypeId.invalidate();
         },
     });
 
@@ -22,13 +36,12 @@ export default function CreateComment({ postId }: { postId: string }) {
             const data = {
                 text,
                 userId: session.user.id,
-                postId: postId,
+                type: type,
+                typeId: typeId,
             };
 
             setText("");
             return mutate(data);
-        } else {
-            throw new Error("Hot Toast Incoming!!!");
         }
     };
 

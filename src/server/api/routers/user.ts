@@ -14,14 +14,14 @@ export const userRouter = createTRPCRouter({
     getSeller: publicProcedure
         .input(z.string())
         .query(async ({ input, ctx }) => {
-            const user = await ctx.prisma.user.findUnique({
+            const seller = await ctx.prisma.user.findUnique({
                 where: { id: input },
             });
             const allSellerStars = await ctx.prisma.review.aggregate({
                 where: { sellerId: input },
                 _avg: { starRating: true },
             });
-            return { user, allSellerStars };
+            return { seller, allSellerStars };
         }),
     usernameCheck: publicProcedure
         .input(z.string())

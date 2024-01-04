@@ -17,7 +17,8 @@ export default function SellerPublicProfile({
 
     return (
         <div className="flex justify-between">
-            <div>{}</div>
+            <div>seller profile if profile otherwise bmo</div>
+            <div>seller avg stars here</div>
         </div>
     );
 }
