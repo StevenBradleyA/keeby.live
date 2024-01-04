@@ -6,6 +6,23 @@ import {
 } from "~/server/api/trpc";
 
 export const userRouter = createTRPCRouter({
+    getOneUser: publicProcedure.input(z.string()).query(({ input, ctx }) => {
+        return ctx.prisma.user.findUnique({
+            where: { id: input },
+        });
+    }),
+    getSeller: publicProcedure
+        .input(z.string())
+        .query(async ({ input, ctx }) => {
+            const user = await ctx.prisma.user.findUnique({
+                where: { id: input },
+            });
+            const allSellerStars = await ctx.prisma.review.aggregate({
+                where: { sellerId: input },
+                _avg: { starRating: true },
+            });
+            return { user, allSellerStars };
+        }),
     usernameCheck: publicProcedure
         .input(z.string())
         .query(async ({ input, ctx }) => {
