@@ -367,21 +367,24 @@ li:not(:first-child) span {
         #1c0466 90%,
         #f284f8 100%
     );
+    background-size: 200%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     -webkit-text-stroke: 1.5px #f5f5f5;
     font-style: italic;
-    /* margin: 0; */
-    line-height: 1.2;
-    /* font-weight: 900; */
+    z-index: 10;
 }
 
+/* line-height: 1.2; */
 .listing-page-title-small {
     color: #f975e7;
     transform: rotate(-20deg);
     -webkit-transform: rotate(-20deg);
+    -webkit-text-fill-color:#f008e4;
     -webkit-text-stroke: 0.5px #f008e4;
     -webkit-filter: drop-shadow(2px 2px 20px#f008e4);
+    z-index: 10;
+
 }
 
 .pog-title {

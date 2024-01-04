@@ -1,12 +1,9 @@
 import type { Listing } from "@prisma/client";
 import { api } from "~/utils/api";
-import Image from "next/image";
-import { useEffect, useState } from "react";
 import ListingGallery from "./listingGallery";
 
 interface DisplayListingPhotosProps {
     keeb: Listing;
-    // index: number;
 }
 
 export default function DisplayListingPhotos({
