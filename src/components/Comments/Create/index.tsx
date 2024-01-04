@@ -21,6 +21,8 @@ interface ErrorsObj {
 
 export default function CreateComment({ typeId, type }: CreateCommentProps) {
     const [text, setText] = useState<string>("");
+    const [row, setRow] = useState<number>(1);
+
     const [errors, setErrors] = useState<ErrorsObj>({});
     const [createSelected, setCreateSelected] = useState<boolean>(false);
     const { data: session } = useSession();
@@ -36,10 +38,17 @@ export default function CreateComment({ typeId, type }: CreateCommentProps) {
         },
     });
 
+    const handleRowIncrease = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+            setRow((prevRow) => prevRow + 1); // Increase the row count
+        }
+    };
+
     const cancelComment = (e: React.FormEvent) => {
         e.preventDefault();
         setText("");
-        setCreateSelected(false)
+        setCreateSelected(false);
+        setRow(1);
     };
 
     const submit = (e: React.FormEvent) => {
@@ -59,7 +68,8 @@ export default function CreateComment({ typeId, type }: CreateCommentProps) {
             };
 
             setText("");
-            setCreateSelected(false)
+            setCreateSelected(false);
+            setRow(1);
             return mutate(data);
         }
     };
@@ -75,16 +85,18 @@ export default function CreateComment({ typeId, type }: CreateCommentProps) {
     }, [text]);
 
     return (
-        <form className="flex flex-col justify-between gap-5">
-            <input
+        <form className="mb-10 flex flex-col justify-between gap-5">
+            <textarea
                 className="comment-input-box w-full rounded-lg border-none bg-pogGray p-2 outline-none"
                 value={text}
                 placeholder="Write a comment..."
                 onChange={(e) => setText(e.target.value)}
                 onFocus={() => setCreateSelected(true)}
+                onKeyDown={handleRowIncrease}
+                rows={row}
             />
             {createSelected && (
-                <div className="flex ">
+                <div className="flex justify-end gap-5">
                     <button
                         className="rounded-md border text-slate-200"
                         onClick={cancelComment}
