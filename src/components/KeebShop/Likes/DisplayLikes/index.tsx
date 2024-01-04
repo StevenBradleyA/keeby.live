@@ -1,5 +1,6 @@
 import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
+import CreateLike from "../Create";
 
 interface DisplayLikesProps {
     typeId: string;
@@ -19,31 +20,18 @@ export default function DisplayLikes({ typeId, type }: DisplayLikesProps) {
         typeId: typeId,
     });
 
-    const { mutate } = api.like.create.useMutation({
-        onSuccess: () => {
-            void ctx.comment.getAllByTypeId.invalidate();
-        },
-    });
-
-    const submit = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (session && session.user && session.user.id) {
-            const data = {
-                userId: session.user.id,
-                type: type,
-                typeId: typeId,
-            };
-            mutate(data);
-        }
-    };
-
-    // if the comment is unliked we want to create
-    // if the comment is liked we want to delete
-
     return (
         <div className="flex gap-2">
             <div>{totalLikes}</div>
-            <button onClick={submit}>like</button>
+            {session && session.user && session.user.id ? (
+                <CreateLike
+                    userId={session.user.id}
+                    type={type}
+                    typeId={typeId}
+                />
+            ) : (
+                <button>like</button>
+            )}
         </div>
     );
 }
