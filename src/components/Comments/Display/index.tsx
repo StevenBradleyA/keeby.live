@@ -2,6 +2,7 @@ import { api } from "~/utils/api";
 import CreateComment from "../Create";
 import Image from "next/image";
 import keebo from "@public/Profile/profile-keebo.jpg";
+import DisplayLikes from "~/components/KeebShop/Likes/DisplayLikes";
 
 interface DisplayCommentsProps {
     typeId: string;
@@ -46,10 +47,13 @@ export default function DisplayComments({ typeId }: DisplayCommentsProps) {
                                 )}
                             </div>
                             <div className=" w-full flex-wrap ">
-                                <div >{e.user.name}</div>
-                                <div className="whitespace-pre-wrap"> {e.text}</div>
+                                <div>{e.user.name}</div>
+                                <div className="whitespace-pre-wrap">
+                                    {" "}
+                                    {e.text}
+                                </div>
                                 <div className="flex justify-between">
-                                    <button>like</button>
+                                    <DisplayLikes typeId={e.id} type="COMMENT" />
                                     <button>reply</button>
                                 </div>
                             </div>

@@ -56,10 +56,9 @@ model Comment {
     type   String
     typeId String
 
-    user User   @relation(fields: [userId], references: [id])
+    user User @relation(fields: [userId], references: [id])
     // listing Listing? @relation(fields: [listingId], references: [id])
     // post    Post?    @relation(fields: [postId], references: [id])
-    Like Like[]
 
     // Self-referential relation fields
     //  i want to setup replies I think that'd be cool. needs testing tho
@@ -95,16 +94,16 @@ model Keeb {
 }
 
 model Like {
-    id        String @id @default(cuid())
-    userId    String
-    commentId String
+    id     String @id @default(cuid())
+    userId String
+    typeId String
+    type   String
     // todo we also want posts to have likes too so we may just want a reference type here
 
-    user    User    @relation(fields: [userId], references: [id])
-    comment Comment @relation(fields: [commentId], references: [id])
+    user User @relation(fields: [userId], references: [id])
 
     // This unique constraint prevents duplicate likes from the same user on the same comment.
-    @@unique([userId, commentId], name: "unique_user_comment_like")
+    @@unique([userId, typeId, type], name: "unique_user_type_like")
 }
 
 model Review {
