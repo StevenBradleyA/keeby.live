@@ -9,6 +9,7 @@ interface DisplayCommentsProps {
 
 export default function DisplayComments({ typeId }: DisplayCommentsProps) {
     // TODO integrate likes and reply logic
+    // TODO filter comments by likes  and new
 
     const { data: comments, isLoading } = api.comment.getAllByTypeId.useQuery({
         type: "LISTING",

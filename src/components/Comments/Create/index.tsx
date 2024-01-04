@@ -85,7 +85,7 @@ export default function CreateComment({ typeId, type }: CreateCommentProps) {
     }, [text]);
 
     return (
-        <form className="mb-10 flex flex-col justify-between gap-5">
+        <form className="mb-5 flex flex-col justify-between gap-5">
             <textarea
                 className="comment-input-box w-full rounded-lg border-none bg-pogGray p-2 outline-none"
                 value={text}
