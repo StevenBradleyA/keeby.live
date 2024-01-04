@@ -25,10 +25,10 @@ model Listing {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    userId  String
+    userId String
     // buyerId String
 
-    user  User @relation(fields: [userId], references: [id])
+    user User @relation(fields: [userId], references: [id])
     // buyer User @relation(fields: [buyerId], references: [id])
 
     // comments Comment[]
@@ -60,6 +60,12 @@ model Comment {
     // listing Listing? @relation(fields: [listingId], references: [id])
     // post    Post?    @relation(fields: [postId], references: [id])
     Like Like[]
+
+    // Self-referential relation fields
+    //  i want to setup replies I think that'd be cool. needs testing tho
+    // parentId String?   // ID of the parent comment, null if top-level comment
+    // parent   Comment?  @relation("ParentComment", fields: [parentId], references: [id])
+    // replies  Comment[] @relation("ParentComment")
 }
 
 model Game {

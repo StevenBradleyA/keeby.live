@@ -41,10 +41,12 @@ export default function ListingPage() {
                         <h3> 10 comments</h3>
                     </div>
                     <DisplayListingPhotos keeb={keeb} />
+
+                    <div> title, switches, keycaps here</div>
                     <p className="mt-5 text-2xl">{keeb.text}</p>
 
-                    <div className="mt-20 flex w-full justify-center bg-red-300">
-                        <div className="flex w-1/2 flex-col bg-black px-10">
+                    <div className="mt-20 flex w-full justify-center ">
+                        <div className="flex w-1/2 flex-col bg-black px-10 rounded-xl">
                             <div className="flex justify-between">
                                 <div className="text-4xl">{`Price: $${keeb.price}`}</div>
                                 <div className="flex flex-col">
