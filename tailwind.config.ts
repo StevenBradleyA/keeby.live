@@ -7,6 +7,7 @@ export default {
             backgroundColor: {
                 dark: "#222",
                 keebyGray: "#2f2f2f",
+                pogGray: "#2d2d2d",
                 testTwo: "#121212",
                 testFour: "#161618",
                 testFive: "#181818",

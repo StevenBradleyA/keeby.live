@@ -409,7 +409,13 @@ li:not(:first-child) span {
 
 /* ------    comments   ------  */
 
-
+.comment-input-box {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  .comment-input-box:focus {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  }
 
 
 

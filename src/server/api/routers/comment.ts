@@ -25,15 +25,6 @@ export const commentRouter = createTRPCRouter({
             });
         }),
 
-    // getByPostId: publicProcedure.input(z.string()).query(({ ctx, input }) => {
-    //     return ctx.prisma.comment.findMany({
-    //         where: { postId: input },
-    //         include: {
-    //             user: { select: { name: true } },
-    //         },
-    //     });
-    // }),
-
     create: protectedProcedure
         .input(
             z.object({

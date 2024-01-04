@@ -8,6 +8,8 @@ interface DisplayCommentsProps {
 }
 
 export default function DisplayComments({ typeId }: DisplayCommentsProps) {
+    // TODO integrate likes and reply logic
+
     const { data: comments, isLoading } = api.comment.getAllByTypeId.useQuery({
         type: "LISTING",
         typeId: typeId,
@@ -42,9 +44,13 @@ export default function DisplayComments({ typeId }: DisplayCommentsProps) {
                                     />
                                 )}
                             </div>
-                            <div className="">
+                            <div className=" w-full flex-wrap bg-red-300">
                                 <div>{e.user.name}</div>
                                 <div> {e.text}</div>
+                                <div className="flex justify-between">
+                                    <button>like</button>
+                                    <button>reply</button>
+                                </div>
                             </div>
                         </div>
                     );
