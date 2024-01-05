@@ -26,10 +26,19 @@ export const userRouter = createTRPCRouter({
     usernameCheck: publicProcedure
         .input(z.string())
         .query(async ({ input, ctx }) => {
-            const user = await ctx.prisma.user.findFirst({
-                where: { username: input },
-            });
-            return Boolean(user);
+            try {
+                // Check if the username exists in the database
+                const user = await ctx.prisma.user.findFirst({
+                    where: { username: input },
+                });
+
+                // Return true if the user exists, false otherwise
+                return Boolean(user);
+            } catch (error) {
+                // Handle any errors that occur during the database query
+                console.error("Error checking username:", error);
+                throw new Error("Error checking username");
+            }
         }),
     updateNewUser: protectedProcedure
         .input(

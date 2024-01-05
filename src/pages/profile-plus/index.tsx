@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { uploadFileToS3 } from "~/utils/aws";
 import Image from "next/image";
 import toast from "react-hot-toast";
+import _ from "lodash";
 
 interface ErrorsObj {
     image?: string;
@@ -35,6 +36,7 @@ interface UserData {
 export default function ProfilePlus() {
     // todo only allow png or jpg
     // todo style ++ double check weird error handling for username check
+    // npm install lodash
 
     const { data: session, update } = useSession();
     const hasProfile = session?.user.hasProfile;
@@ -42,6 +44,8 @@ export default function ProfilePlus() {
     const router = useRouter();
 
     const [username, setUsername] = useState("");
+    const [debouncedUsername, setDebouncedUsername] = useState(username);
+
     const [keyboard, setKeyboard] = useState("");
     const [switches, setSwitches] = useState("");
     const [keycaps, setKeycaps] = useState("");
@@ -52,9 +56,13 @@ export default function ProfilePlus() {
         useState<boolean>(false);
     const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-    const [isAvailable, setIsAvailable] = useState<boolean>(false);
 
-    const { data: usernameCheck } = api.user.usernameCheck.useQuery(username);
+    const { data: usernameCheck } = api.user.usernameCheck.useQuery(
+        debouncedUsername,
+        {
+            enabled: !!debouncedUsername, // Only run query if debouncedUsername is not empty
+        }
+    );
 
     const { mutate } = api.user.updateNewUser.useMutation({
         onSuccess: async () => {
@@ -83,6 +91,7 @@ export default function ProfilePlus() {
         if (!username.length) {
             errorsObj.username = "Please provide a username";
         }
+
         if (!keyboard.length) {
             errorsObj.keyboard = "Please provide your keyboard";
         }
@@ -107,13 +116,24 @@ export default function ProfilePlus() {
         setErrors(errorsObj);
     }, [imageFiles, username, keyboard, switches, keycaps]);
 
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            setDebouncedUsername(username);
+        }, 500); // 500ms delay
+
+        return () => {
+            clearTimeout(handler);
+        };
+    }, [username]);
+
     const submit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        setIsAvailable(!usernameCheck);
         setEnableErrorDisplay(true);
 
-        if (!Object.values(errors).length && isAvailable && !isSubmitting) {
+        console.log("uhhh", usernameCheck);
+
+        if (!Object.values(errors).length && !usernameCheck && !isSubmitting) {
             try {
                 const sessionUserId = session?.user?.id;
 
@@ -200,8 +220,11 @@ export default function ProfilePlus() {
                             {errors.username}
                         </p>
                     )}
-                    {enableErrorDisplay && errors.taken && (
-                        <p className="text-xl text-red-400">{errors.taken}</p>
+                    {enableErrorDisplay && usernameCheck && (
+                        <p className="text-xl text-red-400">
+                            Username already in use. Please choose a different
+                            username
+                        </p>
                     )}
 
                     <div className="mb-5 flex justify-center text-xl">

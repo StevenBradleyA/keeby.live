@@ -98,11 +98,9 @@ model Like {
     userId String
     typeId String
     type   String
-    // todo we also want posts to have likes too so we may just want a reference type here
 
     user User @relation(fields: [userId], references: [id])
 
-    // This unique constraint prevents duplicate likes from the same user on the same comment.
     @@unique([userId, typeId, type], name: "unique_user_type_like")
 }
 
