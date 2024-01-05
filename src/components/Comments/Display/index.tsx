@@ -3,6 +3,8 @@ import CreateComment from "../Create";
 import Image from "next/image";
 import keebo from "@public/Profile/profile-keebo.jpg";
 import DisplayLikes from "~/components/KeebShop/Likes/DisplayLikes";
+import MainFooter from "~/components/Footer";
+import Link from "next/link";
 
 interface DisplayCommentsProps {
     typeId: string;
@@ -22,44 +24,40 @@ export default function DisplayComments({ typeId }: DisplayCommentsProps) {
             <div>{`${comments ? comments.length : 0} COMMENTS`} </div>
             <CreateComment typeId={typeId} type={"LISTING"} />
             {comments &&
-                comments.map((e, i) => {
-                    console.log(e, "heyyyy");
-
-                    return (
-                        <div key={i} className="flex">
-                            <div className="">
-                                {e.user.profile === null ? (
-                                    <Image
-                                        src={keebo}
-                                        alt="profile"
-                                        height={600}
-                                        width={600}
-                                        className="h-12 w-12 object-cover"
-                                    />
-                                ) : (
-                                    <Image
-                                        src={e.user.profile}
-                                        alt="profile"
-                                        height={600}
-                                        width={600}
-                                        className="h-12 w-12 object-cover"
-                                    />
-                                )}
-                            </div>
-                            <div className=" w-full flex-wrap ">
-                                <div>{e.user.name}</div>
-                                <div className="whitespace-pre-wrap">
-                                    {" "}
-                                    {e.text}
-                                </div>
-                                <div className="flex justify-between">
-                                    <DisplayLikes typeId={e.id} type="COMMENT" />
-                                    <button>reply</button>
-                                </div>
+                comments.map((e, i) => (
+                    <div key={i} className="mb-5 flex gap-2">
+                        <div className="">
+                            {e.user.profile === null ? (
+                                <Image
+                                    src={keebo}
+                                    alt="profile"
+                                    height={600}
+                                    width={600}
+                                    className="h-12 w-12 object-cover"
+                                />
+                            ) : (
+                                <Image
+                                    src={e.user.profile}
+                                    alt="profile"
+                                    height={600}
+                                    width={600}
+                                    className="h-12 w-12 object-cover"
+                                />
+                            )}
+                        </div>
+                        <div className=" w-full flex-wrap text-sm ">
+                            <Link href="/profile" className="text-darkGray">
+                                {e.user.username}
+                            </Link>
+                            <div className="whitespace-pre-wrap">{e.text}</div>
+                            <div className="flex justify-between">
+                                <DisplayLikes typeId={e.id} type="COMMENT" />
+                                <button>reply</button>
                             </div>
                         </div>
-                    );
-                })}
+                    </div>
+                ))}
+            <MainFooter />
         </>
     );
 }

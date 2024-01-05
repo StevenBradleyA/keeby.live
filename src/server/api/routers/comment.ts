@@ -20,7 +20,9 @@ export const commentRouter = createTRPCRouter({
             return ctx.prisma.comment.findMany({
                 where: { type: input.type, typeId: input.typeId },
                 include: {
-                    user: { select: { id: true, name: true, profile: true } },
+                    user: {
+                        select: { id: true, username: true, profile: true },
+                    },
                 },
             });
         }),
@@ -32,7 +34,6 @@ export const commentRouter = createTRPCRouter({
                 userId: z.string(),
                 type: z.string(),
                 typeId: z.string(),
-
             })
         )
         .mutation(async ({ input, ctx }) => {
