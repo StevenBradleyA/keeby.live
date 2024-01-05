@@ -15,20 +15,37 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Post {
+model Listing {
     id        String   @id @default(cuid())
     title     String
     text      String
     price     Int
-    stock     Int
+    active    Boolean  @default(false)
+    favorite  Boolean  @default(false)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    userId String
+    // buyerId String
+
+    user User @relation(fields: [userId], references: [id])
+    // buyer User @relation(fields: [buyerId], references: [id])
+
+    // comments Comment[]
+    reviews Review[]
+}
+
+model Post {
+    id        String   @id @default(cuid())
+    title     String
+    text      String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
     userId String
 
-    user     User      @relation(fields: [userId], references: [id])
-    comments Comment[]
-    reviews  Review[]
+    user User @relation(fields: [userId], references: [id])
+    // comments Comment[]
 }
 
 model Comment {
@@ -36,10 +53,55 @@ model Comment {
     text String
 
     userId String
-    postId String
+    type   String
+    typeId String
 
     user User @relation(fields: [userId], references: [id])
-    post Post @relation(fields: [postId], references: [id])
+    // listing Listing? @relation(fields: [listingId], references: [id])
+    // post    Post?    @relation(fields: [postId], references: [id])
+
+    // Self-referential relation fields
+    //  i want to setup replies I think that'd be cool. needs testing tho
+    // parentId String?   // ID of the parent comment, null if top-level comment
+    // parent   Comment?  @relation("ParentComment", fields: [parentId], references: [id])
+    // replies  Comment[] @relation("ParentComment")
+}
+
+model Game {
+    id        String   @id @default(cuid())
+    wpm       Int
+    mode      String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    userId String
+    keebId String?
+
+    user User  @relation(fields: [userId], references: [id])
+    keeb Keeb? @relation(fields: [keebId], references: [id])
+}
+
+model Keeb {
+    id       String @id @default(cuid())
+    name     String
+    switches String
+    keycaps  String
+
+    userId String
+
+    user User   @relation(fields: [userId], references: [id])
+    Game Game[]
+}
+
+model Like {
+    id     String @id @default(cuid())
+    userId String
+    typeId String
+    type   String
+
+    user User @relation(fields: [userId], references: [id])
+
+    @@unique([userId, typeId, type], name: "unique_user_type_like")
 }
 
 model Review {
@@ -49,38 +111,27 @@ model Review {
     createdAt  DateTime @default(now())
     updatedAt  DateTime @updatedAt
 
-    userId String
-    postId String
+    sellerId  String
+    userId    String
+    listingId String
 
-    user User @relation(fields: [userId], references: [id])
-    post Post @relation(fields: [postId], references: [id])
+    seller  User    @relation("SellerRelation", fields: [sellerId], references: [id])
+    user    User    @relation("UserRelation", fields: [userId], references: [id])
+    listing Listing @relation(fields: [listingId], references: [id])
 }
 
-model GCHBooking {
+model Transaction {
     id        String   @id @default(cuid())
-    date      DateTime
-    status    String
+    cost      Int
     type      String
+    status    String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-
-    userId String
-
-    user           User             @relation(fields: [userId], references: [id])
-    GCHTransaction GCHTransaction[]
-}
-
-model GCHTransaction {
-    id     String @id @default(cuid())
-    cost   Int
-    type   String
-    status String
 
     userId    String
     bookingId String
 
-    user    User       @relation(fields: [userId], references: [id])
-    booking GCHBooking @relation(fields: [bookingId], references: [id])
+    user User @relation(fields: [userId], references: [id])
 }
 
 model Images {
@@ -130,16 +181,28 @@ model User {
     email         String?   @unique
     emailVerified DateTime?
     image         String?
-    notes         String?
+    profile       String?
+    rank          String?
+    tag           String?
+    username      String?   @unique
 
-    accounts     Account[]
-    sessions     Session[]
-    posts        Post[]
-    comments     Comment[]
-    reviews      Review[]
-    bookings     GCHBooking[]
-    transactions GCHTransaction[]
-    GCHImages    Images[]
+    isVerified   Boolean @default(false)
+    isAdmin      Boolean @default(false)
+    hasProfile   Boolean @default(false)
+    isNewsletter Boolean @default(false)
+
+    accounts        Account[]
+    sessions        Session[]
+    listings        Listing[]
+    posts           Post[]
+    comments        Comment[]
+    transactions    Transaction[]
+    images          Images[]
+    games           Game[]
+    keebs           Keeb[]
+    Like            Like[]
+    Review          Review[]      @relation("UserRelation")
+    reviewsReceived Review[]      @relation("SellerRelation")
 }
 
 model VerificationToken {

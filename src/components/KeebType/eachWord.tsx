@@ -5,6 +5,7 @@ type EachWordProps = {
     index: number;
     activeWordIndex: number;
 };
+// word active or word or word error
 
 export default function EachWord({
     word,

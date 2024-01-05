@@ -44,6 +44,30 @@ export const imageRouter = createTRPCRouter({
                 },
             });
         }),
+
+    getCombinedListingImages: publicProcedure
+        .input(
+            z.object({
+                resourceId: z.string(),
+            })
+        )
+        .query(async ({ ctx, input }) => {
+            const listingImages = await ctx.prisma.images.findMany({
+                where: {
+                    resourceType: "LISTING",
+                    resourceId: input.resourceId,
+                },
+            });
+            const listingPreviewImages = await ctx.prisma.images.findMany({
+                where: {
+                    resourceType: "LISTINGPREVIEW",
+                    resourceId: input.resourceId,
+                },
+            });
+
+            return [...listingPreviewImages, ...listingImages];
+        }),
+
     create: protectedProcedure
         .input(
             z.object({

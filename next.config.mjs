@@ -6,18 +6,42 @@ await import("./src/env.mjs");
 
 /** @type {import("next").NextConfig} */
 const config = {
-  reactStrictMode: true,
+    reactStrictMode: true,
 
-  /**
-   * If you have `experimental: { appDir: true }` set, then you must comment the below `i18n` config
-   * out.
-   *
-   * @see https://github.com/vercel/next.js/issues/41980
-   */
-  i18n: {
-    locales: ["en"],
-    defaultLocale: "en",
-  },
+    /**
+     * If you have `experimental: { appDir: true }` set, then you must comment the below `i18n` config
+     * out.
+     *
+     * @see https://github.com/vercel/next.js/issues/41980
+     */
+
+    webpack: (config, { isServer }) => {
+        // Add a new rule to handle .glb files
+        config.module.rules.push({
+            test: /\.(glb|gltf)$/,
+            use: {
+                loader: "file-loader",
+                options: {
+                    publicPath: "/_next",
+                    name: "static/media/[name].[hash].[ext]",
+                },
+            },
+        });
+
+        return config;
+    },
+    i18n: {
+        locales: ["en"],
+        defaultLocale: "en",
+    },
+    images: {
+        domains: [
+            // "scontent.cdninstagram.com",
+            // "genevieveclairehair.s3.us-west-2.amazonaws.com",
+            "s3.us-west-2.amazonaws.com",
+            "lh3.googleusercontent.com",
+        ],
+    },
 };
 
 export default config;

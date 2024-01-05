@@ -23,6 +23,8 @@ export const env = createEnv({
         // Add `.min(1) on ID and SECRET if you want to make sure they're not empty
         DISCORD_CLIENT_ID: z.string(),
         DISCORD_CLIENT_SECRET: z.string(),
+        REDDIT_CLIENT_ID: z.string(),
+        REDDIT_CLIENT_SECRET: z.string(),
         GOOGLE_CLIENT_ID: z.string(),
         GOOGLE_CLIENT_SECRET: z.string(),
         GITHUB_CLIENT_ID: z.string(),
@@ -61,6 +63,8 @@ export const env = createEnv({
         GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
         GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
         GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
+        REDDIT_CLIENT_ID: process.env.REDDIT_CLIENT_ID,
+        REDDIT_CLIENT_SECRET: process.env.REDDIT_CLIENT_SECRET,
         NEXT_PUBLIC_AWS_ACCESS_KEY_ID:
             process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID,
         NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY:

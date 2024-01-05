@@ -1,9 +1,13 @@
 import { createTRPCRouter } from "~/server/api/trpc";
-import { postRouter } from "./routers/post";
-import { reviewRouter } from "./routers/review";
 import { commentRouter } from "./routers/comment";
 import { imageRouter } from "./routers/image";
-import { bookingRouter } from "./routers/booking";
+import { keebRouter } from "./routers/keeb";
+import { postRouter } from "./routers/post";
+import { reviewRouter } from "./routers/review";
+import { userRouter } from "./routers/user";
+import { listingRouter } from "./routers/listing";
+import { gameRouter } from "./routers/game";
+import { likeRouter } from "./routers/like";
 
 /**
  * This is the primary router for your server.
@@ -11,11 +15,15 @@ import { bookingRouter } from "./routers/booking";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
+    comment: commentRouter,
+    game: gameRouter,
+    image: imageRouter,
+    keeb: keebRouter,
+    like: likeRouter,
+    listing: listingRouter,
     post: postRouter,
     review: reviewRouter,
-    comment: commentRouter,
-    image: imageRouter,
-    booking: bookingRouter,
+    user: userRouter,
 });
 
 // export type definition of API

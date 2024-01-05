@@ -5,66 +5,104 @@ import {
     protectedProcedure,
 } from "~/server/api/trpc";
 
+import { removeFileFromS3 } from "../utils";
+
 export const postRouter = createTRPCRouter({
     getAll: publicProcedure.query(({ ctx }) => {
         return ctx.prisma.post.findMany();
     }),
-
+    // todo what about separate get routes for different filters? how do we keep track of popularity?? page views comments likes etc.
     create: protectedProcedure
-        .input(
-            z.object({
-                title: z.string(),
-                text: z.string(),
-                price: z.number(),
-                stock: z.number(),
-                userId: z.string(),
-            })
-        )
-        .mutation(async ({ input, ctx }) => {
-            if (ctx.session.user.id === input.userId) {
-                const newPost = await ctx.prisma.post.create({ data: input });
+    .input(
+        z.object({
+            title: z.string(),
+            text: z.string(),
+            preview: z.number(),
+            userId: z.string(),
+            images: z.array(
+                z.object({
+                    link: z.string(),
+                })
+            ),
+        })
+    )
+    .mutation(async ({ input, ctx }) => {
+        const { title, text, preview, userId, images } = input;
 
-                return newPost;
-            }
+        if (ctx.session.user.id === userId) {
+            const newListing = await ctx.prisma.post.create({
+                data: { title, text, userId },
+            });
 
-            throw new Error("Invalid userId");
-        }),
+            const createdImages = await Promise.all(
+                images.map(async (image, i) => {
+                    const imageType =
+                        i === preview ? "POSTPREVIEW" : "POST";
 
-    update: protectedProcedure
+                    return ctx.prisma.images.create({
+                        data: {
+                            link: image.link,
+                            resourceType: imageType,
+                            resourceId: newListing.id,
+                            userId: newListing.userId,
+                        },
+                    });
+                })
+            );
+
+            return {
+                newListing,
+                createdImages,
+            };
+        }
+
+        throw new Error("Invalid userId");
+    }),
+    delete: protectedProcedure
         .input(
             z.object({
                 id: z.string(),
                 userId: z.string(),
-                title: z.string().optional(),
-                text: z.string().optional(),
-                price: z.number().optional(),
-                stock: z.number().optional(),
+                imageIds: z.array(z.string()),
             })
         )
         .mutation(async ({ input, ctx }) => {
-            if (ctx.session.user.id === input.userId) {
-                const updatedPost = await ctx.prisma.post.update({
-                    where: {
-                        id: input.id,
-                    },
-                    data: input,
-                });
+            const { id, imageIds, userId } = input;
+            if (ctx.session.user.id === userId || ctx.session.user.isAdmin) {
+                if (imageIds.length > 0) {
+                    const images = await ctx.prisma.images.findMany({
+                        where: {
+                            id: { in: imageIds },
+                        },
+                    });
+                    const removeFilePromises = images.map(async (image) => {
+                        try {
+                            await removeFileFromS3(image.link);
+                        } catch (err) {
+                            console.error(
+                                `Failed to remove file from S3: `,
+                                err
+                            );
+                            throw new Error(`Failed to remove file from S3: `);
+                        }
+                    });
 
-                return updatedPost;
-            }
+                    await Promise.all(removeFilePromises);
 
-            throw new Error("Invalid userId");
-        }),
+                    await ctx.prisma.images.deleteMany({
+                        where: {
+                            id: { in: imageIds },
+                        },
+                    });
+                }
 
-    delete: protectedProcedure
-        .input(z.object({ id: z.string(), userId: z.string() }))
-        .mutation(async ({ input, ctx }) => {
-            if (ctx.session.user.id === input.userId) {
-                await ctx.prisma.post.delete({ where: { id: input.id } });
+                await ctx.prisma.post.delete({ where: { id: id } });
 
                 return "Successfully deleted";
             }
 
             throw new Error("Invalid userId");
         }),
+
+   
 });

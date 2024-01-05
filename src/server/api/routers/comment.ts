@@ -9,22 +9,30 @@ export const commentRouter = createTRPCRouter({
     getAll: publicProcedure.query(({ ctx }) => {
         return ctx.prisma.comment.findMany();
     }),
-
-    getByPostId: publicProcedure.input(z.string()).query(({ ctx, input }) => {
-        return ctx.prisma.comment.findMany({
-            where: { postId: input },
-            include: {
-                user: { select: { name: true } },
-            },
-        });
-    }),
+    getAllByTypeId: publicProcedure
+        .input(
+            z.object({
+                type: z.string(),
+                typeId: z.string(),
+            })
+        )
+        .query(({ ctx, input }) => {
+            return ctx.prisma.comment.findMany({
+                where: { type: input.type, typeId: input.typeId },
+                include: {
+                    user: { select: { id: true, name: true, profile: true } },
+                },
+            });
+        }),
 
     create: protectedProcedure
         .input(
             z.object({
                 text: z.string(),
                 userId: z.string(),
-                postId: z.string(),
+                type: z.string(),
+                typeId: z.string(),
+
             })
         )
         .mutation(async ({ input, ctx }) => {
