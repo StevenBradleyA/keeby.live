@@ -60,8 +60,8 @@ export default function DisplayComments({ typeId }: DisplayCommentsProps) {
             <CreateComment typeId={typeId} type={"LISTING"} />
             {comments &&
                 comments.map((comment, i) => (
-                    <div key={i} className="mb-5 flex flex-col">
-                        <div className="mb-5 flex gap-2">
+                    <div key={i} className="flex flex-col mb-5">
+                        <div className="flex gap-2">
                             <div className="">
                                 {comment.user.profile === null ? (
                                     <Image
@@ -114,7 +114,10 @@ export default function DisplayComments({ typeId }: DisplayCommentsProps) {
                         </div>
 
                         {comment.replies && (
-                            <button onClick={() => toggleReplies(comment.id)}>
+                            <button
+                                onClick={() => toggleReplies(comment.id)}
+                                className="ml-14 flex justify-start text-sm text-green-500"
+                            >
                                 {openReplies.includes(comment.id)
                                     ? "hide replies"
                                     : "show replies"}
@@ -130,7 +133,7 @@ export default function DisplayComments({ typeId }: DisplayCommentsProps) {
                                                 alt="profile"
                                                 height={600}
                                                 width={600}
-                                                className="h-12 w-12 object-cover"
+                                                className="h-10 w-10 object-cover"
                                             />
                                         ) : (
                                             <Image
@@ -138,7 +141,7 @@ export default function DisplayComments({ typeId }: DisplayCommentsProps) {
                                                 alt="profile"
                                                 height={600}
                                                 width={600}
-                                                className="h-12 w-12 object-cover"
+                                                className="h-10 w-10 object-cover"
                                             />
                                         )}
                                     </div>

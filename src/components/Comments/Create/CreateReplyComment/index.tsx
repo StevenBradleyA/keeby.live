@@ -1,6 +1,8 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { api } from "~/utils/api";
+import Image from "next/image";
+import keebo from "@public/Profile/profile-keebo.jpg";
 
 interface CreateReplyCommentProps {
     type: string;
@@ -40,6 +42,7 @@ export default function CreateReplyComment({
     const { data: session } = useSession();
 
     // send to log in page if not logged in
+    // TODO make it so that submitting a comment opens the hide and removes from show create reply
 
     const ctx = api.useContext();
 
@@ -87,6 +90,8 @@ export default function CreateReplyComment({
             setText("");
             setCreateSelected(false);
             setRow(1);
+            const newReplies = showCreateReply.filter((id) => id !== parentId);
+            setShowCreateReply(newReplies);
             return mutate(data);
         }
     };
@@ -101,23 +106,38 @@ export default function CreateReplyComment({
         setErrors(errorsObj);
     }, [text]);
 
-    // const cancelShowCreateReply = (parentId: string) => {
-    //     const newReplies = showCreateReply.filter((id) => id !== parentId);
-    //     setShowCreateReply(newReplies);
-    // };
-
     return (
         <div className="flex flex-col">
             {showCreateReply && (
-                <form className="my-5 flex flex-col justify-between gap-5">
-                    <textarea
-                        className="comment-input-box w-full rounded-lg border-none bg-pogGray p-2 outline-none"
-                        value={text}
-                        placeholder="Add a reply..."
-                        onChange={(e) => setText(e.target.value)}
-                        onKeyDown={handleRowIncrease}
-                        rows={row}
-                    />
+                <form className="mt-2 flex flex-col justify-between gap-5">
+                    <div className="flex">
+                        {session && session.user.profile ? (
+                            <Image
+                                src={session.user.profile}
+                                alt="profile"
+                                height={600}
+                                width={600}
+                                className="h-7 w-7 object-cover"
+                            />
+                        ) : (
+                            <Image
+                                src={keebo}
+                                alt="profile"
+                                height={600}
+                                width={600}
+                                className="h-7 w-7 object-cover"
+                            />
+                        )}
+
+                        <textarea
+                            className="reply-input w-full  border-none bg-transparent p-2 outline-none"
+                            value={text}
+                            placeholder="Add a reply..."
+                            onChange={(e) => setText(e.target.value)}
+                            onKeyDown={handleRowIncrease}
+                            rows={row}
+                        />
+                    </div>
                     <div className="flex justify-end gap-5">
                         <button
                             className="rounded-md border text-slate-200"
