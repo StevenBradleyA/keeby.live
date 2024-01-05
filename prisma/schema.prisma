@@ -52,19 +52,18 @@ model Comment {
     id   String @id @default(cuid())
     text String
 
-    userId String
-    type   String
-    typeId String
+    userId         String
+    type           String
+    typeId         String
+    parentId       String? // ID of the parent comment, null if top-level comment
+    referencedUser String?
 
     user User @relation(fields: [userId], references: [id])
-    // listing Listing? @relation(fields: [listingId], references: [id])
-    // post    Post?    @relation(fields: [postId], references: [id])
 
     // Self-referential relation fields
     //  i want to setup replies I think that'd be cool. needs testing tho
-    // parentId String?   // ID of the parent comment, null if top-level comment
-    // parent   Comment?  @relation("ParentComment", fields: [parentId], references: [id])
-    // replies  Comment[] @relation("ParentComment")
+    parent  Comment?  @relation("ParentComment", fields: [parentId], references: [id])
+    replies Comment[] @relation("ParentComment")
 }
 
 model Game {

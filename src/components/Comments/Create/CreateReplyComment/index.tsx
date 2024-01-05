@@ -1,20 +1,33 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { api } from "~/utils/api";
-import React from "react";
 
-interface CreateCommentProps {
-    typeId: string;
+interface CreateReplyCommentProps {
     type: string;
+    typeId: string;
+    parentId: string;
+    referencedUser?: string;
 }
-
-
 
 interface ErrorsObj {
     text?: string;
 }
 
-export default function CreateComment({ typeId, type }: CreateCommentProps) {
+interface ReplyData {
+    text: string;
+    userId: string;
+    type: string;
+    typeId: string;
+    parentId: string;
+    referencedUser?: string;
+}
+
+export default function CreateReplyComment({
+    type,
+    typeId,
+    parentId,
+    referencedUser,
+}: CreateReplyCommentProps) {
     const [text, setText] = useState<string>("");
     const [row, setRow] = useState<number>(1);
 
@@ -23,11 +36,10 @@ export default function CreateComment({ typeId, type }: CreateCommentProps) {
     const { data: session } = useSession();
 
     // send to log in page if not logged in
-    // TODO comment replys also create comment toooooo
 
     const ctx = api.useContext();
 
-    const { mutate } = api.comment.create.useMutation({
+    const { mutate } = api.comment.createReply.useMutation({
         onSuccess: () => {
             void ctx.comment.getAllWithReplies.invalidate();
         },
@@ -55,13 +67,17 @@ export default function CreateComment({ typeId, type }: CreateCommentProps) {
             session.user.id &&
             !Object.values(errors).length
         ) {
-            const data = {
+            const data: ReplyData = {
                 text,
                 userId: session.user.id,
                 type: type,
                 typeId: typeId,
+                parentId: parentId,
             };
 
+            if (referencedUser) {
+                data.referencedUser = referencedUser;
+            }
             setText("");
             setCreateSelected(false);
             setRow(1);
@@ -84,7 +100,7 @@ export default function CreateComment({ typeId, type }: CreateCommentProps) {
             <textarea
                 className="comment-input-box w-full rounded-lg border-none bg-pogGray p-2 outline-none"
                 value={text}
-                placeholder="Write a comment..."
+                placeholder="Add a reply..."
                 onChange={(e) => setText(e.target.value)}
                 onFocus={() => setCreateSelected(true)}
                 onKeyDown={handleRowIncrease}
