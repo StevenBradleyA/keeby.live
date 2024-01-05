@@ -71,7 +71,7 @@ export default function VerifyUser() {
                 </button>
             ) : (
                 <button
-                    className="mt-20 rounded-xl bg-red-500 px-10 py-2"
+                    className="mt-20 rounded-xl bg-gray-500 px-10 py-2"
                     onClick={handleVerify}
                 >
                     You are already verified :D

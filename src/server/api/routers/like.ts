@@ -26,15 +26,18 @@ export const likeRouter = createTRPCRouter({
                 typeId: z.string(),
             })
         )
-        .query(({ ctx, input }) => {
-            const like = ctx.prisma.like.findFirst({
+        .query(async ({ ctx, input }) => {
+            const like = await ctx.prisma.like.findFirst({
                 where: {
                     userId: input.userId,
                     type: input.type,
                     typeId: input.typeId,
                 },
+                select: {
+                    id: true,
+                },
             });
-            return like !== null 
+            return like ? like.id : null;
         }),
 
     create: protectedProcedure

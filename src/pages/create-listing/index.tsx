@@ -69,7 +69,7 @@ export default function CreateListing() {
                 },
             });
             void ctx.listing.getAll.invalidate();
-            await router.push("/shop");
+            await router.push("/");
         },
     });
 

@@ -9,7 +9,7 @@ interface CreateLikeProps {
 export default function CreateLike({ userId, type, typeId }: CreateLikeProps) {
     const ctx = api.useContext();
 
-    const { data: isLiked } = api.like.checkisLiked.useQuery({
+    const { data: likedId } = api.like.checkisLiked.useQuery({
         userId: userId,
         type: type,
         typeId: typeId,
@@ -18,11 +18,13 @@ export default function CreateLike({ userId, type, typeId }: CreateLikeProps) {
     const { mutate: createLike } = api.like.create.useMutation({
         onSuccess: () => {
             void ctx.like.getAmountByTypeId.invalidate();
+            void ctx.like.checkisLiked.invalidate();
         },
     });
-    const { mutate: deleteLike } = api.like.create.useMutation({
+    const { mutate: deleteLike } = api.like.delete.useMutation({
         onSuccess: () => {
             void ctx.like.getAmountByTypeId.invalidate();
+            void ctx.like.checkisLiked.invalidate();
         },
     });
 
@@ -33,8 +35,14 @@ export default function CreateLike({ userId, type, typeId }: CreateLikeProps) {
             type: type,
             typeId: typeId,
         };
-        if (isLiked) {
-            deleteLike(data);
+        if (likedId) {
+            const deleteData = {
+                id: likedId,
+                userId: userId,
+                type: type,
+                typeId: typeId,
+            };
+            deleteLike(deleteData);
         } else {
             createLike(data);
         }
