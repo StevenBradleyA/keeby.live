@@ -20,9 +20,6 @@ interface ErrorsObj {
 interface Image {
     link: string;
 }
-interface KeebData {
-    userId: string;
-}
 
 interface UserData {
     userId: string;
@@ -36,7 +33,6 @@ interface UserData {
 export default function ProfilePlus() {
     // todo only allow png or jpg
     // todo style ++ double check weird error handling for username check
-    // npm install lodash
 
     const { data: session, update } = useSession();
     const hasProfile = session?.user.hasProfile;

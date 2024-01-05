@@ -93,4 +93,18 @@ export const userRouter = createTRPCRouter({
 
             return { createKeeb, updatedUser };
         }),
+    verifyUser: protectedProcedure
+        .input(z.string())
+        .mutation(async ({ input, ctx }) => {
+            const sessionUserId = ctx.session.user.id;
+
+            if (sessionUserId === input) {
+                return ctx.prisma.user.update({
+                    where: { id: input },
+                    data: { isVerified: true },
+                });
+            } else {
+                throw new Error("Invalid userId");
+            }
+        }),
 });
