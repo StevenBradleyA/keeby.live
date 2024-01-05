@@ -13,9 +13,11 @@ interface DisplayCommentsProps {
 }
 
 export default function DisplayComments({ typeId }: DisplayCommentsProps) {
-    // TODO integrate likes and reply logic
+
     // TODO filter comments by likes  and new
     // TODO add Emoji button for comments
+    // TODO add edit and delete comments 
+    // todo deleting a parent should also delete all reply comments and all likes
 
     const [showCreateReply, setShowCreateReply] = useState<string[]>([]);
     const [openReplies, setOpenReplies] = useState<string[]>([]);
@@ -168,22 +170,6 @@ export default function DisplayComments({ typeId }: DisplayCommentsProps) {
                                         ) : (
                                             <div>{reply.text}</div>
                                         )}
-                                        {/* <div className="flex gap-5 ">
-                                            <DisplayLikes
-                                                typeId={reply.id}
-                                                type="COMMENT"
-                                            />
-                                            {reply.user.username && (
-                                                <CreateReplyComment
-                                                    typeId={typeId}
-                                                    type={"LISTING"}
-                                                    parentId={comment.id}
-                                                    referencedUser={
-                                                        reply.user.username
-                                                    }
-                                                />
-                                            )}
-                                        </div> */}
                                         <div className="flex gap-5">
                                             <DisplayLikes
                                                 typeId={reply.id}

@@ -169,15 +169,108 @@ export const commentRouter = createTRPCRouter({
 
     delete: protectedProcedure
         .input(
-            z.object({ id: z.string(), userId: z.string(), postId: z.string() })
+            z.object({
+                id: z.string(),
+                userId: z.string(),
+                parentId: z.string().optional(),
+            })
         )
         .mutation(async ({ input, ctx }) => {
-            if (ctx.session.user.id === input.userId) {
-                await ctx.prisma.comment.delete({ where: { id: input.id } });
+            const { id, parentId, userId } = input;
+            if (ctx.session.user.id === userId) {
+                // Top-level comment
+                if (!parentId) {
+                    // ---- get all replies
+                    const replies = await ctx.prisma.comment.findMany({
+                        where: { parentId: id },
+                        select: { id: true },
+                    });
 
-                return "Successfully deleted";
+                    const replyIds = replies.map((reply) => reply.id);
+
+                    // --- Delete all likes associated with the replies
+                    await ctx.prisma.like.deleteMany({
+                        where: { type: "COMMENT", typeId: { in: replyIds } },
+                    });
+
+                    // --- Delete all likes associated with the top-level comment
+                    await ctx.prisma.like.deleteMany({
+                        where: { type: "COMMENT", typeId: id },
+                    });
+
+                    // -- Delete all replies
+                    await ctx.prisma.comment.deleteMany({
+                        where: { parentId: id },
+                    });
+
+                    // - Finally, delete the top-level comment itself
+                    return ctx.prisma.comment.delete({ where: { id: id } });
+                } else {
+                    // Not a top-level comment, delete its likes and then the comment itself
+                    await ctx.prisma.like.deleteMany({
+                        where: { type: "COMMENT", typeId: id },
+                    });
+
+                    return ctx.prisma.comment.delete({ where: { id: id } });
+                }
             }
 
             throw new Error("Invalid userId");
         }),
+    // prisma transaction test. this makes it so that if the operation partially fails it wont go through. Definetly want to implement this for images and lots of stuff if it works
+    // delete: protectedProcedure
+    //     .input(
+    //         z.object({
+    //             id: z.string(),
+    //             userId: z.string(),
+    //             parentId: z.string().optional(),
+    //         })
+    //     )
+    //     .mutation(async ({ input, ctx }) => {
+    //         const { id, parentId, userId } = input;
+
+    //         if (ctx.session.user.id !== userId) {
+    //             throw new Error("Invalid userId");
+    //         }
+
+    //         // Wrap your operations in a transaction
+    //         return ctx.prisma.$transaction(async (prisma) => {
+    //             if (!parentId) {
+    //                 // Top-level comment
+
+    //                 // Get all replies
+    //                 const replies = await prisma.comment.findMany({
+    //                     where: { parentId: id },
+    //                     select: { id: true },
+    //                 });
+
+    //                 const replyIds = replies.map((reply) => reply.id);
+
+    //                 // Delete all likes associated with the replies
+    //                 await prisma.like.deleteMany({
+    //                     where: { type: "COMMENT", typeId: { in: replyIds } },
+    //                 });
+
+    //                 // Delete all likes associated with the top-level comment
+    //                 await prisma.like.deleteMany({
+    //                     where: { type: "COMMENT", typeId: id },
+    //                 });
+
+    //                 // Delete all replies
+    //                 await prisma.comment.deleteMany({
+    //                     where: { parentId: id },
+    //                 });
+
+    //                 // Delete the top-level comment itself
+    //                 return prisma.comment.delete({ where: { id: id } });
+    //             } else {
+    //                 // Not a top-level comment, delete its likes and then the comment itself
+    //                 await prisma.like.deleteMany({
+    //                     where: { type: "COMMENT", typeId: id },
+    //                 });
+
+    //                 return prisma.comment.delete({ where: { id: id } });
+    //             }
+    //         });
+    //     }),
 });

@@ -60,8 +60,6 @@ model Comment {
 
     user User @relation(fields: [userId], references: [id])
 
-    // Self-referential relation fields
-    //  i want to setup replies I think that'd be cool. needs testing tho
     parent  Comment?  @relation("ParentComment", fields: [parentId], references: [id])
     replies Comment[] @relation("ParentComment")
 }
