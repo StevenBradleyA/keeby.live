@@ -9,8 +9,11 @@ interface CreateReplyCommentProps {
     typeId: string;
     parentId: string;
     referencedUser?: string;
+    replyId?: string;
     showCreateReply: string[];
     setShowCreateReply: (newShowCreateReply: string[]) => void;
+    openReplies: string[];
+    setOpenReplies: (newOpenReplies: string[]) => void;
 }
 
 interface ErrorsObj {
@@ -31,18 +34,17 @@ export default function CreateReplyComment({
     typeId,
     parentId,
     referencedUser,
+    replyId,
     showCreateReply,
     setShowCreateReply,
+    openReplies,
+    setOpenReplies,
 }: CreateReplyCommentProps) {
     const [text, setText] = useState<string>("");
     const [row, setRow] = useState<number>(1);
 
     const [errors, setErrors] = useState<ErrorsObj>({});
-    const [createSelected, setCreateSelected] = useState<boolean>(false);
     const { data: session } = useSession();
-
-    // send to log in page if not logged in
-    // TODO make it so that submitting a comment opens the hide and removes from show create reply
 
     const ctx = api.useContext();
 
@@ -55,7 +57,7 @@ export default function CreateReplyComment({
 
     const handleRowIncrease = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (e.key === "Enter" && !e.shiftKey) {
-            setRow((prevRow) => prevRow + 1); // Increase the row count
+            setRow((prevRow) => prevRow + 1);
         }
     };
 
@@ -63,8 +65,11 @@ export default function CreateReplyComment({
         e.preventDefault();
         setText("");
         setRow(1);
-        const newReplies = showCreateReply.filter((id) => id !== parentId);
-        setShowCreateReply(newReplies);
+        if (referencedUser) {
+            setShowCreateReply(showCreateReply.filter((id) => id !== replyId));
+        } else {
+            setShowCreateReply(showCreateReply.filter((id) => id !== parentId));
+        }
     };
 
     const submit = (e: React.FormEvent) => {
@@ -86,12 +91,17 @@ export default function CreateReplyComment({
 
             if (referencedUser) {
                 data.referencedUser = referencedUser;
+                setShowCreateReply(
+                    showCreateReply.filter((id) => id !== replyId)
+                );
+            } else {
+                setShowCreateReply(
+                    showCreateReply.filter((id) => id !== parentId)
+                );
+                setOpenReplies([...openReplies, parentId]);
             }
             setText("");
-            setCreateSelected(false);
             setRow(1);
-            const newReplies = showCreateReply.filter((id) => id !== parentId);
-            setShowCreateReply(newReplies);
             return mutate(data);
         }
     };

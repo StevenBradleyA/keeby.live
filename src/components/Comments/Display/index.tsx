@@ -60,7 +60,7 @@ export default function DisplayComments({ typeId }: DisplayCommentsProps) {
             <CreateComment typeId={typeId} type={"LISTING"} />
             {comments &&
                 comments.map((comment, i) => (
-                    <div key={i} className="flex flex-col mb-5">
+                    <div key={i} className="mb-5 flex flex-col">
                         <div className="flex gap-2">
                             <div className="">
                                 {comment.user.profile === null ? (
@@ -108,19 +108,21 @@ export default function DisplayComments({ typeId }: DisplayCommentsProps) {
                                         parentId={comment.id}
                                         showCreateReply={showCreateReply}
                                         setShowCreateReply={setShowCreateReply}
+                                        openReplies={openReplies}
+                                        setOpenReplies={setOpenReplies}
                                     />
                                 )}
                             </div>
                         </div>
 
-                        {comment.replies && (
+                        {comment.replies && comment.replies.length > 0 && (
                             <button
                                 onClick={() => toggleReplies(comment.id)}
                                 className="ml-14 flex justify-start text-sm text-green-500"
                             >
                                 {openReplies.includes(comment.id)
                                     ? "hide replies"
-                                    : "show replies"}
+                                    : `${comment.replies.length} replies`}
                             </button>
                         )}
                         {openReplies.includes(comment.id) &&
@@ -166,7 +168,7 @@ export default function DisplayComments({ typeId }: DisplayCommentsProps) {
                                         ) : (
                                             <div>{reply.text}</div>
                                         )}
-                                        <div className="flex gap-5 ">
+                                        {/* <div className="flex gap-5 ">
                                             <DisplayLikes
                                                 typeId={reply.id}
                                                 type="COMMENT"
@@ -181,7 +183,42 @@ export default function DisplayComments({ typeId }: DisplayCommentsProps) {
                                                     }
                                                 />
                                             )}
+                                        </div> */}
+                                        <div className="flex gap-5">
+                                            <DisplayLikes
+                                                typeId={reply.id}
+                                                type="COMMENT"
+                                            />
+                                            <button
+                                                onClick={() =>
+                                                    toggleCreateReply(reply.id)
+                                                }
+                                            >
+                                                reply
+                                            </button>
                                         </div>
+                                        {showCreateReply.includes(reply.id) &&
+                                            reply.user.username && (
+                                                <CreateReplyComment
+                                                    typeId={typeId}
+                                                    type={"LISTING"}
+                                                    parentId={comment.id}
+                                                    replyId={reply.id}
+                                                    referencedUser={
+                                                        reply.user.username
+                                                    }
+                                                    showCreateReply={
+                                                        showCreateReply
+                                                    }
+                                                    setShowCreateReply={
+                                                        setShowCreateReply
+                                                    }
+                                                    openReplies={openReplies}
+                                                    setOpenReplies={
+                                                        setOpenReplies
+                                                    }
+                                                />
+                                            )}
                                     </div>
                                 </div>
                             ))}
