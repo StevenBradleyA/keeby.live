@@ -9,24 +9,6 @@ export const commentRouter = createTRPCRouter({
     getAll: publicProcedure.query(({ ctx }) => {
         return ctx.prisma.comment.findMany();
     }),
-
-    getAllByTypeId: publicProcedure
-        .input(
-            z.object({
-                type: z.string(),
-                typeId: z.string(),
-            })
-        )
-        .query(({ ctx, input }) => {
-            return ctx.prisma.comment.findMany({
-                where: { type: input.type, typeId: input.typeId },
-                include: {
-                    user: {
-                        select: { id: true, username: true, profile: true },
-                    },
-                },
-            });
-        }),
     getAllWithReplies: publicProcedure
         .input(
             z.object({
@@ -39,32 +21,19 @@ export const commentRouter = createTRPCRouter({
                 where: {
                     type: input.type,
                     typeId: input.typeId,
-                    parentId: null, // Fetch only top-level comments
+                    parentId: null, 
                 },
                 include: {
                     user: {
                         select: { id: true, username: true, profile: true },
                     },
                     replies: {
-                        // Include replies
                         include: {
                             user: {
                                 select: {
                                     id: true,
                                     username: true,
                                     profile: true,
-                                },
-                            },
-                            // Optionally, include nested replies
-                            replies: {
-                                include: {
-                                    user: {
-                                        select: {
-                                            id: true,
-                                            username: true,
-                                            profile: true,
-                                        },
-                                    },
                                 },
                             },
                         },
@@ -115,12 +84,11 @@ export const commentRouter = createTRPCRouter({
             })
         )
         .mutation(async ({ input, ctx }) => {
-            // Check if the user creating the comment is the logged-in user
             if (ctx.session.user.id !== input.userId) {
                 throw new Error("Invalid userId");
             }
 
-            // Validate parentId if provided (ensure it refers to an existing comment)
+            // parentID validation --- (ensure it refers to an existing comment)
             if (input.parentId) {
                 const parentComment = await ctx.prisma.comment.findUnique({
                     where: { id: input.parentId },
