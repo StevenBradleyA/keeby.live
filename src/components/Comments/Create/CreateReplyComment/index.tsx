@@ -7,6 +7,8 @@ interface CreateReplyCommentProps {
     typeId: string;
     parentId: string;
     referencedUser?: string;
+    showCreateReply: string[];
+    setShowCreateReply: (newShowCreateReply: string[]) => void;
 }
 
 interface ErrorsObj {
@@ -27,6 +29,8 @@ export default function CreateReplyComment({
     typeId,
     parentId,
     referencedUser,
+    showCreateReply,
+    setShowCreateReply,
 }: CreateReplyCommentProps) {
     const [text, setText] = useState<string>("");
     const [row, setRow] = useState<number>(1);
@@ -42,6 +46,7 @@ export default function CreateReplyComment({
     const { mutate } = api.comment.createReply.useMutation({
         onSuccess: () => {
             void ctx.comment.getAllWithReplies.invalidate();
+            void ctx.comment.getAmountByTypeId.invalidate();
         },
     });
 
@@ -51,11 +56,12 @@ export default function CreateReplyComment({
         }
     };
 
-    const cancelComment = (e: React.FormEvent) => {
+    const cancelComment = (e: React.FormEvent, parentId: string) => {
         e.preventDefault();
         setText("");
-        setCreateSelected(false);
         setRow(1);
+        const newReplies = showCreateReply.filter((id) => id !== parentId);
+        setShowCreateReply(newReplies);
     };
 
     const submit = (e: React.FormEvent) => {
@@ -95,33 +101,39 @@ export default function CreateReplyComment({
         setErrors(errorsObj);
     }, [text]);
 
+    // const cancelShowCreateReply = (parentId: string) => {
+    //     const newReplies = showCreateReply.filter((id) => id !== parentId);
+    //     setShowCreateReply(newReplies);
+    // };
+
     return (
-        <form className="mb-5 flex flex-col justify-between gap-5">
-            <textarea
-                className="comment-input-box w-full rounded-lg border-none bg-pogGray p-2 outline-none"
-                value={text}
-                placeholder="Add a reply..."
-                onChange={(e) => setText(e.target.value)}
-                onFocus={() => setCreateSelected(true)}
-                onKeyDown={handleRowIncrease}
-                rows={row}
-            />
-            {createSelected && (
-                <div className="flex justify-end gap-5">
-                    <button
-                        className="rounded-md border text-slate-200"
-                        onClick={cancelComment}
-                    >
-                        Cancel
-                    </button>
-                    <button
-                        className="rounded-md border text-slate-200"
-                        onClick={submit}
-                    >
-                        Submit Comment
-                    </button>
-                </div>
+        <div className="flex flex-col">
+            {showCreateReply && (
+                <form className="my-5 flex flex-col justify-between gap-5">
+                    <textarea
+                        className="comment-input-box w-full rounded-lg border-none bg-pogGray p-2 outline-none"
+                        value={text}
+                        placeholder="Add a reply..."
+                        onChange={(e) => setText(e.target.value)}
+                        onKeyDown={handleRowIncrease}
+                        rows={row}
+                    />
+                    <div className="flex justify-end gap-5">
+                        <button
+                            className="rounded-md border text-slate-200"
+                            onClick={(e) => cancelComment(e, parentId)}
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            className="rounded-md border text-slate-200"
+                            onClick={submit}
+                        >
+                            Submit Comment
+                        </button>
+                    </div>
+                </form>
             )}
-        </form>
+        </div>
     );
 }

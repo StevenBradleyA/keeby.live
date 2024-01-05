@@ -8,8 +8,6 @@ interface CreateCommentProps {
     type: string;
 }
 
-
-
 interface ErrorsObj {
     text?: string;
 }
@@ -30,6 +28,7 @@ export default function CreateComment({ typeId, type }: CreateCommentProps) {
     const { mutate } = api.comment.create.useMutation({
         onSuccess: () => {
             void ctx.comment.getAllWithReplies.invalidate();
+            void ctx.comment.getAmountByTypeId.invalidate();
         },
     });
 

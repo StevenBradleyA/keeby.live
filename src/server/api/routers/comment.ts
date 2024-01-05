@@ -9,6 +9,7 @@ export const commentRouter = createTRPCRouter({
     getAll: publicProcedure.query(({ ctx }) => {
         return ctx.prisma.comment.findMany();
     }),
+
     getAllByTypeId: publicProcedure
         .input(
             z.object({
@@ -71,7 +72,18 @@ export const commentRouter = createTRPCRouter({
                 },
             });
         }),
-
+    getAmountByTypeId: publicProcedure
+        .input(
+            z.object({
+                type: z.string(),
+                typeId: z.string(),
+            })
+        )
+        .query(({ ctx, input }) => {
+            return ctx.prisma.comment.count({
+                where: { type: input.type, typeId: input.typeId },
+            });
+        }),
     create: protectedProcedure
         .input(
             z.object({

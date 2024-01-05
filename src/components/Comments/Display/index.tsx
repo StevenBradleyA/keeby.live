@@ -6,6 +6,7 @@ import DisplayLikes from "~/components/KeebShop/Likes/DisplayLikes";
 import MainFooter from "~/components/Footer";
 import Link from "next/link";
 import CreateReplyComment from "../Create/CreateReplyComment";
+import { useState } from "react";
 
 interface DisplayCommentsProps {
     typeId: string;
@@ -14,24 +15,48 @@ interface DisplayCommentsProps {
 export default function DisplayComments({ typeId }: DisplayCommentsProps) {
     // TODO integrate likes and reply logic
     // TODO filter comments by likes  and new
+    // TODO add Emoji button for comments
 
-    // when replying to a reply we want it to show in the og parentiD replies but have an @username to the nested reply
-
-    // const { data: comments, isLoading } = api.comment.getAllByTypeId.useQuery({
-    //     type: "LISTING",
-    //     typeId: typeId,
-    // });
+    const [showCreateReply, setShowCreateReply] = useState<string[]>([]);
+    const [openReplies, setOpenReplies] = useState<string[]>([]);
 
     const { data: comments, isLoading } =
         api.comment.getAllWithReplies.useQuery({
             type: "LISTING",
             typeId: typeId,
         });
+    const { data: commentCount, isLoading: countIsLoading } =
+        api.comment.getAmountByTypeId.useQuery({
+            type: "LISTING",
+            typeId: typeId,
+        });
 
+    const toggleReplies = (commentId: string) => {
+        setOpenReplies((prevOpenReplies) => {
+            if (prevOpenReplies.includes(commentId)) {
+                return prevOpenReplies.filter((id) => id !== commentId);
+            } else {
+                return [...prevOpenReplies, commentId];
+            }
+        });
+    };
+    const toggleCreateReply = (commentId: string) => {
+        setShowCreateReply((prevOpenReplies) => {
+            if (prevOpenReplies.includes(commentId)) {
+                return prevOpenReplies.filter((id) => id !== commentId);
+            } else {
+                return [...prevOpenReplies, commentId];
+            }
+        });
+    };
 
     return (
         <>
-            <div>{`${comments ? comments.length : 0} COMMENTS`} </div>
+            <div>
+                {`${commentCount ? commentCount : 0} ${
+                    commentCount === 1 ? "COMMENT" : "COMMENTS"
+                }`}
+            </div>
             <CreateComment typeId={typeId} type={"LISTING"} />
             {comments &&
                 comments.map((comment, i) => (
@@ -63,20 +88,39 @@ export default function DisplayComments({ typeId }: DisplayCommentsProps) {
                                 <div className="whitespace-pre-wrap">
                                     {comment.text}
                                 </div>
-                                <div className="flex justify-between">
+                                <div className="flex gap-5">
                                     <DisplayLikes
                                         typeId={comment.id}
                                         type="COMMENT"
                                     />
+                                    <button
+                                        onClick={() =>
+                                            toggleCreateReply(comment.id)
+                                        }
+                                    >
+                                        reply
+                                    </button>
+                                </div>
+                                {showCreateReply.includes(comment.id) && (
                                     <CreateReplyComment
                                         typeId={typeId}
                                         type={"LISTING"}
                                         parentId={comment.id}
+                                        showCreateReply={showCreateReply}
+                                        setShowCreateReply={setShowCreateReply}
                                     />
-                                </div>
+                                )}
                             </div>
                         </div>
-                        {comment.replies &&
+
+                        {comment.replies && (
+                            <button onClick={() => toggleReplies(comment.id)}>
+                                {openReplies.includes(comment.id)
+                                    ? "hide replies"
+                                    : "show replies"}
+                            </button>
+                        )}
+                        {openReplies.includes(comment.id) &&
                             comment.replies.map((reply, i) => (
                                 <div key={i} className="mb-5 flex gap-2 pl-16">
                                     <div className="">
@@ -119,7 +163,7 @@ export default function DisplayComments({ typeId }: DisplayCommentsProps) {
                                         ) : (
                                             <div>{reply.text}</div>
                                         )}
-                                        <div className="flex justify-between">
+                                        <div className="flex gap-5 ">
                                             <DisplayLikes
                                                 typeId={reply.id}
                                                 type="COMMENT"
