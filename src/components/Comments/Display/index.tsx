@@ -2,25 +2,27 @@ import { api } from "~/utils/api";
 import CreateComment from "../Create";
 import Image from "next/image";
 import keebo from "@public/Profile/profile-keebo.jpg";
+import moreOptions from "@public/Vectors/more-options.png";
 import DisplayLikes from "~/components/KeebShop/Likes/DisplayLikes";
 import MainFooter from "~/components/Footer";
 import Link from "next/link";
 import CreateReplyComment from "../Create/CreateReplyComment";
 import { useState } from "react";
+import { useSession } from "next-auth/react";
 
 interface DisplayCommentsProps {
     typeId: string;
 }
 
 export default function DisplayComments({ typeId }: DisplayCommentsProps) {
-
     // TODO filter comments by likes  and new
     // TODO add Emoji button for comments
-    // TODO add edit and delete comments 
+    // TODO add edit and delete comments
     // todo deleting a parent should also delete all reply comments and all likes
 
     const [showCreateReply, setShowCreateReply] = useState<string[]>([]);
     const [openReplies, setOpenReplies] = useState<string[]>([]);
+    const { data: session } = useSession();
 
     const { data: comments, isLoading } =
         api.comment.getAllWithReplies.useQuery({
@@ -83,10 +85,42 @@ export default function DisplayComments({ typeId }: DisplayCommentsProps) {
                                     />
                                 )}
                             </div>
-                            <div className=" w-full flex-wrap text-sm ">
-                                <Link href="/profile" className="text-darkGray">
-                                    {comment.user.username}
-                                </Link>
+                            <div className=" relative w-full flex-wrap text-sm ">
+                                <div className="flex w-full justify-between">
+                                    <Link
+                                        href="/profile"
+                                        className="text-darkGray"
+                                    >
+                                        {comment.user.username}
+                                    </Link>
+                                    {session &&
+                                        session.user.id === comment.userId && (
+                                            <button className="absolute right-0">
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="18"
+                                                    height="18"
+                                                    fill="#616161"
+                                                >
+                                                    <circle
+                                                        cx="9"
+                                                        cy="4.5"
+                                                        r="1.5"
+                                                    />
+                                                    <circle
+                                                        cx="9"
+                                                        cy="9"
+                                                        r="1.5"
+                                                    />
+                                                    <circle
+                                                        cx="9"
+                                                        cy="13.5"
+                                                        r="1.5"
+                                                    />
+                                                </svg>
+                                            </button>
+                                        )}
+                                </div>
                                 <div className="whitespace-pre-wrap">
                                     {comment.text}
                                 </div>
@@ -150,12 +184,44 @@ export default function DisplayComments({ typeId }: DisplayCommentsProps) {
                                         )}
                                     </div>
                                     <div className=" w-full flex-wrap text-sm ">
-                                        <Link
-                                            href="/profile"
-                                            className="text-darkGray"
-                                        >
-                                            {reply.user.username}
-                                        </Link>
+                                        <div className="relative flex justify-between">
+                                            <Link
+                                                href="/profile"
+                                                className="text-darkGray"
+                                            >
+                                                {reply.user.username}
+                                            </Link>
+
+                                            {session &&
+                                                session.user.id ===
+                                                    reply.userId && (
+                                                    <button className="absolute right-0">
+                                                        <svg
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            width="18"
+                                                            height="18"
+                                                            fill="#616161"
+                                                        >
+                                                            <circle
+                                                                cx="9"
+                                                                cy="4.5"
+                                                                r="1.5"
+                                                            />
+                                                            <circle
+                                                                cx="9"
+                                                                cy="9"
+                                                                r="1.5"
+                                                            />
+                                                            <circle
+                                                                cx="9"
+                                                                cy="13.5"
+                                                                r="1.5"
+                                                            />
+                                                        </svg>
+                                                    </button>
+                                                )}
+                                        </div>
+
                                         {reply.referencedUser ? (
                                             <div className="flex gap-1 ">
                                                 <div className="text-green-500">
