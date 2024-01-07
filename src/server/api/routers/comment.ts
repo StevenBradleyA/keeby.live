@@ -21,7 +21,7 @@ export const commentRouter = createTRPCRouter({
                 where: {
                     type: input.type,
                     typeId: input.typeId,
-                    parentId: null, 
+                    parentId: null,
                 },
                 include: {
                     user: {
