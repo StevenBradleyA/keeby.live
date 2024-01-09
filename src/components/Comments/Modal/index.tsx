@@ -42,7 +42,7 @@ const ModifyCommentModal: React.FC<ModifyCommentModalProps> = ({
         <AnimatePresence>
             {isOpen && (
                 <motion.div
-                    className="absolute z-50 flex items-center justify-center"
+                    className="absolute right-0 top-5 z-50 flex items-center justify-center"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
@@ -57,7 +57,7 @@ const ModifyCommentModal: React.FC<ModifyCommentModalProps> = ({
                         transition={{ duration: 0.3, ease: "easeInOut" }}
                     />
                     <motion.div
-                        className="relative flex rounded-lg bg-keebyGray p-10 shadow-lg"
+                        className="relative flex rounded-lg bg-keebyGray px-8 py-2 shadow-lg"
                         initial={{ scale: 0.8, y: -20, opacity: 0 }}
                         animate={{ scale: 1, y: 0, opacity: 1 }}
                         exit={{ scale: 0.8, y: 20, opacity: 0 }}
@@ -68,12 +68,12 @@ const ModifyCommentModal: React.FC<ModifyCommentModalProps> = ({
                         }}
                         onClick={handleModalClick}
                     >
-                        <button
+                        {/* <button
                             className="absolute right-4 top-2 transform text-lg text-gray-600 transition-transform duration-300 ease-in-out hover:rotate-45 hover:scale-110 hover:text-green-500"
                             onClick={handleClose}
                         >
                             &times;
-                        </button>
+                        </button> */}
                         {children}
                     </motion.div>
                 </motion.div>
