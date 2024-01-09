@@ -2,13 +2,13 @@ import { api } from "~/utils/api";
 import CreateComment from "../Create";
 import Image from "next/image";
 import keebo from "@public/Profile/profile-keebo.jpg";
-import moreOptions from "@public/Vectors/more-options.png";
 import DisplayLikes from "~/components/KeebShop/Likes/DisplayLikes";
 import MainFooter from "~/components/Footer";
 import Link from "next/link";
 import CreateReplyComment from "../Create/CreateReplyComment";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
+import ModifyCommentModal from "../Modal";
 
 interface DisplayCommentsProps {
     typeId: string;
@@ -22,6 +22,8 @@ export default function DisplayComments({ typeId }: DisplayCommentsProps) {
 
     const [showCreateReply, setShowCreateReply] = useState<string[]>([]);
     const [openReplies, setOpenReplies] = useState<string[]>([]);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
     const { data: session } = useSession();
 
     const { data: comments, isLoading } =
@@ -52,6 +54,14 @@ export default function DisplayComments({ typeId }: DisplayCommentsProps) {
                 return [...prevOpenReplies, commentId];
             }
         });
+    };
+
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
     };
 
     return (
@@ -95,7 +105,10 @@ export default function DisplayComments({ typeId }: DisplayCommentsProps) {
                                     </Link>
                                     {session &&
                                         session.user.id === comment.userId && (
-                                            <button className="absolute right-0">
+                                            <button
+                                                className="absolute right-0"
+                                                onClick={openModal}
+                                            >
                                                 <svg
                                                     xmlns="http://www.w3.org/2000/svg"
                                                     width="18"
@@ -120,6 +133,15 @@ export default function DisplayComments({ typeId }: DisplayCommentsProps) {
                                                 </svg>
                                             </button>
                                         )}
+                                    <ModifyCommentModal
+                                        isOpen={isModalOpen}
+                                        onClose={closeModal}
+                                    >
+                                        <div className="flex flex-col">
+                                            <div>edit</div>
+                                            <div>delete</div>
+                                        </div>
+                                    </ModifyCommentModal>
                                 </div>
                                 <div className="whitespace-pre-wrap">
                                     {comment.text}
