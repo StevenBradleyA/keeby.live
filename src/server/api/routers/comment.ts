@@ -27,6 +27,11 @@ export const commentRouter = createTRPCRouter({
                     user: {
                         select: { id: true, username: true, profile: true },
                     },
+                    _count: {
+                        select: {
+                            commentLike: true,
+                        },
+                    },
                     replies: {
                         include: {
                             user: {
@@ -41,6 +46,38 @@ export const commentRouter = createTRPCRouter({
                 },
             });
         }),
+    // getAllWithReplies: publicProcedure
+    // .input(
+    //     z.object({
+    //         type: z.string(),
+    //         typeId: z.string(),
+    //     })
+    // )
+    // .query(({ ctx, input }) => {
+    //     return ctx.prisma.comment.findMany({
+    //         where: {
+    //             type: input.type,
+    //             typeId: input.typeId,
+    //             parentId: null,
+    //         },
+    //         include: {
+    //             user: {
+    //                 select: { id: true, username: true, profile: true },
+    //             },
+    //             replies: {
+    //                 include: {
+    //                     user: {
+    //                         select: {
+    //                             id: true,
+    //                             username: true,
+    //                             profile: true,
+    //                         },
+    //                     },
+    //                 },
+    //             },
+    //         },
+    //     });
+    // }),
     getAmountByTypeId: publicProcedure
         .input(
             z.object({

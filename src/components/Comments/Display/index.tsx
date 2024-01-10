@@ -14,6 +14,13 @@ export default function DisplayComments({ typeId }: DisplayCommentsProps) {
     // TODO add edit and delete comments
     // todo deleting a parent should also delete all reply comments and all likes
 
+
+// TODO going to have to implement Lazy loading and pagination 
+// maybe instead of fetching all the comments and replies 
+// we just fetch the top-level comments and number of replies
+// specific replies are fetched when show replies is enabled
+
+
     const { data: comments, isLoading } =
         api.comment.getAllWithReplies.useQuery({
             type: "LISTING",
@@ -24,6 +31,7 @@ export default function DisplayComments({ typeId }: DisplayCommentsProps) {
             type: "LISTING",
             typeId: typeId,
         });
+
 
     return (
         <>

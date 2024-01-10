@@ -23,16 +23,20 @@ interface CommentUser {
     profile: string | null;
 }
 
-interface ReplyContents {
-    user: CommentUser;
-    id: string;
-    text: string;
-    userId: string;
-    type: string;
-    typeId: string;
-    parentId: string | null;
-    referencedUser: string | null;
+interface CommentLike {
+    commentLike: number;
 }
+
+// interface ReplyContents {
+//     user: CommentUser;
+//     id: string;
+//     text: string;
+//     userId: string;
+//     type: string;
+//     typeId: string;
+//     parentId: string | null;
+//     referencedUser: string | null;
+// }
 
 interface CommentContents {
     id: string;
@@ -43,7 +47,8 @@ interface CommentContents {
     parentId: string | null;
     referencedUser: string | null;
     user: CommentUser;
-    replies: ReplyContents[];
+    _count: CommentLike;
+    // replies: ReplyContents[];
 }
 
 export default function EachCommentCard({
@@ -121,7 +126,8 @@ export default function EachCommentCard({
                     </div>
                     <div className="whitespace-pre-wrap">{comment.text}</div>
                     <div className="flex gap-5">
-                        <DisplayLikes typeId={comment.id} type="COMMENT" />
+
+                        <div>{`Like ${comment._count.commentLike}`}</div>
                         <button
                             onClick={() =>
                                 setShowTopLevelCommentReply(
@@ -152,8 +158,8 @@ export default function EachCommentCard({
                     className="ml-14 flex justify-start text-sm text-green-500"
                 >
                     {openReplies
-                        ? `${comment.replies.length} replies`
-                        : "hide replies"}
+                        ? "hide replies"
+                        : `${comment.replies.length} replies`}
                 </button>
             )}
             {openReplies &&

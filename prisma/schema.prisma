@@ -44,8 +44,8 @@ model Post {
 
     userId String
 
-    user User @relation(fields: [userId], references: [id])
-    // comments Comment[]
+    user     User       @relation(fields: [userId], references: [id])
+    postLike PostLike[]
 }
 
 model Comment {
@@ -60,8 +60,9 @@ model Comment {
 
     user User @relation(fields: [userId], references: [id])
 
-    parent  Comment?  @relation("ParentComment", fields: [parentId], references: [id])
-    replies Comment[] @relation("ParentComment")
+    parent      Comment?      @relation("ParentComment", fields: [parentId], references: [id])
+    replies     Comment[]     @relation("ParentComment")
+    commentLike CommentLike[]
 }
 
 model Game {
@@ -90,15 +91,22 @@ model Keeb {
     Game Game[]
 }
 
-model Like {
+model CommentLike {
+    id        String @id @default(cuid())
+    userId    String
+    commentId String
+
+    user    User    @relation(fields: [userId], references: [id])
+    comment Comment @relation(fields: [commentId], references: [id])
+}
+
+model PostLike {
     id     String @id @default(cuid())
     userId String
-    typeId String
-    type   String
+    postId String
 
     user User @relation(fields: [userId], references: [id])
-
-    @@unique([userId, typeId, type], name: "unique_user_type_like")
+    post Post @relation(fields: [postId], references: [id])
 }
 
 model Review {
@@ -197,9 +205,10 @@ model User {
     images          Images[]
     games           Game[]
     keebs           Keeb[]
-    Like            Like[]
-    Review          Review[]      @relation("UserRelation")
+    commentLike     CommentLike[]
+    review          Review[]      @relation("UserRelation")
     reviewsReceived Review[]      @relation("SellerRelation")
+    postLike        PostLike[]
 }
 
 model VerificationToken {

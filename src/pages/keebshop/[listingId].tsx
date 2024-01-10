@@ -13,9 +13,6 @@ export default function ListingPage() {
         id: listingId,
     });
 
-    console.log("goodmorning", keeb);
-    // accsess to the userId
-
     // TODO add seller rating info
     // TODO add comments, seller profile info, seller ratings, public profiels clickable,
     // TODO add youtube api video integration optional()
@@ -63,8 +60,8 @@ export default function ListingPage() {
                                     </button>
                                 </div>
                             </div>
-                                <SellerPublicProfile userId={keeb.userId} />
-                                {/* <div> seller clickable profile here</div>
+                            <SellerPublicProfile userId={keeb.userId} />
+                            {/* <div> seller clickable profile here</div>
                                 <div> seller rating</div> */}
                         </div>
                     </div>
@@ -76,8 +73,7 @@ export default function ListingPage() {
 
                     {/* <div className="mt-32"> comments</div> */}
                     <div className="w-full">
-                    <DisplayComments typeId={keeb.id}/>
-
+                        <DisplayComments typeId={keeb.id} />
                     </div>
                     {/* lets integrate replys but keep keeby styling looks great */}
                 </div>

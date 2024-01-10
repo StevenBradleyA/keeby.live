@@ -34,6 +34,11 @@ export default function EachReplyCommentCard({
     typeId,
     parentId,
 }: EachReplyCardProps) {
+
+// TODO We are sending a ton of queries when we like a comment
+// we only want to be sending a single... 
+
+
     const { data: session } = useSession();
     const [showNestedReply, setShowNestedReply] = useState<boolean>(false);
 
@@ -91,7 +96,7 @@ export default function EachReplyCommentCard({
                     <div>{reply.text}</div>
                 )}
                 <div className="flex gap-5">
-                    <DisplayLikes typeId={reply.id} type="COMMENT" />
+                    {/* <DisplayLikes typeId={reply.id} type="COMMENT" /> */}
                     <button
                         onClick={() => setShowNestedReply(!showNestedReply)}
                     >
