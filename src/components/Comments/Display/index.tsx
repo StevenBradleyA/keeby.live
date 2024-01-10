@@ -1,11 +1,6 @@
 import { api } from "~/utils/api";
 import CreateComment from "../Create";
-import Image from "next/image";
-
 import MainFooter from "~/components/Footer";
-
-import { useState } from "react";
-import { useSession } from "next-auth/react";
 import EachCommentCard from "./eachCommentCard";
 
 interface DisplayCommentsProps {
@@ -28,8 +23,6 @@ export default function DisplayComments({ typeId }: DisplayCommentsProps) {
             type: "LISTING",
             typeId: typeId,
         });
-
-    console.log(comments);
 
     return (
         <>

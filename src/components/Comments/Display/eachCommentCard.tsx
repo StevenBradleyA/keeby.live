@@ -1,4 +1,6 @@
 import type { Comment, User } from "@prisma/client";
+
+// import type {getAllWithReplies} from "@prisma/client"
 import Image from "next/image";
 import keebo from "@public/Profile/profile-keebo.jpg";
 import DisplayLikes from "~/components/KeebShop/Likes/DisplayLikes";
@@ -7,34 +9,41 @@ import CreateReplyComment from "../Create/CreateReplyComment";
 import ModifyCommentModal from "../Modal";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
-
-interface User {
-    id: string;
-    username: string;
-    profile: string;
-}
-
-interface Comment {
-    id: string;
-    parentId: string | null;
-    referencedUser: string | null;
-    replies: Comment[];
-    text: string;
-    type: string;
-    typeId: string;
-    user: User;
-    userId: string;
-}
+import { api } from "~/utils/api";
 
 interface EachCommentCardProps {
-    comment: Comment;
     typeId: string;
+    comment: CommentContents;
+}
+
+interface CommentUser {
+    id: string;
+    username: string | null;
+    profile: string | null;
+}
+
+interface CommentContents {
+    id: string;
+    text: string;
+    userId: string;
+    type: string;
+    typeId: string;
+    parentId: string | null;
+    referencedUser: string | null;
+    user: CommentUser;
+    replies: Comment[];
 }
 
 export default function EachCommentCard({
     comment,
     typeId,
 }: EachCommentCardProps) {
+    // const { data: comments, isLoading } =
+    // api.comment.getAllWithReplies.useQuery({
+    //     type: "LISTING",
+    //     typeId: typeId,
+    // });
+
     const [showCreateReply, setShowCreateReply] = useState<string[]>([]);
     const [openReplies, setOpenReplies] = useState<string[]>([]);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
