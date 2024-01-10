@@ -10,6 +10,7 @@ import ModifyCommentModal from "../Modal";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
+import EachReplyCommentCard from "./eachReplayCommentCard";
 
 interface EachCommentCardProps {
     typeId: string;
@@ -37,37 +38,32 @@ interface CommentContents {
 export default function EachCommentCard({
     comment,
     typeId,
+    user,
 }: EachCommentCardProps) {
-    // const { data: comments, isLoading } =
-    // api.comment.getAllWithReplies.useQuery({
-    //     type: "LISTING",
-    //     typeId: typeId,
-    // });
-
-    const [showCreateReply, setShowCreateReply] = useState<string[]>([]);
-    const [openReplies, setOpenReplies] = useState<string[]>([]);
+    const [showTopLevelCommentReply, setShowTopLevelCommentReply] = useState<boolean>(false);
+    const [openReplies, setOpenReplies] = useState<boolean>(false);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     const { data: session } = useSession();
 
-    const toggleReplies = (commentId: string) => {
-        setOpenReplies((prevOpenReplies) => {
-            if (prevOpenReplies.includes(commentId)) {
-                return prevOpenReplies.filter((id) => id !== commentId);
-            } else {
-                return [...prevOpenReplies, commentId];
-            }
-        });
-    };
-    const toggleCreateReply = (commentId: string) => {
-        setShowCreateReply((prevOpenReplies) => {
-            if (prevOpenReplies.includes(commentId)) {
-                return prevOpenReplies.filter((id) => id !== commentId);
-            } else {
-                return [...prevOpenReplies, commentId];
-            }
-        });
-    };
+    // const toggleReplies = (commentId: string) => {
+    //     setOpenReplies((prevOpenReplies) => {
+    //         if (prevOpenReplies.includes(commentId)) {
+    //             return prevOpenReplies.filter((id) => id !== commentId);
+    //         } else {
+    //             return [...prevOpenReplies, commentId];
+    //         }
+    //     });
+    // };
+    // const toggleCreateReply = (commentId: string) => {
+    //     setShowCreateReply((prevOpenReplies) => {
+    //         if (prevOpenReplies.includes(commentId)) {
+    //             return prevOpenReplies.filter((id) => id !== commentId);
+    //         } else {
+    //             return [...prevOpenReplies, commentId];
+    //         }
+    //     });
+    // };
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -126,26 +122,26 @@ export default function EachCommentCard({
                             onClose={closeModal}
                         >
                             <div className="flex flex-col">
-                                <div>edit</div>
-                                <div>delete</div>
+                                <div>Edit</div>
+                                <div>Delete</div>
                             </div>
                         </ModifyCommentModal>
                     </div>
                     <div className="whitespace-pre-wrap">{comment.text}</div>
                     <div className="flex gap-5">
                         <DisplayLikes typeId={comment.id} type="COMMENT" />
-                        <button onClick={() => toggleCreateReply(comment.id)}>
+                        <button
+                            onClick={() => setShowTopLevelCommentReply(!showTopLevelCommentReply)}
+                        >
                             reply
                         </button>
                     </div>
-                    {showCreateReply.includes(comment.id) && (
+                    {showTopLevelCommentReply && (
                         <CreateReplyComment
                             typeId={typeId}
                             type={"LISTING"}
                             parentId={comment.id}
-                            showCreateReply={showCreateReply}
-                            setShowCreateReply={setShowCreateReply}
-                            openReplies={openReplies}
+                            setShowTopLevelCommentReply={setShowTopLevelCommentReply}
                             setOpenReplies={setOpenReplies}
                         />
                     )}
@@ -154,106 +150,23 @@ export default function EachCommentCard({
 
             {comment.replies && comment.replies.length > 0 && (
                 <button
-                    onClick={() => toggleReplies(comment.id)}
+                    onClick={() => setOpenReplies(!openReplies)}
                     className="ml-14 flex justify-start text-sm text-green-500"
                 >
-                    {openReplies.includes(comment.id)
-                        ? "hide replies"
-                        : `${comment.replies.length} replies`}
+                    {openReplies
+                        ? `${comment.replies.length} replies`
+                        : "hide replies"}
                 </button>
             )}
-            {openReplies.includes(comment.id) &&
+            {openReplies &&
                 comment.replies.map((reply, i) => (
-                    <div key={i} className="mb-5 flex gap-2 pl-16">
-                        <div className="">
-                            {reply.user.profile === null ? (
-                                <Image
-                                    src={keebo}
-                                    alt="profile"
-                                    height={600}
-                                    width={600}
-                                    className="h-10 w-10 object-cover"
-                                />
-                            ) : (
-                                <Image
-                                    src={reply.user.profile}
-                                    alt="profile"
-                                    height={600}
-                                    width={600}
-                                    className="h-10 w-10 object-cover"
-                                />
-                            )}
-                        </div>
-                        <div className=" w-full flex-wrap text-sm ">
-                            <div className="relative flex justify-between">
-                                <Link href="/profile" className="text-darkGray">
-                                    {reply.user.username}
-                                </Link>
-
-                                {session &&
-                                    session.user.id === reply.userId && (
-                                        <button className="absolute right-0">
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="18"
-                                                height="18"
-                                                fill="#616161"
-                                            >
-                                                <circle
-                                                    cx="9"
-                                                    cy="4.5"
-                                                    r="1.5"
-                                                />
-                                                <circle cx="9" cy="9" r="1.5" />
-                                                <circle
-                                                    cx="9"
-                                                    cy="13.5"
-                                                    r="1.5"
-                                                />
-                                            </svg>
-                                        </button>
-                                    )}
-                            </div>
-
-                            {reply.referencedUser ? (
-                                <div className="flex gap-1 ">
-                                    <div className="text-green-500">
-                                        {`@${reply.referencedUser as string}`}
-                                    </div>
-                                    <div className="whitespace-pre-wrap">
-                                        {reply.text}
-                                    </div>
-                                </div>
-                            ) : (
-                                <div>{reply.text}</div>
-                            )}
-                            <div className="flex gap-5">
-                                <DisplayLikes
-                                    typeId={reply.id}
-                                    type="COMMENT"
-                                />
-                                <button
-                                    onClick={() => toggleCreateReply(reply.id)}
-                                >
-                                    reply
-                                </button>
-                            </div>
-                            {showCreateReply.includes(reply.id) &&
-                                reply.user.username && (
-                                    <CreateReplyComment
-                                        typeId={typeId}
-                                        type={"LISTING"}
-                                        parentId={comment.id}
-                                        replyId={reply.id}
-                                        referencedUser={reply.user.username}
-                                        showCreateReply={showCreateReply}
-                                        setShowCreateReply={setShowCreateReply}
-                                        openReplies={openReplies}
-                                        setOpenReplies={setOpenReplies}
-                                    />
-                                )}
-                        </div>
-                    </div>
+                    <EachReplyCommentCard
+                        key={i}
+                        reply={reply}
+                        typeId={typeId}
+                        showTopLevelCommentReply={showTopLevelCommentReply}
+                        parentId={comment.id}
+                    />
                 ))}
         </div>
     );

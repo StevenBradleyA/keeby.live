@@ -10,10 +10,9 @@ interface CreateReplyCommentProps {
     parentId: string;
     referencedUser?: string;
     replyId?: string;
-    showCreateReply: string[];
-    setShowCreateReply: (newShowCreateReply: string[]) => void;
-    openReplies: string[];
-    setOpenReplies: (newOpenReplies: string[]) => void;
+    setShowTopLevelCommentReply?: (showTopLevelCommentReply: boolean) => void;
+    setOpenReplies?: (openReplies: boolean) => void;
+    setShowNestedReply?: (showNestedReply: boolean) => void;
 }
 
 interface ErrorsObj {
@@ -34,15 +33,14 @@ export default function CreateReplyComment({
     typeId,
     parentId,
     referencedUser,
-    replyId,
-    showCreateReply,
-    setShowCreateReply,
-    openReplies,
+    setShowTopLevelCommentReply,
     setOpenReplies,
+    setShowNestedReply,
 }: CreateReplyCommentProps) {
+    // TODO if not signed in clicking reply needs to take to sign in page
+
     const [text, setText] = useState<string>("");
     const [row, setRow] = useState<number>(1);
-
     const [errors, setErrors] = useState<ErrorsObj>({});
     const { data: session } = useSession();
 
@@ -61,14 +59,15 @@ export default function CreateReplyComment({
         }
     };
 
-    const cancelComment = (e: React.FormEvent, parentId: string) => {
+    const cancelComment = (e: React.FormEvent) => {
         e.preventDefault();
         setText("");
         setRow(1);
-        if (referencedUser) {
-            setShowCreateReply(showCreateReply.filter((id) => id !== replyId));
-        } else {
-            setShowCreateReply(showCreateReply.filter((id) => id !== parentId));
+        if (setShowTopLevelCommentReply) {
+            setShowTopLevelCommentReply(false);
+        }
+        if (setShowNestedReply) {
+            setShowNestedReply(false);
         }
     };
 
@@ -89,16 +88,12 @@ export default function CreateReplyComment({
                 parentId: parentId,
             };
 
-            if (referencedUser) {
+            if (referencedUser && setShowNestedReply) {
                 data.referencedUser = referencedUser;
-                setShowCreateReply(
-                    showCreateReply.filter((id) => id !== replyId)
-                );
-            } else {
-                setShowCreateReply(
-                    showCreateReply.filter((id) => id !== parentId)
-                );
-                setOpenReplies([...openReplies, parentId]);
+                setShowNestedReply(false);
+            } else if (setOpenReplies && setShowTopLevelCommentReply) {
+                setOpenReplies(true);
+                setShowTopLevelCommentReply(false);
             }
             setText("");
             setRow(1);
@@ -118,52 +113,50 @@ export default function CreateReplyComment({
 
     return (
         <div className="flex flex-col">
-            {showCreateReply && (
-                <form className="mt-2 flex flex-col justify-between gap-5">
-                    <div className="flex">
-                        {session && session.user.profile ? (
-                            <Image
-                                src={session.user.profile}
-                                alt="profile"
-                                height={600}
-                                width={600}
-                                className="h-7 w-7 object-cover"
-                            />
-                        ) : (
-                            <Image
-                                src={keebo}
-                                alt="profile"
-                                height={600}
-                                width={600}
-                                className="h-7 w-7 object-cover"
-                            />
-                        )}
-
-                        <textarea
-                            className="reply-input w-full  border-none bg-transparent p-2 outline-none"
-                            value={text}
-                            placeholder="Add a reply..."
-                            onChange={(e) => setText(e.target.value)}
-                            onKeyDown={handleRowIncrease}
-                            rows={row}
+            <form className="mt-2 flex flex-col justify-between gap-5">
+                <div className="flex">
+                    {session && session.user.profile ? (
+                        <Image
+                            src={session.user.profile}
+                            alt="profile"
+                            height={600}
+                            width={600}
+                            className="h-7 w-7 object-cover"
                         />
-                    </div>
-                    <div className="flex justify-end gap-5">
-                        <button
-                            className="rounded-md border text-slate-200"
-                            onClick={(e) => cancelComment(e, parentId)}
-                        >
-                            Cancel
-                        </button>
-                        <button
-                            className="rounded-md border text-slate-200"
-                            onClick={submit}
-                        >
-                            Submit Comment
-                        </button>
-                    </div>
-                </form>
-            )}
+                    ) : (
+                        <Image
+                            src={keebo}
+                            alt="profile"
+                            height={600}
+                            width={600}
+                            className="h-7 w-7 object-cover"
+                        />
+                    )}
+
+                    <textarea
+                        className="reply-input w-full  border-none bg-transparent p-2 outline-none"
+                        value={text}
+                        placeholder="Add a reply..."
+                        onChange={(e) => setText(e.target.value)}
+                        onKeyDown={handleRowIncrease}
+                        rows={row}
+                    />
+                </div>
+                <div className="flex justify-end gap-5">
+                    <button
+                        className="rounded-md border text-slate-200"
+                        onClick={cancelComment}
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        className="rounded-md border text-slate-200"
+                        onClick={submit}
+                    >
+                        Submit Comment
+                    </button>
+                </div>
+            </form>
         </div>
     );
 }
