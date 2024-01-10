@@ -25,7 +25,6 @@ export default function DisplayComments({ typeId }: DisplayCommentsProps) {
             typeId: typeId,
         });
 
-
     return (
         <>
             <div>

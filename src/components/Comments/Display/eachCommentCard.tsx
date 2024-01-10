@@ -1,4 +1,4 @@
-import type { Comment, User } from "@prisma/client";
+// import type { Comment, User } from "@prisma/client";
 
 // import type {getAllWithReplies} from "@prisma/client"
 import Image from "next/image";
@@ -23,6 +23,17 @@ interface CommentUser {
     profile: string | null;
 }
 
+interface ReplyContents {
+    user: CommentUser;
+    id: string;
+    text: string;
+    userId: string;
+    type: string;
+    typeId: string;
+    parentId: string | null;
+    referencedUser: string | null;
+}
+
 interface CommentContents {
     id: string;
     text: string;
@@ -32,38 +43,19 @@ interface CommentContents {
     parentId: string | null;
     referencedUser: string | null;
     user: CommentUser;
-    replies: Comment[];
+    replies: ReplyContents[];
 }
 
 export default function EachCommentCard({
     comment,
     typeId,
-    user,
 }: EachCommentCardProps) {
-    const [showTopLevelCommentReply, setShowTopLevelCommentReply] = useState<boolean>(false);
+    const [showTopLevelCommentReply, setShowTopLevelCommentReply] =
+        useState<boolean>(false);
     const [openReplies, setOpenReplies] = useState<boolean>(false);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     const { data: session } = useSession();
-
-    // const toggleReplies = (commentId: string) => {
-    //     setOpenReplies((prevOpenReplies) => {
-    //         if (prevOpenReplies.includes(commentId)) {
-    //             return prevOpenReplies.filter((id) => id !== commentId);
-    //         } else {
-    //             return [...prevOpenReplies, commentId];
-    //         }
-    //     });
-    // };
-    // const toggleCreateReply = (commentId: string) => {
-    //     setShowCreateReply((prevOpenReplies) => {
-    //         if (prevOpenReplies.includes(commentId)) {
-    //             return prevOpenReplies.filter((id) => id !== commentId);
-    //         } else {
-    //             return [...prevOpenReplies, commentId];
-    //         }
-    //     });
-    // };
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -131,7 +123,11 @@ export default function EachCommentCard({
                     <div className="flex gap-5">
                         <DisplayLikes typeId={comment.id} type="COMMENT" />
                         <button
-                            onClick={() => setShowTopLevelCommentReply(!showTopLevelCommentReply)}
+                            onClick={() =>
+                                setShowTopLevelCommentReply(
+                                    !showTopLevelCommentReply
+                                )
+                            }
                         >
                             reply
                         </button>
@@ -141,7 +137,9 @@ export default function EachCommentCard({
                             typeId={typeId}
                             type={"LISTING"}
                             parentId={comment.id}
-                            setShowTopLevelCommentReply={setShowTopLevelCommentReply}
+                            setShowTopLevelCommentReply={
+                                setShowTopLevelCommentReply
+                            }
                             setOpenReplies={setOpenReplies}
                         />
                     )}
@@ -164,7 +162,6 @@ export default function EachCommentCard({
                         key={i}
                         reply={reply}
                         typeId={typeId}
-                        showTopLevelCommentReply={showTopLevelCommentReply}
                         parentId={comment.id}
                     />
                 ))}

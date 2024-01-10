@@ -19,6 +19,7 @@ interface ReplyUser {
 }
 
 interface ReplyContents {
+    user: ReplyUser;
     id: string;
     text: string;
     userId: string;
@@ -26,7 +27,6 @@ interface ReplyContents {
     typeId: string;
     parentId: string | null;
     referencedUser: string | null;
-    user: ReplyUser;
 }
 
 export default function EachReplyCommentCard({
