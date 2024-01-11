@@ -11,9 +11,11 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 import EachReplyCommentCard from "./eachReplayCommentCard";
-import { signIn } from "next-auth/react";
 import ToggleCommentLike from "~/components/KeebShop/Likes/CommentLikes/ToggleLike";
 import DisplayReplyComments from "./displayReplyComments";
+import DisplayReplyViewerComments from "./displayReplyViewerComments";
+import ModalDialog from "~/components/Modal";
+import CommentSignInModal from "../Modal/signInModal";
 
 interface EachCommentCardProps {
     typeId: string;
@@ -52,6 +54,7 @@ export default function EachCommentCard({
         useState<boolean>(false);
     const [openReplies, setOpenReplies] = useState<boolean>(false);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [isSignInModalOpen, setIsSignInModalOpen] = useState<boolean>(false);
 
     const { data: session } = useSession();
 
@@ -61,6 +64,14 @@ export default function EachCommentCard({
 
     const closeModal = () => {
         setIsModalOpen(false);
+    };
+
+    const openSignInModal = () => {
+        setIsSignInModalOpen(true);
+    };
+
+    const closeSignInModal = () => {
+        setIsSignInModalOpen(false);
     };
 
     return (
@@ -130,7 +141,7 @@ export default function EachCommentCard({
                                     topLevel={true}
                                 />
                             ) : (
-                                <button onClick={() => void signIn()}>
+                                <button onClick={openSignInModal}>
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         height="16"
@@ -144,6 +155,12 @@ export default function EachCommentCard({
                             )}
                             <div>{comment._count.commentLike}</div>
                         </div>
+                        <ModalDialog
+                            isOpen={isSignInModalOpen}
+                            onClose={closeSignInModal}
+                        >
+                            <CommentSignInModal closeModal={closeSignInModal} />
+                        </ModalDialog>
                         {session && session.user ? (
                             <button
                                 onClick={() =>
@@ -191,9 +208,12 @@ export default function EachCommentCard({
                     userId={session.user.id}
                 />
             )}
-            {/* {openReplies && session === null && (
-                <DisplayReplyComments parentId={comment.id} />
-            )} */}
+            {openReplies && session === null && (
+                <DisplayReplyViewerComments
+                    parentId={comment.id}
+                    typeId={typeId}
+                />
+            )}
         </div>
     );
 }

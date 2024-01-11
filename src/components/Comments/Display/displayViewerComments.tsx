@@ -31,9 +31,7 @@ export default function DisplayViewerCommments({ typeId }: DisplayCommentsProps)
             typeId: typeId,
         });
 
-    // maybe run like query here to check all comments that have been liked
-    // then pass down a marker or something idk ask chatgpt about efficiency here
-    // if we have a separate route for signed in vs signed out we can handle likes differently. otherwise we jsut need count poggers
+ 
     return (
         <>
             <div>
@@ -42,14 +40,14 @@ export default function DisplayViewerCommments({ typeId }: DisplayCommentsProps)
                 }`}
             </div>
             <CreateComment typeId={typeId} type={"LISTING"} />
-            {/* {comments &&
-                comments.map((comment, i) => (
+            {viewerComments &&
+                viewerComments.map((comment, i) => (
                     <EachCommentCard
                         key={i}
                         comment={comment}
                         typeId={typeId}
                     />
-                ))} */}
+                ))}
             <MainFooter />
         </>
     );

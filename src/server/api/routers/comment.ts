@@ -53,7 +53,33 @@ export const commentRouter = createTRPCRouter({
 
             return commentsWithLikes;
         }),
-
+    getAllByTypeIdForViewers: publicProcedure
+        .input(
+            z.object({
+                type: z.string(),
+                typeId: z.string(),
+            })
+        )
+        .query(({ ctx, input }) => {
+            return ctx.prisma.comment.findMany({
+                where: {
+                    type: input.type,
+                    typeId: input.typeId,
+                    parentId: null,
+                },
+                include: {
+                    user: {
+                        select: { id: true, username: true, profile: true },
+                    },
+                    _count: {
+                        select: {
+                            commentLike: true,
+                            replies: true,
+                        },
+                    },
+                },
+            });
+        }),
     getAllReplysByTypeId: publicProcedure
         .input(
             z.object({
@@ -98,20 +124,20 @@ export const commentRouter = createTRPCRouter({
 
             return commentsWithLikes;
         }),
-
-    getAllByTypeIdForViewers: publicProcedure
+    getAllViewerReplysByTypeId: publicProcedure
         .input(
             z.object({
                 type: z.string(),
                 typeId: z.string(),
+                parentId: z.string(),
             })
         )
-        .query(({ ctx, input }) => {
+        .query(async ({ ctx, input }) => {
             return ctx.prisma.comment.findMany({
                 where: {
                     type: input.type,
                     typeId: input.typeId,
-                    parentId: null,
+                    parentId: input.parentId,
                 },
                 include: {
                     user: {
@@ -120,14 +146,12 @@ export const commentRouter = createTRPCRouter({
                     _count: {
                         select: {
                             commentLike: true,
-                            replies: true,
                         },
                     },
                 },
             });
         }),
-    //TODO  we are going to need different routes depending if a user is signed in chief
-    // TODO refactor so replies are fetched when the button is clicked not all the time. we need to be efficient and poggers
+
     // getAllWithReplies: publicProcedure
     // .input(
     //     z.object({
