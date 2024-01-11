@@ -21,38 +21,31 @@ export const commentLikeRouter = createTRPCRouter({
             });
         }),
 
-    //     toggleLike: publicProcedure
-    // .input(
-    //     z.object({
-    //         commentId: z.string(),
-    //         userId: z.string(),
-    //     })
-    // )
-    // .mutation(async ({ ctx, input }) => {
-    //     const existingLike = await ctx.prisma.commentLike.findUnique({
-    //         where: {
-    //             userId_commentId: {
-    //                 userId: input.userId,
-    //                 commentId: input.commentId,
-    //             },
-    //         },
-    //     });
+    toggleLike: publicProcedure
+        .input(
+            z.object({
+                commentId: z.string(),
+                userId: z.string(),
+                isLiked: z.boolean(),
+            })
+        )
+        .mutation(async ({ ctx, input }) => {
+            const { commentId, userId, isLiked } = input;
+            if (isLiked) {
+                await ctx.prisma.commentLike.deleteMany({
+                    where: { commentId: commentId, userId: userId },
+                });
+            } else {
+                await ctx.prisma.commentLike.create({
+                    data: {
+                        userId: userId,
+                        commentId: commentId,
+                    },
+                });
+            }
 
-    //     if (existingLike) {
-    //         await ctx.prisma.commentLike.delete({
-    //             where: { id: existingLike.id },
-    //         });
-    //     } else {
-    //         await ctx.prisma.commentLike.create({
-    //             data: {
-    //                 userId: input.userId,
-    //                 commentId: input.commentId,
-    //             },
-    //         });
-    //     }
-
-    //     return { success: true };
-    // }),
+            return { success: true };
+        }),
 
     // getAmountByTypeId: publicProcedure
     //     .input(

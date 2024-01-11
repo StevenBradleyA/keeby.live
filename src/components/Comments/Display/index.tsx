@@ -37,13 +37,8 @@ export default function DisplayComments({
             typeId: typeId,
         });
 
-    const { data: userLikes, isLoading: isLoadingUserLikes } =
-        api.commentLike.getUserLikes.useQuery({
-            userId: userId,
-        });
 
-
-        console.log(userLikes)
+        console.log(comments)
     // TODO implement like logic here so we can tell if a user has like a comment
     // signed out we just need to show how many likes a comments has
     // signed in we have to provide show many likes but also if the session user has liked it already which is tricky

@@ -42,14 +42,14 @@ export default function DisplayViewerCommments({ typeId }: DisplayCommentsProps)
                 }`}
             </div>
             <CreateComment typeId={typeId} type={"LISTING"} />
-            {comments &&
+            {/* {comments &&
                 comments.map((comment, i) => (
                     <EachCommentCard
                         key={i}
                         comment={comment}
                         typeId={typeId}
                     />
-                ))}
+                ))} */}
             <MainFooter />
         </>
     );
