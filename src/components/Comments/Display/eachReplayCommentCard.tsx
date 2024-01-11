@@ -16,6 +16,9 @@ interface ReplyUser {
     username: string | null;
     profile: string | null;
 }
+interface CommentLike {
+    commentLike: number;
+}
 
 interface ReplyContents {
     user: ReplyUser;
@@ -26,6 +29,8 @@ interface ReplyContents {
     typeId: string;
     parentId: string | null;
     referencedUser: string | null;
+    _count: CommentLike;
+    isLiked?: boolean;
 }
 
 export default function EachReplyCommentCard({

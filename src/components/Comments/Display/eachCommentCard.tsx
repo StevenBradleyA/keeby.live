@@ -184,7 +184,11 @@ export default function EachCommentCard({
                 </button>
             )}
             {openReplies && session && session.user && (
-                <DisplayReplyComments parentId={comment.id} />
+                <DisplayReplyComments
+                    parentId={comment.id}
+                    typeId={typeId}
+                    userId={session.user.id}
+                />
             )}
             {/* {openReplies && session === null && (
                 <DisplayReplyComments parentId={comment.id} />

@@ -54,6 +54,51 @@ export const commentRouter = createTRPCRouter({
             return commentsWithLikes;
         }),
 
+    getAllReplysByTypeId: publicProcedure
+        .input(
+            z.object({
+                type: z.string(),
+                typeId: z.string(),
+                userId: z.string(),
+                parentId: z.string(),
+            })
+        )
+        .query(async ({ ctx, input }) => {
+            const allComments = await ctx.prisma.comment.findMany({
+                where: {
+                    type: input.type,
+                    typeId: input.typeId,
+                    parentId: input.parentId,
+                },
+                include: {
+                    user: {
+                        select: { id: true, username: true, profile: true },
+                    },
+                    _count: {
+                        select: {
+                            commentLike: true,
+                        },
+                    },
+                },
+            });
+
+            const userLikes = await ctx.prisma.commentLike.findMany({
+                where: {
+                    userId: input.userId,
+                },
+                select: { commentId: true },
+            });
+
+            const commentsWithLikes = allComments.map((comment) => ({
+                ...comment,
+                isLiked: userLikes.some(
+                    (like) => like.commentId === comment.id
+                ),
+            }));
+
+            return commentsWithLikes;
+        }),
+
     getAllByTypeIdForViewers: publicProcedure
         .input(
             z.object({
