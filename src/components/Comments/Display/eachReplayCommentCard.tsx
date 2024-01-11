@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import keebo from "@public/Profile/profile-keebo.jpg";
 import { useSession } from "next-auth/react";
-import DisplayLikes from "~/components/KeebShop/Likes/DisplayLikes";
 import CreateReplyComment from "../Create/CreateReplyComment";
 import { useState } from "react";
 
@@ -34,10 +33,8 @@ export default function EachReplyCommentCard({
     typeId,
     parentId,
 }: EachReplyCardProps) {
-
-// TODO We are sending a ton of queries when we like a comment
-// we only want to be sending a single... 
-
+    // TODO We are sending a ton of queries when we like a comment
+    // we only want to be sending a single...
 
     const { data: session } = useSession();
     const [showNestedReply, setShowNestedReply] = useState<boolean>(false);

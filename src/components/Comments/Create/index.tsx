@@ -20,14 +20,11 @@ export default function CreateComment({ typeId, type }: CreateCommentProps) {
     const [createSelected, setCreateSelected] = useState<boolean>(false);
     const { data: session } = useSession();
 
-    // send to log in page if not logged in
-    // TODO comment replys also create comment toooooo
-
     const ctx = api.useContext();
 
     const { mutate } = api.comment.create.useMutation({
         onSuccess: () => {
-            void ctx.comment.getAllWithReplies.invalidate();
+            void ctx.comment.getAllByTypeId.invalidate();
             void ctx.comment.getAmountByTypeId.invalidate();
         },
     });

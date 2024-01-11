@@ -3,7 +3,7 @@
 // import type {getAllWithReplies} from "@prisma/client"
 import Image from "next/image";
 import keebo from "@public/Profile/profile-keebo.jpg";
-import DisplayLikes from "~/components/KeebShop/Likes/DisplayLikes";
+
 import Link from "next/link";
 import CreateReplyComment from "../Create/CreateReplyComment";
 import ModifyCommentModal from "../Modal";
@@ -11,8 +11,9 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 import EachReplyCommentCard from "./eachReplayCommentCard";
-import ToggleCommentLike from "~/components/KeebShop/Likes/CommentLikes/Create";
 import { signIn } from "next-auth/react";
+import ToggleCommentLike from "~/components/KeebShop/Likes/CommentLikes/ToggleLike";
+import DisplayReplyComments from "./displayReplyComments";
 
 interface EachCommentCardProps {
     typeId: string;
@@ -118,7 +119,7 @@ export default function EachCommentCard({
                     </div>
                     <div className="whitespace-pre-wrap">{comment.text}</div>
                     <div className="flex gap-5">
-                        <div className="flex">
+                        <div className="flex gap-2 text-darkGray">
                             {session &&
                             session.user &&
                             comment.isLiked !== undefined ? (
@@ -142,15 +143,19 @@ export default function EachCommentCard({
                             )}
                             <div>{comment._count.commentLike}</div>
                         </div>
-                        <button
-                            onClick={() =>
-                                setShowTopLevelCommentReply(
-                                    !showTopLevelCommentReply
-                                )
-                            }
-                        >
-                            reply
-                        </button>
+                        {session && session.user ? (
+                            <button
+                                onClick={() =>
+                                    setShowTopLevelCommentReply(
+                                        !showTopLevelCommentReply
+                                    )
+                                }
+                            >
+                                reply
+                            </button>
+                        ) : (
+                            <button onClick={() => void signIn()}>reply</button>
+                        )}
                     </div>
                     {showTopLevelCommentReply && (
                         <CreateReplyComment
@@ -173,18 +178,17 @@ export default function EachCommentCard({
                 >
                     {openReplies
                         ? "hide replies"
-                        : `${comment._count.replies} replies`}
+                        : `${comment._count.replies} ${
+                              comment._count.replies === 1 ? "reply" : "replies"
+                          }`}
                 </button>
             )}
-            {/* {openReplies &&
-                comment.replies.map((reply, i) => (
-                    <EachReplyCommentCard
-                        key={i}
-                        reply={reply}
-                        typeId={typeId}
-                        parentId={comment.id}
-                    />
-                ))} */}
+            {openReplies && session && session.user && (
+                <DisplayReplyComments parentId={comment.id} />
+            )}
+            {/* {openReplies && session === null && (
+                <DisplayReplyComments parentId={comment.id} />
+            )} */}
         </div>
     );
 }
