@@ -226,9 +226,8 @@ export const commentRouter = createTRPCRouter({
         .input(
             z.object({
                 id: z.string(),
-                text: z.string().optional(),
+                text: z.string(),
                 userId: z.string(),
-                postId: z.string(),
             })
         )
         .mutation(async ({ input, ctx }) => {
@@ -237,7 +236,7 @@ export const commentRouter = createTRPCRouter({
                     where: {
                         id: input.id,
                     },
-                    data: input,
+                    data: { text: input.text },
                 });
 
                 return updatedComment;
@@ -268,13 +267,13 @@ export const commentRouter = createTRPCRouter({
                     const replyIds = replies.map((reply) => reply.id);
 
                     // --- Delete all likes associated with the replies
-                    await ctx.prisma.like.deleteMany({
-                        where: { type: "COMMENT", typeId: { in: replyIds } },
+                    await ctx.prisma.commentLike.deleteMany({
+                        where: { commentId: { in: replyIds } },
                     });
 
                     // --- Delete all likes associated with the top-level comment
-                    await ctx.prisma.like.deleteMany({
-                        where: { type: "COMMENT", typeId: id },
+                    await ctx.prisma.commentLike.deleteMany({
+                        where: { commentId: id },
                     });
 
                     // -- Delete all replies
@@ -286,8 +285,8 @@ export const commentRouter = createTRPCRouter({
                     return ctx.prisma.comment.delete({ where: { id: id } });
                 } else {
                     // Not a top-level comment, delete its likes and then the comment itself
-                    await ctx.prisma.like.deleteMany({
-                        where: { type: "COMMENT", typeId: id },
+                    await ctx.prisma.commentLike.deleteMany({
+                        where: { commentId: id },
                     });
 
                     return ctx.prisma.comment.delete({ where: { id: id } });

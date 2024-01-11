@@ -64,16 +64,10 @@ const ModifyCommentModal: React.FC<ModifyCommentModalProps> = ({
                         transition={{
                             type: "spring",
                             damping: 15,
-                            stiffness: 250,
+                            stiffness: 350,
                         }}
                         onClick={handleModalClick}
                     >
-                        {/* <button
-                            className="absolute right-4 top-2 transform text-lg text-gray-600 transition-transform duration-300 ease-in-out hover:rotate-45 hover:scale-110 hover:text-green-500"
-                            onClick={handleClose}
-                        >
-                            &times;
-                        </button> */}
                         {children}
                     </motion.div>
                 </motion.div>

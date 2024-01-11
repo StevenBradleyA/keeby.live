@@ -10,6 +10,7 @@ import DisplayReplyComments from "./displayReplyComments";
 import DisplayReplyViewerComments from "./displayReplyViewerComments";
 import ModalDialog from "~/components/Modal";
 import CommentSignInModal from "../Modal/signInModal";
+import UpdateComment from "../Update";
 
 interface EachCommentCardProps {
     typeId: string;
@@ -125,10 +126,12 @@ export default function EachCommentCard({
                             isOpen={isModalOpen}
                             onClose={closeModal}
                         >
-                            <div className="flex flex-col">
-                                <div>Edit</div>
-                                <div>Delete</div>
-                            </div>
+                            <UpdateComment
+                                typeId={typeId}
+                                type="LISTING"
+                                comment={comment}
+                                closeModal={closeModal}
+                            />
                         </ModifyCommentModal>
                     </div>
 
@@ -139,7 +142,10 @@ export default function EachCommentCard({
                                 : comment.text}
                         </div>
                         {isTooLong && (
-                            <button onClick={toggleReadMore} className="text-darkGray">
+                            <button
+                                onClick={toggleReadMore}
+                                className="text-darkGray"
+                            >
                                 {isExpanded ? "Read Less" : "Read More"}
                             </button>
                         )}
