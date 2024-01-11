@@ -7,6 +7,8 @@ import { useState } from "react";
 import ToggleCommentLike from "~/components/KeebShop/Likes/CommentLikes/ToggleLike";
 import ModalDialog from "~/components/Modal";
 import CommentSignInModal from "../Modal/signInModal";
+import ModifyCommentModal from "../Modal";
+import UpdateComment from "../Update";
 
 interface EachReplyCardProps {
     typeId: string;
@@ -45,6 +47,15 @@ export default function EachReplyCommentCard({
     const [showNestedReply, setShowNestedReply] = useState<boolean>(false);
     const [isSignInModalOpen, setIsSignInModalOpen] = useState<boolean>(false);
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
 
     const openSignInModal = () => {
         setIsSignInModalOpen(true);
@@ -91,7 +102,10 @@ export default function EachReplyCommentCard({
                     </Link>
 
                     {session && session.user.id === reply.userId && (
-                        <button className="absolute right-0">
+                        <button
+                            className="absolute right-0"
+                            onClick={openModal}
+                        >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="18"
@@ -104,6 +118,17 @@ export default function EachReplyCommentCard({
                             </svg>
                         </button>
                     )}
+                    <ModifyCommentModal
+                        isOpen={isModalOpen}
+                        onClose={closeModal}
+                    >
+                        <UpdateComment
+                            comment={reply}
+                            closeModal={closeModal}
+                            startingRows={lines.length}
+                            parentId={parentId}
+                        />
+                    </ModifyCommentModal>
                 </div>
 
                 {reply.referencedUser ? (

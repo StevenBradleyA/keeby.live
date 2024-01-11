@@ -33,7 +33,6 @@ export default function UpdateComment({
     const [row, setRow] = useState<number>(startingRows);
     const [errors, setErrors] = useState<ErrorsObj>({});
 
-    console.log("hallo", startingRows);
     const ctx = api.useContext();
     const { data: session } = useSession();
 
