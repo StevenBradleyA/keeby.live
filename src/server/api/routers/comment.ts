@@ -6,10 +6,39 @@ import {
 } from "~/server/api/trpc";
 
 export const commentRouter = createTRPCRouter({
-    getAll: publicProcedure.query(({ ctx }) => {
-        return ctx.prisma.comment.findMany();
-    }),
-    getAllWithReplies: publicProcedure
+    // getAll: publicProcedure.query(({ ctx }) => {
+    //     return ctx.prisma.comment.findMany();
+    // }),
+    getAllByTypeId: publicProcedure
+        .input(
+            z.object({
+                type: z.string(),
+                typeId: z.string(),
+                userId: z.string(),
+            })
+        )
+        .query(({ ctx, input }) => {
+            return ctx.prisma.comment.findMany({
+                where: {
+                    type: input.type,
+                    typeId: input.typeId,
+                    parentId: null,
+                },
+                include: {
+                    user: {
+                        select: { id: true, username: true, profile: true },
+                    },
+                    _count: {
+                        select: {
+                            commentLike: true,
+                            replies: true,
+                        },
+                    },
+                },
+            });
+        }),
+
+    getAllByTypeIdForViewers: publicProcedure
         .input(
             z.object({
                 type: z.string(),
@@ -30,22 +59,60 @@ export const commentRouter = createTRPCRouter({
                     _count: {
                         select: {
                             commentLike: true,
-                        },
-                    },
-                    replies: {
-                        include: {
-                            user: {
-                                select: {
-                                    id: true,
-                                    username: true,
-                                    profile: true,
-                                },
-                            },
+                            replies: true,
                         },
                     },
                 },
             });
         }),
+    //TODO  we are going to need different routes depending if a user is signed in chief
+    // TODO refactor so replies are fetched when the button is clicked not all the time. we need to be efficient and poggers
+    // getAllWithReplies: publicProcedure
+    // .input(
+    //     z.object({
+    //         type: z.string(),
+    //         typeId: z.string(),
+    //     })
+    // )
+    // .query(({ ctx, input }) => {
+    //     return ctx.prisma.comment.findMany({
+    //         where: {
+    //             type: input.type,
+    //             typeId: input.typeId,
+    //             parentId: null,
+    //         },
+    //         include: {
+    //             user: {
+    //                 select: { id: true, username: true, profile: true },
+    //             },
+    //             _count: {
+    //                 select: {
+    //                     commentLike: true,
+    //                 },
+    //             },
+    //             isLikedByUser: {
+    //                 select: {
+    //                     id: true,
+    //                     where: {
+    //                         userId: input.userId,
+    //                     },
+    //                 },
+    //             },
+    //             replies: {
+    //                 include: {
+    //                     user: {
+    //                         select: {
+    //                             id: true,
+    //                             username: true,
+    //                             profile: true,
+    //                         },
+    //                     },
+    //                 },
+    //             },
+    //         },
+    //     });
+    // }),
+
     // getAllWithReplies: publicProcedure
     // .input(
     //     z.object({
