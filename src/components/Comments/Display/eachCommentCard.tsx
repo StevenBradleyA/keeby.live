@@ -11,6 +11,7 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 import EachReplyCommentCard from "./eachReplayCommentCard";
+import CreateCommentLike from "~/components/KeebShop/Likes/CommentLikes/Create";
 
 interface EachCommentCardProps {
     typeId: string;
@@ -126,8 +127,17 @@ export default function EachCommentCard({
                     </div>
                     <div className="whitespace-pre-wrap">{comment.text}</div>
                     <div className="flex gap-5">
-
-                        <div>{`Like ${comment._count.commentLike}`}</div>
+                        <div className="flex">
+                            {session && session.user ? (
+                                <CreateCommentLike
+                                    commentId={comment.id}
+                                    userId={session.user.id}
+                                />
+                            ) : (
+                                <div>like svg - signin</div>
+                            )}
+                            <div>{comment._count.commentLike}</div>
+                        </div>
                         <button
                             onClick={() =>
                                 setShowTopLevelCommentReply(
@@ -138,7 +148,7 @@ export default function EachCommentCard({
                             reply
                         </button>
                     </div>
-                    {showTopLevelCommentReply && (
+                    {/* {showTopLevelCommentReply && (
                         <CreateReplyComment
                             typeId={typeId}
                             type={"LISTING"}
@@ -148,10 +158,10 @@ export default function EachCommentCard({
                             }
                             setOpenReplies={setOpenReplies}
                         />
-                    )}
+                    )} */}
                 </div>
             </div>
-
+            {/* 
             {comment.replies && comment.replies.length > 0 && (
                 <button
                     onClick={() => setOpenReplies(!openReplies)}
@@ -170,7 +180,7 @@ export default function EachCommentCard({
                         typeId={typeId}
                         parentId={comment.id}
                     />
-                ))}
+                ))} */}
         </div>
     );
 }

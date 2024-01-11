@@ -6,10 +6,9 @@ import { useSession } from "next-auth/react";
 
 interface DisplayCommentsProps {
     typeId: string;
-    userId: string
 }
 
-export default function DisplayComments({ typeId, userId }: DisplayCommentsProps) {
+export default function DisplayViewerCommments({ typeId }: DisplayCommentsProps) {
     // TODO filter comments by likes  and new
     // TODO add Emoji button for comments
     // TODO add edit and delete comments
@@ -19,13 +18,19 @@ export default function DisplayComments({ typeId, userId }: DisplayCommentsProps
     // maybe instead of fetching all the comments and replies
     // we just fetch the top-level comments and number of replies
     // specific replies are fetched when show replies is enabled
-    // const { data: session } = useSession();
+    const { data: session } = useSession();
+
+    const { data: viewerComments, isLoading: isLoadingViewerComments } =
+        api.comment.getAllByTypeIdForViewers.useQuery({
+            type: "LISTING",
+            typeId: typeId,
+        });
 
     const { data: comments, isLoading: isLoadingComments } =
         api.comment.getAllByTypeId.useQuery({
             type: "LISTING",
             typeId: typeId,
-            userId: userId,
+            userId: session?.user.id,
         });
 
     const { data: commentCount, isLoading: isLoadingCommentCount } =

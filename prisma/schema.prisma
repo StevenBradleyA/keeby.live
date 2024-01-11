@@ -98,6 +98,8 @@ model CommentLike {
 
     user    User    @relation(fields: [userId], references: [id])
     comment Comment @relation(fields: [commentId], references: [id])
+
+    @@unique([userId, commentId])
 }
 
 model PostLike {
@@ -107,6 +109,8 @@ model PostLike {
 
     user User @relation(fields: [userId], references: [id])
     post Post @relation(fields: [postId], references: [id])
+
+    @@unique([userId, postId])
 }
 
 model Review {
