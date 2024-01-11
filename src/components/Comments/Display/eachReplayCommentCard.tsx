@@ -4,8 +4,9 @@ import keebo from "@public/Profile/profile-keebo.jpg";
 import { useSession } from "next-auth/react";
 import CreateReplyComment from "../Create/CreateReplyComment";
 import { useState } from "react";
-import { signIn } from "next-auth/react";
 import ToggleCommentLike from "~/components/KeebShop/Likes/CommentLikes/ToggleLike";
+import ModalDialog from "~/components/Modal";
+import CommentSignInModal from "../Modal/signInModal";
 
 interface EachReplyCardProps {
     typeId: string;
@@ -42,6 +43,15 @@ export default function EachReplyCommentCard({
 }: EachReplyCardProps) {
     const { data: session } = useSession();
     const [showNestedReply, setShowNestedReply] = useState<boolean>(false);
+    const [isSignInModalOpen, setIsSignInModalOpen] = useState<boolean>(false);
+
+    const openSignInModal = () => {
+        setIsSignInModalOpen(true);
+    };
+
+    const closeSignInModal = () => {
+        setIsSignInModalOpen(false);
+    };
 
     return (
         <div className="mb-5 flex gap-2 pl-16">
@@ -105,7 +115,7 @@ export default function EachReplyCommentCard({
                             topLevel={false}
                         />
                     ) : (
-                        <button onClick={() => void signIn()}>
+                        <button onClick={openSignInModal}>
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 height="16"
@@ -118,6 +128,12 @@ export default function EachReplyCommentCard({
                         </button>
                     )}
                     <div>{reply._count.commentLike}</div>
+                    <ModalDialog
+                        isOpen={isSignInModalOpen}
+                        onClose={closeSignInModal}
+                    >
+                        <CommentSignInModal closeModal={closeSignInModal} />
+                    </ModalDialog>
 
                     {session && session.user ? (
                         <button
@@ -126,7 +142,7 @@ export default function EachReplyCommentCard({
                             reply
                         </button>
                     ) : (
-                        <button onClick={() => void signIn()}>reply</button>
+                        <button onClick={openSignInModal}>reply</button>
                     )}
                 </div>
                 {showNestedReply && reply.user.username && (

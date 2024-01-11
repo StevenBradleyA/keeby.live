@@ -1,16 +1,10 @@
-// import type { Comment, User } from "@prisma/client";
-
-// import type {getAllWithReplies} from "@prisma/client"
 import Image from "next/image";
 import keebo from "@public/Profile/profile-keebo.jpg";
-
 import Link from "next/link";
 import CreateReplyComment from "../Create/CreateReplyComment";
 import ModifyCommentModal from "../Modal";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
-import { api } from "~/utils/api";
-import EachReplyCommentCard from "./eachReplayCommentCard";
 import ToggleCommentLike from "~/components/KeebShop/Likes/CommentLikes/ToggleLike";
 import DisplayReplyComments from "./displayReplyComments";
 import DisplayReplyViewerComments from "./displayReplyViewerComments";
@@ -172,7 +166,7 @@ export default function EachCommentCard({
                                 reply
                             </button>
                         ) : (
-                            <button onClick={() => void signIn()}>reply</button>
+                            <button onClick={openSignInModal}>reply</button>
                         )}
                     </div>
                     {showTopLevelCommentReply && (

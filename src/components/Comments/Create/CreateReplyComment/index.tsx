@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { api } from "~/utils/api";
 import Image from "next/image";
 import keebo from "@public/Profile/profile-keebo.jpg";
+import ModalDialog from "~/components/Modal";
+import CommentSignInModal from "../../Modal/signInModal";
 
 interface CreateReplyCommentProps {
     type: string;
@@ -37,11 +39,10 @@ export default function CreateReplyComment({
     setOpenReplies,
     setShowNestedReply,
 }: CreateReplyCommentProps) {
-    // TODO if not signed in clicking reply needs to take to sign in page
-
     const [text, setText] = useState<string>("");
     const [row, setRow] = useState<number>(1);
     const [errors, setErrors] = useState<ErrorsObj>({});
+    const [isSignInModalOpen, setIsSignInModalOpen] = useState<boolean>(false);
     const { data: session } = useSession();
 
     const ctx = api.useContext();
@@ -58,6 +59,13 @@ export default function CreateReplyComment({
         if (e.key === "Enter" && !e.shiftKey) {
             setRow((prevRow) => prevRow + 1);
         }
+    };
+    const openSignInModal = () => {
+        setIsSignInModalOpen(true);
+    };
+
+    const closeSignInModal = () => {
+        setIsSignInModalOpen(false);
     };
 
     const cancelComment = (e: React.FormEvent) => {
@@ -150,13 +158,22 @@ export default function CreateReplyComment({
                     >
                         Cancel
                     </button>
+
                     <button
                         className="rounded-md border text-slate-200"
-                        onClick={submit}
+                        onClick={
+                            session && session.user ? submit : openSignInModal
+                        }
                     >
                         Submit Comment
                     </button>
                 </div>
+                <ModalDialog
+                    isOpen={isSignInModalOpen}
+                    onClose={closeSignInModal}
+                >
+                    <CommentSignInModal closeModal={closeSignInModal} />
+                </ModalDialog>
             </form>
         </div>
     );
