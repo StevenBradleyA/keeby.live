@@ -49,6 +49,7 @@ export default function EachCommentCard({
     const [openReplies, setOpenReplies] = useState<boolean>(false);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [isSignInModalOpen, setIsSignInModalOpen] = useState<boolean>(false);
+    const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
     const { data: session } = useSession();
 
@@ -67,6 +68,14 @@ export default function EachCommentCard({
     const closeSignInModal = () => {
         setIsSignInModalOpen(false);
     };
+    const maxLines = 5;
+
+    const toggleReadMore = () => {
+        setIsExpanded(!isExpanded);
+    };
+    const lines = comment.text.split("\n");
+
+    const isTooLong = lines.length > maxLines;
 
     return (
         <div className="mb-5 flex flex-col">
@@ -122,7 +131,20 @@ export default function EachCommentCard({
                             </div>
                         </ModifyCommentModal>
                     </div>
-                    <div className="whitespace-pre-wrap">{comment.text}</div>
+
+                    <div>
+                        <div className="whitespace-pre-wrap">
+                            {isTooLong && !isExpanded
+                                ? lines.slice(0, maxLines).join("\n")
+                                : comment.text}
+                        </div>
+                        {isTooLong && (
+                            <button onClick={toggleReadMore} className="text-darkGray">
+                                {isExpanded ? "Read Less" : "Read More"}
+                            </button>
+                        )}
+                    </div>
+
                     <div className="flex gap-5">
                         <div className="flex gap-2 text-darkGray">
                             {session &&
