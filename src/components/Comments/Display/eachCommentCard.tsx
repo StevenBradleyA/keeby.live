@@ -127,10 +127,9 @@ export default function EachCommentCard({
                             onClose={closeModal}
                         >
                             <UpdateComment
-                                typeId={typeId}
-                                type="LISTING"
                                 comment={comment}
                                 closeModal={closeModal}
+                                startingRows={lines.length}
                             />
                         </ModifyCommentModal>
                     </div>

@@ -27,6 +27,51 @@ export default function TitleScripts({ page }: TitleScriptsProps) {
     //             "jk",
     //             "your profile",
 
+
+    // System Prompt:
+
+    // Query: "Execute command: Confirm/Abort?"
+    // Options: "Execute" / "Abort"
+    // Vintage Terminal Style:
+    
+    // Query: "Proceed with operation? (Y/N)"
+    // Options: "Y" / "N"
+    // Matrix-Inspired:
+    
+    // Query: "Enter the Matrix? Red pill/Blue pill?"
+    // Options: "Red pill" / "Blue pill"
+    // Old-School Computer Dialogue:
+    
+    // Query: "Load next sequence? Confirm/Deny"
+    // Options: "Confirm" / "Deny"
+    // Classic DOS Style:
+    
+    // Query: "Run program now? Yes/No"
+    // Options: "Yes" / "No"
+    // Vintage Gaming Style:
+    
+    // Query: "Start new adventure? Ready/Not ready"
+    // Options: "Ready" / "Not ready"
+    // Retro Sci-Fi Computer:
+    
+    // Query: "Initiate time warp? Engage/Standby"
+    // Options: "Engage" / "Standby"
+    // Early Internet Era:
+    
+    // Query: "Connect to the Web? Connect/Disconnect"
+    // Options: "Connect" / "Disconnect"
+    // Old Computer Boot-up:
+    
+    // Query: "Boot system now? Boot/Halt"
+    // Options: "Boot" / "Halt"
+    // Classic Text Adventure:
+    
+    // Query: "Open the mysterious door? Open/Leave"
+    // Options: "Open" / "Leave"
+
+
+
+
     useEffect(() => {
         if (page === "createListing") {
             const phrases = [
