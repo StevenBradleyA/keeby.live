@@ -6,10 +6,13 @@ import { useSession } from "next-auth/react";
 
 interface DisplayCommentsProps {
     typeId: string;
-    userId: string
+    userId: string;
 }
 
-export default function DisplayComments({ typeId, userId }: DisplayCommentsProps) {
+export default function DisplayComments({
+    typeId,
+    userId,
+}: DisplayCommentsProps) {
     // TODO filter comments by likes  and new
     // TODO add Emoji button for comments
     // TODO add edit and delete comments
@@ -33,6 +36,17 @@ export default function DisplayComments({ typeId, userId }: DisplayCommentsProps
             type: "LISTING",
             typeId: typeId,
         });
+
+    const { data: userLikes, isLoading: isLoadingUserLikes } =
+        api.commentLike.getUserLikes.useQuery({
+            userId: userId,
+        });
+
+
+        console.log(userLikes)
+    // TODO implement like logic here so we can tell if a user has like a comment
+    // signed out we just need to show how many likes a comments has
+    // signed in we have to provide show many likes but also if the session user has liked it already which is tricky
 
     // maybe run like query here to check all comments that have been liked
     // then pass down a marker or something idk ask chatgpt about efficiency here

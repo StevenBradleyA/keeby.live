@@ -5,14 +5,55 @@ import {
     protectedProcedure,
 } from "~/server/api/trpc";
 
-export const likeRouter = createTRPCRouter({
+export const commentLikeRouter = createTRPCRouter({
+    getUserLikes: publicProcedure
+        .input(
+            z.object({
+                userId: z.string(),
+            })
+        )
+        .query(({ input, ctx }) => {
+            return ctx.prisma.commentLike.findMany({
+                where: {
+                    userId: input.userId,
+                },
+                select: { commentId: true },
+            });
+        }),
 
+    //     toggleLike: publicProcedure
+    // .input(
+    //     z.object({
+    //         commentId: z.string(),
+    //         userId: z.string(),
+    //     })
+    // )
+    // .mutation(async ({ ctx, input }) => {
+    //     const existingLike = await ctx.prisma.commentLike.findUnique({
+    //         where: {
+    //             userId_commentId: {
+    //                 userId: input.userId,
+    //                 commentId: input.commentId,
+    //             },
+    //         },
+    //     });
 
+    //     if (existingLike) {
+    //         await ctx.prisma.commentLike.delete({
+    //             where: { id: existingLike.id },
+    //         });
+    //     } else {
+    //         await ctx.prisma.commentLike.create({
+    //             data: {
+    //                 userId: input.userId,
+    //                 commentId: input.commentId,
+    //             },
+    //         });
+    //     }
 
+    //     return { success: true };
+    // }),
 
-
-
-    
     // getAmountByTypeId: publicProcedure
     //     .input(
     //         z.object({

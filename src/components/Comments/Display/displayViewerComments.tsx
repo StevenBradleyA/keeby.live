@@ -18,19 +18,11 @@ export default function DisplayViewerCommments({ typeId }: DisplayCommentsProps)
     // maybe instead of fetching all the comments and replies
     // we just fetch the top-level comments and number of replies
     // specific replies are fetched when show replies is enabled
-    const { data: session } = useSession();
 
     const { data: viewerComments, isLoading: isLoadingViewerComments } =
         api.comment.getAllByTypeIdForViewers.useQuery({
             type: "LISTING",
             typeId: typeId,
-        });
-
-    const { data: comments, isLoading: isLoadingComments } =
-        api.comment.getAllByTypeId.useQuery({
-            type: "LISTING",
-            typeId: typeId,
-            userId: session?.user.id,
         });
 
     const { data: commentCount, isLoading: isLoadingCommentCount } =

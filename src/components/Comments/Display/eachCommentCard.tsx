@@ -26,18 +26,8 @@ interface CommentUser {
 
 interface CommentLike {
     commentLike: number;
+    replies: number;
 }
-
-// interface ReplyContents {
-//     user: CommentUser;
-//     id: string;
-//     text: string;
-//     userId: string;
-//     type: string;
-//     typeId: string;
-//     parentId: string | null;
-//     referencedUser: string | null;
-// }
 
 interface CommentContents {
     id: string;
@@ -49,7 +39,6 @@ interface CommentContents {
     referencedUser: string | null;
     user: CommentUser;
     _count: CommentLike;
-    // replies: ReplyContents[];
 }
 
 export default function EachCommentCard({
@@ -70,6 +59,7 @@ export default function EachCommentCard({
     const closeModal = () => {
         setIsModalOpen(false);
     };
+    // TODO implement signed in vs signout logic
 
     return (
         <div className="mb-5 flex flex-col">
@@ -148,7 +138,7 @@ export default function EachCommentCard({
                             reply
                         </button>
                     </div>
-                    {/* {showTopLevelCommentReply && (
+                    {showTopLevelCommentReply && (
                         <CreateReplyComment
                             typeId={typeId}
                             type={"LISTING"}
@@ -158,21 +148,21 @@ export default function EachCommentCard({
                             }
                             setOpenReplies={setOpenReplies}
                         />
-                    )} */}
+                    )}
                 </div>
             </div>
-            {/* 
-            {comment.replies && comment.replies.length > 0 && (
+
+            {comment._count.commentLike > 0 && (
                 <button
                     onClick={() => setOpenReplies(!openReplies)}
                     className="ml-14 flex justify-start text-sm text-green-500"
                 >
                     {openReplies
                         ? "hide replies"
-                        : `${comment.replies.length} replies`}
+                        : `${comment._count.commentLike} replies`}
                 </button>
             )}
-            {openReplies &&
+            {/* {openReplies &&
                 comment.replies.map((reply, i) => (
                     <EachReplyCommentCard
                         key={i}
