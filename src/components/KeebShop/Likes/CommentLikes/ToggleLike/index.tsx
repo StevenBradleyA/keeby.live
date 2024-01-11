@@ -4,18 +4,24 @@ interface CreateCommentLikeProps {
     commentId: string;
     userId: string;
     isLiked: boolean;
+    topLevel: boolean;
 }
 
 export default function ToggleCommentLike({
     commentId,
     userId,
     isLiked,
+    topLevel,
 }: CreateCommentLikeProps) {
     const ctx = api.useContext();
 
     const { mutate } = api.commentLike.toggleLike.useMutation({
         onSuccess: () => {
-            void ctx.comment.getAllByTypeId.invalidate();
+            if (topLevel) {
+                void ctx.comment.getAllByTypeId.invalidate();
+            } else {
+                void ctx.comment.getAllReplysByTypeId.invalidate();
+            }
         },
     });
 
@@ -31,7 +37,7 @@ export default function ToggleCommentLike({
 
     return (
         <>
-            <button onClick={submit} className="">
+            <button onClick={submit}>
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     height="16"

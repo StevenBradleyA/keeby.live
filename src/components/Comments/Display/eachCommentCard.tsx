@@ -127,6 +127,7 @@ export default function EachCommentCard({
                                     commentId={comment.id}
                                     userId={session.user.id}
                                     isLiked={comment.isLiked}
+                                    topLevel={true}
                                 />
                             ) : (
                                 <button onClick={() => void signIn()}>
