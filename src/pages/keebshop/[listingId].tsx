@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import DisplayComments from "~/components/Comments/Display";
 import DisplayViewerCommments from "~/components/Comments/Display/displayViewerComments";
 import DisplayListingPhotos from "~/components/KeebShop/DisplayListing/DisplayListingPhotos";
-import SellerPublicProfile from "~/components/Profile/ListingPublicProfile";
+import SellerPublicProfileCard from "~/components/Profile/ListingPublicProfile";
 import { api } from "~/utils/api";
 
 export default function ListingPage() {
@@ -83,12 +83,12 @@ export default function ListingPage() {
                                     </button>
                                 </div>
                             </div>
-                            <SellerPublicProfile userId={keeb.userId} />
+                            <SellerPublicProfileCard userId={keeb.userId} />
                             {/* <div> seller clickable profile here</div>
                                 <div> seller rating</div> */}
                         </div>
                     </div>
-                    <div className="mt-10 flex justify-center text-5xl sound-test-title">
+                    <div className="sound-test-title mt-10 flex justify-center text-5xl">
                         SOUND TEST
                     </div>
                     <div> youtube embed link here optional pog</div>

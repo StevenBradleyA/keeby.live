@@ -1,24 +1,56 @@
 import { api } from "~/utils/api";
 import Image from "next/image";
+import Link from "next/link";
+import stockProfile from "@public/Profile/profile-keebo.jpg";
+import StarDisplay from "~/components/Reviews/Star";
+import StarRating from "~/components/Reviews/Star/starRating";
 
 interface SellerPublicProfileProps {
     userId: string;
 }
 
-export default function SellerPublicProfile({
+export default function SellerPublicProfileCard({
     userId,
 }: SellerPublicProfileProps) {
-    const { data: seller, isLoading } = api.user.getSeller.useQuery(userId);
+    const { data: sellerInfo, isLoading } = api.user.getSeller.useQuery(userId);
     // todo include reviews in this query
-    // going to have to map through all the stars and find an average
 
     // if profile pic then we display that otherwise we grab keebo
     // display seller rating if they have that otherwise we display blank stars
-
     return (
-        <div className="flex justify-between">
-            <div>seller profile if profile otherwise bmo</div>
-            <div>seller avg stars here</div>
-        </div>
+        sellerInfo && (
+            <div className="flex justify-between">
+                {sellerInfo.seller && sellerInfo.seller.username && (
+                    <Link href={`/profile/public${sellerInfo.seller.username}`}>
+                        <Image
+                            src={
+                                sellerInfo.seller.profile
+                                    ? sellerInfo.seller.profile
+                                    : stockProfile
+                            }
+                            alt="profile"
+                            width={400}
+                            height={400}
+                            className="w-20"
+                        />
+                    </Link>
+                )}
+                <div className="flex flex-col">
+                    <div>Seller:</div>
+                    <div>{sellerInfo?.seller?.username}</div>
+                </div>
+
+                {sellerInfo.allSellerStars._avg.starRating === null ? (
+                    <div className="flex flex-col">
+                        <div className="text-green-500">Unreviewed seller </div>
+                        <StarRating rating={0} />
+                    </div>
+                ) : (
+                    <StarRating
+                        rating={sellerInfo.allSellerStars._avg.starRating}
+                    />
+                )}
+            </div>
+        )
     );
 }
