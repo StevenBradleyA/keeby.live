@@ -426,19 +426,52 @@ li:not(:first-child) span {
 
 /* background-color: #8357eb; */
 
-/* ------    shop listing title   ------  */
+/* ------    top comment number title   ------  */
 
-    .listing-gradient{
-        background-image: linear-gradient(to right, #378dbc, #f008e4);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
+.listing-gradient {
+    background-image: linear-gradient(to right, #378dbc, #f008e4);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+/* ------    sound test title   ------  */
+
+.sound-test-title {
+    letter-spacing: 10px;
+    /* font-size: 30px; */
+    /* font-size: 1.5rem; */
+    color: #ffffff;
+    /* animation: red-flash 1s ease-in infinite alternate; */
+    animation: neon-glow 1.5s ease-out infinite alternate;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+/* @keyframes red-flash {
+        from {
+          color: rgb(255, 255, 255);
+        }
+        to {
+          color: rgb(221, 0, 0);
+        }
+      } */
+
+@keyframes neon-glow {
+    from {
+        text-shadow: 0 0 0.07em #ff0000, 0 0 0.14em #ff0000, 0 0 0.21em #ff0000,
+            0 0 0.28em #ff0000, 0 0 0.49em #ff0000, 0 0 0.56em #ff0000,
+            0 0 0.7em #ff0000, 0 0 1.05em #ff0000;
+        color: rgb(227, 116, 116);
     }
-
-
-
-
-
+    to {
+        text-shadow: 0 0 0.035em transparent, 0 0 0.07em transparent,
+            0 0 0.105em transparent, 0 0 0.14em transparent,
+            0 0 0.245em transparent, 0 0 0.28em transparent,
+            0 0 0.35em transparent, 0 0 0.525em transparent;
+        color: rgb(255, 255, 255);
+    }
+}
 
 /* ------    comments   ------  */
 
@@ -592,3 +625,11 @@ li:not(:first-child) span {
     left: 0;
     z-index: 25;
 }
+
+
+
+
+
+/* --------------     Loading    --------------  */
+
+

@@ -88,9 +88,8 @@ export default function ListingPage() {
                                 <div> seller rating</div> */}
                         </div>
                     </div>
-                    <div className="mt-10 flex justify-center text-5xl">
-                        {" "}
-                        Sound Test
+                    <div className="mt-10 flex justify-center text-5xl sound-test-title">
+                        SOUND TEST
                     </div>
                     <div> youtube embed link here optional pog</div>
 

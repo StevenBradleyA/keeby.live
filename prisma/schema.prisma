@@ -19,11 +19,13 @@ model Listing {
     id        String   @id @default(cuid())
     title     String
     text      String
+    soundTest String
     price     Int
     active    Boolean  @default(false)
-    favorite  Boolean  @default(false)
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+
+    // youtube embed link will need a new cat
 
     userId String
     // buyerId String
@@ -32,7 +34,19 @@ model Listing {
     // buyer User @relation(fields: [buyerId], references: [id])
 
     // comments Comment[]
-    reviews Review[]
+    reviews   Review[]
+    favorites UserFavorites[]
+}
+
+model UserFavorites {
+    id        String @id @default(cuid())
+    userId    String
+    listingId String
+
+    user    User    @relation(fields: [userId], references: [id])
+    listing Listing @relation(fields: [listingId], references: [id])
+
+    @@unique([userId, listingId])
 }
 
 model Post {
@@ -203,6 +217,7 @@ model User {
     accounts        Account[]
     sessions        Session[]
     listings        Listing[]
+    favorites       UserFavorites[]
     posts           Post[]
     comments        Comment[]
     transactions    Transaction[]
@@ -210,8 +225,8 @@ model User {
     games           Game[]
     keebs           Keeb[]
     commentLike     CommentLike[]
-    review          Review[]      @relation("UserRelation")
-    reviewsReceived Review[]      @relation("SellerRelation")
+    review          Review[]        @relation("UserRelation")
+    reviewsReceived Review[]        @relation("SellerRelation")
     postLike        PostLike[]
 }
 
