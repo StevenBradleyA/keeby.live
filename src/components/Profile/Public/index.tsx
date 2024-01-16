@@ -9,15 +9,11 @@ interface PublicProfileProps {
 export default function PublicProfileUserInfo({
     username,
 }: PublicProfileProps) {
-    // going to take in a userID and query that users info
     const { data: profile } = api.user.getUserPublic.useQuery(username);
-
-    console.log(profile);
-
     return (
         <>
             <div>hey</div>
-            {profile ? (\
+            {profile ? (
                 <div>
                     {profile.profile && (
                         <Image
