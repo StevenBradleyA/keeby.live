@@ -44,27 +44,25 @@ model Post {
 
     userId String
 
-    user User @relation(fields: [userId], references: [id])
-    // comments Comment[]
+    user     User       @relation(fields: [userId], references: [id])
+    postLike PostLike[]
 }
 
 model Comment {
     id   String @id @default(cuid())
     text String
 
-    userId String
-    type   String
-    typeId String
+    userId         String
+    type           String
+    typeId         String
+    parentId       String? // ID of the parent comment, null if top-level comment
+    referencedUser String?
 
     user User @relation(fields: [userId], references: [id])
-    // listing Listing? @relation(fields: [listingId], references: [id])
-    // post    Post?    @relation(fields: [postId], references: [id])
 
-    // Self-referential relation fields
-    //  i want to setup replies I think that'd be cool. needs testing tho
-    // parentId String?   // ID of the parent comment, null if top-level comment
-    // parent   Comment?  @relation("ParentComment", fields: [parentId], references: [id])
-    // replies  Comment[] @relation("ParentComment")
+    parent      Comment?      @relation("ParentComment", fields: [parentId], references: [id])
+    replies     Comment[]     @relation("ParentComment")
+    commentLike CommentLike[]
 }
 
 model Game {
@@ -93,15 +91,26 @@ model Keeb {
     Game Game[]
 }
 
-model Like {
+model CommentLike {
+    id        String @id @default(cuid())
+    userId    String
+    commentId String
+
+    user    User    @relation(fields: [userId], references: [id])
+    comment Comment @relation(fields: [commentId], references: [id])
+
+    @@unique([userId, commentId])
+}
+
+model PostLike {
     id     String @id @default(cuid())
     userId String
-    typeId String
-    type   String
+    postId String
 
     user User @relation(fields: [userId], references: [id])
+    post Post @relation(fields: [postId], references: [id])
 
-    @@unique([userId, typeId, type], name: "unique_user_type_like")
+    @@unique([userId, postId])
 }
 
 model Review {
@@ -200,9 +209,10 @@ model User {
     images          Images[]
     games           Game[]
     keebs           Keeb[]
-    Like            Like[]
-    Review          Review[]      @relation("UserRelation")
+    commentLike     CommentLike[]
+    review          Review[]      @relation("UserRelation")
     reviewsReceived Review[]      @relation("SellerRelation")
+    postLike        PostLike[]
 }
 
 model VerificationToken {

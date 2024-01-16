@@ -275,8 +275,7 @@ export default function ProfilePlus() {
                                 className="absolute h-full w-full cursor-pointer opacity-0"
                                 type="file"
                                 multiple
-                                // accept="image/png, image/jpg, image/jpeg"
-                                accept="image/*"
+                                accept="image/png, image/jpg"
                                 onChange={(e) => {
                                     if (e.target.files)
                                         setImageFiles([

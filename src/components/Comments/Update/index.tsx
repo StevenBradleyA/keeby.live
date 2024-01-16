@@ -1,57 +1,162 @@
-import { useSession } from "next-auth/react";
-import { useState } from "react";
-import { api } from "~/utils/api";
 import type { Comment } from "@prisma/client";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import { api } from "~/utils/api";
+
+interface UpdateCommentProps {
+    comment: Comment;
+    parentId?: string;
+    closeModal: () => void;
+    startingRows: number;
+}
+
+interface DeleteData {
+    id: string;
+    userId: string;
+    parentId?: string;
+}
+
+interface ErrorsObj {
+    text?: string;
+}
 
 export default function UpdateComment({
-    postId,
     comment,
-}: {
-    postId: string;
-    comment: Comment;
-}) {
-    const [text, setText] = useState(comment.text);
-    const { data: session } = useSession();
+    parentId,
+    closeModal,
+    startingRows,
+}: UpdateCommentProps) {
+    const [showDeleteConfirmation, setShowDeleteConfirmation] =
+        useState<boolean>(false);
+    const [showEdit, setShowEdit] = useState<boolean>(false);
+    const [text, setText] = useState<string>(comment.text);
+    const [row, setRow] = useState<number>(startingRows);
+    const [errors, setErrors] = useState<ErrorsObj>({});
 
     const ctx = api.useContext();
-    const { mutate } = api.comment.update.useMutation({
+    const { data: session } = useSession();
+
+    const { mutate } = api.comment.delete.useMutation({
         onSuccess: () => {
-            void ctx.comment.getByPostId.invalidate();
+            if (parentId) {
+                void ctx.comment.getAllReplysByTypeId.invalidate();
+            } else {
+                void ctx.comment.getAllByTypeId.invalidate();
+            }
+            void ctx.comment.getAmountByTypeId.invalidate();
+            closeModal();
         },
     });
 
-    const handleformSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const { mutate: updateComment } = api.comment.update.useMutation({
+        onSuccess: () => {
+            if (parentId) {
+                void ctx.comment.getAllReplysByTypeId.invalidate();
+            } else {
+                void ctx.comment.getAllByTypeId.invalidate();
+            }
+            closeModal();
+        },
+    });
 
-        if (session && session.user && session.user.id) {
-            const data = {
-                postId: postId,
+    const handleShowDeleteConfirmation = () => {
+        setShowDeleteConfirmation(true);
+    };
+
+    const hideDeleteConfirmation = () => {
+        setShowDeleteConfirmation(false);
+    };
+
+    const handleHideEdit = (e: React.FormEvent) => {
+        e.preventDefault();
+        closeModal();
+    };
+    const handleShowEdit = () => {
+        setShowEdit(true);
+    };
+
+    const deleteComment = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (session && session.user) {
+            const data: DeleteData = {
                 id: comment.id,
                 userId: session.user.id,
-                text: text,
             };
-            return mutate(data);
-        } else {
-            throw new Error("Hot Toast Incoming!!!");
+            if (parentId) {
+                data.parentId = parentId;
+            }
+            mutate(data);
         }
     };
 
+    const handleUpdateComment = (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if (
+            session &&
+            session.user &&
+            session.user.id &&
+            !Object.values(errors).length
+        ) {
+            const data = {
+                id: comment.id,
+                text,
+                userId: session.user.id,
+            };
+            return updateComment(data);
+        }
+    };
+    const handleRowIncrease = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+            setRow((prevRow) => prevRow + 1);
+        }
+    };
+
+    useEffect(() => {
+        const errorsObj: ErrorsObj = {};
+
+        if (text.length < 1) {
+            errorsObj.text = "Please provide text for your comment";
+        }
+
+        setErrors(errorsObj);
+    }, [text]);
+
     return (
-        <div>
-            <form onSubmit={handleformSubmit}>
-                <textarea
-                    className="m-2 rounded border bg-transparent p-1"
-                    value={text}
-                    onChange={(e) => setText(e.target.value)}
-                    placeholder="Update your comment ..."
-                />
-                <button
-                    className="rounded-md border text-slate-200"
-                    type="submit"
-                >
-                    Update Comment
-                </button>
-            </form>
+        <div className="flex flex-col">
+            {showDeleteConfirmation && !showEdit && (
+                <div className="flex flex-col gap-2">
+                    <h1>Proceed with operation?</h1>
+                    <div className="flex gap-5">
+                        <button onClick={deleteComment}>Confirm</button>
+                        <button onClick={hideDeleteConfirmation}>Deny</button>
+                    </div>
+                </div>
+            )}
+            {!showDeleteConfirmation && !showEdit && (
+                <>
+                    <button onClick={handleShowEdit}>Edit</button>
+                    <button onClick={handleShowDeleteConfirmation}>
+                        Delete
+                    </button>
+                </>
+            )}
+            {showEdit && (
+                <form className="flex flex-col">
+                    <textarea
+                        className="comment-input-box w-[600px] rounded-lg border-none bg-pogGray p-2 outline-none"
+                        value={text}
+                        placeholder="Write a comment..."
+                        onChange={(e) => setText(e.target.value)}
+                        onKeyDown={handleRowIncrease}
+                        rows={row}
+                    />
+                    <div className="mt-3 flex gap-5">
+                        <button onClick={handleHideEdit}>cancel</button>
+                        <button onClick={handleUpdateComment}>submit</button>
+                    </div>
+                </form>
+            )}
         </div>
     );
 }

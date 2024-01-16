@@ -6,27 +6,23 @@ import { useSession } from "next-auth/react";
 
 interface DisplayCommentsProps {
     typeId: string;
-    userId: string;
 }
 
-export default function DisplayComments({
-    typeId,
-    userId,
-}: DisplayCommentsProps) {
-
-    
+export default function DisplayViewerCommments({ typeId }: DisplayCommentsProps) {
     // TODO filter comments by likes  and new
     // TODO add Emoji button for comments
     // TODO add edit and delete comments
     // todo deleting a parent should also delete all reply comments and all likes
-    // TODO create a loading animation component and call it if isLoading
-    // TODO going to have to implement Lazy loading and pagination
 
-    const { data: comments, isLoading: isLoadingComments } =
-        api.comment.getAllByTypeId.useQuery({
+    // TODO going to have to implement Lazy loading and pagination
+    // maybe instead of fetching all the comments and replies
+    // we just fetch the top-level comments and number of replies
+    // specific replies are fetched when show replies is enabled
+
+    const { data: viewerComments, isLoading: isLoadingViewerComments } =
+        api.comment.getAllByTypeIdForViewers.useQuery({
             type: "LISTING",
             typeId: typeId,
-            userId: userId,
         });
 
     const { data: commentCount, isLoading: isLoadingCommentCount } =
@@ -35,6 +31,7 @@ export default function DisplayComments({
             typeId: typeId,
         });
 
+ 
     return (
         <>
             <div>
@@ -43,8 +40,8 @@ export default function DisplayComments({
                 }`}
             </div>
             <CreateComment typeId={typeId} type={"LISTING"} />
-            {comments &&
-                comments.map((comment, i) => (
+            {viewerComments &&
+                viewerComments.map((comment, i) => (
                     <EachCommentCard
                         key={i}
                         comment={comment}

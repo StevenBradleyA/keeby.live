@@ -1,3 +1,4 @@
+import { TURBO_TRACE_DEFAULT_MEMORY_LIMIT } from "next/dist/shared/lib/constants";
 import { z } from "zod";
 import {
     createTRPCRouter,
@@ -23,6 +24,34 @@ export const userRouter = createTRPCRouter({
             });
             return { seller, allSellerStars };
         }),
+    getUserPublic: publicProcedure.input(z.string()).query(({ input, ctx }) => {
+        const userInfo = ctx.prisma.user.findUnique({
+            where: { id: input },
+            select: {
+                id: true,
+                username: true,
+                profile: true,
+                tag: true,
+                reviewsReceived: {
+                    select: {
+                        id: true,
+                        text: true,
+                        starRating: true,
+                        userId: true,
+                        user: {
+                            select: {
+                                id: true,
+                                username: true,
+                            },
+                        },
+                    },
+                },
+            },
+        });
+
+        return userInfo;
+    }),
+
     usernameCheck: publicProcedure
         .input(z.string())
         .query(async ({ input, ctx }) => {

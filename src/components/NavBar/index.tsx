@@ -132,7 +132,7 @@ export default function NavBar() {
                 />
             </Link>
             <div className="flex items-center gap-32">
-                {router.asPath === "/shop" ? (
+                {router.asPath === "/" ? (
                     <Link href="/share" aria-label="share">
                         KEEB SHARE
                     </Link>

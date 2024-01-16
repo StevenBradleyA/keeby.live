@@ -2,17 +2,12 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { api } from "~/utils/api";
 import React from "react";
+import ModalDialog from "~/components/Modal";
+import CommentSignInModal from "../Modal/signInModal";
 
 interface CreateCommentProps {
     typeId: string;
     type: string;
-}
-
-interface CommentData {
-    text: string;
-    userId: string;
-    type: string;
-    typeId: string;
 }
 
 interface ErrorsObj {
@@ -22,19 +17,18 @@ interface ErrorsObj {
 export default function CreateComment({ typeId, type }: CreateCommentProps) {
     const [text, setText] = useState<string>("");
     const [row, setRow] = useState<number>(1);
+    const [isSignInModalOpen, setIsSignInModalOpen] = useState<boolean>(false);
 
     const [errors, setErrors] = useState<ErrorsObj>({});
     const [createSelected, setCreateSelected] = useState<boolean>(false);
     const { data: session } = useSession();
-
-    // send to log in page if not logged in
-    // TODO comment replys also create comment toooooo
 
     const ctx = api.useContext();
 
     const { mutate } = api.comment.create.useMutation({
         onSuccess: () => {
             void ctx.comment.getAllByTypeId.invalidate();
+            void ctx.comment.getAmountByTypeId.invalidate();
         },
     });
 
@@ -44,11 +38,29 @@ export default function CreateComment({ typeId, type }: CreateCommentProps) {
         }
     };
 
+    const openSignInModal = () => {
+        setIsSignInModalOpen(true);
+    };
+
+    const closeSignInModal = () => {
+        setIsSignInModalOpen(false);
+    };
+
     const cancelComment = (e: React.FormEvent) => {
         e.preventDefault();
         setText("");
         setCreateSelected(false);
         setRow(1);
+    };
+
+    const handleSubmitClick = (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if (session && session.user) {
+            submit(e);
+        } else {
+            openSignInModal();
+        }
     };
 
     const submit = (e: React.FormEvent) => {
@@ -105,12 +117,15 @@ export default function CreateComment({ typeId, type }: CreateCommentProps) {
                     </button>
                     <button
                         className="rounded-md border text-slate-200"
-                        onClick={submit}
+                        onClick={handleSubmitClick}
                     >
                         Submit Comment
                     </button>
                 </div>
             )}
+            <ModalDialog isOpen={isSignInModalOpen} onClose={closeSignInModal}>
+                <CommentSignInModal closeModal={closeSignInModal} />
+            </ModalDialog>
         </form>
     );
 }

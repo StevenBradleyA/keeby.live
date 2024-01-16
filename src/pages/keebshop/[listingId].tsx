@@ -1,20 +1,22 @@
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import DisplayComments from "~/components/Comments/Display";
+import DisplayViewerCommments from "~/components/Comments/Display/displayViewerComments";
 import DisplayListingPhotos from "~/components/KeebShop/DisplayListing/DisplayListingPhotos";
 import SellerPublicProfile from "~/components/Profile/ListingPublicProfile";
 import { api } from "~/utils/api";
 
 export default function ListingPage() {
     const router = useRouter();
+    const { data: session } = useSession();
+    const isSignedIn = session !== null;
 
+    console.log("POGGGGGGGERSSS", isSignedIn);
     const listingId = router.query.listingId as string;
 
     const { data: keeb, isLoading } = api.listing.getOne.useQuery({
         id: listingId,
     });
-
-    console.log("goodmorning", keeb);
-    // accsess to the userId
 
     // TODO add seller rating info
     // TODO add comments, seller profile info, seller ratings, public profiels clickable,
@@ -63,8 +65,8 @@ export default function ListingPage() {
                                     </button>
                                 </div>
                             </div>
-                                <SellerPublicProfile userId={keeb.userId} />
-                                {/* <div> seller clickable profile here</div>
+                            <SellerPublicProfile userId={keeb.userId} />
+                            {/* <div> seller clickable profile here</div>
                                 <div> seller rating</div> */}
                         </div>
                     </div>
@@ -74,12 +76,16 @@ export default function ListingPage() {
                     </div>
                     <div> youtube embed link here optional pog</div>
 
-                    {/* <div className="mt-32"> comments</div> */}
                     <div className="w-full">
-                    <DisplayComments typeId={keeb.id}/>
-
+                        {session && session.user.id ? (
+                            <DisplayComments
+                                typeId={keeb.id}
+                                userId={session.user.id}
+                            />
+                        ) : (
+                            <DisplayViewerCommments typeId={keeb.id} />
+                        )}
                     </div>
-                    {/* lets integrate replys but keep keeby styling looks great */}
                 </div>
             ) : (
                 <div>loading again </div>

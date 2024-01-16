@@ -7,7 +7,7 @@ import { reviewRouter } from "./routers/review";
 import { userRouter } from "./routers/user";
 import { listingRouter } from "./routers/listing";
 import { gameRouter } from "./routers/game";
-import { likeRouter } from "./routers/like";
+import { commentLikeRouter } from "./routers/like";
 
 /**
  * This is the primary router for your server.
@@ -19,7 +19,7 @@ export const appRouter = createTRPCRouter({
     game: gameRouter,
     image: imageRouter,
     keeb: keebRouter,
-    like: likeRouter,
+    commentLike: commentLikeRouter,
     listing: listingRouter,
     post: postRouter,
     review: reviewRouter,
