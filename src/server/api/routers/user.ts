@@ -26,7 +26,7 @@ export const userRouter = createTRPCRouter({
         }),
     getUserPublic: publicProcedure.input(z.string()).query(({ input, ctx }) => {
         const userInfo = ctx.prisma.user.findUnique({
-            where: { id: input },
+            where: { username: input },
             select: {
                 id: true,
                 username: true,
@@ -40,7 +40,6 @@ export const userRouter = createTRPCRouter({
                         userId: true,
                         user: {
                             select: {
-                                id: true,
                                 username: true,
                             },
                         },
