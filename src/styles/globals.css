@@ -426,6 +426,20 @@ li:not(:first-child) span {
 
 /* background-color: #8357eb; */
 
+/* ------    shop listing title   ------  */
+
+    .listing-gradient{
+        background-image: linear-gradient(to right, #378dbc, #f008e4);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+
+
+
+
+
 /* ------    comments   ------  */
 
 .comment-input-box {
