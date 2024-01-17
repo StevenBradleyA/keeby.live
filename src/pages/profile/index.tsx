@@ -9,7 +9,6 @@ import DisplayKeebs from "~/components/Profile/Keeb/DisplayKeeb";
 import ModalDialog from "~/components/Modal";
 import CreateKeeb from "~/components/Profile/Keeb/CreateKeeb";
 import ManageKeeb from "~/components/Profile/Keeb/ManageKeeb";
-import RotatingKeeb from "~/components/Profile/ThreeScenes/RotatingKeeb";
 import { getCookies, setCookie } from "cookies-next";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -75,8 +74,6 @@ export default function UserProfile() {
         }
     }, [cookies]);
 
-    // className=" mt-5 p-5 outline outline-1 outline-green-500"
-
     //     <svg
     //     width="20"
     //     height="20"
@@ -95,14 +92,7 @@ export default function UserProfile() {
                 <div className="flex justify-center">
                     <TitleScripts page="profile" />
                 </div>
-                {/* <div className="flex justify-end">
-                <button
-                    className="rounded-2xl bg-black px-6 py-2"
-                    onClick={handleRetroMode}
-                >
-                    {`${isRetro ? "to the future" : "hack me back in time"} `}
-                </button>
-            </div> */}
+
                 <div className="flex gap-20">
                     <div className="flex w-1/2 flex-col">
                         <h1 className="font-titillium text-3xl ">
@@ -111,23 +101,62 @@ export default function UserProfile() {
                         <div className=" mt-2 border-b-2 border-white "></div>
                         <div className="my-2 flex justify-between">
                             <h1>profile tittle</h1>
-                            <div>graphic here</div>
+                            <Image
+                                alt="style button"
+                                src={isRetro ? futureComputer : errorComputer}
+                                className="png-green w-14  "
+                            />
                         </div>
                         <Image
                             alt="profile matrix"
                             src={gridFunnel}
                             className=" h-40 border-2 border-white object-cover "
                         />
-                        <div className="my-5 flex justify-between">
-                            <h1>profile tittle</h1>
-                            <div>graphic here</div>
+                        <div className="mt-2 flex justify-between">
+                            <h1>profile data</h1>
+                            <p className=" whitespace-break-spaces">
+                                On this page you can change a lot of different
+                                things
+                            </p>
                         </div>
 
                         <Image
                             alt="profile matrix"
                             src={keebyLiveTitle}
-                            className="png-green mb-5 w-[80%] "
+                            className="png-green my-10 w-[80%] "
                         />
+                        <div className="mb-2 flex items-center justify-between">
+                            <div>tag select</div>
+                            <svg
+                                width="12"
+                                height="12"
+                                viewBox="0 0 100 100"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="white"
+                            >
+                                <circle cx="50" cy="50" r="40" />
+                            </svg>
+                            <div>VIEW PUBLIC PROFILE</div>
+                            <svg
+                                width="12"
+                                height="12"
+                                viewBox="0 0 100 100"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="white"
+                            >
+                                <circle cx="50" cy="50" r="40" />
+                            </svg>
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                height="30px"
+                                width="30px"
+                                viewBox="0 0 512 512"
+                                fill="white"
+                            >
+                                <path d="m34,256l26.2,26.2c108,108 283.7,108 391.7,0l26.1-26.2-26.2-26.2c-108-108-283.7-108-391.7,0l-26.1,26.2zm222,126.2c-75.8,0-151.6-28.9-209.3-86.6l-32.9-32.9c-3.7-3.7-3.7-9.7 0-13.5l32.9-32.9c115.4-115.4 303.2-115.4 418.6,0l32.9,32.9c3.7,3.7 3.7,9.7 0,13.5l-32.9,32.9c-57.7,57.7-133.5,86.6-209.3,86.6z" />
+                                <path d="m256,183.5c-40,0-72.5,32.5-72.5,72.5s32.5,72.5 72.5,72.5c40,0 72.5-32.5 72.5-72.5s-32.5-72.5-72.5-72.5zm0,164c-50.5,0-91.5-41.1-91.5-91.5 0-50.5 41.1-91.5 91.5-91.5s91.5,41.1 91.5,91.5c0,50.5-41,91.5-91.5,91.5z" />
+                            </svg>
+                        </div>
 
                         <div className="h-80  border-2 border-white ">
                             <Canvas
@@ -138,7 +167,6 @@ export default function UserProfile() {
                                 <ambientLight intensity={0.5} />
                                 <pointLight position={[10, 10, 10]} />
                                 <RotatingSphere />
-                                {/* <RotatingKeeb /> */}
                             </Canvas>
                         </div>
                     </div>
@@ -148,13 +176,7 @@ export default function UserProfile() {
                             onClick={handleRetroMode}
                         >
                             {/* <button onClick={handleRetroMode}>
-                                <Image
-                                    alt="style button"
-                                    src={
-                                        isRetro ? futureComputer : errorComputer
-                                    }
-                                    className="png-green w-14  "
-                                />
+                               
                             </button> */}
 
                             <div className="flex gap-1 ">
@@ -205,15 +227,15 @@ export default function UserProfile() {
                             </svg>
                             {isRetro ? (
                                 <div className="flex flex-col text-xs">
-                                    <h1>Future</h1>
-                                    <h1>to the</h1>
-                                    <h1>Future</h1>
+                                    <h1 className="leading-none">Future</h1>
+                                    <h1 className="leading-none">to the</h1>
+                                    <h1 className="leading-none">Future</h1>
                                 </div>
                             ) : (
                                 <div className="flex flex-col text-xs">
-                                    <h1>Retro</h1>
-                                    <h1>Retro</h1>
-                                    <h1>Retro</h1>
+                                    <h1 className="leading-none">Retro</h1>
+                                    <h1 className="leading-none">Retro</h1>
+                                    <h1 className="leading-none">Retro</h1>
                                 </div>
                             )}
                         </button>
@@ -232,6 +254,77 @@ export default function UserProfile() {
                         />
 
                         <h1 className=" font-titillium text-9xl">PROFILE</h1>
+                        <p className="mt-10 text-2xl">
+                            THOCK{" "}
+                            <span className="relative bottom-3">
+                                _____________________
+                            </span>{" "}
+                            CLACK{" "}
+                            <span className="relative bottom-3">________</span>{" "}
+                            POP
+                        </p>
+                        <p className="mt-2 text-2xl">
+                            THOCK{" "}
+                            <span className="relative bottom-3">_________</span>{" "}
+                            CLACK{" "}
+                            <span className="relative bottom-3">_________</span>{" "}
+                            POP{" "}
+                            <span className="relative bottom-3">
+                                __________
+                            </span>
+                        </p>
+                        <p className=" mt-4 text-2xl">
+                            THOCK{" "}
+                            <span className="relative bottom-3">___ </span>{" "}
+                            CLACK{" "}
+                            <span className="relative bottom-3">
+                                __________________________
+                            </span>{" "}
+                            POP
+                        </p>
+
+                        <div className="flex ">
+                            <div className="mt-6 flex items-center gap-5">
+                                <svg
+                                    width="16"
+                                    height="16"
+                                    viewBox="0 0 100 100"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    stroke="white"
+                                    strokeWidth="10"
+                                >
+                                    <circle cx="50" cy="50" r="40" />
+                                </svg>
+                                <svg
+                                    width="18"
+                                    height="18"
+                                    viewBox="0 0 100 100"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="white"
+                                >
+                                    <circle cx="50" cy="50" r="40" />
+                                </svg>
+                                <svg
+                                    width="16"
+                                    height="16"
+                                    viewBox="0 0 100 100"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    stroke="white"
+                                    strokeWidth="10"
+                                >
+                                    <circle cx="50" cy="50" r="40" />
+                                </svg>
+                                <p className="relative bottom-2">
+                                    _____________________________
+                                </p>
+                                <div className="flex flex-col text-[10px]">
+                                    <h3>Its not about the cost of a board</h3>
+                                    <h3> its about how it makes you feel</h3>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
