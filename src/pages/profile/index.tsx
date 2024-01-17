@@ -41,9 +41,9 @@ export default function UserProfile() {
 
     const [isCreateKeebModalOpen, setIsCreateKeebModalOpen] =
         useState<boolean>(false);
-
     const [isManageKeebModalOpen, setIsManageKeebModalOpen] =
         useState<boolean>(false);
+    const [title, setTitle] = useState("");
 
     const openCreateKeebModal = () => {
         setIsCreateKeebModalOpen(true);
@@ -74,24 +74,32 @@ export default function UserProfile() {
         }
     }, [cookies]);
 
-    //     <svg
-    //     width="20"
-    //     height="20"
-    //     viewBox="0 0 100 100"
-    //     xmlns="http://www.w3.org/2000/svg"
-    //     fill="white"
-    // >
-    //     <circle cx="50" cy="50" r="40"  />
-    // </svg>
+    useEffect(() => {
+        const phrases = [
+            "Time Hack Sequence Complete",
+            "checking systems",
+            "deleting hard drive",
+            "jk",
+            "Profile",
+        ];
+        const delay = [0, 2000, 4000, 6000, 8000];
+
+        const timeouts = phrases.map((phrase, i) =>
+            setTimeout(() => {
+                setTitle(phrase);
+            }, delay[i])
+        );
+
+        return () => {
+            timeouts.forEach(clearTimeout);
+        };
+    }, []);
 
     return (
         sessionData &&
         sessionData.user && (
-            <div className="flex w-3/4 flex-col font-retro text-green-500 ">
+            <div className="flex w-3/4 flex-col  text-green-500 font-retro ">
                 {isRetro && <div className="retro-scanlines"></div>}
-                <div className="flex justify-center">
-                    <TitleScripts page="profile" />
-                </div>
 
                 <div className="flex gap-20">
                     <div className="flex w-1/2 flex-col">
@@ -100,12 +108,8 @@ export default function UserProfile() {
                         </h1>
                         <div className=" mt-2 border-b-2 border-white "></div>
                         <div className="my-2 flex justify-between">
-                            <h1>profile tittle</h1>
-                            <Image
-                                alt="style button"
-                                src={isRetro ? futureComputer : errorComputer}
-                                className="png-green w-14  "
-                            />
+                            <h1 className="moving-title">{title}</h1>
+                            <div>add grid graphic here or hacktime logo</div>
                         </div>
                         <Image
                             alt="profile matrix"
@@ -113,11 +117,22 @@ export default function UserProfile() {
                             className=" h-40 border-2 border-white object-cover "
                         />
                         <div className="mt-2 flex justify-between">
-                            <h1>profile data</h1>
-                            <p className=" whitespace-break-spaces">
-                                On this page you can change a lot of different
-                                things
-                            </p>
+                            <h1>PROFILE DATA</h1>
+                            <button className="flex flex-col leading-none">
+                                <p className="text-xs">
+                                    EDIT YOUR PROFILE EDIT YOUR PROFILE EDIT
+                                    YOUR PROFILE
+                                </p>
+                                <p className="text-xs">
+                                    EDIT YOUR PROFILE EDIT YOUR PROFILE EDIT
+                                    YOUR PROFILE
+                                </p>
+
+                                <p className="text-xs">
+                                    EDIT YOUR PROFILE EDIT YOUR PROFILE EDIT
+                                    YOUR PROFILE
+                                </p>
+                            </button>
                         </div>
 
                         <Image
@@ -227,15 +242,15 @@ export default function UserProfile() {
                             </svg>
                             {isRetro ? (
                                 <div className="flex flex-col text-xs">
-                                    <h1 className="leading-none">Future</h1>
-                                    <h1 className="leading-none">to the</h1>
-                                    <h1 className="leading-none">Future</h1>
+                                    <h3 className="leading-none">Future</h3>
+                                    <h3 className="leading-none">to the</h3>
+                                    <h3 className="leading-none">Future</h3>
                                 </div>
                             ) : (
                                 <div className="flex flex-col text-xs">
-                                    <h1 className="leading-none">Retro</h1>
-                                    <h1 className="leading-none">Retro</h1>
-                                    <h1 className="leading-none">Retro</h1>
+                                    <h3 className="leading-none">Retro</h3>
+                                    <h3 className="leading-none">Retro</h3>
+                                    <h3 className="leading-none">Retro</h3>
                                 </div>
                             )}
                         </button>
