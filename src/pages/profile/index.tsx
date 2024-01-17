@@ -4,7 +4,6 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import TitleScripts from "~/components/TitleScripts";
-import keebo from "../../../public/Nav/bmo-test.jpg";
 import RotatingSphere from "~/components/Profile/ThreeScenes/RotatingSphere";
 import DisplayKeebs from "~/components/Profile/Keeb/DisplayKeeb";
 import ModalDialog from "~/components/Modal";
@@ -15,6 +14,12 @@ import { getCookies, setCookie } from "cookies-next";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import DisplayReviews from "~/components/Reviews/DisplayReviews";
+import keebo from "@public/Nav/bmo-test.jpg";
+import keebyLiveTitle from "@public/Profile/keebylive-title.png";
+import futureComputer from "@public/Profile/future-future.png";
+import errorComputer from "@public/Profile/error-error-error.png";
+import gridFunnel from "@public/Profile/profile-idea.png";
+import Custom404 from "../404";
 
 export default function UserProfile() {
     // todo consider hashing or some simple change that doesn't display the correct userID
@@ -70,30 +75,172 @@ export default function UserProfile() {
         }
     }, [cookies]);
 
+    // className=" mt-5 p-5 outline outline-1 outline-green-500"
+
+    //     <svg
+    //     width="20"
+    //     height="20"
+    //     viewBox="0 0 100 100"
+    //     xmlns="http://www.w3.org/2000/svg"
+    //     fill="white"
+    // >
+    //     <circle cx="50" cy="50" r="40"  />
+    // </svg>
+
     return (
-        sessionData && (
-            <div className="flex w-3/4 flex-col font-retro text-green-500">
+        sessionData &&
+        sessionData.user && (
+            <div className="flex w-3/4 flex-col font-retro text-green-500 ">
                 {isRetro && <div className="retro-scanlines"></div>}
                 <div className="flex justify-center">
                     <TitleScripts page="profile" />
                 </div>
-                <div className="flex justify-end">
-                    <button
-                        className="rounded-2xl bg-black px-6 py-2"
-                        onClick={handleRetroMode}
-                    >
-                        {`${
-                            isRetro ? "to the future" : "hack me back in time"
-                        } `}
-                    </button>
+                {/* <div className="flex justify-end">
+                <button
+                    className="rounded-2xl bg-black px-6 py-2"
+                    onClick={handleRetroMode}
+                >
+                    {`${isRetro ? "to the future" : "hack me back in time"} `}
+                </button>
+            </div> */}
+                <div className="flex gap-20">
+                    <div className="flex w-1/2 flex-col">
+                        <h1 className="font-titillium text-3xl ">
+                            {sessionData.user.username}
+                        </h1>
+                        <div className=" mt-2 border-b-2 border-white "></div>
+                        <div className="my-2 flex justify-between">
+                            <h1>profile tittle</h1>
+                            <div>graphic here</div>
+                        </div>
+                        <Image
+                            alt="profile matrix"
+                            src={gridFunnel}
+                            className=" h-40 border-2 border-white object-cover "
+                        />
+                        <div className="my-5 flex justify-between">
+                            <h1>profile tittle</h1>
+                            <div>graphic here</div>
+                        </div>
+
+                        <Image
+                            alt="profile matrix"
+                            src={keebyLiveTitle}
+                            className="png-green mb-5 w-[80%] "
+                        />
+
+                        <div className="h-80  border-2 border-white ">
+                            <Canvas
+                                className="h-full w-full cursor-pointer"
+                                // camera={{ position: [0, 400, 200] }}
+                                camera={{ position: [4, 0, 1] }}
+                            >
+                                <ambientLight intensity={0.5} />
+                                <pointLight position={[10, 10, 10]} />
+                                <RotatingSphere />
+                                {/* <RotatingKeeb /> */}
+                            </Canvas>
+                        </div>
+                    </div>
+                    <div className="flex w-1/2 flex-col">
+                        <button
+                            className="flex items-center justify-end gap-2"
+                            onClick={handleRetroMode}
+                        >
+                            {/* <button onClick={handleRetroMode}>
+                                <Image
+                                    alt="style button"
+                                    src={
+                                        isRetro ? futureComputer : errorComputer
+                                    }
+                                    className="png-green w-14  "
+                                />
+                            </button> */}
+
+                            <div className="flex gap-1 ">
+                                <svg
+                                    width="12"
+                                    height="12"
+                                    viewBox="0 0 100 100"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    stroke="white"
+                                    strokeWidth="10"
+                                >
+                                    <circle cx="50" cy="50" r="40" />
+                                </svg>
+                                <svg
+                                    width="12"
+                                    height="12"
+                                    viewBox="0 0 100 100"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    stroke="white"
+                                    strokeWidth="10"
+                                >
+                                    <circle cx="50" cy="50" r="40" />
+                                </svg>
+                                <svg
+                                    width="12"
+                                    height="12"
+                                    viewBox="0 0 100 100"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    stroke="white"
+                                    strokeWidth="10"
+                                >
+                                    <circle cx="50" cy="50" r="40" />
+                                </svg>
+                            </div>
+
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                height="30px"
+                                width="30px"
+                                viewBox="0 0 512 512"
+                                fill="white"
+                            >
+                                <path d="m34,256l26.2,26.2c108,108 283.7,108 391.7,0l26.1-26.2-26.2-26.2c-108-108-283.7-108-391.7,0l-26.1,26.2zm222,126.2c-75.8,0-151.6-28.9-209.3-86.6l-32.9-32.9c-3.7-3.7-3.7-9.7 0-13.5l32.9-32.9c115.4-115.4 303.2-115.4 418.6,0l32.9,32.9c3.7,3.7 3.7,9.7 0,13.5l-32.9,32.9c-57.7,57.7-133.5,86.6-209.3,86.6z" />
+                                <path d="m256,183.5c-40,0-72.5,32.5-72.5,72.5s32.5,72.5 72.5,72.5c40,0 72.5-32.5 72.5-72.5s-32.5-72.5-72.5-72.5zm0,164c-50.5,0-91.5-41.1-91.5-91.5 0-50.5 41.1-91.5 91.5-91.5s91.5,41.1 91.5,91.5c0,50.5-41,91.5-91.5,91.5z" />
+                            </svg>
+                            {isRetro ? (
+                                <div className="flex flex-col text-xs">
+                                    <h1>Future</h1>
+                                    <h1>to the</h1>
+                                    <h1>Future</h1>
+                                </div>
+                            ) : (
+                                <div className="flex flex-col text-xs">
+                                    <h1>Retro</h1>
+                                    <h1>Retro</h1>
+                                    <h1>Retro</h1>
+                                </div>
+                            )}
+                        </button>
+
+                        <Image
+                            alt="profile"
+                            src={
+                                sessionData.user.profile
+                                    ? sessionData.user.profile
+                                    : keebo
+                            }
+                            width={800}
+                            height={800}
+                            priority={true}
+                            className=" mt-2 h-[400px] w-[800px] border-2 border-white object-cover"
+                        />
+
+                        <h1 className=" font-titillium text-9xl">PROFILE</h1>
+                    </div>
                 </div>
 
-                <div className="mb-10 flex w-full justify-center gap-10">
+                <div className=" mb-10 mt-96 flex w-full justify-center gap-10">
                     <div className="flex flex-col">
-                        {sessionData && sessionData.user.profile ? (
+                        {sessionData.user.profile ? (
                             <Image
                                 alt="profile"
-                                src={sessionData?.user.profile}
+                                src={sessionData.user.profile}
                                 width={300}
                                 height={300}
                                 priority={true}
@@ -107,28 +254,7 @@ export default function UserProfile() {
                                 priority={true}
                             />
                         )}
-                        <div className=" mt-5 p-5 outline outline-1 outline-green-500">
-                            {sessionData?.user.username}
-                        </div>
                         <div>tag selection dropdown here</div>
-                    </div>
-
-                    <div className="flex w-1/3 flex-col">
-                        <div className="h-72 outline outline-1 outline-green-500 ">
-                            <Canvas
-                                className="h-full w-full cursor-pointer"
-                                // camera={{ position: [0, 400, 200] }}
-                                camera={{ position: [4, 0, 1] }}
-                            >
-                                <ambientLight intensity={0.5} />
-                                <pointLight position={[10, 10, 10]} />
-                                <RotatingSphere />
-                                {/* <RotatingKeeb /> */}
-                            </Canvas>
-                        </div>
-                        <div className=" p-10 outline outline-1 outline-green-500">
-                            hello moving text
-                        </div>
                     </div>
                 </div>
 
@@ -267,7 +393,6 @@ export default function UserProfile() {
                         </div>
                         <div> Lets add purchase history here</div>
                         <div>ability to leave reviews on these purchases</div>
-                        
                         <DisplayReviews userId={sessionData.user.id} />
                         Ability to leave reviews
                     </div>

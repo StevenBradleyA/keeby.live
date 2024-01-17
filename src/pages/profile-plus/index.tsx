@@ -87,7 +87,7 @@ export default function ProfilePlus() {
         if (!username.length) {
             errorsObj.username = "Please provide a username";
         }
-
+        //todo set a max username length of 50 characters
         if (!keyboard.length) {
             errorsObj.keyboard = "Please provide your keyboard";
         }
