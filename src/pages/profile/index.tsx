@@ -193,6 +193,7 @@ export default function UserProfile() {
                                 <RotatingSphere />
                             </Canvas>
                         </div>
+                        {/* this needs to be cool moving text */}
                     </div>
                     <div className="flex w-1/2 flex-col">
                         <button
@@ -264,20 +265,35 @@ export default function UserProfile() {
                             )}
                         </button>
 
-                        <Image
-                            alt="profile"
-                            src={
-                                sessionData.user.profile
-                                    ? sessionData.user.profile
-                                    : keebo
-                            }
-                            width={800}
-                            height={800}
-                            priority={true}
-                            className=" mt-2 h-[400px] w-[800px] border-2 border-[#616161] object-cover"
-                        />
+                        <div className="h-[400px] border-2 border-[#616161] ">
+                            <Canvas
+                                className="h-full w-full cursor-pointer"
+                                // camera={{ position: [0, 400, 200] }}
+                                camera={{ position: [4, 0, 1] }}
+                            >
+                                <ambientLight intensity={0.5} />
+                                <pointLight position={[10, 10, 10]} />
+                                <RotatingSphere />
+                            </Canvas>
+                        </div>
+                        <div className="flex items-center justify-between">
+                            <h1 className=" font-titillium text-9xl">
+                                PROFILE
+                            </h1>
+                            <Image
+                                alt="profile"
+                                src={
+                                    sessionData.user.profile
+                                        ? sessionData.user.profile
+                                        : keebo
+                                }
+                                width={800}
+                                height={800}
+                                priority={true}
+                                className=" mt-2 h-24 w-24 object-cover"
+                            />
+                        </div>
 
-                        <h1 className=" font-titillium text-9xl">PROFILE</h1>
                         <p className="mt-10 text-2xl">
                             THOCK{" "}
                             <span className="relative bottom-3">
@@ -352,30 +368,30 @@ export default function UserProfile() {
                     </div>
                 </div>
 
-                <div className=" mb-10 mt-96 flex w-full justify-center gap-10">
-                    <div className="flex flex-col">
-                        {sessionData.user.profile ? (
-                            <Image
-                                alt="profile"
-                                src={sessionData.user.profile}
-                                width={300}
-                                height={300}
-                                priority={true}
-                            />
-                        ) : (
-                            <Image
-                                alt="profile"
-                                src={keebo}
-                                width={300}
-                                height={300}
-                                priority={true}
-                            />
-                        )}
-                        <div>tag selection dropdown here</div>
-                    </div>
+                <div className="mt-44 flex justify-center gap-10 border-2 ">
+                    <Image
+                        src={errorComputer}
+                        alt="computer"
+                        width={200}
+                        height={200}
+                        className="png-green"
+                    />
+                    <Image
+                        src={futureComputer}
+                        alt="computer"
+                        width={200}
+                        height={200}
+                        className="png-green"
+                    />
+                    <Image
+                        src={errorComputer}
+                        alt="computer"
+                        width={200}
+                        height={200}
+                        className="png-green"
+                    />
                 </div>
-
-                <div className="flex justify-center gap-5">
+                <div className=" flex justify-center gap-5">
                     <motion.button
                         onClick={() => setToggle("KeebType")}
                         className="rounded-2xl bg-black px-6 py-2"
