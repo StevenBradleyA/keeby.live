@@ -18,6 +18,7 @@ import futureComputer from "@public/Profile/future-future.png";
 import errorComputer from "@public/Profile/error-error-error.png";
 import gridFunnel from "@public/Profile/profile-idea.png";
 import Custom404 from "../404";
+import LoadingSpinner from "~/components/Loading";
 
 export default function UserProfile() {
     // todo consider hashing or some simple change that doesn't display the correct userID
@@ -391,6 +392,7 @@ export default function UserProfile() {
                         className="png-green"
                     />
                 </div>
+                <LoadingSpinner/>
                 <div className=" flex justify-center gap-5">
                     <motion.button
                         onClick={() => setToggle("KeebType")}
