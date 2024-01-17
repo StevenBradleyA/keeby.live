@@ -39,7 +39,7 @@ export default function Home() {
     //  or big single cards
 
     return (
-        <div className=" flex w-full gap-5">
+        <div className="mt-10 flex w-full gap-5">
             <div className="ml-16 flex w-1/3 flex-col bg-green-200">
                 <div>Search Here</div>
                 <div>Filter selection here</div>

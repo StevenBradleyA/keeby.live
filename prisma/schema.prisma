@@ -160,6 +160,16 @@ model PostLike {
     @@unique([userId, postId])
 }
 
+model Rank {
+    id     String @id @default(cuid())
+    name   String
+    minWpm Int
+    maxWpm Int
+    users  User[]
+}
+
+// could just create ranks in admin to avoid using seeders this way i could change ranks anytime
+
 model Review {
     id         String   @id @default(cuid())
     text       String
@@ -213,7 +223,7 @@ model User {
     emailVerified DateTime?
     image         String?
     profile       String?
-    rank          String?
+    rankId        String?
 
     username String? @unique
 
@@ -237,6 +247,7 @@ model User {
     postLike        PostLike[]
     tags            Tag[]           @relation("UserTags")
     transactions    Transaction[]
+    rank            Rank?           @relation(fields: [rankId], references: [id])
 }
 
 model VerificationToken {

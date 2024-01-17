@@ -3,7 +3,7 @@ import { Canvas } from "@react-three/fiber";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import TitleScripts from "~/components/TitleScripts";
+import Link from "next/link";
 import RotatingSphere from "~/components/Profile/ThreeScenes/RotatingSphere";
 import DisplayKeebs from "~/components/Profile/Keeb/DisplayKeeb";
 import ModalDialog from "~/components/Modal";
@@ -11,7 +11,6 @@ import CreateKeeb from "~/components/Profile/Keeb/CreateKeeb";
 import ManageKeeb from "~/components/Profile/Keeb/ManageKeeb";
 import { getCookies, setCookie } from "cookies-next";
 import { motion } from "framer-motion";
-import Link from "next/link";
 import DisplayReviews from "~/components/Reviews/DisplayReviews";
 import keebo from "@public/Nav/bmo-test.jpg";
 import keebyLiveTitle from "@public/Profile/keebylive-title.png";
@@ -98,7 +97,7 @@ export default function UserProfile() {
     return (
         sessionData &&
         sessionData.user && (
-            <div className="flex w-3/4 flex-col  text-green-500 font-retro ">
+            <div className="flex w-3/4 flex-col  font-retro text-green-500 ">
                 {isRetro && <div className="retro-scanlines"></div>}
 
                 <div className="flex gap-20">
@@ -106,7 +105,7 @@ export default function UserProfile() {
                         <h1 className="font-titillium text-3xl ">
                             {sessionData.user.username}
                         </h1>
-                        <div className=" mt-2 border-b-2 border-white "></div>
+                        <div className=" mt-2 border-b-2 border-[#616161] "></div>
                         <div className="my-2 flex justify-between">
                             <h1 className="moving-title">{title}</h1>
                             <div>add grid graphic here or hacktime logo</div>
@@ -114,7 +113,7 @@ export default function UserProfile() {
                         <Image
                             alt="profile matrix"
                             src={gridFunnel}
-                            className=" h-40 border-2 border-white object-cover "
+                            className=" h-40 border-2 border-[#616161] object-cover "
                         />
                         <div className="mt-2 flex justify-between">
                             <h1>PROFILE DATA</h1>
@@ -147,33 +146,43 @@ export default function UserProfile() {
                                 height="12"
                                 viewBox="0 0 100 100"
                                 xmlns="http://www.w3.org/2000/svg"
-                                fill="white"
+                                fill="#616161"
                             >
                                 <circle cx="50" cy="50" r="40" />
                             </svg>
-                            <div>VIEW PUBLIC PROFILE</div>
+                            <Link
+                                href={`profile/public/${sessionData.user.username}`}
+                                aria-label="public profile"
+                            >
+                                VIEW PUBLIC PROFILE
+                            </Link>
                             <svg
                                 width="12"
                                 height="12"
                                 viewBox="0 0 100 100"
                                 xmlns="http://www.w3.org/2000/svg"
-                                fill="white"
+                                fill="#616161"
                             >
                                 <circle cx="50" cy="50" r="40" />
                             </svg>
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                height="30px"
-                                width="30px"
-                                viewBox="0 0 512 512"
-                                fill="white"
+                            <Link
+                                href={`profile/public/${sessionData.user.username}`}
+                                aria-label="public profile"
                             >
-                                <path d="m34,256l26.2,26.2c108,108 283.7,108 391.7,0l26.1-26.2-26.2-26.2c-108-108-283.7-108-391.7,0l-26.1,26.2zm222,126.2c-75.8,0-151.6-28.9-209.3-86.6l-32.9-32.9c-3.7-3.7-3.7-9.7 0-13.5l32.9-32.9c115.4-115.4 303.2-115.4 418.6,0l32.9,32.9c3.7,3.7 3.7,9.7 0,13.5l-32.9,32.9c-57.7,57.7-133.5,86.6-209.3,86.6z" />
-                                <path d="m256,183.5c-40,0-72.5,32.5-72.5,72.5s32.5,72.5 72.5,72.5c40,0 72.5-32.5 72.5-72.5s-32.5-72.5-72.5-72.5zm0,164c-50.5,0-91.5-41.1-91.5-91.5 0-50.5 41.1-91.5 91.5-91.5s91.5,41.1 91.5,91.5c0,50.5-41,91.5-91.5,91.5z" />
-                            </svg>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    height="30px"
+                                    width="30px"
+                                    viewBox="0 0 512 512"
+                                    fill="#616161"
+                                >
+                                    <path d="m34,256l26.2,26.2c108,108 283.7,108 391.7,0l26.1-26.2-26.2-26.2c-108-108-283.7-108-391.7,0l-26.1,26.2zm222,126.2c-75.8,0-151.6-28.9-209.3-86.6l-32.9-32.9c-3.7-3.7-3.7-9.7 0-13.5l32.9-32.9c115.4-115.4 303.2-115.4 418.6,0l32.9,32.9c3.7,3.7 3.7,9.7 0,13.5l-32.9,32.9c-57.7,57.7-133.5,86.6-209.3,86.6z" />
+                                    <path d="m256,183.5c-40,0-72.5,32.5-72.5,72.5s32.5,72.5 72.5,72.5c40,0 72.5-32.5 72.5-72.5s-32.5-72.5-72.5-72.5zm0,164c-50.5,0-91.5-41.1-91.5-91.5 0-50.5 41.1-91.5 91.5-91.5s91.5,41.1 91.5,91.5c0,50.5-41,91.5-91.5,91.5z" />
+                                </svg>
+                            </Link>
                         </div>
 
-                        <div className="h-80  border-2 border-white ">
+                        <div className="h-80  border-2 border-[#616161] ">
                             <Canvas
                                 className="h-full w-full cursor-pointer"
                                 // camera={{ position: [0, 400, 200] }}
@@ -201,7 +210,7 @@ export default function UserProfile() {
                                     viewBox="0 0 100 100"
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
-                                    stroke="white"
+                                    stroke="#616161"
                                     strokeWidth="10"
                                 >
                                     <circle cx="50" cy="50" r="40" />
@@ -212,7 +221,7 @@ export default function UserProfile() {
                                     viewBox="0 0 100 100"
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
-                                    stroke="white"
+                                    stroke="#616161"
                                     strokeWidth="10"
                                 >
                                     <circle cx="50" cy="50" r="40" />
@@ -223,7 +232,7 @@ export default function UserProfile() {
                                     viewBox="0 0 100 100"
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
-                                    stroke="white"
+                                    stroke="#616161"
                                     strokeWidth="10"
                                 >
                                     <circle cx="50" cy="50" r="40" />
@@ -235,19 +244,19 @@ export default function UserProfile() {
                                 height="30px"
                                 width="30px"
                                 viewBox="0 0 512 512"
-                                fill="white"
+                                fill="#616161"
                             >
                                 <path d="m34,256l26.2,26.2c108,108 283.7,108 391.7,0l26.1-26.2-26.2-26.2c-108-108-283.7-108-391.7,0l-26.1,26.2zm222,126.2c-75.8,0-151.6-28.9-209.3-86.6l-32.9-32.9c-3.7-3.7-3.7-9.7 0-13.5l32.9-32.9c115.4-115.4 303.2-115.4 418.6,0l32.9,32.9c3.7,3.7 3.7,9.7 0,13.5l-32.9,32.9c-57.7,57.7-133.5,86.6-209.3,86.6z" />
                                 <path d="m256,183.5c-40,0-72.5,32.5-72.5,72.5s32.5,72.5 72.5,72.5c40,0 72.5-32.5 72.5-72.5s-32.5-72.5-72.5-72.5zm0,164c-50.5,0-91.5-41.1-91.5-91.5 0-50.5 41.1-91.5 91.5-91.5s91.5,41.1 91.5,91.5c0,50.5-41,91.5-91.5,91.5z" />
                             </svg>
                             {isRetro ? (
-                                <div className="flex flex-col text-xs">
+                                <div className="flex flex-col text-xs ">
                                     <h3 className="leading-none">Future</h3>
                                     <h3 className="leading-none">to the</h3>
                                     <h3 className="leading-none">Future</h3>
                                 </div>
                             ) : (
-                                <div className="flex flex-col text-xs">
+                                <div className="flex flex-col text-xs ">
                                     <h3 className="leading-none">Retro</h3>
                                     <h3 className="leading-none">Retro</h3>
                                     <h3 className="leading-none">Retro</h3>
@@ -265,7 +274,7 @@ export default function UserProfile() {
                             width={800}
                             height={800}
                             priority={true}
-                            className=" mt-2 h-[400px] w-[800px] border-2 border-white object-cover"
+                            className=" mt-2 h-[400px] w-[800px] border-2 border-[#616161] object-cover"
                         />
 
                         <h1 className=" font-titillium text-9xl">PROFILE</h1>
@@ -306,7 +315,7 @@ export default function UserProfile() {
                                     viewBox="0 0 100 100"
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
-                                    stroke="white"
+                                    stroke="#616161"
                                     strokeWidth="10"
                                 >
                                     <circle cx="50" cy="50" r="40" />
@@ -316,7 +325,7 @@ export default function UserProfile() {
                                     height="18"
                                     viewBox="0 0 100 100"
                                     xmlns="http://www.w3.org/2000/svg"
-                                    fill="white"
+                                    fill="#616161"
                                 >
                                     <circle cx="50" cy="50" r="40" />
                                 </svg>
@@ -326,7 +335,7 @@ export default function UserProfile() {
                                     viewBox="0 0 100 100"
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
-                                    stroke="white"
+                                    stroke="#616161"
                                     strokeWidth="10"
                                 >
                                     <circle cx="50" cy="50" r="40" />
