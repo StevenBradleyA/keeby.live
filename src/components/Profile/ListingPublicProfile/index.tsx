@@ -21,7 +21,10 @@ export default function SellerPublicProfileCard({
         sellerInfo && (
             <div className="flex justify-between">
                 {sellerInfo.seller && sellerInfo.seller.username && (
-                    <Link href={`/profile/public${sellerInfo.seller.username}`}>
+                    <Link
+                        href={`/profile/public/${sellerInfo.seller.username}`}
+                        aria-label="seller profile"
+                    >
                         <Image
                             src={
                                 sellerInfo.seller.profile
@@ -35,14 +38,22 @@ export default function SellerPublicProfileCard({
                         />
                     </Link>
                 )}
-                <div className="flex flex-col">
-                    <div>Seller:</div>
-                    <div>{sellerInfo?.seller?.username}</div>
-                </div>
+                {sellerInfo.seller && sellerInfo.seller.username && (
+                    <div className="flex flex-col">
+                        <div className="text-darkGray">Listed by:</div>
+                        <Link
+                            href={`/profile/public/${sellerInfo.seller.username}`}
+                            aria-label="seller profile"
+                        >
+                            {sellerInfo.seller.username}
+                        </Link>
+                        <div className="text-green-500"></div>
+                    </div>
+                )}
 
                 {sellerInfo.allSellerStars._avg.starRating === null ? (
                     <div className="flex flex-col">
-                        <div className="text-green-500">Unreviewed seller </div>
+                        <div className="text-red-500">Unreviewed seller </div>
                         <StarRating rating={0} />
                     </div>
                 ) : (
