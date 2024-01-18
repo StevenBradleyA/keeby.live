@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import ModalDialog from "~/components/Modal";
 import CreateListingModal from "~/components/KeebShop/CreateModal";
 import EachListingCardPreview from "~/components/KeebShop/DisplayListing/DisplayListingsPreview";
+import plus from "@public/Vectors/plus-plus.png";
+import Image from "next/image";
 
 export default function Home() {
     // big cards like bring a trailer  or like this
@@ -27,20 +29,11 @@ export default function Home() {
     };
     const [filter, setFilter] = useState<string>("hot");
 
-    // todo if isClicked then we need completely separate parent divs
-    // need a map of all indexes before 5 indexes
-    // could do grid parent of 5 selected
-    // then need a map of all indexes after.
-    // not efficient code by any means but I want it
-    // will need to save the keebs in a prev and post index to the six in question
-
-    // cards with info like air bnb which I kinda like
-
-    //  or big single cards
+    // todo lets move tactile linear clicky 
 
     return (
         <div className="mt-10 flex w-full gap-5">
-            <div className="ml-16 flex w-1/3 flex-col bg-green-200">
+            <div className="ml-16 flex w-1/3 flex-col ">
                 <div>Search Here</div>
                 <div>Filter selection here</div>
                 <div>Tactile, linear, clicky, topre, other</div>
@@ -70,15 +63,15 @@ export default function Home() {
                             New
                         </button>
                     </div>
-                    <motion.button
-                        whileHover={{
-                            scale: 1.1,
-                        }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={openModal}
-                    >
-                        plus
-                    </motion.button>
+                    <button onClick={openModal}>
+                        <Image
+                            src={plus}
+                            alt="create listing"
+                            width={200}
+                            height={200}
+                            className="png-dark-gray w-12 "
+                        />
+                    </button>
                 </div>
                 <ModalDialog isOpen={isModalOpen} onClose={closeModal}>
                     <CreateListingModal />
@@ -97,7 +90,7 @@ export default function Home() {
                         </div>
                     ) : (
                         <>
-                            <div>{`There are currently no listings, but you could be the first :D `}</div>
+                            <div>{`There are currently no listings`}</div>
                             <motion.button
                                 whileHover={{
                                     scale: 1.1,

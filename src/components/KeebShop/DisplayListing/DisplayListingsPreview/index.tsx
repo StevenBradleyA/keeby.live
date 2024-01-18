@@ -5,6 +5,7 @@ import matrix from "@public/Gifs/matrix.gif";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import LoadingSpinner from "~/components/Loading";
 
 interface EachListingCardProps {
     keeb: Listing;
@@ -12,12 +13,15 @@ interface EachListingCardProps {
 }
 
 export default function EachListingCardPreview({ keeb }: EachListingCardProps) {
-
     const { data: previewImage, isLoading } =
         api.image.getAllByResourceId.useQuery({
             resourceType: "LISTINGPREVIEW",
             resourceId: keeb.id,
         });
+
+    if (isLoading) {
+        return <LoadingSpinner />;
+    }
 
     return (
         <div className="flex w-[30%] flex-col">
@@ -27,7 +31,7 @@ export default function EachListingCardPreview({ keeb }: EachListingCardProps) {
                     query: { listingId: keeb.id },
                 }}
             >
-                {previewImage && previewImage[0] && previewImage[0].link ? (
+                {previewImage && previewImage[0] && previewImage[0].link && (
                     <div className="cursor-pointer">
                         <Image
                             alt="preview"
@@ -37,13 +41,6 @@ export default function EachListingCardPreview({ keeb }: EachListingCardProps) {
                             className={`h-[250px] w-full rounded-3xl object-cover`}
                         />
                     </div>
-                ) : (
-                    <Image
-                        alt="preview"
-                        src={matrix}
-                        width={200}
-                        height={200}
-                    />
                 )}
                 <div>{keeb.title}</div>
                 <div className="text-green-500">{`$${keeb.price}`}</div>

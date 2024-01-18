@@ -2,28 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
-
 /* --------------     png color converter     --------------  */
-
 
 .png-green {
     filter: invert(48%) sepia(5%) saturate(3277%) hue-rotate(72deg)
-      brightness(116%) contrast(126%);
-  }
-  .png-light-gray {
-    filter: invert(80%) sepia(6%) saturate(10%) hue-rotate(341deg) brightness(88%)
-      contrast(85%);
-  }
-  
-  .png-white {
+        brightness(116%) contrast(126%);
+}
+.png-light-gray {
+    filter: invert(80%) sepia(6%) saturate(10%) hue-rotate(341deg)
+        brightness(88%) contrast(85%);
+}
+
+.png-dark-gray {
+    filter: invert(39%) sepia(0%) saturate(0%) hue-rotate(351deg)
+        brightness(96%) contrast(99%);
+}
+
+.png-white {
     filter: invert(100%) sepia(6%) saturate(7476%) hue-rotate(215deg)
-      brightness(110%) contrast(105%);
-  }
+        brightness(110%) contrast(105%);
+}
 
-  /* rgb(34 197 94) this is text-green-500 */
-
+/* rgb(34 197 94) this is text-green-500 */
 
 /* -----------test  */
 
@@ -526,10 +526,6 @@ li:not(:first-child) span {
     font-family: "retro", sans-serif;
 }
 
-/* canvas {
-    width: 400px;
-} */
-
 /* Scanlines && Flicker  */
 
 @keyframes blink {
@@ -649,8 +645,13 @@ li:not(:first-child) span {
     z-index: 25;
 }
 
+/* --------------     Public Profile    --------------  */
 
-
-
+.public-profile-background{
+  z-index: 4;
+}
+.public-profile-container{
+    z-index: 5;
+}
 
 /* --------------     Loading    --------------  */
