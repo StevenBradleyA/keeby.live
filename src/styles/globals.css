@@ -651,7 +651,7 @@ li:not(:first-child) span {
   z-index: 4;
 }
 .public-profile-container{
-    z-index: 5;
+    z-index: 6;
 }
 
 /* --------------     Loading    --------------  */

@@ -2,6 +2,7 @@ import Custom404 from "~/pages/404";
 import { api } from "~/utils/api";
 import Image from "next/image";
 import profileBackground from "@public/Profile/public-profile-background.png";
+import synthGirl from "@public/Profile/synth-girl.png";
 
 interface PublicProfileProps {
     username: string;
@@ -12,18 +13,24 @@ export default function PublicProfileUserInfo({
 }: PublicProfileProps) {
     const { data: profile } = api.user.getUserPublic.useQuery(username);
     return (
-        <>
-            <Image
+        <div className="flex w-full justify-center ">
+            {/* <Image
                 src={profileBackground}
                 alt="profile"
                 // width={800}
                 // height={800}
-                className="public-profile-background absolute w-full "
+                className="public-profile-background fixed -top-60 left-0 "
+            /> */}
+
+            <div className="flex border-4 border-pink-500 rounded-2xl w-2/3 public-profile-container"> 
+            <Image
+                src={synthGirl}
+                alt="synth girl "
+                className="public-profile-container w-[40%] rounded-xl border-4 border-white"
             />
-            <div>{profile?.username}</div>
             {profile ? (
-                <div className="public-profile-container flex">
-                    <div className="w-1/3 rounded-2xl border-2 border-purple-600 bg-black bg-opacity-75 p-5">
+                <div className="flex flex-col w-full">
+                    <div className="rounded-xl border-4 border-purple-600 bg-black bg-opacity-75 p-5">
                         {profile.profile && (
                             <Image
                                 src={profile.profile}
@@ -35,12 +42,13 @@ export default function PublicProfileUserInfo({
                         )}
 
                         <div>{profile.tag}</div>
+                        <div>{profile?.username}</div>
                     </div>
-                    <div className="w-1/3 rounded-2xl border-2 border-purple-600 bg-black bg-opacity-75 p-5">
+                    <div className=" rounded-2xl border-2 border-purple-600 bg-black bg-opacity-75 p-5">
                         <h1 className="text-2xl"> Seller Reviews</h1>
                         <div>if elligibal add leave review button</div>
                     </div>
-                    <div className="w-1/3 rounded-2xl border-2 border-purple-600 bg-black bg-opacity-75 p-5">
+                    <div className="rounded-2xl border-2 border-purple-600 bg-black bg-opacity-75 p-5">
                         <div>{profile.tag}</div>
                     </div>
 
@@ -58,6 +66,10 @@ export default function PublicProfileUserInfo({
             ) : (
                 <Custom404 />
             )}
-        </>
+
+
+
+            </div>
+        </div>
     );
 }
