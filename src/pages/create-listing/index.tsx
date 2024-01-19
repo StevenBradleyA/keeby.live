@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import TitleScripts from "~/components/TitleScripts";
 import { useRouter } from "next/router";
 import Custom404 from "../404";
+import CreateListing from "~/components/KeebShop/CreateListing/Create";
 
 interface ErrorsObj {
     image?: string;
@@ -49,23 +50,7 @@ export default function CreateListingAgreement() {
 
     const [rulesAgreed, setRulesAgreed] = useState(false);
     const [preventScamsAgreed, setPreventScamsAgreed] = useState(false);
-    const [showListingInfo, setShowListingInfo] = useState(false);
-    const [isChecked, setIsChecked] = useState(false);
-
-    const handleCheckboxChange = () => {
-        setIsChecked(!isChecked);
-    };
-
-    // const [text, setText] = useState<string>("");
-    // const [title, setTitle] = useState<string>("");
-    // const [price, setPrice] = useState<number>(0);
-    // const [preview, setPreview] = useState<number>(0);
-    // const [imageFiles, setImageFiles] = useState<File[]>([]);
-    // const [errors, setErrors] = useState<ErrorsObj>({});
-    // const [enableErrorDisplay, setEnableErrorDisplay] =
-    //     useState<boolean>(false);
-    // const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
-    // const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const [showCreate, setShowCreate] = useState(false);
 
     if (accessDenied) {
         return <Custom404 />;
@@ -74,64 +59,71 @@ export default function CreateListingAgreement() {
     return (
         <>
             <TitleScripts page={"createListing"} />
-            <div className="mb-32 mt-10 w-2/3 rounded-2xl bg-keebyGray p-10 ">
-                <div className="flex justify-center text-2xl text-green-500">
-                    Please review and agree to our guidelines and scam
-                    prevention tips before listing
-                </div>
-                <div className="mt-10 flex justify-center gap-10">
-                    <div className="flex flex-col items-center gap-5 ">
-                        <motion.button
-                            whileHover={{
-                                scale: 1.1,
-                            }}
-                            whileTap={{ scale: 0.95 }}
-                            className=" rounded-xl border-2 border-black bg-black px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray"
-                        >
-                            Keeby Rules
-                        </motion.button>
+            {showCreate ? (
+                <CreateListing />
+            ) : (
+                <div className="mb-32 mt-10 w-2/3 rounded-2xl bg-keebyGray p-10 ">
+                    <div className="flex justify-center text-2xl text-green-500">
+                        Please review and agree to our guidelines and scam
+                        prevention tips before listing
+                    </div>
+                    <div className="mt-10 flex justify-center gap-10">
+                        <div className="flex flex-col items-center gap-5 ">
+                            <motion.button
+                                whileHover={{
+                                    scale: 1.1,
+                                }}
+                                whileTap={{ scale: 0.95 }}
+                                className=" rounded-xl border-2 border-black bg-black px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray"
+                            >
+                                Keeby Rules
+                            </motion.button>
 
-                        <input
-                            type="checkbox"
-                            className=" h-7 w-7 cursor-pointer rounded-md border-2 border-green-500 hover:bg-black hover:bg-opacity-30"
-                            onClick={() => setRulesAgreed(!rulesAgreed)}
-                        />
-                    </div>
+                            <input
+                                type="checkbox"
+                                className=" h-7 w-7 cursor-pointer rounded-md border-2 border-green-500 hover:bg-black hover:bg-opacity-30"
+                                onClick={() => setRulesAgreed(!rulesAgreed)}
+                            />
+                        </div>
 
-                    <div className="flex flex-col items-center gap-5 ">
-                        <motion.button
-                            whileHover={{
-                                scale: 1.1,
-                            }}
-                            whileTap={{ scale: 0.95 }}
-                            className=" rounded-xl border-2 border-black bg-black px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray"
-                        >
-                            Preventing Scams
-                        </motion.button>
-                        <input
-                            type="checkbox"
-                            name="Preventing Scams"
-                            className=" h-7 w-7 cursor-pointer rounded-md border-2 border-green-500 hover:bg-black hover:bg-opacity-30"
-                            onClick={() =>
-                                setPreventScamsAgreed(!preventScamsAgreed)
-                            }
-                        />
-                    </div>
-                </div>
-                {preventScamsAgreed && rulesAgreed ? (
-                    <div className="mt-10 flex justify-center">
-                        <motion.button className=" rounded-xl border-2 border-black bg-black px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray">
-                            Access Granted
-                        </motion.button>
-                    </div>
-                ) : (
-                    <div className="mt-10 flex justify-center">
-                        <div className=" rounded-xl border-2 border-[#616161] bg-darkGray px-6 py-2 text-blackAlternative hover:bg-darkGray">
-                            Access Denied
+                        <div className="flex flex-col items-center gap-5 ">
+                            <motion.button
+                                whileHover={{
+                                    scale: 1.1,
+                                }}
+                                whileTap={{ scale: 0.95 }}
+                                className=" rounded-xl border-2 border-black bg-black px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray"
+                            >
+                                Preventing Scams
+                            </motion.button>
+                            <input
+                                type="checkbox"
+                                name="Preventing Scams"
+                                className=" h-7 w-7 cursor-pointer rounded-md border-2 border-green-500 hover:bg-black hover:bg-opacity-30"
+                                onClick={() =>
+                                    setPreventScamsAgreed(!preventScamsAgreed)
+                                }
+                            />
                         </div>
                     </div>
-                )}
-            </div>
+                    {preventScamsAgreed && rulesAgreed ? (
+                        <div className="mt-10 flex justify-center">
+                            <motion.button
+                                className=" rounded-xl border-2 border-black bg-black px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray"
+                                onClick={() => setShowCreate(true)}
+                            >
+                                Access Granted
+                            </motion.button>
+                        </div>
+                    ) : (
+                        <div className="mt-10 flex justify-center">
+                            <div className=" rounded-xl border-2 border-[#616161] bg-darkGray px-6 py-2 text-blackAlternative hover:bg-darkGray">
+                                Access Denied
+                            </div>
+                        </div>
+                    )}
+                </div>
+            )}
         </>
     );
 }

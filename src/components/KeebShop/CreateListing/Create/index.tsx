@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import TitleScripts from "~/components/TitleScripts";
 import { useRouter } from "next/router";
 import Custom404 from "~/pages/404";
+import type { ChangeEvent } from "react";
 
 interface ErrorsObj {
     image?: string;
@@ -16,8 +17,12 @@ interface ErrorsObj {
     imageLarge?: string;
     text?: string;
     title?: string;
+    titleExcess?: string;
     priceNone?: string;
     priceExcess?: string;
+    keycaps?: string;
+    switches?: string;
+    switchType?: string;
 }
 
 interface Image {
@@ -34,11 +39,11 @@ interface ListingData {
 }
 
 export default function CreateListing() {
-    // instead of directing to page it might be nice to have pricing/scams in modals so they don't have to navigate back to page
+    //instead of directing to page it might be nice to have pricing/scams in modals so they don't have to navigate back to page
     //todo what about filters and tags when creating a listing... Maybe an array with tags?
-    // todo change redirect to my listings page??? or shoppp??
-    // todo admin ability to delete other listings
-    // todo maybe listings needs an isActive boolean so when when sold the photos can be auto deleted or kept for a lil bit idk
+    //todo change redirect to my listings page??? or shoppp??
+    //todo admin ability to delete other listings
+    //todo maybe listings needs an isActive boolean so when when sold the photos can be auto deleted or kept for a lil bit idk
     //todo  price going to have to save in pennies i think but we can do that later with stripe
 
     const { data: session } = useSession();
@@ -47,11 +52,10 @@ export default function CreateListing() {
 
     const accessDenied = !session || !session.user.isVerified;
 
-    const [termsAgreed, setTermsAgreed] = useState(false);
-    const [preventScamsAgreed, setPreventScamsAgreed] = useState(false);
-    const [showListingInfo, setShowListingInfo] = useState(false);
-
     const [text, setText] = useState<string>("");
+    const [keycaps, setKeycaps] = useState<string>("");
+    const [switchType, setSwitchType] = useState<string>("linear");
+    const [switches, setSwitches] = useState<string>("");
     const [title, setTitle] = useState<string>("");
     const [price, setPrice] = useState<number>(0);
     const [preview, setPreview] = useState<number>(0);
@@ -90,6 +94,27 @@ export default function CreateListing() {
         if (text.length < 1) {
             errorsObj.text =
                 "Please provide a description of at least 200 words";
+        }
+        if (!title.length) {
+            errorsObj.title = "Please provide a title for your listing";
+        }
+        if (title.length > 50) {
+            errorsObj.titleExcess = "Title cannot exceed 50 characters";
+        }
+
+        // we are going to want to cap the title length to like 10 words or character limit
+
+        if (!keycaps.length) {
+            errorsObj.keycaps = "Please provide the keycaps on your keeb";
+        }
+        if (!switches.length) {
+            errorsObj.switches = "Please provide the switches on your keeb";
+        }
+        if (!switchType.length) {
+            errorsObj.switchType = "Please select the switchType of your keeb";
+        }
+        if (!title.length) {
+            errorsObj.title = "Please provide a title for your listing";
         }
         if (!title.length) {
             errorsObj.title = "Please provide a title for your listing";
@@ -181,41 +206,22 @@ export default function CreateListing() {
         }
     };
 
+    // const handleSwitchTypeSet = (e: ChangeEvent<HTMLSelectElement>) => {
+    //     const switchSelect: string = e.target.value;
+
+    //     setSwitchType(switchSelect);
+    // };
+    console.log(switchType, "yo");
+
     if (accessDenied) {
         return <Custom404 />;
     }
 
     return (
         <>
-            <TitleScripts page={"createListing"} />
             <div className="mb-32 mt-10 flex w-2/3 flex-col items-center rounded-2xl bg-keebyGray ">
-                <div>
-                    Please review and agree to our guidelines and scam
-                    prevention tips before listing
-                </div>
-                <div className="flex">
-                    <motion.button
-                        whileHover={{
-                            scale: 1.1,
-                        }}
-                        whileTap={{ scale: 0.95 }}
-                        className="rounded-2xl bg-black px-6 py-2"
-                    >
-                        pricing
-                    </motion.button>
-
-                    <motion.button
-                        whileHover={{
-                            scale: 1.1,
-                        }}
-                        whileTap={{ scale: 0.95 }}
-                        className="rounded-2xl bg-black px-6 py-2"
-                    >
-                        How to Prevent Scams
-                    </motion.button>
-                </div>
                 <form className="flex w-full flex-col items-center">
-                    <div> What is the name of your keyboard? </div>
+                    <h1> What is the name of your keyboard? </h1>
                     <input
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
@@ -223,7 +229,52 @@ export default function CreateListing() {
                         placeholder="title"
                     />
                     {enableErrorDisplay && errors.title && (
-                        <p className="text-xl text-red-400">{errors.title}</p>
+                        <p className="text-xl text-failure">{errors.title}</p>
+                    )}
+                    {enableErrorDisplay && errors.titleExcess && (
+                        <p className="text-xl text-failure">
+                            {errors.titleExcess}
+                        </p>
+                    )}
+
+                    <h1> {`What's on the keeb?`} </h1>
+                    <div className="flex">
+                        <input
+                            value={keycaps}
+                            onChange={(e) => setKeycaps(e.target.value)}
+                            className="bg-black"
+                            placeholder="keycaps"
+                        />
+                        <input
+                            value={switches}
+                            onChange={(e) => setSwitches(e.target.value)}
+                            className="bg-black"
+                            placeholder="switches"
+                        />
+                        <select
+                            className=" bg-black px-2 py-1 text-green-500"
+                            value={switchType}
+                            onChange={(e) => setSwitchType(e.target.value)}
+                            // onChange={handleSwitchTypeSet}
+                        >
+                            <option value="linear">Linear</option>
+                            <option value="tactile">Tactile</option>
+                            <option value="clicky">Clicky</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    {enableErrorDisplay && errors.keycaps && (
+                        <p className="text-xl text-red-400">{errors.keycaps}</p>
+                    )}
+                    {enableErrorDisplay && errors.switches && (
+                        <p className="text-xl text-red-400">
+                            {errors.switches}
+                        </p>
+                    )}
+                    {enableErrorDisplay && errors.switchType && (
+                        <p className="text-xl text-red-400">
+                            {errors.switchType}
+                        </p>
                     )}
 
                     <div> Write a lengthy description of your keyboard </div>
