@@ -35,29 +35,6 @@ model Account {
     @@unique([provider, providerAccountId])
 }
 
-model Listing {
-    id        String   @id @default(cuid())
-    title     String
-    text      String
-    soundTest String
-    price     Int
-    active    Boolean  @default(false)
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    // youtube embed link will need a new cat
-
-    userId String
-    // buyerId String
-
-    user User @relation(fields: [userId], references: [id])
-    // buyer User @relation(fields: [buyerId], references: [id])
-
-    // comments Comment[]
-    reviews   Review[]
-    favorites UserFavorites[]
-}
-
 model UserFavorites {
     id        String @id @default(cuid())
     userId    String
@@ -149,6 +126,46 @@ model Images {
     user User @relation(fields: [userId], references: [id])
 }
 
+model Listing {
+    id         String   @id @default(cuid())
+    title      String
+    text       String
+    soundTest  String?
+    switchType String
+    keycaps    String
+    switches   String
+    price      Int
+    active     Boolean  @default(false)
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+
+    sellerId String
+    buyerId  String?
+
+    seller User  @relation("Seller", fields: [sellerId], references: [id])
+    buyer  User? @relation("Buyer", fields: [buyerId], references: [id])
+
+    reviews            Review[]
+    favorites          UserFavorites[]
+    listingTransaction ListingTransaction[]
+}
+
+model ListingTransaction {
+    id        String   @id @default(cuid())
+    cost      Int
+    name      String
+    status    String
+    // PENDING CANCELED COMPLETE
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    userId    String
+    listingId String
+
+    user    User    @relation(fields: [userId], references: [id])
+    listing Listing @relation(fields: [listingId], references: [id])
+}
+
 model PostLike {
     id     String @id @default(cuid())
     userId String
@@ -194,20 +211,6 @@ model Tag {
     users User[] @relation("UserTags")
 }
 
-model Transaction {
-    id        String   @id @default(cuid())
-    cost      Int
-    type      String
-    status    String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    userId    String
-    bookingId String
-
-    user User @relation(fields: [userId], references: [id])
-}
-
 model Session {
     id           String   @id @default(cuid())
     sessionToken String   @unique
@@ -234,7 +237,6 @@ model User {
 
     accounts        Account[]
     sessions        Session[]
-    listings        Listing[]
     favorites       UserFavorites[]
     posts           Post[]
     comments        Comment[]
@@ -242,12 +244,14 @@ model User {
     games           Game[]
     keebs           Keeb[]
     commentLike     CommentLike[]
-    review          Review[]        @relation("UserRelation")
-    reviewsReceived Review[]        @relation("SellerRelation")
+    review          Review[]             @relation("UserRelation")
+    reviewsReceived Review[]             @relation("SellerRelation")
     postLike        PostLike[]
-    tags            Tag[]           @relation("UserTags")
-    transactions    Transaction[]
-    rank            Rank?           @relation(fields: [rankId], references: [id])
+    tags            Tag[]                @relation("UserTags")
+    transactions    ListingTransaction[]
+    rank            Rank?                @relation(fields: [rankId], references: [id])
+    sellerListings  Listing[]            @relation("Seller")
+    buyerListings   Listing[]            @relation("Buyer")
 }
 
 model VerificationToken {
