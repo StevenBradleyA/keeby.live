@@ -43,8 +43,6 @@ export default function CreateListingAgreement() {
     //todo  price going to have to save in pennies i think but we can do that later with stripe
 
     const { data: session } = useSession();
-    const ctx = api.useContext();
-    const router = useRouter();
 
     const accessDenied = !session || !session.user.isVerified;
 

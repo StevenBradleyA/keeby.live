@@ -20,6 +20,7 @@ interface ErrorsObj {
     titleExcess?: string;
     priceNone?: string;
     priceExcess?: string;
+    priceNotWhole?: string;
     keycaps?: string;
     switches?: string;
     switchType?: string;
@@ -44,7 +45,7 @@ export default function CreateListing() {
     //todo change redirect to my listings page??? or shoppp??
     //todo admin ability to delete other listings
     //todo maybe listings needs an isActive boolean so when when sold the photos can be auto deleted or kept for a lil bit idk
-    //todo  price going to have to save in pennies i think but we can do that later with stripe
+    // price to cents so it stores in db as cents will have to convert on listing page
 
     const { data: session } = useSession();
     const ctx = api.useContext();
@@ -120,11 +121,15 @@ export default function CreateListing() {
             errorsObj.title = "Please provide a title for your listing";
         }
 
-        if (price < 10) {
+        if (price < 1) {
             errorsObj.priceNone = "Please provide a price";
         }
-        if (price > 5000) {
+        if (price > 7000) {
             errorsObj.priceExcess = "Woah, that price is too high for keeby";
+        }
+        if (!Number.isInteger(price)) {
+            errorsObj.priceNotWhole =
+                "Please enter a whole number for the price";
         }
 
         for (const file of imageFiles) {
@@ -136,7 +141,7 @@ export default function CreateListing() {
         }
 
         setErrors(errorsObj);
-    }, [imageFiles, price, text, title]);
+    }, [imageFiles, price, text, title, keycaps, switches, switchType]);
 
     const submit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -211,7 +216,7 @@ export default function CreateListing() {
 
     //     setSwitchType(switchSelect);
     // };
-    console.log(switchType, "yo");
+    console.log(price, "yo");
 
     if (accessDenied) {
         return <Custom404 />;
@@ -289,10 +294,13 @@ export default function CreateListing() {
                         <p className="text-xl text-red-400">{errors.text}</p>
                     )}
                     <input
+                        type="number"
+                        min={0}
                         value={price === 0 ? "" : price}
-                        onChange={(e) => setPrice(+e.target.value)}
+                        // onChange={(e) => setPrice(+e.target.value)}
+                        onChange={(e) => setPrice(Math.floor(+e.target.value))}
                         className="bg-black"
-                        placeholder="price"
+                        placeholder="$ price"
                     />
 
                     {enableErrorDisplay && errors.priceNone && (
@@ -303,6 +311,11 @@ export default function CreateListing() {
                     {enableErrorDisplay && errors.priceExcess && (
                         <p className="text-xl text-red-400">
                             {errors.priceExcess}
+                        </p>
+                    )}
+                    {enableErrorDisplay && errors.priceNotWhole && (
+                        <p className="text-xl text-red-400">
+                            {errors.priceNotWhole}
                         </p>
                     )}
 
