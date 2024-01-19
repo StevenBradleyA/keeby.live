@@ -31,8 +31,11 @@ interface Image {
 }
 
 interface ListingData {
-    userId: string;
+    sellerId: string;
     title: string;
+    keycaps: string;
+    switches: string;
+    switchType: string;
     price: number;
     text: string;
     preview: number;
@@ -46,6 +49,7 @@ export default function CreateListing() {
     //todo admin ability to delete other listings
     //todo maybe listings needs an isActive boolean so when when sold the photos can be auto deleted or kept for a lil bit idk
     // price to cents so it stores in db as cents will have to convert on listing page
+    // todo styling this page uuuuugggglllyyyyyy
 
     const { data: session } = useSession();
     const ctx = api.useContext();
@@ -157,10 +161,13 @@ export default function CreateListing() {
                 }
 
                 const data: ListingData = {
-                    userId: sessionUserId,
+                    sellerId: sessionUserId,
                     title,
+                    keycaps,
+                    switches,
+                    switchType,
                     text,
-                    price,
+                    price: price * 100,
                     preview,
                     images: [],
                 };
@@ -211,13 +218,6 @@ export default function CreateListing() {
         }
     };
 
-    // const handleSwitchTypeSet = (e: ChangeEvent<HTMLSelectElement>) => {
-    //     const switchSelect: string = e.target.value;
-
-    //     setSwitchType(switchSelect);
-    // };
-    console.log(price, "yo");
-
     if (accessDenied) {
         return <Custom404 />;
     }
@@ -260,7 +260,6 @@ export default function CreateListing() {
                             className=" bg-black px-2 py-1 text-green-500"
                             value={switchType}
                             onChange={(e) => setSwitchType(e.target.value)}
-                            // onChange={handleSwitchTypeSet}
                         >
                             <option value="linear">Linear</option>
                             <option value="tactile">Tactile</option>
