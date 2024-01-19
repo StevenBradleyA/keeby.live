@@ -61,7 +61,7 @@ export default function PublicProfileUserInfo({
                             <div>if elligibal add leave review button</div>
                         </div>
                         <div className="rounded-xl border-4 border-purple-600  p-5">
-                            Keyboards - with top wpm
+                            Keyboards - rank -- each keeb  with desc and top wpm
                         </div>
 
                         {profile.reviewsReceived.length > 0 &&

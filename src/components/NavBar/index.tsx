@@ -8,6 +8,7 @@ import menuBurger from "../../../public/Nav/menu.png";
 import menuBurgerGif from "../../../public/Gifs/menu-glitch.gif";
 import homeButton from "../../../public/Nav/home-test.png";
 import keebo from "../../../public/Nav/bmo-test.jpg";
+import defaultProfile from "@public/Profile/profile-default.png";
 import homeGreenButton from "../../../public/Nav/home-green-test.png";
 import { useRouter } from "next/router";
 
@@ -243,8 +244,10 @@ export default function NavBar() {
                                     >
                                         <Image
                                             alt="profile"
-                                            src={keebo}
-                                            className="w-28"
+                                            src={defaultProfile}
+                                            width={400}
+                                                height={400}
+                                            className="w-28 h-28 object-cover"
                                         />
                                     </motion.button>
                                 ) : (
@@ -262,8 +265,10 @@ export default function NavBar() {
                                         >
                                             <Image
                                                 alt="profile"
-                                                src={keebo}
-                                                className="w-28"
+                                                src={sessionData.user.profile}
+                                                width={400}
+                                                height={400}
+                                                className="w-28 h-28 object-cover"
                                             />
                                         </motion.button>
                                     </Link>
