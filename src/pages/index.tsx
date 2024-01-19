@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { api } from "~/utils/api";
 import { motion } from "framer-motion";
 import ModalDialog from "~/components/Modal";
-import CreateListingModal from "~/components/KeebShop/CreateModal";
+import CreateListingModal from "~/components/KeebShop/CreateListing/CreateModal";
 import EachListingCardPreview from "~/components/KeebShop/DisplayListing/DisplayListingsPreview";
 import plus from "@public/Vectors/plus-plus.png";
 import Image from "next/image";
