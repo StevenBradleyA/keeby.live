@@ -135,7 +135,9 @@ model Listing {
     keycaps    String
     switches   String
     price      Int
-    active     Boolean  @default(false)
+    // this will be as cents
+
+    sold       Boolean  @default(false)
     createdAt  DateTime @default(now())
     updatedAt  DateTime @updatedAt
 
@@ -148,14 +150,34 @@ model Listing {
     reviews            Review[]
     favorites          UserFavorites[]
     listingTransaction ListingTransaction[]
+    ListingOffer       ListingOffer[]
+}
+
+model ListingOffer {
+    id        String   @id @default(cuid())
+    price     Int
+    // this will be as cents
+
+    status    String
+    // PENDING, ACCEPTED, REJECTED, WITHDRAWN
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    listingId String
+    buyerId   String
+
+    listing Listing @relation(fields: [listingId], references: [id])
+    buyer   User    @relation(fields: [buyerId], references: [id])
 }
 
 model ListingTransaction {
     id        String   @id @default(cuid())
-    cost      Int
+    price     Int
+    // this will be as cents
     name      String
     status    String
     // PENDING CANCELED COMPLETE
+    //  stripePaymentId String?  // Unique identifier for the Stripe payment
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
@@ -252,6 +274,7 @@ model User {
     rank            Rank?                @relation(fields: [rankId], references: [id])
     sellerListings  Listing[]            @relation("Seller")
     buyerListings   Listing[]            @relation("Buyer")
+    ListingOffer    ListingOffer[]
 }
 
 model VerificationToken {
