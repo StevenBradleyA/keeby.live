@@ -31,6 +31,7 @@ interface UserData {
 }
 
 export default function ProfilePlus() {
+    // todo fix error where not redirected to profile instead it just says complete
     // todo only allow png or jpg
     // todo style ++ double check weird error handling for username check
 
@@ -193,6 +194,9 @@ export default function ProfilePlus() {
             }
         }
     };
+// todo fix return logic here so it doesnt say completed just only show page
+
+    // lets just push to profile if already ses and profile 
 
     return (
         <>

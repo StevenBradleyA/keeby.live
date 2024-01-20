@@ -18,6 +18,7 @@ import futureComputer from "@public/Profile/future-future.png";
 import errorComputer from "@public/Profile/error-error-error.png";
 import gridFunnel from "@public/Profile/profile-idea.png";
 import Custom404 from "../404";
+import HackermanConsoleCommands from "~/components/Profile/Hackerman";
 
 export default function UserProfile() {
     // todo consider hashing or some simple change that doesn't display the correct userID
@@ -184,16 +185,8 @@ export default function UserProfile() {
                             </Link>
                         </div>
 
-                        <div className="h-80  border-2 border-[#616161] ">
-                            <Canvas
-                                className="h-full w-full cursor-pointer"
-                                // camera={{ position: [0, 400, 200] }}
-                                camera={{ position: [4, 0, 1] }}
-                            >
-                                <ambientLight intensity={0.5} />
-                                <pointLight position={[10, 10, 10]} />
-                                <RotatingSphere />
-                            </Canvas>
+                        <div className="h-80  border-2 border-[#616161] overflow-hidden ">
+                            <HackermanConsoleCommands/>
                         </div>
                         {/* this needs to be cool moving text */}
                     </div>

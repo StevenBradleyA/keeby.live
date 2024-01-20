@@ -67,7 +67,7 @@ export const listingRouter = createTRPCRouter({
                         switchType,
                         price,
                         sellerId,
-                        active: true,
+                        sold: false,
                     },
                 });
 
