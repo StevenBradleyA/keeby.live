@@ -6,6 +6,7 @@ import CreateListingModal from "~/components/KeebShop/CreateListing/CreateModal"
 import EachListingCardPreview from "~/components/KeebShop/DisplayListing/DisplayListingsPreview";
 import plus from "@public/Vectors/plus-plus.png";
 import Image from "next/image";
+import LoadingSpinner from "~/components/Loading";
 
 export default function Home() {
     // big cards like bring a trailer  or like this
@@ -16,7 +17,7 @@ export default function Home() {
     // filters and search need to be sticky
     // maybe break up in groups of six?
 
-    const { data: keebData } = api.listing.getAll.useQuery();
+    const { data: keebData, isLoading } = api.listing.getAll.useQuery();
 
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -29,6 +30,16 @@ export default function Home() {
     };
     const [filter, setFilter] = useState<string>("hot");
     const [searchFilter, setSearchFilter] = useState<string>("search");
+
+    if (isLoading) {
+        return (
+            <div className="mt-32">
+                <LoadingSpinner />
+            </div>
+        );
+    }
+
+    console.log("yo", keebData);
 
     return (
         <div className="mt-10 flex w-full gap-5">
@@ -105,7 +116,7 @@ export default function Home() {
                 </ModalDialog>
 
                 <div>
-                    {keebData ? (
+                    {keebData && keebData.length > 0 ? (
                         <div className={`flex w-full flex-wrap gap-5 pr-20`}>
                             {keebData.map((keeb, i) => (
                                 <EachListingCardPreview
@@ -116,19 +127,7 @@ export default function Home() {
                             ))}
                         </div>
                     ) : (
-                        <>
-                            <div>{`There are currently no listings`}</div>
-                            <motion.button
-                                whileHover={{
-                                    scale: 1.1,
-                                }}
-                                whileTap={{ scale: 0.95 }}
-                                onClick={openModal}
-                                className="rounded-2xl bg-black px-6 py-2 text-green-500 "
-                            >
-                                create a listing
-                            </motion.button>
-                        </>
+                        <div className="mt-10 text-darkGray">{`Woah, all sold out. There are currently no listings for sale `}</div>
                     )}
                 </div>
             </div>

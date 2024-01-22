@@ -1,9 +1,6 @@
 import { api } from "~/utils/api";
 import type { Listing } from "@prisma/client";
 import Image from "next/image";
-import matrix from "@public/Gifs/matrix.gif";
-import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import LoadingSpinner from "~/components/Loading";
 
