@@ -28,15 +28,42 @@ export default function Home() {
         setIsModalOpen(false);
     };
     const [filter, setFilter] = useState<string>("hot");
-
-    // todo lets move tactile linear clicky 
+    const [searchFilter, setSearchFilter] = useState<string>("search");
 
     return (
         <div className="mt-10 flex w-full gap-5">
             <div className="ml-16 flex w-1/3 flex-col ">
-                <div>Search Here</div>
-                <div>Filter selection here</div>
-                <div>Tactile, linear, clicky, topre, other</div>
+                <div className="mb-5 flex gap-5 text-white/40">
+                    <button
+                        className={`${
+                            searchFilter === "search"
+                                ? "border-b border-white text-white"
+                                : ""
+                        }`}
+                        onClick={() => setSearchFilter("search")}
+                    >
+                        Search
+                    </button>
+                    <button
+                        className={`${
+                            searchFilter === "switch"
+                                ? "border-b border-white text-white"
+                                : ""
+                        }`}
+                        onClick={() => setSearchFilter("switch")}
+                    >
+                        Switch
+                    </button>
+                </div>
+
+                {searchFilter === "switch" && (
+                    <div className="flex gap-5">
+                        <button>tactile</button>
+                        <button>linear</button>
+                        <button>clicky</button>
+                        <button>other</button>
+                    </div>
+                )}
             </div>
 
             <div className="mr-16 flex w-full flex-col">

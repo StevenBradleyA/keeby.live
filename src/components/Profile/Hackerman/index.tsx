@@ -13,6 +13,8 @@ const scripts: string[] = [
 ];
 
 export default function HackermanConsoleCommands() {
+    // todo I want to add cool randomized numbers flexed next to eachother occasionally
+
     // State to hold an array of Command objects
     const [outputText, setOutputText] = useState<Command[]>([]);
 
@@ -69,7 +71,7 @@ export default function HackermanConsoleCommands() {
 
     return (
         <div
-            className="scroll hide-scrollbar h-full overflow-auto"
+            className="scroll hide-scrollbar h-full overflow-auto  "
             ref={consoleOutputRef}
         >
             {outputText.map((command, index) => (
