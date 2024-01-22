@@ -35,13 +35,6 @@ interface ListingData {
 }
 
 export default function CreateListingAgreement() {
-    // instead of directing to page it might be nice to have pricing/scams in modals so they don't have to navigate back to page
-    //todo what about filters and tags when creating a listing... Maybe an array with tags?
-    // todo change redirect to my listings page??? or shoppp??
-    // todo admin ability to delete other listings
-    // todo maybe listings needs an isActive boolean so when when sold the photos can be auto deleted or kept for a lil bit idk
-    //todo  price going to have to save in pennies i think but we can do that later with stripe
-
     const { data: session } = useSession();
 
     const accessDenied = !session || !session.user.isVerified;
@@ -53,7 +46,9 @@ export default function CreateListingAgreement() {
     if (accessDenied) {
         return <Custom404 />;
     }
-    // create model for pricing and how to prevent scams that just displays the page that already exists
+
+    // TODO Setup modals for rules, scam prevention -- create keeby rules pool themed and we will link them
+
     return (
         <>
             <TitleScripts page={"createListing"} />

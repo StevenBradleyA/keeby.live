@@ -5,8 +5,14 @@ import gif from "@public/Gifs/matrix.gif";
 
 export default function Custom404() {
     return (
-        <div className="flex w-2/3 flex-col items-center justify-center text-6xl text-white">
-            <Image src={gif} alt="404" className="w-3/4" />
+        <div className="">
+            {/* <Image src={gif} alt="404" className="w-3/4" /> */}
+            <div className="fixed left-0 top-0 matrix-full-screen ">
+            <video className="w-full"  autoPlay loop muted>
+                <source src="/Videos/matrix-fade-green.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+            </video>
+            </div>
             <div className="bg-glass flex flex-col items-center rounded-2xl p-5 shadow-xl">
                 <div className="mb-2 text-6xl">
                     Uh oh! Looks like you got lost

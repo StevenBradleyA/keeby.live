@@ -51,6 +51,9 @@ export default function CreateListing() {
     // price to cents so it stores in db as cents will have to convert on listing page
     // todo styling this page uuuuugggglllyyyyyy
 
+    // TODO youtube api --
+    // add a back button to go back and read terms
+
     const { data: session } = useSession();
     const ctx = api.useContext();
     const router = useRouter();

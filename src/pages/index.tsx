@@ -16,6 +16,7 @@ export default function Home() {
     // budget or ballin  under or above 250
     // filters and search need to be sticky
     // maybe break up in groups of six?
+    // todo implement pagination where listings only load when you scroll to the bottom 
 
     const { data: keebData, isLoading } = api.listing.getAll.useQuery();
 

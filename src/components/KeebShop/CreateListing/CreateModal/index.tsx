@@ -9,61 +9,51 @@ export default function CreateListingModal() {
 
     return (
         <>
-            {sessionData === null && (
-                <div className="flex flex-col ">
-                    SIgn in to list your keeb
-                    <motion.button
-                        whileHover={{
-                            scale: 1.1,
-                        }}
-                        whileTap={{ scale: 0.95 }}
-                        className="rounded-2xl bg-black px-6 py-2"
-                        onClick={() => void signIn()}
-                    >
-                        sign in
-                    </motion.button>
-                </div>
-            )}
-
-            {sessionData && isVerifiedSeller && (
+            {sessionData === null ? (
                 <div>
-                    <div> Would you like to list a keyboard? </div>
-                    <motion.button
-                        whileHover={{
-                            scale: 1.1,
-                        }}
-                        whileTap={{ scale: 0.95 }}
-                        className="rounded-2xl bg-black px-6 py-2"
-                    >
-                        <Link
-                            href="/create-listing"
-                            aria-label="create listing"
+                    <div className="text-3xl text-green-500">
+                        Sign in to list your keyboard for sale!
+                    </div>
+                    <div className="flex justify-center">
+                        <motion.button
+                            whileHover={{
+                                scale: 1.1,
+                            }}
+                            whileTap={{ scale: 0.95 }}
+                            className=" mt-5 rounded-xl border-2 border-black bg-black px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray"
+                            onClick={() => void signIn()}
                         >
                             {`Let's go`}
-                        </Link>
-                    </motion.button>
-                </div>
-            )}
-            {sessionData && !isVerifiedSeller && (
-                <div className="flex flex-col items-center">
-                    <div>
-                        To list a keeb you need to get verified as a seller
+                        </motion.button>
                     </div>
-                    <motion.button
-                        whileHover={{
-                            scale: 1.1,
-                        }}
-                        whileTap={{ scale: 0.95 }}
-                        className="rounded-2xl bg-black px-6 py-2"
-                    >
-                        <Link href="/verification" aria-label="verification">
-                            {`Let's go`}
+                </div>
+            ) : (
+                <div>
+                    <div className="text-3xl text-green-500">
+                        Want to list your keyboard for sale?
+                    </div>
+                    <div className="flex justify-center">
+                        <Link
+                            href={
+                                isVerifiedSeller
+                                    ? "/create-listing"
+                                    : "verification"
+                            }
+                            aria-label="create listing"
+                        >
+                            <motion.button
+                                whileHover={{
+                                    scale: 1.1,
+                                }}
+                                whileTap={{ scale: 0.95 }}
+                                className=" mt-5 rounded-xl border-2 border-black bg-black px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray"
+                            >
+                                {`Let's go`}
+                            </motion.button>
                         </Link>
-                    </motion.button>
+                    </div>
                 </div>
             )}
-
-            <div></div>
         </>
     );
 }

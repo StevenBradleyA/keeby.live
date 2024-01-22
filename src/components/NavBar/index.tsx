@@ -122,7 +122,7 @@ export default function NavBar() {
     return (
         <nav
             className="sticky top-0 z-10 flex items-center justify-between 
-              bg-dark  py-4 text-white"
+              bg-none  py-4 text-white"
             aria-label="Main Navigation"
         >
             <Link href="/" aria-label="Home">

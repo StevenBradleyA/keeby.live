@@ -745,4 +745,9 @@ input[type="checkbox"]:hover {
     z-index: 6;
 }
 
+.matrix-full-screen{
+    z-index: 3;
+    opacity: .5
+}
+
 /* --------------     Loading    --------------  */

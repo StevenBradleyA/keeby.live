@@ -6,6 +6,8 @@ export default function PublicProfile() {
     const router = useRouter();
     const { username } = router.query;
 
+    console.log(username)
+
     return (
         <>
             {username && typeof username === "string" ? (
