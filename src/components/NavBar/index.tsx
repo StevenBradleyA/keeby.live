@@ -2,14 +2,17 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 // import { useRouter } from "next/router";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useAnimation } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import menuBurger from "../../../public/Nav/menu.png";
 import menuBurgerGif from "../../../public/Gifs/menu-glitch.gif";
 import homeButton from "../../../public/Nav/home-test.png";
-import keebo from "../../../public/Nav/bmo-test.jpg";
-import homeGreenButton from "../../../public/Nav/home-green-test.png";
+// import keebo from "../../../public/Nav/bmo-test.jpg";
+// import defaultProfile from "@public/Profile/profile-default.png";
+import defaultProfile from "@public/Profile/profile-default.png";
 import { useRouter } from "next/router";
+
+console.log(defaultProfile);
 
 export default function NavBar() {
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -118,7 +121,7 @@ export default function NavBar() {
 
     return (
         <nav
-            className="sticky top-0 z-10 mb-10 flex items-center justify-between 
+            className="sticky top-0 z-10 flex items-center justify-between 
               bg-dark  py-4 text-white"
             aria-label="Main Navigation"
         >
@@ -243,8 +246,10 @@ export default function NavBar() {
                                     >
                                         <Image
                                             alt="profile"
-                                            src={keebo}
-                                            className="w-28"
+                                            src={defaultProfile}
+                                            width={400}
+                                            height={400}
+                                            className="h-28 w-28 object-cover"
                                         />
                                     </motion.button>
                                 ) : (
@@ -262,8 +267,15 @@ export default function NavBar() {
                                         >
                                             <Image
                                                 alt="profile"
-                                                src={keebo}
-                                                className="w-28"
+                                                src={
+                                                    sessionData.user.profile
+                                                        ? sessionData.user
+                                                              .profile
+                                                        : defaultProfile
+                                                }
+                                                width={400}
+                                                height={400}
+                                                className="h-28 w-28 object-cover"
                                             />
                                         </motion.button>
                                     </Link>

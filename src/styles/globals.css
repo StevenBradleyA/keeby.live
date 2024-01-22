@@ -2,6 +2,35 @@
 @tailwind components;
 @tailwind utilities;
 
+/* --------------     png color converter     --------------  */
+
+.png-green {
+    filter: invert(48%) sepia(5%) saturate(3277%) hue-rotate(72deg)
+        brightness(116%) contrast(126%);
+}
+.png-light-gray {
+    filter: invert(80%) sepia(6%) saturate(10%) hue-rotate(341deg)
+        brightness(88%) contrast(85%);
+}
+
+.png-dark-gray {
+    filter: invert(39%) sepia(0%) saturate(0%) hue-rotate(351deg)
+        brightness(96%) contrast(99%);
+}
+
+.png-white {
+    filter: invert(100%) sepia(6%) saturate(7476%) hue-rotate(215deg)
+        brightness(110%) contrast(105%);
+}
+
+/* rgb(34 197 94) this is text-green-500 */
+
+/* $lightPurple: #ff0a9c;
+$darkPurple: #ae1857;
+$darkGreen: #18da8d;
+$lightGreen: #40e331;
+$blue: #2033c1; */
+
 /* -----------test  */
 
 #paragraph {
@@ -426,6 +455,124 @@ li:not(:first-child) span {
 
 /* background-color: #8357eb; */
 
+/* ------    top comment number title   ------  */
+
+.listing-gradient {
+    background-image: linear-gradient(to right, #378dbc, #f008e4);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+/* ------    sound test title   ------  */
+
+.sound-test-title {
+    letter-spacing: 10px;
+    /* font-size: 30px; */
+    /* font-size: 1.5rem; */
+    color: #ffffff;
+    /* animation: red-flash 1s ease-in infinite alternate; */
+    animation: neon-glow 1.5s ease-out infinite alternate;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+/* @keyframes red-flash {
+        from {
+          color: rgb(255, 255, 255);
+        }
+        to {
+          color: rgb(221, 0, 0);
+        }
+      } */
+
+@keyframes neon-glow {
+    from {
+        text-shadow: 0 0 0.07em #ff0000, 0 0 0.14em #ff0000, 0 0 0.21em #ff0000,
+            0 0 0.28em #ff0000, 0 0 0.49em #ff0000, 0 0 0.56em #ff0000,
+            0 0 0.7em #ff0000, 0 0 1.05em #ff0000;
+        color: rgb(227, 116, 116);
+    }
+    to {
+        text-shadow: 0 0 0.035em transparent, 0 0 0.07em transparent,
+            0 0 0.105em transparent, 0 0 0.14em transparent,
+            0 0 0.245em transparent, 0 0 0.28em transparent,
+            0 0 0.35em transparent, 0 0 0.525em transparent;
+        color: rgb(255, 255, 255);
+    }
+}
+
+/* ------    create-listing   ------  */
+input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    /* border: 0.25rem solid green; */
+    /* border-radius: 0.5rem; */
+}
+
+input[type="checkbox"]::before {
+    content: "";
+    width: 100%;
+    height: 100%;
+    transform: scale(0);
+    background-color: rgb(34 197 94);
+}
+
+input[type="checkbox"]:checked::before {
+    transform: scale(1);
+    animation: checkGlitchAnimation 1s 1 forwards;
+    border-radius: 0.2rem;
+}
+
+input[type="checkbox"]:hover {
+    background-color: rgba(#000, 0.5);
+    /* opacity: 50; */
+}
+
+/* @keyframes checkGlitchAnimation {
+    0% {
+        transform: scale(0);
+    }
+    40% {
+        transform: scale(1.6, 0.5);
+    }
+    50% {
+        transform: scale(0.5, 1.5);
+    }
+    60% {
+        transform: scale(1.3, 0.6);
+    }
+    70% {
+        transform: scale(0.8, 1.2);
+    }
+    100% {
+        transform: scale(1, 1);
+    }
+} */
+@keyframes checkGlitchAnimation {
+    0% {
+        transform: translate(0, 0) scale(0);
+    }
+    40% {
+        transform: translate(50px, 0) scale(1.5, 0.5);
+    }
+    50% {
+        transform: translate(0, 50px) scale(0.5, 1.5);
+    }
+    60% {
+        transform: translate(-30px, -20px) scale(1.3, 0.6);
+    }
+    70% {
+        transform: translate(20px, -30px) scale(0.8, 1.2);
+    }
+    100% {
+        transform: translate(0, 0) scale(1, 1);
+    }
+}
+
 /* ------    comments   ------  */
 
 .comment-input-box {
@@ -455,10 +602,6 @@ li:not(:first-child) span {
 .retroVT {
     font-family: "retro", sans-serif;
 }
-
-/* canvas {
-    width: 400px;
-} */
 
 /* Scanlines && Flicker  */
 
@@ -578,3 +721,28 @@ li:not(:first-child) span {
     left: 0;
     z-index: 25;
 }
+
+
+/* command console fake hack */
+
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE, Edge, and Firefox */
+  .hide-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+
+/* --------------     Public Profile    --------------  */
+
+.public-profile-background {
+    z-index: 4;
+}
+.public-profile-container {
+    z-index: 6;
+}
+
+/* --------------     Loading    --------------  */

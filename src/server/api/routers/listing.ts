@@ -30,8 +30,11 @@ export const listingRouter = createTRPCRouter({
                 title: z.string(),
                 text: z.string(),
                 price: z.number(),
+                keycaps: z.string(),
+                switches: z.string(),
+                switchType: z.string(),
                 preview: z.number(),
-                userId: z.string(),
+                sellerId: z.string(),
                 images: z.array(
                     z.object({
                         link: z.string(),
@@ -40,11 +43,32 @@ export const listingRouter = createTRPCRouter({
             })
         )
         .mutation(async ({ input, ctx }) => {
-            const { title, text, price, preview, userId, images } = input;
-            // todo add && ctx.session.user.isVerified
-            if (ctx.session.user.id === userId) {
+            const {
+                title,
+                text,
+                price,
+                keycaps,
+                switches,
+                switchType,
+                preview,
+                sellerId,
+                images,
+            } = input;
+            if (
+                ctx.session.user.id === sellerId &&
+                ctx.session.user.isVerified
+            ) {
                 const newListing = await ctx.prisma.listing.create({
-                    data: { title, text, price, userId, active: true },
+                    data: {
+                        title,
+                        text,
+                        keycaps,
+                        switches,
+                        switchType,
+                        price,
+                        sellerId,
+                        sold: false,
+                    },
                 });
 
                 const createdImages = await Promise.all(
@@ -57,7 +81,7 @@ export const listingRouter = createTRPCRouter({
                                 link: image.link,
                                 resourceType: imageType,
                                 resourceId: newListing.id,
-                                userId: newListing.userId,
+                                userId: newListing.sellerId,
                             },
                         });
                     })

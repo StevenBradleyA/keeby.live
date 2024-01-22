@@ -39,6 +39,7 @@ export default function UpdateComment({
     const { mutate } = api.comment.delete.useMutation({
         onSuccess: () => {
             if (parentId) {
+                void ctx.comment.getAllByTypeId.invalidate();
                 void ctx.comment.getAllReplysByTypeId.invalidate();
             } else {
                 void ctx.comment.getAllByTypeId.invalidate();

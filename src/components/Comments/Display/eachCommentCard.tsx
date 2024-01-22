@@ -102,9 +102,14 @@ export default function EachCommentCard({
                 </div>
                 <div className=" relative w-full flex-wrap text-sm ">
                     <div className="flex w-full justify-between">
-                        <Link href="/profile" className="text-darkGray">
-                            {comment.user.username}
-                        </Link>
+                        {comment.user.username && (
+                            <Link
+                                href={`/profile/public/${comment.user.username}`}
+                                className="text-darkGray"
+                            >
+                                {comment.user.username}
+                            </Link>
+                        )}
                         {session && session.user.id === comment.userId && (
                             <button
                                 className="absolute right-0"

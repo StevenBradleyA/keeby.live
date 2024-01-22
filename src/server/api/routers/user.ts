@@ -17,6 +17,7 @@ export const userRouter = createTRPCRouter({
         .query(async ({ input, ctx }) => {
             const seller = await ctx.prisma.user.findUnique({
                 where: { id: input },
+                select: { profile: true, username: true },
             });
             const allSellerStars = await ctx.prisma.review.aggregate({
                 where: { sellerId: input },
@@ -26,7 +27,7 @@ export const userRouter = createTRPCRouter({
         }),
     getUserPublic: publicProcedure.input(z.string()).query(({ input, ctx }) => {
         const userInfo = ctx.prisma.user.findUnique({
-            where: { id: input },
+            where: { username: input },
             select: {
                 id: true,
                 username: true,
@@ -40,7 +41,6 @@ export const userRouter = createTRPCRouter({
                         userId: true,
                         user: {
                             select: {
-                                id: true,
                                 username: true,
                             },
                         },
@@ -51,6 +51,8 @@ export const userRouter = createTRPCRouter({
 
         return userInfo;
     }),
+    // need to grab keeb info aswell and top wpm for each keeb 
+    
 
     usernameCheck: publicProcedure
         .input(z.string())

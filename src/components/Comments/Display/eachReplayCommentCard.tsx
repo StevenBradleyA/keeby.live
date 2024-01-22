@@ -97,9 +97,14 @@ export default function EachReplyCommentCard({
             </div>
             <div className=" w-full flex-wrap text-sm ">
                 <div className="relative flex justify-between">
-                    <Link href="/profile" className="text-darkGray">
-                        {reply.user.username}
-                    </Link>
+                    {reply.user.username && (
+                        <Link
+                            href={`/profile/public/${reply.user.username}`}
+                            className="text-darkGray"
+                        >
+                            {reply.user.username}
+                        </Link>
+                    )}
 
                     {session && session.user.id === reply.userId && (
                         <button

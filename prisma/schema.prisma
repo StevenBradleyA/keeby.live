@@ -15,24 +15,35 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Listing {
-    id        String   @id @default(cuid())
-    title     String
-    text      String
-    price     Int
-    active    Boolean  @default(false)
-    favorite  Boolean  @default(false)
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+// Necessary for Next auth
+model Account {
+    id                String  @id @default(cuid())
+    userId            String
+    type              String
+    provider          String
+    providerAccountId String
+    refresh_token     String? // @db.Text
+    access_token      String? // @db.Text
+    expires_at        Int?
+    token_type        String?
+    scope             String?
+    id_token          String? // @db.Text
+    session_state     String?
 
-    userId String
-    // buyerId String
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-    user User @relation(fields: [userId], references: [id])
-    // buyer User @relation(fields: [buyerId], references: [id])
+    @@unique([provider, providerAccountId])
+}
 
-    // comments Comment[]
-    reviews Review[]
+model UserFavorites {
+    id        String @id @default(cuid())
+    userId    String
+    listingId String
+
+    user    User    @relation(fields: [userId], references: [id])
+    listing Listing @relation(fields: [listingId], references: [id])
+
+    @@unique([userId, listingId])
 }
 
 model Post {
@@ -65,6 +76,17 @@ model Comment {
     commentLike CommentLike[]
 }
 
+model CommentLike {
+    id        String @id @default(cuid())
+    userId    String
+    commentId String
+
+    user    User    @relation(fields: [userId], references: [id])
+    comment Comment @relation(fields: [commentId], references: [id])
+
+    @@unique([userId, commentId])
+}
+
 model Game {
     id        String   @id @default(cuid())
     wpm       Int
@@ -91,15 +113,79 @@ model Keeb {
     Game Game[]
 }
 
-model CommentLike {
-    id        String @id @default(cuid())
+model Images {
+    id           String   @id @default(cuid())
+    link         String
+    resourceType String
+    resourceId   String
+    createdAt    DateTime @default(now())
+    updatedAt    DateTime @updatedAt
+
+    userId String
+
+    user User @relation(fields: [userId], references: [id])
+}
+
+model Listing {
+    id         String   @id @default(cuid())
+    title      String
+    text       String
+    soundTest  String?
+    switchType String
+    keycaps    String
+    switches   String
+    price      Int
+    // this will be as cents
+
+    sold       Boolean  @default(false)
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+
+    sellerId String
+    buyerId  String?
+
+    seller User  @relation("Seller", fields: [sellerId], references: [id])
+    buyer  User? @relation("Buyer", fields: [buyerId], references: [id])
+
+    reviews            Review[]
+    favorites          UserFavorites[]
+    listingTransaction ListingTransaction[]
+    ListingOffer       ListingOffer[]
+}
+
+model ListingOffer {
+    id        String   @id @default(cuid())
+    price     Int
+    // this will be as cents
+
+    status    String
+    // PENDING, ACCEPTED, REJECTED, WITHDRAWN
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    listingId String
+    buyerId   String
+
+    listing Listing @relation(fields: [listingId], references: [id])
+    buyer   User    @relation(fields: [buyerId], references: [id])
+}
+
+model ListingTransaction {
+    id        String   @id @default(cuid())
+    price     Int
+    // this will be as cents
+    name      String
+    status    String
+    // PENDING CANCELED COMPLETE
+    //  stripePaymentId String?  // Unique identifier for the Stripe payment
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
     userId    String
-    commentId String
+    listingId String
 
     user    User    @relation(fields: [userId], references: [id])
-    comment Comment @relation(fields: [commentId], references: [id])
-
-    @@unique([userId, commentId])
+    listing Listing @relation(fields: [listingId], references: [id])
 }
 
 model PostLike {
@@ -112,6 +198,16 @@ model PostLike {
 
     @@unique([userId, postId])
 }
+
+model Rank {
+    id     String @id @default(cuid())
+    name   String
+    minWpm Int
+    maxWpm Int
+    users  User[]
+}
+
+// could just create ranks in admin to avoid using seeders this way i could change ranks anytime
 
 model Review {
     id         String   @id @default(cuid())
@@ -129,51 +225,12 @@ model Review {
     listing Listing @relation(fields: [listingId], references: [id])
 }
 
-model Transaction {
-    id        String   @id @default(cuid())
-    cost      Int
-    type      String
-    status    String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+model Tag {
+    id          String @id @default(cuid())
+    name        String
+    description String
 
-    userId    String
-    bookingId String
-
-    user User @relation(fields: [userId], references: [id])
-}
-
-model Images {
-    id           String   @id @default(cuid())
-    link         String
-    resourceType String
-    resourceId   String
-    createdAt    DateTime @default(now())
-    updatedAt    DateTime @updatedAt
-
-    userId String
-
-    user User @relation(fields: [userId], references: [id])
-}
-
-// Necessary for Next auth
-model Account {
-    id                String  @id @default(cuid())
-    userId            String
-    type              String
-    provider          String
-    providerAccountId String
-    refresh_token     String? // @db.Text
-    access_token      String? // @db.Text
-    expires_at        Int?
-    token_type        String?
-    scope             String?
-    id_token          String? // @db.Text
-    session_state     String?
-
-    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-    @@unique([provider, providerAccountId])
+    users User[] @relation("UserTags")
 }
 
 model Session {
@@ -191,9 +248,9 @@ model User {
     emailVerified DateTime?
     image         String?
     profile       String?
-    rank          String?
-    tag           String?
-    username      String?   @unique
+    rankId        String?
+
+    username String? @unique
 
     isVerified   Boolean @default(false)
     isAdmin      Boolean @default(false)
@@ -202,17 +259,22 @@ model User {
 
     accounts        Account[]
     sessions        Session[]
-    listings        Listing[]
+    favorites       UserFavorites[]
     posts           Post[]
     comments        Comment[]
-    transactions    Transaction[]
     images          Images[]
     games           Game[]
     keebs           Keeb[]
     commentLike     CommentLike[]
-    review          Review[]      @relation("UserRelation")
-    reviewsReceived Review[]      @relation("SellerRelation")
+    review          Review[]             @relation("UserRelation")
+    reviewsReceived Review[]             @relation("SellerRelation")
     postLike        PostLike[]
+    tags            Tag[]                @relation("UserTags")
+    transactions    ListingTransaction[]
+    rank            Rank?                @relation(fields: [rankId], references: [id])
+    sellerListings  Listing[]            @relation("Seller")
+    buyerListings   Listing[]            @relation("Buyer")
+    ListingOffer    ListingOffer[]
 }
 
 model VerificationToken {

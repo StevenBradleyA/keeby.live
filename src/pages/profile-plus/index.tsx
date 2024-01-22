@@ -31,6 +31,7 @@ interface UserData {
 }
 
 export default function ProfilePlus() {
+    // todo fix error where not redirected to profile instead it just says complete
     // todo only allow png or jpg
     // todo style ++ double check weird error handling for username check
 
@@ -87,7 +88,7 @@ export default function ProfilePlus() {
         if (!username.length) {
             errorsObj.username = "Please provide a username";
         }
-
+        //todo set a max username length of 50 characters
         if (!keyboard.length) {
             errorsObj.keyboard = "Please provide your keyboard";
         }
@@ -193,6 +194,9 @@ export default function ProfilePlus() {
             }
         }
     };
+// todo fix return logic here so it doesnt say completed just only show page
+
+    // lets just push to profile if already ses and profile 
 
     return (
         <>
