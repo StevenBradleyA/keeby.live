@@ -92,6 +92,8 @@ export const userRouter = createTRPCRouter({
             const { userId, username, images, name, switches, keycaps } = input;
             const sessionUserId = ctx.session.user.id;
 
+            // todo implement tag -- novice 
+
             if (sessionUserId !== userId) {
                 throw new Error("Invalid userId");
             }

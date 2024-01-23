@@ -33,6 +33,7 @@ export const listingRouter = createTRPCRouter({
                 keycaps: z.string(),
                 switches: z.string(),
                 switchType: z.string(),
+                soundTest: z.string().optional(),
                 preview: z.number(),
                 sellerId: z.string(),
                 images: z.array(
@@ -50,6 +51,7 @@ export const listingRouter = createTRPCRouter({
                 keycaps,
                 switches,
                 switchType,
+                soundTest,
                 preview,
                 sellerId,
                 images,
@@ -58,17 +60,22 @@ export const listingRouter = createTRPCRouter({
                 ctx.session.user.id === sellerId &&
                 ctx.session.user.isVerified
             ) {
+                const createData = {
+                    title,
+                    text,
+                    keycaps,
+                    switches,
+                    switchType,
+                    price,
+                    sellerId,
+                    sold: false,
+                };
+                if (soundTest) {
+                    createData.soundTest = soundTest;
+                }
+
                 const newListing = await ctx.prisma.listing.create({
-                    data: {
-                        title,
-                        text,
-                        keycaps,
-                        switches,
-                        switchType,
-                        price,
-                        sellerId,
-                        sold: false,
-                    },
+                    data: createData,
                 });
 
                 const createdImages = await Promise.all(
