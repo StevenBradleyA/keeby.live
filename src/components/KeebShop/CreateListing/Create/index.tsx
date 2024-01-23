@@ -21,7 +21,7 @@ interface ErrorsObj {
     imageExcess?: string;
     imageShortage?: string;
     imageLarge?: string;
-    text?: string;
+    description?: string;
     title?: string;
     titleExcess?: string;
     priceNone?: string;
@@ -30,6 +30,7 @@ interface ErrorsObj {
     keycaps?: string;
     switches?: string;
     switchType?: string;
+    soundTest?: string;
 }
 
 interface Image {
@@ -42,6 +43,7 @@ interface ListingData {
     keycaps: string;
     switches: string;
     switchType: string;
+    soundTest?: string;
     price: number;
     text: string;
     preview: number;
@@ -66,7 +68,7 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
 
     const accessDenied = !session || !session.user.isVerified;
 
-    const [text, setText] = useState<string>("");
+    const [description, setDescription] = useState<string>("");
     const [keycaps, setKeycaps] = useState<string>("");
     const [switchType, setSwitchType] = useState<string>("linear");
     const [switches, setSwitches] = useState<string>("");
@@ -106,9 +108,9 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
             errorsObj.imageShortage = "Please provide at least 5 photos";
         }
 
-        if (text.length < 1) {
-            errorsObj.text =
-                "Please provide a description of at least 200 words";
+        if (description.length < 250) {
+            errorsObj.description =
+                "Please provide a description of at least 250 characters";
         }
         if (!title.length) {
             errorsObj.title = "Please provide a title for your listing";
@@ -116,8 +118,6 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
         if (title.length > 50) {
             errorsObj.titleExcess = "Title cannot exceed 50 characters";
         }
-
-        // we are going to want to cap the title length to like 10 words or character limit
 
         if (!keycaps.length) {
             errorsObj.keycaps = "Please provide the keycaps on your keeb";
@@ -138,12 +138,22 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
         if (price < 1) {
             errorsObj.priceNone = "Please provide a price";
         }
-        if (price > 7000) {
+        if (price > 10000) {
             errorsObj.priceExcess = "Woah, that price is too high for keeby";
         }
         if (!Number.isInteger(price)) {
             errorsObj.priceNotWhole =
                 "Please enter a whole number for the price";
+        }
+
+        const isValidYouTubeUrl = (url: string) => {
+            const regex =
+                /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/;
+            return regex.test(url);
+        };
+
+        if (soundTest.length && !isValidYouTubeUrl(soundTest)) {
+            errorsObj.soundTest = "Please provide a valid YouTube Link";
         }
 
         for (const file of imageFiles) {
@@ -155,7 +165,16 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
         }
 
         setErrors(errorsObj);
-    }, [imageFiles, price, text, title, keycaps, switches, switchType]);
+    }, [
+        imageFiles,
+        price,
+        description,
+        title,
+        keycaps,
+        switches,
+        switchType,
+        soundTest,
+    ]);
 
     const submit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -176,7 +195,7 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                     keycaps,
                     switches,
                     switchType,
-                    text,
+                    text: description,
                     price: price * 100,
                     preview,
                     images: [],
@@ -217,6 +236,10 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                     link: imageUrl || "",
                 }));
 
+                if (soundTest) {
+                    data.soundTest = soundTest;
+                }
+
                 mutate(data);
                 setImageFiles([]);
                 setHasSubmitted(true);
@@ -231,8 +254,6 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
     if (accessDenied) {
         return <Custom404 />;
     }
-
-    // todo youtube link
 
     return (
         <>
@@ -349,6 +370,11 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                                         className="h-10 w-72 rounded-md bg-white p-1"
                                         placeholder="Sound Test Link"
                                     />
+                                    {enableErrorDisplay && errors.soundTest && (
+                                        <p className="text-sm text-red-400">
+                                            {errors.soundTest}
+                                        </p>
+                                    )}
                                 </div>
 
                                 <div className="relative flex flex-col gap-1">
@@ -462,56 +488,64 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                                     Description (250 character minimum)
                                 </label>
                                 <textarea
-                                    value={text}
-                                    onChange={(e) => setText(e.target.value)}
+                                    value={description}
+                                    onChange={(e) =>
+                                        setDescription(e.target.value)
+                                    }
                                     className="h-72 w-full rounded-md bg-white p-1 "
                                     placeholder="Description"
                                 ></textarea>
 
-                                {enableErrorDisplay && errors.text && (
+                                {enableErrorDisplay && errors.description && (
                                     <p className="text-sm text-red-400">
-                                        {errors.text}
+                                        {errors.description}
                                     </p>
                                 )}
                             </div>
                         </div>
                     </div>
 
-                    <div className="mb-1 mt-5  flex justify-center text-darkGray">
-                        Select your preview image by clicking on it. (16:9
-                        aspect ratio is recommended)
-                    </div>
-
-                    <div className="flex w-full flex-wrap justify-center gap-10 rounded-md bg-white bg-opacity-40 p-10 ">
-                        {imageFiles.map((e, i) => (
-                            <div key={i} className="relative">
-                                <Image
-                                    className={`h-28 w-auto cursor-pointer rounded-lg object-cover shadow-sm hover:scale-105 hover:shadow-md ${
-                                        i === preview
-                                            ? "border-4 border-green-500"
-                                            : "border-4 border-black border-opacity-0"
-                                    } `}
-                                    alt={`listing-${i}`}
-                                    src={URL.createObjectURL(e)}
-                                    width={100}
-                                    height={100}
-                                    onClick={() => setPreview(i)}
-                                />
-                                <button
-                                    className="absolute right-[-10px] top-[-32px] transform p-1 text-2xl text-black transition-transform duration-300 ease-in-out hover:rotate-45 hover:scale-110 hover:text-red-500"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        const newImageFiles = [...imageFiles];
-                                        newImageFiles.splice(i, 1);
-                                        setImageFiles(newImageFiles);
-                                        setPreview(0);
-                                    }}
-                                >
-                                    &times;
-                                </button>
+                    {imageFiles.length && (
+                        <>
+                            <div className="mb-1 mt-5  flex justify-center text-darkGray">
+                                Select your preview image by clicking on it.
+                                (16:9 aspect ratio is recommended)
                             </div>
-                        ))}
-                    </div>
+
+                            <div className="flex w-full flex-wrap justify-center gap-10 rounded-md bg-white bg-opacity-40 p-10 ">
+                                {imageFiles.map((e, i) => (
+                                    <div key={i} className="relative">
+                                        <Image
+                                            className={`h-28 w-auto cursor-pointer rounded-lg object-cover shadow-sm hover:scale-105 hover:shadow-md ${
+                                                i === preview
+                                                    ? "border-4 border-green-500"
+                                                    : "border-4 border-black border-opacity-0"
+                                            } `}
+                                            alt={`listing-${i}`}
+                                            src={URL.createObjectURL(e)}
+                                            width={100}
+                                            height={100}
+                                            onClick={() => setPreview(i)}
+                                        />
+                                        <button
+                                            className="absolute right-[-10px] top-[-32px] transform p-1 text-2xl text-black transition-transform duration-300 ease-in-out hover:rotate-45 hover:scale-110 hover:text-red-500"
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                const newImageFiles = [
+                                                    ...imageFiles,
+                                                ];
+                                                newImageFiles.splice(i, 1);
+                                                setImageFiles(newImageFiles);
+                                                setPreview(0);
+                                            }}
+                                        >
+                                            &times;
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        </>
+                    )}
                     {errors.imageExcess && (
                         <p className=" text-red-400">{errors.imageExcess}</p>
                     )}
