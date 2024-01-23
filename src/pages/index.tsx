@@ -16,7 +16,7 @@ export default function Home() {
     // budget or ballin  under or above 250
     // filters and search need to be sticky
     // maybe break up in groups of six?
-    // todo implement pagination where listings only load when you scroll to the bottom 
+    // todo implement pagination where listings only load when you scroll to the bottom
 
     const { data: keebData, isLoading } = api.listing.getAll.useQuery();
 
@@ -39,8 +39,6 @@ export default function Home() {
             </div>
         );
     }
-
-    console.log("yo", keebData);
 
     return (
         <div className="mt-10 flex w-full gap-5">
@@ -69,7 +67,7 @@ export default function Home() {
                 </div>
 
                 {searchFilter === "switch" && (
-                    <div className="flex gap-5">
+                    <div className="flex flex-col items-start gap-5">
                         <button>tactile</button>
                         <button>linear</button>
                         <button>clicky</button>

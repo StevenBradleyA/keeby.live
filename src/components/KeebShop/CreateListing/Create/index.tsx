@@ -5,10 +5,10 @@ import { uploadFileToS3 } from "~/utils/aws";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import toast from "react-hot-toast";
-import TitleScripts from "~/components/TitleScripts";
 import { useRouter } from "next/router";
 import Custom404 from "~/pages/404";
-import type { ChangeEvent } from "react";
+import defaultProfile from "@public/Profile/profile-default.png";
+import TitleScripts from "~/components/TitleScripts";
 
 interface ErrorsObj {
     image?: string;
@@ -227,6 +227,27 @@ export default function CreateListing() {
 
     return (
         <>
+            <div className="flex w-2/3 items-center  ">
+                <Image
+                    src={defaultProfile}
+                    alt="profile"
+                    width={400}
+                    height={400}
+                    className=" h-40 w-40 border-4 border-[#2f2f2f] object-cover"
+                />
+
+                <div className="flex h-24 w-full flex-col justify-center border-b-2 border-t-2 border-[#2f2f2f] bg-black bg-opacity-60 px-5">
+                    <div className="">
+                        <div className="flex justify-between text-3xl">
+                            <TitleScripts page={"createListing"} />
+                            <button>back</button>
+                        </div>
+                        <h3 className="text-darkGray">
+                            {session.user.username}
+                        </h3>
+                    </div>
+                </div>
+            </div>
             <div className="mb-32 mt-10 flex w-2/3 flex-col items-center rounded-2xl bg-keebyGray ">
                 <form className="flex w-full flex-col items-center">
                     <h1> What is the name of your keyboard? </h1>
