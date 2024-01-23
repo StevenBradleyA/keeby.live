@@ -10,6 +10,7 @@ import Custom404 from "~/pages/404";
 import defaultProfile from "@public/Profile/profile-default.png";
 import TitleScripts from "~/components/TitleScripts";
 import BackArrow from "~/components/Svgs/menuArrow";
+import LoadingSpinner from "~/components/Loading";
 
 interface CreateListingProps {
     setShowCreate: (showCreate: boolean) => void;
@@ -78,6 +79,7 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
         useState<boolean>(false);
     const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const [soundTest, setSoundTest] = useState<string>("");
 
     const { mutate } = api.listing.create.useMutation({
         onSuccess: async () => {
@@ -97,8 +99,8 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
     useEffect(() => {
         const maxFileSize = 8 * 1024 * 1024;
         const errorsObj: ErrorsObj = {};
-        if (imageFiles.length > 25) {
-            errorsObj.imageExcess = "Cannot provide more than 25 photos";
+        if (imageFiles.length > 15) {
+            errorsObj.imageExcess = "Cannot provide more than 15 photos";
         }
         if (imageFiles.length < 5) {
             errorsObj.imageShortage = "Please provide at least 5 photos";
@@ -230,6 +232,8 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
         return <Custom404 />;
     }
 
+    // todo youtube link
+
     return (
         <>
             <div className="flex w-2/3 items-center  ">
@@ -238,7 +242,7 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                     alt="profile"
                     width={400}
                     height={400}
-                    className=" h-40 w-40 border-4 border-[#2f2f2f] object-cover"
+                    className=" h-40 w-40 rounded-md border-4 border-[#2f2f2f] object-cover"
                 />
 
                 <div className="flex h-24 w-full flex-col justify-center border-b-2 border-t-2 border-[#2f2f2f] bg-black bg-opacity-60 px-5">
@@ -257,138 +261,235 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                     </div>
                 </div>
             </div>
-            <div className="mb-32 mt-10 flex w-2/3 flex-col items-center rounded-2xl bg-keebyGray ">
-                <form className="flex w-full flex-col items-center">
-                    <h1> What is the name of your keyboard? </h1>
-                    <input
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        className="bg-black"
-                        placeholder="title"
-                    />
-                    {enableErrorDisplay && errors.title && (
-                        <p className="text-xl text-failure">{errors.title}</p>
-                    )}
-                    {enableErrorDisplay && errors.titleExcess && (
-                        <p className="text-xl text-failure">
-                            {errors.titleExcess}
-                        </p>
-                    )}
+            <div className="mb-32 mt-5 flex w-2/3 flex-col items-center rounded-xl bg-black bg-opacity-50 px-10 py-5  ">
+                <form className="w-full text-black">
+                    <div className="flex justify-between ">
+                        <div className="flex flex-col gap-5">
+                            <div className="flex flex-col gap-1">
+                                <label
+                                    htmlFor="titleInput"
+                                    className="text-darkGray"
+                                >
+                                    Title
+                                </label>
+                                <input
+                                    id="titleInput"
+                                    value={title}
+                                    onChange={(e) => setTitle(e.target.value)}
+                                    className="h-10 w-96 rounded-md bg-white p-1 "
+                                    placeholder="Title"
+                                />
+                                {enableErrorDisplay && errors.title && (
+                                    <p className="text-sm text-red-400">
+                                        {errors.title}
+                                    </p>
+                                )}
+                                {enableErrorDisplay && errors.titleExcess && (
+                                    <p className="text-sm text-red-400">
+                                        {errors.titleExcess}
+                                    </p>
+                                )}
+                            </div>
 
-                    <h1> {`What's on the keeb?`} </h1>
-                    <div className="flex">
-                        <input
-                            value={keycaps}
-                            onChange={(e) => setKeycaps(e.target.value)}
-                            className="bg-black"
-                            placeholder="keycaps"
-                        />
-                        <input
-                            value={switches}
-                            onChange={(e) => setSwitches(e.target.value)}
-                            className="bg-black"
-                            placeholder="switches"
-                        />
-                        <select
-                            className=" bg-black px-2 py-1 text-green-500"
-                            value={switchType}
-                            onChange={(e) => setSwitchType(e.target.value)}
-                        >
-                            <option value="linear">Linear</option>
-                            <option value="tactile">Tactile</option>
-                            <option value="clicky">Clicky</option>
-                            <option value="other">Other</option>
-                        </select>
+                            <div className="flex flex-col gap-5 ">
+                                <div className="flex flex-col gap-1">
+                                    <label
+                                        htmlFor="priceInput"
+                                        className="text-darkGray"
+                                    >
+                                        Price (whole number)
+                                    </label>
+                                    <input
+                                        id="priceInput"
+                                        type="number"
+                                        min={0}
+                                        value={price === 0 ? "" : price}
+                                        // onChange={(e) => setPrice(+e.target.value)}
+                                        onChange={(e) =>
+                                            setPrice(
+                                                Math.floor(+e.target.value)
+                                            )
+                                        }
+                                        className="h-10 w-72 rounded-md bg-white p-1"
+                                        placeholder="$ Price"
+                                    />
+
+                                    {enableErrorDisplay && errors.priceNone && (
+                                        <p className="text-sm text-red-400">
+                                            {errors.priceNone}
+                                        </p>
+                                    )}
+                                    {enableErrorDisplay &&
+                                        errors.priceExcess && (
+                                            <p className="text-sm text-red-400">
+                                                {errors.priceExcess}
+                                            </p>
+                                        )}
+                                    {enableErrorDisplay &&
+                                        errors.priceNotWhole && (
+                                            <p className="text-sm text-red-400">
+                                                {errors.priceNotWhole}
+                                            </p>
+                                        )}
+                                </div>
+
+                                <div className="flex flex-col gap-1">
+                                    <label
+                                        htmlFor="youtubeLinkSoundTestInput"
+                                        className="text-darkGray"
+                                    >
+                                        Youtube Link to Sound Test (optional)
+                                    </label>
+                                    <input
+                                        id="youtubeLinkSoundTestInput"
+                                        value={soundTest}
+                                        onChange={(e) =>
+                                            setSoundTest(e.target.value)
+                                        }
+                                        className="h-10 w-72 rounded-md bg-white p-1"
+                                        placeholder="Sound Test Link"
+                                    />
+                                </div>
+
+                                <div className="relative flex flex-col gap-1">
+                                    <label
+                                        htmlFor="imageUploadInput"
+                                        className="text-darkGray"
+                                    >
+                                        Upload Images (5 min - 15 max)
+                                    </label>
+
+                                    <input
+                                        id="imageUploadInput"
+                                        className="absolute top-7 h-20 w-72 cursor-pointer opacity-0"
+                                        type="file"
+                                        multiple
+                                        accept="image/png, image/jpg, image/jpeg"
+                                        onChange={(e) => {
+                                            if (e.target.files)
+                                                setImageFiles([
+                                                    ...imageFiles,
+                                                    ...e.target.files,
+                                                ]);
+                                        }}
+                                    />
+                                    <button className="h-20 w-72 rounded-md bg-green-500">
+                                        <span className=" text-center">
+                                            Choose Files
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="flex flex-col gap-5">
+                            <div className="flex gap-5">
+                                <div className="flex flex-col gap-1">
+                                    <label
+                                        htmlFor="keycapsInput"
+                                        className="text-darkGray"
+                                    >
+                                        Keycaps
+                                    </label>
+                                    <input
+                                        id="keycapsInput"
+                                        value={keycaps}
+                                        onChange={(e) =>
+                                            setKeycaps(e.target.value)
+                                        }
+                                        className="h-10 w-72 rounded-md bg-white p-1"
+                                        placeholder="Keycaps"
+                                    />
+                                    {enableErrorDisplay && errors.keycaps && (
+                                        <p className="text-sm text-red-400">
+                                            {errors.keycaps}
+                                        </p>
+                                    )}
+                                </div>
+                                <div className="flex flex-col gap-1">
+                                    <label
+                                        htmlFor="switchesInput"
+                                        className="text-darkGray"
+                                    >
+                                        Switches
+                                    </label>
+                                    <input
+                                        id="switchesInput"
+                                        value={switches}
+                                        onChange={(e) =>
+                                            setSwitches(e.target.value)
+                                        }
+                                        className="h-10 w-72 rounded-md bg-white p-1"
+                                        placeholder="Switches"
+                                    />
+                                    {enableErrorDisplay && errors.switches && (
+                                        <p className="text-sm text-red-400">
+                                            {errors.switches}
+                                        </p>
+                                    )}
+                                </div>
+                                <div className="flex flex-col gap-1">
+                                    <label
+                                        htmlFor="switchTypeInput"
+                                        className="text-darkGray"
+                                    >
+                                        Switch Type
+                                    </label>
+                                    <select
+                                        id="switchTypeInput"
+                                        className=" h-10 rounded-md bg-green-500 p-1 px-2 py-1"
+                                        value={switchType}
+                                        onChange={(e) =>
+                                            setSwitchType(e.target.value)
+                                        }
+                                    >
+                                        <option value="linear">Linear</option>
+                                        <option value="tactile">Tactile</option>
+                                        <option value="clicky">Clicky</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                    {enableErrorDisplay &&
+                                        errors.switchType && (
+                                            <p className="text-sm text-red-400">
+                                                {errors.switchType}
+                                            </p>
+                                        )}
+                                </div>
+                            </div>
+
+                            <div className=" flex w-full flex-col gap-1 ">
+                                <label className="text-darkGray ">
+                                    Description (250 character minimum)
+                                </label>
+                                <textarea
+                                    value={text}
+                                    onChange={(e) => setText(e.target.value)}
+                                    className="h-72 w-full rounded-md bg-white p-1 "
+                                    placeholder="Description"
+                                ></textarea>
+
+                                {enableErrorDisplay && errors.text && (
+                                    <p className="text-sm text-red-400">
+                                        {errors.text}
+                                    </p>
+                                )}
+                            </div>
+                        </div>
                     </div>
-                    {enableErrorDisplay && errors.keycaps && (
-                        <p className="text-xl text-red-400">{errors.keycaps}</p>
-                    )}
-                    {enableErrorDisplay && errors.switches && (
-                        <p className="text-xl text-red-400">
-                            {errors.switches}
-                        </p>
-                    )}
-                    {enableErrorDisplay && errors.switchType && (
-                        <p className="text-xl text-red-400">
-                            {errors.switchType}
-                        </p>
-                    )}
 
-                    <div> Write a lengthy description of your keyboard </div>
-                    <textarea
-                        value={text}
-                        onChange={(e) => setText(e.target.value)}
-                        className=" bg-black "
-                        placeholder="Description"
-                    ></textarea>
-
-                    {enableErrorDisplay && errors.text && (
-                        <p className="text-xl text-red-400">{errors.text}</p>
-                    )}
-                    <input
-                        type="number"
-                        min={0}
-                        value={price === 0 ? "" : price}
-                        // onChange={(e) => setPrice(+e.target.value)}
-                        onChange={(e) => setPrice(Math.floor(+e.target.value))}
-                        className="bg-black"
-                        placeholder="$ price"
-                    />
-
-                    {enableErrorDisplay && errors.priceNone && (
-                        <p className="text-xl text-red-400">
-                            {errors.priceNone}
-                        </p>
-                    )}
-                    {enableErrorDisplay && errors.priceExcess && (
-                        <p className="text-xl text-red-400">
-                            {errors.priceExcess}
-                        </p>
-                    )}
-                    {enableErrorDisplay && errors.priceNotWhole && (
-                        <p className="text-xl text-red-400">
-                            {errors.priceNotWhole}
-                        </p>
-                    )}
-
-                    <div className="mt-5 flex justify-center text-4xl">
-                        Upload Images for your listing
+                    <div className="mb-1 mt-5  flex justify-center text-darkGray">
+                        Select your preview image by clicking on it. (16:9
+                        aspect ratio is recommended)
                     </div>
-                    <div className=" flex justify-center text-xl">
-                        Clicking on an image will select the preview image ---
-                        green border
-                    </div>
-                    <div className="py-4">
-                        <label className="relative flex justify-center">
-                            <input
-                                className="absolute h-full w-full cursor-pointer opacity-0"
-                                type="file"
-                                multiple
-                                // accept="image/png, image/jpg, image/jpeg"
-                                accept="image/*"
-                                onChange={(e) => {
-                                    if (e.target.files)
-                                        setImageFiles([
-                                            ...imageFiles,
-                                            ...e.target.files,
-                                        ]);
-                                }}
-                            />
-                            <button className="h-32 w-44 rounded-2xl bg-black">
-                                <span className="bg-black text-center">
-                                    Choose Files
-                                </span>
-                            </button>
-                        </label>
-                    </div>
-                    <div className="mb-5 flex w-3/4 flex-wrap justify-center gap-10  ">
+
+                    <div className="flex w-full flex-wrap justify-center gap-10 rounded-md bg-white bg-opacity-40 p-10 ">
                         {imageFiles.map((e, i) => (
                             <div key={i} className="relative">
                                 <Image
                                     className={`h-28 w-auto cursor-pointer rounded-lg object-cover shadow-sm hover:scale-105 hover:shadow-md ${
                                         i === preview
                                             ? "border-4 border-green-500"
-                                            : ""
+                                            : "border-4 border-black border-opacity-0"
                                     } `}
                                     alt={`listing-${i}`}
                                     src={URL.createObjectURL(e)}
@@ -397,7 +498,7 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                                     onClick={() => setPreview(i)}
                                 />
                                 <button
-                                    className="absolute right-[-10px] top-[-32px] transform p-1 text-2xl text-gray-600 transition-transform duration-300 ease-in-out hover:rotate-45 hover:scale-110 hover:text-red-500"
+                                    className="absolute right-[-10px] top-[-32px] transform p-1 text-2xl text-black transition-transform duration-300 ease-in-out hover:rotate-45 hover:scale-110 hover:text-red-500"
                                     onClick={(e) => {
                                         e.preventDefault();
                                         const newImageFiles = [...imageFiles];
@@ -412,39 +513,48 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                         ))}
                     </div>
                     {errors.imageExcess && (
-                        <p className="create-listing-errors text-red-500">
-                            {errors.imageExcess}
-                        </p>
+                        <p className=" text-red-400">{errors.imageExcess}</p>
                     )}
                     {errors.imageLarge && (
-                        <p className="create-listing-errors text-red-500">
+                        <p className=" text-sm text-red-400">
                             {errors.imageLarge}
                         </p>
                     )}
                     {enableErrorDisplay && errors.imageShortage && (
-                        <p className="text-xl text-red-400">
+                        <p className="text-sm text-red-400">
                             {errors.imageShortage}
                         </p>
                     )}
-
-                    <motion.button
-                        whileHover={{
-                            scale: 1.1,
-                        }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={(e) => {
-                            e.preventDefault();
-                            void submit(e);
-                        }}
-                        disabled={hasSubmitted || isSubmitting}
-                        className={`rounded-2xl bg-black px-6 py-2 ${
-                            hasSubmitted ? "text-red-500" : ""
-                        } ${isSubmitting ? "text-red-500" : ""}`}
-                    >
-                        {isSubmitting ? "Uploading..." : "Submit"}
-                    </motion.button>
+                    <div className="mt-5 flex justify-center">
+                        <motion.button
+                            whileHover={{
+                                scale: 1.1,
+                            }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                void submit(e);
+                            }}
+                            disabled={hasSubmitted || isSubmitting}
+                            className={`rounded-xl border-2 border-green-500 bg-black px-6 py-2 text-green-500 hover:bg-keebyGray ${
+                                hasSubmitted ? "text-red-500" : ""
+                            } ${isSubmitting ? "text-red-500" : ""}`}
+                        >
+                            {isSubmitting ? (
+                                <div className="flex gap-1">
+                                    Uploading
+                                    <div className="w-12">
+                                        <LoadingSpinner />
+                                    </div>
+                                </div>
+                            ) : (
+                                "Submit Listing"
+                            )}
+                        </motion.button>
+                    </div>
                 </form>
             </div>
         </>
     );
 }
+// rounded-xl border-2 border-black bg-black px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray
