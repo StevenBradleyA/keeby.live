@@ -29,8 +29,8 @@ export default function CreateListingModal() {
                 </div>
             ) : (
                 <div>
-                    <div className="text-3xl text-green-500">
-                        Want to list your keyboard for sale?
+                    <div className=" p-5 text-3xl  text-green-500 ">
+                        Want to List Your Keyboard for Sale?
                     </div>
                     <div className="flex justify-center">
                         <Link
@@ -46,7 +46,7 @@ export default function CreateListingModal() {
                                     scale: 1.1,
                                 }}
                                 whileTap={{ scale: 0.95 }}
-                                className=" mt-5 rounded-xl border-2 border-black bg-black px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray"
+                                className=" mt-2 rounded-xl border-2 border-black bg-black px-6 py-2 text-xl text-green-500 hover:border-green-500 hover:bg-keebyGray"
                             >
                                 {`Let's go`}
                             </motion.button>

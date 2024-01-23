@@ -22,6 +22,10 @@ export default {
                 mrDafoe: ["Mr Dafoe", "cursive"],
                 titillium: ["Titillium Web", "sans-serif"],
                 retro: ["VT323", "monospace"],
+                montserrat: ["Montserrat", "sans-serif"],
+                poppins: ["Poppins", "sans-serif"],
+
+
             },
             textColor: {
                 blackAlternative: "#181818",

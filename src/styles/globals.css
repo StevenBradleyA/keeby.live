@@ -2,6 +2,36 @@
 @tailwind components;
 @tailwind utilities;
 
+/* --------------     fonts     --------------  */
+
+/* .mrDafoe {
+    font-family: "dafoe";
+} */
+
+@font-face {
+    font-family: "Titillium Web";
+    src: url("/Fonts/TitilliumWeb-Black.ttf") format("truetype");
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Mr Dafoe";
+    src: url("/Fonts/MrDafoe-Regular.ttf") format("truetype");
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Montserrat";
+    src: url("/Fonts/Montserrat-Regular.ttf") format("truetype");
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Poppins";
+    src: url("/Fonts/Poppins-Regular.ttf") format("truetype");
+    font-style: normal;
+}
+
 /* --------------     png color converter     --------------  */
 
 .png-green {
@@ -390,22 +420,6 @@ li:not(:first-child) span {
 
 /* ------    shop listing title   ------  */
 
-.mrDafoe {
-    font-family: "dafoe";
-}
-
-@font-face {
-    font-family: "Titillium Web";
-    src: url("/Fonts/TitilliumWeb-Black.ttf") format("truetype");
-    font-style: normal;
-}
-
-@font-face {
-    font-family: "Mr Dafoe";
-    src: url("/Fonts/MrDafoe-Regular.ttf") format("truetype");
-    font-style: normal;
-}
-
 .listing-page-title-big {
     background-image: -webkit-linear-gradient(
         #378dbc 0%,
@@ -722,19 +736,17 @@ input[type="checkbox"]:hover {
     z-index: 25;
 }
 
-
 /* command console fake hack */
 
 .hide-scrollbar::-webkit-scrollbar {
     display: none;
-  }
-  
-  /* Hide scrollbar for IE, Edge, and Firefox */
-  .hide-scrollbar {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-  }
+}
 
+/* Hide scrollbar for IE, Edge, and Firefox */
+.hide-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
 
 /* --------------     Public Profile    --------------  */
 
@@ -745,17 +757,16 @@ input[type="checkbox"]:hover {
     z-index: 6;
 }
 
-.matrix-full-screen{
+.matrix-full-screen {
     z-index: 1;
 }
 
 /* --------------     404    --------------  */
 
-
 .lost-index {
     position: fixed; /* This will fix the position relative to the viewport */
-    z-index: 10;     /* Higher z-index to ensure it's above the video */
-    top: 50%;        /* Example positioning */
+    z-index: 10; /* Higher z-index to ensure it's above the video */
+    top: 50%; /* Example positioning */
     left: 50%;
     transform: translate(-50%, -50%);
 }
