@@ -14,6 +14,12 @@ export default function CreateListingAgreement() {
     const [preventScamsAgreed, setPreventScamsAgreed] = useState(false);
     const [showCreate, setShowCreate] = useState(false);
 
+    const handleShowCreate = () => {
+        setShowCreate(true);
+        setPreventScamsAgreed(false);
+        setRulesAgreed(false);
+    };
+
     if (accessDenied) {
         return <Custom404 />;
     }
@@ -33,7 +39,7 @@ export default function CreateListingAgreement() {
             </div>
             <div className="z-10 flex w-full flex-col items-center justify-center">
                 {showCreate ? (
-                    <CreateListing />
+                    <CreateListing setShowCreate={setShowCreate} />
                 ) : (
                     <>
                         <div className="z-10 flex justify-center text-5xl">
@@ -91,7 +97,7 @@ export default function CreateListingAgreement() {
                                 <div className="mt-10 flex justify-center">
                                     <motion.button
                                         className=" rounded-xl border-2 border-black bg-black px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray"
-                                        onClick={() => setShowCreate(true)}
+                                        onClick={handleShowCreate}
                                     >
                                         Access Granted
                                     </motion.button>

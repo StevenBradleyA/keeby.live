@@ -9,6 +9,11 @@ import { useRouter } from "next/router";
 import Custom404 from "~/pages/404";
 import defaultProfile from "@public/Profile/profile-default.png";
 import TitleScripts from "~/components/TitleScripts";
+import BackArrow from "~/components/Svgs/menuArrow";
+
+interface CreateListingProps {
+    setShowCreate: (showCreate: boolean) => void;
+}
 
 interface ErrorsObj {
     image?: string;
@@ -42,7 +47,7 @@ interface ListingData {
     images: Image[];
 }
 
-export default function CreateListing() {
+export default function CreateListing({ setShowCreate }: CreateListingProps) {
     //instead of directing to page it might be nice to have pricing/scams in modals so they don't have to navigate back to page
     //todo what about filters and tags when creating a listing... Maybe an array with tags?
     //todo change redirect to my listings page??? or shoppp??
@@ -237,14 +242,18 @@ export default function CreateListing() {
                 />
 
                 <div className="flex h-24 w-full flex-col justify-center border-b-2 border-t-2 border-[#2f2f2f] bg-black bg-opacity-60 px-5">
-                    <div className="">
-                        <div className="flex justify-between text-3xl">
-                            <TitleScripts page={"createListing"} />
-                            <button>back</button>
+                    <div className="flex justify-between">
+                        <div>
+                            <div className="flex justify-between text-3xl">
+                                <TitleScripts page={"createListing"} />
+                            </div>
+                            <h3 className="text-darkGray">
+                                {session.user.username}
+                            </h3>
                         </div>
-                        <h3 className="text-darkGray">
-                            {session.user.username}
-                        </h3>
+                        <button onClick={() => setShowCreate(false)}>
+                            <BackArrow />
+                        </button>
                     </div>
                 </div>
             </div>
