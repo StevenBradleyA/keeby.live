@@ -1,7 +1,7 @@
 import { api } from "~/utils/api";
 import Image from "next/image";
 import Link from "next/link";
-import stockProfile from "@public/Profile/profile-keebo.jpg";
+import defaultProfile from "@public/Profile/profile-default.png";
 import StarDisplay from "~/components/Reviews/Star";
 import StarRating from "~/components/Reviews/Star/starRating";
 
@@ -29,7 +29,7 @@ export default function SellerPublicProfileCard({
                             src={
                                 sellerInfo.seller.profile
                                     ? sellerInfo.seller.profile
-                                    : stockProfile
+                                    : defaultProfile
                             }
                             alt="profile"
                             width={400}

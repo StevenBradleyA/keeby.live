@@ -2,7 +2,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { api } from "~/utils/api";
 import Image from "next/image";
-import keebo from "@public/Profile/profile-keebo.jpg";
+import defaultProfile from "@public/Profile/profile-default.png";
 import ModalDialog from "~/components/Modal";
 import CommentSignInModal from "../../Modal/signInModal";
 
@@ -124,23 +124,17 @@ export default function CreateReplyComment({
         <div className="flex flex-col">
             <form className="mt-2 flex flex-col justify-between gap-5">
                 <div className="flex">
-                    {session && session.user.profile ? (
-                        <Image
-                            src={session.user.profile}
-                            alt="profile"
-                            height={600}
-                            width={600}
-                            className="h-7 w-7 object-cover"
-                        />
-                    ) : (
-                        <Image
-                            src={keebo}
-                            alt="profile"
-                            height={600}
-                            width={600}
-                            className="h-7 w-7 object-cover"
-                        />
-                    )}
+                    <Image
+                        src={
+                            session && session.user.profile
+                                ? session.user.profile
+                                : defaultProfile
+                        }
+                        alt="profile"
+                        height={600}
+                        width={600}
+                        className="h-7 w-7 object-cover"
+                    />
 
                     <textarea
                         className="reply-input w-full  border-none bg-transparent p-2 outline-none"

@@ -12,7 +12,7 @@ import ManageKeeb from "~/components/Profile/Keeb/ManageKeeb";
 import { getCookies, setCookie } from "cookies-next";
 import { motion } from "framer-motion";
 import DisplayReviews from "~/components/Reviews/DisplayReviews";
-import keebo from "@public/Nav/bmo-test.jpg";
+import defaultProfile from "@public/Profile/profile-default.png";
 import keebyLiveTitle from "@public/Profile/keebylive-title.png";
 import futureComputer from "@public/Profile/future-future.png";
 import errorComputer from "@public/Profile/error-error-error.png";
@@ -280,7 +280,7 @@ export default function UserProfile() {
                                 src={
                                     sessionData.user.profile
                                         ? sessionData.user.profile
-                                        : keebo
+                                        : defaultProfile
                                 }
                                 width={800}
                                 height={800}

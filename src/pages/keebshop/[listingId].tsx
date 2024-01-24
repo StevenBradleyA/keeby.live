@@ -83,7 +83,7 @@ export default function ListingPage() {
                                     </button>
                                 </div>
                             </div>
-                            <SellerPublicProfileCard userId={keeb.userId} />
+                            <SellerPublicProfileCard userId={keeb.sellerId} />
                             {/* <div> seller clickable profile here</div>
                                 <div> seller rating</div> */}
                         </div>

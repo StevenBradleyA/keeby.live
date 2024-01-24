@@ -1,5 +1,5 @@
 import Image from "next/image";
-import keebo from "@public/Profile/profile-keebo.jpg";
+import defaultProfile from "@public/Profile/profile-default.png";
 import Link from "next/link";
 import CreateReplyComment from "../Create/CreateReplyComment";
 import ModifyCommentModal from "../Modal";
@@ -84,7 +84,7 @@ export default function EachCommentCard({
                 <div className="">
                     {comment.user.profile === null ? (
                         <Image
-                            src={keebo}
+                            src={defaultProfile}
                             alt="profile"
                             height={600}
                             width={600}

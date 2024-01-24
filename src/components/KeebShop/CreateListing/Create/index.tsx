@@ -577,7 +577,7 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                             {isSubmitting ? (
                                 <div className="flex gap-1">
                                     Uploading
-                                    <div className="w-12">
+                                    <div className="w-6">
                                         <LoadingSpinner />
                                     </div>
                                 </div>

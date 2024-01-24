@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import keebo from "@public/Profile/profile-keebo.jpg";
+import defaultProfile from "@public/Profile/profile-default.png";
 import { useSession } from "next-auth/react";
 import CreateReplyComment from "../Create/CreateReplyComment";
 import { useState } from "react";
@@ -79,7 +79,7 @@ export default function EachReplyCommentCard({
             <div className="">
                 {reply.user.profile === null ? (
                     <Image
-                        src={keebo}
+                        src={defaultProfile}
                         alt="profile"
                         height={600}
                         width={600}

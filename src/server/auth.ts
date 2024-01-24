@@ -24,7 +24,7 @@ declare module "next-auth" {
             id: string;
             username: string;
             profile: string;
-            tag: string;
+            selectedTag: string;
             isVerified: boolean;
             hasProfile: boolean;
             isAdmin: boolean;

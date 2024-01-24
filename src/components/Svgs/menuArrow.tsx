@@ -10,9 +10,9 @@ const BackArrow = () => (
         >
             <path
                 stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="3"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="3"
                 d="M3.515 12h16.97m0 0L13.01 4.525M20.485 12l-7.475 7.476"
             ></path>
         </svg>

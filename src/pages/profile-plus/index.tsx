@@ -97,7 +97,6 @@ export default function ProfilePlus() {
         if (username.length > 30) {
             errorsObj.usernameExcess = "Username cannot exceed 30 characters";
         }
-        //todo set a max username length of 50 characters
         if (!keyboard.length) {
             errorsObj.keyboard = "Please provide your keyboard";
         }
@@ -203,11 +202,6 @@ export default function ProfilePlus() {
             }
         }
     };
-    // todo fix return logic here so it doesnt say completed just only show page
-
-    // lets just push to profile if already ses and profile
-    // todo implement tag
-    // styleeeeeeeeeeeeeeeeeeee
 
     return (
         session &&
@@ -398,7 +392,7 @@ export default function ProfilePlus() {
                             {isSubmitting ? (
                                 <div className="flex gap-1">
                                     Saving Data
-                                    <div className="w-12">
+                                    <div className="w-6">
                                         <LoadingSpinner />
                                     </div>
                                 </div>

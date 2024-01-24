@@ -17,7 +17,7 @@ export const userRouter = createTRPCRouter({
         .query(async ({ input, ctx }) => {
             const seller = await ctx.prisma.user.findUnique({
                 where: { id: input },
-                select: { profile: true, username: true },
+                select: { profile: true, username: true, selectedTag: true },
             });
             const allSellerStars = await ctx.prisma.review.aggregate({
                 where: { sellerId: input },
@@ -32,7 +32,7 @@ export const userRouter = createTRPCRouter({
                 id: true,
                 username: true,
                 profile: true,
-                tag: true,
+                selectedTag: true,
                 reviewsReceived: {
                     select: {
                         id: true,

@@ -7,8 +7,6 @@ import Image from "next/image";
 import menuBurger from "../../../public/Nav/menu.png";
 import menuBurgerGif from "../../../public/Gifs/menu-glitch.gif";
 import homeButton from "../../../public/Nav/home-test.png";
-// import keebo from "../../../public/Nav/bmo-test.jpg";
-// import defaultProfile from "@public/Profile/profile-default.png";
 import defaultProfile from "@public/Profile/profile-default.png";
 import { useRouter } from "next/router";
 
