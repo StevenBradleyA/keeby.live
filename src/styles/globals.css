@@ -418,21 +418,19 @@ li:not(:first-child) span {
 
 /* --------------         KEEB SHOP          --------------  */
 
-.image-container {
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
+/*  ----    Listings Hover effect    ---- */
+.listing-preview-hover-effect {
     background-color: #000000;
 }
 
-.image-container img {
+.listing-preview-hover-effect img {
     transition: opacity 0.55s ease;
 }
 /* Styles for the top and bottom border segments */
-.image-container:before,
-.image-container:after,
-.image-container div:before,
-.image-container div:after {
+.listing-preview-hover-effect:before,
+.listing-preview-hover-effect:after,
+.listing-preview-hover-effect div:before,
+.listing-preview-hover-effect div:after {
     content: "";
     position: absolute;
     background-color: rgb(34 197 94);
@@ -440,58 +438,74 @@ li:not(:first-child) span {
     transition-delay: 0s, 0.15s, 0.15s;
 }
 
-.image-container:before,
-.image-container:after {
+.listing-preview-hover-effect:before,
+.listing-preview-hover-effect:after {
     left: 25px;
     right: 25px;
     height: 2px;
     width: 0;
 }
 /* Positions the top border segment */
-.image-container:before {
+.listing-preview-hover-effect:before {
     top: 25px;
     transform: translateX(-100%);
 }
 /* Positions the bottom border segment */
 
-.image-container:after {
+.listing-preview-hover-effect:after {
     bottom: 25px;
     transform: translateX(100%);
 }
 /* Styles for the left and right border segments */
-.image-container div:before,
-.image-container div:after {
+.listing-preview-hover-effect div:before,
+.listing-preview-hover-effect div:after {
     top: 25px;
     bottom: 25px;
     width: 2px;
     height: 0;
 }
 /* Positions the left border segment */
-.image-container div:before {
+.listing-preview-hover-effect div:before {
     left: 25px;
     transform: translateY(-100%);
 }
 /* Positions the right border segment */
-.image-container div:after {
+.listing-preview-hover-effect div:after {
     right: 25px;
     transform: translateY(100%);
 }
 /* Hover effect: Expands the horizontal border segments */
-.image-container:hover:before,
-.image-container:hover:after {
+.listing-preview-hover-effect:hover:before,
+.listing-preview-hover-effect:hover:after {
     width: calc(100% - 50px);
     transform: translateX(0);
 }
 /* Hover effect: Expands the vertical border segments */
-.image-container:hover div:before,
-.image-container:hover div:after {
+.listing-preview-hover-effect:hover div:before,
+.listing-preview-hover-effect:hover div:after {
     height: calc(100% - 50px);
     transform: translateY(0);
 }
 /* Hover effect: Reduces the opacity of the image */
-.image-container:hover img {
+.listing-preview-hover-effect:hover img {
     opacity: 0.55;
 }
+
+.show-listing-hover-content {
+    opacity: 1; /* Fully visible */
+    transition: opacity 0.55s ease; /* Transition for opacity */
+}
+
+/* Class for the hidden state */
+.hide-listing-hover-content {
+    opacity: 0; /* Fully transparent */
+    transition: opacity 0.55s ease; /* Transition for opacity */
+}
+
+
+
+
+/*  ----    End Listings Hover effect    ---- */
 
 /* --------------                            --------------  */
 
