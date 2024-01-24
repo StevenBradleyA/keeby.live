@@ -127,7 +127,7 @@ model Images {
 }
 
 model Listing {
-    id         String   @id @default(cuid())
+    id         String  @id @default(cuid())
     title      String
     text       String
     soundTest  String?
@@ -137,9 +137,9 @@ model Listing {
     price      Int
     // this will be as cents
 
-    sold       Boolean  @default(false)
-    createdAt  DateTime @default(now())
-    updatedAt  DateTime @updatedAt
+    sold      Boolean  @default(false)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
     sellerId String
     buyerId  String?
@@ -154,8 +154,8 @@ model Listing {
 }
 
 model ListingOffer {
-    id        String   @id @default(cuid())
-    price     Int
+    id    String @id @default(cuid())
+    price Int
     // this will be as cents
 
     status    String
@@ -227,7 +227,7 @@ model Review {
 
 model Tag {
     id          String @id @default(cuid())
-    name        String
+    name        String @unique
     description String
 
     users User[] @relation("UserTags")
@@ -249,8 +249,8 @@ model User {
     image         String?
     profile       String?
     rankId        String?
-
-    username String? @unique
+    username      String?   @unique
+    selectedTag   String
 
     isVerified   Boolean @default(false)
     isAdmin      Boolean @default(false)

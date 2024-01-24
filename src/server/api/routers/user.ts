@@ -51,8 +51,7 @@ export const userRouter = createTRPCRouter({
 
         return userInfo;
     }),
-    // need to grab keeb info aswell and top wpm for each keeb 
-    
+    // need to grab keeb info aswell and top wpm for each keeb
 
     usernameCheck: publicProcedure
         .input(z.string())
@@ -92,8 +91,6 @@ export const userRouter = createTRPCRouter({
             const { userId, username, images, name, switches, keycaps } = input;
             const sessionUserId = ctx.session.user.id;
 
-            // todo implement tag -- novice 
-
             if (sessionUserId !== userId) {
                 throw new Error("Invalid userId");
             }
@@ -102,9 +99,11 @@ export const userRouter = createTRPCRouter({
                 username: string;
                 hasProfile?: boolean;
                 profile?: string;
+                selectedTag: string;
             } = {
                 username,
                 hasProfile: true,
+                selectedTag: "Novice",
             };
 
             if (images && images[0]) {
