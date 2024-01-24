@@ -25,6 +25,7 @@ export default function ListingPage() {
     // TODO add youtube api video integration optional()
     // TODO ability to favorite / unfavorite the listing
     // todo add comment svg to comments number
+    // todo Yellowtail font instead of mr dafoe?
 
     const currentListingNameArr = keeb?.title.split(" ");
     const smallTitle = currentListingNameArr?.pop();
@@ -36,18 +37,20 @@ export default function ListingPage() {
         <div className=" mx-16 w-2/3">
             {keeb ? (
                 <div>
-                    <div className="relative flex justify-center">
-                        <h1 className=" listing-page-title-big absolute bottom-10  font-titillium text-7xl ">
+                    <div className=" mb-14 flex justify-center ">
+                        <h1 className=" listing-page-title-big  px-5 font-titillium text-7xl ">
                             {bigTitle}
-                            <span className="listing-page-title-small absolute top-10 font-mrDafoe text-6xl">
-                                {smallTitle}
-                            </span>
+                        </h1>
+                        <h1 className="listing-page-title-small relative top-10 font-mrDafoe text-6xl">
+                            {smallTitle}
                         </h1>
                     </div>
                     {/* <div className="pog-title">{keeb.title}</div> */}
 
                     <div className="flex justify-between">
-                        <h3 className="text-darkGray">{`Listing Price $${keeb.price}`}</h3>
+                        <h3 className="text-darkGray">{`Listing Price $${
+                            keeb.price / 100
+                        }`}</h3>
                         <div className="flex gap-1 ">
                             {commentCount && (
                                 <h3 className="listing-gradient">
@@ -73,7 +76,9 @@ export default function ListingPage() {
                     <div className="mt-20 flex w-full justify-center ">
                         <div className="flex w-1/2 flex-col rounded-xl bg-black px-10">
                             <div className="flex justify-between">
-                                <div className="text-4xl">{`Price: $${keeb.price}`}</div>
+                                <div className="text-4xl">{`Price: $${
+                                    keeb.price / 100
+                                }`}</div>
                                 <div className="flex flex-col">
                                     <button className=" bg-green-500">
                                         buy now
@@ -88,10 +93,15 @@ export default function ListingPage() {
                                 <div> seller rating</div> */}
                         </div>
                     </div>
-                    <div className="sound-test-title mt-10 flex justify-center text-5xl">
-                        SOUND TEST
-                    </div>
-                    <div> youtube embed link here optional pog</div>
+                    {keeb.soundTest && keeb.soundTest.length > 0 && (
+                        <>
+                            <div className="sound-test-title mt-10 flex justify-center text-5xl">
+                                SOUND TEST
+                            </div>
+
+                            <div>{keeb.soundTest}</div>
+                        </>
+                    )}
 
                     <div className="w-full">
                         {session && session.user.id ? (
