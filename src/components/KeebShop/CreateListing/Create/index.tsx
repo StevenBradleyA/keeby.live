@@ -575,10 +575,10 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                             } ${isSubmitting ? "text-red-500" : ""}`}
                         >
                             {isSubmitting ? (
-                                <div className="flex gap-1">
+                                <div className="flex items-center gap-1">
                                     Uploading
                                     <div className="w-6">
-                                        <LoadingSpinner />
+                                        <LoadingSpinner size="16px" />
                                     </div>
                                 </div>
                             ) : (

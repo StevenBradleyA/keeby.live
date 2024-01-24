@@ -4,10 +4,6 @@
 
 /* --------------     fonts     --------------  */
 
-/* .mrDafoe {
-    font-family: "dafoe";
-} */
-
 @font-face {
     font-family: "Titillium Web";
     src: url("/Fonts/TitilliumWeb-Black.ttf") format("truetype");
@@ -32,6 +28,14 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: "Yellowtail";
+    src: url("/Fonts/Yellowtail-Regular.ttf") format("truetype");
+    font-style: normal;
+}
+
+/* --------------                            --------------  */
+
 /* --------------     png color converter     --------------  */
 
 .png-green {
@@ -53,6 +57,8 @@
         brightness(110%) contrast(105%);
 }
 
+/* --------------                            --------------  */
+
 /* rgb(34 197 94) this is text-green-500 */
 
 /* $lightPurple: #ff0a9c;
@@ -60,6 +66,8 @@ $darkPurple: #ae1857;
 $darkGreen: #18da8d;
 $lightGreen: #40e331;
 $blue: #2033c1; */
+
+/* --------------                            --------------  */
 
 /* -----------test  */
 
@@ -240,6 +248,7 @@ li:not(:first-child) span {
         margin-top: 10px;
     }
 }
+/* --------------                            --------------  */
 
 /* cool pulse animation maybe for profile */
 
@@ -407,16 +416,84 @@ li:not(:first-child) span {
     }
 }
 
-/* --------------     Shop    --------------  */
-.listing {
-    display: flex;
-    flex-wrap: wrap;
+/* --------------         KEEB SHOP          --------------  */
+
+.image-container {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    background-color: #000000;
 }
 
-.expanded-listing {
-    grid-column: 1 / 2;
-    grid-row: 1 / 3;
+.image-container img {
+    transition: opacity 0.55s ease;
 }
+/* Styles for the top and bottom border segments */
+.image-container:before,
+.image-container:after,
+.image-container div:before,
+.image-container div:after {
+    content: "";
+    position: absolute;
+    background-color: rgb(34 197 94);
+    transition: transform 0.55s ease, width 0.55s ease, height 0.55s ease;
+    transition-delay: 0s, 0.15s, 0.15s;
+}
+
+.image-container:before,
+.image-container:after {
+    left: 25px;
+    right: 25px;
+    height: 2px;
+    width: 0;
+}
+/* Positions the top border segment */
+.image-container:before {
+    top: 25px;
+    transform: translateX(-100%);
+}
+/* Positions the bottom border segment */
+
+.image-container:after {
+    bottom: 25px;
+    transform: translateX(100%);
+}
+/* Styles for the left and right border segments */
+.image-container div:before,
+.image-container div:after {
+    top: 25px;
+    bottom: 25px;
+    width: 2px;
+    height: 0;
+}
+/* Positions the left border segment */
+.image-container div:before {
+    left: 25px;
+    transform: translateY(-100%);
+}
+/* Positions the right border segment */
+.image-container div:after {
+    right: 25px;
+    transform: translateY(100%);
+}
+/* Hover effect: Expands the horizontal border segments */
+.image-container:hover:before,
+.image-container:hover:after {
+    width: calc(100% - 50px);
+    transform: translateX(0);
+}
+/* Hover effect: Expands the vertical border segments */
+.image-container:hover div:before,
+.image-container:hover div:after {
+    height: calc(100% - 50px);
+    transform: translateY(0);
+}
+/* Hover effect: Reduces the opacity of the image */
+.image-container:hover img {
+    opacity: 0.55;
+}
+
+/* --------------                            --------------  */
 
 /* ------    shop listing title   ------  */
 
@@ -814,3 +891,68 @@ input[type="checkbox"]:hover {
 }
 
 /* --------------     Loading    --------------  */
+
+/* --------------     Cool Effects not in use currently    --------------  */
+
+/* really cool border draw effect */
+/* 
+.image-hover-effect {
+    position: relative;
+    width: 384px; 
+    height: 288px; 
+    overflow: hidden;
+  }
+  
+  .image-hover-effect:before,
+  .image-hover-effect:after,
+  .image-hover-effect div:before,
+  .image-hover-effect div:after {
+    content: '';
+    position: absolute;
+    background-color: #fff;
+    transition: transform 0.5s ease;
+  }
+  
+
+  .image-hover-effect:before,
+  .image-hover-effect:after {
+    height: 2px;
+    width: 100%;
+    top: 0;
+    left: 0;
+    transform: scaleX(0);
+  }
+  
+  .image-hover-effect:after {
+    top: auto;
+    bottom: 0;
+  }
+  
+
+  .image-hover-effect div:before,
+  .image-hover-effect div:after {
+    width: 2px;
+    height: 100%;
+    top: 0;
+    left: 0;
+    transform: scaleY(0);
+  }
+  
+  .image-hover-effect div:after {
+    left: auto;
+    right: 0;
+  }
+  
+  .image-hover-effect:hover:before,
+  .image-hover-effect:hover:after {
+    transform: scaleX(1);
+  }
+  
+  .image-hover-effect:hover div:before,
+  .image-hover-effect:hover div:after {
+    transform: scaleY(1);
+  } 
+  */
+/* endddd of cool border draw */
+
+/* cool center box effect maybe use */

@@ -17,11 +17,11 @@ export default function EachListingCardPreview({ keeb }: EachListingCardProps) {
         });
 
     if (isLoading) {
-        return <LoadingSpinner />;
+        return <LoadingSpinner size="40px" />;
     }
 
     return (
-        <div className="flex w-[30%] flex-col">
+        <div className="flex w-96 flex-col">
             <Link
                 href={{
                     pathname: "/keebshop/[listingId]",
@@ -29,18 +29,19 @@ export default function EachListingCardPreview({ keeb }: EachListingCardProps) {
                 }}
             >
                 {previewImage && previewImage[0] && previewImage[0].link && (
-                    <div className="cursor-pointer">
+                    <div className=" image-container h-72 w-96  cursor-pointer rounded-2xl ">
                         <Image
                             alt="preview"
                             src={previewImage[0].link}
                             width={600}
                             height={600}
-                            className={`h-[250px] w-full rounded-3xl object-cover`}
+                            className={`h-full w-full object-cover`}
                         />
+                        <div></div>
                     </div>
                 )}
-                <div>{keeb.title}</div>
-                <div className="text-green-500">{`$${keeb.price}`}</div>
+                <div className="text-darkGray">{keeb.title}</div>
+                <div className="text-green-500">{`$${keeb.price / 100}`}</div>
             </Link>
         </div>
     );

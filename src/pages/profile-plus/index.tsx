@@ -390,10 +390,10 @@ export default function ProfilePlus() {
                             className={`rounded-xl border-2 border-pink-500 bg-black px-6 py-2 text-pink-500 hover:border-sky-400 hover:bg-sky-400 hover:text-black`}
                         >
                             {isSubmitting ? (
-                                <div className="flex gap-1">
+                                <div className="flex gap-1 items-center">
                                     Saving Data
                                     <div className="w-6">
-                                        <LoadingSpinner />
+                                        <LoadingSpinner size="16px"/>
                                     </div>
                                 </div>
                             ) : (

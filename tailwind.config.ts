@@ -24,8 +24,7 @@ export default {
                 retro: ["VT323", "monospace"],
                 montserrat: ["Montserrat", "sans-serif"],
                 poppins: ["Poppins", "sans-serif"],
-
-
+                yellowTail: ["Yellowtail", "sans-serif"],
             },
             textColor: {
                 blackAlternative: "#181818",

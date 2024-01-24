@@ -41,7 +41,7 @@ export default function ListingPage() {
                         <h1 className=" listing-page-title-big  px-5 font-titillium text-7xl ">
                             {bigTitle}
                         </h1>
-                        <h1 className="listing-page-title-small relative top-10 font-mrDafoe text-6xl">
+                        <h1 className="listing-page-title-small relative top-10 right-6 font-yellowTail text-6xl">
                             {smallTitle}
                         </h1>
                     </div>

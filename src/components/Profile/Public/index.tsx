@@ -1,7 +1,7 @@
 import Custom404 from "~/pages/404";
 import { api } from "~/utils/api";
 import Image from "next/image";
-import profileBackground from "@public/Profile/public-profile-background.png";
+import profileBackground from "@public/Profile/profile-plus.png";
 import synthGirl from "@public/Profile/synth-girl.png";
 import stockProfile from "@public/Profile/profile-default.png";
 
@@ -15,11 +15,12 @@ export default function PublicProfileUserInfo({
     const { data: profile } = api.user.getUserPublic.useQuery(username);
     return (
         <div className="flex w-full justify-center ">
-            <Image
-                src={profileBackground}
-                alt="profile"
-                className="public-profile-background fixed -top-60 left-0 "
-            />
+            <div className="matrix-full-screen fixed left-0 top-0 opacity-40  ">
+                <video className="-z-10 w-full" autoPlay loop muted>
+                    <source src="/Videos/space-purple.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                </video>
+            </div>
 
             <div className="public-profile-container mt-10 flex w-2/3 rounded-2xl border-4 border-pink-500">
                 <Image
@@ -27,7 +28,7 @@ export default function PublicProfileUserInfo({
                     alt="synth girl "
                     className="public-profile-container w-[40%] rounded-xl border-4 border-white"
                 />
-                {profile ? (
+                {profile && (
                     <div className="flex w-full flex-col gap-2 rounded-2xl bg-black bg-opacity-75">
                         <div className="rounded-xl border-4 border-purple-600  p-5">
                             <div className="flex justify-between ">
@@ -61,7 +62,7 @@ export default function PublicProfileUserInfo({
                             <div>if elligibal add leave review button</div>
                         </div>
                         <div className="rounded-xl border-4 border-purple-600  p-5">
-                            Keyboards - rank -- each keeb  with desc and top wpm
+                            Keyboards - rank -- each keeb with desc and top wpm
                         </div>
 
                         {profile.reviewsReceived.length > 0 &&
@@ -75,8 +76,6 @@ export default function PublicProfileUserInfo({
                                 </div>
                             ))}
                     </div>
-                ) : (
-                    <Custom404 />
                 )}
             </div>
         </div>

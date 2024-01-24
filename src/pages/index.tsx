@@ -34,8 +34,8 @@ export default function Home() {
 
     if (isLoading) {
         return (
-            <div className="mt-32">
-                <LoadingSpinner />
+            <div className="mt-44">
+                <LoadingSpinner size="40px"/>
             </div>
         );
     }
