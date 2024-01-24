@@ -129,7 +129,7 @@ export default function NavBar() {
                     alt="home"
                     width={homeButton.width}
                     height={homeButton.height}
-                    className="ml-10 w-72"
+                    className="ml-14 w-72"
                 />
             </Link>
             <div className="flex items-center gap-32">

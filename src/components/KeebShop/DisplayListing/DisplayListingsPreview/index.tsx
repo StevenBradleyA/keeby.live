@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import LoadingSpinner from "~/components/Loading";
 import { useState } from "react";
-import { motion } from "framer-motion";
 
 interface EachListingCardProps {
     keeb: Listing;
@@ -52,7 +51,7 @@ export default function EachListingCardPreview({ keeb }: EachListingCardProps) {
                                 isPhotoHover
                                     ? "show-listing-hover-content"
                                     : "hide-listing-hover-content"
-                            }   absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2`}
+                            }   absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform`}
                         >
                             <div className="text-green-500  ">{`Check it out`}</div>
                         </div>
