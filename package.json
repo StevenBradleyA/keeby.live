@@ -32,6 +32,7 @@
     "react-dom": "18.2.0",
     "react-hot-toast": "^2.4.1",
     "react-spinners": "^0.13.8",
+    "react-youtube": "^10.1.0",
     "superjson": "1.12.2",
     "three": "^0.158.0",
     "trpc": "^0.11.3",

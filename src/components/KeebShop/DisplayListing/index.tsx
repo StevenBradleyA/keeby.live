@@ -8,6 +8,8 @@ import DisplayComments from "~/components/Comments/Display";
 import DisplayViewerCommments from "~/components/Comments/Display/displayViewerComments";
 import LoadingSpinner from "~/components/Loading";
 import SellerListingCard from "./SellerCard";
+import ListingSoundTest from "./SoundTest";
+import MainFooter from "~/components/Footer";
 
 interface DisplayListingPageProps {
     listing: Listing;
@@ -64,7 +66,7 @@ export default function DisplayListingPage({
 
     return (
         <div className="flex flex-col text-white">
-            <div className="flex h-[80vh] w-full  ">
+            <div className="flex h-[80vh] w-full ">
                 <div className="flex w-1/4 flex-col items-center px-5 ">
                     <div className=" relative h-full w-full overflow-hidden rounded-xl bg-keebyGray p-10 ">
                         <div className=" h-full w-full overflow-hidden ">
@@ -161,7 +163,25 @@ export default function DisplayListingPage({
                     </div>
                 </div>
             </div>
-            <div className="mt-96 text-9xl text-green-500">hello</div>
+
+            {listing.soundTest && (
+                <div className="mt-10 flex w-1/2 justify-center px-5 ">
+                    <ListingSoundTest soundTest={listing.soundTest} />
+                </div>
+            )}
+
+            <div className="mt-10 w-full px-5">
+                {session && session.user.id ? (
+                    <DisplayComments
+                        typeId={listing.id}
+                        userId={session.user.id}
+                    />
+                ) : (
+                    <DisplayViewerCommments typeId={listing.id} />
+                )}
+            </div>
+            <MainFooter />
+
             <div className="mb-20 mt-96 text-9xl text-green-500">hello</div>
         </div>
     );

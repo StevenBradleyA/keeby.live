@@ -24,6 +24,10 @@ export const listingRouter = createTRPCRouter({
     getAll: publicProcedure.query(({ ctx }) => {
         return ctx.prisma.listing.findMany();
     }),
+
+
+
+    
     create: protectedProcedure
         .input(
             z.object({
