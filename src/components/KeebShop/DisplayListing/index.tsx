@@ -2,10 +2,12 @@ import type { Listing } from "@prisma/client";
 import type { Images } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
+import { api } from "~/utils/api";
 import Image from "next/image";
 import DisplayComments from "~/components/Comments/Display";
 import DisplayViewerCommments from "~/components/Comments/Display/displayViewerComments";
-import SellerPublicProfileCard from "~/components/Profile/ListingPublicProfile";
+import LoadingSpinner from "~/components/Loading";
+import SellerListingCard from "./SellerCard";
 
 interface DisplayListingPageProps {
     listing: Listing;
@@ -18,6 +20,9 @@ export default function DisplayListingPage({
     commentCount,
     allListingImages,
 }: DisplayListingPageProps) {
+    const { data: sellerInfo, isLoading: isLoading } =
+        api.user.getSeller.useQuery(listing.sellerId);
+
     const { data: session } = useSession();
 
     const [displayImage, setDisplayImage] = useState(allListingImages[0]);
@@ -26,7 +31,7 @@ export default function DisplayListingPage({
     const smallTitle = currentListingNameArr.pop();
     const bigTitle = currentListingNameArr.join(" ");
 
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const [currentIndex, setCurrentIndex] = useState<number>(0);
 
     const maxIndex = Math.max(0, allListingImages.length - 4);
 
@@ -50,18 +55,24 @@ export default function DisplayListingPage({
     // TODO ability to favorite / unfavorite the listing
     // todo Yellowtail font instead of mr dafoe?
 
-    //   if more than 5 images lets make an expand or something
+    if (isLoading)
+        return (
+            <div className="mt-44">
+                <LoadingSpinner size="40px" />
+            </div>
+        );
+
     return (
-        <div className="flex flex-col ">
-            <div className="flex h-[80vh] w-full  bg-red-200">
+        <div className="flex flex-col text-white">
+            <div className="flex h-[80vh] w-full  ">
                 <div className="flex w-1/4 flex-col items-center px-5 ">
-                    <div className=" relative h-full w-full overflow-hidden rounded-xl bg-white p-10 ">
+                    <div className=" relative h-full w-full overflow-hidden rounded-xl bg-keebyGray p-10 ">
                         <div className=" h-full w-full overflow-hidden ">
                             <button
                                 className={`absolute left-1/2 top-2 -translate-x-1/2 transform ${
                                     currentIndex === 0
                                         ? "text-darkGray"
-                                        : "text-black"
+                                        : "text-white"
                                 }`}
                                 onClick={prevImage}
                             >
@@ -71,7 +82,7 @@ export default function DisplayListingPage({
                                 className={`absolute bottom-2 left-1/2 -translate-x-1/2 transform ${
                                     currentIndex === maxIndex
                                         ? "text-darkGray"
-                                        : "text-black"
+                                        : "text-white"
                                 }`}
                                 onClick={nextImage}
                             >
@@ -111,7 +122,7 @@ export default function DisplayListingPage({
                     </div>
                 </div>
                 <div className="flex w-1/2 flex-col items-center gap-10 px-5">
-                    <div className="flex w-full justify-center rounded-xl bg-white ">
+                    <div className="flex w-full justify-center rounded-xl bg-keebyGray ">
                         <h1 className=" listing-page-title-big  px-5 font-titillium text-5xl ">
                             {bigTitle}
                         </h1>
@@ -130,19 +141,21 @@ export default function DisplayListingPage({
                             />
                         )}
                     </div>
-                    <div className="h-full w-full rounded-xl bg-white ">
-                        <SellerPublicProfileCard userId={listing.sellerId} />
+                    <div className="h-full w-full overflow-hidden rounded-xl bg-keebyGray">
+                        {sellerInfo && (
+                            <SellerListingCard sellerInfo={sellerInfo} />
+                        )}
                     </div>
                 </div>
                 <div className="flex w-1/4 flex-col items-center gap-10 px-5">
-                    <div className=" h-1/3 w-full rounded-xl bg-white  p-10 ">
+                    <div className=" h-1/3 w-full rounded-xl bg-keebyGray  p-10 ">
                         <h1>keeb Stats</h1>
                         <h3>{listing.title}</h3>
                         <h3>{listing.keycaps}</h3>
                         <h3>{listing.switches}</h3>
                         <h3>{listing.switchType}</h3>
                     </div>
-                    <div className="h-2/3 w-full rounded-xl bg-white p-10 ">
+                    <div className="h-2/3 w-full rounded-xl bg-keebyGray p-10 ">
                         <h1 className="text-3xl">Description</h1>
                         <p className=" mt-10 break-words">{listing.text}</p>
                     </div>

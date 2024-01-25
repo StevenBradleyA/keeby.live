@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import DisplayListingPage from "~/components/KeebShop/DisplayListing/DisplayListing";
+import DisplayListingPage from "~/components/KeebShop/DisplayListing";
 import LoadingSpinner from "~/components/Loading";
 import { api } from "~/utils/api";
 
@@ -21,6 +21,7 @@ export default function ListingPage() {
         api.image.getCombinedListingImages.useQuery({
             resourceId: listingId,
         });
+
 
     if (isLoading || isLoadingCommentCount || isLoadingImages)
         return (

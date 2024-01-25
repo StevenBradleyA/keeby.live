@@ -247,7 +247,7 @@ export default function NavBar() {
                                             src={defaultProfile}
                                             width={400}
                                             height={400}
-                                            className="h-28 w-28 object-cover"
+                                            className="h-28 w-28 object-cover rounded-md"
                                         />
                                     </motion.button>
                                 ) : (
@@ -273,7 +273,7 @@ export default function NavBar() {
                                                 }
                                                 width={400}
                                                 height={400}
-                                                className="h-28 w-28 object-cover"
+                                                className="h-28 w-28 object-cover rounded-md"
                                             />
                                         </motion.button>
                                     </Link>

@@ -41,8 +41,8 @@ export default function Home() {
     }
 
     return (
-        <div className="mt-10 flex w-full gap-5">
-            <div className="ml-16 flex w-1/3 flex-col ">
+        <div className="mt-10 flex w-full gap-10">
+            <div className="ml-16 flex w-1/4 flex-col ">
                 <div className="mb-5 flex gap-5 text-white/40">
                     <button
                         className={`${
@@ -74,9 +74,13 @@ export default function Home() {
                         <button>other</button>
                     </div>
                 )}
+                <div className="w-full bg-keebyGray h-96 rounded-xl"></div>
+
+
+
             </div>
 
-            <div className="mr-16 flex w-full flex-col">
+            <div className="mr-16 flex w-3/4 flex-col">
                 <div className=" flex w-full justify-between">
                     <div className="mb-5 flex gap-5 text-white/40">
                         <button
@@ -116,7 +120,7 @@ export default function Home() {
 
                 <div>
                     {keebData && keebData.length > 0 ? (
-                        <div className={`flex w-full flex-wrap gap-5 pr-20`}>
+                        <div className={`flex w-full flex-wrap gap-5  `}>
                             {keebData.map((keeb, i) => (
                                 <EachListingCardPreview
                                     key={i}
