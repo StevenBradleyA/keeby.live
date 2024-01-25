@@ -2,6 +2,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import DisplayComments from "~/components/Comments/Display";
 import DisplayViewerCommments from "~/components/Comments/Display/displayViewerComments";
+import DisplayListingPage from "~/components/KeebShop/DisplayListing/DisplayListing";
 import DisplayListingPhotos from "~/components/KeebShop/DisplayListing/DisplayListingPhotos";
 import LoadingSpinner from "~/components/Loading";
 import SellerPublicProfileCard from "~/components/Profile/ListingPublicProfile";
@@ -9,10 +10,9 @@ import { api } from "~/utils/api";
 
 export default function ListingPage() {
     const router = useRouter();
-    const { data: session } = useSession();
     const listingId = router.query.listingId as string;
 
-    const { data: keeb, isLoading } = api.listing.getOne.useQuery({
+    const { data: listing, isLoading } = api.listing.getOne.useQuery({
         id: listingId,
     });
 
@@ -22,16 +22,17 @@ export default function ListingPage() {
             typeId: listingId,
         });
 
+    const { data: allListingImages, isLoading: isLoadingImages } =
+        api.image.getCombinedListingImages.useQuery({
+            resourceId: listingId,
+        });
+
     // TODO add seller rating info
     // TODO add youtube api video integration optional()
     // TODO ability to favorite / unfavorite the listing
     // todo Yellowtail font instead of mr dafoe?
 
-    const currentListingNameArr = keeb?.title.split(" ");
-    const smallTitle = currentListingNameArr?.pop();
-    const bigTitle = currentListingNameArr?.join(" ");
-
-    if (isLoading)
+    if (isLoading || isLoadingCommentCount || isLoadingImages)
         return (
             <div className="mt-44">
                 <LoadingSpinner size="40px" />
@@ -40,51 +41,20 @@ export default function ListingPage() {
 
     // TODO out of time tonight, steven you need to create a new compontn that takes in keeb
     // todo it can then fetch the photos and do all that stuff the prob is you are calling it twice but they are separate instances so it wont work if that makes sense
-
+    // basically new component that takes in keeb and we shall do everything in that going to need to do a lot of nesting to get what we want
     return (
         <div className="w-full  px-16 text-black">
-            {keeb && (
-                <div className="flex w-full">
-                    <div className="flex w-1/4 flex-col items-center px-5 ">
-                        <div className="w-full rounded-xl bg-white p-10 ">
-                            <DisplayListingPhotos
-                                keeb={keeb}
-                                isPreview={false}
-                            />
-                        </div>
-                    </div>
-                    <div className="flex w-1/2 flex-col items-center gap-10 px-5">
-                        <div className="flex w-full justify-center rounded-xl bg-white ">
-                            <h1 className=" listing-page-title-big  px-5 font-titillium text-5xl ">
-                                {bigTitle}
-                            </h1>
-                            <h1 className="listing-page-title-small relative right-6 top-5 font-yellowTail text-4xl">
-                                {smallTitle}
-                            </h1>
-                        </div>
-                        <div className="flex w-full justify-center rounded-xl ">
-                            <DisplayListingPhotos
-                                keeb={keeb}
-                                isPreview={true}
-                            />
-                        </div>
-                    </div>
-                    <div className="flex w-1/4 flex-col items-center gap-10 px-5">
-                        <div className="z-10 w-full rounded-xl bg-white  p-10 ">
-                            <h1>keeb Stats</h1>
-                            <h3>{keeb.title}</h3>
-                            <h3>{keeb.keycaps}</h3>
-                            <h3>{keeb.switches}</h3>
-                            <h3>{keeb.switchType}</h3>
-                        </div>
-                        <div className="w-full rounded-xl bg-white p-10 ">
-                            <h1>Description</h1>
-                            <p className=" break-words">{keeb.text}</p>
-                        </div>
-                    </div>
-                </div>
-            )}
+            {listing &&
+                typeof commentCount === "number" &&
+                allListingImages && (
+                    <DisplayListingPage
+                        listing={listing}
+                        commentCount={commentCount}
+                        allListingImages={allListingImages}
+                    />
+                )}
         </div>
+
         // <div className=" mx-16 w-2/3">
         //     {keeb ? (
         //         <div>
