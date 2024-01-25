@@ -1,11 +1,6 @@
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import DisplayComments from "~/components/Comments/Display";
-import DisplayViewerCommments from "~/components/Comments/Display/displayViewerComments";
 import DisplayListingPage from "~/components/KeebShop/DisplayListing/DisplayListing";
-import DisplayListingPhotos from "~/components/KeebShop/DisplayListing/DisplayListingPhotos";
 import LoadingSpinner from "~/components/Loading";
-import SellerPublicProfileCard from "~/components/Profile/ListingPublicProfile";
 import { api } from "~/utils/api";
 
 export default function ListingPage() {
@@ -27,11 +22,6 @@ export default function ListingPage() {
             resourceId: listingId,
         });
 
-    // TODO add seller rating info
-    // TODO add youtube api video integration optional()
-    // TODO ability to favorite / unfavorite the listing
-    // todo Yellowtail font instead of mr dafoe?
-
     if (isLoading || isLoadingCommentCount || isLoadingImages)
         return (
             <div className="mt-44">
@@ -39,9 +29,6 @@ export default function ListingPage() {
             </div>
         );
 
-    // TODO out of time tonight, steven you need to create a new compontn that takes in keeb
-    // todo it can then fetch the photos and do all that stuff the prob is you are calling it twice but they are separate instances so it wont work if that makes sense
-    // basically new component that takes in keeb and we shall do everything in that going to need to do a lot of nesting to get what we want
     return (
         <div className="w-full  px-16 text-black">
             {listing &&
