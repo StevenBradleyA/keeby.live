@@ -51,7 +51,6 @@ export default function DisplayListingPage({
     };
 
     // TODO ability to favorite / unfavorite the listing
-    // TODO not sure if i want youtube video centered 1/2 or want like a keebo gif that says sound test next to it or somethin
     // todo I want to have comments next to other listings and banner ads like the nicely styled ones on youtube
     // may want to add a placeholder in the mean time
 

@@ -63,10 +63,8 @@ export default function KeebShare() {
 
                 <div>
                     <div>hey</div>
-                    <div className="w-10">
-                    <ChevronRound/>
+                
 
-                    </div>
                 </div>
             </div>
         </div>

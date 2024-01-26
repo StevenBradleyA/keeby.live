@@ -20,6 +20,8 @@ export default function Home() {
 
     const { data: keebData, isLoading } = api.listing.getAll.useQuery();
 
+
+console.log('HALLLLLOOO', keebData)
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     const openModal = () => {

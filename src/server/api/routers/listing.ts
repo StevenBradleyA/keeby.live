@@ -5,6 +5,19 @@ import {
     protectedProcedure,
 } from "~/server/api/trpc";
 import { removeFileFromS3 } from "../utils";
+import type { Prisma } from "@prisma/client";
+
+type CreateData = {
+    title: string;
+    text: string;
+    keycaps: string;
+    switches: string;
+    switchType: string;
+    price: number;
+    sellerId: string;
+    sold: boolean;
+    soundTest?: string;
+};
 
 export const listingRouter = createTRPCRouter({
     getOne: publicProcedure
@@ -25,9 +38,115 @@ export const listingRouter = createTRPCRouter({
         return ctx.prisma.listing.findMany();
     }),
 
+    getAllWithFilters: publicProcedure
+        .input(
+            z.object({
+                searchQuery: z.string().optional(),
+                switchType: z.string().optional(),
+            })
+        )
+        .query(({ ctx, input }) => {
+            const { searchQuery, switchType } = input;
+            const queryOptions: Prisma.ListingFindManyArgs = {
+                select: {
+                    id: true,
+                    title: true,
+                    price: true,
+                    switchType: true,
+                },
+            };
 
+            const filters: Prisma.ListingWhereInput[] = [];
+            if (searchQuery) {
+                filters.push({
+                    title: {
+                        contains: searchQuery,
+                    },
+                });
+            }
+            if (switchType) {
+                filters.push({
+                    switchType: {
+                        equals: switchType,
+                    },
+                });
+            }
 
-    
+            if (filters.length > 0) {
+                queryOptions.where = {
+                    AND: filters,
+                };
+            }
+
+            return ctx.prisma.listing.findMany(queryOptions);
+        }),
+
+    getAllSortedByPopularityWithFilters: publicProcedure
+        .input(
+            z.object({
+                searchQuery: z.string().optional(),
+                switchType: z.string().optional(),
+            })
+        )
+        .query(async ({ ctx, input }) => {
+            const { searchQuery, switchType } = input;
+
+            // Step 1: Aggregate comment counts
+            const commentCounts = await ctx.prisma.comment.groupBy({
+                by: ["typeId"],
+                where: { type: "LISTING" },
+                _count: true,
+            });
+
+            // Step 2: Apply filters and retrieve listings
+            const queryOptions: Prisma.ListingFindManyArgs = {
+                select: {
+                    id: true,
+                    title: true,
+                    price: true,
+                    switchType: true,
+                },
+            };
+
+            const filters: Prisma.ListingWhereInput[] = [];
+            if (searchQuery) {
+                filters.push({
+                    title: {
+                        contains: searchQuery,
+                        // mode: "insensitive",
+                    },
+                });
+            }
+            if (switchType) {
+                filters.push({
+                    switchType: {
+                        equals: switchType,
+                    },
+                });
+            }
+            if (filters.length > 0) {
+                queryOptions.where = {
+                    AND: filters,
+                };
+            }
+            const listings = await ctx.prisma.listing.findMany(queryOptions);
+
+            // Step 3: Merge listings with comment counts
+            const listingsWithCommentCounts = listings.map((listing) => {
+                const commentCount =
+                    commentCounts.find((c) => c.typeId === listing.id)
+                        ?._count ?? 0;
+                return { ...listing, commentCount };
+            });
+
+            // Step 4: Sort listings by comment counts
+            listingsWithCommentCounts.sort(
+                (a, b) => b.commentCount - a.commentCount
+            );
+
+            return listingsWithCommentCounts;
+        }),
+
     create: protectedProcedure
         .input(
             z.object({
@@ -64,7 +183,7 @@ export const listingRouter = createTRPCRouter({
                 ctx.session.user.id === sellerId &&
                 ctx.session.user.isVerified
             ) {
-                const createData = {
+                const createData: CreateData = {
                     title,
                     text,
                     keycaps,
