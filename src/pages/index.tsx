@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { api } from "~/utils/api";
-import { motion } from "framer-motion";
 import ModalDialog from "~/components/Modal";
 import CreateListingModal from "~/components/KeebShop/CreateListing/CreateModal";
-import EachListingCardPreview from "~/components/KeebShop/DisplayListing/DisplayListingsPreview/eachListingCardPreview";
 import plus from "@public/Vectors/plus-plus.png";
 import Image from "next/image";
 import LoadingSpinner from "~/components/Loading";
+import DisplayListingPreviews from "~/components/KeebShop/DisplayListing/DisplayListingsPreview";
+import DisplayPopularListingPreviews from "~/components/KeebShop/DisplayListing/DisplayListingsPreview/displayPopularListingPreviews";
 
 export default function Home() {
     // big cards like bring a trailer  or like this
@@ -17,9 +17,6 @@ export default function Home() {
     // filters and search need to be sticky
     // maybe break up in groups of six?
     // todo implement pagination where listings only load when you scroll to the bottom
-
-    const { data: keebData, isLoading } =
-        api.listing.getAllWithFilters.useQuery({});
 
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -33,7 +30,7 @@ export default function Home() {
     const [filter, setFilter] = useState<string>("hot");
     const [searchFilter, setSearchFilter] = useState<string>("search");
 
-    const [isPopularFilter, setIsPopularFilter] = useState<boolean>(false);
+    const [isNewFilter, setIsNewFilter] = useState<boolean>(false);
     const [isSwitchFilter, setIsSwitchFilter] = useState<boolean>(false);
 
     const [switchType, setSwitchType] = useState<string>("");
@@ -67,17 +64,8 @@ export default function Home() {
             }
         }
     };
-
-    if (isLoading) {
-        return (
-            <div className="mt-44">
-                <LoadingSpinner size="40px" />
-            </div>
-        );
-    }
+    // todo if site gets very popular in future we will have to implement pagination
     // todo search and switch to be sticky
-
-    console.log("uhhhh", switchType);
 
     return (
         <div className="mt-10 flex w-full gap-10 px-16">
@@ -170,21 +158,21 @@ export default function Home() {
                     <div className="mb-5 flex gap-5 text-white/40">
                         <button
                             className={`${
-                                filter === "hot"
+                                !isNewFilter
                                     ? "border-b border-white text-white"
                                     : ""
                             }`}
-                            onClick={() => setFilter("hot")}
+                            onClick={() => setIsNewFilter(false)}
                         >
                             Hot
                         </button>
                         <button
                             className={`${
-                                filter === "new"
+                                isNewFilter
                                     ? "border-b border-white text-white"
                                     : ""
                             }`}
-                            onClick={() => setFilter("new")}
+                            onClick={() => setIsNewFilter(true)}
                         >
                             New
                         </button>
@@ -204,18 +192,16 @@ export default function Home() {
                 </ModalDialog>
 
                 <div>
-                    {keebData && keebData.length > 0 ? (
-                        <div className={`flex w-full flex-wrap gap-5  `}>
-                            {keebData.map((keeb, i) => (
-                                <EachListingCardPreview
-                                    key={i}
-                                    keeb={keeb}
-                                    index={i}
-                                />
-                            ))}
-                        </div>
+                    {isNewFilter ? (
+                        <DisplayListingPreviews
+                            searchInput={searchInput}
+                            switchType={switchType}
+                        />
                     ) : (
-                        <div className="mt-10 text-darkGray">{`Woah, all sold out. There are currently no listings for sale `}</div>
+                        <DisplayPopularListingPreviews
+                            searchInput={searchInput}
+                            switchType={switchType}
+                        />
                     )}
                 </div>
             </div>

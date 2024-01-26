@@ -4,7 +4,7 @@ import EachListingCardPreview from "./eachListingCardPreview";
 import Image from "next/image";
 import keebo from "@public/Profile/keebo.png";
 
-interface DisplayListingPreviewsProps {
+interface DisplayPopularListingPreviewsProps {
     searchInput: string;
     switchType: string;
 }
@@ -14,10 +14,10 @@ interface Filters {
     switchType?: string;
 }
 
-export default function DisplayListingPreviews({
+export default function DisplayPopularListingPreviews({
     searchInput,
     switchType,
-}: DisplayListingPreviewsProps) {
+}: DisplayPopularListingPreviewsProps) {
     const queryInputs: Filters = {};
 
     if (searchInput.length > 0) {
@@ -28,7 +28,7 @@ export default function DisplayListingPreviews({
     }
 
     const { data: keebData, isLoading } =
-        api.listing.getAllWithFilters.useQuery(queryInputs);
+        api.listing.getAllSortedByPopularityWithFilters.useQuery(queryInputs);
 
     if (isLoading) {
         return (
