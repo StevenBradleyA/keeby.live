@@ -10,6 +10,7 @@ import LoadingSpinner from "~/components/Loading";
 import SellerListingCard from "./SellerCard";
 import ListingSoundTest from "./SoundTest";
 import MainFooter from "~/components/Footer";
+import ChevronRound from "~/components/Svgs/chevron";
 
 interface DisplayListingPageProps {
     listing: Listing;
@@ -68,24 +69,24 @@ export default function DisplayListingPage({
                     <div className=" relative h-full w-full overflow-hidden rounded-xl bg-keebyGray p-10 ">
                         <div className=" h-full w-full overflow-hidden ">
                             <button
-                                className={`absolute left-1/2 top-2 -translate-x-1/2 transform ${
+                                className={`absolute left-1/2 top-2 w-7 -translate-x-1/2 transform ${
                                     currentIndex === 0
                                         ? "text-darkGray"
                                         : "text-white"
                                 }`}
                                 onClick={prevImage}
                             >
-                                Prev
+                                <ChevronRound />
                             </button>
                             <button
-                                className={`absolute bottom-2 left-1/2 -translate-x-1/2 transform ${
+                                className={`absolute bottom-2 left-1/2 w-7 -translate-x-1/2 rotate-180 transform ${
                                     currentIndex === maxIndex
                                         ? "text-darkGray"
                                         : "text-white"
                                 }`}
                                 onClick={nextImage}
                             >
-                                Next
+                                <ChevronRound />
                             </button>
 
                             <div
