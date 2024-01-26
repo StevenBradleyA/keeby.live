@@ -3,7 +3,7 @@ import { api } from "~/utils/api";
 import { motion } from "framer-motion";
 import ModalDialog from "~/components/Modal";
 import CreateListingModal from "~/components/KeebShop/CreateListing/CreateModal";
-import EachListingCardPreview from "~/components/KeebShop/DisplayListing/DisplayListingsPreview";
+import EachListingCardPreview from "~/components/KeebShop/DisplayListing/DisplayListingsPreview/eachListingCardPreview";
 import plus from "@public/Vectors/plus-plus.png";
 import Image from "next/image";
 import LoadingSpinner from "~/components/Loading";
@@ -18,10 +18,9 @@ export default function Home() {
     // maybe break up in groups of six?
     // todo implement pagination where listings only load when you scroll to the bottom
 
-    const { data: keebData, isLoading } = api.listing.getAll.useQuery();
+    const { data: keebData, isLoading } =
+        api.listing.getAllWithFilters.useQuery({});
 
-
-console.log('HALLLLLOOO', keebData)
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     const openModal = () => {
@@ -34,55 +33,139 @@ console.log('HALLLLLOOO', keebData)
     const [filter, setFilter] = useState<string>("hot");
     const [searchFilter, setSearchFilter] = useState<string>("search");
 
+    const [isPopularFilter, setIsPopularFilter] = useState<boolean>(false);
+    const [isSwitchFilter, setIsSwitchFilter] = useState<boolean>(false);
+
+    const [switchType, setSwitchType] = useState<string>("");
+    const [searchInput, setSearchInput] = useState<string>("");
+
+    const handleSearchClick = () => {
+        setIsSwitchFilter(false);
+        setSwitchType("");
+    };
+
+    const handleSwitchClick = () => {
+        setIsSwitchFilter(true);
+        setSearchInput("");
+    };
+
+    const handleSwitchTypeSelect = (type: string) => {
+        if (switchType === type) {
+            setSwitchType("");
+        } else {
+            if (type === "tactile") {
+                setSwitchType("tactile");
+            }
+            if (type === "linear") {
+                setSwitchType("linear");
+            }
+            if (type === "clicky") {
+                setSwitchType("clicky");
+            }
+            if (type === "other") {
+                setSwitchType("other");
+            }
+        }
+    };
+
     if (isLoading) {
         return (
             <div className="mt-44">
-                <LoadingSpinner size="40px"/>
+                <LoadingSpinner size="40px" />
             </div>
         );
     }
+    // todo search and switch to be sticky
+
+    console.log("uhhhh", switchType);
 
     return (
-        <div className="mt-10 flex w-full gap-10">
-            <div className="ml-16 flex w-1/4 flex-col ">
-                <div className="mb-5 flex gap-5 text-white/40">
+        <div className="mt-10 flex w-full gap-10 px-16">
+            <div className=" flex w-1/4 flex-col ">
+                <div className="mb-5 flex gap-5 text-darkGray">
                     <button
+                        onClick={handleSearchClick}
                         className={`${
-                            searchFilter === "search"
+                            !isSwitchFilter
                                 ? "border-b border-white text-white"
                                 : ""
                         }`}
-                        onClick={() => setSearchFilter("search")}
                     >
                         Search
                     </button>
                     <button
+                        onClick={handleSwitchClick}
                         className={`${
-                            searchFilter === "switch"
+                            isSwitchFilter
                                 ? "border-b border-white text-white"
                                 : ""
                         }`}
-                        onClick={() => setSearchFilter("switch")}
                     >
                         Switch
                     </button>
                 </div>
 
-                {searchFilter === "switch" && (
-                    <div className="flex flex-col items-start gap-5">
-                        <button>tactile</button>
-                        <button>linear</button>
-                        <button>clicky</button>
-                        <button>other</button>
-                    </div>
-                )}
-                <div className="w-full bg-keebyGray h-96 rounded-xl"></div>
-
-
-
+                <div className=" h-[70vh] w-full rounded-xl bg-keebyGray p-5 text-darkGray">
+                    {isSwitchFilter ? (
+                        <div className="flex flex-col items-start gap-5">
+                            <button
+                                onClick={() =>
+                                    handleSwitchTypeSelect("tactile")
+                                }
+                                className={`${
+                                    switchType === "tactile"
+                                        ? "border-b border-white text-white"
+                                        : ""
+                                }`}
+                            >
+                                tactile
+                            </button>
+                            <button
+                                onClick={() => handleSwitchTypeSelect("linear")}
+                                className={`${
+                                    switchType === "linear"
+                                        ? "border-b border-white text-white"
+                                        : ""
+                                }`}
+                            >
+                                linear
+                            </button>
+                            <button
+                                onClick={() => handleSwitchTypeSelect("clicky")}
+                                className={`${
+                                    switchType === "clicky"
+                                        ? "border-b border-white text-white"
+                                        : ""
+                                }`}
+                            >
+                                clicky
+                            </button>
+                            <button
+                                onClick={() => handleSwitchTypeSelect("other")}
+                                className={`${
+                                    switchType === "other"
+                                        ? "border-b border-white text-white"
+                                        : ""
+                                }`}
+                            >
+                                other
+                            </button>
+                        </div>
+                    ) : (
+                        <div className="w-full ">
+                            <input
+                                id="searchInput"
+                                value={searchInput}
+                                onChange={(e) => setSearchInput(e.target.value)}
+                                className="h-10 w-full rounded-md bg-black p-1 "
+                                placeholder="Search"
+                            />
+                        </div>
+                    )}
+                </div>
             </div>
 
-            <div className="mr-16 flex w-3/4 flex-col">
+            <div className=" flex w-3/4 flex-col">
                 <div className=" flex w-full justify-between">
                     <div className="mb-5 flex gap-5 text-white/40">
                         <button
