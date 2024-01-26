@@ -9,14 +9,22 @@ import DisplayListingPreviews from "~/components/KeebShop/DisplayListing/Display
 import DisplayPopularListingPreviews from "~/components/KeebShop/DisplayListing/DisplayListingsPreview/displayPopularListingPreviews";
 
 export default function Home() {
-    // big cards like bring a trailer  or like this
-    // https://codepen.io/TurkAysenur/pen/BavLzPj
+    // this is a premium keyboard auction site so make it really cool you can do it!
+
+    // TODO onFocus search should show the matrix
     // svg logos next to filters
-    // search by linear or tactile tags
     // budget or ballin  under or above 250
-    // filters and search need to be sticky
-    // maybe break up in groups of six?
-    // todo implement pagination where listings only load when you scroll to the bottom
+    // todo add cookies for search filters
+    // todo if site gets very popular in future we will have to implement pagination
+    // todo search and switch to be sticky
+    // todo add price filter maybe change switch to Filters?
+    // TODO Layout would be so sick "full tkl 60% 40% "
+    // todo also add price asc or desc
+    // idk if pre selected prices or just input range.
+    // todo could also add a sound Profile selector?
+    // thocky, clacky, clicky, quiet
+    // todo could add hotswap but idkkkkk
+    // assembled vs unassembled
 
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -64,8 +72,6 @@ export default function Home() {
             }
         }
     };
-    // todo if site gets very popular in future we will have to implement pagination
-    // todo search and switch to be sticky
 
     return (
         <div className="mt-10 flex w-full gap-10 px-16">
@@ -89,7 +95,7 @@ export default function Home() {
                                 : ""
                         }`}
                     >
-                        Switch
+                        Specify
                     </button>
                 </div>
 

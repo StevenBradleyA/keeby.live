@@ -54,6 +54,9 @@ export const listingRouter = createTRPCRouter({
                     price: true,
                     switchType: true,
                 },
+                orderBy: {
+                    createdAt: "desc",
+                },
             };
 
             const filters: Prisma.ListingWhereInput[] = [];
