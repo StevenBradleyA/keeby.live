@@ -49,13 +49,10 @@ export default function DisplayListingPage({
         );
     };
 
-    // move seller query up here wiht loading
-    // just pass props to seller card comp so its all guarenteed
-
-    // TODO add seller rating info
-    // TODO add youtube api video integration optional()
     // TODO ability to favorite / unfavorite the listing
-    // todo Yellowtail font instead of mr dafoe?
+    // TODO not sure if i want youtube video centered 1/2 or want like a keebo gif that says sound test next to it or somethin
+    // todo I want to have comments next to other listings and banner ads like the nicely styled ones on youtube
+    // may want to add a placeholder in the mean time
 
     if (isLoading)
         return (
@@ -165,12 +162,12 @@ export default function DisplayListingPage({
             </div>
 
             {listing.soundTest && (
-                <div className="mt-10 flex w-1/2 justify-center px-5 ">
+                <div className="mt-10 flex px-5 ">
                     <ListingSoundTest soundTest={listing.soundTest} />
                 </div>
             )}
 
-            <div className="mt-10 w-full px-5">
+            <div className="mt-10 w-3/4 px-5">
                 {session && session.user.id ? (
                     <DisplayComments
                         typeId={listing.id}
