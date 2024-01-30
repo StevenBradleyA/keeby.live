@@ -119,8 +119,10 @@ export default function NavBar() {
 
     return (
         <nav
-            className="sticky top-0 z-10 flex items-center justify-between 
-              bg-none  py-4 text-white"
+            className={`sticky top-0 z-10 flex items-center justify-between 
+              ${
+                  router.asPath === "/" ? "bg-dark" : "bg-none"
+              }  py-4 text-white`}
             aria-label="Main Navigation"
         >
             <Link href="/" aria-label="Home">
@@ -247,7 +249,7 @@ export default function NavBar() {
                                             src={defaultProfile}
                                             width={400}
                                             height={400}
-                                            className="h-28 w-28 object-cover rounded-md"
+                                            className="h-28 w-28 rounded-md object-cover"
                                         />
                                     </motion.button>
                                 ) : (
@@ -273,7 +275,7 @@ export default function NavBar() {
                                                 }
                                                 width={400}
                                                 height={400}
-                                                className="h-28 w-28 object-cover rounded-md"
+                                                className="h-28 w-28 rounded-md object-cover"
                                             />
                                         </motion.button>
                                     </Link>

@@ -24,9 +24,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <meta name="description" content="keeby" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <div className="-z-30 min-h-screen bg-dark font-poppins text-white   ">
+            <div className="min-h-screen bg-dark font-poppins text-white">
                 <NavBar />
-                <main className="flex  flex-col items-center justify-center">
+                <main className="flex flex-col items-center justify-center">
                     {children}
                 </main>
             </div>

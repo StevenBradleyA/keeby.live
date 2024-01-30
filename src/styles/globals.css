@@ -69,6 +69,14 @@ $blue: #2033c1; */
 
 /* --------------                            --------------  */
 
+.very-sticky {
+    position: -webkit-sticky; /* for Safari */
+    position: sticky;
+    top: 140px;
+    align-self: flex-start; /* <-- this is the fix */
+    z-index: 5;
+  }
+
 /* -----------test  */
 
 #paragraph {
@@ -278,6 +286,7 @@ li:not(:first-child) span {
     background-repeat: no-repeat;
     background-position: center;
     box-shadow: 0 0 10px #32ab36;
+    z-index: 10;
 }
 
 /* --------------     game     --------------  */
