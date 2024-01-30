@@ -7,6 +7,7 @@ import Image from "next/image";
 import DisplayListingPreviews from "~/components/KeebShop/DisplayListing/DisplayListingsPreview";
 import DisplayPopularListingPreviews from "~/components/KeebShop/DisplayListing/DisplayListingsPreview/displayPopularListingPreviews";
 import ResetArrowSvg from "~/components/Svgs/reset";
+import NotificationSvg from "~/components/Svgs/notification";
 
 export default function Home() {
     // this is a premium keyboard auction site so make it really cool you can do it!
@@ -42,8 +43,10 @@ export default function Home() {
     const [isBallin, setIsBallin] = useState<boolean>(false);
     const [minPrice, setMinPrice] = useState<number | null>(null);
     const [maxPrice, setMaxPrice] = useState<number | null>(null);
-    const [layout, setLayout] = useState<string>("");
-    const [assembly, setAssembly] = useState<string>("");
+    const [layoutType, setLayoutType] = useState<string>("");
+    const [assemblyType, setAssemblyType] = useState<string>("");
+    const [hotSwapType, setHotSwapType] = useState<string>("");
+    const [priceOrder, setPriceOrder] = useState<string>("");
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -70,7 +73,8 @@ export default function Home() {
         setMinPrice(null);
         setMaxPrice(null);
         setSoundType("");
-        setAssembly("");
+        setLayoutType("");
+        setAssemblyType("");
     };
 
     const handleSwitchTypeSelect = (type: string) => {
@@ -109,22 +113,80 @@ export default function Home() {
             }
         }
     };
+    const handleAssemblyTypeSelect = (type: string) => {
+        if (assemblyType === type) {
+            setAssemblyType("");
+        } else {
+            if (type === "assembled") {
+                setAssemblyType("assembled");
+            }
+            if (type === "unassembled") {
+                setAssemblyType("unassembled");
+            }
+        }
+    };
+    const handleLayoutTypeSelect = (type: string) => {
+        if (layoutType === type) {
+            setLayoutType("");
+        } else {
+            if (type === "100%") {
+                setLayoutType("100%");
+            }
+            if (type === "75%") {
+                setLayoutType("75%");
+            }
+            if (type === "65%") {
+                setLayoutType("65%");
+            }
+            if (type === "60%") {
+                setLayoutType("60%");
+            }
+            if (type === "40%") {
+                setLayoutType("40%");
+            }
+        }
+    };
+    const handleHotSwapTypeSelect = (type: string) => {
+        if (hotSwapType === type) {
+            setHotSwapType("");
+        } else {
+            if (type === "yes") {
+                setHotSwapType("yes");
+            }
+            if (type === "no") {
+                setHotSwapType("no");
+            }
+        }
+    };
 
-    const handleMinPrice = () => {};
-
-    const handleMaxPrice = () => {};
+    const handleMinPrice = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value ? Math.floor(+e.target.value) : null;
+        if (value) {
+            setIsBudget(false);
+            setIsBallin(false);
+        }
+        setMinPrice(value);
+    };
+    function handleMaxPrice(e: React.ChangeEvent<HTMLInputElement>) {
+        const value = e.target.value ? Math.floor(+e.target.value) : null;
+        if (value) {
+            setIsBudget(false);
+            setIsBallin(false);
+        }
+        setMaxPrice(value);
+    }
 
     return (
-        <div className="mt-10 flex w-full flex-col px-16">
+        <div className="mt-10 flex w-full flex-col px-16 text-darkGray">
             <div className=" flex w-full  gap-10 ">
                 <div className=" very-sticky flex w-1/4 flex-col">
-                    <div className="mb-5 flex gap-5 text-darkGray">
+                    <div className="mb-5 flex gap-5 ">
                         <button
                             onClick={handleSearchClick}
                             className={`${
                                 !isSpecify
                                     ? "border-b border-white text-white"
-                                    : ""
+                                    : "border-b border-white border-opacity-0"
                             }`}
                         >
                             Search
@@ -135,7 +197,7 @@ export default function Home() {
                                 className={`${
                                     isSpecify
                                         ? "border-b border-white text-white"
-                                        : ""
+                                        : "border-b border-white border-opacity-0"
                                 }`}
                             >
                                 Specify
@@ -146,21 +208,9 @@ export default function Home() {
                                 minPrice ||
                                 maxPrice ||
                                 soundType ||
-                                assembly) && (
+                                assemblyType) && (
                                 <div className="absolute -right-5 bottom-3 h-5 w-5 text-green-500  ">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                    >
-                                        <path
-                                            d="M19.4845 7C17.8699 4.58803 15.1204 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21C14.6655 21 17.0604 19.8412 18.7083 18M16 12.2857L17.8 14L22 10M12 8V13M12 16H12.01"
-                                            stroke="currentColor"
-                                            stroke-width="2"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                        />
-                                    </svg>
+                                    <NotificationSvg />
                                 </div>
                             )}
                         </div>
@@ -188,7 +238,7 @@ export default function Home() {
                                         className={`${
                                             switchType === "tactile"
                                                 ? "border-b border-white text-white"
-                                                : ""
+                                                : "border-b border-white border-opacity-0"
                                         }`}
                                     >
                                         tactile
@@ -200,7 +250,7 @@ export default function Home() {
                                         className={`${
                                             switchType === "linear"
                                                 ? "border-b border-white text-white"
-                                                : ""
+                                                : "border-b border-white border-opacity-0"
                                         }`}
                                     >
                                         linear
@@ -212,7 +262,7 @@ export default function Home() {
                                         className={`${
                                             switchType === "clicky"
                                                 ? "border-b border-white text-white"
-                                                : ""
+                                                : "border-b border-white border-opacity-0"
                                         }`}
                                     >
                                         clicky
@@ -224,7 +274,7 @@ export default function Home() {
                                         className={`${
                                             switchType === "other"
                                                 ? "border-b border-white text-white"
-                                                : ""
+                                                : "border-b border-white border-opacity-0"
                                         }`}
                                     >
                                         other
@@ -235,48 +285,48 @@ export default function Home() {
                                     <h1 className="text-green-500">Sound:</h1>
                                     <button
                                         onClick={() =>
-                                            handleSwitchTypeSelect("tactile")
+                                            handleSoundTypeSelect("thock")
                                         }
                                         className={`${
-                                            switchType === "tactile"
+                                            soundType === "thock"
                                                 ? "border-b border-white text-white"
-                                                : ""
+                                                : "border-b border-white border-opacity-0"
                                         }`}
                                     >
                                         thock
                                     </button>
                                     <button
-                                    // onClick={() =>
-                                    //     handleSwitchTypeSelect("linear")
-                                    // }
-                                    // className={`${
-                                    //     switchType === "linear"
-                                    //         ? "border-b border-white text-white"
-                                    //         : ""
-                                    // }`}
+                                        onClick={() =>
+                                            handleSoundTypeSelect("clack")
+                                        }
+                                        className={`${
+                                            soundType === "clack"
+                                                ? "border-b border-white text-white"
+                                                : "border-b border-white border-opacity-0"
+                                        }`}
                                     >
                                         clack
                                     </button>
                                     <button
                                         onClick={() =>
-                                            handleSwitchTypeSelect("clicky")
+                                            handleSoundTypeSelect("click")
                                         }
                                         className={`${
-                                            switchType === "clicky"
+                                            soundType === "click"
                                                 ? "border-b border-white text-white"
-                                                : ""
+                                                : "border-b border-white border-opacity-0"
                                         }`}
                                     >
                                         click
                                     </button>
                                     <button
                                         onClick={() =>
-                                            handleSwitchTypeSelect("other")
+                                            handleSoundTypeSelect("silent")
                                         }
                                         className={`${
-                                            switchType === "other"
+                                            soundType === "silent"
                                                 ? "border-b border-white text-white"
-                                                : ""
+                                                : "border-b border-white border-opacity-0"
                                         }`}
                                     >
                                         silent
@@ -292,6 +342,17 @@ export default function Home() {
                                                 type="checkbox"
                                                 name="Preventing Scams"
                                                 className=" h-5 w-5 cursor-pointer rounded-md border-2 border-green-500 hover:bg-black hover:bg-opacity-30"
+                                                checked={isBudget}
+                                                onClick={() => {
+                                                    setIsBudget(!isBudget);
+                                                    if (isBallin) {
+                                                        setIsBallin(false);
+                                                    }
+                                                    if (minPrice || maxPrice) {
+                                                        setMinPrice(null);
+                                                        setMaxPrice(null);
+                                                    }
+                                                }}
                                             />
                                         </label>
 
@@ -302,134 +363,177 @@ export default function Home() {
                                                 type="checkbox"
                                                 name="Preventing Scams"
                                                 className=" h-5 w-5 cursor-pointer rounded-md border-2 border-green-500 hover:bg-black hover:bg-opacity-30"
+                                                checked={isBallin}
+                                                onClick={() => {
+                                                    setIsBallin(!isBallin);
+                                                    if (isBudget) {
+                                                        setIsBudget(false);
+                                                    }
+                                                    if (minPrice || maxPrice) {
+                                                        setMinPrice(null);
+                                                        setMaxPrice(null);
+                                                    }
+                                                }}
                                             />
                                         </label>
                                     </div>
                                     <div>
-                                        <div className="mt-2 flex gap-5">
+                                        <div className="mt-2 flex gap-5 text-green-500">
                                             <input
                                                 id="priceInput"
                                                 type="number"
-                                                min={0}
-                                                // value={price === 0 ? "" : price}
-                                                // onChange={(e) => setPrice(+e.target.value)}
-                                                // onChange={(e) =>
-                                                //     setPrice(
-                                                //         Math.floor(+e.target.value)
-                                                //     )
-                                                // }
+                                                value={
+                                                    minPrice !== null
+                                                        ? minPrice
+                                                        : ""
+                                                }
+                                                onChange={handleMinPrice}
                                                 className="h-8 w-1/3 rounded-md bg-darkGray p-1"
                                                 placeholder="$ Min"
                                             />
                                             <input
                                                 id="priceInput"
                                                 type="number"
-                                                min={0}
-                                                // value={price === 0 ? "" : price}
-                                                // onChange={(e) => setPrice(+e.target.value)}
-                                                // onChange={(e) =>
-                                                //     setPrice(
-                                                //         Math.floor(+e.target.value)
-                                                //     )
-                                                // }
+                                                value={
+                                                    maxPrice !== null
+                                                        ? maxPrice
+                                                        : ""
+                                                }
+                                                onChange={handleMaxPrice}
                                                 className="h-8 w-1/3 rounded-md bg-darkGray p-1"
                                                 placeholder="$ Max"
                                             />
                                         </div>
                                     </div>
                                 </div>
-
-                                <div className="flex flex-col items-start ">
-                                    <h1 className="text-green-500">
-                                        Assembly:
-                                    </h1>
-                                    <button
-                                    // onClick={() =>
-                                    //     handleSwitchTypeSelect("tactile")
-                                    // }
-                                    // className={`${
-                                    //     switchType === "tactile"
-                                    //         ? "border-b border-white text-white"
-                                    //         : ""
-                                    // }`}
-                                    >
-                                        Assembled
-                                    </button>
-                                    <button
-                                    // onClick={() =>
-                                    //     handleSwitchTypeSelect("linear")
-                                    // }
-                                    // className={`${
-                                    //     switchType === "linear"
-                                    //         ? "border-b border-white text-white"
-                                    //         : ""
-                                    // }`}
-                                    >
-                                        None
-                                    </button>
-                                </div>
                                 <div className="flex flex-col items-start ">
                                     <h1 className="text-green-500">Layout:</h1>
                                     <button
-                                    // onClick={() =>
-                                    //     handleSwitchTypeSelect("tactile")
-                                    // }
-                                    // className={`${
-                                    //     switchType === "tactile"
-                                    //         ? "border-b border-white text-white"
-                                    //         : ""
-                                    // }`}
+                                        onClick={() =>
+                                            handleLayoutTypeSelect("100%")
+                                        }
+                                        className={`${
+                                            layoutType === "100%"
+                                                ? "border-b border-white text-white"
+                                                : "border-b border-white border-opacity-0"
+                                        }`}
                                     >
                                         100%
                                     </button>
                                     <button
-                                    // onClick={() =>
-                                    //     handleSwitchTypeSelect("linear")
-                                    // }
-                                    // className={`${
-                                    //     switchType === "linear"
-                                    //         ? "border-b border-white text-white"
-                                    //         : ""
-                                    // }`}
+                                        onClick={() =>
+                                            handleLayoutTypeSelect("75%")
+                                        }
+                                        className={`${
+                                            layoutType === "75%"
+                                                ? "border-b border-white text-white"
+                                                : "border-b border-white border-opacity-0"
+                                        }`}
                                     >
                                         75%
                                     </button>
                                     <button
-                                    // onClick={() =>
-                                    //     handleSwitchTypeSelect("linear")
-                                    // }
-                                    // className={`${
-                                    //     switchType === "linear"
-                                    //         ? "border-b border-white text-white"
-                                    //         : ""
-                                    // }`}
+                                        onClick={() =>
+                                            handleLayoutTypeSelect("65%")
+                                        }
+                                        className={`${
+                                            layoutType === "65%"
+                                                ? "border-b border-white text-white"
+                                                : "border-b border-white border-opacity-0"
+                                        }`}
                                     >
                                         65%
                                     </button>
                                     <button
-                                    // onClick={() =>
-                                    //     handleSwitchTypeSelect("linear")
-                                    // }
-                                    // className={`${
-                                    //     switchType === "linear"
-                                    //         ? "border-b border-white text-white"
-                                    //         : ""
-                                    // }`}
+                                        onClick={() =>
+                                            handleLayoutTypeSelect("60%")
+                                        }
+                                        className={`${
+                                            layoutType === "60%"
+                                                ? "border-b border-white text-white"
+                                                : "border-b border-white border-opacity-0"
+                                        }`}
                                     >
                                         60%
                                     </button>
                                     <button
-                                    // onClick={() =>
-                                    //     handleSwitchTypeSelect("linear")
-                                    // }
-                                    // className={`${
-                                    //     switchType === "linear"
-                                    //         ? "border-b border-white text-white"
-                                    //         : ""
-                                    // }`}
+                                        onClick={() =>
+                                            handleLayoutTypeSelect("40%")
+                                        }
+                                        className={`${
+                                            layoutType === "40%"
+                                                ? "border-b border-white text-white"
+                                                : "border-b border-white border-opacity-0"
+                                        }`}
                                     >
                                         40%
                                     </button>
+                                </div>
+
+                                <div className="flex w-full justify-between">
+                                    <div className="flex flex-col items-start ">
+                                        <h1 className="text-green-500">
+                                            Assembly:
+                                        </h1>
+                                        <button
+                                            onClick={() =>
+                                                handleAssemblyTypeSelect(
+                                                    "assembled"
+                                                )
+                                            }
+                                            className={`${
+                                                assemblyType === "assembled"
+                                                    ? "border-b border-white text-white"
+                                                    : "border-b border-white border-opacity-0"
+                                            }`}
+                                        >
+                                            assembled
+                                        </button>
+                                        <button
+                                            onClick={() =>
+                                                handleAssemblyTypeSelect(
+                                                    "unassembled"
+                                                )
+                                            }
+                                            className={`${
+                                                assemblyType === "unassembled"
+                                                    ? "border-b border-white text-white"
+                                                    : "border-b border-white border-opacity-0"
+                                            }`}
+                                        >
+                                            unassembled
+                                        </button>
+                                    </div>
+
+                                    <div className="flex flex-col items-start ">
+                                        <h1 className="text-green-500">
+                                            Hotswap:
+                                        </h1>
+                                        <button
+                                            onClick={() =>
+                                                handleLayoutTypeSelect("100%")
+                                            }
+                                            className={`${
+                                                layoutType === "100%"
+                                                    ? "border-b border-white text-white"
+                                                    : "border-b border-white border-opacity-0"
+                                            }`}
+                                        >
+                                            Yes
+                                        </button>
+                                        <button
+                                            onClick={() =>
+                                                handleLayoutTypeSelect("75%")
+                                            }
+                                            className={`${
+                                                layoutType === "75%"
+                                                    ? "border-b border-white text-white"
+                                                    : "border-b border-white border-opacity-0"
+                                            }`}
+                                        >
+                                            No
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         ) : (
@@ -455,7 +559,7 @@ export default function Home() {
                                 className={`${
                                     !isNewFilter
                                         ? "border-b border-white text-white"
-                                        : ""
+                                        : "border-b border-white border-opacity-0"
                                 }`}
                                 onClick={() => setIsNewFilter(false)}
                             >
@@ -465,22 +569,65 @@ export default function Home() {
                                 className={`${
                                     isNewFilter
                                         ? "border-b border-white text-white"
-                                        : ""
+                                        : "border-b border-white border-opacity-0"
                                 }`}
                                 onClick={() => setIsNewFilter(true)}
                             >
                                 New
                             </button>
                         </div>
-                        <button onClick={openModal}>
-                            <Image
-                                src={plus}
-                                alt="create listing"
-                                width={200}
-                                height={200}
-                                className="png-dark-gray w-12 "
-                            />
-                        </button>
+                        <div className="flex items-center gap-16 ">
+                            <div className="relative">
+                                <select
+                                    className=" custom-select  flex h-5 w-8 items-center rounded-lg bg-keebyGray px-2 "
+                                    value={priceOrder}
+                                    onChange={(e) =>
+                                        setPriceOrder(e.target.value)
+                                    }
+                                >
+                                    <option value="">none</option>
+                                    <option value="asc">
+                                        Price: Low to High
+                                    </option>
+                                    <option value="desc">
+                                        Price: High to Low
+                                    </option>
+                                </select>
+                                <span
+                                    className={`select-fake flex h-5 w-8 items-center justify-center rounded-md bg-keebyGray ${
+                                        priceOrder === ""
+                                            ? "text-darkGray"
+                                            : "text-green-500"
+                                    } `}
+                                >
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 24 24"
+                                        width="28px"
+                                        height="28px"
+                                        fill="none"
+                                    >
+                                        <path
+                                            d="M7 10L12 15L17 10"
+                                            stroke="currentColor"
+                                            stroke-width="1.5"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                        />
+                                    </svg>
+                                </span>
+                            </div>
+
+                            <button onClick={openModal}>
+                                <Image
+                                    src={plus}
+                                    alt="create listing"
+                                    width={200}
+                                    height={200}
+                                    className="png-dark-gray w-12 "
+                                />
+                            </button>
+                        </div>
                     </div>
                     <ModalDialog isOpen={isModalOpen} onClose={closeModal}>
                         <CreateListingModal />

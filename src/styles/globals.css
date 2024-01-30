@@ -75,7 +75,22 @@ $blue: #2033c1; */
     top: 140px;
     align-self: flex-start; /* <-- this is the fix */
     z-index: 5;
-  }
+}
+
+
+.custom-select {
+    cursor: pointer;
+    opacity: 0;
+    z-index: 10;
+
+}
+
+.select-fake {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
 
 /* -----------test  */
 

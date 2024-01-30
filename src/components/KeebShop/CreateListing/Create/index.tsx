@@ -325,7 +325,6 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                                         type="number"
                                         min={0}
                                         value={price === 0 ? "" : price}
-                                        // onChange={(e) => setPrice(+e.target.value)}
                                         onChange={(e) =>
                                             setPrice(
                                                 Math.floor(+e.target.value)
