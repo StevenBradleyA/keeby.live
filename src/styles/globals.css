@@ -69,29 +69,6 @@ $blue: #2033c1; */
 
 /* --------------                            --------------  */
 
-.very-sticky {
-    position: -webkit-sticky; /* for Safari */
-    position: sticky;
-    top: 140px;
-    align-self: flex-start; /* <-- this is the fix */
-    z-index: 5;
-}
-
-
-.custom-select {
-    cursor: pointer;
-    opacity: 0;
-    z-index: 10;
-
-}
-
-.select-fake {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -1;
-}
-
 /* -----------test  */
 
 #paragraph {
@@ -441,6 +418,44 @@ li:not(:first-child) span {
 }
 
 /* --------------         KEEB SHOP          --------------  */
+
+
+
+
+
+
+
+.very-sticky {
+    position: -webkit-sticky; /* for Safari */
+    position: sticky;
+    top: 140px;
+    align-self: flex-start; /* <-- this is the fix */
+    z-index: 5;
+}
+
+.custom-select {
+    cursor: pointer;
+    opacity: 0;
+    z-index: 10;
+}
+
+.select-fake {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.search-input-placeholder::placeholder {
+    color: rgb(34 197 94);
+}
+
+.search-input-hack{
+    z-index: 20;
+}
+.search-input-matrix{
+    z-index: 1;
+}
 
 /*  ----    Listings Hover effect    ---- */
 .listing-preview-hover-effect {

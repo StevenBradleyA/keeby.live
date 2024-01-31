@@ -35,6 +35,7 @@ export default function Home() {
     const [isNewFilter, setIsNewFilter] = useState<boolean>(false);
     const [isSpecify, setIsSpecify] = useState<boolean>(false);
     const [searchInput, setSearchInput] = useState<string>("");
+    const [isSearchFocus, setIsSearchFocus] = useState<boolean>(false);
 
     // specify
     const [switchType, setSwitchType] = useState<string>("");
@@ -75,6 +76,7 @@ export default function Home() {
         setSoundType("");
         setLayoutType("");
         setAssemblyType("");
+        setHotSwapType("");
     };
 
     const handleSwitchTypeSelect = (type: string) => {
@@ -208,7 +210,9 @@ export default function Home() {
                                 minPrice ||
                                 maxPrice ||
                                 soundType ||
-                                assemblyType) && (
+                                layoutType ||
+                                assemblyType ||
+                                hotSwapType) && (
                                 <div className="absolute -right-5 bottom-3 h-5 w-5 text-green-500  ">
                                     <NotificationSvg />
                                 </div>
@@ -216,7 +220,7 @@ export default function Home() {
                         </div>
                     </div>
 
-                    <div className=" h-[70vh] w-full rounded-xl bg-keebyGray p-5 text-darkGray">
+                    <div className=" relative h-[70vh] w-full overflow-hidden rounded-xl bg-keebyGray p-5 text-darkGray">
                         {isSpecify ? (
                             <div className="flex w-full flex-col items-start gap-5">
                                 <div className="flex w-full flex-col items-start">
@@ -511,10 +515,10 @@ export default function Home() {
                                         </h1>
                                         <button
                                             onClick={() =>
-                                                handleLayoutTypeSelect("100%")
+                                                handleHotSwapTypeSelect("yes")
                                             }
                                             className={`${
-                                                layoutType === "100%"
+                                                hotSwapType === "yes"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
                                             }`}
@@ -523,10 +527,10 @@ export default function Home() {
                                         </button>
                                         <button
                                             onClick={() =>
-                                                handleLayoutTypeSelect("75%")
+                                                handleHotSwapTypeSelect("no")
                                             }
                                             className={`${
-                                                layoutType === "75%"
+                                                hotSwapType === "no"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
                                             }`}
@@ -537,16 +541,40 @@ export default function Home() {
                                 </div>
                             </div>
                         ) : (
-                            <div className="w-full ">
+                            <div className="relative w-full ">
                                 <input
                                     id="searchInput"
                                     value={searchInput}
                                     onChange={(e) =>
                                         setSearchInput(e.target.value)
                                     }
-                                    className="h-10 w-full rounded-md bg-black p-1 text-green-500 "
+                                    className={` search-input-hack absolute h-10 w-full rounded-md ${
+                                        isSearchFocus
+                                            ? "search-input-placeholder bg-blackAlternative"
+                                            : "bg-darkGray"
+                                    } p-1 text-green-500 outline-none `}
                                     placeholder="Search"
+                                    onFocus={() => setIsSearchFocus(true)}
+                                    onBlur={() => setIsSearchFocus(false)}
                                 />
+
+                                {isSearchFocus && (
+                                    <div className=" search-input-matrix absolute -bottom-[70vh] left-0 top-0 -m-5 rounded-md opacity-70  ">
+                                        <video
+                                            className="h-full object-cover"
+                                            autoPlay
+                                            loop
+                                            muted
+                                        >
+                                            <source
+                                                src="/Videos/matrix-fade-green.mp4"
+                                                type="video/mp4"
+                                            />
+                                            Your browser does not support the
+                                            video tag.
+                                        </video>
+                                    </div>
+                                )}
                             </div>
                         )}
                     </div>
