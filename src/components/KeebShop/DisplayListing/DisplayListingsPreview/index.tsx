@@ -7,16 +7,41 @@ import keebo from "@public/Profile/keebo.png";
 interface DisplayListingPreviewsProps {
     searchInput: string;
     switchType: string;
+    soundType: string;
+    isBudget: boolean;
+    isBallin: boolean;
+    minPrice: number | null;
+    maxPrice: number | null;
+    layoutType: string;
+    assemblyType: string;
+    hotSwapType: string;
+    priceOrder: string;
 }
 
 interface Filters {
     searchQuery?: string;
     switchType?: string;
+    soundType?: string;
+    minPrice?: number;
+    maxPrice?: number;
+    layoutType?: string;
+    assemblyType?: string;
+    hotSwapType?: string;
+    priceOrder?: string;
 }
 
 export default function DisplayListingPreviews({
     searchInput,
     switchType,
+    soundType,
+    minPrice,
+    maxPrice,
+    isBudget,
+    isBallin,
+    layoutType,
+    assemblyType,
+    hotSwapType,
+    priceOrder,
 }: DisplayListingPreviewsProps) {
     const queryInputs: Filters = {};
 
@@ -25,6 +50,43 @@ export default function DisplayListingPreviews({
     }
     if (switchType.length > 0) {
         queryInputs.switchType = switchType;
+    }
+    if (soundType.length > 0) {
+        queryInputs.soundType = soundType;
+    }
+    if (isBallin) {
+        queryInputs.minPrice = 20000;
+    }
+    if (isBudget) {
+        queryInputs.maxPrice = 20000;
+    }
+    if (!isBallin && !isBudget && minPrice !== null && maxPrice === null) {
+        queryInputs.minPrice = minPrice * 100;
+    }
+    if (!isBallin && !isBudget && maxPrice !== null && minPrice === null) {
+        queryInputs.maxPrice = maxPrice * 100;
+    }
+    if (!isBallin && !isBudget && minPrice !== null && maxPrice !== null) {
+        if (maxPrice < minPrice) {
+            queryInputs.minPrice = minPrice * 100;
+        } else {
+            queryInputs.minPrice = minPrice * 100;
+            queryInputs.maxPrice = maxPrice * 100;
+        }
+    }
+
+    if (priceOrder.length > 0) {
+        queryInputs.priceOrder = priceOrder;
+    }
+
+    if (layoutType.length > 0) {
+        queryInputs.layoutType = layoutType;
+    }
+    if (assemblyType.length > 0) {
+        queryInputs.assemblyType = assemblyType;
+    }
+    if (hotSwapType.length > 0) {
+        queryInputs.hotSwapType = hotSwapType;
     }
 
     const { data: keebData, isLoading } =

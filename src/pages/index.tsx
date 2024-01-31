@@ -59,12 +59,10 @@ export default function Home() {
 
     const handleSearchClick = () => {
         setIsSpecify(false);
-        setSwitchType("");
     };
 
-    const handleSwitchClick = () => {
+    const handleSpecifyClick = () => {
         setIsSpecify(true);
-        setSearchInput("");
     };
 
     const handleResetSpecify = () => {
@@ -195,7 +193,7 @@ export default function Home() {
                         </button>
                         <div className="relative flex">
                             <button
-                                onClick={handleSwitchClick}
+                                onClick={handleSpecifyClick}
                                 className={`${
                                     isSpecify
                                         ? "border-b border-white text-white"
@@ -666,6 +664,15 @@ export default function Home() {
                             <DisplayListingPreviews
                                 searchInput={searchInput}
                                 switchType={switchType}
+                                soundType={soundType}
+                                isBudget={isBudget}
+                                isBallin={isBallin}
+                                minPrice={minPrice}
+                                maxPrice={maxPrice}
+                                layoutType={layoutType}
+                                assemblyType={assemblyType}
+                                hotSwapType={hotSwapType}
+                                priceOrder={priceOrder}
                             />
                         ) : (
                             <DisplayPopularListingPreviews

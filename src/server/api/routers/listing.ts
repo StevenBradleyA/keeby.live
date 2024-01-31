@@ -47,10 +47,28 @@ export const listingRouter = createTRPCRouter({
             z.object({
                 searchQuery: z.string().optional(),
                 switchType: z.string().optional(),
+                minPrice: z.number().optional(),
+                maxPrice: z.number().optional(),
+                priceOrder: z.string().optional(),
+                layoutType: z.string().optional(),
+                assemblyType: z.string().optional(),
+                hotSwapType: z.string().optional(),
+                soundType: z.string().optional(),
             })
         )
         .query(({ ctx, input }) => {
-            const { searchQuery, switchType } = input;
+            const {
+                searchQuery,
+                switchType,
+                soundType,
+                assemblyType,
+                hotSwapType,
+                layoutType,
+                minPrice,
+                maxPrice,
+                priceOrder,
+            } = input;
+
             const queryOptions: Prisma.ListingFindManyArgs = {
                 select: {
                     id: true,
@@ -58,19 +76,15 @@ export const listingRouter = createTRPCRouter({
                     price: true,
                     switchType: true,
                 },
-                orderBy: {
-                    createdAt: "desc",
-                },
+                orderBy: priceOrder
+                    ? priceOrder === "asc"
+                        ? { createdAt: "desc", price: "asc" }
+                        : { createdAt: "desc", price: "desc" }
+                    : { createdAt: "desc" },
             };
 
             const filters: Prisma.ListingWhereInput[] = [];
-            if (searchQuery) {
-                filters.push({
-                    title: {
-                        contains: searchQuery,
-                    },
-                });
-            }
+
             if (switchType) {
                 filters.push({
                     switchType: {
@@ -78,7 +92,56 @@ export const listingRouter = createTRPCRouter({
                     },
                 });
             }
+            if (soundType) {
+                filters.push({
+                    soundType: {
+                        equals: soundType,
+                    },
+                });
+            }
+            if (assemblyType) {
+                filters.push({
+                    assemblyType: {
+                        equals: assemblyType,
+                    },
+                });
+            }
+            if (layoutType) {
+                filters.push({
+                    layoutType: {
+                        equals: layoutType,
+                    },
+                });
+            }
+            if (hotSwapType) {
+                filters.push({
+                    pcbType: {
+                        equals: hotSwapType,
+                    },
+                });
+            }
+            if (minPrice) {
+                filters.push({
+                    price: {
+                        gte: minPrice,
+                    },
+                });
+            }
+            if (maxPrice) {
+                filters.push({
+                    price: {
+                        lte: maxPrice,
+                    },
+                });
+            }
 
+            if (searchQuery) {
+                filters.push({
+                    title: {
+                        contains: searchQuery,
+                    },
+                });
+            }
             if (filters.length > 0) {
                 queryOptions.where = {
                     AND: filters,
