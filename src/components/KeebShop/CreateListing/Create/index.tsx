@@ -47,6 +47,10 @@ interface ListingData {
     keycaps: string;
     switches: string;
     switchType: string;
+    soundType: string;
+    layoutType: string;
+    pcbType: string;
+    assemblyType: string;
     soundTest?: string;
     price: number;
     text: string;
@@ -212,6 +216,10 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                     keycaps,
                     switches,
                     switchType,
+                    layoutType,
+                    pcbType,
+                    assemblyType,
+                    soundType,
                     text: description,
                     price: price * 100,
                     preview,

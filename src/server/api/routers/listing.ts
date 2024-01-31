@@ -13,6 +13,10 @@ type CreateData = {
     keycaps: string;
     switches: string;
     switchType: string;
+    soundType: string;
+    layoutType: string;
+    pcbType: string;
+    assemblyType: string;
     price: number;
     sellerId: string;
     sold: boolean;
@@ -159,6 +163,10 @@ export const listingRouter = createTRPCRouter({
                 keycaps: z.string(),
                 switches: z.string(),
                 switchType: z.string(),
+                soundType: z.string(),
+                layoutType: z.string(),
+                pcbType: z.string(),
+                assemblyType: z.string(),
                 soundTest: z.string().optional(),
                 preview: z.number(),
                 sellerId: z.string(),
@@ -177,6 +185,10 @@ export const listingRouter = createTRPCRouter({
                 keycaps,
                 switches,
                 switchType,
+                soundType,
+                pcbType,
+                layoutType,
+                assemblyType,
                 soundTest,
                 preview,
                 sellerId,
@@ -192,6 +204,10 @@ export const listingRouter = createTRPCRouter({
                     keycaps,
                     switches,
                     switchType,
+                    soundType,
+                    layoutType,
+                    pcbType,
+                    assemblyType,
                     price,
                     sellerId,
                     sold: false,

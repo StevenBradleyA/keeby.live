@@ -130,8 +130,6 @@ model Listing {
     id           String  @id @default(cuid())
     title        String
     text         String
-    sound        String
-    layout       String
     soundTest    String?
     switchType   String
     keycaps      String
