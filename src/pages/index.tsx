@@ -339,7 +339,7 @@ export default function Home() {
 
                                 <div className="flex flex-col items-start">
                                     <h1 className="text-green-500"> Price:</h1>
-                                    <div className="flex gap-10">
+                                    <div className="flex gap-16">
                                         <label>
                                             {`budget < $200`}
                                             <input
@@ -382,7 +382,7 @@ export default function Home() {
                                         </label>
                                     </div>
                                     <div>
-                                        <div className="mt-2 flex gap-5 text-green-500">
+                                        <div className="mt-2 flex gap-12 text-green-500">
                                             <input
                                                 id="priceInput"
                                                 type="number"

@@ -31,6 +31,10 @@ interface ErrorsObj {
     switches?: string;
     switchType?: string;
     soundTest?: string;
+    soundType?: string;
+    layoutType?: string;
+    assemblyType?: string;
+    pcbType?: string;
 }
 
 interface Image {
@@ -51,16 +55,7 @@ interface ListingData {
 }
 
 export default function CreateListing({ setShowCreate }: CreateListingProps) {
-    //instead of directing to page it might be nice to have pricing/scams in modals so they don't have to navigate back to page
-    //todo what about filters and tags when creating a listing... Maybe an array with tags?
-    //todo change redirect to my listings page??? or shoppp??
     //todo admin ability to delete other listings
-    //todo maybe listings needs an isActive boolean so when when sold the photos can be auto deleted or kept for a lil bit idk
-    // price to cents so it stores in db as cents will have to convert on listing page
-    // todo styling this page uuuuugggglllyyyyyy
-
-    // TODO youtube api --
-    // add a back button to go back and read terms
 
     const { data: session } = useSession();
     const ctx = api.useContext();
@@ -82,6 +77,10 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
     const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [soundTest, setSoundTest] = useState<string>("");
+    const [soundType, setSoundType] = useState<string>("thock");
+    const [assemblyType, setAssemblyType] = useState<string>("assembled");
+    const [pcbType, setPcbType] = useState<string>("hotswap");
+    const [layoutType, setLayoutType] = useState<string>("100%");
 
     const { mutate } = api.listing.create.useMutation({
         onSuccess: async () => {
@@ -126,8 +125,22 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
             errorsObj.switches = "Please provide the switches on your keeb";
         }
         if (!switchType.length) {
-            errorsObj.switchType = "Please select the switchType of your keeb";
+            errorsObj.switchType = "Please select the switch type of your keeb";
         }
+        if (!soundType.length) {
+            errorsObj.soundType = "Please select the sound of your keeb";
+        }
+        if (!layoutType.length) {
+            errorsObj.layoutType = "Please select the layout of your keeb";
+        }
+        if (!assemblyType.length) {
+            errorsObj.assemblyType =
+                "Please select the build status of your keeb";
+        }
+        if (!pcbType.length) {
+            errorsObj.pcbType = "Please select the PCB type in your keeb";
+        }
+
         if (!title.length) {
             errorsObj.title = "Please provide a title for your listing";
         }
@@ -174,6 +187,10 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
         switches,
         switchType,
         soundTest,
+        soundType,
+        layoutType,
+        assemblyType,
+        pcbType,
     ]);
 
     const submit = async (e: React.FormEvent) => {
@@ -267,7 +284,7 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                 />
 
                 <div className="flex h-24 w-full flex-col justify-center border-b-2 border-t-2 border-[#2f2f2f] bg-black bg-opacity-60 px-5">
-                    <div className="flex justify-between">
+                    <div className="flex justify-between ">
                         <div>
                             <div className="flex justify-between text-3xl">
                                 <TitleScripts page={"createListing"} />
@@ -284,8 +301,8 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
             </div>
             <div className="mb-32 mt-5 flex w-2/3 flex-col items-center rounded-xl bg-black bg-opacity-50 px-10 py-5  ">
                 <form className="w-full text-black">
-                    <div className="flex justify-between ">
-                        <div className="flex flex-col gap-5">
+                    <div className="flex justify-between gap-10">
+                        <div className="flex w-1/3 flex-col gap-5">
                             <div className="flex flex-col gap-1">
                                 <label
                                     htmlFor="titleInput"
@@ -297,7 +314,7 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                                     id="titleInput"
                                     value={title}
                                     onChange={(e) => setTitle(e.target.value)}
-                                    className="h-10 w-96 rounded-md bg-white p-1 "
+                                    className="h-10 w-full rounded-md bg-white p-1 "
                                     placeholder="Title"
                                 />
                                 {enableErrorDisplay && errors.title && (
@@ -312,104 +329,125 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                                 )}
                             </div>
 
-                            <div className="flex flex-col gap-5 ">
-                                <div className="flex flex-col gap-1">
-                                    <label
-                                        htmlFor="priceInput"
-                                        className="text-darkGray"
-                                    >
-                                        Price (whole number)
-                                    </label>
-                                    <input
-                                        id="priceInput"
-                                        type="number"
-                                        min={0}
-                                        value={price === 0 ? "" : price}
-                                        onChange={(e) =>
-                                            setPrice(
-                                                Math.floor(+e.target.value)
-                                            )
-                                        }
-                                        className="h-10 w-72 rounded-md bg-white p-1"
-                                        placeholder="$ Price"
-                                    />
+                            <div className="flex flex-col gap-1">
+                                <label
+                                    htmlFor="soundTypeInput"
+                                    className="text-darkGray"
+                                >
+                                    Sound Type
+                                </label>
+                                <select
+                                    id="soundTypeInput"
+                                    className=" h-10 w-3/4 rounded-md bg-green-500 p-1 px-2 py-1"
+                                    value={soundType}
+                                    onChange={(e) =>
+                                        setSoundType(e.target.value)
+                                    }
+                                >
+                                    <option value="thock">Thock</option>
+                                    <option value="clack">Clack</option>
+                                    <option value="click">Click</option>
+                                    <option value="silent">Silent</option>
+                                </select>
+                                {enableErrorDisplay && errors.soundType && (
+                                    <p className="text-sm text-red-400">
+                                        {errors.soundType}
+                                    </p>
+                                )}
+                            </div>
 
-                                    {enableErrorDisplay && errors.priceNone && (
-                                        <p className="text-sm text-red-400">
-                                            {errors.priceNone}
-                                        </p>
-                                    )}
-                                    {enableErrorDisplay &&
-                                        errors.priceExcess && (
-                                            <p className="text-sm text-red-400">
-                                                {errors.priceExcess}
-                                            </p>
-                                        )}
-                                    {enableErrorDisplay &&
-                                        errors.priceNotWhole && (
-                                            <p className="text-sm text-red-400">
-                                                {errors.priceNotWhole}
-                                            </p>
-                                        )}
-                                </div>
+                            <div className="flex flex-col gap-1">
+                                <label
+                                    htmlFor="youtubeLinkSoundTestInput"
+                                    className="text-darkGray"
+                                >
+                                    Youtube Link to Sound Test (optional)
+                                </label>
+                                <input
+                                    id="youtubeLinkSoundTestInput"
+                                    value={soundTest}
+                                    onChange={(e) =>
+                                        setSoundTest(e.target.value)
+                                    }
+                                    className="h-10 w-3/4 rounded-md bg-white p-1"
+                                    placeholder="Sound Test Link"
+                                />
+                                {enableErrorDisplay && errors.soundTest && (
+                                    <p className="text-sm text-red-400">
+                                        {errors.soundTest}
+                                    </p>
+                                )}
+                            </div>
 
-                                <div className="flex flex-col gap-1">
-                                    <label
-                                        htmlFor="youtubeLinkSoundTestInput"
-                                        className="text-darkGray"
-                                    >
-                                        Youtube Link to Sound Test (optional)
-                                    </label>
-                                    <input
-                                        id="youtubeLinkSoundTestInput"
-                                        value={soundTest}
-                                        onChange={(e) =>
-                                            setSoundTest(e.target.value)
-                                        }
-                                        className="h-10 w-72 rounded-md bg-white p-1"
-                                        placeholder="Sound Test Link"
-                                    />
-                                    {enableErrorDisplay && errors.soundTest && (
-                                        <p className="text-sm text-red-400">
-                                            {errors.soundTest}
-                                        </p>
-                                    )}
-                                </div>
+                            <div className="flex flex-col gap-1">
+                                <label
+                                    htmlFor="priceInput"
+                                    className="text-darkGray"
+                                >
+                                    Price (whole number)
+                                </label>
+                                <input
+                                    id="priceInput"
+                                    type="number"
+                                    min={0}
+                                    value={price === 0 ? "" : price}
+                                    onChange={(e) =>
+                                        setPrice(Math.floor(+e.target.value))
+                                    }
+                                    className="h-10 w-3/4 rounded-md bg-white p-1"
+                                    placeholder="$ Price"
+                                />
 
-                                <div className="relative flex flex-col gap-1">
-                                    <label
-                                        htmlFor="imageUploadInput"
-                                        className="text-darkGray"
-                                    >
-                                        Upload Images (5 min - 15 max)
-                                    </label>
+                                {enableErrorDisplay && errors.priceNone && (
+                                    <p className="text-sm text-red-400">
+                                        {errors.priceNone}
+                                    </p>
+                                )}
+                                {enableErrorDisplay && errors.priceExcess && (
+                                    <p className="text-sm text-red-400">
+                                        {errors.priceExcess}
+                                    </p>
+                                )}
+                                {enableErrorDisplay && errors.priceNotWhole && (
+                                    <p className="text-sm text-red-400">
+                                        {errors.priceNotWhole}
+                                    </p>
+                                )}
+                            </div>
 
-                                    <input
-                                        id="imageUploadInput"
-                                        className="absolute top-7 h-20 w-72 cursor-pointer opacity-0"
-                                        type="file"
-                                        multiple
-                                        accept="image/png, image/jpg, image/jpeg"
-                                        onChange={(e) => {
-                                            if (e.target.files)
-                                                setImageFiles([
-                                                    ...imageFiles,
-                                                    ...e.target.files,
-                                                ]);
-                                        }}
-                                    />
-                                    <button className="h-20 w-72 rounded-md bg-green-500">
-                                        <span className=" text-center">
-                                            Choose Files
-                                        </span>
-                                    </button>
-                                </div>
+                            <div className="relative flex w-3/4 flex-col gap-1">
+                                <label
+                                    htmlFor="imageUploadInput"
+                                    className="text-darkGray"
+                                >
+                                    Upload Images (5 min - 15 max)
+                                </label>
+
+                                <input
+                                    id="imageUploadInput"
+                                    className="absolute top-7 h-28 w-72 cursor-pointer opacity-0"
+                                    type="file"
+                                    multiple
+                                    accept="image/png, image/jpg, image/jpeg"
+                                    onChange={(e) => {
+                                        if (e.target.files)
+                                            setImageFiles([
+                                                ...imageFiles,
+                                                ...e.target.files,
+                                            ]);
+                                    }}
+                                />
+                                <button className="h-28 w-full rounded-md bg-green-500">
+                                    <span className=" text-center">
+                                        Choose Files
+                                    </span>
+                                </button>
                             </div>
                         </div>
 
-                        <div className="flex flex-col gap-5">
-                            <div className="flex gap-5">
-                                <div className="flex flex-col gap-1">
+                        <div className="flex w-2/3 flex-col gap-5">
+                            <div className="flex w-full gap-5 ">
+                                <div className="flex w-5/12 flex-col  gap-1">
                                     <label
                                         htmlFor="keycapsInput"
                                         className="text-darkGray"
@@ -422,7 +460,7 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                                         onChange={(e) =>
                                             setKeycaps(e.target.value)
                                         }
-                                        className="h-10 w-72 rounded-md bg-white p-1"
+                                        className="h-10 w-full rounded-md bg-white p-1"
                                         placeholder="Keycaps"
                                     />
                                     {enableErrorDisplay && errors.keycaps && (
@@ -431,7 +469,7 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                                         </p>
                                     )}
                                 </div>
-                                <div className="flex flex-col gap-1">
+                                <div className="flex w-5/12 flex-col gap-1 ">
                                     <label
                                         htmlFor="switchesInput"
                                         className="text-darkGray"
@@ -444,7 +482,7 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                                         onChange={(e) =>
                                             setSwitches(e.target.value)
                                         }
-                                        className="h-10 w-72 rounded-md bg-white p-1"
+                                        className="h-10 w-full rounded-md bg-white p-1"
                                         placeholder="Switches"
                                     />
                                     {enableErrorDisplay && errors.switches && (
@@ -453,7 +491,7 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                                         </p>
                                     )}
                                 </div>
-                                <div className="flex flex-col gap-1">
+                                <div className="flex w-2/12 flex-col gap-1 ">
                                     <label
                                         htmlFor="switchTypeInput"
                                         className="text-darkGray"
@@ -462,7 +500,7 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                                     </label>
                                     <select
                                         id="switchTypeInput"
-                                        className=" h-10 rounded-md bg-green-500 p-1 px-2 py-1"
+                                        className=" h-10 w-full rounded-md bg-green-500 p-1 px-2 py-1"
                                         value={switchType}
                                         onChange={(e) =>
                                             setSwitchType(e.target.value)
@@ -477,6 +515,91 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                                         errors.switchType && (
                                             <p className="text-sm text-red-400">
                                                 {errors.switchType}
+                                            </p>
+                                        )}
+                                </div>
+                            </div>
+                            <div className="flex w-full items-center  gap-5 ">
+                                <div className="flex w-1/3 flex-col gap-1">
+                                    <label
+                                        htmlFor="layoutTypeInput"
+                                        className="text-darkGray"
+                                    >
+                                        Layout Type
+                                    </label>
+                                    <select
+                                        id="layoutTypeInput"
+                                        className=" h-10 w-full rounded-md bg-green-500 p-1 px-2 py-1"
+                                        value={layoutType}
+                                        onChange={(e) =>
+                                            setLayoutType(e.target.value)
+                                        }
+                                    >
+                                        <option value="100%">100%</option>
+                                        <option value="75%">75%</option>
+                                        <option value="65%">65%</option>
+                                        <option value="60%">60%</option>
+                                        <option value="40%">40%</option>
+                                    </select>
+                                    {enableErrorDisplay &&
+                                        errors.layoutType && (
+                                            <p className="text-sm text-red-400">
+                                                {errors.layoutType}
+                                            </p>
+                                        )}
+                                </div>
+                                <div className="flex w-1/3 flex-col gap-1">
+                                    <label
+                                        htmlFor="pcbTypeInput"
+                                        className="text-darkGray"
+                                    >
+                                        PCB Type
+                                    </label>
+                                    <select
+                                        id="pcbTypeInput"
+                                        className=" h-10 w-full rounded-md bg-green-500 p-1 px-2 py-1"
+                                        value={pcbType}
+                                        onChange={(e) =>
+                                            setPcbType(e.target.value)
+                                        }
+                                    >
+                                        <option value="hotswap">Hotswap</option>
+                                        <option value="soldered">
+                                            Soldered
+                                        </option>
+                                    </select>
+                                    {enableErrorDisplay && errors.pcbType && (
+                                        <p className="text-sm text-red-400">
+                                            {errors.pcbType}
+                                        </p>
+                                    )}
+                                </div>
+                                <div className="flex w-1/3 flex-col gap-1">
+                                    <label
+                                        htmlFor="assemblyTypeInput"
+                                        className="text-darkGray"
+                                    >
+                                        Build Status
+                                    </label>
+                                    <select
+                                        id="assemblyTypeInput"
+                                        className=" h-10 w-full rounded-md bg-green-500 p-1 px-2 py-1"
+                                        value={assemblyType}
+                                        onChange={(e) =>
+                                            setAssemblyType(e.target.value)
+                                        }
+                                    >
+                                        <option value="assembled">
+                                            Assembled
+                                        </option>
+                                        <option value="disassembled">
+                                            disassembled
+                                        </option>
+                                    </select>
+                                    {enableErrorDisplay &&
+                                        errors.assemblyType && (
+                                            <p className="text-sm text-red-400">
+                                                {errors.assemblyType}
                                             </p>
                                         )}
                                 </div>
@@ -590,4 +713,3 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
         </>
     );
 }
-// rounded-xl border-2 border-black bg-black px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray

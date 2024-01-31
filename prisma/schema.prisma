@@ -127,18 +127,21 @@ model Images {
 }
 
 model Listing {
-    id         String  @id @default(cuid())
-    title      String
-    text       String
-    sound      String
-    layout     String
-    soundTest  String?
-    switchType String
-    keycaps    String
-    switches   String
-    price      Int
+    id           String  @id @default(cuid())
+    title        String
+    text         String
+    sound        String
+    layout       String
+    soundTest    String?
+    switchType   String
+    keycaps      String
+    switches     String
+    price        Int
+    soundType    String
+    layoutType   String
+    assemblyType String
+    pcbType      String
 
-    assembled Boolean
     sold      Boolean  @default(false)
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
