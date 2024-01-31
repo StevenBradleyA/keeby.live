@@ -600,8 +600,8 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                                         <option value="assembled">
                                             Assembled
                                         </option>
-                                        <option value="disassembled">
-                                            disassembled
+                                        <option value="unassembled">
+                                            Unassembled
                                         </option>
                                     </select>
                                     {enableErrorDisplay &&

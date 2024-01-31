@@ -150,11 +150,11 @@ export default function Home() {
         if (hotSwapType === type) {
             setHotSwapType("");
         } else {
-            if (type === "yes") {
-                setHotSwapType("yes");
+            if (type === "hotswap") {
+                setHotSwapType("hotswap");
             }
-            if (type === "no") {
-                setHotSwapType("no");
+            if (type === "soldered") {
+                setHotSwapType("soldered");
             }
         }
     };
@@ -513,10 +513,12 @@ export default function Home() {
                                         </h1>
                                         <button
                                             onClick={() =>
-                                                handleHotSwapTypeSelect("yes")
+                                                handleHotSwapTypeSelect(
+                                                    "hotswap"
+                                                )
                                             }
                                             className={`${
-                                                hotSwapType === "yes"
+                                                hotSwapType === "hotswap"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
                                             }`}
@@ -525,10 +527,12 @@ export default function Home() {
                                         </button>
                                         <button
                                             onClick={() =>
-                                                handleHotSwapTypeSelect("no")
+                                                handleHotSwapTypeSelect(
+                                                    "soldered"
+                                                )
                                             }
                                             className={`${
-                                                hotSwapType === "no"
+                                                hotSwapType === "soldered"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
                                             }`}
@@ -678,6 +682,15 @@ export default function Home() {
                             <DisplayPopularListingPreviews
                                 searchInput={searchInput}
                                 switchType={switchType}
+                                soundType={soundType}
+                                isBudget={isBudget}
+                                isBallin={isBallin}
+                                minPrice={minPrice}
+                                maxPrice={maxPrice}
+                                layoutType={layoutType}
+                                assemblyType={assemblyType}
+                                hotSwapType={hotSwapType}
+                                priceOrder={priceOrder}
                             />
                         )}
                     </div>

@@ -78,9 +78,9 @@ export const listingRouter = createTRPCRouter({
                 },
                 orderBy: priceOrder
                     ? priceOrder === "asc"
-                        ? { createdAt: "desc", price: "asc" }
-                        : { createdAt: "desc", price: "desc" }
-                    : { createdAt: "desc" },
+                        ? [{ price: "asc" }, { createdAt: "desc" }]
+                        : [{ price: "desc" }, { createdAt: "desc" }]
+                    : [{ createdAt: "desc" }],
             };
 
             const filters: Prisma.ListingWhereInput[] = [];
@@ -156,10 +156,27 @@ export const listingRouter = createTRPCRouter({
             z.object({
                 searchQuery: z.string().optional(),
                 switchType: z.string().optional(),
+                minPrice: z.number().optional(),
+                maxPrice: z.number().optional(),
+                priceOrder: z.string().optional(),
+                layoutType: z.string().optional(),
+                assemblyType: z.string().optional(),
+                hotSwapType: z.string().optional(),
+                soundType: z.string().optional(),
             })
         )
         .query(async ({ ctx, input }) => {
-            const { searchQuery, switchType } = input;
+            const {
+                searchQuery,
+                switchType,
+                soundType,
+                assemblyType,
+                hotSwapType,
+                layoutType,
+                minPrice,
+                maxPrice,
+                priceOrder,
+            } = input;
 
             // Step 1: Aggregate comment counts
             const commentCounts = await ctx.prisma.comment.groupBy({
@@ -179,18 +196,61 @@ export const listingRouter = createTRPCRouter({
             };
 
             const filters: Prisma.ListingWhereInput[] = [];
-            if (searchQuery) {
-                filters.push({
-                    title: {
-                        contains: searchQuery,
-                        // mode: "insensitive",
-                    },
-                });
-            }
+
             if (switchType) {
                 filters.push({
                     switchType: {
                         equals: switchType,
+                    },
+                });
+            }
+            if (soundType) {
+                filters.push({
+                    soundType: {
+                        equals: soundType,
+                    },
+                });
+            }
+            if (assemblyType) {
+                filters.push({
+                    assemblyType: {
+                        equals: assemblyType,
+                    },
+                });
+            }
+            if (layoutType) {
+                filters.push({
+                    layoutType: {
+                        equals: layoutType,
+                    },
+                });
+            }
+            if (hotSwapType) {
+                filters.push({
+                    pcbType: {
+                        equals: hotSwapType,
+                    },
+                });
+            }
+            if (minPrice) {
+                filters.push({
+                    price: {
+                        gte: minPrice,
+                    },
+                });
+            }
+            if (maxPrice) {
+                filters.push({
+                    price: {
+                        lte: maxPrice,
+                    },
+                });
+            }
+
+            if (searchQuery) {
+                filters.push({
+                    title: {
+                        contains: searchQuery,
                     },
                 });
             }
@@ -209,7 +269,14 @@ export const listingRouter = createTRPCRouter({
                 return { ...listing, commentCount };
             });
 
-            // Step 4: Sort listings by comment counts
+            // Step 4: Sort listings by priceOrder if specified
+            if (priceOrder === "asc") {
+                listingsWithCommentCounts.sort((a, b) => a.price - b.price);
+            } else if (priceOrder === "desc") {
+                listingsWithCommentCounts.sort((a, b) => b.price - a.price);
+            }
+
+            // Step 5: Sort listings by comment counts
             listingsWithCommentCounts.sort(
                 (a, b) => b.commentCount - a.commentCount
             );
