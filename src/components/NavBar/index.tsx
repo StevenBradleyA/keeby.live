@@ -122,7 +122,7 @@ export default function NavBar() {
             className={`sticky top-0 z-10 flex items-center justify-between 
               ${
                   router.asPath === "/" ? "bg-dark" : "bg-none"
-              }  py-4 text-white`}
+              }  menu-index py-4 text-white`}
             aria-label="Main Navigation"
         >
             <Link href="/" aria-label="Home">
@@ -134,14 +134,14 @@ export default function NavBar() {
                     className="ml-14 w-72"
                 />
             </Link>
-            <div className="flex items-center gap-32">
+            <div className="flex items-center gap-32 text-darkGray">
                 {router.asPath === "/" ? (
-                    <Link href="/share" aria-label="share">
-                        KEEB SHARE
+                    <Link href="/keebshare" aria-label="share">
+                        <h1>KEEB SHARE</h1>
                     </Link>
                 ) : (
                     <Link href="/" aria-label="shop">
-                        KEEB SHOP
+                        <h1>KEEB SHOP</h1>
                     </Link>
                 )}
 
@@ -178,7 +178,7 @@ export default function NavBar() {
                                 type: "easeIn",
                             }}
                             ref={menuRef}
-                            className="dropdown-menu-gif absolute right-5 top-40 flex w-80 justify-between rounded-lg px-5 py-5"
+                            className="dropdown-menu-gif absolute right-5 top-40 flex w-80 justify-between rounded-lg px-5 py-5 text-white"
                         >
                             <div className="flex flex-col justify-between">
                                 <Link

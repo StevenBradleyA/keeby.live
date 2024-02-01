@@ -281,6 +281,11 @@ li:not(:first-child) span {
     z-index: 10;
 }
 
+.menu-index {
+    z-index: 50;
+}
+
+
 /* --------------     game     --------------  */
 
 /* word */

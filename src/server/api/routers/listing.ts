@@ -54,9 +54,11 @@ export const listingRouter = createTRPCRouter({
                 assemblyType: z.string().optional(),
                 hotSwapType: z.string().optional(),
                 soundType: z.string().optional(),
+                cursor: z.string().nullish(),
+                limit: z.number().min(1).max(100).nullish(),
             })
         )
-        .query(({ ctx, input }) => {
+        .query(async ({ ctx, input }) => {
             const {
                 searchQuery,
                 switchType,
@@ -67,8 +69,10 @@ export const listingRouter = createTRPCRouter({
                 minPrice,
                 maxPrice,
                 priceOrder,
+                cursor,
             } = input;
 
+            const limit = input.limit ?? 12;
             const queryOptions: Prisma.ListingFindManyArgs = {
                 select: {
                     id: true,
@@ -81,6 +85,9 @@ export const listingRouter = createTRPCRouter({
                         ? [{ price: "asc" }, { createdAt: "desc" }]
                         : [{ price: "desc" }, { createdAt: "desc" }]
                     : [{ createdAt: "desc" }],
+                take: limit + 1,
+                skip: cursor ? 1 : undefined,
+                cursor: cursor ? { id: cursor } : undefined,
             };
 
             const filters: Prisma.ListingWhereInput[] = [];
@@ -148,8 +155,129 @@ export const listingRouter = createTRPCRouter({
                 };
             }
 
-            return ctx.prisma.listing.findMany(queryOptions);
+            const listings = await ctx.prisma.listing.findMany(queryOptions);
+
+            let nextCursor: typeof cursor | undefined = undefined;
+            if (listings.length > limit) {
+                const nextItem = listings.pop(); // Remove the extra item
+                if (nextItem !== undefined) {
+                    nextCursor = nextItem.id; // Set the next cursor to the ID of the extra item
+                }
+            }
+
+            return {
+                listings,
+                nextCursor,
+            };
         }),
+    // getAllWithFilters: publicProcedure
+    // .input(
+    //     z.object({
+    //         searchQuery: z.string().optional(),
+    //         switchType: z.string().optional(),
+    //         minPrice: z.number().optional(),
+    //         maxPrice: z.number().optional(),
+    //         priceOrder: z.string().optional(),
+    //         layoutType: z.string().optional(),
+    //         assemblyType: z.string().optional(),
+    //         hotSwapType: z.string().optional(),
+    //         soundType: z.string().optional(),
+    //     })
+    // )
+    // .query(({ ctx, input }) => {
+    //     const {
+    //         searchQuery,
+    //         switchType,
+    //         soundType,
+    //         assemblyType,
+    //         hotSwapType,
+    //         layoutType,
+    //         minPrice,
+    //         maxPrice,
+    //         priceOrder,
+    //     } = input;
+
+    //     const queryOptions: Prisma.ListingFindManyArgs = {
+    //         select: {
+    //             id: true,
+    //             title: true,
+    //             price: true,
+    //             switchType: true,
+    //         },
+    //         orderBy: priceOrder
+    //             ? priceOrder === "asc"
+    //                 ? [{ price: "asc" }, { createdAt: "desc" }]
+    //                 : [{ price: "desc" }, { createdAt: "desc" }]
+    //             : [{ createdAt: "desc" }],
+    //     };
+
+    //     const filters: Prisma.ListingWhereInput[] = [];
+
+    //     if (switchType) {
+    //         filters.push({
+    //             switchType: {
+    //                 equals: switchType,
+    //             },
+    //         });
+    //     }
+    //     if (soundType) {
+    //         filters.push({
+    //             soundType: {
+    //                 equals: soundType,
+    //             },
+    //         });
+    //     }
+    //     if (assemblyType) {
+    //         filters.push({
+    //             assemblyType: {
+    //                 equals: assemblyType,
+    //             },
+    //         });
+    //     }
+    //     if (layoutType) {
+    //         filters.push({
+    //             layoutType: {
+    //                 equals: layoutType,
+    //             },
+    //         });
+    //     }
+    //     if (hotSwapType) {
+    //         filters.push({
+    //             pcbType: {
+    //                 equals: hotSwapType,
+    //             },
+    //         });
+    //     }
+    //     if (minPrice) {
+    //         filters.push({
+    //             price: {
+    //                 gte: minPrice,
+    //             },
+    //         });
+    //     }
+    //     if (maxPrice) {
+    //         filters.push({
+    //             price: {
+    //                 lte: maxPrice,
+    //             },
+    //         });
+    //     }
+
+    //     if (searchQuery) {
+    //         filters.push({
+    //             title: {
+    //                 contains: searchQuery,
+    //             },
+    //         });
+    //     }
+    //     if (filters.length > 0) {
+    //         queryOptions.where = {
+    //             AND: filters,
+    //         };
+    //     }
+
+    //     return ctx.prisma.listing.findMany(queryOptions);
+    // }),
 
     getAllSortedByPopularityWithFilters: publicProcedure
         .input(

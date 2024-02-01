@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { api } from "~/utils/api";
 import ModalDialog from "~/components/Modal";
 import CreateListingModal from "~/components/KeebShop/CreateListing/CreateModal";
@@ -10,32 +10,18 @@ import ResetArrowSvg from "~/components/Svgs/reset";
 import NotificationSvg from "~/components/Svgs/notification";
 
 export default function Home() {
-    // this is a premium keyboard auction site so make it really cool you can do it!
-
-    // TODO onFocus search should show the matrix
-    // svg logos next to filters
-    // budget or ballin  under or above 250
-    // todo add cookies for search filters? maybe
-    // maybe just filters for hot / new
-    // todo if site gets very popular in future we will have to implement pagination
-    // todo search and switch to be sticky
-    // todo add price filter maybe change switch to Filters?
-    // TODO Layout would be so sick "full tkl 60% 40% "
-    // todo also add price asc or desc
-    // idk if pre selected prices or just input range.
-    // todo could also add a sound Profile selector?
-    // thocky, clacky, clicky, quiet
-    // todo could add hotswap but idkkkkk
-    // assembled vs unassembled
-
-    // todo we def wanna be able to search with filters on huh
-    // do we need to indicate that filters are active maybe add a lil star next to specify when they are active?
+    // todo implement pagination on scroll every 20 listings?
+    // todo Cookies? do we want to save filters? not sure yet maybe just save hot/ new with cookies
+    // todo debounce search waiting untill the user stops typing to reduce querys 
+    // todo reduce the amount of image queries? 
+    // saving these could reduce cookies?
 
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [isNewFilter, setIsNewFilter] = useState<boolean>(false);
     const [isSpecify, setIsSpecify] = useState<boolean>(false);
     const [searchInput, setSearchInput] = useState<string>("");
     const [isSearchFocus, setIsSearchFocus] = useState<boolean>(false);
+    const [page, setPage] = useState<number>(1);
 
     // specify
     const [switchType, setSwitchType] = useState<string>("");
@@ -175,6 +161,23 @@ export default function Home() {
         }
         setMaxPrice(value);
     }
+
+    // useEffect(() => {
+    //     const handleScroll = () => {
+    //         if (
+    //             window.innerHeight + document.documentElement.scrollTop !==
+    //             document.documentElement.offsetHeight
+    //         )
+    //             return;
+    //         setPage((prevPage) => prevPage + 1);
+    //     };
+
+    //     window.addEventListener("scroll", handleScroll);
+
+    //     return () => window.removeEventListener("scroll", handleScroll);
+    // }, []);
+
+    // console.log('heyo', page)
 
     return (
         <div className="mt-10 flex w-full flex-col px-16 text-darkGray">

@@ -30,7 +30,7 @@ export default function CreateListingAgreement() {
 
     return (
         <>
-            <div className="matrix-full-screen fixed left-0 top-0 opacity-50  ">
+            <div className="matrix-full-screen fixed left-0 right-0 bottom-0 top-0 opacity-50  ">
                 <video className="-z-10 w-full" autoPlay loop muted>
                     <source
                         src="/Videos/matrix-fade-green.mp4"
