@@ -136,7 +136,6 @@ export default function ProfilePlus() {
 
         setEnableErrorDisplay(true);
 
-        console.log("uhhh", usernameCheck);
 
         if (!Object.values(errors).length && !usernameCheck && !isSubmitting) {
             try {

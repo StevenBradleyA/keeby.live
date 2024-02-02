@@ -10,7 +10,6 @@ import homeButton from "../../../public/Nav/home-test.png";
 import defaultProfile from "@public/Profile/profile-default.png";
 import { useRouter } from "next/router";
 
-console.log(defaultProfile);
 
 export default function NavBar() {
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);

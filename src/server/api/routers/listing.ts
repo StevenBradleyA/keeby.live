@@ -279,7 +279,139 @@ export const listingRouter = createTRPCRouter({
     //     return ctx.prisma.listing.findMany(queryOptions);
     // }),
 
-    getAllSortedByPopularityWithFilters: publicProcedure
+    // getAllSortedByPopularityWithFilters: publicProcedure
+    //     .input(
+    //         z.object({
+    //             searchQuery: z.string().optional(),
+    //             switchType: z.string().optional(),
+    //             minPrice: z.number().optional(),
+    //             maxPrice: z.number().optional(),
+    //             priceOrder: z.string().optional(),
+    //             layoutType: z.string().optional(),
+    //             assemblyType: z.string().optional(),
+    //             hotSwapType: z.string().optional(),
+    //             soundType: z.string().optional(),
+    //         })
+    //     )
+    //     .query(async ({ ctx, input }) => {
+    //         const {
+    //             searchQuery,
+    //             switchType,
+    //             soundType,
+    //             assemblyType,
+    //             hotSwapType,
+    //             layoutType,
+    //             minPrice,
+    //             maxPrice,
+    //             priceOrder,
+    //         } = input;
+
+    //         // Step 1: Aggregate comment counts
+    //         const commentCounts = await ctx.prisma.comment.groupBy({
+    //             by: ["typeId"],
+    //             where: { type: "LISTING" },
+    //             _count: true,
+    //         });
+
+    //         // Step 2: Apply filters and retrieve listings
+    //         const queryOptions: Prisma.ListingFindManyArgs = {
+    //             select: {
+    //                 id: true,
+    //                 title: true,
+    //                 price: true,
+    //                 switchType: true,
+    //             },
+    //         };
+
+    //         const filters: Prisma.ListingWhereInput[] = [];
+
+    //         if (switchType) {
+    //             filters.push({
+    //                 switchType: {
+    //                     equals: switchType,
+    //                 },
+    //             });
+    //         }
+    //         if (soundType) {
+    //             filters.push({
+    //                 soundType: {
+    //                     equals: soundType,
+    //                 },
+    //             });
+    //         }
+    //         if (assemblyType) {
+    //             filters.push({
+    //                 assemblyType: {
+    //                     equals: assemblyType,
+    //                 },
+    //             });
+    //         }
+    //         if (layoutType) {
+    //             filters.push({
+    //                 layoutType: {
+    //                     equals: layoutType,
+    //                 },
+    //             });
+    //         }
+    //         if (hotSwapType) {
+    //             filters.push({
+    //                 pcbType: {
+    //                     equals: hotSwapType,
+    //                 },
+    //             });
+    //         }
+    //         if (minPrice) {
+    //             filters.push({
+    //                 price: {
+    //                     gte: minPrice,
+    //                 },
+    //             });
+    //         }
+    //         if (maxPrice) {
+    //             filters.push({
+    //                 price: {
+    //                     lte: maxPrice,
+    //                 },
+    //             });
+    //         }
+
+    //         if (searchQuery) {
+    //             filters.push({
+    //                 title: {
+    //                     contains: searchQuery,
+    //                 },
+    //             });
+    //         }
+    //         if (filters.length > 0) {
+    //             queryOptions.where = {
+    //                 AND: filters,
+    //             };
+    //         }
+    //         const listings = await ctx.prisma.listing.findMany(queryOptions);
+
+    //         // Step 3: Merge listings with comment counts
+    //         const listingsWithCommentCounts = listings.map((listing) => {
+    //             const commentCount =
+    //                 commentCounts.find((c) => c.typeId === listing.id)
+    //                     ?._count ?? 0;
+    //             return { ...listing, commentCount };
+    //         });
+
+    //         // Step 4: Sort listings by priceOrder if specified
+    //         if (priceOrder === "asc") {
+    //             listingsWithCommentCounts.sort((a, b) => a.price - b.price);
+    //         } else if (priceOrder === "desc") {
+    //             listingsWithCommentCounts.sort((a, b) => b.price - a.price);
+    //         }
+
+    //         // Step 5: Sort listings by comment counts
+    //         listingsWithCommentCounts.sort(
+    //             (a, b) => b.commentCount - a.commentCount
+    //         );
+
+    //         return listingsWithCommentCounts;
+    //     }),
+        getAllSortedByPopularityWithFilters: publicProcedure
         .input(
             z.object({
                 searchQuery: z.string().optional(),
@@ -411,6 +543,7 @@ export const listingRouter = createTRPCRouter({
 
             return listingsWithCommentCounts;
         }),
+
 
     create: protectedProcedure
         .input(

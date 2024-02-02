@@ -13,15 +13,15 @@ interface EachListingCardProps {
 export default function EachListingCardPreview({ keeb }: EachListingCardProps) {
     const [isPhotoHover, setIsPhotoHover] = useState<boolean>(false);
 
-    const { data: previewImage, isLoading } =
-        api.image.getAllByResourceId.useQuery({
-            resourceType: "LISTINGPREVIEW",
-            resourceId: keeb.id,
-        });
+    // const { data: previewImage, isLoading } =
+    //     api.image.getAllByResourceId.useQuery({
+    //         resourceType: "LISTINGPREVIEW",
+    //         resourceId: keeb.id,
+    //     });
 
-    if (isLoading) {
-        return <LoadingSpinner size="40px" />;
-    }
+    // if (isLoading) {
+    //     return <LoadingSpinner size="40px" />;
+    // }
 
     return (
         <div className="flex w-96 flex-col">

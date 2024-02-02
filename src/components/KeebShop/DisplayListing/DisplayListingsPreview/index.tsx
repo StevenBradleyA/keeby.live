@@ -137,8 +137,7 @@ export default function DisplayListingPreviews({
             </div>
         );
     }
-
-    console.log("THE ONE PIECE IS REAL", keebData);
+console.log('halloooo', keebData?.pages)
 
     return (
         <>

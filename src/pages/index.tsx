@@ -1,5 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
-import { api } from "~/utils/api";
+import { useState } from "react";
 import ModalDialog from "~/components/Modal";
 import CreateListingModal from "~/components/KeebShop/CreateListing/CreateModal";
 import plus from "@public/Vectors/plus-plus.png";
@@ -12,8 +11,9 @@ import NotificationSvg from "~/components/Svgs/notification";
 export default function Home() {
     // todo implement pagination on scroll every 20 listings?
     // todo Cookies? do we want to save filters? not sure yet maybe just save hot/ new with cookies
-    // todo debounce search waiting untill the user stops typing to reduce querys 
-    // todo reduce the amount of image queries? 
+    // todo debounce search waiting untill the user stops typing to reduce querys
+    // todo reduce the amount of image queries?
+    // todo cursor pointer broken also too many queries rn not sure why
     // saving these could reduce cookies?
 
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -21,7 +21,6 @@ export default function Home() {
     const [isSpecify, setIsSpecify] = useState<boolean>(false);
     const [searchInput, setSearchInput] = useState<string>("");
     const [isSearchFocus, setIsSearchFocus] = useState<boolean>(false);
-    const [page, setPage] = useState<number>(1);
 
     // specify
     const [switchType, setSwitchType] = useState<string>("");
@@ -161,23 +160,6 @@ export default function Home() {
         }
         setMaxPrice(value);
     }
-
-    // useEffect(() => {
-    //     const handleScroll = () => {
-    //         if (
-    //             window.innerHeight + document.documentElement.scrollTop !==
-    //             document.documentElement.offsetHeight
-    //         )
-    //             return;
-    //         setPage((prevPage) => prevPage + 1);
-    //     };
-
-    //     window.addEventListener("scroll", handleScroll);
-
-    //     return () => window.removeEventListener("scroll", handleScroll);
-    // }, []);
-
-    // console.log('heyo', page)
 
     return (
         <div className="mt-10 flex w-full flex-col px-16 text-darkGray">
@@ -348,7 +330,7 @@ export default function Home() {
                                                 name="Preventing Scams"
                                                 className=" h-5 w-5 cursor-pointer rounded-md border-2 border-green-500 hover:bg-black hover:bg-opacity-30"
                                                 checked={isBudget}
-                                                onClick={() => {
+                                                onChange={() => {
                                                     setIsBudget(!isBudget);
                                                     if (isBallin) {
                                                         setIsBallin(false);
@@ -369,7 +351,7 @@ export default function Home() {
                                                 name="Preventing Scams"
                                                 className=" h-5 w-5 cursor-pointer rounded-md border-2 border-green-500 hover:bg-black hover:bg-opacity-30"
                                                 checked={isBallin}
-                                                onClick={() => {
+                                                onChange={() => {
                                                     setIsBallin(!isBallin);
                                                     if (isBudget) {
                                                         setIsBudget(false);
@@ -643,9 +625,9 @@ export default function Home() {
                                         <path
                                             d="M7 10L12 15L17 10"
                                             stroke="currentColor"
-                                            stroke-width="1.5"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
+                                            strokeWidth="1.5"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
                                         />
                                     </svg>
                                 </span>
