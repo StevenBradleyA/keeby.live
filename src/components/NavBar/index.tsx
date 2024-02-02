@@ -131,6 +131,7 @@ export default function NavBar() {
                     width={homeButton.width}
                     height={homeButton.height}
                     className="ml-14 w-72"
+                    priority
                 />
             </Link>
             <div className="flex items-center gap-32 text-darkGray">

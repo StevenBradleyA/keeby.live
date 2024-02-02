@@ -107,7 +107,6 @@ export default function DisplayListingPreviews({
         }
     );
 
-
     useEffect(() => {
         const handleScroll = throttle(() => {
             const nearBottom =
@@ -137,7 +136,7 @@ export default function DisplayListingPreviews({
             </div>
         );
     }
-console.log('halloooo', keebData?.pages)
+    // console.log("halloooo", keebData.pages[0]);
 
     return (
         <>
@@ -160,7 +159,7 @@ console.log('halloooo', keebData?.pages)
                 </div>
             )}
 
-            {!isFetchingNextPage && keebData && keebData.pages.length === 0 && (
+            {keebData && keebData.pages[0]?.listings.length === 0 && (
                 <div className=" mt-5 flex items-end gap-2 text-darkGray">
                     <h1>
                         {`Woah, all sold out. There are currently no listings for sale `}

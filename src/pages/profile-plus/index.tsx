@@ -136,7 +136,6 @@ export default function ProfilePlus() {
 
         setEnableErrorDisplay(true);
 
-
         if (!Object.values(errors).length && !usernameCheck && !isSubmitting) {
             try {
                 const sessionUserId = session?.user?.id;
@@ -209,7 +208,8 @@ export default function ProfilePlus() {
                 <Image
                     src={gridBackground}
                     alt="background"
-                    className="matrix-full-screen fixed left-0 top-0 opacity-40 "
+                    className="matrix-full-screen fixed left-0 right-0 bottom-0 top-0 opacity-40 "
+                    priority
                 />
                 <form className=" z-10 flex w-1/2 flex-col text-black ">
                     <div className="flex gap-10">
@@ -239,6 +239,7 @@ export default function ProfilePlus() {
                                         src={defaultProfile}
                                         alt="profile"
                                         className="h-full w-full rounded-md border-2 border-sky-300 object-cover"
+                                        priority
                                     />
                                 </div>
                             )}
@@ -248,6 +249,8 @@ export default function ProfilePlus() {
                             <label className=" text-md text-darkGray">
                                 Define Your Identity: Enter Username
                                 <input
+                                    name="username"
+                                    id="usernameInput"
                                     value={username}
                                     onChange={(e) =>
                                         setUsername(e.target.value)
@@ -284,6 +287,8 @@ export default function ProfilePlus() {
                             <label className="text-darkGray">
                                 Keyboard
                                 <input
+                                    name="keyboard"
+                                    id="keyboardInput"
                                     value={keyboard}
                                     onChange={(e) =>
                                         setKeyboard(e.target.value)
@@ -301,6 +306,8 @@ export default function ProfilePlus() {
                             <label className="text-darkGray">
                                 Switches
                                 <input
+                                    name="switches"
+                                    id="keyboardSwitchesInput"
                                     value={switches}
                                     onChange={(e) =>
                                         setSwitches(e.target.value)
@@ -317,6 +324,8 @@ export default function ProfilePlus() {
                             <label className="text-darkGray">
                                 Keycaps
                                 <input
+                                    name="keycaps"
+                                    id="keyboardKeycapsInput"
                                     value={keycaps}
                                     onChange={(e) => setKeycaps(e.target.value)}
                                     className=" h-10 w-full rounded-md bg-black  p-1 text-sky-300 "
@@ -340,6 +349,8 @@ export default function ProfilePlus() {
                                 <label className="text-darkGray">
                                     1:1 aspect ratio recommended
                                     <input
+                                       name="profileImage"
+                                       id="profileImageInput"
                                         className="absolute left-0 top-7 h-32 w-full cursor-pointer rounded-md opacity-0"
                                         type="file"
                                         accept="image/png, image/jpg, image/jpeg"
@@ -389,10 +400,10 @@ export default function ProfilePlus() {
                             className={`rounded-xl border-2 border-pink-500 bg-black px-6 py-2 text-pink-500 hover:border-sky-400 hover:bg-sky-400 hover:text-black`}
                         >
                             {isSubmitting ? (
-                                <div className="flex gap-1 items-center">
+                                <div className="flex items-center gap-1">
                                     Saving Data
                                     <div className="w-6">
-                                        <LoadingSpinner size="16px"/>
+                                        <LoadingSpinner size="16px" />
                                     </div>
                                 </div>
                             ) : (

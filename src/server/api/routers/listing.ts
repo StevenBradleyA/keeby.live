@@ -620,7 +620,7 @@ export const listingRouter = createTRPCRouter({
                             data: {
                                 link: image.link,
                                 resourceType: imageType,
-                                resourceId: newListing.id,
+                                listingId: newListing.id,
                                 userId: newListing.sellerId,
                             },
                         });

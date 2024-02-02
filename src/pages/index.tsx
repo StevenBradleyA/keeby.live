@@ -12,9 +12,10 @@ export default function Home() {
     // todo implement pagination on scroll every 20 listings?
     // todo Cookies? do we want to save filters? not sure yet maybe just save hot/ new with cookies
     // todo debounce search waiting untill the user stops typing to reduce querys
-    // todo reduce the amount of image queries?
-    // todo cursor pointer broken also too many queries rn not sure why
+
     // saving these could reduce cookies?
+
+
 
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [isNewFilter, setIsNewFilter] = useState<boolean>(false);
@@ -168,7 +169,7 @@ export default function Home() {
                     <div className="mb-5 flex gap-5 ">
                         <button
                             onClick={handleSearchClick}
-                            className={`${
+                            className={` cursor-pointer${
                                 !isSpecify
                                     ? "border-b border-white text-white"
                                     : "border-b border-white border-opacity-0"
