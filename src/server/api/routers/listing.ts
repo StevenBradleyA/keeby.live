@@ -79,6 +79,11 @@ export const listingRouter = createTRPCRouter({
                     title: true,
                     price: true,
                     switchType: true,
+                    images: {
+                        where: {
+                            resourceType: "LISTINGPREVIEW",
+                        },
+                    },
                 },
                 orderBy: priceOrder
                     ? priceOrder === "asc"
@@ -411,7 +416,7 @@ export const listingRouter = createTRPCRouter({
 
     //         return listingsWithCommentCounts;
     //     }),
-        getAllSortedByPopularityWithFilters: publicProcedure
+    getAllSortedByPopularityWithFilters: publicProcedure
         .input(
             z.object({
                 searchQuery: z.string().optional(),
@@ -452,6 +457,11 @@ export const listingRouter = createTRPCRouter({
                     title: true,
                     price: true,
                     switchType: true,
+                    images: {
+                        where: {
+                            resourceType: "LISTINGPREVIEW",
+                        },
+                    },
                 },
             };
 
@@ -543,7 +553,6 @@ export const listingRouter = createTRPCRouter({
 
             return listingsWithCommentCounts;
         }),
-
 
     create: protectedProcedure
         .input(

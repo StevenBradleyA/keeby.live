@@ -1,27 +1,24 @@
-import { api } from "~/utils/api";
-import type { Listing } from "@prisma/client";
-import Image from "next/image";
-import Link from "next/link";
-import LoadingSpinner from "~/components/Loading";
 import { useState } from "react";
+import type { Images } from "@prisma/client";
+import Link from "next/link";
+import Image from "next/image";
+import keebo from "@public/Profile/keebo.png";
 
 interface EachListingCardProps {
-    keeb: Listing;
+    keeb: EachKeeb;
     index: number;
+}
+
+interface EachKeeb {
+    id: string;
+    title: string;
+    price: number;
+    switchType: string;
+    images: Images[];
 }
 
 export default function EachListingCardPreview({ keeb }: EachListingCardProps) {
     const [isPhotoHover, setIsPhotoHover] = useState<boolean>(false);
-
-    // const { data: previewImage, isLoading } =
-    //     api.image.getAllByResourceId.useQuery({
-    //         resourceType: "LISTINGPREVIEW",
-    //         resourceId: keeb.id,
-    //     });
-
-    // if (isLoading) {
-    //     return <LoadingSpinner size="40px" />;
-    // }
 
     return (
         <div className="flex w-96 flex-col">
@@ -31,7 +28,7 @@ export default function EachListingCardPreview({ keeb }: EachListingCardProps) {
                     query: { listingId: keeb.id },
                 }}
             >
-                {previewImage && previewImage[0] && previewImage[0].link && (
+                {keeb.images && keeb.images[0] && (
                     <div
                         className="listing-preview-hover-effect relative h-72 w-96  cursor-pointer overflow-hidden rounded-2xl "
                         onMouseEnter={() => setIsPhotoHover(true)}
@@ -39,7 +36,11 @@ export default function EachListingCardPreview({ keeb }: EachListingCardProps) {
                     >
                         <Image
                             alt="preview"
-                            src={previewImage[0].link}
+                            src={
+                                keeb.images[0].link
+                                    ? keeb.images[0].link
+                                    : keebo
+                            }
                             width={600}
                             height={600}
                             className={`h-full w-full object-cover`}
