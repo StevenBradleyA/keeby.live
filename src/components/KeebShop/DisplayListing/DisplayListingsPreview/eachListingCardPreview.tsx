@@ -20,6 +20,7 @@ interface EachKeeb {
 export default function EachListingCardPreview({ keeb }: EachListingCardProps) {
     const [isPhotoHover, setIsPhotoHover] = useState<boolean>(false);
 
+    console.log("halllooo", keeb);
     return (
         <div className="flex w-96 flex-col">
             <Link

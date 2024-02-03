@@ -11,11 +11,10 @@ import NotificationSvg from "~/components/Svgs/notification";
 export default function Home() {
     // todo implement pagination on scroll every 20 listings?
     // todo Cookies? do we want to save filters? not sure yet maybe just save hot/ new with cookies
+    // todo cookies for hot and new is a must lol
     // todo debounce search waiting untill the user stops typing to reduce querys
 
     // saving these could reduce cookies?
-
-
 
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [isNewFilter, setIsNewFilter] = useState<boolean>(false);

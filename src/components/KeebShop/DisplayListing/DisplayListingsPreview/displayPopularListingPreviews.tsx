@@ -3,6 +3,8 @@ import { api } from "~/utils/api";
 import EachListingCardPreview from "./eachListingCardPreview";
 import Image from "next/image";
 import keebo from "@public/Profile/keebo.png";
+import { useEffect } from "react";
+import { throttle } from "lodash";
 
 interface DisplayPopularListingPreviewsProps {
     searchInput: string;
@@ -89,8 +91,46 @@ export default function DisplayPopularListingPreviews({
         queryInputs.hotSwapType = hotSwapType;
     }
 
-    const { data: keebData, isLoading } =
-        api.listing.getAllSortedByPopularityWithFilters.useQuery(queryInputs);
+    // const { data: keebData, isLoading } =
+    //     api.listing.getAllSortedByPopularityWithFilters.useQuery(queryInputs);
+
+    const {
+        data: keebData,
+        hasNextPage,
+        fetchNextPage,
+        isLoading,
+        isFetchingNextPage,
+    } = api.listing.getAllSortedByPopularityWithFilters.useInfiniteQuery(
+        {
+            ...queryInputs,
+            limit: 12,
+        },
+        {
+            getNextPageParam: (lastPage) => lastPage.nextCursor,
+        }
+    );
+
+    useEffect(() => {
+        const handleScroll = throttle(() => {
+            const nearBottom =
+                window.innerHeight + window.scrollY >=
+                document.documentElement.offsetHeight - 300; // pagination fetch distance from bottom px
+            if (
+                nearBottom &&
+                hasNextPage &&
+                !isLoading &&
+                !isFetchingNextPage
+            ) {
+                void fetchNextPage();
+            }
+        }, 100);
+
+        window.addEventListener("scroll", handleScroll);
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+            handleScroll.cancel();
+        };
+    }, [hasNextPage, isLoading, isFetchingNextPage, fetchNextPage]);
 
     if (isLoading) {
         return (
@@ -100,15 +140,30 @@ export default function DisplayPopularListingPreviews({
         );
     }
 
+    console.log(keebData);
+    console.log(keebData?.pages);
     return (
         <>
-            {keebData && keebData.length > 0 ? (
+            {keebData && keebData.pages.length > 0 && (
                 <div className={`flex w-full flex-wrap gap-5  `}>
-                    {keebData.map((keeb, i) => (
-                        <EachListingCardPreview key={i} keeb={keeb} index={i} />
-                    ))}
+                    {keebData.pages.map((page) =>
+                        page.popularListings.map((keeb, i) => (
+                            <EachListingCardPreview
+                                key={keeb.id}
+                                keeb={keeb}
+                                index={i}
+                            />
+                        ))
+                    )}
                 </div>
-            ) : (
+            )}
+            {isFetchingNextPage && (
+                <div className="flex w-full justify-center">
+                    <LoadingSpinner size="40px" />
+                </div>
+            )}
+
+            {keebData && keebData.pages[0]?.popularListings.length === 0 && (
                 <div className=" mt-5 flex items-end gap-2 text-darkGray">
                     <h1>
                         {`Woah, all sold out. There are currently no listings for sale `}

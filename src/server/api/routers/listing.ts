@@ -428,6 +428,8 @@ export const listingRouter = createTRPCRouter({
                 assemblyType: z.string().optional(),
                 hotSwapType: z.string().optional(),
                 soundType: z.string().optional(),
+                cursor: z.string().nullish(),
+                limit: z.number().min(1).max(100).nullish(),
             })
         )
         .query(async ({ ctx, input }) => {
@@ -441,7 +443,9 @@ export const listingRouter = createTRPCRouter({
                 minPrice,
                 maxPrice,
                 priceOrder,
+                cursor,
             } = input;
+            const limit = input.limit ?? 12;
 
             // Step 1: Aggregate comment counts
             const commentCounts = await ctx.prisma.comment.groupBy({
@@ -463,6 +467,14 @@ export const listingRouter = createTRPCRouter({
                         },
                     },
                 },
+                orderBy: priceOrder
+                    ? priceOrder === "asc"
+                        ? [{ price: "asc" }, { createdAt: "desc" }]
+                        : [{ price: "desc" }, { createdAt: "desc" }]
+                    : [{ createdAt: "desc" }],
+                take: limit + 1,
+                skip: cursor ? 1 : undefined,
+                cursor: cursor ? { id: cursor } : undefined,
             };
 
             const filters: Prisma.ListingWhereInput[] = [];
@@ -532,7 +544,7 @@ export const listingRouter = createTRPCRouter({
             const listings = await ctx.prisma.listing.findMany(queryOptions);
 
             // Step 3: Merge listings with comment counts
-            const listingsWithCommentCounts = listings.map((listing) => {
+            const popularListings = listings.map((listing) => {
                 const commentCount =
                     commentCounts.find((c) => c.typeId === listing.id)
                         ?._count ?? 0;
@@ -541,17 +553,26 @@ export const listingRouter = createTRPCRouter({
 
             // Step 4: Sort listings by priceOrder if specified
             if (priceOrder === "asc") {
-                listingsWithCommentCounts.sort((a, b) => a.price - b.price);
+                popularListings.sort((a, b) => a.price - b.price);
             } else if (priceOrder === "desc") {
-                listingsWithCommentCounts.sort((a, b) => b.price - a.price);
+                popularListings.sort((a, b) => b.price - a.price);
             }
 
             // Step 5: Sort listings by comment counts
-            listingsWithCommentCounts.sort(
-                (a, b) => b.commentCount - a.commentCount
-            );
+            popularListings.sort((a, b) => b.commentCount - a.commentCount);
 
-            return listingsWithCommentCounts;
+            let nextCursor: typeof cursor | undefined = undefined;
+            if (popularListings.length > limit) {
+                const nextItem = popularListings.pop(); // Remove the extra item
+                if (nextItem !== undefined) {
+                    nextCursor = nextItem.id; // Set the next cursor to the ID of the extra item
+                }
+            }
+
+            return {
+                popularListings,
+                nextCursor,
+            };
         }),
 
     create: protectedProcedure
