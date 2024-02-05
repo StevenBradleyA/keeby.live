@@ -29,44 +29,42 @@ export const imageRouter = createTRPCRouter({
                 },
             });
         }),
-    getAllByResourceId: publicProcedure
-        .input(
-            z.object({
-                resourceType: z.string(),
-                resourceId: z.string(),
-            })
-        )
-        .query(({ ctx, input }) => {
-            return ctx.prisma.images.findMany({
-                where: {
-                    resourceType: input.resourceType,
-                    resourceId: input.resourceId,
-                },
-            });
-        }),
+    // getAllByResourceId: publicProcedure
+    //     .input(
+    //         z.object({
+    //             resourceType: z.string(),
+    //             resourceId: z.string(),
+    //         })
+    //     )
+    //     .query(({ ctx, input }) => {
+    //         return ctx.prisma.images.findMany({
+    //             where: {
+    //                 resourceType: input.resourceType,
+    //                 resourceId: input.resourceId,
+    //             },
+    //         });
+    //     }),
 
     getCombinedListingImages: publicProcedure
         .input(
             z.object({
-                resourceId: z.string(),
+                listingId: z.string(),
             })
         )
         .query(async ({ ctx, input }) => {
             const listingImages = await ctx.prisma.images.findMany({
                 where: {
                     resourceType: "LISTING",
-                    resourceId: input.resourceId,
+                    listingId: input.listingId,
                 },
             });
             const listingPreviewImages = await ctx.prisma.images.findMany({
                 where: {
                     resourceType: "LISTINGPREVIEW",
-                    resourceId: input.resourceId,
+                    listingId: input.listingId,
                 },
             });
 
             return [...listingPreviewImages, ...listingImages];
         }),
-
-    
 });
