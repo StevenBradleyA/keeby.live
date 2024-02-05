@@ -599,16 +599,23 @@ li:not(:first-child) span {
     z-index: 10;
 }
 
+
+
 /* line-height: 1.2; */
 .listing-page-title-small {
     color: #f975e7;
-    transform: rotate(-20deg);
-    -webkit-transform: rotate(-20deg);
+    transform: rotate(-30deg);
+    -webkit-transform: rotate(-30deg);
     -webkit-text-fill-color: #f008e4;
     -webkit-text-stroke: 0.5px #f008e4;
     -webkit-filter: drop-shadow(2px 2px 20px#f008e4);
     z-index: 10;
 }
+
+
+
+
+
 
 .pog-title {
     transition: all 0.5s;
@@ -793,6 +800,11 @@ input[type="checkbox"]:hover {
 .comment-input-box {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     resize: none;
+
+}
+.comment-input-box::placeholder {
+    color: #616161
+
 }
 
 .comment-input-box:focus {

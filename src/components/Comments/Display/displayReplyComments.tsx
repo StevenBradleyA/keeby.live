@@ -21,7 +21,7 @@ export default function DisplayReplyComments({
         });
 
     return (
-        <>
+        <div className="mt-2">
             {replies &&
                 replies.map((e, i) => (
                     <EachReplyCommentCard
@@ -31,6 +31,6 @@ export default function DisplayReplyComments({
                         parentId={parentId}
                     />
                 ))}
-        </>
+        </div>
     );
 }

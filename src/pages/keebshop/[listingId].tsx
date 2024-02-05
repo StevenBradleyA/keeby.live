@@ -11,18 +11,12 @@ export default function ListingPage() {
         id: listingId,
     });
 
-    const { data: commentCount, isLoading: isLoadingCommentCount } =
-        api.comment.getAmountByTypeId.useQuery({
-            type: "LISTING",
-            typeId: listingId,
-        });
-
     const { data: allListingImages, isLoading: isLoadingImages } =
         api.image.getCombinedListingImages.useQuery({
             listingId: listingId,
         });
 
-    if (isLoading || isLoadingCommentCount || isLoadingImages)
+    if (isLoading || isLoadingImages)
         return (
             <div className="mt-44">
                 <LoadingSpinner size="40px" />
@@ -31,16 +25,12 @@ export default function ListingPage() {
 
     return (
         <div className="w-full  px-16 text-black">
-            {listing &&
-                typeof commentCount === "number" &&
-                allListingImages && (
-                    <DisplayListingPage
-                        listing={listing}
-                        commentCount={commentCount}
-                        allListingImages={allListingImages}
-                    />
-                )}
+            {listing && allListingImages && (
+                <DisplayListingPage
+                    listing={listing}
+                    allListingImages={allListingImages}
+                />
+            )}
         </div>
-
     );
 }

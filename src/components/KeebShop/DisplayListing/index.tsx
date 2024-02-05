@@ -14,13 +14,11 @@ import ChevronRound from "~/components/Svgs/chevron";
 
 interface DisplayListingPageProps {
     listing: Listing;
-    commentCount: number;
     allListingImages: Images[];
 }
 
 export default function DisplayListingPage({
     listing,
-    commentCount,
     allListingImages,
 }: DisplayListingPageProps) {
     const { data: sellerInfo, isLoading: isLoading } =
@@ -53,7 +51,6 @@ export default function DisplayListingPage({
     // TODO ability to favorite / unfavorite the listing
     // todo I want to have comments next to other listings and banner ads like the nicely styled ones on youtube
     // may want to add a placeholder in the mean time
-
     // todo favorite, new listings on bottom,
 
     if (isLoading)
@@ -94,7 +91,7 @@ export default function DisplayListingPage({
                                 className={` flex h-full w-full flex-col items-center gap-5 `}
                                 style={{
                                     transform: `translateY(-${
-                                        currentIndex * 50
+                                        currentIndex * 40
                                     }%)`,
                                     transition: "transform 0.3s ease-in-out",
                                 }}
@@ -127,9 +124,11 @@ export default function DisplayListingPage({
                         <h1 className=" listing-page-title-big  px-5 font-titillium text-5xl ">
                             {bigTitle}
                         </h1>
-                        <h1 className="listing-page-title-small relative right-6 top-5 font-yellowTail text-4xl">
-                            {smallTitle}
-                        </h1>
+                        {currentListingNameArr.length > 0 && (
+                            <h1 className="listing-page-title-small relative right-4 top-7 font-yellowTail text-4xl">
+                                {smallTitle}
+                            </h1>
+                        )}
                     </div>
 
                     <div className="flex h-[60%] w-full justify-center rounded-xl ">
@@ -149,17 +148,40 @@ export default function DisplayListingPage({
                         )}
                     </div>
                 </div>
-                <div className="flex w-1/4 flex-col items-center gap-10 px-5">
-                    <div className=" h-1/3 w-full rounded-xl bg-keebyGray  p-10 ">
-                        <h1>keeb Stats</h1>
-                        <h3>{listing.title}</h3>
-                        <h3>{listing.keycaps}</h3>
-                        <h3>{listing.switches}</h3>
-                        <h3>{listing.switchType}</h3>
+                <div className="flex h-full w-1/4 flex-col items-center gap-10  px-5">
+                    <div className=" h-1/3 w-full overflow-hidden rounded-xl  bg-keebyGray px-10 py-5 ">
+                        <h1 className="mb-2 text-2xl ">Keeb Specs</h1>
+                        <div className="h-full overflow-auto">
+                            <h3 className=" text-darkGray">{listing.title}</h3>
+                            <h3 className="flex gap-2">
+                                <span className="text-darkGray">{`Keycaps `}</span>
+                                {listing.keycaps}
+                            </h3>
+                            <h3 className="flex gap-2">
+                                <span className="text-darkGray">{`Switches `}</span>
+                                {listing.switches}
+                            </h3>
+                            <h3 className="flex gap-2">
+                                <span className="text-darkGray">{`Switch type `}</span>
+                                {listing.switchType}
+                            </h3>
+                            <h3 className="flex gap-2">
+                                <span className="text-darkGray">{`Sound type `}</span>
+                                {listing.soundType}
+                            </h3>
+                            <h3 className="flex gap-2">
+                                <span className="text-darkGray">{`PCB `}</span>
+                                {listing.pcbType}
+                            </h3>
+                        </div>
                     </div>
-                    <div className="h-2/3 w-full rounded-xl bg-keebyGray p-10 ">
-                        <h1 className="text-3xl">Description</h1>
-                        <p className=" mt-10 break-words">{listing.text}</p>
+                    <div className="h-2/3 w-full overflow-hidden rounded-xl bg-keebyGray p-10 ">
+                        <h1 className="mb-2 text-3xl text-purple">
+                            Description
+                        </h1>
+                        <div className="h-full overflow-auto">
+                            <p className=" break-words">{listing.text}</p>
+                        </div>
                     </div>
                 </div>
             </div>

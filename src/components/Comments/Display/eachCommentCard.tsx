@@ -80,15 +80,15 @@ export default function EachCommentCard({
 
     return (
         <div className="mb-5 flex flex-col">
-            <div className="flex gap-2">
-                <div className="">
+            <div className="flex gap-3">
+                <div className="mt-1 h-12 w-12">
                     {comment.user.profile === null ? (
                         <Image
                             src={defaultProfile}
                             alt="profile"
                             height={600}
                             width={600}
-                            className="h-12 w-12 object-cover"
+                            className="h-full w-full object-cover"
                         />
                     ) : (
                         <Image
@@ -96,7 +96,7 @@ export default function EachCommentCard({
                             alt="profile"
                             height={600}
                             width={600}
-                            className="h-12 w-12 object-cover"
+                            className="h-full w-full object-cover"
                         />
                     )}
                 </div>
@@ -140,7 +140,7 @@ export default function EachCommentCard({
                     </div>
 
                     <div>
-                        <div className="whitespace-pre-wrap">
+                        <div className="text-md whitespace-pre-wrap">
                             {isTooLong && !isExpanded
                                 ? lines.slice(0, maxLines).join("\n")
                                 : comment.text}
@@ -155,7 +155,7 @@ export default function EachCommentCard({
                         )}
                     </div>
 
-                    <div className="flex gap-5">
+                    <div className="mt-1 flex gap-5">
                         <div className="flex gap-2 text-darkGray">
                             {session &&
                             session.user &&
@@ -179,7 +179,9 @@ export default function EachCommentCard({
                                     </svg>
                                 </button>
                             )}
-                            <div>{comment._count.commentLike}</div>
+                            <div className="text-xs">
+                                {comment._count.commentLike}
+                            </div>
                         </div>
                         <ModalDialog
                             isOpen={isSignInModalOpen}
@@ -194,11 +196,17 @@ export default function EachCommentCard({
                                         !showTopLevelCommentReply
                                     )
                                 }
+                                className="text-xs text-darkGray"
                             >
-                                reply
+                                Reply
                             </button>
                         ) : (
-                            <button onClick={openSignInModal}>reply</button>
+                            <button
+                                onClick={openSignInModal}
+                                className="text-xs text-darkGray"
+                            >
+                                Reply
+                            </button>
                         )}
                     </div>
                     {showTopLevelCommentReply && (
@@ -218,13 +226,28 @@ export default function EachCommentCard({
             {comment._count.replies > 0 && (
                 <button
                     onClick={() => setOpenReplies(!openReplies)}
-                    className="ml-14 flex justify-start text-sm text-green-500"
+                    className="ml-14 mt-2 flex justify-start text-sm text-green-500"
                 >
-                    {openReplies
-                        ? "hide replies"
-                        : `${comment._count.replies} ${
-                              comment._count.replies === 1 ? "reply" : "replies"
-                          }`}
+                    <div className="flex items-center gap-2 ">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="rgb(34 197 94)"
+                            width="12px"
+                            height="12px"
+                            viewBox="0 0 24 24"
+                            className={`${openReplies ? "rotate-180 " : ""}`}
+                        >
+                            <path d="M11.178 19.569a.998.998 0 0 0 1.644 0l9-13A.999.999 0 0 0 21 5H3a1.002 1.002 0 0 0-.822 1.569l9 13z" />
+                        </svg>
+
+                        {openReplies
+                            ? "hide replies"
+                            : `${comment._count.replies} ${
+                                  comment._count.replies === 1
+                                      ? "reply"
+                                      : "replies"
+                              }`}
+                    </div>
                 </button>
             )}
             {openReplies && session && session.user && (

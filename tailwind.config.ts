@@ -31,6 +31,7 @@ export default {
                 hack: "#00dd00",
                 failure: "#ff0000",
                 darkGray: "#616161",
+                purple: "#f008e4",
             },
         },
     },
