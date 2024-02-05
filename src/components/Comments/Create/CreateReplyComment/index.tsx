@@ -122,8 +122,8 @@ export default function CreateReplyComment({
 
     return (
         <div className="flex flex-col">
-            <form className="mt-2 flex flex-col justify-between gap-5">
-                <div className="flex">
+            <form className="mt-2 flex flex-col justify-between gap-2">
+                <div className="flex items-end gap-2">
                     <Image
                         src={
                             session && session.user.profile
@@ -145,16 +145,16 @@ export default function CreateReplyComment({
                         rows={row}
                     />
                 </div>
-                <div className="flex justify-end gap-5">
+                <div className="flex justify-end gap-5 text-sm">
                     <button
-                        className="rounded-md border text-slate-200"
+                        className="rounded-md border-2 border-green-500 border-opacity-0 px-2 py-1  text-darkGray hover:border-opacity-100 "
                         onClick={cancelComment}
                     >
                         Cancel
                     </button>
 
                     <button
-                        className="rounded-md border text-slate-200"
+                        className="rounded-md border-2 border-green-500 border-opacity-0 px-2 py-1  text-darkGray hover:border-opacity-100 "
                         onClick={
                             session && session.user ? submit : openSignInModal
                         }

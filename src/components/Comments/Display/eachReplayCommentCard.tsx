@@ -76,7 +76,7 @@ export default function EachReplyCommentCard({
 
     return (
         <div className="mb-5 flex gap-2 pl-16">
-            <div className="">
+            <div className="mt-1">
                 {reply.user.profile === null ? (
                     <Image
                         src={defaultProfile}
@@ -209,11 +209,17 @@ export default function EachReplyCommentCard({
                     {session && session.user ? (
                         <button
                             onClick={() => setShowNestedReply(!showNestedReply)}
+                            className="text-xs text-darkGray"
                         >
-                            reply
+                            Reply
                         </button>
                     ) : (
-                        <button onClick={openSignInModal}>reply</button>
+                        <button
+                            onClick={openSignInModal}
+                            className="text-xs text-darkGray"
+                        >
+                            Reply
+                        </button>
                     )}
                 </div>
                 {showNestedReply && reply.user.username && (

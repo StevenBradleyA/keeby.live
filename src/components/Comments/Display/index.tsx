@@ -1,7 +1,6 @@
 import { api } from "~/utils/api";
 import CreateComment from "../Create";
 import EachCommentCard from "./eachCommentCard";
-import { useSession } from "next-auth/react";
 import LoadingSpinner from "~/components/Loading";
 
 interface DisplayCommentsProps {

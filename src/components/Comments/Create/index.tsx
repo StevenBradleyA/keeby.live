@@ -42,7 +42,8 @@ export default function CreateComment({ typeId, type }: CreateCommentProps) {
         setIsSignInModalOpen(true);
     };
 
-    const closeSignInModal = () => {
+    const closeSignInModal = (e?: React.SyntheticEvent) => {
+        if (e?.preventDefault) e.preventDefault();
         setIsSignInModalOpen(false);
     };
 
@@ -97,7 +98,7 @@ export default function CreateComment({ typeId, type }: CreateCommentProps) {
     }, [text]);
 
     return (
-        <form className="mb-5 flex flex-col justify-between gap-5">
+        <form className="mb-5 flex flex-col justify-between gap-2">
             <textarea
                 className="comment-input-box w-full rounded-lg border-none bg-pogGray p-2 outline-none"
                 value={text}
@@ -108,15 +109,15 @@ export default function CreateComment({ typeId, type }: CreateCommentProps) {
                 rows={row}
             />
             {createSelected && (
-                <div className="flex justify-end gap-5">
+                <div className="flex justify-end gap-5 text-sm">
                     <button
-                        className="rounded-md border text-slate-200"
+                        className="rounded-md border-2 border-green-500 border-opacity-0 px-2 py-1  text-darkGray hover:border-opacity-100 "
                         onClick={cancelComment}
                     >
                         Cancel
                     </button>
                     <button
-                        className="rounded-md border text-slate-200"
+                        className="rounded-md border-2 border-green-500 border-opacity-0 px-2 py-1  text-darkGray hover:border-opacity-100 "
                         onClick={handleSubmitClick}
                     >
                         Submit Comment
