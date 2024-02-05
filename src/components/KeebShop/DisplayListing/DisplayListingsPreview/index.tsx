@@ -5,7 +5,6 @@ import Image from "next/image";
 import keebo from "@public/Profile/keebo.png";
 import { useEffect } from "react";
 import { throttle } from "lodash";
-import type { Images } from "@prisma/client";
 
 interface DisplayListingPreviewsProps {
     searchInput: string;
@@ -38,7 +37,12 @@ interface EachKeeb {
     title: string;
     price: number;
     switchType: string;
-    images: Images[];
+    images: EachPreviewImage[];
+}
+
+interface EachPreviewImage {
+    id: string;
+    link: string;
 }
 
 export default function DisplayListingPreviews({
@@ -145,11 +149,7 @@ export default function DisplayListingPreviews({
             </div>
         );
     }
-    // todo have to create a custom type for our friend keebData
-    // idk if we need to nest in a new component and pass as props to assert the type? probably
 
-
-    console.log(keebData?.pages)
     return (
         <>
             {keebData && keebData.pages.length > 0 && (
@@ -158,7 +158,7 @@ export default function DisplayListingPreviews({
                         page.listings.map((keeb, i) => (
                             <EachListingCardPreview
                                 key={keeb.id}
-                                keeb={keeb}
+                                keeb={keeb as unknown as EachKeeb}
                                 index={i}
                             />
                         ))

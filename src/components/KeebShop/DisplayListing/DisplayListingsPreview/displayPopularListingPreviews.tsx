@@ -1,10 +1,10 @@
 import LoadingSpinner from "~/components/Loading";
 import { api } from "~/utils/api";
-import EachListingCardPreview from "./eachListingCardPreview";
-import Image from "next/image";
-import keebo from "@public/Profile/keebo.png";
 import { useEffect } from "react";
 import { throttle } from "lodash";
+import Image from "next/image";
+import EachListingCardPreview from "./eachListingCardPreview";
+import keebo from "@public/Profile/keebo.png";
 
 interface DisplayPopularListingPreviewsProps {
     searchInput: string;
@@ -30,6 +30,20 @@ interface Filters {
     assemblyType?: string;
     hotSwapType?: string;
     priceOrder?: string;
+}
+
+interface EachKeeb {
+    id: string;
+    title: string;
+    price: number;
+    switchType: string;
+    images: EachPreviewImage[];
+    commentCount: number;
+}
+
+interface EachPreviewImage {
+    id: string;
+    link: string;
 }
 
 export default function DisplayPopularListingPreviews({
@@ -91,9 +105,6 @@ export default function DisplayPopularListingPreviews({
         queryInputs.hotSwapType = hotSwapType;
     }
 
-    // const { data: keebData, isLoading } =
-    //     api.listing.getAllSortedByPopularityWithFilters.useQuery(queryInputs);
-
     const {
         data: keebData,
         hasNextPage,
@@ -140,8 +151,6 @@ export default function DisplayPopularListingPreviews({
         );
     }
 
-    console.log(keebData);
-    console.log(keebData?.pages);
     return (
         <>
             {keebData && keebData.pages.length > 0 && (
@@ -150,7 +159,7 @@ export default function DisplayPopularListingPreviews({
                         page.popularListings.map((keeb, i) => (
                             <EachListingCardPreview
                                 key={keeb.id}
-                                keeb={keeb}
+                                keeb={keeb as unknown as EachKeeb}
                                 index={i}
                             />
                         ))

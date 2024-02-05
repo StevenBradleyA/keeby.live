@@ -1,5 +1,4 @@
 import { useState } from "react";
-import type { Images } from "@prisma/client";
 import Link from "next/link";
 import Image from "next/image";
 import keebo from "@public/Profile/keebo.png";
@@ -14,13 +13,18 @@ interface EachKeeb {
     title: string;
     price: number;
     switchType: string;
-    images: Images[];
+    images: EachPreviewImage[];
+    commentCount?: number;
+}
+
+interface EachPreviewImage {
+    id: string;
+    link: string;
 }
 
 export default function EachListingCardPreview({ keeb }: EachListingCardProps) {
     const [isPhotoHover, setIsPhotoHover] = useState<boolean>(false);
 
-    console.log("halllooo", keeb);
     return (
         <div className="flex w-96 flex-col">
             <Link
