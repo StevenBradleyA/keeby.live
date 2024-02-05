@@ -228,11 +228,6 @@ export const listingRouter = createTRPCRouter({
                         select: { id: true, link: true },
                     },
                 },
-                orderBy: priceOrder
-                    ? priceOrder === "asc"
-                        ? [{ price: "asc" }, { createdAt: "desc" }]
-                        : [{ price: "desc" }, { createdAt: "desc" }]
-                    : [{ createdAt: "desc" }],
                 take: limit + 1,
                 skip: cursor ? 1 : undefined,
                 cursor: cursor ? { id: cursor } : undefined,
@@ -312,15 +307,15 @@ export const listingRouter = createTRPCRouter({
                 return { ...listing, commentCount };
             });
 
-            // Step 4: Sort listings by priceOrder if specified
+            // Step 4: Sort listings by comment counts
+            popularListings.sort((a, b) => b.commentCount - a.commentCount);
+
+            // Step 5: Sort listings by priceOrder if specified
             if (priceOrder === "asc") {
                 popularListings.sort((a, b) => a.price - b.price);
             } else if (priceOrder === "desc") {
                 popularListings.sort((a, b) => b.price - a.price);
             }
-
-            // Step 5: Sort listings by comment counts
-            popularListings.sort((a, b) => b.commentCount - a.commentCount);
 
             let nextCursor: typeof cursor | undefined = undefined;
             if (popularListings.length > limit) {
