@@ -17,8 +17,11 @@ import keebyLiveTitle from "@public/Profile/keebylive-title.png";
 import futureComputer from "@public/Profile/future-future.png";
 import errorComputer from "@public/Profile/error-error-error.png";
 import gridFunnel from "@public/Profile/profile-idea.png";
-import Custom404 from "../404";
 import HackermanConsoleCommands from "~/components/Profile/Hackerman";
+import computerShare from "@public/Profile/computer-share.png";
+import computerShop from "@public/Profile/computer-shop.png";
+import computerType from "@public/Profile/computer-type.png";
+import MainFooter from "~/components/Footer";
 
 export default function UserProfile() {
     // todo consider hashing or some simple change that doesn't display the correct userID
@@ -30,8 +33,7 @@ export default function UserProfile() {
     // TODO Listing might need a purchased by userId category
     // that way it is easy to see who has purchased and query for that
     //todo set cookies for retro theme plus make separate button
-
-    // todo ssr or static generation so refresh doesnt show 404 page? we need to show 404 if not signed in
+    // todo set cookies for toggle shop type, share
 
     const { data: sessionData } = useSession();
     const { data: keebData } = api.keeb.getAll.useQuery();
@@ -39,7 +41,7 @@ export default function UserProfile() {
     const cookies = getCookies();
 
     const [isRetro, setIsRetro] = useState<boolean>(true);
-    const [toggle, setToggle] = useState<string>("KeebType");
+    const [toggle, setToggle] = useState<string>("KeebShop");
 
     const [isCreateKeebModalOpen, setIsCreateKeebModalOpen] =
         useState<boolean>(false);
@@ -100,7 +102,7 @@ export default function UserProfile() {
     return (
         sessionData &&
         sessionData.user && (
-            <div className="flex w-3/4 flex-col  font-retro text-green-500 ">
+            <div className="flex w-3/4 flex-col font-retro text-green-500 ">
                 {isRetro && <div className="retro-scanlines"></div>}
 
                 <div className="flex gap-20">
@@ -185,8 +187,8 @@ export default function UserProfile() {
                             </Link>
                         </div>
 
-                        <div className="h-80  border-2 border-[#616161] overflow-hidden ">
-                            <HackermanConsoleCommands/>
+                        <div className="h-80  overflow-hidden border-2 border-[#616161] ">
+                            <HackermanConsoleCommands />
                         </div>
                         {/* this needs to be cool moving text */}
                     </div>
@@ -363,189 +365,214 @@ export default function UserProfile() {
                     </div>
                 </div>
 
-                <div className="mt-44 flex justify-center gap-10 border-2 ">
-                    <Image
-                        src={errorComputer}
-                        alt="computer"
-                        width={200}
-                        height={200}
-                        className="png-green"
-                    />
-                    <Image
-                        src={futureComputer}
-                        alt="computer"
-                        width={200}
-                        height={200}
-                        className="png-green"
-                    />
-                    <Image
-                        src={errorComputer}
-                        alt="computer"
-                        width={200}
-                        height={200}
-                        className="png-green"
-                    />
+                <div className="mt-10 flex w-full items-center gap-5">
+                    <h1 className="text-xl"> PROFILE</h1>
+                    <h1 className="w-full border-[1.5px] border-green-500"></h1>
                 </div>
-                <div className=" flex justify-center gap-5">
-                    <motion.button
-                        onClick={() => setToggle("KeebType")}
-                        className="rounded-2xl bg-black px-6 py-2"
-                        whileHover={{
-                            scale: 1.1,
-                        }}
-                        whileTap={{ scale: 0.95 }}
-                    >
-                        KeebType
-                    </motion.button>
-                    <motion.button
-                        onClick={() => setToggle("KeebShop")}
-                        className="rounded-2xl bg-black px-6 py-2"
-                        whileHover={{
-                            scale: 1.1,
-                        }}
-                        whileTap={{ scale: 0.95 }}
-                    >
-                        KeebShop
-                    </motion.button>
-                    <motion.button
-                        onClick={() => setToggle("KeebShare")}
-                        className="rounded-2xl bg-black px-6 py-2"
-                        whileHover={{
-                            scale: 1.1,
-                        }}
-                        whileTap={{ scale: 0.95 }}
-                    >
-                        KeebShare
-                    </motion.button>
-                </div>
-                {toggle === "KeebType" && (
-                    <div className=" flex flex-col items-center">
-                        <div>graph with wpm date and keeb etc</div>
-                        <div>next to graph is a list of ten fastest wpm</div>
-                        <div>
-                            Rank information maybe link to a page that explains
-                            ranking system
-                        </div>
 
-                        <div className="text-3xl">Keebs</div>
-                        <div className="flex">
-                            <button
-                                className="rounded-2xl bg-green-600 px-6 py-2"
-                                onClick={openCreateKeebModal}
-                            >
-                                add a keeb
-                            </button>
-                            <button
-                                className="rounded-2xl bg-green-600 px-6 py-2"
-                                onClick={openManageKeebModal}
-                            >
-                                manage
-                            </button>
-                        </div>
-
-                        <ModalDialog
-                            isOpen={isCreateKeebModalOpen}
-                            onClose={closeCreateKeebModalModal}
-                        >
-                            <CreateKeeb
-                                closeModal={closeCreateKeebModalModal}
-                                userId={sessionData.user.id}
+                <div className="mt-5 flex items-end ">
+                    <div className=" flex h-[310px] w-1/3 flex-col gap-5 border-l-2 border-r-2 border-t-2 border-[#616161] p-5 ">
+                        <div className="flex items-center justify-center gap-10 text-xs">
+                            <Image
+                                src={computerShop}
+                                alt="computer"
+                                width={200}
+                                height={200}
+                                className="png-green w-20 cursor-pointer object-cover"
+                                onClick={() => setToggle("KeebShop")}
                             />
-                        </ModalDialog>
-
-                        <ModalDialog
-                            isOpen={isManageKeebModalOpen}
-                            onClose={closeManageKeebModalModal}
-                        >
-                            <ManageKeeb
-                                closeModal={closeManageKeebModalModal}
-                                userId={sessionData.user.id}
-                            />
-                        </ModalDialog>
-
-                        <div className="flex flex-wrap gap-10">
-                            {keebData?.map((keeb, i) => (
-                                <DisplayKeebs key={i} keeb={keeb} />
-                            ))}
+                            <p>
+                                check your favorite listings, manage your
+                                listings, leave reviews, with this keeb shop tab
+                            </p>
                         </div>
-
-                        <div>
-                            clicking on a keeb will show data for that keeb{" "}
+                        <div className="flex items-center justify-center gap-10 text-xs">
+                            <Image
+                                src={computerShare}
+                                alt="computer"
+                                width={200}
+                                height={200}
+                                className="png-green w-20 cursor-pointer object-cover"
+                                onClick={() => setToggle("KeebShare")}
+                            />
+                            <p>
+                                check your favorite posts, see your internet
+                                points, and manage your posts, with this keeb
+                                share tab
+                            </p>
+                        </div>
+                        <div className="flex items-center justify-center gap-10 text-xs">
+                            <Image
+                                src={computerType}
+                                alt="computer"
+                                width={200}
+                                height={200}
+                                className="png-green w-20 cursor-pointer object-cover"
+                                onClick={() => setToggle("KeebType")}
+                            />
+                            <p>
+                                check your typing stats, manage your typing
+                                keebs, with this keeb type tab
+                            </p>
                         </div>
                     </div>
-                )}
 
-                {toggle === "KeebShop" && (
-                    <div className="mb-20 mt-10 flex flex-col items-center">
-                        {sessionData.user.isVerified ? (
-                            <div>You are verified :D</div>
-                        ) : (
-                            <>
-                                <div>
-                                    To list a keeb you need to get verified as a
-                                    seller
-                                </div>
-                                <motion.button
-                                    whileHover={{
-                                        scale: 1.1,
-                                    }}
-                                    whileTap={{ scale: 0.95 }}
-                                    className="rounded-2xl bg-black px-6 py-2"
+                    <div className="w-1/3   ">
+                        <div className="mb-2 flex justify-between text-xs">
+                            <h1>{sessionData.user.username}</h1>
+                            <h1> {sessionData.user.selectedTag}</h1>
+                        </div>
+                        <Image
+                            alt="profile"
+                            src={
+                                sessionData.user.profile
+                                    ? sessionData.user.profile
+                                    : defaultProfile
+                            }
+                            width={800}
+                            height={800}
+                            priority={true}
+                            className=" w-full object-cover"
+                        />
+                    </div>
+                    <div className=" flex h-[310px] w-1/3 items-center justify-center border-l-2 border-r-2 border-t-2 border-[#616161] p-10 ">
+                        <h1 className="font-titillium text-7xl">{toggle}</h1>
+                    </div>
+                </div>
+
+                <div className=" w-full border-2 border-[#616161]">
+                    {toggle === "KeebType" && (
+                        <div className=" flex flex-col items-center">
+                            <div>graph with wpm date and keeb etc</div>
+                            <div>
+                                next to graph is a list of ten fastest wpm
+                            </div>
+                            <div>
+                                Rank information maybe link to a page that
+                                explains ranking system
+                            </div>
+
+                            <div className="text-3xl">Keebs</div>
+                            <div className="flex">
+                                <button
+                                    className="rounded-2xl bg-green-600 px-6 py-2"
+                                    onClick={openCreateKeebModal}
                                 >
-                                    <Link
-                                        href="/verification"
-                                        aria-label="verification"
+                                    add a keeb
+                                </button>
+                                <button
+                                    className="rounded-2xl bg-green-600 px-6 py-2"
+                                    onClick={openManageKeebModal}
+                                >
+                                    manage
+                                </button>
+                            </div>
+
+                            <ModalDialog
+                                isOpen={isCreateKeebModalOpen}
+                                onClose={closeCreateKeebModalModal}
+                            >
+                                <CreateKeeb
+                                    closeModal={closeCreateKeebModalModal}
+                                    userId={sessionData.user.id}
+                                />
+                            </ModalDialog>
+
+                            <ModalDialog
+                                isOpen={isManageKeebModalOpen}
+                                onClose={closeManageKeebModalModal}
+                            >
+                                <ManageKeeb
+                                    closeModal={closeManageKeebModalModal}
+                                    userId={sessionData.user.id}
+                                />
+                            </ModalDialog>
+
+                            <div className="flex flex-wrap gap-10">
+                                {keebData?.map((keeb, i) => (
+                                    <DisplayKeebs key={i} keeb={keeb} />
+                                ))}
+                            </div>
+
+                            <div>
+                                clicking on a keeb will show data for that keeb{" "}
+                            </div>
+                        </div>
+                    )}
+
+                    {toggle === "KeebShop" && (
+                        <div className="mb-20 mt-10 w-full">
+                            {sessionData.user.isVerified ? (
+                                <div>You are verified :D</div>
+                            ) : (
+                                <div>
+                                    <h1>
+                                        To list a keeb you need to get verified
+                                        as a seller
+                                    </h1>
+                                    <motion.button
+                                        whileHover={{
+                                            scale: 1.1,
+                                        }}
+                                        whileTap={{ scale: 0.95 }}
+                                        className="rounded-2xl bg-black px-6 py-2"
                                     >
-                                        {`Let's go`}
-                                    </Link>
-                                </motion.button>
-                            </>
-                        )}
-                        <motion.button
-                            whileHover={{
-                                scale: 1.1,
-                            }}
-                            whileTap={{ scale: 0.95 }}
-                            className="mt-10 rounded-2xl bg-black px-6 py-2"
-                        >
+                                        <Link
+                                            href="/verification"
+                                            aria-label="verification"
+                                        >
+                                            {`Let's go`}
+                                        </Link>
+                                    </motion.button>
+                                </div>
+                            )}
+                            <h1>View Favorite Listings</h1>
                             <Link
                                 href="/manage-listings"
                                 aria-label="manage listings"
+                                className="bg-black px-6 py-2"
                             >
-                                {`My Listings`}
+                                {`Manage my listings`}
                             </Link>
-                        </motion.button>
-                        <div className="mt-10">
-                            MY Seller Reputation aka reviews with average star
-                            rating
-                        </div>
-                        <div> Lets add purchase history here</div>
-                        <div>ability to leave reviews on these purchases</div>
-                        <DisplayReviews userId={sessionData.user.id} />
-                        Ability to leave reviews
-                    </div>
-                )}
-
-                {toggle === "KeebShare" && (
-                    <div className="mb-20 mt-10 flex flex-col items-center">
-                        <div>Internet Points counter --total likes</div>
-
-                        <motion.button
-                            whileHover={{
-                                scale: 1.1,
-                            }}
-                            whileTap={{ scale: 0.95 }}
-                            className="mt-10 rounded-2xl bg-black px-6 py-2"
-                        >
                             <Link
-                                href="/manage-posts"
-                                aria-label="manage posts"
+                                href={`profile/public/${sessionData.user.username}`}
+                                aria-label="public profile"
+                                className="bg-black px-6 py-2"
                             >
-                                {`Manage my posts`}
+                                My seller Reputation
                             </Link>
-                        </motion.button>
-                    </div>
-                )}
+                            <button> My purchases</button>
+                            <div>
+                                ability to leave reviews on these purchases
+                            </div>
+                            <DisplayReviews userId={sessionData.user.id} />
+                            Ability to leave reviews
+                        </div>
+                    )}
+
+                    {toggle === "KeebShare" && (
+                        <div className="mb-20 mt-10 flex flex-col items-center">
+                            <div>Internet Points counter --total likes</div>
+
+                            <motion.button
+                                whileHover={{
+                                    scale: 1.1,
+                                }}
+                                whileTap={{ scale: 0.95 }}
+                                className="mt-10 rounded-2xl bg-black px-6 py-2"
+                            >
+                                <Link
+                                    href="/manage-posts"
+                                    aria-label="manage posts"
+                                >
+                                    {`Manage my posts`}
+                                </Link>
+                            </motion.button>
+                        </div>
+                    )}
+                </div>
+
+                <MainFooter />
             </div>
         )
     );

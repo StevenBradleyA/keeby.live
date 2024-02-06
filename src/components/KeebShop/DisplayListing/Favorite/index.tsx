@@ -1,6 +1,5 @@
 import LoadingSpinner from "~/components/Loading";
 import { api } from "~/utils/api";
-import toast from "react-hot-toast";
 
 interface ListingPageFavoriteProps {
     userId: string;
