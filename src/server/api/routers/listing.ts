@@ -24,6 +24,7 @@ type CreateData = {
 };
 
 export const listingRouter = createTRPCRouter({
+   
     getOne: publicProcedure
         .input(
             z.object({

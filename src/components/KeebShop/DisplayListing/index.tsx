@@ -11,6 +11,7 @@ import SellerListingCard from "./SellerCard";
 import ListingSoundTest from "./SoundTest";
 import MainFooter from "~/components/Footer";
 import ChevronRound from "~/components/Svgs/chevron";
+import ListingPageFavorite from "./Favorite";
 
 interface DisplayListingPageProps {
     listing: Listing;
@@ -52,6 +53,7 @@ export default function DisplayListingPage({
     // todo I want to have comments next to other listings and banner ads like the nicely styled ones on youtube
     // may want to add a placeholder in the mean time
     // todo favorite, new listings on bottom,
+    // the favorite here should be based off the session user. we need to check if they have the listing favorited?
 
     if (isLoading)
         return (
@@ -131,7 +133,7 @@ export default function DisplayListingPage({
                         )}
                     </div>
 
-                    <div className="flex h-[60%] w-full justify-center rounded-xl ">
+                    <div className="relative flex h-[60%] w-full justify-center rounded-xl ">
                         {displayImage && (
                             <Image
                                 src={displayImage.link}
@@ -139,6 +141,12 @@ export default function DisplayListingPage({
                                 width={1000}
                                 height={1000}
                                 className="h-full w-full rounded-xl object-cover"
+                            />
+                        )}
+                        {session && session.user && (
+                            <ListingPageFavorite
+                                userId={session.user.id}
+                                listingId={listing.id}
                             />
                         )}
                     </div>
