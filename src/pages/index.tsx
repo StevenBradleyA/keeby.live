@@ -9,12 +9,10 @@ import ResetArrowSvg from "~/components/Svgs/reset";
 import NotificationSvg from "~/components/Svgs/notification";
 
 export default function Home() {
-    // todo implement pagination on scroll every 20 listings?
     // todo Cookies? do we want to save filters? not sure yet maybe just save hot/ new with cookies
-    // todo cookies for hot and new is a must lol
-    // todo debounce search waiting untill the user stops typing to reduce querys
 
-    // saving these could reduce cookies?
+    // todo cookies for hot and new is a must lol
+    // todo throughly test pagination
 
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [isNewFilter, setIsNewFilter] = useState<boolean>(false);
@@ -168,7 +166,7 @@ export default function Home() {
                     <div className="mb-5 flex gap-5 ">
                         <button
                             onClick={handleSearchClick}
-                            className={` cursor-pointer${
+                            className={`${
                                 !isSpecify
                                     ? "border-b border-white text-white"
                                     : "border-b border-white border-opacity-0"
@@ -639,7 +637,7 @@ export default function Home() {
                                     alt="create listing"
                                     width={200}
                                     height={200}
-                                    className="png-dark-gray w-12 "
+                                    className="shop-create-listing w-12  transition duration-150 ease-in-out "
                                 />
                             </button>
                         </div>

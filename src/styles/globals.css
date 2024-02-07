@@ -455,6 +455,17 @@ li:not(:first-child) span {
     z-index: 1;
 }
 
+.shop-create-listing {
+    filter: invert(39%) sepia(0%) saturate(0%) hue-rotate(351deg)
+        brightness(96%) contrast(99%);
+}
+.shop-create-listing:hover {
+    filter: invert(48%) sepia(5%) saturate(3277%) hue-rotate(72deg)
+        brightness(116%) contrast(126%);
+}
+
+
+
 /*  ----    Listings Hover effect    ---- */
 .listing-preview-hover-effect {
     background-color: #000000;

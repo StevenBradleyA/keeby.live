@@ -1,13 +1,13 @@
 import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import type { Mesh, BufferGeometry, MeshStandardMaterial } from "three";
+import type { Mesh } from "three";
 
 export default function RotatingSphere() {
-    const sphereRef= useRef(null);
+    const sphereRef = useRef<Mesh>(null);
 
     useFrame(() => {
         if (sphereRef.current) {
-            // Rotate the sphere on each frame
+            // This rotates the sphere on each frame
             sphereRef.current.rotation.y += 0.008;
         }
     });

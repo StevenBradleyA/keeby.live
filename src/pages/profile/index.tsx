@@ -26,21 +26,12 @@ import DisplayFavoriteListings from "~/components/Profile/Favorites";
 import ChevronRound from "~/components/Svgs/chevron";
 
 export default function UserProfile() {
-    // todo consider hashing or some simple change that doesn't display the correct userID
-    // todo does it really matter if this source code is avail...
-    // todo could make a simple button to turn off scanlines
     // mdn digest() -- might be useful for us here
     // npm install three @types/three @react-three/fiber
-    // todo don't want the userId in the url personal can just grab from session and we will have a separate profile for viewing other users.
-    // TODO Listing might need a purchased by userId category
-    // that way it is easy to see who has purchased and query for that
-    //todo set cookies for retro theme plus make separate button
-    // todo set cookies for toggle shop type, share
-    // todo add notification if user has an offer 
 
-    
-
-
+    // todo add notification if user has an offer
+    // todo add notification for navbar profile if a user has a offer they havent accepted or declined
+    // maybe if they have an offer we just set a cookie and then access the cookie in the navbar that way we arent checking query every single page...
 
     const { data: sessionData } = useSession();
     const { data: keebData } = api.keeb.getAll.useQuery();
@@ -200,17 +191,12 @@ export default function UserProfile() {
                         <div className="h-80  overflow-hidden border-2 border-[#616161] ">
                             <HackermanConsoleCommands />
                         </div>
-                        {/* this needs to be cool moving text */}
                     </div>
                     <div className="flex w-1/2 flex-col">
                         <button
                             className="flex items-center justify-end gap-2"
                             onClick={handleRetroMode}
                         >
-                            {/* <button onClick={handleRetroMode}>
-                               
-                            </button> */}
-
                             <div className="flex gap-1 ">
                                 <svg
                                     width="12"
@@ -275,7 +261,6 @@ export default function UserProfile() {
                         <div className="h-[400px] border-2 border-[#616161] ">
                             <Canvas
                                 className="h-full w-full cursor-pointer"
-                                // camera={{ position: [0, 400, 200] }}
                                 camera={{ position: [4, 0, 1] }}
                             >
                                 <ambientLight intensity={0.5} />

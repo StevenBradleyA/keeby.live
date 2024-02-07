@@ -57,6 +57,7 @@ export default function SellerListingCard({ sellerInfo }: SellerListingProps) {
                             <Link
                                 href={`/profile/public/${seller.username}`}
                                 aria-label="seller profile"
+                                className="text-white hover:text-green-500 hover:underline"
                             >
                                 {seller.username}
                             </Link>
