@@ -36,6 +36,11 @@ export default function UserProfile() {
     // that way it is easy to see who has purchased and query for that
     //todo set cookies for retro theme plus make separate button
     // todo set cookies for toggle shop type, share
+    // todo add notification if user has an offer 
+
+    
+
+
 
     const { data: sessionData } = useSession();
     const { data: keebData } = api.keeb.getAll.useQuery();
@@ -44,6 +49,7 @@ export default function UserProfile() {
 
     const [isRetro, setIsRetro] = useState<boolean>(true);
     const [showFavorites, setShowFavorites] = useState<boolean>(false);
+    const [showOffers, setShowOffers] = useState<boolean>(false);
 
     const [toggle, setToggle] = useState<string>("KEEBSHOP");
 
@@ -370,7 +376,7 @@ export default function UserProfile() {
                 </div>
 
                 <div className="my-10 flex w-full items-center gap-5">
-                    <h1 className="text-2xl"> PROFILE</h1>
+                    <h1 className="text-2xl"> {toggle}</h1>
                     <h1 className="w-full border-[1px] border-green-500"></h1>
                 </div>
 
@@ -600,13 +606,12 @@ export default function UserProfile() {
                                 <Link
                                     href="/manage-listings"
                                     aria-label="manage listings"
-                                    className=" flex h-32 w-32 items-center justify-center bg-black p-20"
+                                    className="rounded border-2 border-[#616161] px-4 py-2 transition  duration-150 ease-in-out hover:border-green-500"
                                 >
-                                    {`Manage listings`}
+                                    MY LISTINGS
                                 </Link>
-
-                                <button className=" flex h-32 w-32 items-center justify-center bg-black p-20">
-                                    My orders
+                                <button className="rounded border-2 border-[#616161] px-4 py-2 transition  duration-150 ease-in-out hover:border-green-500">
+                                    MY ORDERS
                                 </button>
                             </div>
 
@@ -619,19 +624,91 @@ export default function UserProfile() {
                                 reviews about me
                             </Link>
                         </div>
-                        <div className="w-1/2">
+                        <div className="flex w-1/2 flex-col gap-5">
                             <div className=" w-full border-2 border-[#616161] p-5">
                                 <button
                                     onClick={() =>
                                         setShowFavorites(!showFavorites)
                                     }
-                                    className="flex gap-5 "
+                                    className="flex items-center gap-5 text-xl "
                                 >
-                                    <h1>
-                                        FAVORITES FAVORITES FAVORITES FAVORITES
-                                        FAVORITES FAVORITES
-                                    </h1>
-                                    <div className="w-5 rotate-180 ">
+                                    <h1>FAVORITES</h1>
+
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="w-7"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                    >
+                                        <path
+                                            d="M2 9.1371C2 14 6.01943 16.5914 8.96173 18.9109C10 19.7294 11 20.5 12 20.5C13 20.5 14 19.7294 15.0383 18.9109C17.9806 16.5914 22 14 22 9.1371C22 4.27416 16.4998 0.825464 12 5.50063C7.50016 0.825464 2 4.27416 2 9.1371Z"
+                                            stroke="#616161"
+                                            strokeWidth="1.5"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                        />
+                                        <path
+                                            opacity="0.5"
+                                            d="M12 5.50073L10.5 8.5001L14 11.0001L11 14.5001L13 16.5001L12 20.5001"
+                                            stroke="#616161"
+                                            stroke-width="1.5"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                        />
+                                    </svg>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="w-7"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                    >
+                                        <path
+                                            d="M2 9.1371C2 14 6.01943 16.5914 8.96173 18.9109C10 19.7294 11 20.5 12 20.5C13 20.5 14 19.7294 15.0383 18.9109C17.9806 16.5914 22 14 22 9.1371C22 4.27416 16.4998 0.825464 12 5.50063C7.50016 0.825464 2 4.27416 2 9.1371Z"
+                                            stroke="#616161"
+                                            strokeWidth="1.5"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                        />
+                                        <path
+                                            opacity="0.5"
+                                            d="M12 5.50073L10.5 8.5001L14 11.0001L11 14.5001L13 16.5001L12 20.5001"
+                                            stroke="#616161"
+                                            stroke-width="1.5"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                        />
+                                    </svg>
+
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="w-7"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                    >
+                                        <path
+                                            d="M2 9.1371C2 14 6.01943 16.5914 8.96173 18.9109C10 19.7294 11 20.5 12 20.5C13 20.5 14 19.7294 15.0383 18.9109C17.9806 16.5914 22 14 22 9.1371C22 4.27416 16.4998 0.825464 12 5.50063C7.50016 0.825464 2 4.27416 2 9.1371Z"
+                                            stroke="#616161"
+                                            strokeWidth="1.5"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                        />
+                                        <path
+                                            opacity="0.5"
+                                            d="M12 5.50073L10.5 8.5001L14 11.0001L11 14.5001L13 16.5001L12 20.5001"
+                                            stroke="#616161"
+                                            stroke-width="1.5"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                        />
+                                    </svg>
+
+                                    <div
+                                        className={`w-5 ${
+                                            showFavorites
+                                                ? "rotate-0"
+                                                : "rotate-180"
+                                        } `}
+                                    >
                                         <ChevronRound />
                                     </div>
                                 </button>
@@ -639,6 +716,34 @@ export default function UserProfile() {
                                     <DisplayFavoriteListings
                                         userId={sessionData.user.id}
                                     />
+                                )}
+                            </div>
+                            <div className=" w-full border-2 border-[#616161] p-5">
+                                <button
+                                    onClick={() => setShowOffers(!showOffers)}
+                                    className="flex items-center gap-5 text-xl "
+                                >
+                                    <h1>OFFERS</h1>
+                                    <h1>OFFERS</h1>
+                                    <h1>OFFERS</h1>
+                                    <h1>OFFERS</h1>
+                                    <h1>OFFERS</h1>
+
+                                    <div
+                                        className={`w-5 ${
+                                            showOffers
+                                                ? "rotate-0"
+                                                : "rotate-180"
+                                        } `}
+                                    >
+                                        <ChevronRound />
+                                    </div>
+                                </button>
+                                {showOffers && (
+                                    <div>
+                                        hello display offers with agree and
+                                        delete with confirms
+                                    </div>
                                 )}
                             </div>
                         </div>
