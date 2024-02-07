@@ -22,6 +22,8 @@ import computerShare from "@public/Profile/computer-share.png";
 import computerShop from "@public/Profile/computer-shop.png";
 import computerType from "@public/Profile/computer-type.png";
 import MainFooter from "~/components/Footer";
+import DisplayFavoriteListings from "~/components/Profile/Favorites";
+import ChevronRound from "~/components/Svgs/chevron";
 
 export default function UserProfile() {
     // todo consider hashing or some simple change that doesn't display the correct userID
@@ -41,7 +43,9 @@ export default function UserProfile() {
     const cookies = getCookies();
 
     const [isRetro, setIsRetro] = useState<boolean>(true);
-    const [toggle, setToggle] = useState<string>("KeebShop");
+    const [showFavorites, setShowFavorites] = useState<boolean>(false);
+
+    const [toggle, setToggle] = useState<string>("KEEBSHOP");
 
     const [isCreateKeebModalOpen, setIsCreateKeebModalOpen] =
         useState<boolean>(false);
@@ -365,63 +369,13 @@ export default function UserProfile() {
                     </div>
                 </div>
 
-                <div className="mt-10 flex w-full items-center gap-5">
-                    <h1 className="text-xl"> PROFILE</h1>
-                    <h1 className="w-full border-[1.5px] border-green-500"></h1>
+                <div className="my-10 flex w-full items-center gap-5">
+                    <h1 className="text-2xl"> PROFILE</h1>
+                    <h1 className="w-full border-[1px] border-green-500"></h1>
                 </div>
 
-                <div className="mt-5 flex items-end ">
-                    <div className=" flex h-[310px] w-1/3 flex-col gap-5 border-l-2 border-r-2 border-t-2 border-[#616161] p-5 ">
-                        <div className="flex items-center justify-center gap-10 text-xs">
-                            <Image
-                                src={computerShop}
-                                alt="computer"
-                                width={200}
-                                height={200}
-                                className="png-green w-20 cursor-pointer object-cover"
-                                onClick={() => setToggle("KeebShop")}
-                            />
-                            <p>
-                                check your favorite listings, manage your
-                                listings, leave reviews, with this keeb shop tab
-                            </p>
-                        </div>
-                        <div className="flex items-center justify-center gap-10 text-xs">
-                            <Image
-                                src={computerShare}
-                                alt="computer"
-                                width={200}
-                                height={200}
-                                className="png-green w-20 cursor-pointer object-cover"
-                                onClick={() => setToggle("KeebShare")}
-                            />
-                            <p>
-                                check your favorite posts, see your internet
-                                points, and manage your posts, with this keeb
-                                share tab
-                            </p>
-                        </div>
-                        <div className="flex items-center justify-center gap-10 text-xs">
-                            <Image
-                                src={computerType}
-                                alt="computer"
-                                width={200}
-                                height={200}
-                                className="png-green w-20 cursor-pointer object-cover"
-                                onClick={() => setToggle("KeebType")}
-                            />
-                            <p>
-                                check your typing stats, manage your typing
-                                keebs, with this keeb type tab
-                            </p>
-                        </div>
-                    </div>
-
-                    <div className="w-1/3   ">
-                        <div className="mb-2 flex justify-between text-xs">
-                            <h1>{sessionData.user.username}</h1>
-                            <h1> {sessionData.user.selectedTag}</h1>
-                        </div>
+                <div className=" flex w-full items-start gap-20">
+                    <div className="w-1/2   ">
                         <Image
                             alt="profile"
                             src={
@@ -435,142 +389,339 @@ export default function UserProfile() {
                             className=" w-full object-cover"
                         />
                     </div>
-                    <div className=" flex h-[310px] w-1/3 items-center justify-center border-l-2 border-r-2 border-t-2 border-[#616161] p-10 ">
-                        <h1 className="font-titillium text-7xl">{toggle}</h1>
+                    <div className="flex w-1/2 flex-col gap-10 ">
+                        <div className=" flex w-full flex-col gap-5 border-2 border-[#616161] p-5 ">
+                            <div className="flex items-center justify-center gap-10 text-xs">
+                                <Image
+                                    src={computerShop}
+                                    alt="computer"
+                                    width={200}
+                                    height={200}
+                                    className="png-green w-20 cursor-pointer object-cover"
+                                    onClick={() => setToggle("KEEBSHOP")}
+                                />
+                                <p
+                                    className={`${
+                                        toggle === "KEEBSHOP"
+                                            ? "text-darkGray"
+                                            : "text-green-500"
+                                    }`}
+                                >
+                                    check your favorite listings, manage your
+                                    listings, leave reviews, with this keeb shop
+                                    tab
+                                </p>
+                            </div>
+                            <div className="flex items-center justify-center gap-10 text-xs">
+                                <Image
+                                    src={computerShare}
+                                    alt="computer"
+                                    width={200}
+                                    height={200}
+                                    className="png-green w-20 cursor-pointer object-cover"
+                                    onClick={() => setToggle("KEEBSHARE")}
+                                />
+                                <p
+                                    className={`${
+                                        toggle === "KEEBSHARE"
+                                            ? "text-darkGray"
+                                            : "text-green-500"
+                                    }`}
+                                >
+                                    check your favorite posts, see your internet
+                                    points, and manage your posts, with this
+                                    keeb share tab
+                                </p>
+                            </div>
+                            <div className="flex items-center justify-center gap-10 text-xs">
+                                <Image
+                                    src={computerType}
+                                    alt="computer"
+                                    width={200}
+                                    height={200}
+                                    className="png-green w-20 cursor-pointer object-cover"
+                                    onClick={() => setToggle("KEEBTYPE")}
+                                />
+                                <p
+                                    className={`${
+                                        toggle === "KEEBTYPE"
+                                            ? "text-darkGray"
+                                            : "text-green-500"
+                                    }`}
+                                >
+                                    check your typing stats, manage your typing
+                                    keebs, with this keeb type tab
+                                </p>
+                            </div>
+                        </div>
+
+                        <h1 className="font-titillium text-6xl"> {toggle}</h1>
+                        <div className=" flex w-full items-center gap-5 text-2xl">
+                            {toggle === "KEEBSHOP" && <h1> BUY</h1>}
+                            {toggle === "KEEBSHARE" && <h1> SHARE</h1>}
+                            {toggle === "KEEBTYPE" && <h1> TYPE</h1>}
+
+                            <h1 className="w-full border-[1px] border-green-500"></h1>
+
+                            {toggle === "KEEBSHOP" && <h1> SELL</h1>}
+                            {toggle === "KEEBSHARE" && <h1> ENJOY</h1>}
+                            {toggle === "KEEBTYPE" && <h1> WITH</h1>}
+
+                            <h1 className="w-full border-[1px] border-green-500"></h1>
+
+                            <h1> KEEBS</h1>
+                        </div>
                     </div>
                 </div>
 
-                <div className=" w-full border-2 border-[#616161]">
-                    {toggle === "KeebType" && (
-                        <div className=" flex flex-col items-center">
-                            <div>graph with wpm date and keeb etc</div>
-                            <div>
-                                next to graph is a list of ten fastest wpm
-                            </div>
-                            <div>
-                                Rank information maybe link to a page that
-                                explains ranking system
-                            </div>
-
-                            <div className="text-3xl">Keebs</div>
-                            <div className="flex">
-                                <button
-                                    className="rounded-2xl bg-green-600 px-6 py-2"
-                                    onClick={openCreateKeebModal}
-                                >
-                                    add a keeb
-                                </button>
-                                <button
-                                    className="rounded-2xl bg-green-600 px-6 py-2"
-                                    onClick={openManageKeebModal}
-                                >
-                                    manage
-                                </button>
-                            </div>
-
-                            <ModalDialog
-                                isOpen={isCreateKeebModalOpen}
-                                onClose={closeCreateKeebModalModal}
-                            >
-                                <CreateKeeb
-                                    closeModal={closeCreateKeebModalModal}
-                                    userId={sessionData.user.id}
-                                />
-                            </ModalDialog>
-
-                            <ModalDialog
-                                isOpen={isManageKeebModalOpen}
-                                onClose={closeManageKeebModalModal}
-                            >
-                                <ManageKeeb
-                                    closeModal={closeManageKeebModalModal}
-                                    userId={sessionData.user.id}
-                                />
-                            </ModalDialog>
-
-                            <div className="flex flex-wrap gap-10">
-                                {keebData?.map((keeb, i) => (
-                                    <DisplayKeebs key={i} keeb={keeb} />
-                                ))}
-                            </div>
-
-                            <div>
-                                clicking on a keeb will show data for that keeb{" "}
-                            </div>
-                        </div>
-                    )}
-
-                    {toggle === "KeebShop" && (
-                        <div className="mb-20 mt-10 w-full">
+                {toggle === "KEEBSHOP" && (
+                    <div className="mt-1 flex w-full gap-20">
+                        <div className="w-1/2 flex-col  ">
                             {sessionData.user.isVerified ? (
-                                <div>You are verified :D</div>
-                            ) : (
-                                <div>
-                                    <h1>
-                                        To list a keeb you need to get verified
-                                        as a seller
-                                    </h1>
-                                    <motion.button
-                                        whileHover={{
-                                            scale: 1.1,
-                                        }}
-                                        whileTap={{ scale: 0.95 }}
-                                        className="rounded-2xl bg-black px-6 py-2"
+                                <div className="flex items-center justify-between">
+                                    <Link
+                                        href="/verification"
+                                        aria-label="verification"
                                     >
-                                        <Link
-                                            href="/verification"
-                                            aria-label="verification"
-                                        >
-                                            {`Let's go`}
-                                        </Link>
-                                    </motion.button>
+                                        <h1>verified</h1>
+                                    </Link>
+                                    <Link
+                                        href="/verification"
+                                        aria-label="verification"
+                                    >
+                                        <div className="flex gap-1">
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                className="w-4"
+                                                viewBox="0 0 20 20"
+                                                fill="none"
+                                            >
+                                                <path
+                                                    stroke="rgb(34 197 94)"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth="2"
+                                                    d="M17 5L8 15l-5-4"
+                                                />
+                                            </svg>
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                className="w-4"
+                                                viewBox="0 0 20 20"
+                                                fill="none"
+                                            >
+                                                <path
+                                                    stroke="rgb(34 197 94)"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth="2"
+                                                    d="M17 5L8 15l-5-4"
+                                                />
+                                            </svg>
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                className="w-4"
+                                                viewBox="0 0 20 20"
+                                                fill="none"
+                                            >
+                                                <path
+                                                    stroke="rgb(34 197 94)"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth="2"
+                                                    d="M17 5L8 15l-5-4"
+                                                />
+                                            </svg>
+                                        </div>
+                                    </Link>
+                                </div>
+                            ) : (
+                                <div className="flex items-center justify-between">
+                                    <Link
+                                        href="/verification"
+                                        aria-label="verification"
+                                        className="text-darkGray"
+                                    >
+                                        not verified
+                                    </Link>
+                                    <Link
+                                        href="/verification"
+                                        aria-label="verification"
+                                    >
+                                        <div className="flex">
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                className="w-6"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                            >
+                                                <path
+                                                    d="M16 8L8 16M8.00001 8L16 16"
+                                                    stroke="#616161"
+                                                    strokeWidth="2"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                />
+                                            </svg>
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                className="w-6"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                            >
+                                                <path
+                                                    d="M16 8L8 16M8.00001 8L16 16"
+                                                    stroke="#616161"
+                                                    strokeWidth="2"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                />
+                                            </svg>
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                className="w-6"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                            >
+                                                <path
+                                                    d="M16 8L8 16M8.00001 8L16 16"
+                                                    stroke="#616161"
+                                                    strokeWidth="2"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                />
+                                            </svg>
+                                        </div>
+                                    </Link>
                                 </div>
                             )}
-                            <h1>View Favorite Listings</h1>
-                            <Link
-                                href="/manage-listings"
-                                aria-label="manage listings"
-                                className="bg-black px-6 py-2"
-                            >
-                                {`Manage my listings`}
-                            </Link>
+
+                            <div className="mt-5 flex w-full justify-between gap-5 border-2 border-[#616161] p-5">
+                                <Link
+                                    href="/manage-listings"
+                                    aria-label="manage listings"
+                                    className=" flex h-32 w-32 items-center justify-center bg-black p-20"
+                                >
+                                    {`Manage listings`}
+                                </Link>
+
+                                <button className=" flex h-32 w-32 items-center justify-center bg-black p-20">
+                                    My orders
+                                </button>
+                            </div>
+
+                            <h1>REVIEWS</h1>
+                            <h1>leave a review</h1>
                             <Link
                                 href={`profile/public/${sessionData.user.username}`}
                                 aria-label="public profile"
-                                className="bg-black px-6 py-2"
                             >
-                                My seller Reputation
+                                reviews about me
                             </Link>
-                            <button> My purchases</button>
-                            <div>
-                                ability to leave reviews on these purchases
-                            </div>
-                            <DisplayReviews userId={sessionData.user.id} />
-                            Ability to leave reviews
                         </div>
-                    )}
-
-                    {toggle === "KeebShare" && (
-                        <div className="mb-20 mt-10 flex flex-col items-center">
-                            <div>Internet Points counter --total likes</div>
-
-                            <motion.button
-                                whileHover={{
-                                    scale: 1.1,
-                                }}
-                                whileTap={{ scale: 0.95 }}
-                                className="mt-10 rounded-2xl bg-black px-6 py-2"
-                            >
-                                <Link
-                                    href="/manage-posts"
-                                    aria-label="manage posts"
+                        <div className="w-1/2">
+                            <div className=" w-full border-2 border-[#616161] p-5">
+                                <button
+                                    onClick={() =>
+                                        setShowFavorites(!showFavorites)
+                                    }
+                                    className="flex gap-5 "
                                 >
-                                    {`Manage my posts`}
-                                </Link>
-                            </motion.button>
+                                    <h1>
+                                        FAVORITES FAVORITES FAVORITES FAVORITES
+                                        FAVORITES FAVORITES
+                                    </h1>
+                                    <div className="w-5 rotate-180 ">
+                                        <ChevronRound />
+                                    </div>
+                                </button>
+                                {showFavorites && (
+                                    <DisplayFavoriteListings
+                                        userId={sessionData.user.id}
+                                    />
+                                )}
+                            </div>
                         </div>
-                    )}
-                </div>
+                    </div>
+                )}
+
+                {toggle === "KEEBSHARE" && (
+                    <div className="mb-20 mt-10 flex flex-col items-center">
+                        <div>Internet Points counter --total likes</div>
+
+                        <motion.button
+                            whileHover={{
+                                scale: 1.1,
+                            }}
+                            whileTap={{ scale: 0.95 }}
+                            className="mt-10 rounded-2xl bg-black px-6 py-2"
+                        >
+                            <Link
+                                href="/manage-posts"
+                                aria-label="manage posts"
+                            >
+                                {`Manage my posts`}
+                            </Link>
+                        </motion.button>
+                    </div>
+                )}
+
+                {toggle === "KEEBTYPE" && (
+                    <div className=" flex flex-col items-center">
+                        <div>graph with wpm date and keeb etc</div>
+                        <div>next to graph is a list of ten fastest wpm</div>
+                        <div>
+                            Rank information maybe link to a page that explains
+                            ranking system
+                        </div>
+
+                        <div className="text-3xl">Keebs</div>
+                        <div className="flex">
+                            <button
+                                className="rounded-2xl bg-green-600 px-6 py-2"
+                                onClick={openCreateKeebModal}
+                            >
+                                add a keeb
+                            </button>
+                            <button
+                                className="rounded-2xl bg-green-600 px-6 py-2"
+                                onClick={openManageKeebModal}
+                            >
+                                manage
+                            </button>
+                        </div>
+
+                        <ModalDialog
+                            isOpen={isCreateKeebModalOpen}
+                            onClose={closeCreateKeebModalModal}
+                        >
+                            <CreateKeeb
+                                closeModal={closeCreateKeebModalModal}
+                                userId={sessionData.user.id}
+                            />
+                        </ModalDialog>
+
+                        <ModalDialog
+                            isOpen={isManageKeebModalOpen}
+                            onClose={closeManageKeebModalModal}
+                        >
+                            <ManageKeeb
+                                closeModal={closeManageKeebModalModal}
+                                userId={sessionData.user.id}
+                            />
+                        </ModalDialog>
+
+                        <div className="flex flex-wrap gap-10">
+                            {keebData?.map((keeb, i) => (
+                                <DisplayKeebs key={i} keeb={keeb} />
+                            ))}
+                        </div>
+
+                        <div>
+                            clicking on a keeb will show data for that keeb{" "}
+                        </div>
+                    </div>
+                )}
 
                 <MainFooter />
             </div>

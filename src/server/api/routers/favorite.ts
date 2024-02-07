@@ -30,6 +30,36 @@ export const favoriteRouter = createTRPCRouter({
             return isFavorited;
         }),
 
+    getAllFavoriteListings: publicProcedure
+        .input(
+            z.object({
+                userId: z.string(),
+            })
+        )
+        .query(({ ctx, input }) => {
+            return ctx.prisma.userFavorites.findMany({
+                where: {
+                    userId: input.userId,
+                },
+                include: {
+                    listing: {
+                        select: {
+                            id: true,
+                            title: true,
+                            price: true,
+                            switchType: true,
+                            images: {
+                                where: {
+                                    resourceType: "LISTINGPREVIEW",
+                                },
+                                select: { id: true, link: true },
+                            },
+                        },
+                    },
+                },
+            });
+        }),
+
     create: protectedProcedure
         .input(
             z.object({
