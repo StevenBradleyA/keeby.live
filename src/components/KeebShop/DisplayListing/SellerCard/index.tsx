@@ -27,6 +27,11 @@ interface SellerListingProps {
 export default function SellerListingCard({ sellerInfo }: SellerListingProps) {
     const { seller, allSellerStars } = sellerInfo;
 
+    // todo is user is not verified take to /verification otherwise we allow them to actually buy the board
+
+    // also going to allow them to make an offer
+    // todo not sure the best way to handle offers. only one offer at a time? make it unique if the buyer counters the offer or something . maybe it needs a string that determines which way its going aka buyer or seller
+
     return (
         <div className="flex h-full w-full gap-5 p-5">
             {seller && seller.username && (

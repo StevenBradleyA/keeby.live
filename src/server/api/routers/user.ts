@@ -5,6 +5,10 @@ import {
     publicProcedure,
     protectedProcedure,
 } from "~/server/api/trpc";
+import { env } from "~/env.mjs";
+import Stripe from "stripe";
+
+const stripe = new Stripe(env.STRIPE_SECRET);
 
 export const userRouter = createTRPCRouter({
     getOneUser: publicProcedure.input(z.string()).query(({ input, ctx }) => {
@@ -125,12 +129,11 @@ export const userRouter = createTRPCRouter({
 
             return { createKeeb, updatedUser };
         }),
+
     verifyUser: protectedProcedure
         .input(z.string())
         .mutation(async ({ input, ctx }) => {
-            const sessionUserId = ctx.session.user.id;
-
-            if (sessionUserId === input) {
+            if (ctx.session.user.id === input) {
                 return ctx.prisma.user.update({
                     where: { id: input },
                     data: { isVerified: true },
@@ -138,5 +141,46 @@ export const userRouter = createTRPCRouter({
             } else {
                 throw new Error("Invalid userId");
             }
+        }),
+    createStripeIntent: protectedProcedure
+        .input(
+            z.object({
+                userId: z.string(),
+                email: z.string(),
+            })
+        )
+        .mutation(async ({ input, ctx }) => {
+            const { userId, email } = input;
+
+            if (ctx.session.user.id !== userId) {
+                throw new Error("Invalid userId");
+            }
+
+            let stripeCustomerId = ctx.session.user.stripeCustomerId;
+
+            if (!stripeCustomerId) {
+                // Optionally, retrieve or create a Stripe Customer for the user
+                // Assuming you store the Stripe Customer ID in your user model
+
+                const customer = await stripe.customers.create({
+                    email: email,
+                });
+
+                // Update your user model with the new Stripe Customer ID for future reference
+                await ctx.prisma.user.update({
+                    where: { id: userId },
+                    data: { stripeCustomerId: customer.id },
+                });
+
+                stripeCustomerId = customer.id;
+            }
+
+            const setupIntent = await stripe.setupIntents.create({
+                customer: stripeCustomerId,
+                usage: "off_session",
+            });
+
+            // Return the clientSecret from the newly created Setup Intent
+            return { clientSecret: setupIntent.client_secret };
         }),
 });

@@ -24,6 +24,7 @@ declare module "next-auth" {
             id: string;
             username: string;
             profile: string;
+            stripeCustomerId: string;
             selectedTag: string;
             isVerified: boolean;
             hasProfile: boolean;

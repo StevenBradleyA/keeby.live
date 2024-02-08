@@ -115,11 +115,11 @@ model Keeb {
 }
 
 model Images {
-    id        String   @id @default(cuid())
-    link      String
+    id           String   @id @default(cuid())
+    link         String
     resourceType String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    createdAt    DateTime @default(now())
+    updatedAt    DateTime @updatedAt
 
     // Relations
     userId String
@@ -253,15 +253,16 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
-    profile       String?
-    rankId        String?
-    username      String?   @unique
-    selectedTag   String?
+    id               String    @id @default(cuid())
+    name             String?
+    email            String?   @unique
+    emailVerified    DateTime?
+    image            String?
+    profile          String?
+    rankId           String?
+    username         String?   @unique
+    selectedTag      String?
+    stripeCustomerId String?   @unique
 
     isVerified   Boolean @default(false)
     isAdmin      Boolean @default(false)
