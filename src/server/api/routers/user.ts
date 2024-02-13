@@ -1,4 +1,3 @@
-import { TURBO_TRACE_DEFAULT_MEMORY_LIMIT } from "next/dist/shared/lib/constants";
 import { z } from "zod";
 import {
     createTRPCRouter,
@@ -6,9 +5,6 @@ import {
     protectedProcedure,
 } from "~/server/api/trpc";
 import { env } from "~/env.mjs";
-import Stripe from "stripe";
-
-const stripe = new Stripe(env.STRIPE_SECRET);
 
 export const userRouter = createTRPCRouter({
     getOneUser: publicProcedure.input(z.string()).query(({ input, ctx }) => {
@@ -142,45 +138,15 @@ export const userRouter = createTRPCRouter({
                 throw new Error("Invalid userId");
             }
         }),
-    createStripeIntent: protectedProcedure
-        .input(
-            z.object({
-                userId: z.string(),
-                email: z.string(),
-            })
-        )
-        .mutation(async ({ input, ctx }) => {
-            const { userId, email } = input;
 
-            if (ctx.session.user.id !== userId) {
-                throw new Error("Invalid userId");
-            }
+    paypalRedirect: protectedProcedure.query(({ ctx }) => {
+        const clientId = env.PAYPAL_CLIENT_ID;
+        const returnUrl = encodeURIComponent(
+            `http://localhost:3000/verification/success`
+        );
+        const scope = encodeURIComponent("openid email profile");
+        const paypalUrl = `https://www.sandbox.paypal.com/signin/authorize?flowEntry=static&client_id=${clientId}&scope=${scope}&redirect_uri=${returnUrl}`;
 
-            let stripeCustomerId = ctx.session.user.stripeCustomerId;
-
-            if (!stripeCustomerId) {
-                // Optionally, retrieve or create a Stripe Customer for the user
-                // Assuming you store the Stripe Customer ID in your user model
-
-                const customer = await stripe.customers.create({
-                    email: email,
-                });
-
-                // Update your user model with the new Stripe Customer ID for future reference
-                await ctx.prisma.user.update({
-                    where: { id: userId },
-                    data: { stripeCustomerId: customer.id },
-                });
-
-                stripeCustomerId = customer.id;
-            }
-
-            const setupIntent = await stripe.setupIntents.create({
-                customer: stripeCustomerId,
-                usage: "off_session",
-            });
-
-            // Return the clientSecret from the newly created Setup Intent
-            return { clientSecret: setupIntent.client_secret };
-        }),
+        return { url: paypalUrl };
+    }),
 });

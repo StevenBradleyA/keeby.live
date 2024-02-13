@@ -1,17 +1,12 @@
 import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
-import {
-    CardElement,
-    Elements,
-    useElements,
-    useStripe,
-} from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
 import toast from "react-hot-toast";
 import { env } from "~/env.mjs";
 import { useState } from "react";
-import KeebShopVerifyUser from "~/components/KeebShop/Verification";
 import MainFooter from "~/components/Footer";
+import { useRouter } from "next/router";
+import LoadingSpinner from "~/components/Loading";
+import Image from "next/image";
 
 // npm install @stripe/stripe-js @stripe/react-stripe-js
 // npm install stripe
@@ -23,83 +18,24 @@ import MainFooter from "~/components/Footer";
 export default function VerifyUser() {
     const { data: session, update } = useSession();
     const ctx = api.useContext();
-    const [showPaymentForm, setShowPaymentForm] = useState(false);
+    const router = useRouter();
 
-    const [clientSecret, setClientSecret] = useState<string | null>("");
+    // if (isLoading)
+    // return (
+    //     <div className="mt-44">
+    //         <LoadingSpinner size="40px" />
+    //     </div>
+    // );
 
-    const stripeApi = env.NEXT_PUBLIC_STRIPE_API;
-    const stripePromise = loadStripe(stripeApi);
-
-    const { mutate } = api.user.verifyUser.useMutation({
-        onSuccess: async () => {
-            try {
-                toast.success("Profile Verified!", {
-                    icon: "👏",
-                    style: {
-                        borderRadius: "10px",
-                        background: "#333",
-                        color: "#fff",
-                    },
-                });
-
-                void ctx.user.invalidate();
-                await update();
-            } catch (error) {
-                console.error("Error while navigating:", error);
-            }
-        },
-    });
-
-    const { mutate: createStripeCustomer } =
-        api.user.createStripeIntent.useMutation({
-            onSuccess: async (data) => {
-                try {
-                    setClientSecret(data.clientSecret);
-                    void ctx.user.invalidate();
-                    await update();
-                } catch (error) {
-                    console.error("Error while navigating:", error);
-                }
-            },
-
-            onError: (error) => {
-                toast.error(`Failed to verify profile: ${error.message}`, {
-                    style: {
-                        borderRadius: "10px",
-                        background: "#333",
-                        color: "#fff",
-                    },
-                });
-            },
-        });
-
-    const handleCreateStripeCustomer = (e: React.FormEvent) => {
-        e.preventDefault();
-
-        if (session && session.user && session.user.email) {
-            const data = {
-                userId: session.user.id,
-                email: session.user.email,
-            };
-
-            createStripeCustomer(data);
-        }
-    };
-    const appearance = {
-        variables: {
-            colorPrimary: "#22C55E",
-            colorBackground: "#616161",
-            colorText: '#FFFFFF'
-        },
-    };
+    const { data: redirect } = api.user.paypalRedirect.useQuery();
 
     return (
         <>
             <div>email is already verified because we use OAUTH</div>
 
             <div>
-                We don't save or interact with your payment data its all securly
-                stored via stripe
+                {`     We don't save or interact with your payment data its all securly
+                stored via stripe`}
             </div>
             <div>going to want to verify payment via stripe</div>
             <div>
@@ -117,25 +53,20 @@ export default function VerifyUser() {
                 on youtube*
             </div>
             <p>
-                keeby live is a market place by verifying your account we will
+                {`keeby live is a market place by verifying your account we will
                 use strip to securely collect payment details to verify the
                 payment method's validity and charge you or pay you at a later
-                time depending on if you buy or sell.{" "}
+                time depending on if you buy or sell.`}
             </p>
-            <button
-                onClick={handleCreateStripeCustomer}
-                className="my-32 bg-red-500 p-20"
-            >
-                Verify Payment Method
+
+            <button className="my-32">
+                <Image
+                    alt="paypal button"
+                    src="https://www.paypalobjects.com/devdoc/log-in-with-paypal-button.png"
+                    width={200}
+                    height={200}
+                />
             </button>
-            {clientSecret && (
-                <Elements
-                    stripe={stripePromise}
-                    options={{ clientSecret, appearance }}
-                >
-                    <KeebShopVerifyUser clientSecret={clientSecret} />
-                </Elements>
-            )}
 
             <MainFooter />
 
@@ -151,15 +82,3 @@ export default function VerifyUser() {
         </>
     );
 }
-
-// const handleVerify = (e: React.FormEvent) => {
-//     e.preventDefault();
-//     if (
-//         session &&
-//         session.user &&
-//         session.user.id &&
-//         !session.user.isVerified
-//     ) {
-//         mutate(session.user.id);
-//     }
-// };

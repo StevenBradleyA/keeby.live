@@ -35,6 +35,8 @@ export const env = createEnv({
         NEXT_PUBLIC_REGION: z.string(),
         NEXT_PUBLIC_STRIPE_API: z.string(),
         STRIPE_SECRET: z.string(),
+        PAYPAL_CLIENT_ID: z.string(),
+        PAYPAL_SECRET: z.string(),
     },
 
     /**
@@ -76,6 +78,8 @@ export const env = createEnv({
         NEXT_PUBLIC_REGION: process.env.NEXT_PUBLIC_REGION,
         NEXT_PUBLIC_STRIPE_API: process.env.NEXT_PUBLIC_STRIPE_API,
         STRIPE_SECRET: process.env.STRIPE_SECRET,
+        PAYPAL_CLIENT_ID: process.env.PAYPAL_CLIENT_ID,
+        PAYPAL_SECRET: process.env.PAYPAL_SECRET,
     },
     /**
      * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.

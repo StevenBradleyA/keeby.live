@@ -42,7 +42,7 @@ export default function DisplayComments({
     return (
         <>
             <div className=" mb-1 flex gap-1">
-                <h1 className="text-green-500 text-lg">
+                <h1 className="text-lg text-green-500">
                     {`${commentCount ? commentCount : 0} ${
                         commentCount === 1 ? "COMMENT" : "COMMENTS"
                     }`}

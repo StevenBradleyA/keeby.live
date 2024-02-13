@@ -1,5 +1,5 @@
 import { useState } from "react";
-import TypingText from "./typingText";
+// import TypingText from "./typingText";
 
 interface TypeMechanicsProps {
     currentParagraph: string;
@@ -92,11 +92,11 @@ export default function TypeMechanics({
             className="content-box relative z-10"
             style={{ pointerEvents: "none", userSelect: "none" }}
         >
-            <TypingText
+            {/* <TypingText
                 currentParagraph={currentParagraph}
                 letterIndex={letterIndex}
                 typedText={typedText}
-            />
+            /> */}
             <div
                 className="content"
                 style={{ pointerEvents: "none", userSelect: "none" }}
