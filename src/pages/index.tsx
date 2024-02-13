@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ModalDialog from "~/components/Modal";
 import CreateListingModal from "~/components/KeebShop/CreateListing/CreateModal";
 import plus from "@public/Vectors/plus-plus.png";
@@ -7,15 +7,22 @@ import DisplayListingPreviews from "~/components/KeebShop/DisplayListing/Display
 import DisplayPopularListingPreviews from "~/components/KeebShop/DisplayListing/DisplayListingsPreview/displayPopularListingPreviews";
 import ResetArrowSvg from "~/components/Svgs/reset";
 import NotificationSvg from "~/components/Svgs/notification";
+import { getCookies } from "cookies-next";
+import { setCookie } from "cookies-next";
 
 export default function Home() {
     // todo Cookies? do we want to save filters? not sure yet maybe just save hot/ new with cookies
 
     // todo cookies for hot and new is a must lol
     // todo throughly test pagination
+    // Conversion to SSR
+
+    const cookies = getCookies();
 
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [isNewFilter, setIsNewFilter] = useState<boolean>(false);
+    const [filter, setFilter] = useState<string>("Hot");
+
     const [isSpecify, setIsSpecify] = useState<boolean>(false);
     const [searchInput, setSearchInput] = useState<string>("");
     const [isSearchFocus, setIsSearchFocus] = useState<boolean>(false);
@@ -158,6 +165,20 @@ export default function Home() {
         }
         setMaxPrice(value);
     }
+
+    useEffect(() => {
+        if (cookies.filter) {
+            setFilter(cookies.filter);
+        }
+    }, [cookies]);
+
+    const handleFilters = (isNew: string) => {
+        setFilter(isNew);
+        setCookie("filter", isNew, {
+            maxAge: 60 * 60 * 24 * 365, // 1 year
+            path: "/",
+        });
+    };
 
     return (
         <div className="mt-10 flex w-full flex-col px-16 text-darkGray">
@@ -570,21 +591,21 @@ export default function Home() {
                         <div className="mb-5 flex gap-5 text-white/40">
                             <button
                                 className={`${
-                                    !isNewFilter
+                                    filter === "Hot"
                                         ? "border-b border-white text-white"
                                         : "border-b border-white border-opacity-0"
                                 }`}
-                                onClick={() => setIsNewFilter(false)}
+                                onClick={() => handleFilters("Hot")}
                             >
                                 Hot
                             </button>
                             <button
                                 className={`${
-                                    isNewFilter
+                                    filter === "New"
                                         ? "border-b border-white text-white"
                                         : "border-b border-white border-opacity-0"
                                 }`}
-                                onClick={() => setIsNewFilter(true)}
+                                onClick={() => handleFilters("New")}
                             >
                                 New
                             </button>
@@ -647,7 +668,7 @@ export default function Home() {
                     </ModalDialog>
 
                     <div>
-                        {isNewFilter ? (
+                        {filter === "New" && (
                             <DisplayListingPreviews
                                 searchInput={searchInput}
                                 switchType={switchType}
@@ -661,7 +682,8 @@ export default function Home() {
                                 hotSwapType={hotSwapType}
                                 priceOrder={priceOrder}
                             />
-                        ) : (
+                        )}
+                        {filter === "Hot" && (
                             <DisplayPopularListingPreviews
                                 searchInput={searchInput}
                                 switchType={switchType}

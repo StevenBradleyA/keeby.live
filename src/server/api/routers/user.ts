@@ -139,14 +139,14 @@ export const userRouter = createTRPCRouter({
             }
         }),
 
-    paypalRedirect: protectedProcedure.query(({ ctx }) => {
-        const clientId = env.PAYPAL_CLIENT_ID;
-        const returnUrl = encodeURIComponent(
-            `http://localhost:3000/verification/success`
-        );
-        const scope = encodeURIComponent("openid email profile");
-        const paypalUrl = `https://www.sandbox.paypal.com/signin/authorize?flowEntry=static&client_id=${clientId}&scope=${scope}&redirect_uri=${returnUrl}`;
+    // paypalRedirect: protectedProcedure.query(({ ctx }) => {
+    //     const clientId = env.PAYPAL_CLIENT_ID;
+    //     const returnUrl = encodeURIComponent(
+    //         `http://localhost:3000/verification/success`
+    //     );
+    //     const scope = encodeURIComponent("openid email profile");
+    //     const paypalUrl = `https://www.sandbox.paypal.com/signin/authorize?flowEntry=static&client_id=${clientId}&scope=${scope}&redirect_uri=${returnUrl}`;
 
-        return { url: paypalUrl };
-    }),
+    //     return { url: paypalUrl };
+    // }),
 });

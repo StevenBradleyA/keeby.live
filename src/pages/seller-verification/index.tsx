@@ -7,27 +7,16 @@ import MainFooter from "~/components/Footer";
 import { useRouter } from "next/router";
 import LoadingSpinner from "~/components/Loading";
 import Image from "next/image";
+import KeebShopVerifyUser from "~/components/KeebShop/Verification";
 
-// npm install @stripe/stripe-js @stripe/react-stripe-js
-// npm install stripe
-
-// Charge Buyers: When a transaction occurs, use a Payment Intent to charge the buyer's saved payment method.
-
-// Payout to Sellers: Use Stripe Connect to manage transferring funds to sellers. You might create Express or Custom accounts for your sellers to handle payouts.
-
-export default function VerifyUser() {
+export default function VerifySeller() {
     const { data: session, update } = useSession();
     const ctx = api.useContext();
     const router = useRouter();
 
-    // if (isLoading)
-    // return (
-    //     <div className="mt-44">
-    //         <LoadingSpinner size="40px" />
-    //     </div>
-    // );
-
-    const { data: redirect } = api.user.paypalRedirect.useQuery();
+    // WHEN LIVE INTEGRATE PAYPAL LOGIN HERE FOR SELLERS
+    // BUYERS ONLY NEED PAYPAL EXPRESS
+    // SELLERS WILL NEED A PAYPAL ACCOUNT FOR PAYOUTS SUPER POGS
 
     return (
         <>
@@ -59,26 +48,14 @@ export default function VerifyUser() {
                 time depending on if you buy or sell.`}
             </p>
 
-            <button className="my-32">
-                <Image
-                    alt="paypal button"
-                    src="https://www.paypalobjects.com/devdoc/log-in-with-paypal-button.png"
-                    width={200}
-                    height={200}
-                />
-            </button>
-
-            <MainFooter />
-
-            {/* {session && session.user && !session.user.isVerified ? (
-                <button className="mt-20 rounded-xl bg-red-500 px-10 py-2">
-                    Verify
-                </button>
+            {session && session.user && !session.user.isVerified ? (
+                <KeebShopVerifyUser userId={session.user.id} />
             ) : (
                 <button className="mt-20 rounded-xl bg-gray-500 px-10 py-2">
                     You are already verified :D
                 </button>
-            )} */}
+            )}
+            <MainFooter />
         </>
     );
 }
