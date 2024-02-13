@@ -12,26 +12,26 @@ import ManageKeeb from "~/components/Profile/Keeb/ManageKeeb";
 import { getCookies, setCookie } from "cookies-next";
 import { motion } from "framer-motion";
 import DisplayReviews from "~/components/Reviews/DisplayReviews";
-import keebo from "@public/Nav/bmo-test.jpg";
+import defaultProfile from "@public/Profile/profile-default.png";
 import keebyLiveTitle from "@public/Profile/keebylive-title.png";
 import futureComputer from "@public/Profile/future-future.png";
 import errorComputer from "@public/Profile/error-error-error.png";
 import gridFunnel from "@public/Profile/profile-idea.png";
-import Custom404 from "../404";
 import HackermanConsoleCommands from "~/components/Profile/Hackerman";
+import computerShare from "@public/Profile/computer-share.png";
+import computerShop from "@public/Profile/computer-shop.png";
+import computerType from "@public/Profile/computer-type.png";
+import MainFooter from "~/components/Footer";
+import DisplayFavoriteListings from "~/components/Profile/Favorites";
+import ChevronRound from "~/components/Svgs/chevron";
 
 export default function UserProfile() {
-    // todo consider hashing or some simple change that doesn't display the correct userID
-    // todo does it really matter if this source code is avail...
-    // todo could make a simple button to turn off scanlines
     // mdn digest() -- might be useful for us here
     // npm install three @types/three @react-three/fiber
-    // todo don't want the userId in the url personal can just grab from session and we will have a separate profile for viewing other users.
-    // TODO Listing might need a purchased by userId category
-    // that way it is easy to see who has purchased and query for that
-    //todo set cookies for retro theme plus make separate button
 
-    // todo ssr or static generation so refresh doesnt show 404 page? we need to show 404 if not signed in
+    // todo add notification if user has an offer
+    // todo add notification for navbar profile if a user has a offer they havent accepted or declined
+    // maybe if they have an offer we just set a cookie and then access the cookie in the navbar that way we arent checking query every single page...
 
     const { data: sessionData } = useSession();
     const { data: keebData } = api.keeb.getAll.useQuery();
@@ -39,7 +39,10 @@ export default function UserProfile() {
     const cookies = getCookies();
 
     const [isRetro, setIsRetro] = useState<boolean>(true);
-    const [toggle, setToggle] = useState<string>("KeebType");
+    const [showFavorites, setShowFavorites] = useState<boolean>(false);
+    const [showOffers, setShowOffers] = useState<boolean>(false);
+
+    const [toggle, setToggle] = useState<string>("KEEBSHOP");
 
     const [isCreateKeebModalOpen, setIsCreateKeebModalOpen] =
         useState<boolean>(false);
@@ -100,7 +103,7 @@ export default function UserProfile() {
     return (
         sessionData &&
         sessionData.user && (
-            <div className="flex w-3/4 flex-col  font-retro text-green-500 ">
+            <div className="flex w-3/4 flex-col font-retro text-green-500 ">
                 {isRetro && <div className="retro-scanlines"></div>}
 
                 <div className="flex gap-20">
@@ -185,20 +188,15 @@ export default function UserProfile() {
                             </Link>
                         </div>
 
-                        <div className="h-80  border-2 border-[#616161] overflow-hidden ">
-                            <HackermanConsoleCommands/>
+                        <div className="h-80  overflow-hidden border-2 border-[#616161] ">
+                            <HackermanConsoleCommands />
                         </div>
-                        {/* this needs to be cool moving text */}
                     </div>
                     <div className="flex w-1/2 flex-col">
                         <button
                             className="flex items-center justify-end gap-2"
                             onClick={handleRetroMode}
                         >
-                            {/* <button onClick={handleRetroMode}>
-                               
-                            </button> */}
-
                             <div className="flex gap-1 ">
                                 <svg
                                     width="12"
@@ -263,7 +261,6 @@ export default function UserProfile() {
                         <div className="h-[400px] border-2 border-[#616161] ">
                             <Canvas
                                 className="h-full w-full cursor-pointer"
-                                // camera={{ position: [0, 400, 200] }}
                                 camera={{ position: [4, 0, 1] }}
                             >
                                 <ambientLight intensity={0.5} />
@@ -280,7 +277,7 @@ export default function UserProfile() {
                                 src={
                                     sessionData.user.profile
                                         ? sessionData.user.profile
-                                        : keebo
+                                        : defaultProfile
                                 }
                                 width={800}
                                 height={800}
@@ -363,62 +360,403 @@ export default function UserProfile() {
                     </div>
                 </div>
 
-                <div className="mt-44 flex justify-center gap-10 border-2 ">
-                    <Image
-                        src={errorComputer}
-                        alt="computer"
-                        width={200}
-                        height={200}
-                        className="png-green"
-                    />
-                    <Image
-                        src={futureComputer}
-                        alt="computer"
-                        width={200}
-                        height={200}
-                        className="png-green"
-                    />
-                    <Image
-                        src={errorComputer}
-                        alt="computer"
-                        width={200}
-                        height={200}
-                        className="png-green"
-                    />
+                <div className="my-10 flex w-full items-center gap-5">
+                    <h1 className="text-2xl"> {toggle}</h1>
+                    <h1 className="w-full border-[1px] border-green-500"></h1>
                 </div>
-                <div className=" flex justify-center gap-5">
-                    <motion.button
-                        onClick={() => setToggle("KeebType")}
-                        className="rounded-2xl bg-black px-6 py-2"
-                        whileHover={{
-                            scale: 1.1,
-                        }}
-                        whileTap={{ scale: 0.95 }}
-                    >
-                        KeebType
-                    </motion.button>
-                    <motion.button
-                        onClick={() => setToggle("KeebShop")}
-                        className="rounded-2xl bg-black px-6 py-2"
-                        whileHover={{
-                            scale: 1.1,
-                        }}
-                        whileTap={{ scale: 0.95 }}
-                    >
-                        KeebShop
-                    </motion.button>
-                    <motion.button
-                        onClick={() => setToggle("KeebShare")}
-                        className="rounded-2xl bg-black px-6 py-2"
-                        whileHover={{
-                            scale: 1.1,
-                        }}
-                        whileTap={{ scale: 0.95 }}
-                    >
-                        KeebShare
-                    </motion.button>
+
+                <div className=" flex w-full items-start gap-20">
+                    <div className="w-1/2   ">
+                        <Image
+                            alt="profile"
+                            src={
+                                sessionData.user.profile
+                                    ? sessionData.user.profile
+                                    : defaultProfile
+                            }
+                            width={800}
+                            height={800}
+                            priority={true}
+                            className=" w-full object-cover"
+                        />
+                    </div>
+                    <div className="flex w-1/2 flex-col gap-10 ">
+                        <div className=" flex w-full flex-col gap-5 border-2 border-[#616161] p-5 ">
+                            <div className="flex items-center justify-center gap-10 text-xs">
+                                <Image
+                                    src={computerShop}
+                                    alt="computer"
+                                    width={200}
+                                    height={200}
+                                    className="png-green w-20 cursor-pointer object-cover"
+                                    onClick={() => setToggle("KEEBSHOP")}
+                                />
+                                <p
+                                    className={`${
+                                        toggle === "KEEBSHOP"
+                                            ? "text-darkGray"
+                                            : "text-green-500"
+                                    }`}
+                                >
+                                    check your favorite listings, manage your
+                                    listings, leave reviews, with this keeb shop
+                                    tab
+                                </p>
+                            </div>
+                            <div className="flex items-center justify-center gap-10 text-xs">
+                                <Image
+                                    src={computerShare}
+                                    alt="computer"
+                                    width={200}
+                                    height={200}
+                                    className="png-green w-20 cursor-pointer object-cover"
+                                    onClick={() => setToggle("KEEBSHARE")}
+                                />
+                                <p
+                                    className={`${
+                                        toggle === "KEEBSHARE"
+                                            ? "text-darkGray"
+                                            : "text-green-500"
+                                    }`}
+                                >
+                                    check your favorite posts, see your internet
+                                    points, and manage your posts, with this
+                                    keeb share tab
+                                </p>
+                            </div>
+                            <div className="flex items-center justify-center gap-10 text-xs">
+                                <Image
+                                    src={computerType}
+                                    alt="computer"
+                                    width={200}
+                                    height={200}
+                                    className="png-green w-20 cursor-pointer object-cover"
+                                    onClick={() => setToggle("KEEBTYPE")}
+                                />
+                                <p
+                                    className={`${
+                                        toggle === "KEEBTYPE"
+                                            ? "text-darkGray"
+                                            : "text-green-500"
+                                    }`}
+                                >
+                                    check your typing stats, manage your typing
+                                    keebs, with this keeb type tab
+                                </p>
+                            </div>
+                        </div>
+
+                        <h1 className="font-titillium text-6xl"> {toggle}</h1>
+                        <div className=" flex w-full items-center gap-5 text-2xl">
+                            {toggle === "KEEBSHOP" && <h1> BUY</h1>}
+                            {toggle === "KEEBSHARE" && <h1> SHARE</h1>}
+                            {toggle === "KEEBTYPE" && <h1> TYPE</h1>}
+
+                            <h1 className="w-full border-[1px] border-green-500"></h1>
+
+                            {toggle === "KEEBSHOP" && <h1> SELL</h1>}
+                            {toggle === "KEEBSHARE" && <h1> ENJOY</h1>}
+                            {toggle === "KEEBTYPE" && <h1> WITH</h1>}
+
+                            <h1 className="w-full border-[1px] border-green-500"></h1>
+
+                            <h1> KEEBS</h1>
+                        </div>
+                    </div>
                 </div>
-                {toggle === "KeebType" && (
+
+                {toggle === "KEEBSHOP" && (
+                    <div className="mt-1 flex w-full gap-20">
+                        <div className="w-1/2 flex-col  ">
+                            {sessionData.user.isVerified ? (
+                                <div className="flex items-center justify-between">
+                                    <Link
+                                        href="/verification"
+                                        aria-label="verification"
+                                    >
+                                        <h1>verified</h1>
+                                    </Link>
+                                    <Link
+                                        href="/verification"
+                                        aria-label="verification"
+                                    >
+                                        <div className="flex gap-1">
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                className="w-4"
+                                                viewBox="0 0 20 20"
+                                                fill="none"
+                                            >
+                                                <path
+                                                    stroke="rgb(34 197 94)"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth="2"
+                                                    d="M17 5L8 15l-5-4"
+                                                />
+                                            </svg>
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                className="w-4"
+                                                viewBox="0 0 20 20"
+                                                fill="none"
+                                            >
+                                                <path
+                                                    stroke="rgb(34 197 94)"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth="2"
+                                                    d="M17 5L8 15l-5-4"
+                                                />
+                                            </svg>
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                className="w-4"
+                                                viewBox="0 0 20 20"
+                                                fill="none"
+                                            >
+                                                <path
+                                                    stroke="rgb(34 197 94)"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth="2"
+                                                    d="M17 5L8 15l-5-4"
+                                                />
+                                            </svg>
+                                        </div>
+                                    </Link>
+                                </div>
+                            ) : (
+                                <div className="flex items-center justify-between">
+                                    <Link
+                                        href="/verification"
+                                        aria-label="verification"
+                                        className="text-darkGray"
+                                    >
+                                        not verified
+                                    </Link>
+                                    <Link
+                                        href="/verification"
+                                        aria-label="verification"
+                                    >
+                                        <div className="flex">
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                className="w-6"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                            >
+                                                <path
+                                                    d="M16 8L8 16M8.00001 8L16 16"
+                                                    stroke="#616161"
+                                                    strokeWidth="2"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                />
+                                            </svg>
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                className="w-6"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                            >
+                                                <path
+                                                    d="M16 8L8 16M8.00001 8L16 16"
+                                                    stroke="#616161"
+                                                    strokeWidth="2"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                />
+                                            </svg>
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                className="w-6"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                            >
+                                                <path
+                                                    d="M16 8L8 16M8.00001 8L16 16"
+                                                    stroke="#616161"
+                                                    strokeWidth="2"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                />
+                                            </svg>
+                                        </div>
+                                    </Link>
+                                </div>
+                            )}
+
+                            <div className="mt-5 flex w-full justify-between gap-5 border-2 border-[#616161] p-5">
+                                <Link
+                                    href="/manage-listings"
+                                    aria-label="manage listings"
+                                    className="rounded border-2 border-[#616161] px-4 py-2 transition  duration-150 ease-in-out hover:border-green-500"
+                                >
+                                    MY LISTINGS
+                                </Link>
+                                <button className="rounded border-2 border-[#616161] px-4 py-2 transition  duration-150 ease-in-out hover:border-green-500">
+                                    MY ORDERS
+                                </button>
+                            </div>
+
+                            <h1>REVIEWS</h1>
+                            <h1>leave a review</h1>
+                            <Link
+                                href={`profile/public/${sessionData.user.username}`}
+                                aria-label="public profile"
+                            >
+                                reviews about me
+                            </Link>
+                        </div>
+                        <div className="flex w-1/2 flex-col gap-5">
+                            <div className=" w-full border-2 border-[#616161] p-5">
+                                <button
+                                    onClick={() =>
+                                        setShowFavorites(!showFavorites)
+                                    }
+                                    className="flex items-center gap-5 text-xl "
+                                >
+                                    <h1>FAVORITES</h1>
+
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="w-7"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                    >
+                                        <path
+                                            d="M2 9.1371C2 14 6.01943 16.5914 8.96173 18.9109C10 19.7294 11 20.5 12 20.5C13 20.5 14 19.7294 15.0383 18.9109C17.9806 16.5914 22 14 22 9.1371C22 4.27416 16.4998 0.825464 12 5.50063C7.50016 0.825464 2 4.27416 2 9.1371Z"
+                                            stroke="#616161"
+                                            strokeWidth="1.5"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                        />
+                                        <path
+                                            opacity="0.5"
+                                            d="M12 5.50073L10.5 8.5001L14 11.0001L11 14.5001L13 16.5001L12 20.5001"
+                                            stroke="#616161"
+                                            stroke-width="1.5"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                        />
+                                    </svg>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="w-7"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                    >
+                                        <path
+                                            d="M2 9.1371C2 14 6.01943 16.5914 8.96173 18.9109C10 19.7294 11 20.5 12 20.5C13 20.5 14 19.7294 15.0383 18.9109C17.9806 16.5914 22 14 22 9.1371C22 4.27416 16.4998 0.825464 12 5.50063C7.50016 0.825464 2 4.27416 2 9.1371Z"
+                                            stroke="#616161"
+                                            strokeWidth="1.5"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                        />
+                                        <path
+                                            opacity="0.5"
+                                            d="M12 5.50073L10.5 8.5001L14 11.0001L11 14.5001L13 16.5001L12 20.5001"
+                                            stroke="#616161"
+                                            stroke-width="1.5"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                        />
+                                    </svg>
+
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="w-7"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                    >
+                                        <path
+                                            d="M2 9.1371C2 14 6.01943 16.5914 8.96173 18.9109C10 19.7294 11 20.5 12 20.5C13 20.5 14 19.7294 15.0383 18.9109C17.9806 16.5914 22 14 22 9.1371C22 4.27416 16.4998 0.825464 12 5.50063C7.50016 0.825464 2 4.27416 2 9.1371Z"
+                                            stroke="#616161"
+                                            strokeWidth="1.5"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                        />
+                                        <path
+                                            opacity="0.5"
+                                            d="M12 5.50073L10.5 8.5001L14 11.0001L11 14.5001L13 16.5001L12 20.5001"
+                                            stroke="#616161"
+                                            stroke-width="1.5"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                        />
+                                    </svg>
+
+                                    <div
+                                        className={`w-5 ${
+                                            showFavorites
+                                                ? "rotate-0"
+                                                : "rotate-180"
+                                        } `}
+                                    >
+                                        <ChevronRound />
+                                    </div>
+                                </button>
+                                {showFavorites && (
+                                    <DisplayFavoriteListings
+                                        userId={sessionData.user.id}
+                                    />
+                                )}
+                            </div>
+                            <div className=" w-full border-2 border-[#616161] p-5">
+                                <button
+                                    onClick={() => setShowOffers(!showOffers)}
+                                    className="flex items-center gap-5 text-xl "
+                                >
+                                    <h1>OFFERS</h1>
+                                    <h1>OFFERS</h1>
+                                    <h1>OFFERS</h1>
+                                    <h1>OFFERS</h1>
+                                    <h1>OFFERS</h1>
+
+                                    <div
+                                        className={`w-5 ${
+                                            showOffers
+                                                ? "rotate-0"
+                                                : "rotate-180"
+                                        } `}
+                                    >
+                                        <ChevronRound />
+                                    </div>
+                                </button>
+                                {showOffers && (
+                                    <div>
+                                        hello display offers with agree and
+                                        delete with confirms
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {toggle === "KEEBSHARE" && (
+                    <div className="mb-20 mt-10 flex flex-col items-center">
+                        <div>Internet Points counter --total likes</div>
+
+                        <motion.button
+                            whileHover={{
+                                scale: 1.1,
+                            }}
+                            whileTap={{ scale: 0.95 }}
+                            className="mt-10 rounded-2xl bg-black px-6 py-2"
+                        >
+                            <Link
+                                href="/manage-posts"
+                                aria-label="manage posts"
+                            >
+                                {`Manage my posts`}
+                            </Link>
+                        </motion.button>
+                    </div>
+                )}
+
+                {toggle === "KEEBTYPE" && (
                     <div className=" flex flex-col items-center">
                         <div>graph with wpm date and keeb etc</div>
                         <div>next to graph is a list of ten fastest wpm</div>
@@ -475,77 +813,7 @@ export default function UserProfile() {
                     </div>
                 )}
 
-                {toggle === "KeebShop" && (
-                    <div className="mb-20 mt-10 flex flex-col items-center">
-                        {sessionData.user.isVerified ? (
-                            <div>You are verified :D</div>
-                        ) : (
-                            <>
-                                <div>
-                                    To list a keeb you need to get verified as a
-                                    seller
-                                </div>
-                                <motion.button
-                                    whileHover={{
-                                        scale: 1.1,
-                                    }}
-                                    whileTap={{ scale: 0.95 }}
-                                    className="rounded-2xl bg-black px-6 py-2"
-                                >
-                                    <Link
-                                        href="/verification"
-                                        aria-label="verification"
-                                    >
-                                        {`Let's go`}
-                                    </Link>
-                                </motion.button>
-                            </>
-                        )}
-                        <motion.button
-                            whileHover={{
-                                scale: 1.1,
-                            }}
-                            whileTap={{ scale: 0.95 }}
-                            className="mt-10 rounded-2xl bg-black px-6 py-2"
-                        >
-                            <Link
-                                href="/manage-listings"
-                                aria-label="manage listings"
-                            >
-                                {`My Listings`}
-                            </Link>
-                        </motion.button>
-                        <div className="mt-10">
-                            MY Seller Reputation aka reviews with average star
-                            rating
-                        </div>
-                        <div> Lets add purchase history here</div>
-                        <div>ability to leave reviews on these purchases</div>
-                        <DisplayReviews userId={sessionData.user.id} />
-                        Ability to leave reviews
-                    </div>
-                )}
-
-                {toggle === "KeebShare" && (
-                    <div className="mb-20 mt-10 flex flex-col items-center">
-                        <div>Internet Points counter --total likes</div>
-
-                        <motion.button
-                            whileHover={{
-                                scale: 1.1,
-                            }}
-                            whileTap={{ scale: 0.95 }}
-                            className="mt-10 rounded-2xl bg-black px-6 py-2"
-                        >
-                            <Link
-                                href="/manage-posts"
-                                aria-label="manage posts"
-                            >
-                                {`Manage my posts`}
-                            </Link>
-                        </motion.button>
-                    </div>
-                )}
+                <MainFooter />
             </div>
         )
     );

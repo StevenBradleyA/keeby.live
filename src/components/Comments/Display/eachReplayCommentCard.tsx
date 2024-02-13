@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import keebo from "@public/Profile/profile-keebo.jpg";
+import defaultProfile from "@public/Profile/profile-default.png";
 import { useSession } from "next-auth/react";
 import CreateReplyComment from "../Create/CreateReplyComment";
 import { useState } from "react";
@@ -76,10 +76,10 @@ export default function EachReplyCommentCard({
 
     return (
         <div className="mb-5 flex gap-2 pl-16">
-            <div className="">
+            <div className="mt-1">
                 {reply.user.profile === null ? (
                     <Image
-                        src={keebo}
+                        src={defaultProfile}
                         alt="profile"
                         height={600}
                         width={600}
@@ -209,11 +209,17 @@ export default function EachReplyCommentCard({
                     {session && session.user ? (
                         <button
                             onClick={() => setShowNestedReply(!showNestedReply)}
+                            className="text-xs text-darkGray"
                         >
-                            reply
+                            Reply
                         </button>
                     ) : (
-                        <button onClick={openSignInModal}>reply</button>
+                        <button
+                            onClick={openSignInModal}
+                            className="text-xs text-darkGray"
+                        >
+                            Reply
+                        </button>
                     )}
                 </div>
                 {showNestedReply && reply.user.username && (

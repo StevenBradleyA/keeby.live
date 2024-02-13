@@ -5,8 +5,26 @@ import {
     protectedProcedure,
 } from "~/server/api/trpc";
 import { removeFileFromS3 } from "../utils";
+import type { Images, Prisma } from "@prisma/client";
+
+type CreateData = {
+    title: string;
+    text: string;
+    keycaps: string;
+    switches: string;
+    switchType: string;
+    soundType: string;
+    layoutType: string;
+    pcbType: string;
+    assemblyType: string;
+    price: number;
+    sellerId: string;
+    sold: boolean;
+    soundTest?: string;
+};
 
 export const listingRouter = createTRPCRouter({
+   
     getOne: publicProcedure
         .input(
             z.object({
@@ -24,6 +42,296 @@ export const listingRouter = createTRPCRouter({
     getAll: publicProcedure.query(({ ctx }) => {
         return ctx.prisma.listing.findMany();
     }),
+
+    getAllWithFilters: publicProcedure
+        .input(
+            z.object({
+                searchQuery: z.string().optional(),
+                switchType: z.string().optional(),
+                minPrice: z.number().optional(),
+                maxPrice: z.number().optional(),
+                priceOrder: z.string().optional(),
+                layoutType: z.string().optional(),
+                assemblyType: z.string().optional(),
+                hotSwapType: z.string().optional(),
+                soundType: z.string().optional(),
+                cursor: z.string().nullish(),
+                limit: z.number().min(1).max(100).nullish(),
+            })
+        )
+        .query(async ({ ctx, input }) => {
+            const {
+                searchQuery,
+                switchType,
+                soundType,
+                assemblyType,
+                hotSwapType,
+                layoutType,
+                minPrice,
+                maxPrice,
+                priceOrder,
+                cursor,
+            } = input;
+
+            const limit = input.limit ?? 12;
+            const queryOptions: Prisma.ListingFindManyArgs = {
+                select: {
+                    id: true,
+                    title: true,
+                    price: true,
+                    switchType: true,
+                    images: {
+                        where: {
+                            resourceType: "LISTINGPREVIEW",
+                        },
+                        select: { id: true, link: true },
+                    },
+                },
+                orderBy: priceOrder
+                    ? priceOrder === "asc"
+                        ? [{ price: "asc" }, { createdAt: "desc" }]
+                        : [{ price: "desc" }, { createdAt: "desc" }]
+                    : [{ createdAt: "desc" }],
+                take: limit + 1,
+                skip: cursor ? 1 : undefined,
+                cursor: cursor ? { id: cursor } : undefined,
+            };
+
+            const filters: Prisma.ListingWhereInput[] = [];
+
+            if (switchType) {
+                filters.push({
+                    switchType: {
+                        equals: switchType,
+                    },
+                });
+            }
+            if (soundType) {
+                filters.push({
+                    soundType: {
+                        equals: soundType,
+                    },
+                });
+            }
+            if (assemblyType) {
+                filters.push({
+                    assemblyType: {
+                        equals: assemblyType,
+                    },
+                });
+            }
+            if (layoutType) {
+                filters.push({
+                    layoutType: {
+                        equals: layoutType,
+                    },
+                });
+            }
+            if (hotSwapType) {
+                filters.push({
+                    pcbType: {
+                        equals: hotSwapType,
+                    },
+                });
+            }
+            if (minPrice) {
+                filters.push({
+                    price: {
+                        gte: minPrice,
+                    },
+                });
+            }
+            if (maxPrice) {
+                filters.push({
+                    price: {
+                        lte: maxPrice,
+                    },
+                });
+            }
+
+            if (searchQuery) {
+                filters.push({
+                    title: {
+                        contains: searchQuery,
+                    },
+                });
+            }
+            if (filters.length > 0) {
+                queryOptions.where = {
+                    AND: filters,
+                };
+            }
+
+            const listings = await ctx.prisma.listing.findMany(queryOptions);
+
+            let nextCursor: typeof cursor | undefined = undefined;
+            if (listings.length > limit) {
+                const nextItem = listings.pop(); // Remove the extra item
+                if (nextItem !== undefined) {
+                    nextCursor = nextItem.id; // Set the next cursor to the ID of the extra item
+                }
+            }
+
+            return {
+                listings,
+                nextCursor,
+            };
+        }),
+    getAllSortedByPopularityWithFilters: publicProcedure
+        .input(
+            z.object({
+                searchQuery: z.string().optional(),
+                switchType: z.string().optional(),
+                minPrice: z.number().optional(),
+                maxPrice: z.number().optional(),
+                priceOrder: z.string().optional(),
+                layoutType: z.string().optional(),
+                assemblyType: z.string().optional(),
+                hotSwapType: z.string().optional(),
+                soundType: z.string().optional(),
+                cursor: z.string().nullish(),
+                limit: z.number().min(1).max(100).nullish(),
+            })
+        )
+        .query(async ({ ctx, input }) => {
+            const {
+                searchQuery,
+                switchType,
+                soundType,
+                assemblyType,
+                hotSwapType,
+                layoutType,
+                minPrice,
+                maxPrice,
+                priceOrder,
+                cursor,
+            } = input;
+            const limit = input.limit ?? 12;
+
+            // Step 1: Aggregate comment counts
+            const commentCounts = await ctx.prisma.comment.groupBy({
+                by: ["typeId"],
+                where: { type: "LISTING" },
+                _count: true,
+            });
+
+            // Step 2: Apply filters and retrieve listings
+            const queryOptions: Prisma.ListingFindManyArgs = {
+                select: {
+                    id: true,
+                    title: true,
+                    price: true,
+                    switchType: true,
+                    images: {
+                        where: {
+                            resourceType: "LISTINGPREVIEW",
+                        },
+                        select: { id: true, link: true },
+                    },
+                },
+                take: limit + 1,
+                skip: cursor ? 1 : undefined,
+                cursor: cursor ? { id: cursor } : undefined,
+            };
+
+            const filters: Prisma.ListingWhereInput[] = [];
+
+            if (switchType) {
+                filters.push({
+                    switchType: {
+                        equals: switchType,
+                    },
+                });
+            }
+            if (soundType) {
+                filters.push({
+                    soundType: {
+                        equals: soundType,
+                    },
+                });
+            }
+            if (assemblyType) {
+                filters.push({
+                    assemblyType: {
+                        equals: assemblyType,
+                    },
+                });
+            }
+            if (layoutType) {
+                filters.push({
+                    layoutType: {
+                        equals: layoutType,
+                    },
+                });
+            }
+            if (hotSwapType) {
+                filters.push({
+                    pcbType: {
+                        equals: hotSwapType,
+                    },
+                });
+            }
+            if (minPrice) {
+                filters.push({
+                    price: {
+                        gte: minPrice,
+                    },
+                });
+            }
+            if (maxPrice) {
+                filters.push({
+                    price: {
+                        lte: maxPrice,
+                    },
+                });
+            }
+
+            if (searchQuery) {
+                filters.push({
+                    title: {
+                        contains: searchQuery,
+                    },
+                });
+            }
+            if (filters.length > 0) {
+                queryOptions.where = {
+                    AND: filters,
+                };
+            }
+            const listings = await ctx.prisma.listing.findMany(queryOptions);
+
+            // Step 3: Merge listings with comment counts
+            const popularListings = listings.map((listing) => {
+                const commentCount =
+                    commentCounts.find((c) => c.typeId === listing.id)
+                        ?._count ?? 0;
+                return { ...listing, commentCount };
+            });
+
+            // Step 4: Sort listings by comment counts
+            popularListings.sort((a, b) => b.commentCount - a.commentCount);
+
+            // Step 5: Sort listings by priceOrder if specified
+            if (priceOrder === "asc") {
+                popularListings.sort((a, b) => a.price - b.price);
+            } else if (priceOrder === "desc") {
+                popularListings.sort((a, b) => b.price - a.price);
+            }
+
+            let nextCursor: typeof cursor | undefined = undefined;
+            if (popularListings.length > limit) {
+                const nextItem = popularListings.pop(); // Remove the extra item
+                if (nextItem !== undefined) {
+                    nextCursor = nextItem.id; // Set the next cursor to the ID of the extra item
+                }
+            }
+
+            return {
+                popularListings,
+                nextCursor,
+            };
+        }),
+
     create: protectedProcedure
         .input(
             z.object({
@@ -33,6 +341,11 @@ export const listingRouter = createTRPCRouter({
                 keycaps: z.string(),
                 switches: z.string(),
                 switchType: z.string(),
+                soundType: z.string(),
+                layoutType: z.string(),
+                pcbType: z.string(),
+                assemblyType: z.string(),
+                soundTest: z.string().optional(),
                 preview: z.number(),
                 sellerId: z.string(),
                 images: z.array(
@@ -50,6 +363,11 @@ export const listingRouter = createTRPCRouter({
                 keycaps,
                 switches,
                 switchType,
+                soundType,
+                pcbType,
+                layoutType,
+                assemblyType,
+                soundTest,
                 preview,
                 sellerId,
                 images,
@@ -58,17 +376,26 @@ export const listingRouter = createTRPCRouter({
                 ctx.session.user.id === sellerId &&
                 ctx.session.user.isVerified
             ) {
+                const createData: CreateData = {
+                    title,
+                    text,
+                    keycaps,
+                    switches,
+                    switchType,
+                    soundType,
+                    layoutType,
+                    pcbType,
+                    assemblyType,
+                    price,
+                    sellerId,
+                    sold: false,
+                };
+                if (soundTest) {
+                    createData.soundTest = soundTest;
+                }
+
                 const newListing = await ctx.prisma.listing.create({
-                    data: {
-                        title,
-                        text,
-                        keycaps,
-                        switches,
-                        switchType,
-                        price,
-                        sellerId,
-                        sold: false,
-                    },
+                    data: createData,
                 });
 
                 const createdImages = await Promise.all(
@@ -80,7 +407,7 @@ export const listingRouter = createTRPCRouter({
                             data: {
                                 link: image.link,
                                 resourceType: imageType,
-                                resourceId: newListing.id,
+                                listingId: newListing.id,
                                 userId: newListing.sellerId,
                             },
                         });

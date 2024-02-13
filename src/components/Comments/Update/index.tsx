@@ -126,35 +126,63 @@ export default function UpdateComment({
     return (
         <div className="flex flex-col">
             {showDeleteConfirmation && !showEdit && (
-                <div className="flex flex-col gap-2">
-                    <h1>Proceed with operation?</h1>
+                <div className="flex flex-col items-center gap-2 ">
+                    <h1 className="text-green-500">Proceed with operation?</h1>
                     <div className="flex gap-5">
-                        <button onClick={deleteComment}>Confirm</button>
-                        <button onClick={hideDeleteConfirmation}>Deny</button>
+                        <button
+                            onClick={deleteComment}
+                            className="rounded-md border-2 border-red-500 border-opacity-0 px-2 py-1  text-darkGray hover:border-opacity-100 "
+                        >
+                            Confirm
+                        </button>
+                        <button
+                            onClick={hideDeleteConfirmation}
+                            className="rounded-md border-2 border-green-500 border-opacity-0 px-2 py-1  text-darkGray hover:border-opacity-100 "
+                        >
+                            Deny
+                        </button>
                     </div>
                 </div>
             )}
             {!showDeleteConfirmation && !showEdit && (
                 <>
-                    <button onClick={handleShowEdit}>Edit</button>
-                    <button onClick={handleShowDeleteConfirmation}>
+                    <button
+                        onClick={handleShowEdit}
+                        className="hover:text-green-500"
+                    >
+                        Edit
+                    </button>
+                    <button
+                        onClick={handleShowDeleteConfirmation}
+                        className="hover:text-green-500"
+                    >
                         Delete
                     </button>
                 </>
             )}
             {showEdit && (
-                <form className="flex flex-col">
+                <form className="flex w-[800px] flex-col gap-2">
                     <textarea
-                        className="comment-input-box w-[600px] rounded-lg border-none bg-pogGray p-2 outline-none"
+                        className="comment-input-box w-full rounded-lg border-none bg-pogGray p-2 outline-none"
                         value={text}
                         placeholder="Write a comment..."
                         onChange={(e) => setText(e.target.value)}
                         onKeyDown={handleRowIncrease}
                         rows={row}
                     />
-                    <div className="mt-3 flex gap-5">
-                        <button onClick={handleHideEdit}>cancel</button>
-                        <button onClick={handleUpdateComment}>submit</button>
+                    <div className=" flex w-full justify-end gap-5 ">
+                        <button
+                            onClick={handleHideEdit}
+                            className="rounded-md border-2 border-green-500 border-opacity-0 px-2 py-1  text-darkGray hover:border-opacity-100 "
+                        >
+                            cancel
+                        </button>
+                        <button
+                            onClick={handleUpdateComment}
+                            className="rounded-md border-2 border-green-500 border-opacity-0 px-2 py-1  text-darkGray hover:border-opacity-100 "
+                        >
+                            submit
+                        </button>
                     </div>
                 </form>
             )}

@@ -2,7 +2,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { api } from "~/utils/api";
 import Image from "next/image";
-import keebo from "@public/Profile/profile-keebo.jpg";
+import defaultProfile from "@public/Profile/profile-default.png";
 import ModalDialog from "~/components/Modal";
 import CommentSignInModal from "../../Modal/signInModal";
 
@@ -122,25 +122,19 @@ export default function CreateReplyComment({
 
     return (
         <div className="flex flex-col">
-            <form className="mt-2 flex flex-col justify-between gap-5">
-                <div className="flex">
-                    {session && session.user.profile ? (
-                        <Image
-                            src={session.user.profile}
-                            alt="profile"
-                            height={600}
-                            width={600}
-                            className="h-7 w-7 object-cover"
-                        />
-                    ) : (
-                        <Image
-                            src={keebo}
-                            alt="profile"
-                            height={600}
-                            width={600}
-                            className="h-7 w-7 object-cover"
-                        />
-                    )}
+            <form className="mt-2 flex flex-col justify-between gap-2">
+                <div className="flex items-end gap-2">
+                    <Image
+                        src={
+                            session && session.user.profile
+                                ? session.user.profile
+                                : defaultProfile
+                        }
+                        alt="profile"
+                        height={600}
+                        width={600}
+                        className="h-7 w-7 object-cover"
+                    />
 
                     <textarea
                         className="reply-input w-full  border-none bg-transparent p-2 outline-none"
@@ -151,16 +145,16 @@ export default function CreateReplyComment({
                         rows={row}
                     />
                 </div>
-                <div className="flex justify-end gap-5">
+                <div className="flex justify-end gap-5 text-sm">
                     <button
-                        className="rounded-md border text-slate-200"
+                        className="rounded-md border-2 border-green-500 border-opacity-0 px-2 py-1  text-darkGray hover:border-opacity-100 "
                         onClick={cancelComment}
                     >
                         Cancel
                     </button>
 
                     <button
-                        className="rounded-md border text-slate-200"
+                        className="rounded-md border-2 border-green-500 border-opacity-0 px-2 py-1  text-darkGray hover:border-opacity-100 "
                         onClick={
                             session && session.user ? submit : openSignInModal
                         }

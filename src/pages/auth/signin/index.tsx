@@ -7,18 +7,17 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "~/server/auth";
 import { authSvg } from "~/components/Svgs/auth";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
 import TitleScripts from "~/components/TitleScripts";
 
 export default function SignIn({
     providers,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-   
-
     return (
         <>
-            <TitleScripts page={"signin"} />
-            <div className="z-30  rounded-3xl bg-keebyGray px-20 py-10">
+            <div className="text-3xl">
+                <TitleScripts page={"signin"} />
+            </div>
+            <div className="z-30 mt-10  rounded-3xl bg-keebyGray px-20 py-10">
                 {Object.values(providers).map((provider) => (
                     <div key={provider.name}>
                         <motion.button

@@ -194,8 +194,8 @@ so that users can store a keeb
   Resend for emails $ they are def better than the others
   confirmation emails and newsletter emails
 
-TODO cookie warning modal 
-TODO epilepsy warning modal 
+TODO cookie warning modal
+TODO epilepsy warning modal
 
 
 
@@ -203,12 +203,12 @@ TODO epilepsy warning modal
 
 
 If successful ideas
-KEEB SHARE - a community page with cards like arbnb where people can share builds for inspiration 
+KEEB SHARE - a community page with cards like arbnb where people can share builds for inspiration
 
 Store
-- sell merch - maybe develop a keyboard - maybe make a marketplace that shows products from other sites and links to them 
+- sell merch - maybe develop a keyboard - maybe make a marketplace that shows products from other sites and links to them
 
-Add achievements - allow people to select tags - their rank or when they buy a keyboard they get a tag etc. 
+Add achievements - allow people to select tags - their rank or when they buy a keyboard they get a tag etc.
 
 
 

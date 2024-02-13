@@ -1,10 +1,10 @@
-import { TURBO_TRACE_DEFAULT_MEMORY_LIMIT } from "next/dist/shared/lib/constants";
 import { z } from "zod";
 import {
     createTRPCRouter,
     publicProcedure,
     protectedProcedure,
 } from "~/server/api/trpc";
+import { env } from "~/env.mjs";
 
 export const userRouter = createTRPCRouter({
     getOneUser: publicProcedure.input(z.string()).query(({ input, ctx }) => {
@@ -17,7 +17,7 @@ export const userRouter = createTRPCRouter({
         .query(async ({ input, ctx }) => {
             const seller = await ctx.prisma.user.findUnique({
                 where: { id: input },
-                select: { profile: true, username: true },
+                select: { profile: true, username: true, selectedTag: true },
             });
             const allSellerStars = await ctx.prisma.review.aggregate({
                 where: { sellerId: input },
@@ -32,7 +32,7 @@ export const userRouter = createTRPCRouter({
                 id: true,
                 username: true,
                 profile: true,
-                tag: true,
+                selectedTag: true,
                 reviewsReceived: {
                     select: {
                         id: true,
@@ -51,8 +51,7 @@ export const userRouter = createTRPCRouter({
 
         return userInfo;
     }),
-    // need to grab keeb info aswell and top wpm for each keeb 
-    
+    // need to grab keeb info aswell and top wpm for each keeb
 
     usernameCheck: publicProcedure
         .input(z.string())
@@ -100,9 +99,11 @@ export const userRouter = createTRPCRouter({
                 username: string;
                 hasProfile?: boolean;
                 profile?: string;
+                selectedTag: string;
             } = {
                 username,
                 hasProfile: true,
+                selectedTag: "Novice",
             };
 
             if (images && images[0]) {
@@ -124,12 +125,11 @@ export const userRouter = createTRPCRouter({
 
             return { createKeeb, updatedUser };
         }),
+
     verifyUser: protectedProcedure
         .input(z.string())
         .mutation(async ({ input, ctx }) => {
-            const sessionUserId = ctx.session.user.id;
-
-            if (sessionUserId === input) {
+            if (ctx.session.user.id === input) {
                 return ctx.prisma.user.update({
                     where: { id: input },
                     data: { isVerified: true },
@@ -138,4 +138,15 @@ export const userRouter = createTRPCRouter({
                 throw new Error("Invalid userId");
             }
         }),
+
+    paypalRedirect: protectedProcedure.query(({ ctx }) => {
+        const clientId = env.PAYPAL_CLIENT_ID;
+        const returnUrl = encodeURIComponent(
+            `http://localhost:3000/verification/success`
+        );
+        const scope = encodeURIComponent("openid email profile");
+        const paypalUrl = `https://www.sandbox.paypal.com/signin/authorize?flowEntry=static&client_id=${clientId}&scope=${scope}&redirect_uri=${returnUrl}`;
+
+        return { url: paypalUrl };
+    }),
 });

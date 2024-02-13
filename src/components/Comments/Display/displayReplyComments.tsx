@@ -1,5 +1,6 @@
 import { api } from "~/utils/api";
 import EachReplyCommentCard from "./eachReplayCommentCard";
+import LoadingSpinner from "~/components/Loading";
 
 interface DisplayReplyCommentsProps {
     parentId: string;
@@ -20,8 +21,15 @@ export default function DisplayReplyComments({
             parentId: parentId,
         });
 
+    if (isLoadingComments)
+        return (
+            <div className="mt-10">
+                <LoadingSpinner size="20px" />
+            </div>
+        );
+
     return (
-        <>
+        <div className="mt-2">
             {replies &&
                 replies.map((e, i) => (
                     <EachReplyCommentCard
@@ -31,6 +39,6 @@ export default function DisplayReplyComments({
                         parentId={parentId}
                     />
                 ))}
-        </>
+        </div>
     );
 }

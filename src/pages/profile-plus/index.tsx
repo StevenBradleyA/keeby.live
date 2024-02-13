@@ -4,14 +4,20 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { uploadFileToS3 } from "~/utils/aws";
 import Image from "next/image";
+import defaultProfile from "@public/Profile/profile-default.png";
+import gridBackground from "@public/Profile/profile-plus.png";
+
 import toast from "react-hot-toast";
 import _ from "lodash";
+import LoadingSpinner from "~/components/Loading";
+import { motion } from "framer-motion";
 
 interface ErrorsObj {
     image?: string;
     imageExcess?: string;
     imageLarge?: string;
     username?: string;
+    usernameExcess?: string;
     taken?: string;
     keyboard?: string;
     switches?: string;
@@ -88,7 +94,9 @@ export default function ProfilePlus() {
         if (!username.length) {
             errorsObj.username = "Please provide a username";
         }
-        //todo set a max username length of 50 characters
+        if (username.length > 30) {
+            errorsObj.usernameExcess = "Username cannot exceed 30 characters";
+        }
         if (!keyboard.length) {
             errorsObj.keyboard = "Please provide your keyboard";
         }
@@ -127,8 +135,6 @@ export default function ProfilePlus() {
         e.preventDefault();
 
         setEnableErrorDisplay(true);
-
-        console.log("uhhh", usernameCheck);
 
         if (!Object.values(errors).length && !usernameCheck && !isSubmitting) {
             try {
@@ -194,156 +200,219 @@ export default function ProfilePlus() {
             }
         }
     };
-// todo fix return logic here so it doesnt say completed just only show page
-
-    // lets just push to profile if already ses and profile 
 
     return (
-        <>
-            {session && hasProfile ? (
-                <div>completed</div>
-            ) : (
-                <form className="mb-20 flex flex-col  items-center rounded-2xl bg-keebyGray p-20 text-3xl text-white shadow-xl">
-                    <div className="mb-5 flex justify-center text-xl">
-                        Please choose a username
-                    </div>
-                    <div className=" mb-10 flex gap-5">
-                        <input
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            className=" rounded-md p-2 text-xl text-purple-300 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-200"
-                            placeholder="Username"
-                        ></input>
-                    </div>
-                    {enableErrorDisplay && errors.username && (
-                        <p className="text-xl text-red-400">
-                            {errors.username}
-                        </p>
-                    )}
-                    {enableErrorDisplay && usernameCheck && (
-                        <p className="text-xl text-red-400">
-                            Username already in use. Please choose a different
-                            username
-                        </p>
-                    )}
+        session &&
+        !hasProfile && (
+            <>
+                <Image
+                    src={gridBackground}
+                    alt="background"
+                    className="matrix-full-screen fixed left-0 right-0 bottom-0 top-0 opacity-40 "
+                    priority
+                />
+                <form className=" z-10 flex w-1/2 flex-col text-black ">
+                    <div className="flex gap-10">
+                        <div className="w-40">
+                            {imageFiles && imageFiles[0] ? (
+                                <div className="relative h-40 w-40">
+                                    <Image
+                                        className="h-full w-full rounded-md border-2 border-sky-300 object-cover"
+                                        alt="profile"
+                                        src={URL.createObjectURL(imageFiles[0])}
+                                        width={200}
+                                        height={200}
+                                    />
+                                    <button
+                                        className="absolute right-[-10px] top-[-32px] transform p-1 text-2xl text-gray-600 transition-transform duration-300 ease-in-out hover:rotate-45 hover:scale-110 hover:text-red-500"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            setImageFiles([]);
+                                        }}
+                                    >
+                                        &times;
+                                    </button>
+                                </div>
+                            ) : (
+                                <div className=" h-40 w-40 ">
+                                    <Image
+                                        src={defaultProfile}
+                                        alt="profile"
+                                        className="h-full w-full rounded-md border-2 border-sky-300 object-cover"
+                                        priority
+                                    />
+                                </div>
+                            )}
+                        </div>
 
-                    <div className="mb-5 flex justify-center text-xl">
-                        Create a Keyboard profile
+                        <div className="flex w-full flex-col rounded-md border-2 border-sky-300 bg-black bg-opacity-50 p-10">
+                            <label className=" text-md text-darkGray">
+                                Define Your Identity: Enter Username
+                                <input
+                                    name="username"
+                                    id="usernameInput"
+                                    value={username}
+                                    onChange={(e) =>
+                                        setUsername(e.target.value)
+                                    }
+                                    className=" h-10 w-full rounded-md bg-black  p-1 text-sky-300 "
+                                    placeholder="Username"
+                                ></input>
+                            </label>
+                            {enableErrorDisplay && errors.username && (
+                                <p className="text-sm text-red-400">
+                                    {errors.username}
+                                </p>
+                            )}
+                            {enableErrorDisplay && errors.usernameExcess && (
+                                <p className="text-sm text-red-400">
+                                    {errors.usernameExcess}
+                                </p>
+                            )}
+                            {enableErrorDisplay && usernameCheck && (
+                                <p className="text-sm text-red-400">
+                                    Username already in use
+                                </p>
+                            )}
+                        </div>
                     </div>
-                    <div className="mb-5 flex justify-center text-xl">
-                        (can add more later)
-                    </div>
-                    <div className=" mb-10 flex gap-5">
-                        <input
-                            value={keyboard}
-                            onChange={(e) => setKeyboard(e.target.value)}
-                            className=" rounded-md p-2 text-xl text-purple-300 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-200"
-                            placeholder="Keyboard"
-                        ></input>
-                        <input
-                            value={switches}
-                            onChange={(e) => setSwitches(e.target.value)}
-                            className=" rounded-md p-2 text-xl text-purple-300 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-200"
-                            placeholder="Switches"
-                        ></input>
-                        <input
-                            value={keycaps}
-                            onChange={(e) => setKeycaps(e.target.value)}
-                            className=" rounded-md p-2 text-xl text-purple-300 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-200"
-                            placeholder="Keycaps"
-                        ></input>
-                    </div>
-                    {enableErrorDisplay && errors.keyboard && (
-                        <p className="text-xl text-red-400">
-                            {errors.keyboard}
-                        </p>
-                    )}
-                    {enableErrorDisplay && errors.switches && (
-                        <p className="text-xl text-red-400">
-                            {errors.switches}
-                        </p>
-                    )}
-                    {enableErrorDisplay && errors.keycaps && (
-                        <p className="text-xl text-red-400">{errors.keycaps}</p>
-                    )}
 
-                    <div className="mt-5 flex justify-center text-4xl">
-                        Upload a custom profile picture
-                    </div>
-                    <div className=" flex justify-center text-xl">
-                        (optional ++ will be visible by other users)
-                    </div>
-                    <div className="py-4">
-                        <label className="relative inline-block h-40 w-40">
-                            <input
-                                className="absolute h-full w-full cursor-pointer opacity-0"
-                                type="file"
-                                multiple
-                                accept="image/png, image/jpg"
-                                onChange={(e) => {
-                                    if (e.target.files)
-                                        setImageFiles([
-                                            ...imageFiles,
-                                            ...e.target.files,
-                                        ]);
-                                }}
-                            />
-                            <div className="bg-glass flex h-full w-full cursor-pointer items-center justify-center rounded text-white shadow-lg transition-all duration-300 hover:shadow-xl">
-                                <span className="bg-red-300 text-center">
-                                    Choose Files
-                                </span>
+                    <div className="mt-10 flex w-full gap-10 ">
+                        <div className="flex w-1/2 flex-col gap-5 rounded-md border-2 border-sky-300 bg-black bg-opacity-50 p-10">
+                            <div className="flex justify-center">
+                                <h1 className="text-pink-500">
+                                    Create a Keyboard Profile
+                                </h1>
                             </div>
-                        </label>
-                    </div>
-                    <div className="mb-5 flex w-3/4 flex-wrap justify-center gap-10">
-                        {imageFiles.map((e, i) => (
-                            <div key={i} className="relative">
-                                <Image
-                                    className="h-28 w-auto rounded-lg object-cover shadow-sm hover:scale-105 hover:shadow-md"
-                                    alt={`listing-${i}`}
-                                    src={URL.createObjectURL(e)}
-                                    width={100}
-                                    height={100}
-                                />
-                                <button
-                                    className="absolute right-[-10px] top-[-32px] transform p-1 text-2xl text-gray-600 transition-transform duration-300 ease-in-out hover:rotate-45 hover:scale-110 hover:text-red-500"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        const newImageFiles = [...imageFiles];
-                                        newImageFiles.splice(i, 1);
-                                        setImageFiles(newImageFiles);
-                                    }}
-                                >
-                                    &times;
+                            <label className="text-darkGray">
+                                Keyboard
+                                <input
+                                    name="keyboard"
+                                    id="keyboardInput"
+                                    value={keyboard}
+                                    onChange={(e) =>
+                                        setKeyboard(e.target.value)
+                                    }
+                                    className=" h-10 w-full rounded-md bg-black  p-1 text-sky-300 "
+                                    placeholder="Keyboard"
+                                ></input>
+                            </label>
+                            {enableErrorDisplay && errors.keyboard && (
+                                <p className="text-sm text-red-400">
+                                    {errors.keyboard}
+                                </p>
+                            )}
+
+                            <label className="text-darkGray">
+                                Switches
+                                <input
+                                    name="switches"
+                                    id="keyboardSwitchesInput"
+                                    value={switches}
+                                    onChange={(e) =>
+                                        setSwitches(e.target.value)
+                                    }
+                                    className=" h-10 w-full rounded-md bg-black  p-1 text-sky-300 "
+                                    placeholder="Switches"
+                                ></input>
+                                {enableErrorDisplay && errors.switches && (
+                                    <p className="text-sm text-red-400">
+                                        {errors.switches}
+                                    </p>
+                                )}
+                            </label>
+                            <label className="text-darkGray">
+                                Keycaps
+                                <input
+                                    name="keycaps"
+                                    id="keyboardKeycapsInput"
+                                    value={keycaps}
+                                    onChange={(e) => setKeycaps(e.target.value)}
+                                    className=" h-10 w-full rounded-md bg-black  p-1 text-sky-300 "
+                                    placeholder="Keycaps"
+                                ></input>
+                            </label>
+                            {enableErrorDisplay && errors.keycaps && (
+                                <p className="text-sm text-red-400">
+                                    {errors.keycaps}
+                                </p>
+                            )}
+                        </div>
+                        <div className="flex w-1/2 flex-col rounded-md border-2 border-sky-300 bg-black bg-opacity-50 p-10">
+                            <div className="flex flex-col items-center">
+                                <h1 className="text-pink-500">
+                                    Choose a Profile Picture
+                                </h1>
+                                <h1 className="text-sky-300">{`(optional)`}</h1>
+                            </div>
+                            <div className="relative mt-5 flex flex-col gap-1">
+                                <label className="text-darkGray">
+                                    1:1 aspect ratio recommended
+                                    <input
+                                       name="profileImage"
+                                       id="profileImageInput"
+                                        className="absolute left-0 top-7 h-32 w-full cursor-pointer rounded-md opacity-0"
+                                        type="file"
+                                        accept="image/png, image/jpg, image/jpeg"
+                                        onChange={(e) => {
+                                            if (
+                                                e.target.files &&
+                                                e.target.files.length > 0
+                                            ) {
+                                                const file = e.target.files[0];
+                                                if (file instanceof File) {
+                                                    setImageFiles([file]);
+                                                }
+                                            }
+                                        }}
+                                    />
+                                </label>
+                                <button className="h-32 w-full rounded-md bg-sky-400">
+                                    <span className=" text-center">
+                                        Choose Image
+                                    </span>
                                 </button>
                             </div>
-                        ))}
+                            {errors.imageExcess && (
+                                <p className="text-sm text-red-400">
+                                    {errors.imageExcess}
+                                </p>
+                            )}
+                            {errors.imageLarge && (
+                                <p className="text-sm text-red-400">
+                                    {errors.imageLarge}
+                                </p>
+                            )}
+                        </div>
                     </div>
-                    {errors.imageExcess && (
-                        <p className="create-listing-errors text-red-500">
-                            {errors.imageExcess}
-                        </p>
-                    )}
-                    {errors.imageLarge && (
-                        <p className="create-listing-errors text-red-500">
-                            {errors.imageLarge}
-                        </p>
-                    )}
 
-                    <button
-                        onClick={(e) => {
-                            e.preventDefault();
-                            void submit(e);
-                        }}
-                        disabled={hasSubmitted || isSubmitting}
-                        className={`rounded-2xl bg-black px-6 py-2 ${
-                            hasSubmitted ? "text-red-500" : ""
-                        } ${isSubmitting ? "text-red-500" : ""}`}
-                    >
-                        {isSubmitting ? "Uploading..." : "Submit"}
-                    </button>
+                    <div className="mt-5 flex justify-center">
+                        <motion.button
+                            whileHover={{
+                                scale: 1.1,
+                            }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                void submit(e);
+                            }}
+                            disabled={hasSubmitted || isSubmitting}
+                            className={`rounded-xl border-2 border-pink-500 bg-black px-6 py-2 text-pink-500 hover:border-sky-400 hover:bg-sky-400 hover:text-black`}
+                        >
+                            {isSubmitting ? (
+                                <div className="flex items-center gap-1">
+                                    Saving Data
+                                    <div className="w-6">
+                                        <LoadingSpinner size="16px" />
+                                    </div>
+                                </div>
+                            ) : (
+                                "Access Granted"
+                            )}
+                        </motion.button>
+                    </div>
                 </form>
-            )}
-        </>
+            </>
+        )
     );
 }

@@ -57,6 +57,7 @@ model Post {
 
     user     User       @relation(fields: [userId], references: [id])
     postLike PostLike[]
+    images   Images[]
 }
 
 model Comment {
@@ -117,29 +118,38 @@ model Images {
     id           String   @id @default(cuid())
     link         String
     resourceType String
-    resourceId   String
     createdAt    DateTime @default(now())
     updatedAt    DateTime @updatedAt
 
+    // Relations
     userId String
+    user   User   @relation(fields: [userId], references: [id])
 
-    user User @relation(fields: [userId], references: [id])
+    // Polymorphic relations
+    listingId String?
+    postId    String?
+
+    listing Listing? @relation(fields: [listingId], references: [id])
+    post    Post?    @relation(fields: [postId], references: [id])
 }
 
 model Listing {
-    id         String   @id @default(cuid())
-    title      String
-    text       String
-    soundTest  String?
-    switchType String
-    keycaps    String
-    switches   String
-    price      Int
-    // this will be as cents
+    id           String  @id @default(cuid())
+    title        String
+    text         String
+    soundTest    String?
+    switchType   String
+    keycaps      String
+    switches     String
+    price        Int
+    soundType    String
+    layoutType   String
+    assemblyType String
+    pcbType      String
 
-    sold       Boolean  @default(false)
-    createdAt  DateTime @default(now())
-    updatedAt  DateTime @updatedAt
+    sold      Boolean  @default(false)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
     sellerId String
     buyerId  String?
@@ -150,12 +160,13 @@ model Listing {
     reviews            Review[]
     favorites          UserFavorites[]
     listingTransaction ListingTransaction[]
-    ListingOffer       ListingOffer[]
+    listingOffer       ListingOffer[]
+    images             Images[]
 }
 
 model ListingOffer {
-    id        String   @id @default(cuid())
-    price     Int
+    id    String @id @default(cuid())
+    price Int
     // this will be as cents
 
     status    String
@@ -227,7 +238,7 @@ model Review {
 
 model Tag {
     id          String @id @default(cuid())
-    name        String
+    name        String @unique
     description String
 
     users User[] @relation("UserTags")
@@ -242,15 +253,16 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
-    profile       String?
-    rankId        String?
-
-    username String? @unique
+    id               String    @id @default(cuid())
+    name             String?
+    email            String?   @unique
+    emailVerified    DateTime?
+    image            String?
+    profile          String?
+    rankId           String?
+    username         String?   @unique
+    selectedTag      String?
+    stripeCustomerId String?   @unique
 
     isVerified   Boolean @default(false)
     isAdmin      Boolean @default(false)
@@ -274,7 +286,7 @@ model User {
     rank            Rank?                @relation(fields: [rankId], references: [id])
     sellerListings  Listing[]            @relation("Seller")
     buyerListings   Listing[]            @relation("Buyer")
-    ListingOffer    ListingOffer[]
+    listingOffer    ListingOffer[]
 }
 
 model VerificationToken {
