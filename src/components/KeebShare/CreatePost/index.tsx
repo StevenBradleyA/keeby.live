@@ -24,7 +24,7 @@ export default function CreatePostModal() {
     const [showLinkInput, setShowLinkInput] = useState<boolean>(false);
     const [link, setLink] = useState<string>("");
     const [text, setText] = useState<string>("");
-    const [tag, setTag] = useState<string>("");
+    const [tag, setTag] = useState<string>("discussion");
 
     const [errors, setErrors] = useState<ErrorsObj>({});
     const [imageFiles, setImageFiles] = useState<File[]>([]);
@@ -152,6 +152,7 @@ export default function CreatePostModal() {
                                     onClick={(e) => {
                                         e.preventDefault();
                                         setShowLinkInput(!showLinkInput);
+                                        showLinkInput ? setLink("") : null;
                                     }}
                                 >
                                     <svg
@@ -213,15 +214,19 @@ export default function CreatePostModal() {
                                 value={tag}
                                 onChange={(e) => setTag(e.target.value)}
                             >
-                                <option value="build">Build</option>
                                 <option value="discussion">Discussion</option>
+                                <option value="guide">Guide</option>
+                                <option value="events">Events</option>
                                 <option value="meme">Meme</option>
-                                <option value="tutorial">Tutorial</option>
+                                <option value="news">News</option>
+                                <option value="showcase">Showcase</option>
+                                <option value="software">Software</option>
+                                <option value="typing">Typing</option>
                             </select>
                         </div>
 
                         {imageFiles.length > 0 && (
-                            <div className="mt-2 flex w-[35rem] flex-wrap justify-center gap-10 rounded-md bg-black bg-opacity-20 p-5 ">
+                            <div className="mt-2 flex w-[35rem] flex-wrap justify-center gap-5 rounded-md bg-black bg-opacity-20 p-5 ">
                                 {imageFiles.map((e, i) => (
                                     <div key={i} className="relative">
                                         <Image
@@ -269,17 +274,17 @@ export default function CreatePostModal() {
                         <textarea
                             value={text}
                             onChange={(e) => setText(e.target.value)}
-                            className="mt-5 h-72 w-[35rem] rounded-md bg-darkGray p-1 "
+                            className="mt-2 h-72 w-[35rem] rounded-md bg-darkGray p-1 "
                             placeholder="Text (optional)"
                         ></textarea>
-                        <div className="flex w-full justify-center ">
+                        <div className="mt-2 flex w-full justify-center ">
                             <button
                                 // onClick={(e) => {
                                 //     e.preventDefault();
                                 //     void submit(e);
                                 // }}
                                 disabled={hasSubmitted || isSubmitting}
-                                className={`rounded-md border-2 border-green-500 bg-keebyGray px-6 py-1 text-green-500 hover:bg-black ${
+                                className={`rounded-md border-2 border-green-500 bg-keebyGray px-6 py-1 text-green-500 hover:bg-green-500 hover:text-black ${
                                     hasSubmitted ? "text-red-500" : ""
                                 } ${
                                     isSubmitting ? "text-red-500" : ""
