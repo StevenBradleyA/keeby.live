@@ -14,14 +14,15 @@ interface ErrorsObj {
     text?: string;
     title?: string;
     titleExcess?: string;
-    soundTest?: string;
+    link?: string;
 }
 
 export default function CreatePostModal() {
     const { data: sessionData } = useSession();
 
     const [title, setTitle] = useState<string>("");
-    const [soundTest, setSoundTest] = useState<string>("");
+    const [showLinkInput, setShowLinkInput] = useState<boolean>(false);
+    const [link, setLink] = useState<string>("");
     const [text, setText] = useState<string>("");
     const [tag, setTag] = useState<string>("");
 
@@ -53,8 +54,8 @@ export default function CreatePostModal() {
             return regex.test(url);
         };
 
-        if (soundTest.length && !isValidYouTubeUrl(soundTest)) {
-            errorsObj.soundTest = "Please provide a valid YouTube Link";
+        if (link.length && !isValidYouTubeUrl(link)) {
+            errorsObj.link = "Please provide a valid YouTube Link";
         }
 
         for (const file of imageFiles) {
@@ -66,7 +67,7 @@ export default function CreatePostModal() {
         }
 
         setErrors(errorsObj);
-    }, [imageFiles, title, soundTest]);
+    }, [imageFiles, title, link]);
 
     // optional image upload
     // optional youtube link
@@ -108,14 +109,14 @@ export default function CreatePostModal() {
                             className="h-20 w-20 border-2 border-[#616161] object-cover "
                         />
                         <div className="relative flex  w-full items-center border-b-2 border-t-2 border-[#616161] p-2 ">
-                            <div className="ml-2 flex items-end gap-3">
+                            <div className="ml-2 flex items-center gap-2">
                                 <h1 className="text-2xl text-green-500">
                                     Create a Post
                                 </h1>
                                 <Image
                                     alt="keebo"
                                     src={keebo}
-                                    className="h-8 w-8"
+                                    className="h-6 w-6"
                                 />
                             </div>
                             <h3 className="absolute -top-5 right-0 text-xs text-darkGray">
@@ -124,13 +125,13 @@ export default function CreatePostModal() {
                         </div>
                     </div>
 
-                    <form className="mt-5">
+                    <form className="mt-5 text-white">
                         <div className="flex flex-col gap-1">
                             <input
                                 id="titleInput"
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
-                                className="h-10 w-full rounded-md bg-white p-1 "
+                                className="h-10 w-full rounded-md bg-darkGray p-1 "
                                 placeholder="Title"
                             />
                             {enableErrorDisplay && errors.title && (
@@ -146,7 +147,13 @@ export default function CreatePostModal() {
                         </div>
                         <div className="mt-2 flex w-full items-center justify-between">
                             <div className="flex gap-5 ">
-                                <button className="w-8">
+                                <button
+                                    className="w-8"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setShowLinkInput(!showLinkInput);
+                                    }}
+                                >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         version="1.1"
@@ -202,7 +209,7 @@ export default function CreatePostModal() {
                             </div>
                             <select
                                 id="tagInput"
-                                className=" h-8 w-32 rounded-md bg-green-500 p-1 px-2 py-1"
+                                className=" h-8 w-32 rounded-md bg-green-500 p-1 px-2 py-1 text-black"
                                 value={tag}
                                 onChange={(e) => setTag(e.target.value)}
                             >
@@ -214,64 +221,69 @@ export default function CreatePostModal() {
                         </div>
 
                         {imageFiles.length > 0 && (
-                            <>
-                                <div className="mt-2 flex w-full flex-wrap justify-center gap-10 rounded-md bg-white bg-opacity-40 p-5 ">
-                                    {imageFiles.map((e, i) => (
-                                        <div key={i} className="relative">
-                                            <Image
-                                                className={`h-16 w-24 cursor-pointer rounded-lg object-cover shadow-sm hover:scale-105 hover:shadow-md ${
-                                                    i === preview
-                                                        ? "border-4 border-green-500"
-                                                        : "border-4 border-black border-opacity-0"
-                                                } `}
-                                                alt={`listing-${i}`}
-                                                src={URL.createObjectURL(e)}
-                                                width={100}
-                                                height={100}
-                                                onClick={() => setPreview(i)}
-                                            />
-                                            <button
-                                                className="absolute -right-2 -top-6 transform p-1 text-lg text-black transition-transform duration-300 ease-in-out hover:rotate-45 hover:scale-110 hover:text-red-500"
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    const newImageFiles = [
-                                                        ...imageFiles,
-                                                    ];
-                                                    newImageFiles.splice(i, 1);
-                                                    setImageFiles(
-                                                        newImageFiles
-                                                    );
-                                                    setPreview(0);
-                                                }}
-                                            >
-                                                &times;
-                                            </button>
-                                        </div>
-                                    ))}
-                                </div>
-                            </>
+                            <div className="mt-2 flex w-[35rem] flex-wrap justify-center gap-10 rounded-md bg-black bg-opacity-20 p-5 ">
+                                {imageFiles.map((e, i) => (
+                                    <div key={i} className="relative">
+                                        <Image
+                                            className={`h-16 w-24 cursor-pointer rounded-lg object-cover shadow-sm hover:scale-105 hover:shadow-md ${
+                                                i === preview
+                                                    ? "border-4 border-green-500"
+                                                    : "border-4 border-black border-opacity-0"
+                                            } `}
+                                            alt={`listing-${i}`}
+                                            src={URL.createObjectURL(e)}
+                                            width={100}
+                                            height={100}
+                                            onClick={() => setPreview(i)}
+                                        />
+                                        <button
+                                            className="absolute -right-2 -top-6 transform p-1 text-lg text-darkGray transition-transform duration-300 ease-in-out hover:rotate-45 hover:scale-110 hover:text-red-500"
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                const newImageFiles = [
+                                                    ...imageFiles,
+                                                ];
+                                                newImageFiles.splice(i, 1);
+                                                setImageFiles(newImageFiles);
+                                                setPreview(0);
+                                            }}
+                                        >
+                                            &times;
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                        {showLinkInput && (
+                            <div className="mt-2">
+                                <input
+                                    id="youTubeLinkInput"
+                                    value={link}
+                                    onChange={(e) => setLink(e.target.value)}
+                                    className="h-10 w-[35rem] rounded-md bg-darkGray p-1 "
+                                    placeholder="YouTube Link"
+                                />
+                            </div>
                         )}
 
                         <textarea
                             value={text}
                             onChange={(e) => setText(e.target.value)}
-                            className="mt-5 h-72 w-[35rem] rounded-md bg-white p-1 "
+                            className="mt-5 h-72 w-[35rem] rounded-md bg-darkGray p-1 "
                             placeholder="Text (optional)"
                         ></textarea>
                         <div className="flex w-full justify-center ">
-                            <motion.button
-                                whileHover={{
-                                    scale: 1.1,
-                                }}
-                                whileTap={{ scale: 0.95 }}
+                            <button
                                 // onClick={(e) => {
                                 //     e.preventDefault();
                                 //     void submit(e);
                                 // }}
                                 disabled={hasSubmitted || isSubmitting}
-                                className={`rounded-xl border-2 border-green-500 bg-black px-6 py-1 text-green-500 hover:bg-keebyGray ${
+                                className={`rounded-md border-2 border-green-500 bg-keebyGray px-6 py-1 text-green-500 hover:bg-black ${
                                     hasSubmitted ? "text-red-500" : ""
-                                } ${isSubmitting ? "text-red-500" : ""}`}
+                                } ${
+                                    isSubmitting ? "text-red-500" : ""
+                                } transition-all duration-300 ease-in-out`}
                             >
                                 {isSubmitting ? (
                                     <div className="flex items-center gap-1">
@@ -283,7 +295,7 @@ export default function CreatePostModal() {
                                 ) : (
                                     "Post"
                                 )}
-                            </motion.button>
+                            </button>
                         </div>
                     </form>
                 </div>
