@@ -3,27 +3,18 @@ import { signIn } from "next-auth/react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import keebo from "@public/Profile/keebo.png";
+import defaultProfile from "@public/Profile/profile-default.png";
 import { useEffect, useState } from "react";
+import LoadingSpinner from "~/components/Loading";
 
 interface ErrorsObj {
     image?: string;
     imageExcess?: string;
-    imageShortage?: string;
     imageLarge?: string;
-    description?: string;
+    text?: string;
     title?: string;
     titleExcess?: string;
-    priceNone?: string;
-    priceExcess?: string;
-    priceNotWhole?: string;
-    keycaps?: string;
-    switches?: string;
-    switchType?: string;
     soundTest?: string;
-    soundType?: string;
-    layoutType?: string;
-    assemblyType?: string;
-    pcbType?: string;
 }
 
 export default function CreatePostModal() {
@@ -32,21 +23,22 @@ export default function CreatePostModal() {
     const [title, setTitle] = useState<string>("");
     const [soundTest, setSoundTest] = useState<string>("");
     const [text, setText] = useState<string>("");
+    const [tag, setTag] = useState<string>("");
+
     const [errors, setErrors] = useState<ErrorsObj>({});
     const [imageFiles, setImageFiles] = useState<File[]>([]);
     const [preview, setPreview] = useState<number>(0);
     const [enableErrorDisplay, setEnableErrorDisplay] =
         useState<boolean>(false);
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
 
     useEffect(() => {
         const maxFileSize = 8 * 1024 * 1024;
         const errorsObj: ErrorsObj = {};
-        // if (imageFiles.length > 15) {
-        //     errorsObj.imageExcess = "Cannot provide more than 15 photos";
-        // }
-        // if (imageFiles.length < 5) {
-        //     errorsObj.imageShortage = "Please provide at least 5 photos";
-        // }
+        if (imageFiles.length > 5) {
+            errorsObj.imageExcess = "Cannot provide more than 5 photos";
+        }
 
         if (!title.length) {
             errorsObj.title = "Please provide a title for your post";
@@ -76,6 +68,10 @@ export default function CreatePostModal() {
         setErrors(errorsObj);
     }, [imageFiles, title, soundTest]);
 
+    // optional image upload
+    // optional youtube link
+    //
+
     return (
         <>
             {sessionData === null ? (
@@ -100,21 +96,36 @@ export default function CreatePostModal() {
                     </div>
                 </div>
             ) : (
-                <div className="p-2">
-                    <div className="flex items-end gap-3">
-                        <h1 className="text-2xl text-green-500">
-                            Create a Post
-                        </h1>
-                        <Image alt="keebo" src={keebo} className="h-12 w-12" />
+                <div className="p-2 ">
+                    <div className="flex items-center">
+                        <Image
+                            alt="keeb"
+                            src={
+                                sessionData.user.profile
+                                    ? sessionData.user.profile
+                                    : defaultProfile
+                            }
+                            className="h-20 w-20 border-2 border-[#616161] object-cover "
+                        />
+                        <div className="relative flex  w-full items-center border-b-2 border-t-2 border-[#616161] p-2 ">
+                            <div className="ml-2 flex items-end gap-3">
+                                <h1 className="text-2xl text-green-500">
+                                    Create a Post
+                                </h1>
+                                <Image
+                                    alt="keebo"
+                                    src={keebo}
+                                    className="h-8 w-8"
+                                />
+                            </div>
+                            <h3 className="absolute -top-5 right-0 text-xs text-darkGray">
+                                {sessionData.user.username}
+                            </h3>
+                        </div>
                     </div>
-                    <form>
+
+                    <form className="mt-5">
                         <div className="flex flex-col gap-1">
-                            <label
-                                htmlFor="titleInput"
-                                className="text-darkGray"
-                            >
-                                Title
-                            </label>
                             <input
                                 id="titleInput"
                                 value={title}
@@ -132,6 +143,147 @@ export default function CreatePostModal() {
                                     {errors.titleExcess}
                                 </p>
                             )}
+                        </div>
+                        <div className="mt-2 flex w-full items-center justify-between">
+                            <div className="flex gap-5 ">
+                                <button className="w-8">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        version="1.1"
+                                        id="Layer_1"
+                                        viewBox="0 0 461.001 461.001"
+                                    >
+                                        <g>
+                                            <path
+                                                fill="#F61C0D"
+                                                d="M365.257,67.393H95.744C42.866,67.393,0,110.259,0,163.137v134.728   c0,52.878,42.866,95.744,95.744,95.744h269.513c52.878,0,95.744-42.866,95.744-95.744V163.137   C461.001,110.259,418.135,67.393,365.257,67.393z M300.506,237.056l-126.06,60.123c-3.359,1.602-7.239-0.847-7.239-4.568V168.607   c0-3.774,3.982-6.22,7.348-4.514l126.06,63.881C304.363,229.873,304.298,235.248,300.506,237.056z"
+                                            />
+                                        </g>
+                                    </svg>
+                                </button>
+
+                                <button className="relative w-8 ">
+                                    <input
+                                        id="imageUploadInput"
+                                        className="absolute left-0 top-0 w-8 cursor-pointer opacity-0 "
+                                        type="file"
+                                        multiple
+                                        accept="image/png, image/jpg, image/jpeg"
+                                        onChange={(e) => {
+                                            if (e.target.files)
+                                                setImageFiles([
+                                                    ...imageFiles,
+                                                    ...e.target.files,
+                                                ]);
+                                        }}
+                                    />
+
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                    >
+                                        <path
+                                            fill-rule="evenodd"
+                                            clip-rule="evenodd"
+                                            d="M23 4C23 2.34315 21.6569 1 20 1H4C2.34315 1 1 2.34315 1 4V20C1 21.6569 2.34315 23 4 23H20C21.6569 23 23 21.6569 23 20V4ZM21 4C21 3.44772 20.5523 3 20 3H4C3.44772 3 3 3.44772 3 4V20C3 20.5523 3.44772 21 4 21H20C20.5523 21 21 20.5523 21 20V4Z"
+                                            fill="#0F0F0F"
+                                        />
+                                        <path
+                                            d="M4.80665 17.5211L9.1221 9.60947C9.50112 8.91461 10.4989 8.91461 10.8779 9.60947L14.0465 15.4186L15.1318 13.5194C15.5157 12.8476 16.4843 12.8476 16.8682 13.5194L19.1451 17.5039C19.526 18.1705 19.0446 19 18.2768 19H5.68454C4.92548 19 4.44317 18.1875 4.80665 17.5211Z"
+                                            fill="#0F0F0F"
+                                        />
+                                        <path
+                                            d="M18 8C18 9.10457 17.1046 10 16 10C14.8954 10 14 9.10457 14 8C14 6.89543 14.8954 6 16 6C17.1046 6 18 6.89543 18 8Z"
+                                            fill="#0F0F0F"
+                                        />
+                                    </svg>
+                                </button>
+                            </div>
+                            <select
+                                id="tagInput"
+                                className=" h-8 w-32 rounded-md bg-green-500 p-1 px-2 py-1"
+                                value={tag}
+                                onChange={(e) => setTag(e.target.value)}
+                            >
+                                <option value="build">Build</option>
+                                <option value="discussion">Discussion</option>
+                                <option value="meme">Meme</option>
+                                <option value="tutorial">Tutorial</option>
+                            </select>
+                        </div>
+
+                        {imageFiles.length > 0 && (
+                            <>
+                                <div className="mt-2 flex w-full flex-wrap justify-center gap-10 rounded-md bg-white bg-opacity-40 p-5 ">
+                                    {imageFiles.map((e, i) => (
+                                        <div key={i} className="relative">
+                                            <Image
+                                                className={`h-16 w-24 cursor-pointer rounded-lg object-cover shadow-sm hover:scale-105 hover:shadow-md ${
+                                                    i === preview
+                                                        ? "border-4 border-green-500"
+                                                        : "border-4 border-black border-opacity-0"
+                                                } `}
+                                                alt={`listing-${i}`}
+                                                src={URL.createObjectURL(e)}
+                                                width={100}
+                                                height={100}
+                                                onClick={() => setPreview(i)}
+                                            />
+                                            <button
+                                                className="absolute -right-2 -top-6 transform p-1 text-lg text-black transition-transform duration-300 ease-in-out hover:rotate-45 hover:scale-110 hover:text-red-500"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    const newImageFiles = [
+                                                        ...imageFiles,
+                                                    ];
+                                                    newImageFiles.splice(i, 1);
+                                                    setImageFiles(
+                                                        newImageFiles
+                                                    );
+                                                    setPreview(0);
+                                                }}
+                                            >
+                                                &times;
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            </>
+                        )}
+
+                        <textarea
+                            value={text}
+                            onChange={(e) => setText(e.target.value)}
+                            className="mt-5 h-72 w-[35rem] rounded-md bg-white p-1 "
+                            placeholder="Text (optional)"
+                        ></textarea>
+                        <div className="flex w-full justify-center ">
+                            <motion.button
+                                whileHover={{
+                                    scale: 1.1,
+                                }}
+                                whileTap={{ scale: 0.95 }}
+                                // onClick={(e) => {
+                                //     e.preventDefault();
+                                //     void submit(e);
+                                // }}
+                                disabled={hasSubmitted || isSubmitting}
+                                className={`rounded-xl border-2 border-green-500 bg-black px-6 py-1 text-green-500 hover:bg-keebyGray ${
+                                    hasSubmitted ? "text-red-500" : ""
+                                } ${isSubmitting ? "text-red-500" : ""}`}
+                            >
+                                {isSubmitting ? (
+                                    <div className="flex items-center gap-1">
+                                        Uploading
+                                        <div className="w-6">
+                                            <LoadingSpinner size="16px" />
+                                        </div>
+                                    </div>
+                                ) : (
+                                    "Post"
+                                )}
+                            </motion.button>
                         </div>
                     </form>
                 </div>
