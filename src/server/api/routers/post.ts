@@ -7,57 +7,103 @@ import {
 
 import { removeFileFromS3 } from "../utils";
 
+type CreateData = {
+    title: string;
+    text?: string;
+    link?: string;
+    userId: string;
+    tag: string;
+};
+
 export const postRouter = createTRPCRouter({
     getAll: publicProcedure.query(({ ctx }) => {
-        return ctx.prisma.post.findMany();
+        return ctx.prisma.post.findMany({
+            select: {
+                id: true,
+                title: true,
+                tag: true,
+                images: {
+                    where: {
+                        OR: [
+                            { resourceType: "POSTPREVIEW" },
+                            { resourceType: "POST" },
+                        ],
+                    },
+                    select: { id: true, link: true },
+                },
+            },
+           
+        });
     }),
-    // todo what about separate get routes for different filters? how do we keep track of popularity?? page views comments likes etc.
+
     create: protectedProcedure
-    .input(
-        z.object({
-            title: z.string(),
-            text: z.string(),
-            preview: z.number(),
-            userId: z.string(),
-            images: z.array(
-                z.object({
-                    link: z.string(),
-                })
-            ),
-        })
-    )
-    .mutation(async ({ input, ctx }) => {
-        const { title, text, preview, userId, images } = input;
+        .input(
+            z.object({
+                title: z.string(),
+                tag: z.string(),
+                text: z.string().optional(),
+                link: z.string().optional(),
+                preview: z.number().optional(),
+                userId: z.string(),
+                images: z
+                    .array(
+                        z.object({
+                            link: z.string(),
+                        })
+                    )
+                    .optional(),
+            })
+        )
+        .mutation(async ({ input, ctx }) => {
+            const { title, tag, link, text, preview, userId, images } = input;
 
-        if (ctx.session.user.id === userId) {
-            const newListing = await ctx.prisma.post.create({
-                data: { title, text, userId },
-            });
+            if (ctx.session.user.id === userId && ctx.session.user.isVerified) {
+                const createData: CreateData = {
+                    title,
+                    tag,
+                    userId,
+                };
+                if (link?.length) {
+                    createData.link = link;
+                }
+                if (text?.length) {
+                    createData.text = text;
+                }
 
-            const createdImages = await Promise.all(
-                images.map(async (image, i) => {
-                    const imageType =
-                        i === preview ? "POSTPREVIEW" : "POST";
+                const newPost = await ctx.prisma.post.create({
+                    data: createData,
+                });
+                if (images && preview) {
+                    const createdImages = await Promise.all(
+                        images.map(async (image, i) => {
+                            const imageType =
+                                i === preview ? "POSTPREVIEW" : "POST";
 
-                    return ctx.prisma.images.create({
-                        data: {
-                            link: image.link,
-                            resourceType: imageType,
-                            resourceId: newListing.id,
-                            userId: newListing.userId,
-                        },
-                    });
-                })
-            );
+                            return ctx.prisma.images.create({
+                                data: {
+                                    link: image.link,
+                                    resourceType: imageType,
+                                    postId: newPost.id,
+                                    userId: userId,
+                                },
+                            });
+                        })
+                    );
 
-            return {
-                newListing,
-                createdImages,
-            };
-        }
+                    return {
+                        newPost,
+                        createdImages,
+                    };
+                }
 
-        throw new Error("Invalid userId");
-    }),
+                return {
+                    newPost,
+                };
+            }
+
+            throw new Error("Invalid userId");
+        }),
+
     delete: protectedProcedure
         .input(
             z.object({
@@ -103,6 +149,4 @@ export const postRouter = createTRPCRouter({
 
             throw new Error("Invalid userId");
         }),
-
-   
 });

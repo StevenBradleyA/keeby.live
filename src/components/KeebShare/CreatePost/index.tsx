@@ -5,7 +5,11 @@ import Image from "next/image";
 import keebo from "@public/Profile/keebo.png";
 import defaultProfile from "@public/Profile/profile-default.png";
 import { useEffect, useState } from "react";
+import { api } from "~/utils/api";
 import LoadingSpinner from "~/components/Loading";
+import toast from "react-hot-toast";
+import { useRouter } from "next/router";
+import { uploadFileToS3 } from "~/utils/aws";
 
 interface ErrorsObj {
     image?: string;
@@ -15,6 +19,20 @@ interface ErrorsObj {
     title?: string;
     titleExcess?: string;
     link?: string;
+}
+
+interface Image {
+    link: string;
+}
+
+interface PostData {
+    userId: string;
+    title: string;
+    tag: string;
+    link?: string;
+    text?: string;
+    preview?: number;
+    images?: Image[];
 }
 
 export default function CreatePostModal() {
@@ -33,6 +51,22 @@ export default function CreatePostModal() {
         useState<boolean>(false);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
+    const router = useRouter();
+
+    const { mutate } = api.post.create.useMutation({
+        onSuccess: async () => {
+            toast.success("Post Complete!", {
+                icon: "👏",
+                style: {
+                    borderRadius: "10px",
+                    background: "#333",
+                    color: "#fff",
+                },
+            });
+            // void ctx.post.getAll.invalidate();
+            await router.push("/keebshare");
+        },
+    });
 
     useEffect(() => {
         const maxFileSize = 8 * 1024 * 1024;
@@ -69,9 +103,84 @@ export default function CreatePostModal() {
         setErrors(errorsObj);
     }, [imageFiles, title, link]);
 
-    // optional image upload
-    // optional youtube link
-    //
+    const submit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        setEnableErrorDisplay(true);
+
+        if (!Object.values(errors).length && !isSubmitting) {
+            try {
+                const sessionUserId = sessionData?.user?.id;
+
+                if (!sessionUserId) {
+                    throw new Error("Session expired");
+                }
+
+                const data: PostData = {
+                    userId: sessionUserId,
+                    title,
+                    tag,
+                    preview,
+                    images: [],
+                };
+
+                setIsSubmitting(true);
+                if (imageFiles.length > 0 && preview) {
+                    data.images = [];
+                    data.preview = preview;
+
+                    const imagePromises = imageFiles.map((file) => {
+                        return new Promise<string>((resolve, reject) => {
+                            const reader = new FileReader();
+                            reader.readAsDataURL(file);
+                            reader.onloadend = () => {
+                                if (typeof reader.result === "string") {
+                                    const base64Data =
+                                        reader.result.split(",")[1];
+                                    if (base64Data) {
+                                        resolve(base64Data);
+                                    }
+                                } else {
+                                    reject(new Error("Failed to read file"));
+                                }
+                            };
+                            reader.onerror = () => {
+                                reject(new Error("Failed to read file"));
+                            };
+                        });
+                    });
+
+                    const base64DataArray = await Promise.all(imagePromises);
+                    const imageUrlArr: string[] = [];
+
+                    for (const base64Data of base64DataArray) {
+                        const buffer = Buffer.from(base64Data, "base64");
+                        const imageUrl = await uploadFileToS3(buffer);
+                        imageUrlArr.push(imageUrl);
+                    }
+
+                    data.images = imageUrlArr.map((imageUrl) => ({
+                        link: imageUrl || "",
+                    }));
+                }
+
+                if (link) {
+                    data.link = link;
+                }
+                if (text) {
+                    data.text = text;
+                }
+
+                mutate(data);
+                setImageFiles([]);
+                setHasSubmitted(true);
+                setIsSubmitting(false);
+            } catch (error) {
+                console.error("Submission failed:", error);
+                setIsSubmitting(false);
+            }
+        }
+    };
 
     return (
         <>
@@ -279,10 +388,10 @@ export default function CreatePostModal() {
                         ></textarea>
                         <div className="mt-2 flex w-full justify-center ">
                             <button
-                                // onClick={(e) => {
-                                //     e.preventDefault();
-                                //     void submit(e);
-                                // }}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    void submit(e);
+                                }}
                                 disabled={hasSubmitted || isSubmitting}
                                 className={`rounded-md border-2 border-green-500 bg-keebyGray px-6 py-1 text-green-500 hover:bg-green-500 hover:text-black ${
                                     hasSubmitted ? "text-red-500" : ""
