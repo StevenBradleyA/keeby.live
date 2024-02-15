@@ -32,9 +32,39 @@ export const postRouter = createTRPCRouter({
                     select: { id: true, link: true },
                 },
             },
-           
         });
     }),
+
+    getOne: publicProcedure
+        .input(
+            z.object({
+                id: z.string(),
+            })
+        )
+        .query(({ input, ctx }) => {
+            return ctx.prisma.post.findUnique({
+                where: {
+                    id: input.id,
+                },
+                select: {
+                    id: true,
+                    userId: true,
+                    title: true,
+                    text: true,
+                    link: true,
+                    tag: true,
+                    images: {
+                        where: {
+                            OR: [
+                                { resourceType: "POSTPREVIEW" },
+                                { resourceType: "POST" },
+                            ],
+                        },
+                        select: { id: true, link: true },
+                    },
+                },
+            });
+        }),
 
     create: protectedProcedure
         .input(
@@ -57,7 +87,7 @@ export const postRouter = createTRPCRouter({
         .mutation(async ({ input, ctx }) => {
             const { title, tag, link, text, preview, userId, images } = input;
 
-            if (ctx.session.user.id === userId && ctx.session.user.isVerified) {
+            if (ctx.session.user.id === userId) {
                 const createData: CreateData = {
                     title,
                     tag,

@@ -255,7 +255,7 @@ export default function KeebShare() {
                         </div>
                     </div>
                     <ModalDialog isOpen={isModalOpen} onClose={closeModal}>
-                        <CreatePostModal />
+                        <CreatePostModal closeModal={closeModal} />
                     </ModalDialog>
 
                     <div>

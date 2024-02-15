@@ -35,7 +35,11 @@ interface PostData {
     images?: Image[];
 }
 
-export default function CreatePostModal() {
+interface CreatePostModalProps {
+    closeModal: () => void;
+}
+
+export default function CreatePostModal({ closeModal }: CreatePostModalProps) {
     const { data: sessionData } = useSession();
 
     const [title, setTitle] = useState<string>("");
@@ -54,7 +58,7 @@ export default function CreatePostModal() {
     const router = useRouter();
 
     const { mutate } = api.post.create.useMutation({
-        onSuccess: async () => {
+        onSuccess: async (data) => {
             toast.success("Post Complete!", {
                 icon: "👏",
                 style: {
@@ -64,7 +68,8 @@ export default function CreatePostModal() {
                 },
             });
             // void ctx.post.getAll.invalidate();
-            await router.push("/keebshare");
+            await router.push(`/keebshare/${data.newPost.id}`);
+            closeModal();
         },
     });
 
@@ -301,8 +306,8 @@ export default function CreatePostModal() {
                                         fill="none"
                                     >
                                         <path
-                                            fill-rule="evenodd"
-                                            clip-rule="evenodd"
+                                            fillRule="evenodd"
+                                            clipRule="evenodd"
                                             d="M23 4C23 2.34315 21.6569 1 20 1H4C2.34315 1 1 2.34315 1 4V20C1 21.6569 2.34315 23 4 23H20C21.6569 23 23 21.6569 23 20V4ZM21 4C21 3.44772 20.5523 3 20 3H4C3.44772 3 3 3.44772 3 4V20C3 20.5523 3.44772 21 4 21H20C20.5523 21 21 20.5523 21 20V4Z"
                                             fill="#0F0F0F"
                                         />
