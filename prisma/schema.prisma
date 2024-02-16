@@ -60,6 +60,7 @@ model Post {
     user     User       @relation(fields: [userId], references: [id])
     postLike PostLike[]
     images   Images[]
+    Comment  Comment[]
 }
 
 model Comment {
@@ -67,16 +68,24 @@ model Comment {
     text String
 
     userId         String
-    type           String
-    typeId         String
     parentId       String? // ID of the parent comment, null if top-level comment
     referencedUser String?
+
+    // New explicit relations
+    listingId String?
+    postId    String?
 
     user User @relation(fields: [userId], references: [id])
 
     parent      Comment?      @relation("ParentComment", fields: [parentId], references: [id])
     replies     Comment[]     @relation("ParentComment")
     commentLike CommentLike[]
+
+    // New explicit relations to Listing and Post
+    listing Listing? @relation(fields: [listingId], references: [id])
+    post    Post?    @relation(fields: [postId], references: [id])
+
+    @@unique([userId, id])
 }
 
 model CommentLike {
@@ -85,7 +94,7 @@ model CommentLike {
     commentId String
 
     user    User    @relation(fields: [userId], references: [id])
-    comment Comment @relation(fields: [commentId], references: [id])
+    comment Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
 
     @@unique([userId, commentId])
 }
@@ -164,6 +173,7 @@ model Listing {
     listingTransaction ListingTransaction[]
     listingOffer       ListingOffer[]
     images             Images[]
+    Comment            Comment[]
 }
 
 model ListingOffer {

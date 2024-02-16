@@ -34,6 +34,83 @@ export const postRouter = createTRPCRouter({
             },
         });
     }),
+// comment count
+    getAllWithFilters: publicProcedure
+        .input(
+            z.object({
+                searchQuery: z.string().optional(),
+                tag: z.string().optional(),
+                cursor: z.string().nullish(),
+                limit: z.number().min(1).max(100).nullish(),
+            })
+        )
+        .query(async ({ ctx, input }) => {
+            const { searchQuery, tag, cursor } = input;
+
+            const limit = input.limit ?? 12;
+            const queryOptions: Prisma.ListingFindManyArgs = {
+                select: {
+                    id: true,
+                    title: true,
+                    link: true,
+                    text: true,
+                    switchType: true,
+                    images: {
+                        where: {
+                            OR: [
+                                { resourceType: "POSTPREVIEW" },
+                                { resourceType: "POST" },
+                            ],
+                        },
+                        select: { id: true, link: true },
+                    },
+                },
+                orderBy: { createdAt: "desc" },
+                take: limit + 1,
+                skip: cursor ? 1 : undefined,
+                cursor: cursor ? { id: cursor } : undefined,
+            };
+
+            const filters: Prisma.ListingWhereInput[] = [];
+
+            if (tag) {
+                filters.push({
+                    tag: {
+                        equals: tag,
+                    },
+                });
+            }
+
+            if (searchQuery) {
+                filters.push({
+                    title: {
+                        contains: searchQuery,
+                    },
+                });
+            }
+            if (filters.length > 0) {
+                queryOptions.where = {
+                    AND: filters,
+                };
+            }
+
+            const posts = await ctx.prisma.post.findMany(queryOptions);
+
+            let nextCursor: typeof cursor | undefined = undefined;
+            if (posts.length > limit) {
+                const nextItem = posts.pop(); // Remove the extra item
+                if (nextItem !== undefined) {
+                    nextCursor = nextItem.id; // Set the next cursor to the ID of the extra item
+                }
+            }
+
+            return {
+                posts,
+                nextCursor,
+            };
+        }),
+
+    // add comment count
 
     getOne: publicProcedure
         .input(
