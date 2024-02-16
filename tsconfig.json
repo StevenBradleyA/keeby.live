@@ -29,6 +29,6 @@
         "**/*.tsx",
         "**/*.cjs",
         "**/*.mjs"
-    ],
+, "src/pages/keebshare/[postId]"    ],
     "exclude": ["node_modules"]
 }

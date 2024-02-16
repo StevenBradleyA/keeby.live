@@ -9,6 +9,8 @@ import NotificationSvg from "~/components/Svgs/notification";
 import { getCookies } from "cookies-next";
 import { setCookie } from "cookies-next";
 import CreatePostModal from "~/components/KeebShare/CreatePost";
+import { api } from "~/utils/api";
+import Link from "next/link";
 
 export default function KeebShare() {
     // todo Cookies? do we want to save filters? not sure yet maybe just save hot/ new with cookies
@@ -82,6 +84,8 @@ export default function KeebShare() {
             path: "/",
         });
     };
+
+    const { data: posts } = api.post.getAll.useQuery();
 
     return (
         <div className="mt-10 flex w-full flex-col px-16 text-darkGray">
@@ -259,7 +263,29 @@ export default function KeebShare() {
                     </ModalDialog>
 
                     <div>
-                        {filter === "New" && <div> new posts</div>}
+                        {filter === "New" && (
+                            <div>
+                                {posts &&
+                                    posts.map((e, i) => (
+                                        <div
+                                            className="mt-5 h-72 w-3/4 bg-red-200 p-10"
+                                            key={e.id}
+                                        >
+                                            <Link href={`/keebshare/${e.id}`}>
+                                                <div>{e.title}</div>
+                                                {e.images.length > 0 && (
+                                                    <Image
+                                                        alt="post image"
+                                                        src={e.images[0].link}
+                                                        width={800}
+                                                        height={800}
+                                                    />
+                                                )}
+                                            </Link>
+                                        </div>
+                                    ))}
+                            </div>
+                        )}
                         {filter === "Hot" && <div> popular posts</div>}
                     </div>
                 </div>

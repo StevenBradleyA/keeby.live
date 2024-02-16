@@ -21,7 +21,8 @@ export default function PostPage() {
 
     return (
         <>
-            <div></div>
+            <div> hey whatsup post page </div>
+            {post?.title}
         </>
     );
 }
