@@ -36,14 +36,18 @@ model Account {
 }
 
 model UserFavorites {
-    id        String @id @default(cuid())
+    id        String  @id @default(cuid())
     userId    String
-    listingId String
+    listingId String?
+    postId    String?
 
-    user    User    @relation(fields: [userId], references: [id])
-    listing Listing @relation(fields: [listingId], references: [id])
+    user    User     @relation(fields: [userId], references: [id])
+    listing Listing? @relation(fields: [listingId], references: [id])
+    post    Post?    @relation(fields: [postId], references: [id])
 
-    @@unique([userId, listingId])
+    @@unique([userId, listingId, postId])
+    @@index([listingId], name: "idxUserFavoritesListingId")
+    @@index([postId], name: "idxUserFavoritesPostId")
 }
 
 model Post {
@@ -57,10 +61,11 @@ model Post {
 
     userId String
 
-    user     User       @relation(fields: [userId], references: [id])
-    postLike PostLike[]
-    images   Images[]
-    Comment  Comment[]
+    user          User            @relation(fields: [userId], references: [id])
+    postLike      PostLike[]
+    images        Images[]
+    Comment       Comment[]
+    UserFavorites UserFavorites[]
 }
 
 model Comment {
@@ -86,6 +91,8 @@ model Comment {
     post    Post?    @relation(fields: [postId], references: [id])
 
     @@unique([userId, id])
+    @@index([listingId], name: "idxCommentListingId")
+    @@index([postId], name: "idxCommentPostId")
 }
 
 model CommentLike {
