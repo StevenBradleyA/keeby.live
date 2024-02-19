@@ -57,7 +57,7 @@ export default function CreatePostModal({ closeModal }: CreatePostModalProps) {
     const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
     const router = useRouter();
 
-    // console.log("bees make honey", imageFiles);
+    const ctx = api.useContext();
 
     const { mutate } = api.post.create.useMutation({
         onSuccess: async (data) => {
@@ -69,7 +69,7 @@ export default function CreatePostModal({ closeModal }: CreatePostModalProps) {
                     color: "#fff",
                 },
             });
-            // void ctx.post.getAll.invalidate();
+            void ctx.post.getAllNewPreviewPosts.invalidate();
             await router.push(`/keebshare/${data.newPost.id}`);
             closeModal();
         },

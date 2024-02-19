@@ -109,6 +109,85 @@ export const postRouter = createTRPCRouter({
             };
         }),
 
+    getAllPopularPreviewPosts: publicProcedure
+        .input(
+            z.object({
+                searchQuery: z.string().optional(),
+                tag: z.string().optional(),
+                cursor: z.string().nullish(),
+                limit: z.number().min(1).max(100).nullish(),
+            })
+        )
+        .query(async ({ ctx, input }) => {
+            const { searchQuery, tag, cursor } = input;
+
+            const limit = input.limit ?? 10;
+
+            // Build the dynamic filters based on the input
+            const whereFilters: Prisma.PostWhereInput = {
+                AND: [
+                    tag ? { tag } : {},
+                    searchQuery
+                        ? {
+                              OR: [
+                                  {
+                                      title: {
+                                          contains: searchQuery,
+                                          mode: "insensitive",
+                                      },
+                                  },
+                                  {
+                                      text: {
+                                          contains: searchQuery,
+                                          mode: "insensitive",
+                                      },
+                                  },
+                              ],
+                          }
+                        : {},
+                ].filter((obj) => Object.keys(obj).length > 0),
+            };
+
+            const posts = await ctx.prisma.post.findMany({
+                where: whereFilters,
+                include: {
+                    _count: {
+                        select: { comments: true },
+                    },
+                    images: {
+                        where: {
+                            OR: [
+                                { resourceType: "POSTPREVIEW" },
+                                { resourceType: "POST" },
+                            ],
+                        },
+                    },
+                },
+                orderBy: { createdAt: "desc" },
+                take: limit + 1,
+                skip: cursor ? 1 : 0,
+                cursor: cursor ? { id: cursor } : undefined,
+            });
+
+            // sort by popularity (comment count)
+            const popularPosts = posts.sort(
+                (a, b) => b._count.comments - a._count.comments
+            );
+
+            let nextCursor: typeof cursor | undefined = undefined;
+            if (popularPosts.length > limit) {
+                const nextItem = popularPosts.pop(); // Remove the extra item
+                if (nextItem !== undefined) {
+                    nextCursor = nextItem.id; // Set the next cursor to the ID of the extra item
+                }
+            }
+
+            return {
+                posts: popularPosts,
+                nextCursor,
+            };
+        }),
+
     getOne: publicProcedure
         .input(
             z.object({

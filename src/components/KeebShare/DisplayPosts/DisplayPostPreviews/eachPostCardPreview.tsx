@@ -32,10 +32,13 @@ export default function EachPostCardPreview({
 
     // going to have to organize images via resource type prob
     // then addd a simple carosal
- console.log(post)
+
+    // idk about layout design yet i just don't like reddits at all 
+
+    
+    console.log(post);
     return (
-        <div
-         className="flex h-[30vh] w-[47%] flex-col rounded-xl bg-green-200">
+        <div className="flex h-[30vh] w-[47%] flex-col overflow-hidden rounded-xl bg-keebyGray">
             <Link
                 href={{
                     pathname: "/keebshop/[postId]",
@@ -43,24 +46,41 @@ export default function EachPostCardPreview({
                 }}
             >
                 {post.images && post.images[0] && (
-                    <div className="listing-preview-hover-effect relative h-72 w-96  cursor-pointer overflow-hidden rounded-2xl ">
-                        <Image
-                            alt="preview"
-                            src={
-                                post.images[0].link
-                                    ? post.images[0].link
-                                    : keebo
-                            }
-                            width={600}
-                            height={600}
-                            className={`h-full w-full object-cover`}
-                        />
+                    <div className="h-full w-full ">
+                        <h1 className="p-2 text-lg text-white">{post.title}</h1>
+                        <div className=" relative h-full w-full cursor-pointer">
+                            <Image
+                                alt="preview"
+                                src={
+                                    post.images[0].link
+                                        ? post.images[0].link
+                                        : keebo
+                                }
+                                width={600}
+                                height={600}
+                                className={`h-full w-full object-cover`}
+                            />
+                            <button className="absolute right-0 top-10">
+                                next
+                            </button>
+                            <button className="absolute left-0 top-10">
+                                prev
+                            </button>
+                        </div>
+                        {/* <div className=" flex h-1/6 justify-evenly">
+                            <div className="text-red-500 ">
+                                {`${post._count.comments} ${
+                                    post._count.comments === 1
+                                        ? "Comment"
+                                        : "Comments"
+                                }`}
+                            </div>
+                            <div>like </div>
+
+                            <div>favorite </div>
+                        </div> */}
                     </div>
                 )}
-
-                <div className="text-darkGray">{post.title}</div>
-                {/* <div>{post._count}</div> */}
-                <div>{post._count.comments}</div>
             </Link>
         </div>
     );

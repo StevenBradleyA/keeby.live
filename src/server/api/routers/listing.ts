@@ -299,7 +299,7 @@ export const listingRouter = createTRPCRouter({
                     cursor: cursor ? { id: cursor } : undefined,
                 });
 
-            // Apply manual sorting by popularity (comment count)
+            // sort by popularity (comment count)
             let popularListings = listings.sort(
                 (a, b) => b._count.comments - a._count.comments
             );
