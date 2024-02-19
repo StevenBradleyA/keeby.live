@@ -29,6 +29,17 @@ interface ListingWithCommentCount extends Listing {
     };
 }
 
+interface ListingWithImagesAndCount extends Listing {
+    images: Array<{
+        id: string;
+        link: string;
+        resourceType: string;
+    }>;
+    _count: {
+        comments: number;
+    };
+}
+
 export const listingRouter = createTRPCRouter({
     getOne: publicProcedure
         .input(
@@ -36,12 +47,38 @@ export const listingRouter = createTRPCRouter({
                 id: z.string(),
             })
         )
-        .query(({ input, ctx }) => {
-            return ctx.prisma.listing.findUnique({
+        .query(async ({ input, ctx }) => {
+            const listingWithImages = (await ctx.prisma.listing.findUnique({
                 where: {
                     id: input.id,
                 },
-            });
+                include: {
+                    images: true,
+                    _count: {
+                        select: { comments: true },
+                    },
+                },
+            })) as ListingWithImagesAndCount;
+
+            if (listingWithImages) {
+                // Sort images with "LISTINGPREVIEW" appearing first
+                listingWithImages.images.sort((a, b) => {
+                    if (
+                        a.resourceType === "LISTINGPREVIEW" &&
+                        b.resourceType !== "LISTINGPREVIEW"
+                    ) {
+                        return -1;
+                    } else if (
+                        a.resourceType !== "LISTINGPREVIEW" &&
+                        b.resourceType === "LISTINGPREVIEW"
+                    ) {
+                        return 1;
+                    }
+                    return 0;
+                });
+            }
+
+            return listingWithImages;
         }),
 
     getAll: publicProcedure.query(({ ctx }) => {
@@ -182,160 +219,6 @@ export const listingRouter = createTRPCRouter({
                 nextCursor,
             };
         }),
-    // getAllSortedByPopularityWithFilters: publicProcedure
-    //     .input(
-    //         z.object({
-    //             searchQuery: z.string().optional(),
-    //             switchType: z.string().optional(),
-    //             minPrice: z.number().optional(),
-    //             maxPrice: z.number().optional(),
-    //             priceOrder: z.string().optional(),
-    //             layoutType: z.string().optional(),
-    //             assemblyType: z.string().optional(),
-    //             hotSwapType: z.string().optional(),
-    //             soundType: z.string().optional(),
-    //             cursor: z.string().nullish(),
-    //             limit: z.number().min(1).max(100).nullish(),
-    //         })
-    //     )
-    //     .query(async ({ ctx, input }) => {
-    //         const {
-    //             searchQuery,
-    //             switchType,
-    //             soundType,
-    //             assemblyType,
-    //             hotSwapType,
-    //             layoutType,
-    //             minPrice,
-    //             maxPrice,
-    //             priceOrder,
-    //             cursor,
-    //         } = input;
-    //         const limit = input.limit ?? 12;
-
-    //         // Step 1: Aggregate comment counts
-    //         const commentCounts = await ctx.prisma.comment.groupBy({
-    //             by: ["typeId"],
-    //             where: { type: "LISTING" },
-    //             _count: true,
-    //         });
-
-    //         // Step 2: Apply filters and retrieve listings
-    //         const queryOptions: Prisma.ListingFindManyArgs = {
-    //             select: {
-    //                 id: true,
-    //                 title: true,
-    //                 price: true,
-    //                 switchType: true,
-    //                 images: {
-    //                     where: {
-    //                         resourceType: "LISTINGPREVIEW",
-    //                     },
-    //                     select: { id: true, link: true },
-    //                 },
-    //             },
-    //             take: limit + 1,
-    //             skip: cursor ? 1 : undefined,
-    //             cursor: cursor ? { id: cursor } : undefined,
-    //         };
-
-    //         const filters: Prisma.ListingWhereInput[] = [];
-
-    //         if (switchType) {
-    //             filters.push({
-    //                 switchType: {
-    //                     equals: switchType,
-    //                 },
-    //             });
-    //         }
-    //         if (soundType) {
-    //             filters.push({
-    //                 soundType: {
-    //                     equals: soundType,
-    //                 },
-    //             });
-    //         }
-    //         if (assemblyType) {
-    //             filters.push({
-    //                 assemblyType: {
-    //                     equals: assemblyType,
-    //                 },
-    //             });
-    //         }
-    //         if (layoutType) {
-    //             filters.push({
-    //                 layoutType: {
-    //                     equals: layoutType,
-    //                 },
-    //             });
-    //         }
-    //         if (hotSwapType) {
-    //             filters.push({
-    //                 pcbType: {
-    //                     equals: hotSwapType,
-    //                 },
-    //             });
-    //         }
-    //         if (minPrice) {
-    //             filters.push({
-    //                 price: {
-    //                     gte: minPrice,
-    //                 },
-    //             });
-    //         }
-    //         if (maxPrice) {
-    //             filters.push({
-    //                 price: {
-    //                     lte: maxPrice,
-    //                 },
-    //             });
-    //         }
-
-    //         if (searchQuery) {
-    //             filters.push({
-    //                 title: {
-    //                     contains: searchQuery,
-    //                 },
-    //             });
-    //         }
-    //         if (filters.length > 0) {
-    //             queryOptions.where = {
-    //                 AND: filters,
-    //             };
-    //         }
-    //         const listings = await ctx.prisma.listing.findMany(queryOptions);
-
-    //         // Step 3: Merge listings with comment counts
-    //         const popularListings = listings.map((listing) => {
-    //             const commentCount =
-    //                 commentCounts.find((c) => c.typeId === listing.id)
-    //                     ?._count ?? 0;
-    //             return { ...listing, commentCount };
-    //         });
-
-    //         // Step 4: Sort listings by comment counts
-    //         popularListings.sort((a, b) => b.commentCount - a.commentCount);
-
-    //         // Step 5: Sort listings by priceOrder if specified
-    //         if (priceOrder === "asc") {
-    //             popularListings.sort((a, b) => a.price - b.price);
-    //         } else if (priceOrder === "desc") {
-    //             popularListings.sort((a, b) => b.price - a.price);
-    //         }
-
-    //         let nextCursor: typeof cursor | undefined = undefined;
-    //         if (popularListings.length > limit) {
-    //             const nextItem = popularListings.pop(); // Remove the extra item
-    //             if (nextItem !== undefined) {
-    //                 nextCursor = nextItem.id; // Set the next cursor to the ID of the extra item
-    //             }
-    //         }
-
-    //         return {
-    //             popularListings,
-    //             nextCursor,
-    //         };
-    //     }),
 
     getAllSortedByPopularityWithFilters: publicProcedure
         .input(

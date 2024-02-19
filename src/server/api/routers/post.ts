@@ -6,6 +6,7 @@ import {
 } from "~/server/api/trpc";
 
 import { removeFileFromS3 } from "../utils";
+import type { Prisma } from "@prisma/client";
 
 type CreateData = {
     title: string;
@@ -34,8 +35,8 @@ export const postRouter = createTRPCRouter({
             },
         });
     }),
-// comment count
-    getAllWithFilters: publicProcedure
+    // comment count
+    getAllNewPreviewPosts: publicProcedure
         .input(
             z.object({
                 searchQuery: z.string().optional(),
@@ -47,14 +48,39 @@ export const postRouter = createTRPCRouter({
         .query(async ({ ctx, input }) => {
             const { searchQuery, tag, cursor } = input;
 
-            const limit = input.limit ?? 12;
-            const queryOptions: Prisma.ListingFindManyArgs = {
-                select: {
-                    id: true,
-                    title: true,
-                    link: true,
-                    text: true,
-                    switchType: true,
+            const limit = input.limit ?? 10;
+
+            // Build the dynamic filters based on the input
+            const whereFilters: Prisma.PostWhereInput = {
+                AND: [
+                    tag ? { tag } : {},
+                    searchQuery
+                        ? {
+                              OR: [
+                                  {
+                                      title: {
+                                          contains: searchQuery,
+                                          mode: "insensitive",
+                                      },
+                                  },
+                                  {
+                                      text: {
+                                          contains: searchQuery,
+                                          mode: "insensitive",
+                                      },
+                                  },
+                              ],
+                          }
+                        : {},
+                ].filter((obj) => Object.keys(obj).length > 0),
+            };
+
+            const posts = await ctx.prisma.post.findMany({
+                where: whereFilters,
+                include: {
+                    _count: {
+                        select: { comments: true },
+                    },
                     images: {
                         where: {
                             OR: [
@@ -62,39 +88,13 @@ export const postRouter = createTRPCRouter({
                                 { resourceType: "POST" },
                             ],
                         },
-                        select: { id: true, link: true },
                     },
                 },
                 orderBy: { createdAt: "desc" },
                 take: limit + 1,
-                skip: cursor ? 1 : undefined,
+                skip: cursor ? 1 : 0,
                 cursor: cursor ? { id: cursor } : undefined,
-            };
-
-            const filters: Prisma.ListingWhereInput[] = [];
-
-            if (tag) {
-                filters.push({
-                    tag: {
-                        equals: tag,
-                    },
-                });
-            }
-
-            if (searchQuery) {
-                filters.push({
-                    title: {
-                        contains: searchQuery,
-                    },
-                });
-            }
-            if (filters.length > 0) {
-                queryOptions.where = {
-                    AND: filters,
-                };
-            }
-
-            const posts = await ctx.prisma.post.findMany(queryOptions);
+            });
 
             let nextCursor: typeof cursor | undefined = undefined;
             if (posts.length > limit) {
@@ -109,8 +109,6 @@ export const postRouter = createTRPCRouter({
                 nextCursor,
             };
         }),
-
-    // add comment count
 
     getOne: publicProcedure
         .input(
