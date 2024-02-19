@@ -9,6 +9,10 @@ export const commentRouter = createTRPCRouter({
     // getAll: publicProcedure.query(({ ctx }) => {
     //     return ctx.prisma.comment.findMany();
     // }),
+    // is there a more efficient way to check if it is liked?
+    // implement pagination here
+    // lets go ahead and implement comment sorting by top comment and newest.`
+
     getAllByTypeId: publicProcedure
         .input(
             z.object({
@@ -53,6 +57,7 @@ export const commentRouter = createTRPCRouter({
 
             return commentsWithLikes;
         }),
+
     getAllByTypeIdForViewers: publicProcedure
         .input(
             z.object({
@@ -164,13 +169,12 @@ export const commentRouter = createTRPCRouter({
                 where: { type: input.type, typeId: input.typeId },
             });
         }),
-    create: protectedProcedure
+    createListingComment: protectedProcedure
         .input(
             z.object({
                 text: z.string(),
                 userId: z.string(),
-                type: z.string(),
-                typeId: z.string(),
+                listingId: z.string(),
             })
         )
         .mutation(async ({ input, ctx }) => {

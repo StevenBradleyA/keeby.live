@@ -6,15 +6,14 @@ import ModalDialog from "~/components/Modal";
 import CommentSignInModal from "../Modal/signInModal";
 
 interface CreateCommentProps {
-    typeId: string;
-    type: string;
+    listingId: string;
 }
 
 interface ErrorsObj {
     text?: string;
 }
 
-export default function CreateComment({ typeId, type }: CreateCommentProps) {
+export default function CreateComment({ listingId }: CreateCommentProps) {
     const [text, setText] = useState<string>("");
     const [row, setRow] = useState<number>(1);
     const [isSignInModalOpen, setIsSignInModalOpen] = useState<boolean>(false);
@@ -25,10 +24,10 @@ export default function CreateComment({ typeId, type }: CreateCommentProps) {
 
     const ctx = api.useContext();
 
-    const { mutate } = api.comment.create.useMutation({
+    const { mutate } = api.comment.createListingComment.useMutation({
         onSuccess: () => {
             void ctx.comment.getAllByTypeId.invalidate();
-            void ctx.comment.getAmountByTypeId.invalidate();
+            // void ctx.comment.getAmountByTypeId.invalidate();
         },
     });
 
@@ -76,8 +75,7 @@ export default function CreateComment({ typeId, type }: CreateCommentProps) {
             const data = {
                 text,
                 userId: session.user.id,
-                type: type,
-                typeId: typeId,
+                listingId: listingId,
             };
 
             setText("");

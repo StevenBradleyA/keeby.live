@@ -50,24 +50,6 @@ model UserFavorites {
     @@index([postId], name: "idxUserFavoritesPostId")
 }
 
-model Post {
-    id        String   @id @default(cuid())
-    title     String
-    text      String?
-    tag       String
-    link      String?
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    userId String
-
-    user          User            @relation(fields: [userId], references: [id])
-    postLike      PostLike[]
-    images        Images[]
-    comments      Comment[]
-    UserFavorites UserFavorites[]
-}
-
 model Comment {
     id   String @id @default(cuid())
     text String
@@ -120,18 +102,6 @@ model Game {
     keeb Keeb? @relation(fields: [keebId], references: [id])
 }
 
-model Keeb {
-    id       String @id @default(cuid())
-    name     String
-    switches String
-    keycaps  String
-
-    userId String
-
-    user User   @relation(fields: [userId], references: [id])
-    Game Game[]
-}
-
 model Images {
     id           String   @id @default(cuid())
     link         String
@@ -149,6 +119,21 @@ model Images {
 
     listing Listing? @relation(fields: [listingId], references: [id])
     post    Post?    @relation(fields: [postId], references: [id])
+
+    @@index([listingId], name: "idxImagesListingId")
+    @@index([postId], name: "idxImagesPostId")
+}
+
+model Keeb {
+    id       String @id @default(cuid())
+    name     String
+    switches String
+    keycaps  String
+
+    userId String
+
+    user User   @relation(fields: [userId], references: [id])
+    Game Game[]
 }
 
 model Listing {
@@ -216,6 +201,24 @@ model ListingTransaction {
 
     user    User    @relation(fields: [userId], references: [id])
     listing Listing @relation(fields: [listingId], references: [id])
+}
+
+model Post {
+    id        String   @id @default(cuid())
+    title     String
+    text      String?
+    tag       String
+    link      String?
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    userId String
+
+    user          User            @relation(fields: [userId], references: [id])
+    postLike      PostLike[]
+    images        Images[]
+    comments      Comment[]
+    UserFavorites UserFavorites[]
 }
 
 model PostLike {

@@ -2,14 +2,13 @@ import { useEffect, useState } from "react";
 import ModalDialog from "~/components/Modal";
 import plus from "@public/Vectors/plus-plus.png";
 import Image from "next/image";
-import DisplayListingPreviews from "~/components/KeebShop/DisplayListing/DisplayListingsPreview";
-import DisplayPopularListingPreviews from "~/components/KeebShop/DisplayListing/DisplayListingsPreview/displayPopularListingPreviews";
 import ResetArrowSvg from "~/components/Svgs/reset";
 import NotificationSvg from "~/components/Svgs/notification";
 import { getCookies } from "cookies-next";
 import { setCookie } from "cookies-next";
 import CreatePostModal from "~/components/KeebShare/CreatePost";
 import { api } from "~/utils/api";
+import DisplayNewPostPreviews from "~/components/KeebShare/DisplayPosts/DisplayPostPreviews/displayNewPostPreviews";
 import Link from "next/link";
 
 export default function KeebShare() {
@@ -20,16 +19,12 @@ export default function KeebShare() {
     // Conversion to SSR
 
     const cookies = getCookies();
-
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
     const [filter, setFilter] = useState<string>("Hot");
-    const [isSpecify, setIsSpecify] = useState<boolean>(false);
     const [searchInput, setSearchInput] = useState<string>("");
     const [isSearchFocus, setIsSearchFocus] = useState<boolean>(false);
-
-    // specify
-    // thinking tags like memes, builds, discussion, tutorials
-
+    const [isSpecify, setIsSpecify] = useState<boolean>(false);
     const [tag, setTag] = useState<string>("");
 
     const openModal = () => {
@@ -56,17 +51,17 @@ export default function KeebShare() {
         if (tag === type) {
             setTag("");
         } else {
-            if (tag === "builds") {
+            if (type === "builds") {
                 setTag("builds");
             }
-            if (tag === "meme") {
-                setTag("meme");
+            if (type === "memes") {
+                setTag("memes");
             }
-            if (tag === "clicky") {
-                setTag("clicky");
+            if (type === "tutorials") {
+                setTag("tutorials");
             }
-            if (tag === "other") {
-                setTag("other");
+            if (type === "discussion") {
+                setTag("discussion");
             }
         }
     };
@@ -86,6 +81,8 @@ export default function KeebShare() {
     };
 
     const { data: posts } = api.post.getAll.useQuery();
+
+    // create two different infinite queries one sorting by popular comments the other sorting simply by newest.
 
     return (
         <div className="mt-10 flex w-full flex-col px-16 text-darkGray">
@@ -265,25 +262,10 @@ export default function KeebShare() {
                     <div>
                         {filter === "New" && (
                             <div>
-                                {posts &&
-                                    posts.map((e, i) => (
-                                        <div
-                                            className="mt-5 h-72 w-3/4 bg-red-200 p-10"
-                                            key={e.id}
-                                        >
-                                            <Link href={`/keebshare/${e.id}`}>
-                                                <div>{e.title}</div>
-                                                {e.images.length > 0 && (
-                                                    <Image
-                                                        alt="post image"
-                                                        src={e.images[0].link}
-                                                        width={800}
-                                                        height={800}
-                                                    />
-                                                )}
-                                            </Link>
-                                        </div>
-                                    ))}
+                                <DisplayNewPostPreviews
+                                    searchInput={searchInput}
+                                    tag={tag}
+                                />
                             </div>
                         )}
                         {filter === "Hot" && <div> popular posts</div>}

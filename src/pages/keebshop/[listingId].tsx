@@ -11,26 +11,25 @@ export default function ListingPage() {
         id: listingId,
     });
 
-    const { data: allListingImages, isLoading: isLoadingImages } =
-        api.image.getCombinedListingImages.useQuery({
-            listingId: listingId,
-        });
+    console.log("hello steven", listing);
 
-    if (isLoading || isLoadingImages)
+    // const { data: allListingImages, isLoading: isLoadingImages } =
+    //     api.image.getCombinedListingImages.useQuery({
+    //         listingId: listingId,
+    //     });
+
+    if (isLoading)
         return (
             <div className="mt-44">
                 <LoadingSpinner size="40px" />
             </div>
         );
 
+    // hmmmmm
+
     return (
         <div className="w-full  px-16 text-black">
-            {listing && allListingImages && (
-                <DisplayListingPage
-                    listing={listing}
-                    allListingImages={allListingImages}
-                />
-            )}
+            {listing && <DisplayListingPage listing={listing} />}
         </div>
     );
 }

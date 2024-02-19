@@ -13,21 +13,32 @@ import MainFooter from "~/components/Footer";
 import ChevronRound from "~/components/Svgs/chevron";
 import ListingPageFavorite from "./Favorite";
 
+interface Image {
+    id: string;
+    link: string;
+    resourceType: string;
+}
+
+interface ListingWithImagesAndCount extends Listing {
+    images: Image[];
+    _count: {
+        comments: number;
+    };
+}
+
 interface DisplayListingPageProps {
-    listing: Listing;
-    allListingImages: Images[];
+    listing: ListingWithImagesAndCount;
 }
 
 export default function DisplayListingPage({
     listing,
-    allListingImages,
 }: DisplayListingPageProps) {
     const { data: sellerInfo, isLoading: isLoading } =
         api.user.getSeller.useQuery(listing.sellerId);
 
     const { data: session } = useSession();
 
-    const [displayImage, setDisplayImage] = useState(allListingImages[0]);
+    const [displayImage, setDisplayImage] = useState(listing.images[0]);
 
     const currentListingNameArr = listing.title.split(" ");
     const smallTitle = currentListingNameArr.pop();
@@ -35,7 +46,7 @@ export default function DisplayListingPage({
 
     const [currentIndex, setCurrentIndex] = useState<number>(0);
 
-    const maxIndex = Math.max(0, allListingImages.length - 4);
+    const maxIndex = Math.max(0, listing.images.length - 4);
 
     const nextImage = () => {
         setCurrentIndex((prevIndex) =>
@@ -98,7 +109,7 @@ export default function DisplayListingPage({
                                     transition: "transform 0.3s ease-in-out",
                                 }}
                             >
-                                {allListingImages.map((e, i) => {
+                                {listing.images.map((e, i) => {
                                     return (
                                         <button
                                             className="h-1/4 w-full"
@@ -203,11 +214,15 @@ export default function DisplayListingPage({
             <div className="mt-10 w-3/4 px-5">
                 {session && session.user.id ? (
                     <DisplayComments
-                        typeId={listing.id}
+                        listingId={listing.id}
                         userId={session.user.id}
+                        commentCount={listing._count.comments}
                     />
                 ) : (
-                    <DisplayViewerCommments typeId={listing.id} />
+                    <DisplayViewerCommments
+                        listingId={listing.id}
+                        commentCount={listing._count.comments}
+                    />
                 )}
             </div>
             <MainFooter />
