@@ -94,9 +94,9 @@ export default function DispayNewPostPreviews({
     return (
         <>
             {postData && postData.pages.length > 0 && (
-                <div>
+                <div className="flex flex-wrap gap-10">
                     {postData.pages.map((page) =>
-                        page.posts.map((post, i) => (
+                        page.posts.map((post) => (
                             <EachPostCardPreview
                                 key={post.id}
                                 post={post as unknown as EachPost}
@@ -105,39 +105,18 @@ export default function DispayNewPostPreviews({
                     )}
                 </div>
             )}
+            {isFetchingNextPage && (
+                <div className="flex w-full justify-center">
+                    <LoadingSpinner size="40px" />
+                </div>
+            )}
+
+            {postData && postData.pages[0]?.posts.length === 0 && (
+                <div className=" mt-5 flex items-end gap-2 text-darkGray">
+                    <h1>{`Woah, there are currently no posts `}</h1>
+                    <Image src={keebo} alt="keeby mascot" className="w-10" />
+                </div>
+            )}
         </>
     );
 }
-
-//     return (
-//         <>
-//             {keebData && keebData.pages.length > 0 && (
-//                 <div className={`flex w-full flex-wrap gap-5  `}>
-//                     {keebData.pages.map((page) =>
-//                         page.listings.map((keeb, i) => (
-//                             <EachListingCardPreview
-//                                 key={keeb.id}
-//                                 keeb={keeb as unknown as EachKeeb}
-//                                 index={i}
-//                             />
-//                         ))
-//                     )}
-//                 </div>
-//             )}
-//             {isFetchingNextPage && (
-//                 <div className="flex w-full justify-center">
-//                     <LoadingSpinner size="40px" />
-//                 </div>
-//             )}
-
-//             {keebData && keebData.pages[0]?.listings.length === 0 && (
-//                 <div className=" mt-5 flex items-end gap-2 text-darkGray">
-//                     <h1>
-//                         {`Woah, all sold out. There are currently no listings for sale `}
-//                     </h1>
-//                     <Image src={keebo} alt="keeby mascot" className="w-10" />
-//                 </div>
-//             )}
-//         </>
-//     );
-// }

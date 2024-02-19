@@ -57,6 +57,8 @@ export default function CreatePostModal({ closeModal }: CreatePostModalProps) {
     const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
     const router = useRouter();
 
+    // console.log("bees make honey", imageFiles);
+
     const { mutate } = api.post.create.useMutation({
         onSuccess: async (data) => {
             toast.success("Post Complete!", {
@@ -130,44 +132,39 @@ export default function CreatePostModal({ closeModal }: CreatePostModalProps) {
                 };
 
                 setIsSubmitting(true);
-                if (imageFiles.length > 0 && preview) {
-                    data.images = [];
-                    data.preview = preview;
 
-                    const imagePromises = imageFiles.map((file) => {
-                        return new Promise<string>((resolve, reject) => {
-                            const reader = new FileReader();
-                            reader.readAsDataURL(file);
-                            reader.onloadend = () => {
-                                if (typeof reader.result === "string") {
-                                    const base64Data =
-                                        reader.result.split(",")[1];
-                                    if (base64Data) {
-                                        resolve(base64Data);
-                                    }
-                                } else {
-                                    reject(new Error("Failed to read file"));
+                const imagePromises = imageFiles.map((file) => {
+                    return new Promise<string>((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.readAsDataURL(file);
+                        reader.onloadend = () => {
+                            if (typeof reader.result === "string") {
+                                const base64Data = reader.result.split(",")[1];
+                                if (base64Data) {
+                                    resolve(base64Data);
                                 }
-                            };
-                            reader.onerror = () => {
+                            } else {
                                 reject(new Error("Failed to read file"));
-                            };
-                        });
+                            }
+                        };
+                        reader.onerror = () => {
+                            reject(new Error("Failed to read file"));
+                        };
                     });
+                });
 
-                    const base64DataArray = await Promise.all(imagePromises);
-                    const imageUrlArr: string[] = [];
+                const base64DataArray = await Promise.all(imagePromises);
+                const imageUrlArr: string[] = [];
 
-                    for (const base64Data of base64DataArray) {
-                        const buffer = Buffer.from(base64Data, "base64");
-                        const imageUrl = await uploadFileToS3(buffer);
-                        imageUrlArr.push(imageUrl);
-                    }
-
-                    data.images = imageUrlArr.map((imageUrl) => ({
-                        link: imageUrl || "",
-                    }));
+                for (const base64Data of base64DataArray) {
+                    const buffer = Buffer.from(base64Data, "base64");
+                    const imageUrl = await uploadFileToS3(buffer);
+                    imageUrlArr.push(imageUrl);
                 }
+
+                data.images = imageUrlArr.map((imageUrl) => ({
+                    link: imageUrl || "",
+                }));
 
                 if (link) {
                     data.link = link;

@@ -35,7 +35,6 @@ export const postRouter = createTRPCRouter({
             },
         });
     }),
-    // comment count
     getAllNewPreviewPosts: publicProcedure
         .input(
             z.object({
@@ -178,7 +177,8 @@ export const postRouter = createTRPCRouter({
                 const newPost = await ctx.prisma.post.create({
                     data: createData,
                 });
-                if (images && preview) {
+
+                if (images && preview !== undefined) {
                     const createdImages = await Promise.all(
                         images.map(async (image, i) => {
                             const imageType =
