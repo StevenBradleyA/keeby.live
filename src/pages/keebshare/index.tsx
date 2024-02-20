@@ -9,12 +9,10 @@ import { setCookie } from "cookies-next";
 import CreatePostModal from "~/components/KeebShare/CreatePost";
 import { api } from "~/utils/api";
 import DisplayNewPostPreviews from "~/components/KeebShare/DisplayPosts/DisplayPostPreviews/displayNewPostPreviews";
-import Link from "next/link";
+import DisplayPopularPostPreviews from "~/components/KeebShare/DisplayPosts/DisplayPostPreviews/displayPopularPostPreviews";
 
 export default function KeebShare() {
-    // todo Cookies? do we want to save filters? not sure yet maybe just save hot/ new with cookies
 
-    // todo cookies for hot and new is a must lol
     // todo throughly test pagination
     // Conversion to SSR
 
@@ -79,10 +77,6 @@ export default function KeebShare() {
             path: "/",
         });
     };
-
-    const { data: posts } = api.post.getAll.useQuery();
-
-    // create two different infinite queries one sorting by popular comments the other sorting simply by newest.
 
     return (
         <div className="mt-10 flex w-full flex-col px-16 text-darkGray">
@@ -268,7 +262,14 @@ export default function KeebShare() {
                                 />
                             </div>
                         )}
-                        {filter === "Hot" && <div> popular posts</div>}
+                        {filter === "Hot" && (
+                            <div>
+                                <DisplayPopularPostPreviews
+                                    searchInput={searchInput}
+                                    tag={tag}
+                                />
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

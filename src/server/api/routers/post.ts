@@ -59,13 +59,11 @@ export const postRouter = createTRPCRouter({
                                   {
                                       title: {
                                           contains: searchQuery,
-                                          mode: "insensitive",
                                       },
                                   },
                                   {
                                       text: {
                                           contains: searchQuery,
-                                          mode: "insensitive",
                                       },
                                   },
                               ],
@@ -133,13 +131,11 @@ export const postRouter = createTRPCRouter({
                                   {
                                       title: {
                                           contains: searchQuery,
-                                          mode: "insensitive",
                                       },
                                   },
                                   {
                                       text: {
                                           contains: searchQuery,
-                                          mode: "insensitive",
                                       },
                                   },
                               ],
@@ -213,7 +209,6 @@ export const postRouter = createTRPCRouter({
                                 { resourceType: "POST" },
                             ],
                         },
-                        select: { id: true, link: true },
                     },
                 },
             });
