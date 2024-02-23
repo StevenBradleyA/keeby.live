@@ -9,6 +9,31 @@ interface DisplayCommentsProps {
     commentCount: number;
 }
 
+
+interface CommentUser {
+    id: string;
+    username: string | null;
+    profile: string | null;
+}
+
+interface CommentLike {
+    commentLike: number;
+    replies: number;
+}
+
+interface CommentContents {
+    id: string;
+    text: string;
+    userId: string;
+    listingId: string;
+    postId: null;
+    parentId: string | null;
+    referencedUser: string | null;
+    user: CommentUser;
+    _count: CommentLike;
+    isLiked?: boolean;
+}
+
 export default function DisplayComments({
     listingId,
     userId,
@@ -24,8 +49,7 @@ export default function DisplayComments({
     // lets add infiinite query now load first 20 comments or something big
 
     const { data: comments, isLoading: isLoadingComments } =
-        api.comment.getAllByTypeId.useQuery({
-            type: "LISTING",
+        api.comment.getAllByListingId.useQuery({
             listingId: listingId,
             userId: userId,
         });
@@ -54,7 +78,7 @@ export default function DisplayComments({
                 comments.map((comment, i) => (
                     <EachCommentCard
                         key={i}
-                        comment={comment}
+                        comment={comment as CommentContents}
                         listingId={listingId}
                     />
                 ))}

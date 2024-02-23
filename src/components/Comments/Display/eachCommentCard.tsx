@@ -13,7 +13,7 @@ import CommentSignInModal from "../Modal/signInModal";
 import UpdateComment from "../Update";
 
 interface EachCommentCardProps {
-    typeId: string;
+    listingId: string;
     comment: CommentContents;
 }
 
@@ -32,8 +32,8 @@ interface CommentContents {
     id: string;
     text: string;
     userId: string;
-    type: string;
-    typeId: string;
+    listingId: string;
+    postId: null;
     parentId: string | null;
     referencedUser: string | null;
     user: CommentUser;
@@ -43,7 +43,7 @@ interface CommentContents {
 
 export default function EachCommentCard({
     comment,
-    typeId,
+    listingId,
 }: EachCommentCardProps) {
     const [showTopLevelCommentReply, setShowTopLevelCommentReply] =
         useState<boolean>(false);
@@ -211,8 +211,7 @@ export default function EachCommentCard({
                     </div>
                     {showTopLevelCommentReply && (
                         <CreateReplyComment
-                            typeId={typeId}
-                            type={"LISTING"}
+                            listingId={listingId}
                             parentId={comment.id}
                             setShowTopLevelCommentReply={
                                 setShowTopLevelCommentReply
@@ -222,7 +221,6 @@ export default function EachCommentCard({
                     )}
                 </div>
             </div>
-
             {comment._count.replies > 0 && (
                 <button
                     onClick={() => setOpenReplies(!openReplies)}
@@ -253,14 +251,14 @@ export default function EachCommentCard({
             {openReplies && session && session.user && (
                 <DisplayReplyComments
                     parentId={comment.id}
-                    typeId={typeId}
+                    listingId={listingId}
                     userId={session.user.id}
                 />
             )}
             {openReplies && session === null && (
                 <DisplayReplyViewerComments
                     parentId={comment.id}
-                    typeId={typeId}
+                    listingId={listingId}
                 />
             )}
         </div>

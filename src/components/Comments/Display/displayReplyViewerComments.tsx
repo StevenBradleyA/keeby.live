@@ -4,17 +4,38 @@ import LoadingSpinner from "~/components/Loading";
 
 interface DisplayReplyCommentsProps {
     parentId: string;
-    typeId: string;
+    listingId: string;
+}
+
+interface ReplyUser {
+    id: string;
+    username: string | null;
+    profile: string | null;
+}
+interface CommentLike {
+    commentLike: number;
+}
+
+interface ReplyContents {
+    user: ReplyUser;
+    id: string;
+    text: string;
+    userId: string;
+    listingId: string;
+    postId: null;
+    parentId: string | null;
+    referencedUser: string | null;
+    _count: CommentLike;
+    isLiked?: boolean;
 }
 
 export default function DisplayReplyViewerComments({
     parentId,
-    typeId,
+    listingId,
 }: DisplayReplyCommentsProps) {
     const { data: replies, isLoading: isLoadingComments } =
         api.comment.getAllViewerReplysByTypeId.useQuery({
-            type: "LISTING",
-            typeId: typeId,
+            listingId: listingId,
             parentId: parentId,
         });
 
@@ -31,8 +52,8 @@ export default function DisplayReplyViewerComments({
                 replies.map((e, i) => (
                     <EachReplyCommentCard
                         key={i}
-                        reply={e}
-                        typeId={typeId}
+                        reply={e as ReplyContents}
+                        listingId={listingId}
                         parentId={parentId}
                     />
                 ))}

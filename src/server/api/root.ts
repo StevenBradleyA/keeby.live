@@ -7,7 +7,7 @@ import { reviewRouter } from "./routers/review";
 import { userRouter } from "./routers/user";
 import { listingRouter } from "./routers/listing";
 import { gameRouter } from "./routers/game";
-import { commentLikeRouter } from "./routers/like";
+import { likeRouter } from "./routers/like";
 import { favoriteRouter } from "./routers/favorite";
 
 /**
@@ -21,7 +21,7 @@ export const appRouter = createTRPCRouter({
     game: gameRouter,
     image: imageRouter,
     keeb: keebRouter,
-    commentLike: commentLikeRouter,
+    like: likeRouter,
     listing: listingRouter,
     post: postRouter,
     review: reviewRouter,

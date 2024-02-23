@@ -45,7 +45,7 @@ export default function CreateListingModal() {
                             href={
                                 isVerifiedSeller
                                     ? "/create-listing"
-                                    : "verification"
+                                    : "/seller-verify"
                             }
                             aria-label="create listing"
                         >

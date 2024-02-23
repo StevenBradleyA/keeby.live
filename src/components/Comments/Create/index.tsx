@@ -26,8 +26,7 @@ export default function CreateComment({ listingId }: CreateCommentProps) {
 
     const { mutate } = api.comment.createListingComment.useMutation({
         onSuccess: () => {
-            void ctx.comment.getAllByTypeId.invalidate();
-            // void ctx.comment.getAmountByTypeId.invalidate();
+            void ctx.comment.getAllByListingId.invalidate();
         },
     });
 

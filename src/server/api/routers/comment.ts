@@ -13,19 +13,18 @@ export const commentRouter = createTRPCRouter({
     // implement pagination here
     // lets go ahead and implement comment sorting by top comment and newest.`
 
-    getAllByTypeId: publicProcedure
+    getAllByListingId: publicProcedure
         .input(
             z.object({
-                type: z.string(),
-                typeId: z.string(),
+                listingId: z.string(),
                 userId: z.string(),
             })
         )
         .query(async ({ ctx, input }) => {
+            const { listingId, userId } = input;
             const allComments = await ctx.prisma.comment.findMany({
                 where: {
-                    type: input.type,
-                    typeId: input.typeId,
+                    listingId: listingId,
                     parentId: null,
                 },
                 include: {
@@ -43,7 +42,7 @@ export const commentRouter = createTRPCRouter({
 
             const userLikes = await ctx.prisma.commentLike.findMany({
                 where: {
-                    userId: input.userId,
+                    userId: userId,
                 },
                 select: { commentId: true },
             });
@@ -61,15 +60,13 @@ export const commentRouter = createTRPCRouter({
     getAllByTypeIdForViewers: publicProcedure
         .input(
             z.object({
-                type: z.string(),
-                typeId: z.string(),
+                listingId: z.string(),
             })
         )
         .query(({ ctx, input }) => {
             return ctx.prisma.comment.findMany({
                 where: {
-                    type: input.type,
-                    typeId: input.typeId,
+                    listingId: input.listingId,
                     parentId: null,
                 },
                 include: {
@@ -85,11 +82,10 @@ export const commentRouter = createTRPCRouter({
                 },
             });
         }),
-    getAllReplysByTypeId: publicProcedure
+    getAllReplysByListingId: publicProcedure
         .input(
             z.object({
-                type: z.string(),
-                typeId: z.string(),
+                listingId: z.string(),
                 userId: z.string(),
                 parentId: z.string(),
             })
@@ -97,8 +93,7 @@ export const commentRouter = createTRPCRouter({
         .query(async ({ ctx, input }) => {
             const allComments = await ctx.prisma.comment.findMany({
                 where: {
-                    type: input.type,
-                    typeId: input.typeId,
+                    listingId: input.listingId,
                     parentId: input.parentId,
                 },
                 include: {
@@ -132,16 +127,14 @@ export const commentRouter = createTRPCRouter({
     getAllViewerReplysByTypeId: publicProcedure
         .input(
             z.object({
-                type: z.string(),
-                typeId: z.string(),
+                listingId: z.string(),
                 parentId: z.string(),
             })
         )
         .query(async ({ ctx, input }) => {
             return ctx.prisma.comment.findMany({
                 where: {
-                    type: input.type,
-                    typeId: input.typeId,
+                    listingId: input.listingId,
                     parentId: input.parentId,
                 },
                 include: {
@@ -157,18 +150,17 @@ export const commentRouter = createTRPCRouter({
             });
         }),
 
-    getAmountByTypeId: publicProcedure
-        .input(
-            z.object({
-                type: z.string(),
-                typeId: z.string(),
-            })
-        )
-        .query(({ ctx, input }) => {
-            return ctx.prisma.comment.count({
-                where: { type: input.type, typeId: input.typeId },
-            });
-        }),
+    // getAmountByTypeId: publicProcedure
+    //     .input(
+    //         z.object({
+    //             listingId: z.string(),
+    //         })
+    //     )
+    //     .query(({ ctx, input }) => {
+    //         return ctx.prisma.comment.count({
+    //             where: { listingId: input.listingId },
+    //         });
+    //     }),
     createListingComment: protectedProcedure
         .input(
             z.object({
@@ -192,8 +184,7 @@ export const commentRouter = createTRPCRouter({
             z.object({
                 text: z.string(),
                 userId: z.string(),
-                type: z.string(),
-                typeId: z.string(),
+                listingId: z.string(),
                 parentId: z.string(),
                 referencedUser: z.string().optional(),
             })
@@ -217,8 +208,7 @@ export const commentRouter = createTRPCRouter({
                 data: {
                     text: input.text,
                     userId: input.userId,
-                    type: input.type,
-                    typeId: input.typeId,
+                    listingId: input.listingId,
                     parentId: input.parentId,
                     referencedUser: input.referencedUser || null,
                 },

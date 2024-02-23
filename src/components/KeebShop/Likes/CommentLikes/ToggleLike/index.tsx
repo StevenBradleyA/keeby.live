@@ -15,12 +15,12 @@ export default function ToggleCommentLike({
 }: CreateCommentLikeProps) {
     const ctx = api.useContext();
 
-    const { mutate } = api.commentLike.toggleLike.useMutation({
+    const { mutate } = api.like.toggleCommentLike.useMutation({
         onSuccess: () => {
             if (topLevel) {
-                void ctx.comment.getAllByTypeId.invalidate();
+                void ctx.comment.getAllByListingId.invalidate();
             } else {
-                void ctx.comment.getAllReplysByTypeId.invalidate();
+                void ctx.comment.getAllReplysByListingId.invalidate();
             }
         },
     });

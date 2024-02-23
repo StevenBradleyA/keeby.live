@@ -5,7 +5,7 @@ import {
     protectedProcedure,
 } from "~/server/api/trpc";
 
-export const commentLikeRouter = createTRPCRouter({
+export const likeRouter = createTRPCRouter({
     getUserCommentLikes: publicProcedure
         .input(
             z.object({
