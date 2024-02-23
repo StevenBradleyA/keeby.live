@@ -3,39 +3,36 @@ import { api } from "~/utils/api";
 
 interface ListingPageFavoriteProps {
     userId: string;
-    listingId: string;
+    postId: string;
 }
-export default function ListingPageFavorite({
+export default function PostPreviewFavorite({
     userId,
-    listingId,
+    postId,
 }: ListingPageFavoriteProps) {
     const ctx = api.useContext();
 
     const { data: favoriteId, isLoading } =
-        api.favorite.checkIfListingIsFavorited.useQuery({ userId, listingId });
+        api.favorite.checkIfPostIsFavorited.useQuery({ userId, postId });
 
-    const { mutate: favorite } = api.favorite.createListingFavorite.useMutation(
-        {
-            onSuccess: () => {
-                void ctx.favorite.checkIfListingIsFavorited.invalidate();
-            },
-        }
-    );
+    const { mutate: favorite } = api.favorite.createPostFavorite.useMutation({
+        onSuccess: () => {
+            void ctx.favorite.checkIfPostIsFavorited.invalidate();
+        },
+    });
 
-    const { mutate: unfavorite } =
-        api.favorite.deleteListingFavorite.useMutation({
-            onSuccess: () => {
-                void ctx.favorite.checkIfListingIsFavorited.invalidate();
-            },
-        });
+    const { mutate: unfavorite } = api.favorite.deletePostFavorite.useMutation({
+        onSuccess: () => {
+            void ctx.favorite.checkIfPostIsFavorited.invalidate();
+        },
+    });
 
     const handleFavoriteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
-        if (userId && listingId) {
+        if (userId && postId) {
             const data = {
                 userId: userId,
-                listingId: listingId,
+                postId: postId,
             };
 
             return favorite(data);
@@ -62,13 +59,10 @@ export default function ListingPageFavorite({
         );
 
     return favoriteId !== null ? (
-        <button
-            className="absolute bottom-2 right-2"
-            onClick={handleUnfavoriteClick}
-        >
+        <button onClick={handleUnfavoriteClick}>
             <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="w-7"
+                className="w-full"
                 viewBox="0 0 24 24"
                 fill={`${favoriteId ? "rgb(0, 0, 0, 0.4)" : "none"}`}
             >
@@ -84,13 +78,10 @@ export default function ListingPageFavorite({
             </svg>
         </button>
     ) : (
-        <button
-            className="absolute bottom-2 right-2"
-            onClick={handleFavoriteClick}
-        >
+        <button onClick={handleFavoriteClick}>
             <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="w-7"
+                className="w-full"
                 viewBox="0 0 24 24"
                 fill="none"
             >

@@ -11,21 +11,12 @@ export default function ListingPage() {
         id: listingId,
     });
 
-    console.log("hello steven", listing);
-
-    // const { data: allListingImages, isLoading: isLoadingImages } =
-    //     api.image.getCombinedListingImages.useQuery({
-    //         listingId: listingId,
-    //     });
-
     if (isLoading)
         return (
             <div className="mt-44">
                 <LoadingSpinner size="40px" />
             </div>
         );
-
-    // hmmmmm
 
     return (
         <div className="w-full  px-16 text-black">

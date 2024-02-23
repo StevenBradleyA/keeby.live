@@ -2,7 +2,10 @@ import type { Images } from "@prisma/client";
 import Link from "next/link";
 import Image from "next/image";
 import keebo from "@public/Profile/keebo.png";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import ChevronRound from "~/components/Svgs/chevron";
+import { useSession } from "next-auth/react";
+import PostPreviewFavorite from "../Favorite";
 
 interface EachPostCardPreviewProps {
     post: EachPost;
@@ -37,7 +40,7 @@ export default function EachPostCardPreview({
     // idk about layout design yet i just don't like reddits at all
     // maybe theres a menu on the right side of the container that has all the options
     //  idk about the sizing either tbh
-
+    const { data: session } = useSession();
     const [imageIndex, setImageIndex] = useState<number>(0);
 
     const goToNextImage = () => {
@@ -53,16 +56,10 @@ export default function EachPostCardPreview({
 
     console.log(imageIndex, "index here");
     return (
-        <div className="flex h-[30vh] w-[47%] flex-col overflow-hidden rounded-md border-2 border-green-500 p-2">
-            {/* <Link
-                href={{
-                    pathname: "/keebshare/[postId]",
-                    query: { postId: post.id },
-                }}
-            > */}
+        <div className="flex h-[30vh] w-[47%] flex-col overflow-hidden rounded-md border-2 border-green-500 p-2 text-sm">
             {post.images.length > 0 && post.images[0] && (
                 <div className="flex h-full w-full ">
-                    <div className=" relative h-full w-3/4 cursor-pointer">
+                    <div className=" relative h-full w-3/4">
                         <Image
                             alt="preview"
                             src={post.images[imageIndex]?.link || keebo}
@@ -70,33 +67,74 @@ export default function EachPostCardPreview({
                             height={600}
                             className={`h-full w-full rounded-l-md object-cover`}
                         />
-                        <button
-                            className="absolute right-0 top-10 z-10"
-                            onClick={goToNextImage}
-                        >
-                            next
-                        </button>
-                        <button
-                            className="absolute left-0 top-10 z-10"
-                            onClick={goToPrevImage}
-                        >
-                            prev
-                        </button>
-                        <button className="absolute bottom-0 left-0 z-10 rounded-3xl bg-white bg-opacity-30 px-4 py-2 text-green-500">
+                        {post.images.length > 1 && (
+                            <>
+                                <button
+                                    className="absolute right-2 top-1/2 z-10 w-10 -translate-y-1/2 rotate-90 rounded-full p-2 text-green-500 transition duration-100 ease-in-out hover:bg-white hover:bg-opacity-20 "
+                                    onClick={goToNextImage}
+                                >
+                                    <ChevronRound />
+                                </button>
+                                <button
+                                    className="absolute left-2 top-1/2 z-10 w-10 -translate-y-1/2 -rotate-90 rounded-full p-2 text-green-500 transition duration-100 ease-in-out hover:bg-white hover:bg-opacity-20 "
+                                    onClick={goToPrevImage}
+                                >
+                                    <ChevronRound />
+                                </button>
+                            </>
+                        )}
+                        <h1 className="absolute bottom-2 left-2 z-10 rounded-3xl bg-white bg-opacity-20 px-4 py-2 text-green-500">
                             {post.tag}
-                        </button>
+                        </h1>
                     </div>
-                    <div className=" flex w-1/4 flex-col justify-between rounded-r-md bg-black bg-opacity-30 p-2">
+                    <div className=" flex w-1/4 flex-col justify-between rounded-r-md bg-black bg-opacity-30 p-2 ">
                         <h1 className=" text-lg text-white">{post.title}</h1>
-
                         <div>
-                            <button
-                                className="mb-5  rounded-md bg-green-500 p-2  "
-                                style={{ boxShadow: "0 0 20px #22C55E" }}
-                            >{`Let's Go `}</button>
-                            <div className="flex">
+                            <div className="mb-3 flex justify-center">
+                                <Link
+                                    href={{
+                                        pathname: "/keebshare/[postId]",
+                                        query: { postId: post.id },
+                                    }}
+                                >
+                                    <button
+                                        className="text-md rounded-md bg-green-500 p-2  "
+                                        style={{
+                                            boxShadow: "0 0 20px #22C55E",
+                                        }}
+                                    >{`Let's Go `}</button>
+                                </Link>
+                            </div>
+
+                            <div className="relative flex justify-between">
                                 <h1>like</h1>
-                                <h1>fav</h1>
+                                {session && session.user && (
+                                    <div className="w-6">
+                                        <PostPreviewFavorite
+                                            userId={session.user.id}
+                                            postId={post.id}
+                                        />
+                                    </div>
+                                )}
+                                {session === null && (
+                                    // add sign in modal for fav and likes
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="w-6"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                    >
+                                        <path
+                                            fillRule="evenodd"
+                                            clipRule="evenodd"
+                                            d="M12 6.00019C10.2006 3.90317 7.19377 3.2551 4.93923 5.17534C2.68468 7.09558 2.36727 10.3061 4.13778 12.5772C5.60984 14.4654 10.0648 18.4479 11.5249 19.7369C11.6882 19.8811 11.7699 19.9532 11.8652 19.9815C11.9483 20.0062 12.0393 20.0062 12.1225 19.9815C12.2178 19.9532 12.2994 19.8811 12.4628 19.7369C13.9229 18.4479 18.3778 14.4654 19.8499 12.5772C21.6204 10.3061 21.3417 7.07538 19.0484 5.17534C16.7551 3.2753 13.7994 3.90317 12 6.00019Z"
+                                            stroke="#616161"
+                                            strokeWidth="2"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                        />
+                                    </svg>
+                                )}
                             </div>
                             <div className="flex gap-1 text-green-500 ">
                                 <svg
@@ -138,7 +176,6 @@ export default function EachPostCardPreview({
                     <h1 className="p-2 text-2xl text-white">{post.title}</h1>
                 </div>
             )}
-            {/* </Link> */}
         </div>
     );
 }
