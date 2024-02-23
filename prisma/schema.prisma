@@ -215,10 +215,10 @@ model Post {
     userId String
 
     user          User            @relation(fields: [userId], references: [id])
-    postLike      PostLike[]
+    postLikes      PostLike[]
     images        Images[]
     comments      Comment[]
-    UserFavorites UserFavorites[]
+    userFavorites UserFavorites[]
 }
 
 model PostLike {

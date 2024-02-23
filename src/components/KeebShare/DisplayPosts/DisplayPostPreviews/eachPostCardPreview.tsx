@@ -17,11 +17,12 @@ interface EachPost {
     title: string;
     link: string | null;
     text: string | null;
-    _count: CommentCount;
+    _count: Count;
     images: Images[];
 }
-interface CommentCount {
+interface Count {
     comments: number;
+    postLikes: number;
 }
 
 export default function EachPostCardPreview({
@@ -37,9 +38,6 @@ export default function EachPostCardPreview({
     // going to have to organize images via resource type prob
     // then addd a simple carosal
 
-    // idk about layout design yet i just don't like reddits at all
-    // maybe theres a menu on the right side of the container that has all the options
-    //  idk about the sizing either tbh
     const { data: session } = useSession();
     const [imageIndex, setImageIndex] = useState<number>(0);
 
@@ -54,7 +52,6 @@ export default function EachPostCardPreview({
         );
     };
 
-    console.log(imageIndex, "index here");
     return (
         <div className="flex h-[30vh] w-[47%] flex-col overflow-hidden rounded-md border-2 border-green-500 p-2 text-sm">
             {post.images.length > 0 && post.images[0] && (
@@ -107,7 +104,8 @@ export default function EachPostCardPreview({
                             </div>
 
                             <div className="relative flex justify-between">
-                                <h1>like</h1>
+                                <h1>{post._count.postLikes}</h1>
+
                                 {session && session.user && (
                                     <div className="w-6">
                                         <PostPreviewFavorite

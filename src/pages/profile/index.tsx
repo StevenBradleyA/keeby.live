@@ -471,14 +471,14 @@ export default function UserProfile() {
                             {sessionData.user.isVerified ? (
                                 <div className="flex items-center justify-between">
                                     <Link
-                                        href="/verification"
-                                        aria-label="verification"
+                                        href="/seller-verify"
+                                        aria-label="seller-verify"
                                     >
                                         <h1>verified</h1>
                                     </Link>
                                     <Link
-                                        href="/verification"
-                                        aria-label="verification"
+                                        href="/seller-verify"
+                                        aria-label="seller-verify"
                                     >
                                         <div className="flex gap-1">
                                             <svg
@@ -529,15 +529,15 @@ export default function UserProfile() {
                             ) : (
                                 <div className="flex items-center justify-between">
                                     <Link
-                                        href="/verification"
-                                        aria-label="verification"
+                                        href="/seller-verify"
+                                        aria-label="seller-verify"
                                         className="text-darkGray"
                                     >
                                         not verified
                                     </Link>
                                     <Link
-                                        href="/verification"
-                                        aria-label="verification"
+                                        href="/seller-verify"
+                                        aria-label="seller-verify"
                                     >
                                         <div className="flex">
                                             <svg

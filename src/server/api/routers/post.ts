@@ -6,7 +6,7 @@ import {
 } from "~/server/api/trpc";
 
 import { removeFileFromS3 } from "../utils";
-import type { Prisma } from "@prisma/client";
+import type { Images, Prisma } from "@prisma/client";
 
 type CreateData = {
     title: string;
@@ -15,6 +15,24 @@ type CreateData = {
     userId: string;
     tag: string;
 };
+
+interface PostWithCount {
+    id: string;
+    title: string;
+    text?: string | null;
+    tag: string;
+    link?: string | null;
+    createdAt: Date;
+    updatedAt: Date;
+    userId: string;
+
+    _count: {
+        comments: number;
+        postLikes: number;
+    };
+
+    images: Images[];
+}
 
 export const postRouter = createTRPCRouter({
     getAll: publicProcedure.query(({ ctx }) => {
@@ -72,11 +90,11 @@ export const postRouter = createTRPCRouter({
                 ].filter((obj) => Object.keys(obj).length > 0),
             };
 
-            const posts = await ctx.prisma.post.findMany({
+            const posts: PostWithCount[] = await ctx.prisma.post.findMany({
                 where: whereFilters,
                 include: {
                     _count: {
-                        select: { comments: true },
+                        select: { comments: true, postLikes: true },
                     },
                     images: {
                         where: {
@@ -144,11 +162,11 @@ export const postRouter = createTRPCRouter({
                 ].filter((obj) => Object.keys(obj).length > 0),
             };
 
-            const posts = await ctx.prisma.post.findMany({
+            const posts: PostWithCount[] = await ctx.prisma.post.findMany({
                 where: whereFilters,
                 include: {
                     _count: {
-                        select: { comments: true },
+                        select: { comments: true, postLikes: true },
                     },
                     images: {
                         where: {
@@ -166,9 +184,12 @@ export const postRouter = createTRPCRouter({
             });
 
             // sort by popularity (comment count)
-            const popularPosts = posts.sort(
-                (a, b) => b._count.comments - a._count.comments
-            );
+            // lets sort by combined number of posts and comment count
+            const popularPosts = posts.sort((a, b) => {
+                const totalA = a._count.comments + a._count.postLikes;
+                const totalB = b._count.comments + b._count.postLikes;
+                return totalB - totalA;
+            });
 
             let nextCursor: typeof cursor | undefined = undefined;
             if (popularPosts.length > limit) {
