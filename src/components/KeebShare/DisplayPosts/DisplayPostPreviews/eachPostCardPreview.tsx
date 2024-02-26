@@ -52,16 +52,19 @@ export default function EachPostCardPreview({
         );
     };
 
+// todo refactor to check if a user issigned in or not 
+//  if they are we are running different checks to see if they have liked the post or favorited it becuase otherwise we are making a bunch of db calls. 
+
     return (
-        <div className="flex h-[30vh] w-[47%] flex-col overflow-hidden rounded-md border-2 border-green-500 p-2 text-sm">
+        <div className="flex h-[40vh] flex-col overflow-hidden rounded-md border-2 border-[#2f2f2f] text-sm tablet:w-full largeLaptop:w-3/4   desktop:w-2/3">
             {post.images.length > 0 && post.images[0] && (
                 <div className="flex h-full w-full ">
                     <div className=" relative h-full w-3/4">
                         <Image
                             alt="preview"
                             src={post.images[imageIndex]?.link || keebo}
-                            width={600}
-                            height={600}
+                            width={1000}
+                            height={1000}
                             className={`h-full w-full rounded-l-md object-cover`}
                         />
                         {post.images.length > 1 && (
@@ -85,9 +88,11 @@ export default function EachPostCardPreview({
                         </h1>
                     </div>
                     <div className=" flex w-1/4 flex-col justify-between rounded-r-md bg-black bg-opacity-30 p-2 ">
-                        <h1 className=" text-lg text-white">{post.title}</h1>
-                        <div>
-                            <div className="mb-3 flex justify-center">
+                        <h1 className=" text-2xl text-green-500">
+                            {post.title}
+                        </h1>
+                        <div className="flex flex-col gap-2">
+                            <div className="mb-2 flex justify-center">
                                 <Link
                                     href={{
                                         pathname: "/keebshare/[postId]",
@@ -95,7 +100,7 @@ export default function EachPostCardPreview({
                                     }}
                                 >
                                     <button
-                                        className="text-md rounded-md bg-green-500 p-2  "
+                                        className="text-md rounded-md bg-green-500 px-4 py-2 "
                                         style={{
                                             boxShadow: "0 0 20px #22C55E",
                                         }}
@@ -104,7 +109,19 @@ export default function EachPostCardPreview({
                             </div>
 
                             <div className="relative flex justify-between">
-                                <h1>{post._count.postLikes}</h1>
+                                {session && session.user && (
+                                    <div className="w-6">
+                                        <PostPreviewFavorite
+                                            userId={session.user.id}
+                                            postId={post.id}
+                                        />
+                                    </div>
+                                )}
+                                {session === null && (
+                                    <button className="w-6">
+                                        {post._count.postLikes}
+                                    </button>
+                                )}
 
                                 {session && session.user && (
                                     <div className="w-6">

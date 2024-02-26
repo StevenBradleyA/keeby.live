@@ -28,6 +28,7 @@ interface EachPost {
 }
 interface CommentCount {
     comments: number;
+    postLikes: number;
 }
 
 export default function DispayPopularPostPreviews({
@@ -89,7 +90,7 @@ export default function DispayPopularPostPreviews({
         );
     }
 
-    console.log(postData);
+// todo test pagination for popular posts
 
     return (
         <>
@@ -99,7 +100,7 @@ export default function DispayPopularPostPreviews({
                         page.posts.map((post) => (
                             <EachPostCardPreview
                                 key={post.id}
-                                post={post as unknown as EachPost}
+                                post={post as EachPost}
                             />
                         ))
                     )}

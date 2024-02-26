@@ -5,7 +5,7 @@ import {
     protectedProcedure,
 } from "~/server/api/trpc";
 import { removeFileFromS3 } from "../utils";
-import type { Images, Prisma, Listing } from "@prisma/client";
+import type { Prisma, Listing } from "@prisma/client";
 
 type CreateData = {
     title: string;

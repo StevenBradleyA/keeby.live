@@ -10,9 +10,9 @@ import CreatePostModal from "~/components/KeebShare/CreatePost";
 import { api } from "~/utils/api";
 import DisplayNewPostPreviews from "~/components/KeebShare/DisplayPosts/DisplayPostPreviews/displayNewPostPreviews";
 import DisplayPopularPostPreviews from "~/components/KeebShare/DisplayPosts/DisplayPostPreviews/displayPopularPostPreviews";
+import MainFooter from "~/components/Footer";
 
 export default function KeebShare() {
-
     // todo throughly test pagination
     // Conversion to SSR
 
@@ -273,6 +273,7 @@ export default function KeebShare() {
                     </div>
                 </div>
             </div>
+            <MainFooter />
         </div>
     );
 }
