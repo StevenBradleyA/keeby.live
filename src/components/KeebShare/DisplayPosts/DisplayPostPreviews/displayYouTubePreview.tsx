@@ -13,14 +13,21 @@ interface DisplayYouTubePostPreview {
     link: string;
 }
 
+const calculateResponsiveSize = () => {
+    // Example calculation, adjust according to your needs
+    const width = Math.min(1260, window.innerWidth - 40); // Ensure video is not wider than the screen minus some margin
+    const height = (width * 9) / 16; // Maintain a 16:9 aspect ratio
+    return { width: width.toString(), height: height.toString() };
+};
+
 export default function DisplayYouTubePostPreview({
     link,
 }: DisplayYouTubePostPreview) {
     const videoId = extractVideoIdFromLink(link);
 
     const opts: YouTubePlayerOptions = {
-        height: "500",
-        width: "1260",
+        height: "100%",
+        width: "100%",
         playerVars: {
             autoplay: 0,
             controls: 1,
@@ -28,12 +35,12 @@ export default function DisplayYouTubePostPreview({
     };
 
     return (
-        <div className="flex justify-center rounded-xl bg-keebyGray p-5">
+        <div className="h-full w-full">
             {videoId && (
                 <YouTube
                     videoId={videoId}
                     opts={opts}
-                    // className="rounded-3xl text-green-500"
+                    className="h-full w-full"
                 />
             )}
         </div>
