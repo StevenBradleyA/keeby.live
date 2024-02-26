@@ -9,8 +9,8 @@ import ToggleCommentLike from "~/components/KeebShop/Likes/CommentLikes/ToggleLi
 import DisplayReplyComments from "./displayReplyComments";
 import DisplayReplyViewerComments from "./displayReplyViewerComments";
 import ModalDialog from "~/components/Modal";
-import CommentSignInModal from "../Modal/signInModal";
 import UpdateComment from "../Update";
+import SignInModal from "../Modal/signInModal";
 
 interface EachCommentCardProps {
     listingId: string;
@@ -187,7 +187,7 @@ export default function EachCommentCard({
                             isOpen={isSignInModalOpen}
                             onClose={closeSignInModal}
                         >
-                            <CommentSignInModal closeModal={closeSignInModal} />
+                            <SignInModal closeModal={closeSignInModal} />
                         </ModalDialog>
                         {session && session.user ? (
                             <button

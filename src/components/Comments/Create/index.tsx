@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { api } from "~/utils/api";
 import React from "react";
 import ModalDialog from "~/components/Modal";
-import CommentSignInModal from "../Modal/signInModal";
+import SignInModal from "../Modal/signInModal";
 
 interface CreateCommentProps {
     listingId: string;
@@ -122,7 +122,7 @@ export default function CreateComment({ listingId }: CreateCommentProps) {
                 </div>
             )}
             <ModalDialog isOpen={isSignInModalOpen} onClose={closeSignInModal}>
-                <CommentSignInModal closeModal={closeSignInModal} />
+                <SignInModal closeModal={closeSignInModal} />
             </ModalDialog>
         </form>
     );

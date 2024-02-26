@@ -4,7 +4,7 @@ import { api } from "~/utils/api";
 import Image from "next/image";
 import defaultProfile from "@public/Profile/profile-default.png";
 import ModalDialog from "~/components/Modal";
-import CommentSignInModal from "../../Modal/signInModal";
+import SignInModal from "../../Modal/signInModal";
 
 interface CreateReplyCommentProps {
     listingId: string;
@@ -161,7 +161,7 @@ export default function CreateReplyComment({
                     isOpen={isSignInModalOpen}
                     onClose={closeSignInModal}
                 >
-                    <CommentSignInModal closeModal={closeSignInModal} />
+                    <SignInModal closeModal={closeSignInModal} />
                 </ModalDialog>
             </form>
         </div>

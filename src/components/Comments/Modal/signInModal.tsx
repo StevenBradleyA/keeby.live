@@ -1,12 +1,10 @@
 import { signIn } from "next-auth/react";
 
-interface CommentSignInModalProps {
+interface SignInModalProps {
     closeModal: () => void;
 }
 
-export default function CommentSignInModal({
-    closeModal,
-}: CommentSignInModalProps) {
+export default function SignInModal({ closeModal }: SignInModalProps) {
     return (
         <div className="flex flex-col">
             <h1>Sign in to use this function!</h1>

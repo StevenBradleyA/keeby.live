@@ -6,9 +6,9 @@ import CreateReplyComment from "../Create/CreateReplyComment";
 import { useState } from "react";
 import ToggleCommentLike from "~/components/KeebShop/Likes/CommentLikes/ToggleLike";
 import ModalDialog from "~/components/Modal";
-import CommentSignInModal from "../Modal/signInModal";
 import ModifyCommentModal from "../Modal";
 import UpdateComment from "../Update";
+import SignInModal from "../Modal/signInModal";
 
 interface EachReplyCardProps {
     listingId: string;
@@ -203,7 +203,7 @@ export default function EachReplyCommentCard({
                         isOpen={isSignInModalOpen}
                         onClose={closeSignInModal}
                     >
-                        <CommentSignInModal closeModal={closeSignInModal} />
+                        <SignInModal closeModal={closeSignInModal} />
                     </ModalDialog>
 
                     {session && session.user ? (
