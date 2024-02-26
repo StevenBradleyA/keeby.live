@@ -6,6 +6,7 @@ import LoadingSpinner from "~/components/Loading";
 import { api } from "~/utils/api";
 import EachPostCardPreview from "./eachPostCardPreview";
 import type { Images } from "@prisma/client";
+import { useSession } from "next-auth/react";
 
 interface DisplayNewPostPreviewsProps {
     searchInput: string;
@@ -15,6 +16,7 @@ interface DisplayNewPostPreviewsProps {
 interface Filters {
     searchQuery?: string;
     tag?: string;
+    userId?: string;
 }
 
 interface EachPost {
@@ -37,11 +39,16 @@ export default function DispayPopularPostPreviews({
 }: DisplayNewPostPreviewsProps) {
     const queryInputs: Filters = {};
 
+    const { data: session } = useSession();
+
     if (searchInput.length > 0) {
         queryInputs.searchQuery = searchInput;
     }
     if (tag.length > 0) {
         queryInputs.tag = tag;
+    }
+    if (session && session.user) {
+        queryInputs.userId = session.user.id;
     }
 
     const {
@@ -90,7 +97,7 @@ export default function DispayPopularPostPreviews({
         );
     }
 
-// todo test pagination for popular posts
+    // todo test pagination for popular posts
 
     return (
         <>

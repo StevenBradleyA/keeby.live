@@ -17,6 +17,8 @@ interface EachPost {
     title: string;
     link: string | null;
     text: string | null;
+    isLiked?: boolean;
+    isFavorited?: boolean;
     _count: Count;
     images: Images[];
 }
@@ -52,8 +54,8 @@ export default function EachPostCardPreview({
         );
     };
 
-// todo refactor to check if a user issigned in or not 
-//  if they are we are running different checks to see if they have liked the post or favorited it becuase otherwise we are making a bunch of db calls. 
+    // todo refactor to check if a user issigned in or not
+    //  if they are we are running different checks to see if they have liked the post or favorited it becuase otherwise we are making a bunch of db calls.
 
     return (
         <div className="flex h-[40vh] flex-col overflow-hidden rounded-md border-2 border-[#2f2f2f] text-sm tablet:w-full largeLaptop:w-3/4   desktop:w-2/3">
@@ -123,14 +125,17 @@ export default function EachPostCardPreview({
                                     </button>
                                 )}
 
-                                {session && session.user && (
-                                    <div className="w-6">
-                                        <PostPreviewFavorite
-                                            userId={session.user.id}
-                                            postId={post.id}
-                                        />
-                                    </div>
-                                )}
+                                {session &&
+                                    session.user &&
+                                    typeof post.isLiked === "boolean" && (
+                                        <div className="w-6">
+                                            <PostPreviewFavorite
+                                                userId={session.user.id}
+                                                postId={post.id}
+                                                isFavorited={post.isLiked}
+                                            />
+                                        </div>
+                                    )}
                                 {session === null && (
                                     // add sign in modal for fav and likes
                                     <svg

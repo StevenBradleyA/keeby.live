@@ -6,6 +6,7 @@ import LoadingSpinner from "~/components/Loading";
 import { api } from "~/utils/api";
 import EachPostCardPreview from "./eachPostCardPreview";
 import type { Images } from "@prisma/client";
+import { useSession } from "next-auth/react";
 
 interface DisplayNewPostPreviewsProps {
     searchInput: string;
@@ -15,6 +16,7 @@ interface DisplayNewPostPreviewsProps {
 interface Filters {
     searchQuery?: string;
     tag?: string;
+    userId?: string;
 }
 
 interface EachPost {
@@ -23,11 +25,14 @@ interface EachPost {
     title: string;
     link: string | null;
     text: string | null;
-    _count: CommentCount;
+    isLiked?: boolean;
+    isFavorited?: boolean;
+    _count: Count;
     images: Images[];
 }
-interface CommentCount {
+interface Count {
     comments: number;
+    postLikes: number;
 }
 
 export default function DispayNewPostPreviews({
@@ -36,11 +41,16 @@ export default function DispayNewPostPreviews({
 }: DisplayNewPostPreviewsProps) {
     const queryInputs: Filters = {};
 
+    const { data: session } = useSession();
+
     if (searchInput.length > 0) {
         queryInputs.searchQuery = searchInput;
     }
     if (tag.length > 0) {
         queryInputs.tag = tag;
+    }
+    if (session && session.user) {
+        queryInputs.userId = session.user.id;
     }
 
     const {
@@ -99,7 +109,7 @@ export default function DispayNewPostPreviews({
                         page.posts.map((post) => (
                             <EachPostCardPreview
                                 key={post.id}
-                                post={post as unknown as EachPost}
+                                post={post as EachPost}
                             />
                         ))
                     )}

@@ -25,12 +25,14 @@ interface PostWithCount {
     createdAt: Date;
     updatedAt: Date;
     userId: string;
-
+    isLiked?: boolean;
+    likeId?: string;
+    isFavorited?: boolean;
+    favoriteId?: string;
     _count: {
         comments: number;
         postLikes: number;
     };
-
     images: Images[];
 }
 
@@ -58,16 +60,16 @@ export const postRouter = createTRPCRouter({
             z.object({
                 searchQuery: z.string().optional(),
                 tag: z.string().optional(),
+                userId: z.string().optional(),
                 cursor: z.string().nullish(),
                 limit: z.number().min(1).max(100).nullish(),
             })
         )
         .query(async ({ ctx, input }) => {
-            const { searchQuery, tag, cursor } = input;
+            const { searchQuery, tag, cursor, userId } = input;
 
             const limit = input.limit ?? 10;
 
-            // Build the dynamic filters based on the input
             const whereFilters: Prisma.PostWhereInput = {
                 AND: [
                     tag ? { tag } : {},
@@ -111,11 +113,48 @@ export const postRouter = createTRPCRouter({
                 cursor: cursor ? { id: cursor } : undefined,
             });
 
+            if (userId) {
+                const likesMap = new Map(
+                    await ctx.prisma.postLike
+                        .findMany({
+                            where: {
+                                userId: userId,
+                                postId: { in: posts.map((post) => post.id) },
+                            },
+                            select: { postId: true, id: true },
+                        })
+                        .then((results) =>
+                            results.map((result) => [result.postId, result.id])
+                        )
+                );
+
+                const favoritesMap = new Map(
+                    await ctx.prisma.userFavorites
+                        .findMany({
+                            where: {
+                                userId: userId,
+                                postId: { in: posts.map((post) => post.id) },
+                            },
+                            select: { postId: true, id: true },
+                        })
+                        .then((results) =>
+                            results.map((result) => [result.postId, result.id])
+                        )
+                );
+
+                posts.forEach((post) => {
+                    post.isLiked = likesMap.has(post.id);
+                    post.likeId = likesMap.get(post.id);
+                    post.isFavorited = favoritesMap.has(post.id);
+                    post.favoriteId = favoritesMap.get(post.id);
+                });
+            }
+
             let nextCursor: typeof cursor | undefined = undefined;
             if (posts.length > limit) {
-                const nextItem = posts.pop(); // Remove the extra item
+                const nextItem = posts.pop();
                 if (nextItem !== undefined) {
-                    nextCursor = nextItem.id; // Set the next cursor to the ID of the extra item
+                    nextCursor = nextItem.id;
                 }
             }
 
@@ -130,16 +169,16 @@ export const postRouter = createTRPCRouter({
             z.object({
                 searchQuery: z.string().optional(),
                 tag: z.string().optional(),
+                userId: z.string().optional(),
                 cursor: z.string().nullish(),
                 limit: z.number().min(1).max(100).nullish(),
             })
         )
         .query(async ({ ctx, input }) => {
-            const { searchQuery, tag, cursor } = input;
+            const { searchQuery, tag, cursor, userId } = input;
 
             const limit = input.limit ?? 10;
 
-            // Build the dynamic filters based on the input
             const whereFilters: Prisma.PostWhereInput = {
                 AND: [
                     tag ? { tag } : {},
@@ -182,6 +221,43 @@ export const postRouter = createTRPCRouter({
                 skip: cursor ? 1 : 0,
                 cursor: cursor ? { id: cursor } : undefined,
             });
+
+            if (userId) {
+                const likesMap = new Map(
+                    await ctx.prisma.postLike
+                        .findMany({
+                            where: {
+                                userId: userId,
+                                postId: { in: posts.map((post) => post.id) },
+                            },
+                            select: { postId: true, id: true },
+                        })
+                        .then((results) =>
+                            results.map((result) => [result.postId, result.id])
+                        )
+                );
+
+                const favoritesMap = new Map(
+                    await ctx.prisma.userFavorites
+                        .findMany({
+                            where: {
+                                userId: userId,
+                                postId: { in: posts.map((post) => post.id) },
+                            },
+                            select: { postId: true, id: true },
+                        })
+                        .then((results) =>
+                            results.map((result) => [result.postId, result.id])
+                        )
+                );
+
+                posts.forEach((post) => {
+                    post.isLiked = likesMap.has(post.id);
+                    post.likeId = likesMap.get(post.id);
+                    post.isFavorited = favoritesMap.has(post.id);
+                    post.favoriteId = favoritesMap.get(post.id);
+                });
+            }
 
             // sort by popularity (comment count)
             // lets sort by combined number of posts and comment count

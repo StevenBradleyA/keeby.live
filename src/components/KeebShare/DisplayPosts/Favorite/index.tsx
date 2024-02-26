@@ -4,15 +4,17 @@ import { api } from "~/utils/api";
 interface ListingPageFavoriteProps {
     userId: string;
     postId: string;
+    isFavorited: boolean;
 }
 export default function PostPreviewFavorite({
     userId,
     postId,
+    isFavorited,
 }: ListingPageFavoriteProps) {
     const ctx = api.useContext();
 
-    const { data: favoriteId, isLoading } =
-        api.favorite.checkIfPostIsFavorited.useQuery({ userId, postId });
+    // const { data: favoriteId, isLoading } =
+    //     api.favorite.checkIfPostIsFavorited.useQuery({ userId, postId });
 
     const { mutate: favorite } = api.favorite.createPostFavorite.useMutation({
         onSuccess: () => {
