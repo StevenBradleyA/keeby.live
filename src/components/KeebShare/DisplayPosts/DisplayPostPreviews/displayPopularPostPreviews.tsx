@@ -25,6 +25,10 @@ interface EachPost {
     title: string;
     link: string | null;
     text: string | null;
+    isFavorited?: boolean;
+    favoriteId?: string;
+    isLiked?: boolean;
+    likedId?: string;
     _count: CommentCount;
     images: Images[];
 }
@@ -98,6 +102,8 @@ export default function DispayPopularPostPreviews({
     }
 
     // todo test pagination for popular posts
+
+    console.log('hi big boy', postData)
 
     return (
         <>

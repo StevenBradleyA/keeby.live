@@ -5,7 +5,9 @@ import keebo from "@public/Profile/keebo.png";
 import { useContext, useState } from "react";
 import ChevronRound from "~/components/Svgs/chevron";
 import { useSession } from "next-auth/react";
-import PostPreviewFavorite from "../Favorite";
+import PostPreviewFavorite from "./Favorite";
+import PostPreviewDeleteFavorite from "./Favorite/deleteFavorite";
+import PostPreviewCreateFavorite from "./Favorite/createFavorite";
 
 interface EachPostCardPreviewProps {
     post: EachPost;
@@ -18,7 +20,9 @@ interface EachPost {
     link: string | null;
     text: string | null;
     isLiked?: boolean;
+    likeId?: string;
     isFavorited?: boolean;
+    favoriteId?: string;
     _count: Count;
     images: Images[];
 }
@@ -111,14 +115,6 @@ export default function EachPostCardPreview({
                             </div>
 
                             <div className="relative flex justify-between">
-                                {session && session.user && (
-                                    <div className="w-6">
-                                        <PostPreviewFavorite
-                                            userId={session.user.id}
-                                            postId={post.id}
-                                        />
-                                    </div>
-                                )}
                                 {session === null && (
                                     <button className="w-6">
                                         {post._count.postLikes}
@@ -127,12 +123,23 @@ export default function EachPostCardPreview({
 
                                 {session &&
                                     session.user &&
-                                    typeof post.isLiked === "boolean" && (
+                                    post.isFavorited === false && (
                                         <div className="w-6">
-                                            <PostPreviewFavorite
+                                            <PostPreviewCreateFavorite
                                                 userId={session.user.id}
                                                 postId={post.id}
-                                                isFavorited={post.isLiked}
+                                            />
+                                        </div>
+                                    )}
+
+                                {session &&
+                                    session.user &&
+                                    post.isFavorited === true &&
+                                    post.favoriteId && (
+                                        <div className="w-6">
+                                            <PostPreviewDeleteFavorite
+                                                userId={session.user.id}
+                                                favoriteId={post.favoriteId}
                                             />
                                         </div>
                                     )}
