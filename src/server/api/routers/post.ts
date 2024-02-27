@@ -36,6 +36,31 @@ interface PostWithCount {
     images: Images[];
 }
 
+interface PostPage {
+    id: string;
+    title: string;
+    text?: string | null;
+    tag: string;
+    link?: string | null;
+    createdAt: Date;
+    updatedAt: Date;
+    userId: string;
+    isLiked?: boolean;
+    likeId?: string;
+    isFavorited?: boolean;
+    favoriteId?: string;
+    _count: {
+        comments: number;
+        postLikes: number;
+    };
+    images: Images[];
+    user: {
+        username: string | null;
+        profile: string | null;
+        selectedTag: string | null;
+    };
+}
+
 export const postRouter = createTRPCRouter({
     getAll: publicProcedure.query(({ ctx }) => {
         return ctx.prisma.post.findMany({
@@ -281,24 +306,24 @@ export const postRouter = createTRPCRouter({
             };
         }),
 
-    getOne: publicProcedure
+    getOneById: publicProcedure
         .input(
             z.object({
                 id: z.string(),
+                userId: z.string().optional(),
             })
         )
-        .query(({ input, ctx }) => {
-            return ctx.prisma.post.findUnique({
+        .query(async ({ input, ctx }) => {
+            const { userId, id } = input;
+
+            const postResult = await ctx.prisma.post.findUnique({
                 where: {
-                    id: input.id,
+                    id: id,
                 },
-                select: {
-                    id: true,
-                    userId: true,
-                    title: true,
-                    text: true,
-                    link: true,
-                    tag: true,
+                include: {
+                    _count: {
+                        select: { comments: true, postLikes: true },
+                    },
                     images: {
                         where: {
                             OR: [
@@ -307,8 +332,56 @@ export const postRouter = createTRPCRouter({
                             ],
                         },
                     },
+                    user: {
+                        select: {
+                            profile: true,
+                            username: true,
+                            selectedTag: true,
+                        },
+                    },
                 },
             });
+            if (!postResult) {
+                throw new Error("Post not found");
+            }
+
+            const post: PostPage = postResult;
+
+            if (userId) {
+                const likesMap = new Map(
+                    await ctx.prisma.postLike
+                        .findMany({
+                            where: {
+                                userId: userId,
+                                postId: id,
+                            },
+                            select: { postId: true, id: true },
+                        })
+                        .then((results) =>
+                            results.map((result) => [result.postId, result.id])
+                        )
+                );
+
+                const favoritesMap = new Map(
+                    await ctx.prisma.userFavorites
+                        .findMany({
+                            where: {
+                                userId: userId,
+                                postId: id,
+                            },
+                            select: { postId: true, id: true },
+                        })
+                        .then((results) =>
+                            results.map((result) => [result.postId, result.id])
+                        )
+                );
+
+                post.isLiked = likesMap.has(post.id);
+                post.likeId = likesMap.get(post.id);
+                post.isFavorited = favoritesMap.has(post.id);
+                post.favoriteId = favoritesMap.get(post.id);
+            }
+            return { post };
         }),
 
     create: protectedProcedure

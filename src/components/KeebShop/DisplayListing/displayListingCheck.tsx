@@ -2,8 +2,6 @@ import DisplayListingPage from "~/components/KeebShop/DisplayListing";
 import LoadingSpinner from "~/components/Loading";
 import { api } from "~/utils/api";
 
-
-
 interface DisplayListingCheckProps {
     listingId: string;
 }
@@ -11,9 +9,6 @@ interface DisplayListingCheckProps {
 export default function DisplayListingCheck({
     listingId,
 }: DisplayListingCheckProps) {
-
-
-
     const { data: listing, isLoading } = api.listing.getOne.useQuery({
         id: listingId,
     });
@@ -25,10 +20,9 @@ export default function DisplayListingCheck({
             </div>
         );
 
-
     return (
         <div className="w-full  px-16 text-black">
-        {listing && <DisplayListingPage listing={listing} />}
-    </div>
+            {listing && <DisplayListingPage listing={listing} />}
+        </div>
     );
 }
