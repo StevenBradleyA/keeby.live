@@ -134,7 +134,12 @@ export default function NavBar() {
                 />
             </Link>
             <div className="flex items-center gap-32 text-darkGray">
-                {router.asPath === "/" ? (
+                {router.asPath === "/keebshare" ? (
+                    <Link href="/" aria-label="shop">
+                        <h1>KEEB SHOP</h1>
+                    </Link>
+                ) : router.asPath.startsWith("/keebshare/") ||
+                  router.asPath === "/" ? (
                     <Link href="/keebshare" aria-label="share">
                         <h1>KEEB SHARE</h1>
                     </Link>

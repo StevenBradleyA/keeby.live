@@ -381,7 +381,7 @@ export const postRouter = createTRPCRouter({
                 post.isFavorited = favoritesMap.has(post.id);
                 post.favoriteId = favoritesMap.get(post.id);
             }
-            return { post };
+            return post;
         }),
 
     create: protectedProcedure
