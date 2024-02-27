@@ -464,8 +464,6 @@ li:not(:first-child) span {
         brightness(116%) contrast(126%);
 }
 
-
-
 /*  ----    Listings Hover effect    ---- */
 .listing-preview-hover-effect {
     background-color: #000000;
@@ -820,6 +818,17 @@ input[type="checkbox"]:hover {
     border-bottom: 1px solid rgb(34 197 94);
     outline: none;
 }
+
+/* --------------         KEEB SHARE          --------------  */
+
+.post-preview-tag-container {
+}
+
+.post-preview-tag-container:hover .post-preview-tag {
+    visibility: hidden;
+}
+
+/* --------------         END KEEB SHARE          --------------  */
 
 /* --------------     Profile    --------------  */
 

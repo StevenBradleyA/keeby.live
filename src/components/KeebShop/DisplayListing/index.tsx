@@ -206,7 +206,7 @@ export default function DisplayListingPage({
             </div>
 
             {listing.soundTest && (
-                <div className="mt-10 flex px-5 ">
+                <div className="mt-10 flex px-5 w-3/4 h-[35rem] ">
                     <ListingSoundTest soundTest={listing.soundTest} />
                 </div>
             )}

@@ -23,8 +23,8 @@ export default function ListingSoundTest({ soundTest }: ListingSoundTestProps) {
     const videoId = extractVideoIdFromLink(soundTest);
 
     const opts: YouTubePlayerOptions = {
-        height: "500",
-        width: "1260",
+        height: "100%",
+        width: "100%",
         playerVars: {
             autoplay: 0,
             controls: 1,
@@ -32,12 +32,12 @@ export default function ListingSoundTest({ soundTest }: ListingSoundTestProps) {
     };
 
     return (
-        <div className="flex justify-center rounded-xl bg-keebyGray p-5">
+        <div className="flex justify-center rounded-xl bg-keebyGray p-5 w-full h-full">
             {videoId && (
                 <YouTube
                     videoId={videoId}
                     opts={opts}
-                    // className="rounded-3xl text-green-500"
+                    className="w-full h-full"
                 />
             )}
         </div>

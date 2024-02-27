@@ -10,7 +10,6 @@ import homeButton from "../../../public/Nav/home-test.png";
 import defaultProfile from "@public/Profile/profile-default.png";
 import { useRouter } from "next/router";
 
-
 export default function NavBar() {
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
     const [isMenuGif, setIsMenuGif] = useState<boolean>(false);
@@ -120,7 +119,7 @@ export default function NavBar() {
         <nav
             className={`sticky top-0 z-10 flex items-center justify-between 
               ${
-                  router.asPath === "/" ? "bg-dark" : "bg-none"
+                  router.asPath === "/" || "keebshare" ? "bg-dark" : "bg-none"
               }  menu-index py-4 text-white`}
             aria-label="Main Navigation"
         >
