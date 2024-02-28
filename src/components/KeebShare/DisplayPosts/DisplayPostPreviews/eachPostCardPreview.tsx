@@ -371,7 +371,7 @@ export default function EachPostCardPreview({
 
             {post.images.length === 0 && !post.link && post.text && (
                 <div className="flex h-full w-full ">
-                    <div className="  relative h-full w-3/4">
+                    <div className="relative h-full w-3/4">
                         <p className="p-5 text-xl">{post.text}</p>
 
                         <h1 className=" absolute bottom-2 left-2 z-10 rounded-3xl bg-white bg-opacity-20 px-4 py-2 text-green-500">
