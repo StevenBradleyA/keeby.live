@@ -119,7 +119,9 @@ export default function NavBar() {
         <nav
             className={`sticky top-0 z-10 flex items-center justify-between 
               ${
-                  router.asPath === "/" || "keebshare" ? "bg-dark" : "bg-none"
+                  router.asPath === "/" || router.asPath === "/keebshare"
+                      ? "bg-dark"
+                      : "bg-none"
               }  menu-index py-4 text-white`}
             aria-label="Main Navigation"
         >

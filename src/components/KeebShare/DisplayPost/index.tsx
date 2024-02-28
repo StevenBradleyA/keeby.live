@@ -89,7 +89,6 @@ export default function DisplayPostPage({ post }: DisplayPostPageProps) {
         );
     };
 
-    console.log("hey steven", post);
     return (
         <div className="w-full px-16 text-darkGray ">
             <div className="flex  w-full gap-10">
@@ -100,8 +99,8 @@ export default function DisplayPostPage({ post }: DisplayPostPageProps) {
                                 {post.user.selectedTag}
                             </h3>
                         )}
-                        <div className="text-green absolute right-3 top-3 flex items-center justify-center rounded-md bg-white bg-opacity-20 px-3 py-2 text-green-500">
-                            999
+                        <div className="text-green absolute right-3 top-3 flex items-center justify-center rounded-md bg-white bg-opacity-20 px-4 py-2 text-green-500">
+                            {post.user.internetPoints}
                         </div>
 
                         <Image
@@ -121,9 +120,9 @@ export default function DisplayPostPage({ post }: DisplayPostPageProps) {
                         {post.user && post.user.username && (
                             <div className="post-page-user-contents text-green-500">
                                 <Link
-                                    href={`/public-profile/${post.user.username}`}
+                                    href={`/profile/public/${post.user.username}`}
                                 >
-                                    <h1 className=" mt-2 mb-5 text-2xl">
+                                    <h1 className=" mb-5 mt-2 text-2xl">
                                         {post.user.username}
                                     </h1>
                                 </Link>
@@ -135,13 +134,13 @@ export default function DisplayPostPage({ post }: DisplayPostPageProps) {
 
                 <div className="flex w-1/2 flex-col gap-5 ">
                     <div className=" w-full rounded-xl bg-keebyGray ">
-                        <div className="flex justify-between p-3 ">
+                        <div className="flex items-center justify-between p-3 ">
                             <h1 className=" rounded-md bg-white bg-opacity-20 px-4 py-2 text-green-500">
                                 {post.tag}
                             </h1>
 
-                            <div className="relative flex items-center  gap-5 ">
-                                <div className="flex gap-2">
+                            <div className="relative flex items-center mt-1  gap-5 ">
+                                <div className="flex gap-2 items-center">
                                     {session === null && (
                                         <button
                                             className="w-5"
@@ -275,8 +274,8 @@ export default function DisplayPostPage({ post }: DisplayPostPageProps) {
                             {post.title}
                         </h1>
                     </div>
-                    <div className=" w-full rounded-xl bg-darkGray p-5 text-green-500  ">
-                        <div className="flex gap-5 text-sm">
+                    <div className=" w-full rounded-xl bg-darkGray p-3 text-green-500  ">
+                        <div className="mb-2 flex gap-5 text-sm">
                             <h3 className="flex gap-2">
                                 <svg
                                     className="w-5"

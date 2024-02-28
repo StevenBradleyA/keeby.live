@@ -9,6 +9,8 @@ export default {
                 dark: "#222",
                 darkGray: "#616161",
                 keebyGray: "#2f2f2f",
+                lightGray: "#d3d3d3",
+
                 pogGray: "#2d2d2d",
                 testTwo: "#121212",
                 testFour: "#161618",
@@ -32,7 +34,9 @@ export default {
                 failure: "#ff0000",
                 darkGray: "#616161",
                 keebyGray: "#2f2f2f",
+                lightGray: "#d3d3d3",
                 purple: "#f008e4",
+                cadetBlue: "#5F9EA0",
             },
             screens: {
                 mobile: "320px",
