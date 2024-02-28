@@ -28,6 +28,7 @@ interface UserPostPreview {
 }
 
 interface UserWithPosts {
+    id: string;
     username: string | null;
     profile: string | null;
     selectedTag: string | null;
@@ -53,6 +54,9 @@ interface PostWithCount {
         postLikes: number;
     };
     images: Images[];
+    user: {
+        id: string;
+    };
 }
 
 interface PostPage {
@@ -144,6 +148,11 @@ export const postRouter = createTRPCRouter({
                                 { resourceType: "POSTPREVIEW" },
                                 { resourceType: "POST" },
                             ],
+                        },
+                    },
+                    user: {
+                        select: {
+                            id: true,
                         },
                     },
                 },
@@ -255,6 +264,11 @@ export const postRouter = createTRPCRouter({
                             ],
                         },
                     },
+                    user: {
+                        select: {
+                            id: true,
+                        },
+                    },
                 },
                 orderBy: { createdAt: "desc" },
                 take: limit + 1,
@@ -349,6 +363,7 @@ export const postRouter = createTRPCRouter({
                     },
                     user: {
                         select: {
+                            id: true,
                             internetPoints: true,
                             profile: true,
                             username: true,

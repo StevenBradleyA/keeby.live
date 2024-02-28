@@ -17,6 +17,7 @@ interface UserPostPreview {
 }
 
 interface UserWithPosts {
+    id: string;
     username: string | null;
     profile: string | null;
     selectedTag: string | null;

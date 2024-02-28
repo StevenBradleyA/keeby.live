@@ -29,6 +29,9 @@ interface EachPost {
     favoriteId?: string;
     _count: Count;
     images: Images[];
+    user: {
+        id: string;
+    };
 }
 interface Count {
     comments: number;
@@ -149,6 +152,7 @@ export default function EachPostCardPreview({
                                                 <PostPreviewDeleteLike
                                                     userId={session.user.id}
                                                     likeId={post.likeId}
+                                                    ownerId={post.user.id}
                                                 />
                                             </div>
                                         )}
@@ -159,6 +163,7 @@ export default function EachPostCardPreview({
                                                 <PostPreviewCreateLike
                                                     userId={session.user.id}
                                                     postId={post.id}
+                                                    ownerId={post.user.id}
                                                 />
                                             </div>
                                         )}
@@ -288,6 +293,7 @@ export default function EachPostCardPreview({
                                                 <PostPreviewDeleteLike
                                                     userId={session.user.id}
                                                     likeId={post.likeId}
+                                                    ownerId={post.user.id}
                                                 />
                                             </div>
                                         )}
@@ -298,6 +304,7 @@ export default function EachPostCardPreview({
                                                 <PostPreviewCreateLike
                                                     userId={session.user.id}
                                                     postId={post.id}
+                                                    ownerId={post.user.id}
                                                 />
                                             </div>
                                         )}
@@ -424,6 +431,7 @@ export default function EachPostCardPreview({
                                                 <PostPreviewDeleteLike
                                                     userId={session.user.id}
                                                     likeId={post.likeId}
+                                                    ownerId={post.user.id}
                                                 />
                                             </div>
                                         )}
@@ -434,6 +442,7 @@ export default function EachPostCardPreview({
                                                 <PostPreviewCreateLike
                                                     userId={session.user.id}
                                                     postId={post.id}
+                                                    ownerId={post.user.id}
                                                 />
                                             </div>
                                         )}
@@ -559,6 +568,7 @@ export default function EachPostCardPreview({
                                                 <PostPreviewDeleteLike
                                                     userId={session.user.id}
                                                     likeId={post.likeId}
+                                                    ownerId={post.user.id}
                                                 />
                                             </div>
                                         )}
@@ -569,6 +579,7 @@ export default function EachPostCardPreview({
                                                 <PostPreviewCreateLike
                                                     userId={session.user.id}
                                                     postId={post.id}
+                                                    ownerId={post.user.id}
                                                 />
                                             </div>
                                         )}

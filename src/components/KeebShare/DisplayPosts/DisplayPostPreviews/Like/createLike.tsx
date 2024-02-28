@@ -3,11 +3,13 @@ import { api } from "~/utils/api";
 interface PostPreviewCreateFavoriteProps {
     userId: string;
     postId: string;
+    ownerId: string;
 }
 
 export default function PostPreviewCreateLike({
     userId,
     postId,
+    ownerId,
 }: PostPreviewCreateFavoriteProps) {
     const ctx = api.useContext();
 
@@ -15,18 +17,18 @@ export default function PostPreviewCreateLike({
         onSuccess: () => {
             void ctx.post.getAllPopularPreviewPosts.invalidate();
             void ctx.post.getAllNewPreviewPosts.invalidate();
-            void ctx.post.getOneById.invalidate()
-
+            void ctx.post.getOneById.invalidate();
         },
     });
 
     const handleLikePost = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
-        if (userId && postId) {
+        if (userId && postId && ownerId) {
             const data = {
                 userId: userId,
                 postId: postId,
+                ownerId: ownerId,
             };
 
             return like(data);

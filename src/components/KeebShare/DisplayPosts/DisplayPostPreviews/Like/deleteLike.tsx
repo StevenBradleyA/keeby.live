@@ -3,11 +3,13 @@ import { api } from "~/utils/api";
 interface PostPreviewDeleteLikeProps {
     userId: string;
     likeId: string;
+    ownerId: string;
 }
 
 export default function PostPreviewDeleteLike({
     userId,
     likeId,
+    ownerId,
 }: PostPreviewDeleteLikeProps) {
     const ctx = api.useContext();
 
@@ -15,16 +17,17 @@ export default function PostPreviewDeleteLike({
         onSuccess: () => {
             void ctx.post.getAllPopularPreviewPosts.invalidate();
             void ctx.post.getAllNewPreviewPosts.invalidate();
-            void ctx.post.getOneById.invalidate()
+            void ctx.post.getOneById.invalidate();
         },
     });
 
     const handleDeleteLike = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        if (likeId && userId) {
+        if (likeId && userId && ownerId) {
             const data = {
                 id: likeId,
                 userId: userId,
+                ownerId: ownerId,
             };
 
             return deleteLike(data);

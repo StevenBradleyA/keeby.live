@@ -32,6 +32,7 @@ interface UserPostPreview {
 }
 
 interface UserWithPosts {
+    id: string;
     username: string | null;
     profile: string | null;
     selectedTag: string | null;
@@ -139,8 +140,8 @@ export default function DisplayPostPage({ post }: DisplayPostPageProps) {
                                 {post.tag}
                             </h1>
 
-                            <div className="relative flex items-center mt-1  gap-5 ">
-                                <div className="flex gap-2 items-center">
+                            <div className="relative mt-1 flex items-center  gap-5 ">
+                                <div className="flex items-center gap-2">
                                     {session === null && (
                                         <button
                                             className="w-5"
@@ -164,6 +165,7 @@ export default function DisplayPostPage({ post }: DisplayPostPageProps) {
                                                 <PostPreviewDeleteLike
                                                     userId={session.user.id}
                                                     likeId={post.likeId}
+                                                    ownerId={post.user.id}
                                                 />
                                             </div>
                                         )}
@@ -174,6 +176,7 @@ export default function DisplayPostPage({ post }: DisplayPostPageProps) {
                                                 <PostPreviewCreateLike
                                                     userId={session.user.id}
                                                     postId={post.id}
+                                                    ownerId={post.user.id}
                                                 />
                                             </div>
                                         )}

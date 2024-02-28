@@ -1,6 +1,6 @@
 import { api } from "~/utils/api";
 
-interface PostPreviewCreateLikeProps {
+interface PostPreviewCreateFavoriteProps {
     userId: string;
     postId: string;
 }
@@ -8,7 +8,7 @@ interface PostPreviewCreateLikeProps {
 export default function PostPreviewCreateFavorite({
     userId,
     postId,
-}: PostPreviewCreateLikeProps) {
+}: PostPreviewCreateFavoriteProps) {
     const ctx = api.useContext();
 
     const { mutate: favorite } = api.favorite.createPostFavorite.useMutation({
