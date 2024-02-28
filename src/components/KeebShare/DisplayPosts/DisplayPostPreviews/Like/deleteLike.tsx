@@ -15,6 +15,7 @@ export default function PostPreviewDeleteLike({
         onSuccess: () => {
             void ctx.post.getAllPopularPreviewPosts.invalidate();
             void ctx.post.getAllNewPreviewPosts.invalidate();
+            void ctx.post.getOneById.invalidate()
         },
     });
 

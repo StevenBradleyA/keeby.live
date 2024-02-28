@@ -215,7 +215,7 @@ model Post {
     userId String
 
     user          User            @relation(fields: [userId], references: [id])
-    postLikes      PostLike[]
+    postLikes     PostLike[]
     images        Images[]
     comments      Comment[]
     userFavorites UserFavorites[]
@@ -279,6 +279,7 @@ model User {
     name             String?
     email            String?   @unique
     emailVerified    DateTime?
+    internetPoints   Int       @default(0)
     image            String?
     profile          String?
     rankId           String?

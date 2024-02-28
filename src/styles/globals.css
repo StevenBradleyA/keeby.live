@@ -632,19 +632,18 @@ li:not(:first-child) span {
 
 .pob-title {
     transition: all 0.2s;
-    -webkit-text-stroke: 0.53px #616161; 
+    -webkit-text-stroke: 0.53px #616161;
     font-variation-settings: "wght" 900, "ital" 1;
-    font-size: 2rem; 
+    font-size: 2rem;
     color: transparent;
     text-shadow: 1.33px 1.33px 0px #07bccc, 2px 2px 0px #e601c0,
         2.67px 2.67px 0px #e9019a, 3.33px 3.33px 0px #f40468,
-        6px 6px 1.33px #482896; 
+        6px 6px 1.33px #482896;
 }
 
 .pob-title:hover {
     font-variation-settings: "wght" 100, "ital" 0;
     text-shadow: none;
-
 }
 
 /* heres antoher title variation */
@@ -843,6 +842,25 @@ input[type="checkbox"]:hover {
 
 .post-preview-tag-container:hover .post-preview-tag {
     visibility: hidden;
+}
+
+.post-page-user-container {
+    z-index: 2;
+}
+
+.post-page-user-contents {
+    z-index: 20;
+}
+
+.post-page-user-overlay {
+    /* clip-path: polygon(0 15%, 100% 0%, 100% 100%, 0 100%); */
+    clip-path: polygon(0 25%, 75% 0%, 100% 10%, 100% 100%, 0 100%);
+    /* clip-path: polygon(0 10%, 10% 0, 90% 0, 100% 10%, 100% 100%, 0 100%); */
+
+
+
+
+
 }
 
 /* --------------         END KEEB SHARE          --------------  */

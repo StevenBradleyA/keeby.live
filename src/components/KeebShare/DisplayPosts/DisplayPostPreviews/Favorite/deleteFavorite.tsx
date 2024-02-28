@@ -15,6 +15,7 @@ export default function PostPreviewDeleteFavorite({
         onSuccess: () => {
             void ctx.post.getAllPopularPreviewPosts.invalidate();
             void ctx.post.getAllNewPreviewPosts.invalidate();
+            void ctx.post.getOneById.invalidate();
         },
     });
 

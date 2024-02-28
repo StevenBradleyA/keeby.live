@@ -14,9 +14,29 @@ import SignInModal from "~/components/Comments/Modal/signInModal";
 import DisplayYouTubePostPreview from "../DisplayPosts/DisplayPostPreviews/displayYouTubePreview";
 import MainFooter from "~/components/Footer";
 import { formatDistance } from "date-fns";
+import Link from "next/link";
+import UserPostPreviews from "./userPostPreviews";
 
 interface DisplayPostPageProps {
     post: PostPage;
+}
+
+interface UserPostPreview {
+    id: string;
+    title: string;
+    _count: {
+        comments: number;
+        postLikes: number;
+    };
+    images: Images[];
+}
+
+interface UserWithPosts {
+    username: string | null;
+    profile: string | null;
+    selectedTag: string | null;
+    internetPoints: number;
+    posts: UserPostPreview[];
 }
 
 interface PostPage {
@@ -37,11 +57,7 @@ interface PostPage {
         postLikes: number;
     };
     images: Images[];
-    user: {
-        username: string | null;
-        profile: string | null;
-        selectedTag: string | null;
-    };
+    user: UserWithPosts;
 }
 
 export default function DisplayPostPage({ post }: DisplayPostPageProps) {
@@ -73,11 +89,21 @@ export default function DisplayPostPage({ post }: DisplayPostPageProps) {
         );
     };
 
+    console.log("hey steven", post);
     return (
         <div className="w-full px-16 text-darkGray ">
             <div className="flex  w-full gap-10">
-                <div className=" h-[70vh]  w-1/4 rounded-xl bg-keebyGray p-10">
+                <div className=" post-page-user-container  relative h-[70vh] w-1/4 overflow-hidden rounded-xl bg-keebyGray px-10 py-8">
                     <div className="w-full">
+                        {post.user.selectedTag && (
+                            <h3 className="mb-2 flex justify-center text-sm">
+                                {post.user.selectedTag}
+                            </h3>
+                        )}
+                        <div className="text-green absolute right-3 top-3 flex items-center justify-center rounded-md bg-white bg-opacity-20 px-3 py-2 text-green-500">
+                            999
+                        </div>
+
                         <Image
                             alt="preview"
                             src={
@@ -91,15 +117,26 @@ export default function DisplayPostPage({ post }: DisplayPostPageProps) {
                             priority
                         />
 
-                        {post.user.username}
-                        {post.user.selectedTag}
+                        <div className="post-page-user-overlay absolute bottom-0 left-0 top-1/4 -z-10 h-full w-full bg-darkGray"></div>
+                        {post.user && post.user.username && (
+                            <div className="post-page-user-contents text-green-500">
+                                <Link
+                                    href={`/public-profile/${post.user.username}`}
+                                >
+                                    <h1 className=" mt-2 mb-5 text-2xl">
+                                        {post.user.username}
+                                    </h1>
+                                </Link>
+                            </div>
+                        )}
+                        <UserPostPreviews user={post.user} />
                     </div>
                 </div>
 
                 <div className="flex w-1/2 flex-col gap-5 ">
                     <div className=" w-full rounded-xl bg-keebyGray ">
                         <div className="flex justify-between p-3 ">
-                            <h1 className=" rounded-3xl bg-white bg-opacity-20 px-4 py-2 text-green-500">
+                            <h1 className=" rounded-md bg-white bg-opacity-20 px-4 py-2 text-green-500">
                                 {post.tag}
                             </h1>
 

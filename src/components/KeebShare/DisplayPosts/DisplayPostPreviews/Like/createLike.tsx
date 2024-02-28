@@ -15,6 +15,8 @@ export default function PostPreviewCreateLike({
         onSuccess: () => {
             void ctx.post.getAllPopularPreviewPosts.invalidate();
             void ctx.post.getAllNewPreviewPosts.invalidate();
+            void ctx.post.getOneById.invalidate()
+
         },
     });
 

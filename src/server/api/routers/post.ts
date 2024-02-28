@@ -7,6 +7,7 @@ import {
 
 import { removeFileFromS3 } from "../utils";
 import type { Images, Prisma } from "@prisma/client";
+import { int } from "aws-sdk/clients/datapipeline";
 
 type CreateData = {
     title: string;
@@ -15,6 +16,24 @@ type CreateData = {
     userId: string;
     tag: string;
 };
+
+interface UserPostPreview {
+    id: string;
+    title: string;
+    _count: {
+        comments: number;
+        postLikes: number;
+    };
+    images: Images[];
+}
+
+interface UserWithPosts {
+    username: string | null;
+    profile: string | null;
+    selectedTag: string | null;
+    internetPoints: number;
+    posts: UserPostPreview[];
+}
 
 interface PostWithCount {
     id: string;
@@ -54,11 +73,7 @@ interface PostPage {
         postLikes: number;
     };
     images: Images[];
-    user: {
-        username: string | null;
-        profile: string | null;
-        selectedTag: string | null;
-    };
+    user: UserWithPosts;
 }
 
 export const postRouter = createTRPCRouter({
@@ -334,9 +349,34 @@ export const postRouter = createTRPCRouter({
                     },
                     user: {
                         select: {
+                            internetPoints: true,
                             profile: true,
                             username: true,
                             selectedTag: true,
+                            posts: {
+                                take: 4,
+                                orderBy: {
+                                    createdAt: "desc",
+                                },
+                                where: {
+                                    NOT: {
+                                        id: id,
+                                    },
+                                },
+                                select: {
+                                    id: true,
+                                    title: true,
+                                    _count: {
+                                        select: {
+                                            comments: true,
+                                            postLikes: true,
+                                        },
+                                    },
+                                    images: {
+                                        where: { resourceType: "POSTPREVIEW" },
+                                    },
+                                },
+                            },
                         },
                     },
                 },
