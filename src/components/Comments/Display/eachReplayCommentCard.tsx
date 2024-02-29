@@ -11,7 +11,8 @@ import UpdateComment from "../Update";
 import SignInModal from "../Modal/signInModal";
 
 interface EachReplyCardProps {
-    listingId: string;
+    typeId: string;
+    type: string;
     reply: ReplyContents;
     parentId: string;
 }
@@ -30,8 +31,8 @@ interface ReplyContents {
     id: string;
     text: string;
     userId: string;
-    listingId: string;
-    postId: null;
+    listingId: string | null;
+    postId: string | null;
     parentId: string | null;
     referencedUser: string | null;
     _count: CommentLike;
@@ -40,7 +41,8 @@ interface ReplyContents {
 
 export default function EachReplyCommentCard({
     reply,
-    listingId,
+    typeId,
+    type,
     parentId,
 }: EachReplyCardProps) {
     const { data: session } = useSession();
@@ -224,7 +226,8 @@ export default function EachReplyCommentCard({
                 </div>
                 {showNestedReply && reply.user.username && (
                     <CreateReplyComment
-                        listingId={listingId}
+                        typeId={typeId}
+                        type={type}
                         parentId={parentId}
                         replyId={reply.id}
                         referencedUser={reply.user.username}

@@ -50,7 +50,7 @@ export default function CreateReplyComment({
     const { mutate } = api.comment.createReply.useMutation({
         onSuccess: () => {
             void ctx.comment.getAllByTypeId.invalidate();
-            void ctx.comment.getAllReplysByListingId.invalidate();
+            void ctx.comment.getAllReplysByTypeId.invalidate();
         },
     });
 

@@ -35,7 +35,16 @@ export const likeRouter = createTRPCRouter({
                 await ctx.prisma.commentLike.deleteMany({
                     where: { commentId: commentId, userId: userId },
                 });
-                // update user who owns the comment to increase internetpoint
+                // await ctx.prisma.user.update({
+                //     data: {
+                //         internetPoints: {
+                //             increment: 1,
+                //         },
+                //     },
+                //     where: {
+                //         id: ownerId,
+                //     },
+                // });
             } else {
                 await ctx.prisma.commentLike.create({
                     data: {
@@ -43,8 +52,16 @@ export const likeRouter = createTRPCRouter({
                         commentId: commentId,
                     },
                 });
-
-                // update user who owns the comment to decrease internetpoint
+                // await ctx.prisma.user.update({
+                //     data: {
+                //         internetPoints: {
+                //             increment: 1,
+                //         },
+                //     },
+                //     where: {
+                //         id: ownerId,
+                //     },
+                // });
             }
 
             return { success: true };

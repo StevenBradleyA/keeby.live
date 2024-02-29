@@ -1,44 +1,26 @@
 import { api } from "~/utils/api";
 import EachReplyCommentCard from "./eachReplayCommentCard";
 import LoadingSpinner from "~/components/Loading";
+import { useSession } from "next-auth/react";
 
 interface DisplayReplyCommentsProps {
     parentId: string;
-    listingId: string;
-    userId: string;
-}
-
-interface ReplyUser {
-    id: string;
-    username: string | null;
-    profile: string | null;
-}
-interface CommentLike {
-    commentLike: number;
-}
-
-interface ReplyContents {
-    user: ReplyUser;
-    id: string;
-    text: string;
-    userId: string;
-    listingId: string;
-    postId: null;
-    parentId: string | null;
-    referencedUser: string | null;
-    _count: CommentLike;
-    isLiked?: boolean;
+    type: string;
+    typeId: string;
 }
 
 export default function DisplayReplyComments({
     parentId,
-    listingId,
-    userId,
+    typeId,
+    type,
 }: DisplayReplyCommentsProps) {
+    const { data: session } = useSession();
+
     const { data: replies, isLoading: isLoadingComments } =
-        api.comment.getAllReplysByListingId.useQuery({
-            listingId: listingId,
-            userId: userId,
+        api.comment.getAllReplysByTypeId.useQuery({
+            typeId: typeId,
+            type: type,
+            userId: session?.user.id,
             parentId: parentId,
         });
 
@@ -55,8 +37,9 @@ export default function DisplayReplyComments({
                 replies.map((e, i) => (
                     <EachReplyCommentCard
                         key={i}
-                        reply={e as ReplyContents}
-                        listingId={listingId}
+                        reply={e}
+                        type={type}
+                        typeId={typeId}
                         parentId={parentId}
                     />
                 ))}

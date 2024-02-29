@@ -7,7 +7,6 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 import ToggleCommentLike from "~/components/KeebShop/Likes/CommentLikes/ToggleLike";
 import DisplayReplyComments from "./displayReplyComments";
-import DisplayReplyViewerComments from "./displayReplyViewerComments";
 import ModalDialog from "~/components/Modal";
 import UpdateComment from "../Update";
 import SignInModal from "../Modal/signInModal";
@@ -251,19 +250,11 @@ export default function EachCommentCard({
                     </div>
                 </button>
             )}
-            {openReplies && session && session.user && (
+            {openReplies && (
                 <DisplayReplyComments
                     parentId={comment.id}
                     type={type}
                     typeId={typeId}
-                    userId={session.user.id}
-                />
-            )}
-            {openReplies && session === null && (
-                <DisplayReplyViewerComments
-                    parentId={comment.id}
-                    typeId={typeId}
-                    type={type}
                 />
             )}
         </div>

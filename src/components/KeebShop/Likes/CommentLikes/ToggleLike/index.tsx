@@ -18,9 +18,9 @@ export default function ToggleCommentLike({
     const { mutate } = api.like.toggleCommentLike.useMutation({
         onSuccess: () => {
             if (topLevel) {
-                void ctx.comment.getAllByListingId.invalidate();
+                void ctx.comment.getAllByTypeId.invalidate();
             } else {
-                void ctx.comment.getAllReplysByListingId.invalidate();
+                void ctx.comment.getAllReplysByTypeId.invalidate();
             }
         },
     });

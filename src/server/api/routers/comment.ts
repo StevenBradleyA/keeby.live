@@ -93,33 +93,7 @@ export const commentRouter = createTRPCRouter({
                 return allComments;
             }
         }),
-
-    // getAllByTypeIdForViewers: publicProcedure
-    //     .input(
-    //         z.object({
-    //             listingId: z.string(),
-    //         })
-    //     )
-    //     .query(({ ctx, input }) => {
-    //         return ctx.prisma.comment.findMany({
-    //             where: {
-    //                 listingId: input.listingId,
-    //                 parentId: null,
-    //             },
-    //             include: {
-    //                 user: {
-    //                     select: { id: true, username: true, profile: true },
-    //                 },
-    //                 _count: {
-    //                     select: {
-    //                         commentLike: true,
-    //                         replies: true,
-    //                     },
-    //                 },
-    //             },
-    //         });
-    //     }),
-    getAllReplysByListingId: publicProcedure
+    getAllReplysByTypeId: publicProcedure
         .input(
             z.object({
                 typeId: z.string(),
@@ -129,71 +103,82 @@ export const commentRouter = createTRPCRouter({
             })
         )
         .query(async ({ ctx, input }) => {
-            const {typeId, type, userId, parentId} = input
+            const { typeId, type, userId, parentId } = input;
 
-
-
-
-
-            const allComments = await ctx.prisma.comment.findMany({
-                where: {
-                    listingId: input.listingId,
-                    parentId: input.parentId,
-                },
-                include: {
-                    user: {
-                        select: { id: true, username: true, profile: true },
+            if (type === "listing") {
+                const allComments = await ctx.prisma.comment.findMany({
+                    where: {
+                        listingId: typeId,
+                        parentId: parentId,
                     },
-                    _count: {
-                        select: {
-                            commentLike: true,
+                    include: {
+                        user: {
+                            select: { id: true, username: true, profile: true },
+                        },
+                        _count: {
+                            select: {
+                                commentLike: true,
+                            },
                         },
                     },
-                },
-            });
+                });
+                if (userId) {
+                    const userLikes = await ctx.prisma.commentLike.findMany({
+                        where: {
+                            userId: userId,
+                        },
+                        select: { commentId: true },
+                    });
 
-            const userLikes = await ctx.prisma.commentLike.findMany({
-                where: {
-                    userId: input.userId,
-                },
-                select: { commentId: true },
-            });
+                    const commentsWithLikes = allComments.map((comment) => ({
+                        ...comment,
+                        isLiked: userLikes.some(
+                            (like) => like.commentId === comment.id
+                        ),
+                    }));
 
-            const commentsWithLikes = allComments.map((comment) => ({
-                ...comment,
-                isLiked: userLikes.some(
-                    (like) => like.commentId === comment.id
-                ),
-            }));
+                    return commentsWithLikes;
+                }
 
-            return commentsWithLikes;
-        }),
-    getAllViewerReplysByTypeId: publicProcedure
-        .input(
-            z.object({
-                listingId: z.string(),
-                parentId: z.string(),
-            })
-        )
-        .query(async ({ ctx, input }) => {
-            return ctx.prisma.comment.findMany({
-                where: {
-                    listingId: input.listingId,
-                    parentId: input.parentId,
-                },
-                include: {
-                    user: {
-                        select: { id: true, username: true, profile: true },
+                return allComments;
+            } else if (type === "post") {
+                const allComments = await ctx.prisma.comment.findMany({
+                    where: {
+                        postId: typeId,
+                        parentId: parentId,
                     },
-                    _count: {
-                        select: {
-                            commentLike: true,
+                    include: {
+                        user: {
+                            select: { id: true, username: true, profile: true },
+                        },
+                        _count: {
+                            select: {
+                                commentLike: true,
+                            },
                         },
                     },
-                },
-            });
-        }),
+                });
+                if (userId) {
+                    const userLikes = await ctx.prisma.commentLike.findMany({
+                        where: {
+                            userId: userId,
+                        },
+                        select: { commentId: true },
+                    });
 
+                    const commentsWithLikes = allComments.map((comment) => ({
+                        ...comment,
+                        isLiked: userLikes.some(
+                            (like) => like.commentId === comment.id
+                        ),
+                    }));
+
+                    return commentsWithLikes;
+                }
+
+                return allComments;
+            }
+        }),
     createComment: protectedProcedure
         .input(
             z.object({
@@ -251,15 +236,15 @@ export const commentRouter = createTRPCRouter({
             }
 
             // parentID validation --- (ensure it refers to an existing comment)
-            if (parentId) {
-                const exists = await ctx.prisma.comment.findUnique({
-                    where: { id: parentId },
-                    select: { id: true },
-                });
-                if (!exists) {
-                    throw new Error("Invalid parentId");
-                }
-            }
+            // if (parentId) {
+            //     const exists = await ctx.prisma.comment.findUnique({
+            //         where: { id: parentId },
+            //         select: { id: true },
+            //     });
+            //     if (!exists) {
+            //         throw new Error("Invalid parentId");
+            //     }
+            // }
 
             if (type === "listing") {
                 const newComment = await ctx.prisma.comment.create({
@@ -326,22 +311,22 @@ export const commentRouter = createTRPCRouter({
                 // Top-level comment
                 if (!parentId) {
                     // ---- get all replies
-                    const replies = await ctx.prisma.comment.findMany({
-                        where: { parentId: id },
-                        select: { id: true },
-                    });
+                    // const replies = await ctx.prisma.comment.findMany({
+                    //     where: { parentId: id },
+                    //     select: { id: true },
+                    // });
 
-                    const replyIds = replies.map((reply) => reply.id);
+                    // const replyIds = replies.map((reply) => reply.id);
 
                     // --- Delete all likes associated with the replies
-                    await ctx.prisma.commentLike.deleteMany({
-                        where: { commentId: { in: replyIds } },
-                    });
+                    // await ctx.prisma.commentLike.deleteMany({
+                    //     where: { commentId: { in: replyIds } },
+                    // });
 
                     // --- Delete all likes associated with the top-level comment
-                    await ctx.prisma.commentLike.deleteMany({
-                        where: { commentId: id },
-                    });
+                    // await ctx.prisma.commentLike.deleteMany({
+                    //     where: { commentId: id },
+                    // });
 
                     // -- Delete all replies
                     await ctx.prisma.comment.deleteMany({
@@ -352,9 +337,9 @@ export const commentRouter = createTRPCRouter({
                     return ctx.prisma.comment.delete({ where: { id: id } });
                 } else {
                     // Not a top-level comment, delete its likes and then the comment itself
-                    await ctx.prisma.commentLike.deleteMany({
-                        where: { commentId: id },
-                    });
+                    // await ctx.prisma.commentLike.deleteMany({
+                    //     where: { commentId: id },
+                    // });
 
                     return ctx.prisma.comment.delete({ where: { id: id } });
                 }
