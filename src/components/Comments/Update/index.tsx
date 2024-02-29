@@ -39,10 +39,10 @@ export default function UpdateComment({
     const { mutate } = api.comment.delete.useMutation({
         onSuccess: () => {
             if (parentId) {
-                void ctx.comment.getAllByListingId.invalidate();
-                void ctx.comment.getAllReplysByListingId.invalidate();
+                void ctx.comment.getAllByTypeId.invalidate();
+                void ctx.comment.getAllReplysByTypeId.invalidate();
             } else {
-                void ctx.comment.getAllByListingId.invalidate();
+                void ctx.comment.getAllByTypeId.invalidate();
             }
             closeModal();
         },
@@ -51,9 +51,9 @@ export default function UpdateComment({
     const { mutate: updateComment } = api.comment.update.useMutation({
         onSuccess: () => {
             if (parentId) {
-                void ctx.comment.getAllReplysByListingId.invalidate();
+                void ctx.comment.getAllReplysByTypeId.invalidate();
             } else {
-                void ctx.comment.getAllByListingId.invalidate();
+                void ctx.comment.getAllByTypeId.invalidate();
             }
             closeModal();
         },

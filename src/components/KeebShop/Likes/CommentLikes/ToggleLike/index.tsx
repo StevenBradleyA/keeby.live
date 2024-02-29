@@ -5,6 +5,7 @@ interface CreateCommentLikeProps {
     userId: string;
     isLiked: boolean;
     topLevel: boolean;
+    ownerId: string;
 }
 
 export default function ToggleCommentLike({
@@ -12,6 +13,7 @@ export default function ToggleCommentLike({
     userId,
     isLiked,
     topLevel,
+    ownerId,
 }: CreateCommentLikeProps) {
     const ctx = api.useContext();
 
@@ -31,6 +33,7 @@ export default function ToggleCommentLike({
             commentId: commentId,
             userId: userId,
             isLiked: isLiked,
+            ownerId,
         };
         mutate(data);
     };

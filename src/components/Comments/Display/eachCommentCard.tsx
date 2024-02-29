@@ -111,23 +111,25 @@ export default function EachCommentCard({
                                 {comment.user.username}
                             </Link>
                         )}
-                        {session && session.user.id === comment.userId && (
-                            <button
-                                className="absolute right-0"
-                                onClick={openModal}
-                            >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="18"
-                                    height="18"
-                                    fill="#616161"
+                        {session &&
+                            (session.user.id === comment.userId ||
+                                session.user.isAdmin) && (
+                                <button
+                                    className="absolute right-0"
+                                    onClick={openModal}
                                 >
-                                    <circle cx="9" cy="4.5" r="1.5" />
-                                    <circle cx="9" cy="9" r="1.5" />
-                                    <circle cx="9" cy="13.5" r="1.5" />
-                                </svg>
-                            </button>
-                        )}
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="18"
+                                        height="18"
+                                        fill="#616161"
+                                    >
+                                        <circle cx="9" cy="4.5" r="1.5" />
+                                        <circle cx="9" cy="9" r="1.5" />
+                                        <circle cx="9" cy="13.5" r="1.5" />
+                                    </svg>
+                                </button>
+                            )}
                         <ModifyCommentModal
                             isOpen={isModalOpen}
                             onClose={closeModal}
@@ -166,6 +168,7 @@ export default function EachCommentCard({
                                     userId={session.user.id}
                                     isLiked={comment.isLiked}
                                     topLevel={true}
+                                    ownerId={comment.user.id}
                                 />
                             ) : (
                                 <button onClick={openSignInModal}>

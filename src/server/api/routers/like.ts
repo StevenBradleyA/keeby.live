@@ -27,24 +27,25 @@ export const likeRouter = createTRPCRouter({
                 commentId: z.string(),
                 userId: z.string(),
                 isLiked: z.boolean(),
+                ownerId: z.string(),
             })
         )
         .mutation(async ({ ctx, input }) => {
-            const { commentId, userId, isLiked } = input;
+            const { commentId, userId, isLiked, ownerId } = input;
             if (isLiked) {
                 await ctx.prisma.commentLike.deleteMany({
                     where: { commentId: commentId, userId: userId },
                 });
-                // await ctx.prisma.user.update({
-                //     data: {
-                //         internetPoints: {
-                //             increment: 1,
-                //         },
-                //     },
-                //     where: {
-                //         id: ownerId,
-                //     },
-                // });
+                await ctx.prisma.user.update({
+                    data: {
+                        internetPoints: {
+                            decrement: 1,
+                        },
+                    },
+                    where: {
+                        id: ownerId,
+                    },
+                });
             } else {
                 await ctx.prisma.commentLike.create({
                     data: {
@@ -52,16 +53,16 @@ export const likeRouter = createTRPCRouter({
                         commentId: commentId,
                     },
                 });
-                // await ctx.prisma.user.update({
-                //     data: {
-                //         internetPoints: {
-                //             increment: 1,
-                //         },
-                //     },
-                //     where: {
-                //         id: ownerId,
-                //     },
-                // });
+                await ctx.prisma.user.update({
+                    data: {
+                        internetPoints: {
+                            increment: 1,
+                        },
+                    },
+                    where: {
+                        id: ownerId,
+                    },
+                });
             }
 
             return { success: true };

@@ -235,17 +235,6 @@ export const commentRouter = createTRPCRouter({
                 throw new Error("Invalid userId");
             }
 
-            // parentID validation --- (ensure it refers to an existing comment)
-            // if (parentId) {
-            //     const exists = await ctx.prisma.comment.findUnique({
-            //         where: { id: parentId },
-            //         select: { id: true },
-            //     });
-            //     if (!exists) {
-            //         throw new Error("Invalid parentId");
-            //     }
-            // }
-
             if (type === "listing") {
                 const newComment = await ctx.prisma.comment.create({
                     data: {
@@ -310,37 +299,12 @@ export const commentRouter = createTRPCRouter({
             if (ctx.session.user.id === userId || ctx.session.user.isAdmin) {
                 // Top-level comment
                 if (!parentId) {
-                    // ---- get all replies
-                    // const replies = await ctx.prisma.comment.findMany({
-                    //     where: { parentId: id },
-                    //     select: { id: true },
-                    // });
-
-                    // const replyIds = replies.map((reply) => reply.id);
-
-                    // --- Delete all likes associated with the replies
-                    // await ctx.prisma.commentLike.deleteMany({
-                    //     where: { commentId: { in: replyIds } },
-                    // });
-
-                    // --- Delete all likes associated with the top-level comment
-                    // await ctx.prisma.commentLike.deleteMany({
-                    //     where: { commentId: id },
-                    // });
-
-                    // -- Delete all replies
                     await ctx.prisma.comment.deleteMany({
                         where: { parentId: id },
                     });
-
-                    // - Finally, delete the top-level comment itself
                     return ctx.prisma.comment.delete({ where: { id: id } });
                 } else {
-                    // Not a top-level comment, delete its likes and then the comment itself
-                    // await ctx.prisma.commentLike.deleteMany({
-                    //     where: { commentId: id },
-                    // });
-
+                    // Not a top-level comment
                     return ctx.prisma.comment.delete({ where: { id: id } });
                 }
             }

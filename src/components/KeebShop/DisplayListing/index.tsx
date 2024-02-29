@@ -1,5 +1,4 @@
 import type { Listing } from "@prisma/client";
-import type { Images } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { api } from "~/utils/api";
