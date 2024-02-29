@@ -1,11 +1,9 @@
 import Image from "next/image";
 import keebo from "@public/Profile/keebo.png";
-import { useEffect } from "react";
-import { throttle } from "lodash";
+import { useEffect, useRef } from "react";
 import LoadingSpinner from "~/components/Loading";
 import { api } from "~/utils/api";
 import EachPostCardPreview from "./eachPostCardPreview";
-import type { Images } from "@prisma/client";
 import { useSession } from "next-auth/react";
 
 interface DisplayNewPostPreviewsProps {
@@ -19,28 +17,12 @@ interface Filters {
     userId?: string;
 }
 
-interface EachPost {
-    id: string;
-    tag: string;
-    title: string;
-    link: string | null;
-    text: string | null;
-    isFavorited?: boolean;
-    favoriteId?: string;
-    isLiked?: boolean;
-    likedId?: string;
-    _count: CommentCount;
-    images: Images[];
-}
-interface CommentCount {
-    comments: number;
-    postLikes: number;
-}
-
 export default function DispayPopularPostPreviews({
     searchInput,
     tag,
 }: DisplayNewPostPreviewsProps) {
+    const scrollFlagRef = useRef<HTMLDivElement | null>(null);
+
     const queryInputs: Filters = {};
 
     const { data: session } = useSession();
@@ -64,34 +46,36 @@ export default function DispayPopularPostPreviews({
     } = api.post.getAllPopularPreviewPosts.useInfiniteQuery(
         {
             ...queryInputs,
-            limit: 10,
+            limit: 8,
         },
         {
             getNextPageParam: (lastPage) => lastPage.nextCursor,
         }
     );
 
-    //     useEffect(() => {
-    //         const handleScroll = throttle(() => {
-    //             const nearBottom =
-    //                 window.innerHeight + window.scrollY >=
-    //                 document.documentElement.offsetHeight - 300; // pagination fetch distance from bottom px
-    //             if (
-    //                 nearBottom &&
-    //                 hasNextPage &&
-    //                 !isLoading &&
-    //                 !isFetchingNextPage
-    //             ) {
-    //                 void fetchNextPage();
-    //             }
-    //         }, 100);
+    useEffect(() => {
+        if (isLoading || isFetchingNextPage || !hasNextPage) return;
 
-    //         window.addEventListener("scroll", handleScroll);
-    //         return () => {
-    //             window.removeEventListener("scroll", handleScroll);
-    //             handleScroll.cancel();
-    //         };
-    //     }, [hasNextPage, isLoading, isFetchingNextPage, fetchNextPage]);
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0] && entries[0].isIntersecting) {
+                    void fetchNextPage();
+                }
+            },
+            { threshold: 1.0 }
+        );
+
+        const currentFlag = scrollFlagRef.current;
+        if (currentFlag) {
+            observer.observe(currentFlag);
+        }
+
+        return () => {
+            if (observer && currentFlag) {
+                observer.unobserve(currentFlag);
+            }
+        };
+    }, [hasNextPage, isLoading, isFetchingNextPage, fetchNextPage]);
 
     if (isLoading) {
         return (
@@ -101,22 +85,16 @@ export default function DispayPopularPostPreviews({
         );
     }
 
-    // todo test pagination for popular posts
-
-    console.log('hi big boy', postData)
-
     return (
         <>
             {postData && postData.pages.length > 0 && (
                 <div className="flex flex-wrap gap-10">
                     {postData.pages.map((page) =>
                         page.posts.map((post) => (
-                            <EachPostCardPreview
-                                key={post.id}
-                                post={post as EachPost}
-                            />
+                            <EachPostCardPreview key={post.id} post={post} />
                         ))
                     )}
+                    <div ref={scrollFlagRef} className="h-10 w-full"></div>
                 </div>
             )}
             {isFetchingNextPage && (

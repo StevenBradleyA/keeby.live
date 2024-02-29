@@ -43,9 +43,9 @@ interface UserWithPosts {
 interface PostPage {
     id: string;
     title: string;
-    text?: string | null;
+    text: string | null;
     tag: string;
-    link?: string | null;
+    link: string | null;
     createdAt: Date;
     updatedAt: Date;
     userId: string;

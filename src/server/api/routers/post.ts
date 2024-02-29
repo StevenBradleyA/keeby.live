@@ -39,9 +39,9 @@ interface UserWithPosts {
 interface PostWithCount {
     id: string;
     title: string;
-    text?: string | null;
+    text: string | null;
     tag: string;
-    link?: string | null;
+    link: string | null;
     createdAt: Date;
     updatedAt: Date;
     userId: string;
@@ -62,9 +62,9 @@ interface PostWithCount {
 interface PostPage {
     id: string;
     title: string;
-    text?: string | null;
+    text: string | null;
     tag: string;
-    link?: string | null;
+    link: string | null;
     createdAt: Date;
     updatedAt: Date;
     userId: string;
@@ -114,7 +114,7 @@ export const postRouter = createTRPCRouter({
         .query(async ({ ctx, input }) => {
             const { searchQuery, tag, cursor, userId } = input;
 
-            const limit = input.limit ?? 10;
+            const limit = input.limit ?? 8;
 
             const whereFilters: Prisma.PostWhereInput = {
                 AND: [
@@ -228,7 +228,7 @@ export const postRouter = createTRPCRouter({
         .query(async ({ ctx, input }) => {
             const { searchQuery, tag, cursor, userId } = input;
 
-            const limit = input.limit ?? 10;
+            const limit = input.limit ?? 8;
 
             const whereFilters: Prisma.PostWhereInput = {
                 AND: [
