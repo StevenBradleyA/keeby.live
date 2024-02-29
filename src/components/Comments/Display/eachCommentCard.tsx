@@ -13,7 +13,8 @@ import UpdateComment from "../Update";
 import SignInModal from "../Modal/signInModal";
 
 interface EachCommentCardProps {
-    listingId: string;
+    type: string;
+    typeId: string;
     comment: CommentContents;
 }
 
@@ -32,8 +33,8 @@ interface CommentContents {
     id: string;
     text: string;
     userId: string;
-    listingId: string;
-    postId: null;
+    listingId: string | null;
+    postId: string | null;
     parentId: string | null;
     referencedUser: string | null;
     user: CommentUser;
@@ -43,7 +44,8 @@ interface CommentContents {
 
 export default function EachCommentCard({
     comment,
-    listingId,
+    typeId,
+    type,
 }: EachCommentCardProps) {
     const [showTopLevelCommentReply, setShowTopLevelCommentReply] =
         useState<boolean>(false);
@@ -211,7 +213,8 @@ export default function EachCommentCard({
                     </div>
                     {showTopLevelCommentReply && (
                         <CreateReplyComment
-                            listingId={listingId}
+                            type={type}
+                            typeId={typeId}
                             parentId={comment.id}
                             setShowTopLevelCommentReply={
                                 setShowTopLevelCommentReply
@@ -251,14 +254,16 @@ export default function EachCommentCard({
             {openReplies && session && session.user && (
                 <DisplayReplyComments
                     parentId={comment.id}
-                    listingId={listingId}
+                    type={type}
+                    typeId={typeId}
                     userId={session.user.id}
                 />
             )}
             {openReplies && session === null && (
                 <DisplayReplyViewerComments
                     parentId={comment.id}
-                    listingId={listingId}
+                    typeId={typeId}
+                    type={type}
                 />
             )}
         </div>

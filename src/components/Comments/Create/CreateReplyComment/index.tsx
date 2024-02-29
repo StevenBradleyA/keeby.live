@@ -7,7 +7,8 @@ import ModalDialog from "~/components/Modal";
 import SignInModal from "../../Modal/signInModal";
 
 interface CreateReplyCommentProps {
-    listingId: string;
+    type: string;
+    typeId: string;
     parentId: string;
     referencedUser?: string;
     replyId?: string;
@@ -23,13 +24,15 @@ interface ErrorsObj {
 interface ReplyData {
     text: string;
     userId: string;
-    listingId: string;
+    type: string;
+    typeId: string;
     parentId: string;
     referencedUser?: string;
 }
 
 export default function CreateReplyComment({
-    listingId,
+    type,
+    typeId,
     parentId,
     referencedUser,
     setShowTopLevelCommentReply,
@@ -46,7 +49,7 @@ export default function CreateReplyComment({
 
     const { mutate } = api.comment.createReply.useMutation({
         onSuccess: () => {
-            void ctx.comment.getAllByListingId.invalidate();
+            void ctx.comment.getAllByTypeId.invalidate();
             void ctx.comment.getAllReplysByListingId.invalidate();
         },
     });
@@ -88,7 +91,8 @@ export default function CreateReplyComment({
             const data: ReplyData = {
                 text,
                 userId: session.user.id,
-                listingId: listingId,
+                type: type,
+                typeId: typeId,
                 parentId: parentId,
             };
 

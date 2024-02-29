@@ -4,14 +4,14 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { api } from "~/utils/api";
 import Image from "next/image";
-import DisplayComments from "~/components/Comments/Display";
-import DisplayViewerCommments from "~/components/Comments/Display/displayViewerComments";
 import LoadingSpinner from "~/components/Loading";
 import SellerListingCard from "./SellerCard";
 import ListingSoundTest from "./SoundTest";
 import MainFooter from "~/components/Footer";
 import ChevronRound from "~/components/Svgs/chevron";
 import ListingPageFavorite from "./Favorite";
+import CreateComment from "~/components/Comments/Create";
+import EachCommentCard from "~/components/Comments/Display/eachCommentCard";
 
 interface Image {
     id: string;
@@ -33,10 +33,16 @@ interface DisplayListingPageProps {
 export default function DisplayListingPage({
     listing,
 }: DisplayListingPageProps) {
+    const { data: session } = useSession();
+
     const { data: sellerInfo, isLoading: isLoading } =
         api.user.getSeller.useQuery(listing.sellerId);
 
-    const { data: session } = useSession();
+    const { data: comments } = api.comment.getAllByTypeId.useQuery({
+        type: "listing",
+        typeId: listing.id,
+        userId: session?.user.id,
+    });
 
     const [displayImage, setDisplayImage] = useState(listing.images[0]);
 
@@ -62,9 +68,6 @@ export default function DisplayListingPage({
 
     // TODO ability to favorite / unfavorite the listing
     // todo I want to have comments next to other listings and banner ads like the nicely styled ones on youtube
-    // may want to add a placeholder in the mean time
-    // todo favorite, new listings on bottom,
-    // the favorite here should be based off the session user. we need to check if they have the listing favorited?
 
     if (isLoading)
         return (
@@ -206,24 +209,42 @@ export default function DisplayListingPage({
             </div>
 
             {listing.soundTest && (
-                <div className="mt-10 flex px-5 w-3/4 h-[35rem] ">
+                <div className="mt-10 flex h-[35rem] w-3/4 px-5 ">
                     <ListingSoundTest soundTest={listing.soundTest} />
                 </div>
             )}
 
             <div className="mt-10 w-3/4 px-5">
-                {session && session.user.id ? (
-                    <DisplayComments
-                        listingId={listing.id}
-                        userId={session.user.id}
-                        commentCount={listing._count.comments}
-                    />
-                ) : (
-                    <DisplayViewerCommments
-                        listingId={listing.id}
-                        commentCount={listing._count.comments}
-                    />
-                )}
+                <div className=" mb-1 flex gap-1">
+                    <h1 className="text-lg text-green-500">
+                        {`${
+                            listing._count.comments
+                                ? listing._count.comments
+                                : 0
+                        } ${
+                            listing._count.comments === 1
+                                ? "COMMENT"
+                                : "COMMENTS"
+                        }`}
+                    </h1>
+                    <svg
+                        className="w-5"
+                        viewBox="0 0 24 24"
+                        fill="rgb(34 197 94)"
+                    >
+                        <path d="M5.25,18 C3.45507456,18 2,16.5449254 2,14.75 L2,6.25 C2,4.45507456 3.45507456,3 5.25,3 L18.75,3 C20.5449254,3 22,4.45507456 22,6.25 L22,14.75 C22,16.5449254 20.5449254,18 18.75,18 L13.0124851,18 L7.99868152,21.7506795 C7.44585139,22.1641649 6.66249789,22.0512036 6.2490125,21.4983735 C6.08735764,21.2822409 6,21.0195912 6,20.7499063 L5.99921427,18 L5.25,18 Z M12.5135149,16.5 L18.75,16.5 C19.7164983,16.5 20.5,15.7164983 20.5,14.75 L20.5,6.25 C20.5,5.28350169 19.7164983,4.5 18.75,4.5 L5.25,4.5 C4.28350169,4.5 3.5,5.28350169 3.5,6.25 L3.5,14.75 C3.5,15.7164983 4.28350169,16.5 5.25,16.5 L7.49878573,16.5 L7.49899997,17.2497857 L7.49985739,20.2505702 L12.5135149,16.5 Z"></path>
+                    </svg>
+                </div>
+                <CreateComment typeId={listing.id} type="listing" />
+                {comments &&
+                    comments.map((comment, i) => (
+                        <EachCommentCard
+                            key={i}
+                            comment={comment}
+                            type="listing"
+                            typeId={listing.id}
+                        />
+                    ))}
             </div>
             <MainFooter />
         </div>

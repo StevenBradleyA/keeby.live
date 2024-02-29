@@ -6,91 +6,135 @@ import {
 } from "~/server/api/trpc";
 
 export const commentRouter = createTRPCRouter({
-    // getAll: publicProcedure.query(({ ctx }) => {
-    //     return ctx.prisma.comment.findMany();
-    // }),
-    // is there a more efficient way to check if it is liked?
-    // implement pagination here
-    // lets go ahead and implement comment sorting by top comment and newest.`
-
-    getAllByListingId: publicProcedure
+    getAllByTypeId: publicProcedure
         .input(
             z.object({
-                listingId: z.string(),
-                userId: z.string(),
+                type: z.string(),
+                typeId: z.string(),
+                userId: z.string().optional(),
             })
         )
         .query(async ({ ctx, input }) => {
-            const { listingId, userId } = input;
-            const allComments = await ctx.prisma.comment.findMany({
-                where: {
-                    listingId: listingId,
-                    parentId: null,
-                },
-                include: {
-                    user: {
-                        select: { id: true, username: true, profile: true },
+            const { typeId, userId, type } = input;
+
+            if (type === "listing") {
+                const allComments = await ctx.prisma.comment.findMany({
+                    where: {
+                        listingId: typeId,
+                        parentId: null,
                     },
-                    _count: {
-                        select: {
-                            commentLike: true,
-                            replies: true,
+                    include: {
+                        user: {
+                            select: { id: true, username: true, profile: true },
+                        },
+                        _count: {
+                            select: {
+                                commentLike: true,
+                                replies: true,
+                            },
                         },
                     },
-                },
-            });
+                });
+                if (userId) {
+                    const userLikes = await ctx.prisma.commentLike.findMany({
+                        where: {
+                            userId: userId,
+                        },
+                        select: { commentId: true },
+                    });
 
-            const userLikes = await ctx.prisma.commentLike.findMany({
-                where: {
-                    userId: userId,
-                },
-                select: { commentId: true },
-            });
+                    const commentsWithLikes = allComments.map((comment) => ({
+                        ...comment,
+                        isLiked: userLikes.some(
+                            (like) => like.commentId === comment.id
+                        ),
+                    }));
 
-            const commentsWithLikes = allComments.map((comment) => ({
-                ...comment,
-                isLiked: userLikes.some(
-                    (like) => like.commentId === comment.id
-                ),
-            }));
+                    return commentsWithLikes;
+                }
 
-            return commentsWithLikes;
-        }),
-
-    getAllByTypeIdForViewers: publicProcedure
-        .input(
-            z.object({
-                listingId: z.string(),
-            })
-        )
-        .query(({ ctx, input }) => {
-            return ctx.prisma.comment.findMany({
-                where: {
-                    listingId: input.listingId,
-                    parentId: null,
-                },
-                include: {
-                    user: {
-                        select: { id: true, username: true, profile: true },
+                return allComments;
+            } else if (type === "post") {
+                const allComments = await ctx.prisma.comment.findMany({
+                    where: {
+                        postId: typeId,
+                        parentId: null,
                     },
-                    _count: {
-                        select: {
-                            commentLike: true,
-                            replies: true,
+                    include: {
+                        user: {
+                            select: { id: true, username: true, profile: true },
+                        },
+                        _count: {
+                            select: {
+                                commentLike: true,
+                                replies: true,
+                            },
                         },
                     },
-                },
-            });
+                });
+                if (userId) {
+                    const userLikes = await ctx.prisma.commentLike.findMany({
+                        where: {
+                            userId: userId,
+                        },
+                        select: { commentId: true },
+                    });
+
+                    const commentsWithLikes = allComments.map((comment) => ({
+                        ...comment,
+                        isLiked: userLikes.some(
+                            (like) => like.commentId === comment.id
+                        ),
+                    }));
+
+                    return commentsWithLikes;
+                }
+
+                return allComments;
+            }
         }),
+
+    // getAllByTypeIdForViewers: publicProcedure
+    //     .input(
+    //         z.object({
+    //             listingId: z.string(),
+    //         })
+    //     )
+    //     .query(({ ctx, input }) => {
+    //         return ctx.prisma.comment.findMany({
+    //             where: {
+    //                 listingId: input.listingId,
+    //                 parentId: null,
+    //             },
+    //             include: {
+    //                 user: {
+    //                     select: { id: true, username: true, profile: true },
+    //                 },
+    //                 _count: {
+    //                     select: {
+    //                         commentLike: true,
+    //                         replies: true,
+    //                     },
+    //                 },
+    //             },
+    //         });
+    //     }),
     getAllReplysByListingId: publicProcedure
         .input(
             z.object({
-                listingId: z.string(),
-                userId: z.string(),
+                typeId: z.string(),
+                type: z.string(),
+                userId: z.string().optional(),
                 parentId: z.string(),
             })
         )
         .query(async ({ ctx, input }) => {
+            const {typeId, type, userId, parentId} = input
+
+
+
+
+
             const allComments = await ctx.prisma.comment.findMany({
                 where: {
                     listingId: input.listingId,
@@ -150,31 +194,39 @@ export const commentRouter = createTRPCRouter({
             });
         }),
 
-    // getAmountByTypeId: publicProcedure
-    //     .input(
-    //         z.object({
-    //             listingId: z.string(),
-    //         })
-    //     )
-    //     .query(({ ctx, input }) => {
-    //         return ctx.prisma.comment.count({
-    //             where: { listingId: input.listingId },
-    //         });
-    //     }),
-    createListingComment: protectedProcedure
+    createComment: protectedProcedure
         .input(
             z.object({
                 text: z.string(),
                 userId: z.string(),
-                listingId: z.string(),
+                typeId: z.string(),
+                type: z.string(),
             })
         )
         .mutation(async ({ input, ctx }) => {
+            const { text, userId, typeId, type } = input;
+
             if (ctx.session.user.id === input.userId) {
-                const newComment = await ctx.prisma.comment.create({
-                    data: input,
-                });
-                return newComment;
+                if (type === "listing") {
+                    const newComment = await ctx.prisma.comment.create({
+                        data: {
+                            text: text,
+                            userId: userId,
+                            listingId: typeId,
+                        },
+                    });
+                    return newComment;
+                }
+                if (type === "post") {
+                    const newComment = await ctx.prisma.comment.create({
+                        data: {
+                            text: text,
+                            userId: userId,
+                            postId: typeId,
+                        },
+                    });
+                    return newComment;
+                }
             }
             throw new Error("Invalid userId");
         }),
@@ -184,37 +236,58 @@ export const commentRouter = createTRPCRouter({
             z.object({
                 text: z.string(),
                 userId: z.string(),
-                listingId: z.string(),
+                type: z.string(),
+                typeId: z.string(),
                 parentId: z.string(),
                 referencedUser: z.string().optional(),
             })
         )
         .mutation(async ({ input, ctx }) => {
-            if (ctx.session.user.id !== input.userId) {
+            const { text, userId, type, typeId, parentId, referencedUser } =
+                input;
+
+            if (ctx.session.user.id !== userId) {
                 throw new Error("Invalid userId");
             }
 
             // parentID validation --- (ensure it refers to an existing comment)
-            if (input.parentId) {
-                const parentComment = await ctx.prisma.comment.findUnique({
-                    where: { id: input.parentId },
+            if (parentId) {
+                const exists = await ctx.prisma.comment.findUnique({
+                    where: { id: parentId },
+                    select: { id: true },
                 });
-                if (!parentComment) {
+                if (!exists) {
                     throw new Error("Invalid parentId");
                 }
             }
 
-            const newComment = await ctx.prisma.comment.create({
-                data: {
-                    text: input.text,
-                    userId: input.userId,
-                    listingId: input.listingId,
-                    parentId: input.parentId,
-                    referencedUser: input.referencedUser || null,
-                },
-            });
+            if (type === "listing") {
+                const newComment = await ctx.prisma.comment.create({
+                    data: {
+                        text: text,
+                        userId: userId,
+                        listingId: typeId,
+                        parentId: parentId,
+                        referencedUser: referencedUser || null,
+                    },
+                });
 
-            return newComment;
+                return newComment;
+            }
+
+            if (type === "post") {
+                const newComment = await ctx.prisma.comment.create({
+                    data: {
+                        text: text,
+                        userId: userId,
+                        postId: typeId,
+                        parentId: parentId,
+                        referencedUser: referencedUser || null,
+                    },
+                });
+
+                return newComment;
+            }
         }),
     update: protectedProcedure
         .input(
@@ -249,7 +322,7 @@ export const commentRouter = createTRPCRouter({
         )
         .mutation(async ({ input, ctx }) => {
             const { id, parentId, userId } = input;
-            if (ctx.session.user.id === userId) {
+            if (ctx.session.user.id === userId || ctx.session.user.isAdmin) {
                 // Top-level comment
                 if (!parentId) {
                     // ---- get all replies
@@ -289,6 +362,7 @@ export const commentRouter = createTRPCRouter({
 
             throw new Error("Invalid userId");
         }),
+
     // prisma transaction test. this makes it so that if the operation partially fails it wont go through. Definetly want to implement this for images and lots of stuff if it works
     // delete: protectedProcedure
     //     .input(

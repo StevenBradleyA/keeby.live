@@ -80,6 +80,8 @@ interface PostPage {
     user: UserWithPosts;
 }
 
+// todo potentially not update user if post id matches userId so they dont gain points for liking their own stuff.. this would prevent farming
+
 export const postRouter = createTRPCRouter({
     getAll: publicProcedure.query(({ ctx }) => {
         return ctx.prisma.post.findMany({

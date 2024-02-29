@@ -12,6 +12,7 @@ export const userRouter = createTRPCRouter({
             where: { id: input },
         });
     }),
+    // todo lets get rid of get seller and add into first listing route
     getSeller: publicProcedure
         .input(z.string())
         .query(async ({ input, ctx }) => {
