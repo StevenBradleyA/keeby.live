@@ -4,7 +4,6 @@ import EachListingCardPreview from "./eachListingCardPreview";
 import Image from "next/image";
 import keebo from "@public/Profile/keebo.png";
 import { useEffect, useRef } from "react";
-import { throttle } from "lodash";
 
 interface DisplayListingPreviewsProps {
     searchInput: string;
@@ -121,28 +120,6 @@ export default function DisplayListingPreviews({
         }
     );
 
-    // useEffect(() => {
-    //     const handleScroll = throttle(() => {
-    //         const nearBottom =
-    //             window.innerHeight + window.scrollY >=
-    //             document.documentElement.offsetHeight - 300; // pagination fetch distance from bottom px
-    //         if (
-    //             nearBottom &&
-    //             hasNextPage &&
-    //             !isLoading &&
-    //             !isFetchingNextPage
-    //         ) {
-    //             void fetchNextPage();
-    //         }
-    //     }, 100);
-
-    //     window.addEventListener("scroll", handleScroll);
-    //     return () => {
-    //         window.removeEventListener("scroll", handleScroll);
-    //         handleScroll.cancel();
-    //     };
-    // }, [hasNextPage, isLoading, isFetchingNextPage, fetchNextPage]);
-
     useEffect(() => {
         if (isLoading || isFetchingNextPage || !hasNextPage) return;
 
@@ -183,7 +160,7 @@ export default function DisplayListingPreviews({
                         page.listings.map((keeb, i) => (
                             <EachListingCardPreview
                                 key={keeb.id}
-                                keeb={keeb as unknown as EachKeeb}
+                                keeb={keeb}
                                 index={i}
                             />
                         ))

@@ -12,86 +12,75 @@ export const commentRouter = createTRPCRouter({
                 type: z.string(),
                 typeId: z.string(),
                 userId: z.string().optional(),
+                cursor: z.string().nullish(),
+                limit: z.number().min(1).max(100).nullish(),
             })
         )
         .query(async ({ ctx, input }) => {
-            const { typeId, userId, type } = input;
+            const { typeId, userId, type, cursor } = input;
 
-            if (type === "listing") {
-                const allComments = await ctx.prisma.comment.findMany({
+            const limit = input.limit ?? 20;
+
+            const commentType =
+                type === "listing" ? { listingId: typeId } : { postId: typeId };
+
+            const comments = await ctx.prisma.comment.findMany({
+                where: {
+                    ...commentType,
+                    parentId: null,
+                },
+                include: {
+                    user: {
+                        select: { id: true, username: true, profile: true },
+                    },
+                    _count: {
+                        select: {
+                            commentLike: true,
+                            replies: true,
+                        },
+                    },
+                },
+                take: limit + 1,
+                skip: cursor ? 1 : 0,
+                cursor: cursor ? { id: cursor } : undefined,
+            });
+            if (userId) {
+                const userLikes = await ctx.prisma.commentLike.findMany({
                     where: {
-                        listingId: typeId,
-                        parentId: null,
+                        userId: userId,
                     },
-                    include: {
-                        user: {
-                            select: { id: true, username: true, profile: true },
-                        },
-                        _count: {
-                            select: {
-                                commentLike: true,
-                                replies: true,
-                            },
-                        },
-                    },
+                    select: { commentId: true },
+                    take: limit + 1,
+                    skip: cursor ? 1 : 0,
+                    cursor: cursor ? { id: cursor } : undefined,
                 });
-                if (userId) {
-                    const userLikes = await ctx.prisma.commentLike.findMany({
-                        where: {
-                            userId: userId,
-                        },
-                        select: { commentId: true },
-                    });
 
-                    const commentsWithLikes = allComments.map((comment) => ({
-                        ...comment,
-                        isLiked: userLikes.some(
-                            (like) => like.commentId === comment.id
-                        ),
-                    }));
+                const commentsWithLikes = comments.map((comment) => ({
+                    ...comment,
+                    isLiked: userLikes.some(
+                        (like) => like.commentId === comment.id
+                    ),
+                }));
 
-                    return commentsWithLikes;
+                let nextCursor: typeof cursor | undefined = undefined;
+                if (commentsWithLikes.length > limit) {
+                    const nextItem = commentsWithLikes.pop();
+                    if (nextItem !== undefined) {
+                        nextCursor = nextItem.id;
+                    }
                 }
 
-                return allComments;
-            } else if (type === "post") {
-                const allComments = await ctx.prisma.comment.findMany({
-                    where: {
-                        postId: typeId,
-                        parentId: null,
-                    },
-                    include: {
-                        user: {
-                            select: { id: true, username: true, profile: true },
-                        },
-                        _count: {
-                            select: {
-                                commentLike: true,
-                                replies: true,
-                            },
-                        },
-                    },
-                });
-                if (userId) {
-                    const userLikes = await ctx.prisma.commentLike.findMany({
-                        where: {
-                            userId: userId,
-                        },
-                        select: { commentId: true },
-                    });
-
-                    const commentsWithLikes = allComments.map((comment) => ({
-                        ...comment,
-                        isLiked: userLikes.some(
-                            (like) => like.commentId === comment.id
-                        ),
-                    }));
-
-                    return commentsWithLikes;
-                }
-
-                return allComments;
+                return { comments: commentsWithLikes, nextCursor };
             }
+
+            let nextCursor: typeof cursor | undefined = undefined;
+            if (comments.length > limit) {
+                const nextItem = comments.pop();
+                if (nextItem !== undefined) {
+                    nextCursor = nextItem.id;
+                }
+            }
+            return { comments, nextCursor };
         }),
     getAllReplysByTypeId: publicProcedure
         .input(

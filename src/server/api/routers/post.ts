@@ -4,10 +4,8 @@ import {
     publicProcedure,
     protectedProcedure,
 } from "~/server/api/trpc";
-
 import { removeFileFromS3 } from "../utils";
 import type { Images, Prisma } from "@prisma/client";
-import { int } from "aws-sdk/clients/datapipeline";
 
 type CreateData = {
     title: string;

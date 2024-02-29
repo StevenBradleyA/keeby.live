@@ -1,6 +1,6 @@
-import type { Listing } from "@prisma/client";
+import type { Comment, Listing } from "@prisma/client";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { api } from "~/utils/api";
 import Image from "next/image";
 import LoadingSpinner from "~/components/Loading";
@@ -11,6 +11,11 @@ import ChevronRound from "~/components/Svgs/chevron";
 import ListingPageFavorite from "./Favorite";
 import CreateComment from "~/components/Comments/Create";
 import EachCommentCard from "~/components/Comments/Display/eachCommentCard";
+
+interface CommentPage {
+    comments: Comment[]; // Use your actual Comment type here
+    nextCursor?: string; // Make it optional to handle cases where there's no next page
+}
 
 interface Image {
     id: string;
@@ -33,15 +38,27 @@ export default function DisplayListingPage({
     listing,
 }: DisplayListingPageProps) {
     const { data: session } = useSession();
+    const scrollFlagRef = useRef<HTMLDivElement | null>(null);
 
-    const { data: sellerInfo, isLoading: isLoading } =
-        api.user.getSeller.useQuery(listing.sellerId);
+    // const { data: sellerInfo, isLoading: isLoading } =
+    //     api.user.getSeller.useQuery(listing.sellerId);
 
-    const { data: comments } = api.comment.getAllByTypeId.useQuery({
-        type: "listing",
-        typeId: listing.id,
-        userId: session?.user.id,
-    });
+    const {
+        data: comments,
+        hasNextPage,
+        fetchNextPage,
+        isLoading,
+        isFetchingNextPage,
+    } = api.comment.getAllByTypeId.useInfiniteQuery(
+        {
+            type: "listing",
+            typeId: listing.id,
+            userId: session?.user.id,
+        },
+        {
+            getNextPageParam: (lastPage) => lastPage.nextCursor,
+        }
+    );
 
     const [displayImage, setDisplayImage] = useState(listing.images[0]);
 
@@ -65,8 +82,30 @@ export default function DisplayListingPage({
         );
     };
 
-    // TODO ability to favorite / unfavorite the listing
     // todo I want to have comments next to other listings and banner ads like the nicely styled ones on youtube
+    useEffect(() => {
+        if (isLoading || isFetchingNextPage || !hasNextPage) return;
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0] && entries[0].isIntersecting) {
+                    void fetchNextPage();
+                }
+            },
+            { threshold: 1.0 }
+        );
+
+        const currentFlag = scrollFlagRef.current;
+        if (currentFlag) {
+            observer.observe(currentFlag);
+        }
+
+        return () => {
+            if (observer && currentFlag) {
+                observer.unobserve(currentFlag);
+            }
+        };
+    }, [hasNextPage, isLoading, isFetchingNextPage, fetchNextPage]);
 
     if (isLoading)
         return (
@@ -164,9 +203,9 @@ export default function DisplayListingPage({
                         )}
                     </div>
                     <div className="h-[30%] w-full overflow-hidden rounded-xl bg-keebyGray">
-                        {sellerInfo && (
+                        {/* {sellerInfo && (
                             <SellerListingCard sellerInfo={sellerInfo} />
-                        )}
+                        )} */}
                     </div>
                 </div>
                 <div className="flex h-full w-1/4 flex-col items-center gap-10  px-5">
@@ -235,15 +274,22 @@ export default function DisplayListingPage({
                     </svg>
                 </div>
                 <CreateComment typeId={listing.id} type="listing" />
-                {comments &&
-                    comments.map((comment, i) => (
-                        <EachCommentCard
-                            key={i}
-                            comment={comment}
-                            type="listing"
-                            typeId={listing.id}
-                        />
-                    ))}
+                {comments && comments.pages.length > 0 && (
+                    <>
+                        {comments.pages.map((page) =>
+                            page.comments.map((comment, i) => (
+                                <EachCommentCard
+                                    key={i}
+                                    comment={comment}
+                                    type="listing"
+                                    typeId={listing.id}
+                                />
+                            ))
+                        )}
+
+                        <div ref={scrollFlagRef} className="h-10 w-full"></div>
+                    </>
+                )}
             </div>
             <MainFooter />
         </div>
