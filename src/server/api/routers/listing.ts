@@ -5,7 +5,7 @@ import {
     protectedProcedure,
 } from "~/server/api/trpc";
 import { removeFileFromS3 } from "../utils";
-import type { Prisma, Listing } from "@prisma/client";
+import type { Prisma, Listing, Images } from "@prisma/client";
 
 type CreateData = {
     title: string;
@@ -29,16 +29,32 @@ interface ListingWithCommentCount extends Listing {
     };
 }
 
-interface ListingWithImagesAndCount extends Listing {
-    images: Array<{
-        id: string;
-        link: string;
-        resourceType: string;
-    }>;
+interface ListingPage extends Listing {
+    images: Images[];
     _count: {
         comments: number;
     };
+    seller: {
+        id: string;
+        username: string | null;
+        selectedTag: string | null;
+        profile: string | null;
+        avgRating?: number | null;
+    };
 }
+
+interface ListingPreview extends Listing {
+    images: {
+        id: string;
+        link: string;
+    };
+    id: string;
+}
+
+// todo update the preview listings to have count comments
+// todo update types for preview listings potentially style
+
+// after this is
 
 export const listingRouter = createTRPCRouter({
     getOne: publicProcedure
@@ -48,19 +64,36 @@ export const listingRouter = createTRPCRouter({
             })
         )
         .query(async ({ input, ctx }) => {
-            const listingWithImages = (await ctx.prisma.listing.findUnique({
-                where: {
-                    id: input.id,
-                },
-                include: {
-                    images: true,
-                    _count: {
-                        select: { comments: true },
+            const listingWithImages: ListingPage | null =
+                await ctx.prisma.listing.findUnique({
+                    where: {
+                        id: input.id,
                     },
-                },
-            })) as ListingWithImagesAndCount;
+                    include: {
+                        images: true,
+                        _count: {
+                            select: { comments: true },
+                        },
+                        seller: {
+                            select: {
+                                id: true,
+                                username: true,
+                                profile: true,
+                                selectedTag: true,
+                            },
+                        },
+                    },
+                });
 
             if (listingWithImages) {
+                const averageStarRating = await ctx.prisma.review.aggregate({
+                    where: { sellerId: listingWithImages.seller.id },
+                    _avg: { starRating: true },
+                });
+
+                listingWithImages.seller.avgRating =
+                    averageStarRating._avg.starRating;
+
                 // Sort images with "LISTINGPREVIEW" appearing first
                 listingWithImages.images.sort((a, b) => {
                     if (
@@ -127,6 +160,9 @@ export const listingRouter = createTRPCRouter({
                             resourceType: "LISTINGPREVIEW",
                         },
                         select: { id: true, link: true },
+                    },
+                    _count: {
+                        select: { comments: true },
                     },
                 },
                 orderBy: priceOrder

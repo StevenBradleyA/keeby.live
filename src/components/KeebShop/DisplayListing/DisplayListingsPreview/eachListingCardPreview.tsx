@@ -49,6 +49,7 @@ export default function EachListingCardPreview({ keeb }: EachListingCardProps) {
                             width={600}
                             height={600}
                             className={`h-full w-full object-cover`}
+                            priority
                         />
                         <div></div>
 

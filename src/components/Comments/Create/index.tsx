@@ -28,6 +28,8 @@ export default function CreateComment({ typeId, type }: CreateCommentProps) {
     const { mutate } = api.comment.createComment.useMutation({
         onSuccess: () => {
             void ctx.comment.getAllByTypeId.invalidate();
+            if (type === "listing") void ctx.listing.getOne.invalidate();
+            if (type === "post") void ctx.post.getOneById.invalidate();
         },
     });
 

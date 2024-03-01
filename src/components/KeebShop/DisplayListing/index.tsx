@@ -1,4 +1,4 @@
-import type { Comment, Listing } from "@prisma/client";
+import type { Images, Comment, Listing } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import { api } from "~/utils/api";
@@ -12,26 +12,22 @@ import ListingPageFavorite from "./Favorite";
 import CreateComment from "~/components/Comments/Create";
 import EachCommentCard from "~/components/Comments/Display/eachCommentCard";
 
-interface CommentPage {
-    comments: Comment[]; // Use your actual Comment type here
-    nextCursor?: string; // Make it optional to handle cases where there's no next page
-}
-
-interface Image {
-    id: string;
-    link: string;
-    resourceType: string;
+interface DisplayListingPageProps {
+    listing: ListingWithImagesAndCount;
 }
 
 interface ListingWithImagesAndCount extends Listing {
-    images: Image[];
+    images: Images[];
     _count: {
         comments: number;
     };
-}
-
-interface DisplayListingPageProps {
-    listing: ListingWithImagesAndCount;
+    seller: {
+        id: string;
+        username: string | null;
+        selectedTag: string | null;
+        profile: string | null;
+        avgRating?: number | null;
+    };
 }
 
 export default function DisplayListingPage({
@@ -39,9 +35,6 @@ export default function DisplayListingPage({
 }: DisplayListingPageProps) {
     const { data: session } = useSession();
     const scrollFlagRef = useRef<HTMLDivElement | null>(null);
-
-    // const { data: sellerInfo, isLoading: isLoading } =
-    //     api.user.getSeller.useQuery(listing.sellerId);
 
     const {
         data: comments,
@@ -82,7 +75,6 @@ export default function DisplayListingPage({
         );
     };
 
-    // todo I want to have comments next to other listings and banner ads like the nicely styled ones on youtube
     useEffect(() => {
         if (isLoading || isFetchingNextPage || !hasNextPage) return;
 
@@ -165,6 +157,7 @@ export default function DisplayListingPage({
                                                     setDisplayImage(e)
                                                 }
                                                 className="h-full w-full rounded-xl object-cover"
+                                                priority
                                             />
                                         </button>
                                     );
@@ -193,6 +186,7 @@ export default function DisplayListingPage({
                                 width={1000}
                                 height={1000}
                                 className="h-full w-full rounded-xl object-cover"
+                                priority
                             />
                         )}
                         {session && session.user && (
@@ -203,9 +197,7 @@ export default function DisplayListingPage({
                         )}
                     </div>
                     <div className="h-[30%] w-full overflow-hidden rounded-xl bg-keebyGray">
-                        {/* {sellerInfo && (
-                            <SellerListingCard sellerInfo={sellerInfo} />
-                        )} */}
+                        <SellerListingCard seller={listing.seller} />
                     </div>
                 </div>
                 <div className="flex h-full w-1/4 flex-col items-center gap-10  px-5">
@@ -286,7 +278,6 @@ export default function DisplayListingPage({
                                 />
                             ))
                         )}
-
                         <div ref={scrollFlagRef} className="h-10 w-full"></div>
                     </>
                 )}

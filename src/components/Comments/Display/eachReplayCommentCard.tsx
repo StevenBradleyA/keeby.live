@@ -79,23 +79,16 @@ export default function EachReplyCommentCard({
     return (
         <div className="mb-5 flex gap-2 pl-16">
             <div className="mt-1">
-                {reply.user.profile === null ? (
-                    <Image
-                        src={defaultProfile}
-                        alt="profile"
-                        height={600}
-                        width={600}
-                        className="h-10 w-10 object-cover"
-                    />
-                ) : (
-                    <Image
-                        src={reply.user.profile}
-                        alt="profile"
-                        height={600}
-                        width={600}
-                        className="h-10 w-10 object-cover"
-                    />
-                )}
+                <Image
+                    src={
+                        reply.user.profile ? reply.user.profile : defaultProfile
+                    }
+                    alt="profile"
+                    height={600}
+                    width={600}
+                    className="h-10 w-10 object-cover"
+                    priority
+                />
             </div>
             <div className=" w-full flex-wrap text-sm ">
                 <div className="relative flex justify-between">

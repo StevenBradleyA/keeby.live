@@ -162,6 +162,24 @@ export const postRouter = createTRPCRouter({
                 cursor: cursor ? { id: cursor } : undefined,
             });
 
+            // we need to sort preview images to be first
+            posts.forEach((post) => {
+                post.images.sort((a, b) => {
+                    if (
+                        a.resourceType === "POSTPREVIEW" &&
+                        b.resourceType !== "POSTPREVIEW"
+                    ) {
+                        return -1;
+                    } else if (
+                        a.resourceType !== "POSTPREVIEW" &&
+                        b.resourceType === "POSTPREVIEW"
+                    ) {
+                        return 1;
+                    }
+                    return 0;
+                });
+            });
+
             if (userId) {
                 const likesMap = new Map(
                     await ctx.prisma.postLike
@@ -274,6 +292,24 @@ export const postRouter = createTRPCRouter({
                 take: limit + 1,
                 skip: cursor ? 1 : 0,
                 cursor: cursor ? { id: cursor } : undefined,
+            });
+
+            // we need to sort preview images to be first
+            posts.forEach((post) => {
+                post.images.sort((a, b) => {
+                    if (
+                        a.resourceType === "POSTPREVIEW" &&
+                        b.resourceType !== "POSTPREVIEW"
+                    ) {
+                        return -1;
+                    } else if (
+                        a.resourceType !== "POSTPREVIEW" &&
+                        b.resourceType === "POSTPREVIEW"
+                    ) {
+                        return 1;
+                    }
+                    return 0;
+                });
             });
 
             if (userId) {
@@ -399,6 +435,21 @@ export const postRouter = createTRPCRouter({
             if (!postResult) {
                 throw new Error("Post not found");
             }
+            // we need to sort preview images to be first
+            postResult.images.sort((a, b) => {
+                if (
+                    a.resourceType === "POSTPREVIEW" &&
+                    b.resourceType !== "POSTPREVIEW"
+                ) {
+                    return -1;
+                } else if (
+                    a.resourceType !== "POSTPREVIEW" &&
+                    b.resourceType === "POSTPREVIEW"
+                ) {
+                    return 1;
+                }
+                return 0;
+            });
 
             const post: PostPage = postResult;
 
@@ -436,6 +487,7 @@ export const postRouter = createTRPCRouter({
                 post.isFavorited = favoritesMap.has(post.id);
                 post.favoriteId = favoritesMap.get(post.id);
             }
+
             return post;
         }),
 

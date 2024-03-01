@@ -51,6 +51,8 @@ export default function CreateReplyComment({
         onSuccess: () => {
             void ctx.comment.getAllByTypeId.invalidate();
             void ctx.comment.getAllReplysByTypeId.invalidate();
+            if (type === "listing") void ctx.listing.getOne.invalidate();
+            if (type === "post") void ctx.post.getOneById.invalidate();
         },
     });
 

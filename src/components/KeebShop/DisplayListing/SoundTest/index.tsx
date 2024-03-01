@@ -15,11 +15,8 @@ interface YouTubePlayerOptions {
 
 export default function ListingSoundTest({ soundTest }: ListingSoundTestProps) {
     // npm install react-youtube
+    // TODO when LIVE  check console warnings
 
-    // TODO am going to have to create a variable that changes the height and width sent to youtube
-    // based off of screen size I like the
-    // love the 800/360 style a lil thinner than a 16;9 but looks clean we want 1/2 width basically
-// do some screen size testing without passing a height and width ...
     const videoId = extractVideoIdFromLink(soundTest);
 
     const opts: YouTubePlayerOptions = {
@@ -32,12 +29,12 @@ export default function ListingSoundTest({ soundTest }: ListingSoundTestProps) {
     };
 
     return (
-        <div className="flex justify-center rounded-xl bg-keebyGray p-5 w-full h-full">
+        <div className="flex h-full w-full justify-center rounded-xl bg-keebyGray p-5">
             {videoId && (
                 <YouTube
                     videoId={videoId}
                     opts={opts}
-                    className="w-full h-full"
+                    className="h-full w-full"
                 />
             )}
         </div>
