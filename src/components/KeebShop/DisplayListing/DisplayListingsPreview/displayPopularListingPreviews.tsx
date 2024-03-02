@@ -31,19 +31,19 @@ interface Filters {
     priceOrder?: string;
 }
 
-interface EachKeeb {
-    id: string;
-    title: string;
-    price: number;
-    switchType: string;
-    images: EachPreviewImage[];
-    commentCount: number;
-}
+// interface EachKeeb {
+//     id: string;
+//     title: string;
+//     price: number;
+//     switchType: string;
+//     images: EachPreviewImage[];
+//     commentCount: number;
+// }
 
-interface EachPreviewImage {
-    id: string;
-    link: string;
-}
+// interface EachPreviewImage {
+//     id: string;
+//     link: string;
+// }
 
 export default function DisplayPopularListingPreviews({
     searchInput,
@@ -161,7 +161,7 @@ export default function DisplayPopularListingPreviews({
                         page.popularListings.map((keeb, i) => (
                             <EachListingCardPreview
                                 key={keeb.id}
-                                keeb={keeb as unknown as EachKeeb}
+                                keeb={keeb}
                                 index={i}
                             />
                         ))

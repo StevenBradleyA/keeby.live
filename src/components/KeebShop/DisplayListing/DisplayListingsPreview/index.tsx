@@ -160,7 +160,7 @@ export default function DisplayListingPreviews({
                         page.listings.map((keeb, i) => (
                             <EachListingCardPreview
                                 key={keeb.id}
-                                keeb={keeb as EachKeeb}
+                                keeb={keeb}
                                 index={i}
                             />
                         ))
