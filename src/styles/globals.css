@@ -867,6 +867,10 @@ input[type="checkbox"]:hover {
     visibility: visible;
 }
 
+.post-preview-container:hover .post-preview-tag {
+    visibility: hidden;
+}
+
 
 /* --------------         END KEEB SHARE          --------------  */
 
