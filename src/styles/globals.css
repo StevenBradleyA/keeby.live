@@ -423,6 +423,20 @@ li:not(:first-child) span {
 
 /* --------------         KEEB SHOP          --------------  */
 
+.keebshop-listing-preview-container {
+}
+.keebshop-listing-preview {
+    visibility: visible;
+    transition: visibility 0s linear 0.5s, opacity 0.5s ease-in-out 0s;
+    opacity: 1;
+}
+
+.keebshop-listing-preview-container:hover .keebshop-listing-preview {
+    visibility: hidden;
+    /* transition: visibility 0s, opacity 0.2s ease-in-out; */
+    opacity: 0;
+}
+
 .very-sticky {
     position: -webkit-sticky; /* for Safari */
     position: sticky;
@@ -863,14 +877,13 @@ input[type="checkbox"]:hover {
 .post-preview-link {
     visibility: hidden;
 }
-.post-preview-container:hover .post-preview-link{
+.post-preview-container:hover .post-preview-link {
     visibility: visible;
 }
 
 .post-preview-container:hover .post-preview-tag {
     visibility: hidden;
 }
-
 
 /* --------------         END KEEB SHARE          --------------  */
 
