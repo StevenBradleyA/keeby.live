@@ -1,15 +1,10 @@
-import Image from "next/image";
-import keebo from "@public/Profile/keebo.png";
-import { useEffect, useRef } from "react";
-import LoadingSpinner from "~/components/Loading";
-import { api } from "~/utils/api";
-import EachPostCardPreview from "./eachPostCardPreview";
 import { useSession } from "next-auth/react";
-
-interface DisplayNewPostPreviewsProps {
-    searchInput: string;
-    tag: string;
-}
+import { useEffect, useRef } from "react";
+import { api } from "~/utils/api";
+import LoadingSpinner from "~/components/Loading";
+import keebo from "@public/Profile/keebo.png";
+import Image from "next/image";
+import PostPagePreviewCard from "./eachAdditionalPostPreviewCard";
 
 interface Filters {
     searchQuery?: string;
@@ -17,22 +12,13 @@ interface Filters {
     userId?: string;
 }
 
-export default function DisplayNewPostPreviews({
-    searchInput,
-    tag,
-}: DisplayNewPostPreviewsProps) {
+export default function PostPagePreviews() {
     const scrollFlagRef = useRef<HTMLDivElement | null>(null);
 
     const queryInputs: Filters = {};
 
     const { data: session } = useSession();
 
-    if (searchInput.length > 0) {
-        queryInputs.searchQuery = searchInput;
-    }
-    if (tag.length > 0) {
-        queryInputs.tag = tag;
-    }
     if (session && session.user) {
         queryInputs.userId = session.user.id;
     }
@@ -46,7 +32,7 @@ export default function DisplayNewPostPreviews({
     } = api.post.getAllNewPreviewPosts.useInfiniteQuery(
         {
             ...queryInputs,
-            limit: 8,
+            limit: 5,
         },
         {
             getNextPageParam: (lastPage) => lastPage.nextCursor,
@@ -59,6 +45,7 @@ export default function DisplayNewPostPreviews({
         const observer = new IntersectionObserver(
             (entries) => {
                 if (entries[0] && entries[0].isIntersecting) {
+                    console.log('hey pagination here')
                     void fetchNextPage();
                 }
             },
@@ -91,7 +78,7 @@ export default function DisplayNewPostPreviews({
                 <div className="flex flex-wrap gap-10">
                     {postData.pages.map((page) =>
                         page.posts.map((post) => (
-                            <EachPostCardPreview key={post.id} post={post} />
+                            <PostPagePreviewCard key={post.id} post={post} />
                         ))
                     )}
                     <div ref={scrollFlagRef} className="h-10 w-full"></div>

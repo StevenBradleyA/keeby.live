@@ -5,6 +5,9 @@ import {
     protectedProcedure,
 } from "~/server/api/trpc";
 
+
+// todo decide if we want to remove internet increment if userId matches post id cuz spamming would be a thing 
+// downside is we get spamming or a lot of db calls for abuse, also can promote your listing by just spamming... 
 export const likeRouter = createTRPCRouter({
     getUserCommentLikes: publicProcedure
         .input(

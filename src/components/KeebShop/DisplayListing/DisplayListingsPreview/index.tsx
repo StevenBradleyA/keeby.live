@@ -31,19 +31,6 @@ interface Filters {
     priceOrder?: string;
 }
 
-interface EachKeeb {
-    id: string;
-    title: string;
-    price: number;
-    switchType: string;
-    images: EachPreviewImage[];
-}
-
-interface EachPreviewImage {
-    id: string;
-    link: string;
-}
-
 export default function DisplayListingPreviews({
     searchInput,
     switchType,

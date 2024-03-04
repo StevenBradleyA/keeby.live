@@ -13,8 +13,7 @@ import DisplayPopularPostPreviews from "~/components/KeebShare/DisplayPosts/Disp
 import MainFooter from "~/components/Footer";
 
 export default function KeebShare() {
-    // todo throughly test pagination
-    // Conversion to SSR
+   
 
     const cookies = getCookies();
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);

@@ -1,17 +1,17 @@
 import type { Images } from "@prisma/client";
+import PostPreviewCreateFavorite from "../DisplayPosts/DisplayPostPreviews/Favorite/createFavorite";
+import PostPreviewDeleteFavorite from "../DisplayPosts/DisplayPostPreviews/Favorite/deleteFavorite";
+import PostPreviewCreateLike from "../DisplayPosts/DisplayPostPreviews/Like/createLike";
+import PostPreviewDeleteLike from "../DisplayPosts/DisplayPostPreviews/Like/deleteLike";
 import Link from "next/link";
-import Image from "next/image";
-import keebo from "@public/Profile/keebo.png";
-import { useContext, useState } from "react";
-import ChevronRound from "~/components/Svgs/chevron";
-import { useSession } from "next-auth/react";
-import PostPreviewDeleteFavorite from "./Favorite/deleteFavorite";
-import PostPreviewCreateFavorite from "./Favorite/createFavorite";
-import PostPreviewDeleteLike from "./Like/deleteLike";
-import PostPreviewCreateLike from "./Like/createLike";
-import ModalDialog from "~/components/Modal";
+import DisplayYouTubePostPreview from "../DisplayPosts/DisplayPostPreviews/displayYouTubePreview";
 import SignInModal from "~/components/Comments/Modal/signInModal";
-import DisplayYouTubePostPreview from "./displayYouTubePreview";
+import ModalDialog from "~/components/Modal";
+import ChevronRound from "~/components/Svgs/chevron";
+import Image from "next/image";
+import { useSession } from "next-auth/react";
+import { useState } from "react";
+import keebo from "@public/Profile/keebo.png";
 
 interface EachPostCardPreviewProps {
     post: EachPost;
@@ -38,10 +38,10 @@ interface Count {
     postLikes: number;
 }
 
-export default function EachPostCardPreview({
+export default function PostPagePreviewCard({
     post,
 }: EachPostCardPreviewProps) {
-    // todo Need default images or some styling change so blank posts look better
+    // lets redesign these they look real ugly  in this small format
 
     const { data: session } = useSession();
     const [imageIndex, setImageIndex] = useState<number>(0);
@@ -67,9 +67,9 @@ export default function EachPostCardPreview({
     };
 
     return (
-        <div className="flex h-[35vh] flex-col  rounded-md border-2 border-[#2f2f2f] text-sm tablet:w-full largeLaptop:w-3/4   desktop:w-2/3">
+        <div className="flex h-[25vh] w-full  flex-col rounded-md text-xs">
             {post.images.length > 0 && post.images[0] && (
-                <div className="flex h-full w-full ">
+                <div className="flex  h-full w-full ">
                     <div className=" relative h-full w-3/4">
                         <Image
                             alt="preview"
@@ -100,7 +100,7 @@ export default function EachPostCardPreview({
                         </h1>
                     </div>
                     <div className=" flex w-1/4 flex-col justify-between rounded-r-md bg-black bg-opacity-30 p-2 ">
-                        <h1 className="  break-words text-2xl text-green-500">
+                        <h1 className="  break-words text-lg text-green-500">
                             {post.title}
                         </h1>
                         <div className="flex flex-col gap-2">
@@ -241,7 +241,7 @@ export default function EachPostCardPreview({
                         </h1>
                     </div>
                     <div className=" flex w-1/4 flex-col justify-between rounded-r-md bg-black bg-opacity-30 p-2 ">
-                        <h1 className=" break-words text-2xl text-green-500">
+                        <h1 className=" break-words text-lg text-green-500">
                             {post.title}
                         </h1>
                         <div className="flex flex-col gap-2">
@@ -282,7 +282,7 @@ export default function EachPostCardPreview({
                                         session.user &&
                                         post.isLiked === true &&
                                         post.likeId && (
-                                            <div className="w-5">
+                                            <div className="w-4">
                                                 <PostPreviewDeleteLike
                                                     userId={session.user.id}
                                                     likeId={post.likeId}
@@ -293,7 +293,7 @@ export default function EachPostCardPreview({
                                     {session &&
                                         session.user &&
                                         post.isLiked === false && (
-                                            <div className="w-5">
+                                            <div className="w-4">
                                                 <PostPreviewCreateLike
                                                     userId={session.user.id}
                                                     postId={post.id}
@@ -308,7 +308,7 @@ export default function EachPostCardPreview({
                                 {session &&
                                     session.user &&
                                     post.isFavorited === false && (
-                                        <div className="w-6">
+                                        <div className="w-4">
                                             <PostPreviewCreateFavorite
                                                 userId={session.user.id}
                                                 postId={post.id}
@@ -320,7 +320,7 @@ export default function EachPostCardPreview({
                                     session.user &&
                                     post.isFavorited === true &&
                                     post.favoriteId && (
-                                        <div className="w-6">
+                                        <div className="w-4">
                                             <PostPreviewDeleteFavorite
                                                 userId={session.user.id}
                                                 favoriteId={post.favoriteId}
@@ -331,7 +331,7 @@ export default function EachPostCardPreview({
                                     <button onClick={openSignInModal}>
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
-                                            className="w-6"
+                                            className="w-4"
                                             viewBox="0 0 24 24"
                                             fill="none"
                                         >
@@ -371,15 +371,15 @@ export default function EachPostCardPreview({
 
             {post.images.length === 0 && !post.link && post.text && (
                 <div className="flex h-full w-full ">
-                    <div className="relative h-full w-3/4">
-                        <p className="p-5 text-xl">{post.text}</p>
+                    <div className="relative h-full w-3/4 bg-black bg-opacity-20">
+                        <p className="break-words p-5 text-xl">{post.text}</p>
 
                         <h1 className=" absolute bottom-2 left-2 z-10 rounded-3xl bg-white bg-opacity-20 px-4 py-2 text-green-500">
                             {post.tag}
                         </h1>
                     </div>
                     <div className=" flex w-1/4 flex-col justify-between rounded-r-md bg-black bg-opacity-30 p-2 ">
-                        <h1 className=" break-words text-2xl text-green-500">
+                        <h1 className=" break-words text-lg text-green-500">
                             {post.title}
                         </h1>
                         <div className="flex flex-col gap-2">
@@ -516,7 +516,7 @@ export default function EachPostCardPreview({
                         </h1>
                     </div>
                     <div className=" flex w-1/4 flex-col justify-between rounded-r-md bg-black bg-opacity-30 p-2 ">
-                        <h1 className=" break-words text-2xl text-green-500">
+                        <h1 className=" break-words text-lg text-green-500">
                             {post.title}
                         </h1>
                         <div className="flex flex-col gap-2">

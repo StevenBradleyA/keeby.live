@@ -20,6 +20,8 @@ import CreateComment from "~/components/Comments/Create";
 import { api } from "~/utils/api";
 import LoadingSpinner from "~/components/Loading";
 import EachCommentCard from "~/components/Comments/Display/eachCommentCard";
+import DisplayNewPostPreviews from "../DisplayPosts/DisplayPostPreviews/displayNewPostPreviews";
+import PostPagePreviews from "./additionalPostPreviews";
 
 interface DisplayPostPageProps {
     post: PostPage;
@@ -420,8 +422,8 @@ export default function DisplayPostPage({ post }: DisplayPostPageProps) {
                     </div>
                 </div>
 
-                <div className="w-1/4 rounded-xl bg-darkGray text-black ">
-                    listing previews here
+                <div className="w-1/4 rounded-xl bg-darkGray p-3 text-black ">
+                    <PostPagePreviews />
                 </div>
             </div>
             <MainFooter />
