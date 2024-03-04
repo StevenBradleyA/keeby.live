@@ -66,6 +66,8 @@ export default function EachPostCardPreview({
         );
     };
 
+    // todo keebo with a sign that has the tag name or a computer with the tag name idk yet but a placeholder image for no text might be ideal
+
     return (
         <div className="flex h-[35vh] flex-col  rounded-md border-2 border-[#2f2f2f] text-sm tablet:w-full largeLaptop:w-3/4   desktop:w-2/3">
             {post.images.length > 0 && post.images[0] && (
@@ -371,7 +373,7 @@ export default function EachPostCardPreview({
 
             {post.images.length === 0 && !post.link && post.text && (
                 <div className="flex h-full w-full ">
-                    <div className="relative h-full w-3/4">
+                    <div className="relative h-full w-3/4 rounded-l-md  ">
                         <p className="p-5 text-xl">{post.text}</p>
 
                         <h1 className=" absolute bottom-2 left-2 z-10 rounded-3xl bg-white bg-opacity-20 px-4 py-2 text-green-500">
@@ -509,7 +511,7 @@ export default function EachPostCardPreview({
 
             {post.images.length === 0 && !post.link && !post.text && (
                 <div className="flex h-full w-full ">
-                    <div className="  relative h-full w-3/4">
+                    <div className="  relative h-full w-3/4 ">
                         <p className="text-4x p-5  ">{post.title}</p>
                         <h1 className=" absolute bottom-2 left-2 z-10 rounded-3xl bg-white bg-opacity-20 px-4 py-2 text-green-500">
                             {post.tag}
