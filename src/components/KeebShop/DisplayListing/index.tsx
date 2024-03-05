@@ -11,6 +11,8 @@ import ChevronRound from "~/components/Svgs/chevron";
 import ListingPageFavorite from "./Favorite";
 import CreateComment from "~/components/Comments/Create";
 import EachCommentCard from "~/components/Comments/Display/eachCommentCard";
+import DisplayListingPreviews from "./DisplayListingsPreview";
+import ListingPagePreviews from "./DisplayListingsPreview/listingPagePreviews";
 
 interface DisplayListingPageProps {
     listing: ListingWithImagesAndCount;
@@ -289,8 +291,8 @@ export default function DisplayListingPage({
                     </div>
                 </div>
                 <div className="mt-10 w-1/4 px-5 ">
-                    <div className="overflow-hidden rounded-xl bg-keebyGray p-10">
-                        hey preview listings here...
+                    <div className="flex flex-col items-center overflow-hidden rounded-xl bg-keebyGray p-5">
+                        <ListingPagePreviews />
                     </div>
                 </div>
             </div>

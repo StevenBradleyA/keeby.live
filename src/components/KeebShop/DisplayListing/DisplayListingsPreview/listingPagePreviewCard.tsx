@@ -22,11 +22,11 @@ interface EachPreviewImage {
     link: string;
 }
 
-export default function EachListingCardPreview({ keeb }: EachListingCardProps) {
+export default function ListingPagePreviewCard({ keeb }: EachListingCardProps) {
     const [isPhotoHover, setIsPhotoHover] = useState<boolean>(false);
 
     return (
-        <div className="keebshop-listing-preview-container relative flex w-96 flex-col">
+        <div className="keebshop-listing-preview-container relative flex w-full flex-col">
             <Link
                 href={{
                     pathname: "/keebshop/[listingId]",
@@ -35,7 +35,7 @@ export default function EachListingCardPreview({ keeb }: EachListingCardProps) {
             >
                 {keeb.images && keeb.images[0] && (
                     <div
-                        className="listing-preview-hover-effect relative h-72 w-96 cursor-pointer overflow-hidden rounded-2xl "
+                        className="listing-preview-hover-effect relative h-52 w-full cursor-pointer overflow-hidden rounded-2xl "
                         onMouseEnter={() => setIsPhotoHover(true)}
                         onMouseLeave={() => setIsPhotoHover(false)}
                     >
