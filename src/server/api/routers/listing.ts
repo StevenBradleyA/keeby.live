@@ -50,20 +50,60 @@ interface ListingPage extends Listing {
 }
 
 export const listingRouter = createTRPCRouter({
-    getAll: publicProcedure.query(({ ctx }) => {
-        return ctx.prisma.listing.findMany({
-            select: {
-                id: true,
-                title: true,
-                sellerId: true,
-                images: {
-                    where: {
-                        resourceType: "LISTINGPREVIEW",
+    getAll: publicProcedure
+        .input(
+            z.object({
+                searchQuery: z.string().optional(),
+            })
+        )
+        .query(({ input, ctx }) => {
+            // const searchFilter = input.searchQuery
+            //     ? {
+            //           title: {
+            //               contains: input.search,
+            //               mode: "insensitive",
+            //           },
+            //       }
+            //     : {};
+            const { searchQuery } = input;
+
+            const whereFilters = {
+                AND: [
+                    searchQuery
+                        ? {
+                              OR: [
+                                  {
+                                      title: {
+                                          contains: searchQuery,
+                                      },
+                                  },
+                                  {
+                                      text: {
+                                          contains: searchQuery,
+                                      },
+                                  },
+                              ],
+                          }
+                        : {},
+                ].filter((obj) => Object.keys(obj).length > 0),
+            };
+
+            return ctx.prisma.listing.findMany({
+                where: {
+                    ...whereFilters,
+                },
+                select: {
+                    id: true,
+                    title: true,
+                    sellerId: true,
+                    images: {
+                        where: {
+                            resourceType: "LISTINGPREVIEW",
+                        },
                     },
                 },
-            },
-        });
-    }),
+            });
+        }),
 
     getOne: publicProcedure
         .input(
@@ -168,13 +208,11 @@ export const listingRouter = createTRPCRouter({
                                   {
                                       title: {
                                           contains: searchQuery,
-                                          mode: "insensitive",
                                       },
                                   },
                                   {
-                                      description: {
+                                      text: {
                                           contains: searchQuery,
-                                          mode: "insensitive",
                                       },
                                   },
                               ],
@@ -265,13 +303,11 @@ export const listingRouter = createTRPCRouter({
                                   {
                                       title: {
                                           contains: searchQuery,
-                                          mode: "insensitive",
                                       },
                                   },
                                   {
-                                      description: {
+                                      text: {
                                           contains: searchQuery,
-                                          mode: "insensitive",
                                       },
                                   },
                               ],

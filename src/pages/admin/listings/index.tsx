@@ -5,18 +5,23 @@ import { api } from "~/utils/api";
 import EachAdminListing from "~/components/Admin/Listings";
 import Custom404 from "~/pages/404";
 import { useSession } from "next-auth/react";
+import { useState } from "react";
 
 export default function AdminListings() {
     const { data: session } = useSession();
     const accessDenied = !session || !session.user.isAdmin;
 
-    const { data: listings } = api.listing.getAll.useQuery();
+    const [searchQuery, setSearchQuery] = useState<string>("");
+
+    const { data: listings } = api.listing.getAll.useQuery({
+        searchQuery: searchQuery,
+    });
 
     if (accessDenied) {
         return <Custom404 />;
     }
 
-    // implement search 
+    // implement search
 
     return (
         <div className="w-full">
@@ -41,7 +46,17 @@ export default function AdminListings() {
                     </div>
                 </div>
             </div>
-
+            <div className="mt-5 flex w-full justify-center">
+                <div className="w-1/5">
+                    <input
+                        id="searchQuery"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className={` admin-search h-10 w-full rounded-md bg-black p-1 text-failure outline-none `}
+                        placeholder="Search"
+                    />
+                </div>
+            </div>
             <div className="mt-10  flex justify-center">
                 <div className="flex h-10 w-2/3 gap-10">
                     {listings &&
