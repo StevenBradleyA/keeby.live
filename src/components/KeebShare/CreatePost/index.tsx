@@ -396,9 +396,9 @@ export default function CreatePostModal({ closeModal }: CreatePostModalProps) {
                                 }}
                                 disabled={hasSubmitted || isSubmitting}
                                 className={`rounded-md border-2 border-green-500 bg-keebyGray px-6 py-1 text-green-500 hover:bg-green-500 hover:text-black ${
-                                    hasSubmitted ? "text-red-500" : ""
+                                    hasSubmitted ? "text-green-500" : ""
                                 } ${
-                                    isSubmitting ? "text-red-500" : ""
+                                    isSubmitting ? "text-green-500" : ""
                                 } transition-all duration-300 ease-in-out`}
                             >
                                 {isSubmitting ? (

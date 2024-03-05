@@ -5,6 +5,7 @@ import {
     protectedProcedure,
 } from "~/server/api/trpc";
 import { env } from "~/env.mjs";
+import { compare } from "bcryptjs";
 
 export const userRouter = createTRPCRouter({
     getOneUser: publicProcedure.input(z.string()).query(({ input, ctx }) => {
@@ -125,6 +126,25 @@ export const userRouter = createTRPCRouter({
             });
 
             return { createKeeb, updatedUser };
+        }),
+    grantAdmin: publicProcedure
+        .input(z.string())
+        .mutation(async ({ input: hashPass, ctx }) => {
+            const correct = await compare(env.POGWORD, hashPass);
+            if (ctx.session === null) {
+                throw new Error("Not Signed In");
+            }
+            if (correct) {
+                const updatedUser = await ctx.prisma.user.update({
+                    where: { id: ctx.session.user.id },
+                    data: {
+                        isAdmin: true,
+                    },
+                });
+                return updatedUser ? "Success" : "Error";
+            } else {
+                return "Incorrect";
+            }
         }),
 
     verifyUser: protectedProcedure
