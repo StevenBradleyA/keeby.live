@@ -9,6 +9,7 @@ import ResetArrowSvg from "~/components/Svgs/reset";
 import NotificationSvg from "~/components/Svgs/notification";
 import { getCookies } from "cookies-next";
 import { setCookie } from "cookies-next";
+import { debounce } from "lodash";
 
 export default function Home() {
     // todo Cookies? do we want to save filters? not sure yet maybe just save hot/ new with cookies
@@ -26,6 +27,8 @@ export default function Home() {
     const [isSpecify, setIsSpecify] = useState<boolean>(false);
     const [searchInput, setSearchInput] = useState<string>("");
     const [isSearchFocus, setIsSearchFocus] = useState<boolean>(false);
+    const [debouncedSearchQuery, setDebouncedSearchQuery] =
+        useState<string>("");
 
     // specify
     const [switchType, setSwitchType] = useState<string>("");
@@ -165,6 +168,17 @@ export default function Home() {
         }
         setMaxPrice(value);
     }
+
+    useEffect(() => {
+        const handler = debounce(() => {
+            setDebouncedSearchQuery(searchInput);
+        }, 200);
+
+        handler();
+        return () => {
+            handler.cancel();
+        };
+    }, [searchInput]);
 
     useEffect(() => {
         if (cookies.filter) {
@@ -670,7 +684,7 @@ export default function Home() {
                     <div>
                         {filter === "New" && (
                             <DisplayListingPreviews
-                                searchInput={searchInput}
+                                searchInput={debouncedSearchQuery}
                                 switchType={switchType}
                                 soundType={soundType}
                                 isBudget={isBudget}
@@ -685,7 +699,7 @@ export default function Home() {
                         )}
                         {filter === "Hot" && (
                             <DisplayPopularListingPreviews
-                                searchInput={searchInput}
+                                searchInput={debouncedSearchQuery}
                                 switchType={switchType}
                                 soundType={soundType}
                                 isBudget={isBudget}

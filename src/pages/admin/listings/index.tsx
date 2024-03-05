@@ -5,23 +5,36 @@ import { api } from "~/utils/api";
 import EachAdminListing from "~/components/Admin/Listings";
 import Custom404 from "~/pages/404";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { debounce } from "lodash";
 
 export default function AdminListings() {
     const { data: session } = useSession();
     const accessDenied = !session || !session.user.isAdmin;
 
     const [searchQuery, setSearchQuery] = useState<string>("");
+    const [debouncedSearchQuery, setDebouncedSearchQuery] =
+        useState<string>("");
 
+        
     const { data: listings } = api.listing.getAll.useQuery({
-        searchQuery: searchQuery,
+        searchQuery: debouncedSearchQuery,
     });
+
+    useEffect(() => {
+        const handler = debounce(() => {
+            setDebouncedSearchQuery(searchQuery);
+        }, 300);
+
+        handler();
+        return () => {
+            handler.cancel();
+        };
+    }, [searchQuery]);
 
     if (accessDenied) {
         return <Custom404 />;
     }
-
-    // implement search
 
     return (
         <div className="w-full">
