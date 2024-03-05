@@ -56,6 +56,10 @@
     filter: invert(100%) sepia(6%) saturate(7476%) hue-rotate(215deg)
         brightness(110%) contrast(105%);
 }
+.png-red {
+    filter: invert(26%) sepia(83%) saturate(7492%) hue-rotate(356deg)
+        brightness(112%) contrast(123%);
+}
 
 /* --------------                            --------------  */
 
