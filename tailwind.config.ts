@@ -10,7 +10,7 @@ export default {
                 darkGray: "#616161",
                 keebyGray: "#2f2f2f",
                 lightGray: "#d3d3d3",
-
+                failure: "#ff0000",
                 pogGray: "#2d2d2d",
                 testTwo: "#121212",
                 testFour: "#161618",

@@ -50,6 +50,21 @@ interface ListingPage extends Listing {
 }
 
 export const listingRouter = createTRPCRouter({
+    getAll: publicProcedure.query(({ ctx }) => {
+        return ctx.prisma.listing.findMany({
+            select: {
+                id: true,
+                title: true,
+                sellerId: true,
+                images: {
+                    where: {
+                        resourceType: "LISTINGPREVIEW",
+                    },
+                },
+            },
+        });
+    }),
+
     getOne: publicProcedure
         .input(
             z.object({
@@ -105,10 +120,6 @@ export const listingRouter = createTRPCRouter({
 
             return listingWithImages;
         }),
-
-    getAll: publicProcedure.query(({ ctx }) => {
-        return ctx.prisma.listing.findMany();
-    }),
 
     getAllWithFilters: publicProcedure
         .input(
