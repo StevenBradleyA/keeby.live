@@ -2,6 +2,9 @@ import type { Images } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useState } from "react";
+import { api } from "~/utils/api";
+import toast from "react-hot-toast";
+
 interface EachListing {
     id: string;
     title: string;
@@ -16,21 +19,31 @@ export default function EachAdminListing({ listing }: EachAdminListingProps) {
     console.log("hello", listing);
     const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
     const { data: session } = useSession();
+    const ctx = api.useContext();
 
-    // const { mutate } = api.comment.delete.useMutation({
-    //     onSuccess: () => {
-    //         if (parentId) {
-    //             void ctx.comment.getAllByTypeId.invalidate();
-    //             void ctx.comment.getAllReplysByTypeId.invalidate();
-    //         } else {
-    //             void ctx.comment.getAllByTypeId.invalidate();
-    //         }
-    //         closeModal();
-    //     },
-    // });
+    const { mutate } = api.listing.delete.useMutation({
+        onSuccess: () => {
+            toast.success("Listing Eliminated!", {
+                icon: "☠️",
+                style: {
+                    borderRadius: "10px",
+                    background: "#333",
+                    color: "#ff0000",
+                },
+            });
+            void ctx.listing.getAll.invalidate();
+        },
+    });
 
     const handleDeleteListing = () => {
-        console.log("bye");
+        if (session?.user.isAdmin) {
+            const data = {
+                id: listing.id,
+                sellerId: listing.sellerId,
+            };
+
+            mutate(data);
+        }
     };
 
     return (

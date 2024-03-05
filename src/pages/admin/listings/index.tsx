@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import BackArrow from "~/components/Svgs/menuArrow";
 import hackerman from "@public/Admin/admin-black.png";
 import { api } from "~/utils/api";
 import EachAdminListing from "~/components/Admin/Listings";
@@ -17,10 +16,7 @@ export default function AdminListings() {
         return <Custom404 />;
     }
 
-
-
-
-
+    // implement search 
 
     return (
         <div className="w-full">

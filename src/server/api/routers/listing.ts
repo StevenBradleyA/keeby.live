@@ -419,45 +419,52 @@ export const listingRouter = createTRPCRouter({
         .input(
             z.object({
                 id: z.string(),
-                userId: z.string(),
-                imageIds: z.array(z.string()),
+                sellerId: z.string(),
             })
         )
         .mutation(async ({ input, ctx }) => {
-            const { id, imageIds, userId } = input;
-            if (ctx.session.user.id === userId || ctx.session.user.isAdmin) {
-                if (imageIds.length > 0) {
-                    const images = await ctx.prisma.images.findMany({
-                        where: {
-                            id: { in: imageIds },
-                        },
-                    });
-                    const removeFilePromises = images.map(async (image) => {
-                        try {
-                            await removeFileFromS3(image.link);
-                        } catch (err) {
+            const { id, sellerId } = input;
+            if (ctx.session.user.id === sellerId || ctx.session.user.isAdmin) {
+                const images = await ctx.prisma.images.findMany({
+                    where: {
+                        listingId: id,
+                    },
+                });
+
+                if (images.length > 0) {
+                    const imageIds = images.map((image) => image.id);
+                    const removeFilePromises = images.map((image) =>
+                        removeFileFromS3(image.link)
+                    );
+                    try {
+                        // here we are waiting for all promises and capturing those that are rejected
+                        const results = await Promise.allSettled(
+                            removeFilePromises
+                        );
+                        const errors = results.filter(
+                            (result) => result.status === "rejected"
+                        );
+
+                        if (errors.length > 0) {
                             console.error(
-                                `Failed to remove file from S3: `,
-                                err
+                                "Errors occurred while removing files from S3:",
+                                errors
                             );
-                            throw new Error(`Failed to remove file from S3: `);
                         }
-                    });
 
-                    await Promise.all(removeFilePromises);
-
-                    await ctx.prisma.images.deleteMany({
-                        where: {
-                            id: { in: imageIds },
-                        },
-                    });
+                        await ctx.prisma.images.deleteMany({
+                            where: {
+                                id: { in: imageIds },
+                            },
+                        });
+                    } catch (err) {
+                        console.error("An unexpected error occurred:", err);
+                    }
                 }
-
-                await ctx.prisma.listing.delete({ where: { id: id } });
-
-                return "Successfully deleted";
             }
 
-            throw new Error("Invalid userId");
+            await ctx.prisma.listing.delete({ where: { id: id } });
+
+            return "Successfully deleted";
         }),
 });
