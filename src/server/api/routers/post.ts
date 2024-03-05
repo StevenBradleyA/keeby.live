@@ -81,24 +81,52 @@ interface PostPage {
 // todo potentially not update user if post id matches userId so they dont gain points for liking their own stuff.. this would prevent farming
 
 export const postRouter = createTRPCRouter({
-    getAll: publicProcedure.query(({ ctx }) => {
-        return ctx.prisma.post.findMany({
-            select: {
-                id: true,
-                title: true,
-                tag: true,
-                images: {
-                    where: {
-                        OR: [
-                            { resourceType: "POSTPREVIEW" },
-                            { resourceType: "POST" },
-                        ],
-                    },
-                    select: { id: true, link: true },
+    getAll: publicProcedure
+        .input(
+            z.object({
+                searchQuery: z.string().optional(),
+            })
+        )
+        .query(({ input, ctx }) => {
+            const { searchQuery } = input;
+            const whereFilters = {
+                AND: [
+                    searchQuery
+                        ? {
+                              OR: [
+                                  {
+                                      title: {
+                                          contains: searchQuery,
+                                      },
+                                  },
+                                  {
+                                      text: {
+                                          contains: searchQuery,
+                                      },
+                                  },
+                              ],
+                          }
+                        : {},
+                ].filter((obj) => Object.keys(obj).length > 0),
+            };
+
+            return ctx.prisma.post.findMany({
+                where: {
+                    ...whereFilters,
                 },
-            },
-        });
-    }),
+                select: {
+                    id: true,
+                    title: true,
+                    userId: true,
+                    images: {
+                        where: {
+                            resourceType: "POSTPREVIEW",
+                        },
+                    },
+                },
+            });
+        }),
+
     getAllNewPreviewPosts: publicProcedure
         .input(
             z.object({
@@ -565,44 +593,51 @@ export const postRouter = createTRPCRouter({
             z.object({
                 id: z.string(),
                 userId: z.string(),
-                imageIds: z.array(z.string()),
             })
         )
         .mutation(async ({ input, ctx }) => {
-            const { id, imageIds, userId } = input;
+            const { id, userId } = input;
             if (ctx.session.user.id === userId || ctx.session.user.isAdmin) {
-                if (imageIds.length > 0) {
-                    const images = await ctx.prisma.images.findMany({
-                        where: {
-                            id: { in: imageIds },
-                        },
-                    });
-                    const removeFilePromises = images.map(async (image) => {
-                        try {
-                            await removeFileFromS3(image.link);
-                        } catch (err) {
+                const images = await ctx.prisma.images.findMany({
+                    where: {
+                        postId: id,
+                    },
+                });
+
+                if (images.length > 0) {
+                    const imageIds = images.map((image) => image.id);
+                    const removeFilePromises = images.map((image) =>
+                        removeFileFromS3(image.link)
+                    );
+                    try {
+                        // here we are waiting for all promises and capturing those that are rejected
+                        const results = await Promise.allSettled(
+                            removeFilePromises
+                        );
+                        const errors = results.filter(
+                            (result) => result.status === "rejected"
+                        );
+
+                        if (errors.length > 0) {
                             console.error(
-                                `Failed to remove file from S3: `,
-                                err
+                                "Errors occurred while removing files from S3:",
+                                errors
                             );
-                            throw new Error(`Failed to remove file from S3: `);
                         }
-                    });
 
-                    await Promise.all(removeFilePromises);
-
-                    await ctx.prisma.images.deleteMany({
-                        where: {
-                            id: { in: imageIds },
-                        },
-                    });
+                        await ctx.prisma.images.deleteMany({
+                            where: {
+                                id: { in: imageIds },
+                            },
+                        });
+                    } catch (err) {
+                        console.error("An unexpected error occurred:", err);
+                    }
                 }
-
-                await ctx.prisma.post.delete({ where: { id: id } });
-
-                return "Successfully deleted";
             }
 
-            throw new Error("Invalid userId");
+            await ctx.prisma.post.delete({ where: { id: id } });
+
+            return "Successfully deleted";
         }),
 });

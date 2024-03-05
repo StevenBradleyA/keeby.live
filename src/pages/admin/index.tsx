@@ -48,7 +48,7 @@ export default function Admin() {
                     </h3>
                 </Link>
                 <Link
-                    href="/admin/listings"
+                    href="/admin/posts"
                     className="flex flex-col items-center"
                 >
                     <Image

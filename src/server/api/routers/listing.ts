@@ -57,16 +57,7 @@ export const listingRouter = createTRPCRouter({
             })
         )
         .query(({ input, ctx }) => {
-            // const searchFilter = input.searchQuery
-            //     ? {
-            //           title: {
-            //               contains: input.search,
-            //               mode: "insensitive",
-            //           },
-            //       }
-            //     : {};
             const { searchQuery } = input;
-
             const whereFilters = {
                 AND: [
                     searchQuery

@@ -16,7 +16,6 @@ export default function AdminListings() {
     const [debouncedSearchQuery, setDebouncedSearchQuery] =
         useState<string>("");
 
-        
     const { data: listings } = api.listing.getAll.useQuery({
         searchQuery: debouncedSearchQuery,
     });
@@ -47,6 +46,9 @@ export default function AdminListings() {
                             className="png-red w-32 "
                         />
                     </Link>
+                    <div className="absolute right-2 top-0 z-10 font-titillium text-2xl text-failure">
+                        LISTINGS
+                    </div>
 
                     <div className=" absolute bottom-0 left-0 right-0 top-0  ">
                         <video className="-z-10 w-full" autoPlay loop muted>

@@ -3,26 +3,27 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useState } from "react";
 import { api } from "~/utils/api";
+import admin from "@public/Admin/admin-black.png";
 import toast from "react-hot-toast";
 
-interface EachListing {
+interface EachPost {
     id: string;
     title: string;
-    sellerId: string;
+    userId: string;
     images: Images[];
 }
-interface EachAdminListingProps {
-    listing: EachListing;
+interface EachAdminPostProps {
+    post: EachPost;
 }
 
-export default function EachAdminListing({ listing }: EachAdminListingProps) {
+export default function EachAdminPost({ post }: EachAdminPostProps) {
     const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
     const { data: session } = useSession();
     const ctx = api.useContext();
 
-    const { mutate } = api.listing.delete.useMutation({
+    const { mutate } = api.post.delete.useMutation({
         onSuccess: () => {
-            toast.success("Listing Eliminated!", {
+            toast.success("Post Eliminated!", {
                 icon: "☠️",
                 style: {
                     borderRadius: "10px",
@@ -30,15 +31,15 @@ export default function EachAdminListing({ listing }: EachAdminListingProps) {
                     color: "#ff0000",
                 },
             });
-            void ctx.listing.getAll.invalidate();
+            void ctx.post.getAll.invalidate();
         },
     });
 
-    const handleDeleteListing = () => {
+    const handlePostDelete = () => {
         if (session?.user.isAdmin) {
             const data = {
-                id: listing.id,
-                sellerId: listing.sellerId,
+                id: post.id,
+                userId: post.userId,
             };
 
             mutate(data);
@@ -46,19 +47,30 @@ export default function EachAdminListing({ listing }: EachAdminListingProps) {
     };
 
     return (
-        <div className=" h-[40vh] w-1/3">
+        <div className=" h-[40vh] w-[30%]">
             <div className="h-full w-full rounded-xl bg-black">
                 <div className="flex h-1/4 items-center justify-center p-5 text-failure">
-                    {listing.title}
+                    {post.title}
                 </div>
-                {listing && listing.images[0] && (
+                {post && post.images[0] && (
                     <div className="h-1/2 w-full">
                         <Image
-                            alt="listing preview"
-                            src={listing.images[0].link}
+                            alt="post preview"
+                            src={post.images[0].link}
                             width={500}
                             height={500}
                             className="h-full w-full object-cover"
+                        />
+                    </div>
+                )}
+                {post && !post.images[0] && (
+                    <div className="flex h-1/2 w-full justify-center">
+                        <Image
+                            alt="post preview"
+                            src={admin}
+                            width={500}
+                            height={500}
+                            className="png-red h-full w-1/2 object-cover"
                         />
                     </div>
                 )}
@@ -74,7 +86,7 @@ export default function EachAdminListing({ listing }: EachAdminListingProps) {
                         <div className="absolute left-1/2 top-1/2 flex w-full -translate-x-1/2 -translate-y-1/2 transform justify-center gap-5 ">
                             <button
                                 className=" rounded-md bg-failure px-2 py-2 "
-                                onClick={handleDeleteListing}
+                                onClick={handlePostDelete}
                             >
                                 {`C:\\\\> XXXX`}
                             </button>

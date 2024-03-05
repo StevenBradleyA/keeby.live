@@ -172,7 +172,7 @@ export default function Home() {
     useEffect(() => {
         const handler = debounce(() => {
             setDebouncedSearchQuery(searchInput);
-        }, 200);
+        }, 250);
 
         handler();
         return () => {
