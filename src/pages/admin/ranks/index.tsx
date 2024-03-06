@@ -10,12 +10,15 @@ export default function AdminRanks() {
     const { data: session } = useSession();
     const accessDenied = !session || !session.user.isAdmin;
 
+    const { data: tags } = api.tag.getAll.useQuery();
+    const { data: ranks } = api.rank.getAll.useQuery();
+
     if (accessDenied) {
         return <Custom404 />;
     }
 
     return (
-        <div className="w-full">
+        <div className="w-full text-failure">
             <div className="flex justify-center">
                 <div className=" relative flex w-1/2 justify-center overflow-hidden rounded-xl bg-black bg-opacity-50 p-5">
                     <Link href="/admin" className="z-10 ">
@@ -40,8 +43,38 @@ export default function AdminRanks() {
                     </div>
                 </div>
             </div>
-            <div className="mt-10 flex w-full justify-center">
-                <p>Ability to create new ranks and tags etc </p>
+            <div className="mt-10 flex justify-center">
+                <div className="flex w-1/2 items-center gap-5 ">
+                    <h1 className="font-titillium text-3xl">RANKS</h1>
+                    <button className="flex h-6 w-12 items-center justify-center rounded-full bg-black text-2xl ">
+                        {`+`}
+                    </button>
+                    {ranks &&
+                        ranks.length > 0 &&
+                        ranks.map((rank) => (
+                            <div className="bg-black p-10" key={rank.id}>
+                                <h1>{rank.name}</h1>
+                                <p>{`max wpm ${rank.maxWpm}`}</p>
+                                <p>{`min wpm ${rank.minWpm}`}</p>
+                            </div>
+                        ))}
+                </div>
+            </div>
+            <div className="mt-10 flex justify-center">
+                <div className="flex w-1/2 items-center gap-5 ">
+                    <h1 className="font-titillium text-3xl">TAGS</h1>
+                    <button className="flex h-6 w-12 items-center justify-center rounded-full bg-black text-2xl ">
+                        {`+`}
+                    </button>
+                    {tags &&
+                        tags.length > 0 &&
+                        tags.map((tag) => (
+                            <div className="bg-black p-2" key={tag.id}>
+                                <h1>{tag.name}</h1>
+                                <p>{tag.description}</p>
+                            </div>
+                        ))}
+                </div>
             </div>
         </div>
     );
