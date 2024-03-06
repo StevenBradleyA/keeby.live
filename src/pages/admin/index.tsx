@@ -8,11 +8,7 @@ export default function Admin() {
     const { data: session } = useSession();
     const accessDenied = !session || !session.user.isAdmin;
 
-    if (accessDenied) {
-        return <Custom404 />;
-    }
-
-    return (
+    return !accessDenied ? (
         <div className="h-full  w-1/2  ">
             <div className="relative flex justify-center ">
                 <div className="relative flex w-full justify-center overflow-hidden rounded-xl bg-black bg-opacity-50 p-5">
@@ -61,7 +57,7 @@ export default function Admin() {
                     </h3>
                 </Link>
                 <Link
-                    href="/admin/listings"
+                    href="/admin/ranks"
                     className="flex flex-col items-center"
                 >
                     <Image
@@ -74,7 +70,7 @@ export default function Admin() {
                     </h3>
                 </Link>
                 <Link
-                    href="/admin/listings"
+                    href="/admin/users"
                     className="flex flex-col items-center"
                 >
                     <Image
@@ -87,10 +83,8 @@ export default function Admin() {
                     </h3>
                 </Link>
             </div>
-            <div className="mt-32 ">
-                ability to remove listings ability to delete users ability
-                to remove posts. create ranks...
-            </div>
         </div>
+    ) : (
+        <Custom404 />
     );
 }

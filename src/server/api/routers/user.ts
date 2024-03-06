@@ -8,6 +8,38 @@ import { env } from "~/env.mjs";
 import { compare } from "bcryptjs";
 
 export const userRouter = createTRPCRouter({
+    getAll: publicProcedure
+        .input(
+            z.object({
+                searchQuery: z.string().optional(),
+            })
+        )
+        .query(({ input, ctx }) => {
+            const { searchQuery } = input;
+            let whereFilters = {};
+            if (searchQuery) {
+                whereFilters = {
+                    username: {
+                        contains: searchQuery,
+                    },
+                };
+            }
+
+            return ctx.prisma.user.findMany({
+                where: {
+                    ...whereFilters,
+                },
+                select: {
+                    id: true,
+                    username: true,
+                    email: true,
+                    profile: true,
+                    internetPoints: true,
+                    selectedTag:true, 
+                },
+            });
+        }),
+
     getOneUser: publicProcedure.input(z.string()).query(({ input, ctx }) => {
         return ctx.prisma.user.findUnique({
             where: { id: input },
