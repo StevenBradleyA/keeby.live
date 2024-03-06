@@ -10,6 +10,33 @@ export const rankRouter = createTRPCRouter({
     getAll: publicProcedure.query(({ ctx }) => {
         return ctx.prisma.rank.findMany();
     }),
-    // create
+
+    create: protectedProcedure
+        .input(
+            z.object({
+                name: z.string(),
+                image: z.array(
+                    z.object({
+                        link: z.string(),
+                    })
+                ),
+                minWpm: z.number(),
+                maxWpm: z.number(),
+            })
+        )
+        .mutation(({ ctx, input }) => {
+            if (ctx.session.user.isAdmin && input.image[0]) {
+                return ctx.prisma.rank.create({
+                    data: {
+                        name: input.name,
+                        image: input.image[0].link,
+                        minWpm: input.minWpm,
+                        maxWpm: input.maxWpm,
+                    },
+                });
+            }
+
+            throw new Error("You must be admin to perform this action.");
+        }),
     // delete
 });

@@ -234,6 +234,7 @@ model PostLike {
 
 model Rank {
     id     String @id @default(cuid())
+    image  String
     name   String
     minWpm Int
     maxWpm Int
