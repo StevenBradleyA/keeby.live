@@ -35,7 +35,7 @@ export const userRouter = createTRPCRouter({
                     email: true,
                     profile: true,
                     internetPoints: true,
-                    selectedTag:true, 
+                    selectedTag: true,
                 },
             });
         }),
@@ -176,6 +176,34 @@ export const userRouter = createTRPCRouter({
                 return updatedUser ? "Success" : "Error";
             } else {
                 return "Incorrect";
+            }
+        }),
+
+    deleteUserProfile: protectedProcedure
+        .input(z.string())
+        .mutation(async ({ input, ctx }) => {
+            if (ctx.session.user.isAdmin) {
+                return ctx.prisma.user.update({
+                    where: { id: input },
+                    data: { profile: null },
+                });
+            } else {
+                throw new Error("Invalid userId");
+            }
+        }),
+
+    delete: protectedProcedure
+        .input(z.string())
+        .mutation(async ({ input, ctx }) => {
+            if (ctx.session.user.isAdmin) {
+                // need to aws delete all images associated with a user
+                // plus fix all on delete cascades
+
+                return ctx.prisma.user.delete({
+                    where: { id: input },
+                });
+            } else {
+                throw new Error("Invalid userId");
             }
         }),
 

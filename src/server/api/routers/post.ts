@@ -224,7 +224,7 @@ export const postRouter = createTRPCRouter({
                 );
 
                 const favoritesMap = new Map(
-                    await ctx.prisma.userFavorites
+                    await ctx.prisma.favorites
                         .findMany({
                             where: {
                                 userId: userId,
@@ -356,7 +356,7 @@ export const postRouter = createTRPCRouter({
                 );
 
                 const favoritesMap = new Map(
-                    await ctx.prisma.userFavorites
+                    await ctx.prisma.favorites
                         .findMany({
                             where: {
                                 userId: userId,
@@ -497,7 +497,7 @@ export const postRouter = createTRPCRouter({
                 );
 
                 const favoritesMap = new Map(
-                    await ctx.prisma.userFavorites
+                    await ctx.prisma.favorites
                         .findMany({
                             where: {
                                 userId: userId,

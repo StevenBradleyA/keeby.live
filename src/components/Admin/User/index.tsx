@@ -7,11 +7,11 @@ import defaultProfile from "@public/Profile/profile-default.png";
 
 interface EachUser {
     id: string;
-    username: string;
-    email: string;
-    selectedTag: string;
+    username: string | null;
+    email: string | null;
+    selectedTag: string | null;
     internetPoints: number;
-    profile: string;
+    profile: string | null;
 }
 interface EachAdminUserProps {
     user: EachUser;
@@ -25,41 +25,50 @@ export default function EachAdminUser({ user }: EachAdminUserProps) {
     const { data: session } = useSession();
     const ctx = api.useContext();
 
-    // const { mutate } = api.user.delete.useMutation({
-    //     onSuccess: () => {
-    //         toast.success("Listing Eliminated!", {
-    //             icon: "☠️",
-    //             style: {
-    //                 borderRadius: "10px",
-    //                 background: "#333",
-    //                 color: "#ff0000",
-    //             },
-    //         });
-    //         void ctx.user.getAll.invalidate();
-    //     },
-    // });
+    const { mutate } = api.user.delete.useMutation({
+        onSuccess: () => {
+            toast.success("User Removed!", {
+                icon: "☠️",
+                style: {
+                    borderRadius: "10px",
+                    background: "#333",
+                    color: "#ff0000",
+                },
+            });
+            void ctx.user.getAll.invalidate();
+        },
+    });
+    const { mutate: deleteProfilePic } = api.user.deleteUserProfile.useMutation(
+        {
+            onSuccess: () => {
+                toast.success("Profile Pic Removed!", {
+                    icon: "☠️",
+                    style: {
+                        borderRadius: "10px",
+                        background: "#333",
+                        color: "#ff0000",
+                    },
+                });
+                void ctx.user.getAll.invalidate();
+            },
+        }
+    );
 
     const handleDeleteUser = () => {
         if (session?.user.isAdmin) {
-            const data = {
-                id: user.id,
-            };
+            const data = user.id;
 
-            // mutate(data);
+            mutate(data);
         }
     };
 
     const handleDeleteProfile = () => {
         if (session?.user.isAdmin) {
-            const data = {
-                id: user.id,
-            };
+            const data = user.id;
 
-            // mutate(data);
+            deleteProfilePic(data);
         }
     };
-
-    // ability to update user and remove profile photo if using inapropriate photos
 
     return (
         <div className=" h-[40vh] w-1/3 text-failure">
@@ -84,7 +93,7 @@ export default function EachAdminUser({ user }: EachAdminUserProps) {
                         height={500}
                         className="h-full w-1/2 object-cover"
                     />
-                    {confirmDeleteProfile ? (
+                    {user.profile && confirmDeleteProfile && (
                         <div className="absolute -top-6 right-[10%] flex gap-3 text-sm">
                             <button onClick={handleDeleteProfile}>
                                 {`XXXX`}
@@ -95,7 +104,8 @@ export default function EachAdminUser({ user }: EachAdminUserProps) {
                                 {`Cancel`}
                             </button>
                         </div>
-                    ) : (
+                    )}
+                    {user.profile && !confirmDeleteProfile && (
                         <button
                             className="absolute -top-6 right-[18%]"
                             onClick={() => setConfirmDeleteProfile(true)}

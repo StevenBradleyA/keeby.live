@@ -16,7 +16,7 @@ export const favoriteRouter = createTRPCRouter({
         .query(async ({ ctx, input }) => {
             const { userId, listingId } = input;
 
-            const isFavorited = await ctx.prisma.userFavorites.findFirst({
+            const isFavorited = await ctx.prisma.favorites.findFirst({
                 where: {
                     userId: userId,
                     listingId: listingId,
@@ -37,7 +37,7 @@ export const favoriteRouter = createTRPCRouter({
         .query(async ({ ctx, input }) => {
             const { userId, postId } = input;
 
-            const isFavorited = await ctx.prisma.userFavorites.findFirst({
+            const isFavorited = await ctx.prisma.favorites.findFirst({
                 where: {
                     userId: userId,
                     postId: postId,
@@ -56,7 +56,7 @@ export const favoriteRouter = createTRPCRouter({
             })
         )
         .query(({ ctx, input }) => {
-            return ctx.prisma.userFavorites.findMany({
+            return ctx.prisma.favorites.findMany({
                 where: {
                     userId: input.userId,
                 },
@@ -88,7 +88,7 @@ export const favoriteRouter = createTRPCRouter({
         )
         .mutation(({ ctx, input }) => {
             if (ctx.session.user.id === input.userId) {
-                return ctx.prisma.userFavorites.create({
+                return ctx.prisma.favorites.create({
                     data: {
                         userId: input.userId,
                         listingId: input.listingId,
@@ -107,7 +107,7 @@ export const favoriteRouter = createTRPCRouter({
         )
         .mutation(({ ctx, input }) => {
             if (ctx.session.user.id === input.userId) {
-                return ctx.prisma.userFavorites.create({
+                return ctx.prisma.favorites.create({
                     data: {
                         userId: input.userId,
                         postId: input.postId,
@@ -126,7 +126,7 @@ export const favoriteRouter = createTRPCRouter({
         )
         .mutation(({ ctx, input }) => {
             if (ctx.session.user.id === input.userId) {
-                return ctx.prisma.userFavorites.delete({
+                return ctx.prisma.favorites.delete({
                     where: {
                         id: input.id,
                     },
@@ -143,7 +143,7 @@ export const favoriteRouter = createTRPCRouter({
         )
         .mutation(({ ctx, input }) => {
             if (ctx.session.user.id === input.userId) {
-                return ctx.prisma.userFavorites.delete({
+                return ctx.prisma.favorites.delete({
                     where: {
                         id: input.id,
                     },

@@ -35,21 +35,6 @@ model Account {
     @@unique([provider, providerAccountId])
 }
 
-model UserFavorites {
-    id        String  @id @default(cuid())
-    userId    String
-    listingId String?
-    postId    String?
-
-    user    User     @relation(fields: [userId], references: [id])
-    listing Listing? @relation(fields: [listingId], references: [id])
-    post    Post?    @relation(fields: [postId], references: [id])
-
-    @@unique([userId, listingId, postId])
-    @@index([listingId], name: "idxUserFavoritesListingId")
-    @@index([postId], name: "idxUserFavoritesPostId")
-}
-
 model Comment {
     id   String @id @default(cuid())
     text String
@@ -86,6 +71,21 @@ model CommentLike {
     comment Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
 
     @@unique([userId, commentId])
+}
+
+model Favorites {
+    id        String  @id @default(cuid())
+    userId    String
+    listingId String?
+    postId    String?
+
+    user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    listing Listing? @relation(fields: [listingId], references: [id], onDelete: Cascade)
+    post    Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+    @@unique([userId, listingId, postId])
+    @@index([listingId], name: "idxUserFavoritesListingId")
+    @@index([postId], name: "idxUserFavoritesPostId")
 }
 
 model Game {
@@ -161,7 +161,7 @@ model Listing {
     buyer  User? @relation("Buyer", fields: [buyerId], references: [id])
 
     reviews            Review[]
-    favorites          UserFavorites[]
+    favorites          Favorites[]
     listingTransaction ListingTransaction[]
     listingOffer       ListingOffer[]
     images             Images[]
@@ -214,11 +214,11 @@ model Post {
 
     userId String
 
-    user          User            @relation(fields: [userId], references: [id])
-    postLikes     PostLike[]
-    images        Images[]
-    comments      Comment[]
-    userFavorites UserFavorites[]
+    user      User        @relation(fields: [userId], references: [id])
+    postLikes PostLike[]
+    images    Images[]
+    comments  Comment[]
+    favorites Favorites[]
 }
 
 model PostLike {
@@ -294,7 +294,7 @@ model User {
 
     accounts        Account[]
     sessions        Session[]
-    favorites       UserFavorites[]
+    favorites       Favorites[]
     posts           Post[]
     comments        Comment[]
     images          Images[]
