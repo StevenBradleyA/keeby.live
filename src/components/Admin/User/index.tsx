@@ -56,7 +56,10 @@ export default function EachAdminUser({ user }: EachAdminUserProps) {
 
     const handleDeleteUser = () => {
         if (session?.user.isAdmin) {
-            const data = user.id;
+            const data = {
+                id: user.id,
+                profile: user.profile ? user.profile : undefined,
+            };
 
             mutate(data);
         }

@@ -6,6 +6,7 @@ import {
 } from "~/server/api/trpc";
 import { env } from "~/env.mjs";
 import { compare } from "bcryptjs";
+import { removeFileFromS3 } from "../utils";
 
 export const userRouter = createTRPCRouter({
     getAll: publicProcedure
@@ -193,14 +194,50 @@ export const userRouter = createTRPCRouter({
         }),
 
     delete: protectedProcedure
-        .input(z.string())
+        .input(
+            z.object({
+                id: z.string(),
+                profile: z.string().optional(),
+            })
+        )
         .mutation(async ({ input, ctx }) => {
+            const { id, profile } = input;
             if (ctx.session.user.isAdmin) {
-                // need to aws delete all images associated with a user
-                // plus fix all on delete cascades
+                const images = await ctx.prisma.images.findMany({
+                    where: {
+                        userId: id,
+                    },
+                });
 
+                if (images.length > 0) {
+                    const removeFilePromises = images.map((image) =>
+                        removeFileFromS3(image.link)
+                    );
+                    if (profile) {
+                        await removeFileFromS3(profile);
+                    }
+
+                    try {
+                        // here we are waiting for all promises and capturing those that are rejected
+                        const results = await Promise.allSettled(
+                            removeFilePromises
+                        );
+                        const errors = results.filter(
+                            (result) => result.status === "rejected"
+                        );
+
+                        if (errors.length > 0) {
+                            console.error(
+                                "Errors occurred while removing files from S3:",
+                                errors
+                            );
+                        }
+                    } catch (err) {
+                        console.error("An unexpected error occurred:", err);
+                    }
+                }
                 return ctx.prisma.user.delete({
-                    where: { id: input },
+                    where: { id: id },
                 });
             } else {
                 throw new Error("Invalid userId");

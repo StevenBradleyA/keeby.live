@@ -36,7 +36,12 @@ export default function SuperSpecialSecretAdminLogin() {
     return (
         <div className="relative h-full w-full text-green-500 ">
             <div className="matrix-full-screen fixed bottom-0 left-0 right-0 top-0  ">
-                <video className="-z-10 w-full" autoPlay loop muted>
+                <video
+                    className="absolute bottom-0 left-0 right-0 top-0 -z-10 h-full w-full object-cover object-center"
+                    autoPlay
+                    loop
+                    muted
+                >
                     <source
                         src="/Videos/matrix-fade-green.mp4"
                         type="video/mp4"

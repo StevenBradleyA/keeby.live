@@ -208,7 +208,7 @@ export default function ProfilePlus() {
                 <Image
                     src={gridBackground}
                     alt="background"
-                    className="matrix-full-screen fixed left-0 right-0 bottom-0 top-0 opacity-40 "
+                    className="matrix-full-screen fixed bottom-0 left-0 right-0 top-0 h-full w-full object-cover object-center opacity-40 "
                     priority
                 />
                 <form className=" z-10 flex w-1/2 flex-col text-black ">
@@ -349,8 +349,8 @@ export default function ProfilePlus() {
                                 <label className="text-darkGray">
                                     1:1 aspect ratio recommended
                                     <input
-                                       name="profileImage"
-                                       id="profileImageInput"
+                                        name="profileImage"
+                                        id="profileImageInput"
                                         className="absolute left-0 top-7 h-32 w-full cursor-pointer rounded-md opacity-0"
                                         type="file"
                                         accept="image/png, image/jpg, image/jpeg"

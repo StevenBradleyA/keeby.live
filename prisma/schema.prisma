@@ -47,7 +47,7 @@ model Comment {
     listingId String?
     postId    String?
 
-    user User @relation(fields: [userId], references: [id])
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     parent      Comment?      @relation("ParentComment", fields: [parentId], references: [id])
     replies     Comment[]     @relation("ParentComment")
@@ -67,7 +67,7 @@ model CommentLike {
     userId    String
     commentId String
 
-    user    User    @relation(fields: [userId], references: [id])
+    user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
     comment Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
 
     @@unique([userId, commentId])
@@ -98,7 +98,7 @@ model Game {
     userId String
     keebId String?
 
-    user User  @relation(fields: [userId], references: [id])
+    user User  @relation(fields: [userId], references: [id], onDelete: Cascade)
     keeb Keeb? @relation(fields: [keebId], references: [id])
 }
 
@@ -111,7 +111,7 @@ model Images {
 
     // Relations
     userId String
-    user   User   @relation(fields: [userId], references: [id])
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     // Polymorphic relations
     listingId String?
@@ -132,7 +132,7 @@ model Keeb {
 
     userId String
 
-    user User   @relation(fields: [userId], references: [id])
+    user User   @relation(fields: [userId], references: [id], onDelete: Cascade)
     Game Game[]
 }
 
@@ -157,7 +157,7 @@ model Listing {
     sellerId String
     buyerId  String?
 
-    seller User  @relation("Seller", fields: [sellerId], references: [id])
+    seller User  @relation("Seller", fields: [sellerId], references: [id], onDelete: Cascade)
     buyer  User? @relation("Buyer", fields: [buyerId], references: [id])
 
     reviews            Review[]
@@ -181,7 +181,7 @@ model ListingOffer {
     listingId String
     buyerId   String
 
-    listing Listing @relation(fields: [listingId], references: [id])
+    listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
     buyer   User    @relation(fields: [buyerId], references: [id])
 }
 
@@ -199,8 +199,8 @@ model ListingTransaction {
     userId    String
     listingId String
 
-    user    User    @relation(fields: [userId], references: [id])
-    listing Listing @relation(fields: [listingId], references: [id])
+    user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
 }
 
 model Post {
@@ -214,7 +214,7 @@ model Post {
 
     userId String
 
-    user      User        @relation(fields: [userId], references: [id])
+    user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
     postLikes PostLike[]
     images    Images[]
     comments  Comment[]
@@ -226,7 +226,7 @@ model PostLike {
     userId String
     postId String
 
-    user User @relation(fields: [userId], references: [id])
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
     post Post @relation(fields: [postId], references: [id])
 
     @@unique([userId, postId])
@@ -253,9 +253,9 @@ model Review {
     userId    String
     listingId String
 
-    seller  User    @relation("SellerRelation", fields: [sellerId], references: [id])
-    user    User    @relation("UserRelation", fields: [userId], references: [id])
-    listing Listing @relation(fields: [listingId], references: [id])
+    seller  User    @relation("SellerRelation", fields: [sellerId], references: [id], onDelete: Cascade)
+    user    User    @relation("UserRelation", fields: [userId], references: [id], onDelete: Cascade)
+    listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
 }
 
 model Tag {

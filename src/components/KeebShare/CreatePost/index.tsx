@@ -217,6 +217,8 @@ export default function CreatePostModal({ closeModal }: CreatePostModalProps) {
                                     ? sessionData.user.profile
                                     : defaultProfile
                             }
+                            width={300}
+                            height={300}
                             className="h-20 w-20 border-2 border-[#616161] object-cover "
                         />
                         <div className="relative flex  w-full items-center border-b-2 border-t-2 border-[#616161] p-2 ">

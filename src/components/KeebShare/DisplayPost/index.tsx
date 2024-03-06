@@ -151,7 +151,7 @@ export default function DisplayPostPage({ post }: DisplayPostPageProps) {
                 <div className="flex w-3/4 flex-col ">
                     <div className="flex w-full gap-10">
                         <div className=" post-page-user-container  relative h-[70vh] w-1/3 overflow-hidden rounded-xl bg-keebyGray px-10 py-8">
-                            <div className="w-full">
+                            <div className="w-full h-full">
                                 {post.user.selectedTag && (
                                     <h3 className="mb-2 flex justify-center text-sm">
                                         {post.user.selectedTag}
@@ -161,18 +161,19 @@ export default function DisplayPostPage({ post }: DisplayPostPageProps) {
                                     {post.user.internetPoints}
                                 </div>
 
+
                                 <Image
                                     alt="preview"
                                     src={
                                         post.user.profile
-                                            ? post.user.profile
-                                            : defaultProfile
+                                        ? post.user.profile
+                                        : defaultProfile
                                     }
                                     width={1000}
                                     height={1000}
-                                    className={`h-full w-full rounded-md object-cover`}
+                                    className={`h-[45%] w-full rounded-md object-cover`}
                                     priority
-                                />
+                                    />
 
                                 <div className="post-page-user-overlay absolute bottom-0 left-0 top-1/4 -z-10 h-full w-full bg-darkGray"></div>
                                 {post.user && post.user.username && (
@@ -186,7 +187,10 @@ export default function DisplayPostPage({ post }: DisplayPostPageProps) {
                                         </Link>
                                     </div>
                                 )}
+                                <div className="w-full">
+
                                 <UserPostPreviews user={post.user} />
+                                </div>
                             </div>
                         </div>
 
