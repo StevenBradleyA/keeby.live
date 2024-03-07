@@ -8,6 +8,8 @@ import { useState } from "react";
 import ModalDialog from "~/components/Modal";
 import AdminCreateRank from "~/components/Admin/Ranks/Create";
 import AdminCreateTag from "~/components/Admin/Tags/Create";
+import AdminEachDisplayTag from "~/components/Admin/Tags/Display/eachDisplayTag";
+import AdminEachDisplayRank from "~/components/Admin/Ranks/Display/eachDisplayRank";
 
 export default function AdminRanks() {
     const { data: session } = useSession();
@@ -84,19 +86,7 @@ export default function AdminRanks() {
                     {ranks &&
                         ranks.length > 0 &&
                         ranks.map((rank) => (
-                            <div className="" key={rank.id}>
-                                <h1>{rank.name}</h1>
-                                <p className="text-darkGray">{`max wpm ${rank.maxWpm}`}</p>
-                                <p className="mb-1 text-darkGray">{`min wpm ${rank.minWpm}`}</p>
-
-                                <Image
-                                    alt="rank"
-                                    src={rank.image}
-                                    width={200}
-                                    height={200}
-                                    className="h-20 w-32 rounded-md object-cover"
-                                />
-                            </div>
+                            <AdminEachDisplayRank rank={rank} key={rank.id} />
                         ))}
                 </div>
             </div>
@@ -122,15 +112,7 @@ export default function AdminRanks() {
                     {tags &&
                         tags.length > 0 &&
                         tags.map((tag) => (
-                            <div
-                                className="rounded-xl border-2 border-black p-3"
-                                key={tag.id}
-                            >
-                                <h1>{tag.name}</h1>
-                                <p className="w-96 text-darkGray">
-                                    {tag.description}
-                                </p>
-                            </div>
+                            <AdminEachDisplayTag tag={tag} key={tag.id} />
                         ))}
                 </div>
             </div>
