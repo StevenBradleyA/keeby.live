@@ -4,7 +4,6 @@ import {
     publicProcedure,
     protectedProcedure,
 } from "~/server/api/trpc";
-import { env } from "~/env.mjs";
 import { removeFileFromS3 } from "../utils";
 
 export const rankRouter = createTRPCRouter({

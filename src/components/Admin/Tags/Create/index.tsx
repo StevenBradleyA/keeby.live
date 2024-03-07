@@ -28,7 +28,7 @@ export default function AdminCreateTag({
         },
     });
 
-    const handleCreateRank = (e: React.FormEvent) => {
+    const handleCreateTag = (e: React.FormEvent) => {
         e.preventDefault();
         if (
             session?.user.isAdmin &&
@@ -78,7 +78,7 @@ export default function AdminCreateTag({
                 className=" flex w-1/2 justify-center rounded-md border-2 border-[#ff0000] bg-keebyGray bg-opacity-60 px-6 py-2 text-failure hover:bg-failure hover:bg-opacity-100 hover:text-black"
                 onClick={(e) => {
                     e.preventDefault();
-                    void handleCreateRank(e);
+                    void handleCreateTag(e);
                 }}
             >
                 Submit

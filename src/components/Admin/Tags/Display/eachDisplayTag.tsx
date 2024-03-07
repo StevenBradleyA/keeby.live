@@ -9,7 +9,6 @@ interface AdminEachDisplayTagProps {
     tag: { id: string; name: string; description: string };
 }
 export default function AdminEachDisplayTag({ tag }: AdminEachDisplayTagProps) {
-    // add update and delete
     const ctx = api.useContext();
     const { data: session } = useSession();
 
@@ -51,7 +50,8 @@ export default function AdminEachDisplayTag({ tag }: AdminEachDisplayTagProps) {
 
     return (
         <div className="relative rounded-xl border-2 border-black p-3">
-            <h1>{tag.name}</h1>
+            <h1 className="text-3xl font-titillium">{tag.name}</h1>
+
             <p className="w-96 text-darkGray">{tag.description}</p>
 
             <div className="absolute -top-8 right-0 flex gap-5">

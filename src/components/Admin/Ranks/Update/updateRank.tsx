@@ -1,6 +1,3 @@
-
-
-
 import { api } from "~/utils/api";
 import toast from "react-hot-toast";
 import { useState } from "react";
@@ -9,22 +6,33 @@ import { uploadFileToS3 } from "~/utils/aws";
 import Image from "next/image";
 import defaultProfile from "@public/Profile/profile-default.png";
 
-export default function AdminUpdateRank({
-    closeModal,
-}: {
+interface AdminUpdateRankProps {
+    rank: EachRank;
     closeModal: () => void;
-}) {
+}
+interface EachRank {
+    id: string;
+    name: string;
+    minWpm: number;
+    maxWpm: number;
+    image: string;
+}
+
+export default function AdminUpdateRank({
+    rank,
+    closeModal,
+}: AdminUpdateRankProps) {
     const { data: session } = useSession();
     const ctx = api.useContext();
 
-    const [rankName, setRankName] = useState<string>("");
-    const [minWpm, setMinWpm] = useState<number>(0);
-    const [maxWpm, setMaxWpm] = useState<number>(0);
+    const [rankName, setRankName] = useState<string>(rank.name);
+    const [minWpm, setMinWpm] = useState<number>(rank.minWpm);
+    const [maxWpm, setMaxWpm] = useState<number>(rank.maxWpm);
     const [imageFiles, setImageFiles] = useState<File[]>([]);
 
-    const { mutate: createRank } = api.rank.create.useMutation({
+    const { mutate: updateRank } = api.rank.update.useMutation({
         onSuccess: () => {
-            toast.success("Tag Created!", {
+            toast.success("Rank Updated!", {
                 style: {
                     borderRadius: "10px",
                     background: "#333",
@@ -36,7 +44,7 @@ export default function AdminUpdateRank({
         },
     });
 
-    const handleCreateRank = async (e: React.FormEvent) => {
+    const handleUpdateRank = async (e: React.FormEvent) => {
         e.preventDefault();
         if (
             session?.user.isAdmin &&
@@ -73,15 +81,17 @@ export default function AdminUpdateRank({
             }
 
             const data = {
+                id: rank.id,
                 name: rankName,
                 minWpm: minWpm,
                 maxWpm: maxWpm,
+                oldImage: rank.image,
                 image: imageUrlArr.map((imageUrl) => ({
                     link: imageUrl || "",
                 })),
             };
 
-            createRank(data);
+            updateRank(data);
         }
     };
 
@@ -188,7 +198,7 @@ export default function AdminUpdateRank({
                 className=" w-1/2 rounded-md border-2 border-[#ff0000] bg-keebyGray bg-opacity-60 px-6 py-2 text-failure hover:bg-failure hover:bg-opacity-100 hover:text-black"
                 onClick={(e) => {
                     e.preventDefault();
-                    void handleCreateRank(e);
+                    void handleUpdateRank(e);
                 }}
             >
                 Submit
