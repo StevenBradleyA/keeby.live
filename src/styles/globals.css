@@ -61,11 +61,6 @@
         brightness(112%) contrast(123%);
 }
 
-
-
-
-
-
 /* --------------                            --------------  */
 
 /* rgb(34 197 94) this is text-green-500 */
@@ -80,12 +75,9 @@ $blue: #2033c1; */
 
 /* --------------         ADMIN          --------------  */
 
-.admin-search::placeholder{
-color: #ff0000
+.admin-search::placeholder {
+    color: #ff0000;
 }
-
-
-
 
 /* --------------                        --------------  */
 
@@ -907,7 +899,7 @@ input[type="checkbox"]:hover {
 
 /* --------------         END KEEB SHARE          --------------  */
 
-/* --------------     Profile    --------------  */
+/* --------------         PROFILE          --------------  */
 
 @import url(https://fonts.googleapis.com/css?family=VT323);
 .retroVT {
@@ -1044,6 +1036,35 @@ input[type="checkbox"]:hover {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
 }
+
+/* Manage Listing Cards  */
+
+.manage-listing-card {
+    transition: all 0.3s ease;
+}
+.manage-listing-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 10px #0fa005;
+}
+
+.manage-listing-name {
+    transition: all 0.3s ease;
+}
+
+.manage-listing-card:hover .manage-listing-name {
+    top: 20px;
+    color: rgb(34 197 94);
+    background-image: url("../../public/Gifs/matrix.gif");
+
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 150%;
+}
+
+
+
+/* --------------         END PROFILE         --------------  */
 
 /* --------------     Public Profile    --------------  */
 

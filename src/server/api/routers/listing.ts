@@ -95,6 +95,38 @@ export const listingRouter = createTRPCRouter({
                 },
             });
         }),
+    getAllByUserId: publicProcedure
+        .input(
+            z.object({
+                userId: z.string(),
+            })
+        )
+        .query(async ({ input, ctx }) => {
+            const { userId } = input;
+
+            const allUserListings = await ctx.prisma.listing.findMany({
+                where: {
+                    sellerId: userId,
+                },
+                include: {
+                    images: true,
+                },
+            });
+
+            if (allUserListings) {
+                allUserListings.map((e) => {
+                    e.images.sort((a, b) => {
+                        const rankA =
+                            a.resourceType === "LISTINGPREVIEW" ? 1 : 2;
+                        const rankB =
+                            b.resourceType === "LISTINGPREVIEW" ? 1 : 2;
+                        return rankA - rankB;
+                    });
+                });
+            }
+
+            return allUserListings;
+        }),
 
     getOne: publicProcedure
         .input(

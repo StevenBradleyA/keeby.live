@@ -24,6 +24,7 @@ import computerType from "@public/Profile/computer-type.png";
 import MainFooter from "~/components/Footer";
 import DisplayFavoriteListings from "~/components/Profile/Favorites";
 import ChevronRound from "~/components/Svgs/chevron";
+import ManageListings from "~/components/KeebShop/ManageListings";
 
 export default function UserProfile() {
     // mdn digest() -- might be useful for us here
@@ -31,17 +32,26 @@ export default function UserProfile() {
 
     // todo add notifcations here for comments, offers, likes etc...
 
-    // todo also we definetly want to do one query that grabs a ton of info like posts , listings, keebs, etc here that way we can access everything easily, ? or we add buttons
     const { data: sessionData } = useSession();
-    const { data: keebData } = api.keeb.getAll.useQuery();
 
     const cookies = getCookies();
 
     const [isRetro, setIsRetro] = useState<boolean>(false);
-    const [showFavorites, setShowFavorites] = useState<boolean>(false);
-    const [showOffers, setShowOffers] = useState<boolean>(false);
-
     const [toggle, setToggle] = useState<string>("KEEBSHOP");
+
+    // keebshop
+    const [keebShopCategory, setKeebShopCategory] = useState<string>("");
+
+    // keebshare
+    const [isShowingPosts, setIsShowingPosts] = useState<boolean>(false);
+    const [isShowingPostFavorites, setIsShowingPostFavorites] =
+        useState<boolean>(false);
+
+    // keebtype
+    const [isShowingStats, setIsShowingStats] = useState<boolean>(false);
+    const [isShowingKeebs, setIsShowingKeebs] = useState<boolean>(false);
+
+    // const { data: keebData } = api.keeb.getAll.useQuery();
 
     const [isCreateKeebModalOpen, setIsCreateKeebModalOpen] =
         useState<boolean>(false);
@@ -528,7 +538,10 @@ export default function UserProfile() {
 
                 {toggle === "KEEBSHOP" && (
                     <div className="mt-10 flex  w-full justify-between border-2 border-[#616161] p-5">
-                        <button className="  border-2 border-black bg-black  px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray">
+                        <button
+                            className="  border-2 border-black bg-black  px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray"
+                            onClick={() => setKeebShopCategory("LISTINGS")}
+                        >
                             My Listings
                         </button>
                         <button className="  border-2 border-black bg-black  px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray">
@@ -563,6 +576,10 @@ export default function UserProfile() {
                             My Keebs
                         </button>
                     </div>
+                )}
+
+                {toggle === "KEEBSHOP" && keebShopCategory === "LISTINGS" && (
+                    <ManageListings userId={sessionData.user.id} />
                 )}
 
                 {/* {toggle === "KEEBSHOP" && (
