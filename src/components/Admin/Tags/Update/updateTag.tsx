@@ -3,20 +3,32 @@ import toast from "react-hot-toast";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 
-export default function AdminUpdateTag({
-    closeModal,
-}: {
+interface AdminUpdateTagProps {
+    tag: EachTag;
     closeModal: () => void;
-}) {
+}
+
+interface EachTag {
+    id: string;
+    name: string;
+    description: string;
+}
+
+export default function AdminUpdateTag({
+    tag,
+    closeModal,
+}: AdminUpdateTagProps) {
     const { data: session } = useSession();
     const ctx = api.useContext();
 
-    const [tagName, setTagName] = useState<string>("");
-    const [tagDescription, setTagDescription] = useState<string>("");
+    const [tagName, setTagName] = useState<string>(tag.name);
+    const [tagDescription, setTagDescription] = useState<string>(
+        tag.description
+    );
 
-    const { mutate: createTag } = api.tag.create.useMutation({
+    const { mutate: updateTag } = api.tag.update.useMutation({
         onSuccess: () => {
-            toast.success("Tag Created!", {
+            toast.success("Tag Updated!", {
                 style: {
                     borderRadius: "10px",
                     background: "#333",
@@ -28,7 +40,7 @@ export default function AdminUpdateTag({
         },
     });
 
-    const handleCreateRank = (e: React.FormEvent) => {
+    const handleUpdateTag = (e: React.FormEvent) => {
         e.preventDefault();
         if (
             session?.user.isAdmin &&
@@ -36,11 +48,12 @@ export default function AdminUpdateTag({
             tagDescription.length > 0
         ) {
             const data = {
+                id: tag.id,
                 name: tagName,
                 description: tagDescription,
             };
 
-            createTag(data);
+            updateTag(data);
         }
     };
 
@@ -78,7 +91,7 @@ export default function AdminUpdateTag({
                 className=" flex w-1/2 justify-center rounded-md border-2 border-[#ff0000] bg-keebyGray bg-opacity-60 px-6 py-2 text-failure hover:bg-failure hover:bg-opacity-100 hover:text-black"
                 onClick={(e) => {
                     e.preventDefault();
-                    void handleCreateRank(e);
+                    void handleUpdateTag(e);
                 }}
             >
                 Submit

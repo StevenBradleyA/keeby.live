@@ -1,15 +1,45 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import ModalDialog from "~/components/Modal";
 import AdminUpdateTag from "../Update/updateTag";
+import { api } from "~/utils/api";
+import toast from "react-hot-toast";
+import { useSession } from "next-auth/react";
 
 interface AdminEachDisplayTagProps {
     tag: { id: string; name: string; description: string };
 }
 export default function AdminEachDisplayTag({ tag }: AdminEachDisplayTagProps) {
     // add update and delete
+    const ctx = api.useContext();
+    const { data: session } = useSession();
+
     const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
 
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+    const { mutate } = api.tag.delete.useMutation({
+        onSuccess: () => {
+            toast.success("Tag Eliminated!", {
+                icon: "☠️",
+                style: {
+                    borderRadius: "10px",
+                    background: "#333",
+                    color: "#ff0000",
+                },
+            });
+            void ctx.tag.getAll.invalidate();
+        },
+    });
+
+    const handleDeleteTag = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+
+        if (session?.user.isAdmin) {
+            const data = tag.id;
+
+            mutate(data);
+        }
+    };
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -59,7 +89,7 @@ export default function AdminEachDisplayTag({ tag }: AdminEachDisplayTagProps) {
 
                 {confirmDelete ? (
                     <div className="flex gap-2">
-                        <button>{`XXXX`}</button>
+                        <button onClick={handleDeleteTag}>{`XXXX`}</button>
                         <button onClick={() => setConfirmDelete(false)}>
                             {`Cancel`}
                         </button>
