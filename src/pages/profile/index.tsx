@@ -29,10 +29,9 @@ export default function UserProfile() {
     // mdn digest() -- might be useful for us here
     // npm install three @types/three @react-three/fiber
 
-    // todo add notification if user has an offer
-    // todo add notification for navbar profile if a user has a offer they havent accepted or declined
-    // maybe if they have an offer we just set a cookie and then access the cookie in the navbar that way we arent checking query every single page...
+    // todo add notifcations here for comments, offers, likes etc...
 
+    // todo also we definetly want to do one query that grabs a ton of info like posts , listings, keebs, etc here that way we can access everything easily, ? or we add buttons
     const { data: sessionData } = useSession();
     const { data: keebData } = api.keeb.getAll.useQuery();
 
@@ -350,11 +349,11 @@ export default function UserProfile() {
 
                 <div className="my-10 flex w-full items-center gap-5">
                     <h1 className="text-2xl"> {toggle}</h1>
-                    <h1 className="w-full border-[1px] border-green-500"></h1>
+                    <div className="w-full border-[1px] border-green-500"></div>
                 </div>
 
-                <div className=" flex w-full items-start gap-20">
-                    <div className="w-1/2   ">
+                <div className=" flex h-[50vh] w-full gap-20  ">
+                    <div className="flex h-full w-1/2 flex-col justify-between">
                         <Image
                             alt="profile"
                             src={
@@ -365,10 +364,72 @@ export default function UserProfile() {
                             width={800}
                             height={800}
                             priority={true}
-                            className=" w-full object-cover"
+                            className=" h-[92%] w-full object-cover"
                         />
+
+                        {toggle === "KEEBSHOP" &&
+                            sessionData.user.isVerified && (
+                                <div className="flex w-full items-end ">
+                                    <div className="flex w-full items-center justify-between gap-5 ">
+                                        <p className="flex-shrink-0">
+                                            {`INTERNET POINTS ${sessionData.user.internetPoints}`}
+                                        </p>
+                                        <div className="h-0 w-full border-[1px] border-green-500"></div>
+
+                                        <Link
+                                            href="//verify-seller"
+                                            aria-label="/verify-seller"
+                                            className="flex-shrink-0"
+                                        >
+                                            VERIFIED SELLER
+                                        </Link>
+                                    </div>
+                                </div>
+                            )}
+
+                        {toggle === "KEEBSHOP" &&
+                            !sessionData.user.isVerified && (
+                                <div className=" flex w-full items-end">
+                                    <div className="flex w-full items-center gap-5">
+                                        <p className="flex-shrink-0">
+                                            {`INTERNET POINTS ${sessionData.user.internetPoints}`}
+                                        </p>
+                                        <div className="h-0 w-full border-[1px] border-green-500"></div>
+
+                                        <Link
+                                            href="//verify-seller"
+                                            aria-label="/verify-seller"
+                                            className=" flex-shrink-0 text-darkGray"
+                                        >
+                                            UNVERIFIED SELLER
+                                        </Link>
+                                    </div>
+                                </div>
+                            )}
+
+                        {toggle === "KEEBSHARE" && (
+                            <div className=" flex w-full items-end">
+                                <div className="mt-2 flex w-full items-center gap-5">
+                                    <p className="flex flex-shrink-0">
+                                        {`INTERNET POINTS ${sessionData.user.internetPoints}`}
+                                    </p>
+                                    <div className="w-full border-[1px] border-green-500"></div>
+                                </div>
+                            </div>
+                        )}
+
+                        {toggle === "KEEBTYPE" && (
+                            <div className="flex w-full items-end ">
+                                <div className="flex w-full items-center justify-between gap-5 ">
+                                    <p className="flex-shrink-0">
+                                        KEEBTYPE STATS
+                                    </p>
+                                    <div className="h-0 w-full border-[1px] border-green-500"></div>
+                                </div>
+                            </div>
+                        )}
                     </div>
-                    <div className="flex w-1/2 flex-col gap-10 ">
+                    <div className="flex h-full w-1/2  flex-col justify-between">
                         <div className=" flex w-full flex-col gap-5 border-2 border-[#616161] p-5 ">
                             <div className="flex items-center justify-center gap-10 text-xs">
                                 <Image
@@ -376,7 +437,11 @@ export default function UserProfile() {
                                     alt="computer"
                                     width={200}
                                     height={200}
-                                    className="png-green w-20 cursor-pointer object-cover"
+                                    className={`${
+                                        toggle === "KEEBSHOP"
+                                            ? "png-light-gray"
+                                            : "png-green"
+                                    } w-20 cursor-pointer object-cover`}
                                     onClick={() => setToggle("KEEBSHOP")}
                                 />
                                 <h2
@@ -397,7 +462,11 @@ export default function UserProfile() {
                                     alt="computer"
                                     width={200}
                                     height={200}
-                                    className="png-green w-20 cursor-pointer object-cover"
+                                    className={`${
+                                        toggle === "KEEBSHARE"
+                                            ? "png-light-gray"
+                                            : "png-green"
+                                    } w-20 cursor-pointer object-cover`}
                                     onClick={() => setToggle("KEEBSHARE")}
                                 />
                                 <h2
@@ -418,7 +487,11 @@ export default function UserProfile() {
                                     alt="computer"
                                     width={200}
                                     height={200}
-                                    className="png-green w-20 cursor-pointer object-cover"
+                                    className={`${
+                                        toggle === "KEEBTYPE"
+                                            ? "png-light-gray"
+                                            : "png-green"
+                                    } w-20 cursor-pointer object-cover`}
                                     onClick={() => setToggle("KEEBTYPE")}
                                 />
                                 <h2
@@ -454,127 +527,47 @@ export default function UserProfile() {
                 </div>
 
                 {toggle === "KEEBSHOP" && (
-                    <div className="mt-1 flex w-full gap-20">
+                    <div className="mt-10 flex  w-full justify-between border-2 border-[#616161] p-5">
+                        <button className="  border-2 border-black bg-black  px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray">
+                            My Listings
+                        </button>
+                        <button className="  border-2 border-black bg-black  px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray">
+                            Offers
+                        </button>
+                        <button className="  border-2 border-black bg-black  px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray">
+                            Favorites
+                        </button>
+                        <button className="  border-2 border-black bg-black  px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray">
+                            Reviews
+                        </button>
+                    </div>
+                )}
+                {toggle === "KEEBSHARE" && (
+                    <div className="mt-10 flex  w-full justify-between border-2 border-[#616161] p-5">
+                        <button className="  border-2 border-black bg-black  px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray">
+                            My Posts
+                        </button>
+
+                        <button className="  border-2 border-black bg-black  px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray">
+                            Favorites
+                        </button>
+                    </div>
+                )}
+                {toggle === "KEEBTYPE" && (
+                    <div className="mt-10 flex  w-full justify-between border-2 border-[#616161] p-5">
+                        <button className="  border-2 border-black bg-black  px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray">
+                            Stats
+                        </button>
+
+                        <button className="  border-2 border-black bg-black  px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray">
+                            My Keebs
+                        </button>
+                    </div>
+                )}
+
+                {/* {toggle === "KEEBSHOP" && (
+                    <div className="mt-10 flex w-full gap-20">
                         <div className="w-1/2 flex-col  ">
-                            {sessionData.user.isVerified ? (
-                                <div className="flex items-center justify-between">
-                                    <p>
-                                        {`INTERNET POINTS ${sessionData.user.internetPoints}`}
-                                    </p>
-
-                                    <Link
-                                        href="//verify-seller"
-                                        aria-label="/verify-seller"
-                                    >
-                                        <div className="flex gap-1">
-                                            <p className="mr-2">
-                                                VERIFIED SELLER
-                                            </p>
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                className="w-4"
-                                                viewBox="0 0 20 20"
-                                                fill="none"
-                                            >
-                                                <path
-                                                    stroke="rgb(34 197 94)"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    strokeWidth="2"
-                                                    d="M17 5L8 15l-5-4"
-                                                />
-                                            </svg>
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                className="w-4"
-                                                viewBox="0 0 20 20"
-                                                fill="none"
-                                            >
-                                                <path
-                                                    stroke="rgb(34 197 94)"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    strokeWidth="2"
-                                                    d="M17 5L8 15l-5-4"
-                                                />
-                                            </svg>
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                className="w-4"
-                                                viewBox="0 0 20 20"
-                                                fill="none"
-                                            >
-                                                <path
-                                                    stroke="rgb(34 197 94)"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    strokeWidth="2"
-                                                    d="M17 5L8 15l-5-4"
-                                                />
-                                            </svg>
-                                        </div>
-                                    </Link>
-                                </div>
-                            ) : (
-                                <div className="flex items-center justify-between">
-                                    <p>
-                                        {`INTERNET POINTS ${sessionData.user.internetPoints}`}
-                                    </p>
-                                    <Link
-                                        href="//verify-seller"
-                                        aria-label="/verify-seller"
-                                    >
-                                        <div className="flex text-darkGray">
-                                            <p className="mr-2">
-                                                UNVERIFIED SELLER
-                                            </p>
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                className="w-6"
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                            >
-                                                <path
-                                                    d="M16 8L8 16M8.00001 8L16 16"
-                                                    stroke="#616161"
-                                                    strokeWidth="2"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                />
-                                            </svg>
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                className="w-6"
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                            >
-                                                <path
-                                                    d="M16 8L8 16M8.00001 8L16 16"
-                                                    stroke="#616161"
-                                                    strokeWidth="2"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                />
-                                            </svg>
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                className="w-6"
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                            >
-                                                <path
-                                                    d="M16 8L8 16M8.00001 8L16 16"
-                                                    stroke="#616161"
-                                                    strokeWidth="2"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                />
-                                            </svg>
-                                        </div>
-                                    </Link>
-                                </div>
-                            )}
-
                             <div className="mt-5 flex w-full justify-between gap-5 border-2 border-[#616161] p-5">
                                 <Link
                                     href="/manage-listings"
@@ -721,17 +714,11 @@ export default function UserProfile() {
                             </div>
                         </div>
                     </div>
-                )}
+                )} */}
 
-                {toggle === "KEEBSHARE" && (
+                {/* {toggle === "KEEBSHARE" && (
                     <div className="mt-1 flex w-full gap-20">
                         <div className="w-1/2 flex-col  ">
-                            <div className="flex items-center justify-between">
-                                <p>
-                                    {`INTERNET POINTS ${sessionData.user.internetPoints}`}
-                                </p>
-                            </div>
-
                             <div className="mt-5 flex w-full justify-between gap-5 border-2 border-[#616161] p-5">
                                 <Link
                                     href="/manage-listings"
@@ -840,29 +827,12 @@ export default function UserProfile() {
                                 )}
                             </div>
                         </div>
-                    </div>
+                    </div> 
 
-                    // <div className="mb-20 mt-10 flex flex-col items-center">
-                    //     <div>Internet Points counter --total likes</div>
+        
+                )}*/}
 
-                    //     <motion.button
-                    //         whileHover={{
-                    //             scale: 1.1,
-                    //         }}
-                    //         whileTap={{ scale: 0.95 }}
-                    //         className="mt-10 rounded-2xl bg-black px-6 py-2"
-                    //     >
-                    //         <Link
-                    //             href="/manage-posts"
-                    //             aria-label="manage posts"
-                    //         >
-                    //             {`Manage my posts`}
-                    //         </Link>
-                    //     </motion.button>
-                    // </div>
-                )}
-
-                {toggle === "KEEBTYPE" && (
+                {/* {toggle === "KEEBTYPE" && (
                     <div className=" flex flex-col items-center">
                         <div>graph with wpm date and keeb etc</div>
                         <div>next to graph is a list of ten fastest wpm</div>
@@ -917,7 +887,7 @@ export default function UserProfile() {
                             clicking on a keeb will show data for that keeb{" "}
                         </div>
                     </div>
-                )}
+                )} */}
 
                 <MainFooter />
             </div>

@@ -21,7 +21,7 @@ export default function AdminCreateRank({
 
     const { mutate: createRank } = api.rank.create.useMutation({
         onSuccess: () => {
-            toast.success("Tag Created!", {
+            toast.success("Rank Created!", {
                 style: {
                     borderRadius: "10px",
                     background: "#333",

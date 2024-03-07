@@ -30,7 +30,7 @@ export default function CreateListingAgreement() {
 
     return (
         <>
-            <div className="matrix-full-screen fixed bottom-0 left-0 right-0 top-0 h-full w-full opacity-50  ">
+            <div className="matrix-full-screen fixed bottom-0 left-0 right-0 top-0 h-full w-full opacity-80  ">
                 <video
                     className="absolute bottom-0 left-0 right-0 top-0 -z-10 h-full w-full object-cover  object-center"
                     autoPlay
@@ -52,7 +52,7 @@ export default function CreateListingAgreement() {
                         <div className="z-10 flex justify-center text-5xl">
                             <TitleScripts page={"createListing"} />
                         </div>
-                        <div className="z-10 mt-10 flex w-1/2 flex-col gap-10 rounded-2xl bg-keebyGray bg-opacity-60 p-10">
+                        <div className="z-10 mt-10 flex w-1/2 flex-col gap-10 rounded-2xl bg-keebyGray bg-opacity-80 p-10">
                             <div className="flex items-end gap-10 text-2xl text-green-500">
                                 <Image
                                     alt="keebo"

@@ -6,6 +6,13 @@ import {
 } from "~/server/api/trpc";
 import { removeFileFromS3 } from "../utils";
 
+
+
+
+// todo assign tags at certain ranks in keeb type
+
+
+
 export const rankRouter = createTRPCRouter({
     getAll: publicProcedure.query(({ ctx }) => {
         return ctx.prisma.rank.findMany();
