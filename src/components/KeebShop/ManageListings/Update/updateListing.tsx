@@ -111,10 +111,10 @@ export default function UpdateListing({
                 style: {
                     borderRadius: "10px",
                     background: "#333",
-                    color: "#22C55E",
+                    color: "#fff",
                 },
             });
-            void ctx.listing.getAll.invalidate();
+            void ctx.listing.getAllByUserId.invalidate();
             closeModal();
         },
     });
@@ -538,6 +538,7 @@ export default function UpdateListing({
                                             multiple
                                             accept="image/png, image/jpg, image/jpeg"
                                             onChange={(e) => {
+                                                e.preventDefault();
                                                 if (e.target.files)
                                                     setImageFiles([
                                                         ...imageFiles,

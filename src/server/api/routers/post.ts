@@ -5,7 +5,8 @@ import {
     protectedProcedure,
 } from "~/server/api/trpc";
 import { removeFileFromS3 } from "../utils";
-import type { Images, Prisma } from "@prisma/client";
+import type { Images, Prisma, Post } from "@prisma/client";
+import { id } from "date-fns/locale";
 
 type CreateData = {
     title: string;
@@ -77,6 +78,14 @@ interface PostPage {
     images: Images[];
     user: UserWithPosts;
 }
+type ExtendedPost = Post & {
+    images: Images[];
+    _count: {
+        comments: number;
+        postLikes: number;
+    };
+    previewIndex?: number;
+};
 
 // todo potentially not update user if post id matches userId so they dont gain points for liking their own stuff.. this would prevent farming
 
@@ -124,6 +133,41 @@ export const postRouter = createTRPCRouter({
                         },
                     },
                 },
+            });
+        }),
+    getAllByUserId: publicProcedure
+        .input(
+            z.object({
+                userId: z.string(),
+            })
+        )
+        .query(async ({ input, ctx }): Promise<ExtendedPost[]> => {
+            const { userId } = input;
+
+            const allUserPosts = await ctx.prisma.post.findMany({
+                where: {
+                    userId: userId,
+                },
+                include: {
+                    images: true,
+                    _count: {
+                        select: { comments: true, postLikes: true },
+                    },
+                },
+            });
+
+            return allUserPosts.map((post) => {
+                const previewIndex =
+                    post.images && post.images.length > 0
+                        ? post.images.findIndex(
+                              (image) => image.resourceType === "POSTPREVIEW"
+                          )
+                        : -1;
+
+                return {
+                    ...post,
+                    ...(previewIndex !== -1 && { previewIndex }),
+                };
             });
         }),
 
@@ -588,6 +632,147 @@ export const postRouter = createTRPCRouter({
             throw new Error("Invalid userId");
         }),
 
+    update: protectedProcedure
+        .input(
+            z.object({
+                id: z.string(),
+                title: z.string(),
+                tag: z.string(),
+                text: z.string().optional(),
+                link: z.string().optional(),
+                userId: z.string(),
+                images: z
+                    .array(
+                        z.object({
+                            link: z.string(),
+                        })
+                    )
+                    .optional(),
+                preview: z
+                    .object({ source: z.string(), index: z.number() })
+                    .optional(),
+                deleteImageIds: z.array(z.string()).optional(),
+            })
+        )
+        .mutation(async ({ input, ctx }) => {
+            const {
+                id,
+                title,
+                tag,
+                link,
+                text,
+                preview,
+                userId,
+                images,
+                deleteImageIds,
+            } = input;
+
+            if (ctx.session.user.id === userId) {
+                const updateData: CreateData = {
+                    title,
+                    tag,
+                    userId,
+                };
+
+                if (link?.length) {
+                    updateData.link = link;
+                }
+                if (text?.length) {
+                    updateData.text = text;
+                }
+
+                const updatePost = await ctx.prisma.post.update({
+                    where: { id: id },
+                    data: updateData,
+                });
+
+                if (images || deleteImageIds || preview) {
+                    await ctx.prisma.images.updateMany({
+                        where: {
+                            listingId: id,
+                            resourceType: "POSTPREVIEW",
+                        },
+                        data: {
+                            resourceType: "POST",
+                        },
+                    });
+
+                    if (preview && preview.source === "prev") {
+                        const allExistingImages =
+                            await ctx.prisma.images.findMany({
+                                where: {
+                                    postId: id,
+                                },
+                            });
+                        const imageToUpdate = allExistingImages[preview.index];
+                        if (imageToUpdate) {
+                            await ctx.prisma.images.update({
+                                where: {
+                                    id: imageToUpdate.id,
+                                },
+                                data: {
+                                    resourceType: "LISTINGPREVIEW",
+                                },
+                            });
+                        }
+                    }
+                    if (images && images.length > 0 && preview) {
+                        await Promise.all(
+                            images.map(async (image, i) => {
+                                const imageType =
+                                    preview.source === "new" &&
+                                    preview.index === i
+                                        ? "LISTINGPREVIEW"
+                                        : "LISTING";
+
+                                return ctx.prisma.images.create({
+                                    data: {
+                                        link: image.link,
+                                        resourceType: imageType,
+                                        listingId: id,
+                                        userId: userId,
+                                    },
+                                });
+                            })
+                        );
+                    }
+
+                    if (deleteImageIds && deleteImageIds.length > 0) {
+                        const images = await ctx.prisma.images.findMany({
+                            where: {
+                                id: { in: deleteImageIds },
+                            },
+                        });
+                        const removeFilePromises = images.map(async (image) => {
+                            try {
+                                await removeFileFromS3(image.link);
+                            } catch (err) {
+                                console.error(
+                                    `Failed to remove file from S3: `,
+                                    err
+                                );
+                                throw new Error(
+                                    `Failed to remove file from S3: `
+                                );
+                            }
+                        });
+
+                        await Promise.all(removeFilePromises);
+
+                        await ctx.prisma.images.deleteMany({
+                            where: {
+                                id: { in: deleteImageIds },
+                            },
+                        });
+                    }
+                }
+
+                return updatePost;
+            }
+
+            throw new Error("Invalid userId");
+        }),
+
     delete: protectedProcedure
         .input(
             z.object({
@@ -610,7 +795,6 @@ export const postRouter = createTRPCRouter({
                         removeFileFromS3(image.link)
                     );
                     try {
-                        // here we are waiting for all promises and capturing those that are rejected
                         const results = await Promise.allSettled(
                             removeFilePromises
                         );

@@ -25,6 +25,7 @@ import MainFooter from "~/components/Footer";
 import DisplayFavoriteListings from "~/components/Profile/Favorites";
 import ChevronRound from "~/components/Svgs/chevron";
 import ManageListings from "~/components/KeebShop/ManageListings";
+import ManagePosts from "~/components/KeebShare/ManagePosts";
 
 export default function UserProfile() {
     // mdn digest() -- might be useful for us here
@@ -43,13 +44,10 @@ export default function UserProfile() {
     const [keebShopCategory, setKeebShopCategory] = useState<string>("");
 
     // keebshare
-    const [isShowingPosts, setIsShowingPosts] = useState<boolean>(false);
-    const [isShowingPostFavorites, setIsShowingPostFavorites] =
-        useState<boolean>(false);
+    const [keebShareCategory, setKeebShareCategory] = useState<string>("");
 
     // keebtype
-    const [isShowingStats, setIsShowingStats] = useState<boolean>(false);
-    const [isShowingKeebs, setIsShowingKeebs] = useState<boolean>(false);
+    const [keebTypeCategory, setKeebTypeCategory] = useState<string>("");
 
     // const { data: keebData } = api.keeb.getAll.useQuery();
 
@@ -557,7 +555,10 @@ export default function UserProfile() {
                 )}
                 {toggle === "KEEBSHARE" && (
                     <div className="mt-10 flex  w-full justify-between border-2 border-[#616161] p-5">
-                        <button className="  border-2 border-black bg-black  px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray">
+                        <button
+                            className="  border-2 border-black bg-black  px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray"
+                            onClick={() => setKeebShareCategory("POSTS")}
+                        >
                             My Posts
                         </button>
 
@@ -580,6 +581,10 @@ export default function UserProfile() {
 
                 {toggle === "KEEBSHOP" && keebShopCategory === "LISTINGS" && (
                     <ManageListings userId={sessionData.user.id} />
+                )}
+
+                {toggle === "KEEBSHARE" && keebShareCategory === "POSTS" && (
+                    <ManagePosts userId={sessionData.user.id} />
                 )}
 
                 {/* {toggle === "KEEBSHOP" && (

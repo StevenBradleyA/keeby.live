@@ -15,10 +15,7 @@ export default function ManageListings({ userId }: ManageListingsProps) {
                 allUserListings.length > 0 &&
                 allUserListings.map((listing) => (
                     <div key={listing.id} className="mt-10 w-96">
-                        <EachManageListingCard
-                            listing={listing}
-                            userId={userId}
-                        />
+                        <EachManageListingCard listing={listing} />
                     </div>
                 ))}
         </div>

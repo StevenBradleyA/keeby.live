@@ -62,13 +62,7 @@ interface ListingPage extends Listing {
     };
 }
 
-// interface ManageListingPage extends Listing {
-//     images: Images[];
-//     _count: {
-//         comments: number;
-//     };
-//     previewIndex?: number;
-// }
+
 type ExtendedListing = Listing & {
     images: Images[];
     _count: {
@@ -143,20 +137,6 @@ export const listingRouter = createTRPCRouter({
                     },
                 },
             });
-
-            // if (allUserListings) {
-            //     allUserListings.map((e) => {
-            //         e.images.sort((a, b) => {
-            //             const rankA =
-            //                 a.resourceType === "LISTINGPREVIEW" ? 1 : 2;
-            //             const rankB =
-            //                 b.resourceType === "LISTINGPREVIEW" ? 1 : 2;
-            //             return rankA - rankB;
-            //         });
-            //     });
-            // }
-
-            // how do i return the index of the ListingPreview ?
 
             return allUserListings.map((listing) => ({
                 ...listing,
@@ -597,21 +577,7 @@ export const listingRouter = createTRPCRouter({
                             listingId: id,
                         },
                     });
-                    // await Promise.all(
-                    //     allExistingImages.map(async (image, i) => {
-                    //         if (i === preview.index) {
-                    //             return ctx.prisma.images.update({
-                    //                 where: {
-                    //                     id: image.id,
-                    //                 },
-                    //                 data: {
-                    //                     resourceType: "LISTINGPREVIEW",
-                    //                 },
-                    //             });
-                    //         }
-                    //         return image;
-                    //     })
-                    // );
+                
                     const imageToUpdate = allExistingImages[preview.index];
                     if (imageToUpdate) {
                         await ctx.prisma.images.update({

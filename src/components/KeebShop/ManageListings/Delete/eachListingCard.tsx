@@ -9,7 +9,6 @@ import UpdateListing from "../Update/updateListing";
 
 interface EachManageListingCardProps {
     listing: EachListing;
-    userId: string;
 }
 
 interface EachListing extends Listing {
