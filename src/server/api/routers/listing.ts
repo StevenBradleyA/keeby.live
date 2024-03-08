@@ -62,6 +62,21 @@ interface ListingPage extends Listing {
     };
 }
 
+// interface ManageListingPage extends Listing {
+//     images: Images[];
+//     _count: {
+//         comments: number;
+//     };
+//     previewIndex?: number;
+// }
+type ExtendedListing = Listing & {
+    images: Images[];
+    _count: {
+        comments: number;
+    };
+    previewIndex: number;
+};
+
 export const listingRouter = createTRPCRouter({
     getAll: publicProcedure
         .input(
@@ -114,7 +129,7 @@ export const listingRouter = createTRPCRouter({
                 userId: z.string(),
             })
         )
-        .query(async ({ input, ctx }) => {
+        .query(async ({ input, ctx }): Promise<ExtendedListing[]> => {
             const { userId } = input;
 
             const allUserListings = await ctx.prisma.listing.findMany({
@@ -129,19 +144,26 @@ export const listingRouter = createTRPCRouter({
                 },
             });
 
-            if (allUserListings) {
-                allUserListings.map((e) => {
-                    e.images.sort((a, b) => {
-                        const rankA =
-                            a.resourceType === "LISTINGPREVIEW" ? 1 : 2;
-                        const rankB =
-                            b.resourceType === "LISTINGPREVIEW" ? 1 : 2;
-                        return rankA - rankB;
-                    });
-                });
-            }
+            // if (allUserListings) {
+            //     allUserListings.map((e) => {
+            //         e.images.sort((a, b) => {
+            //             const rankA =
+            //                 a.resourceType === "LISTINGPREVIEW" ? 1 : 2;
+            //             const rankB =
+            //                 b.resourceType === "LISTINGPREVIEW" ? 1 : 2;
+            //             return rankA - rankB;
+            //         });
+            //     });
+            // }
 
-            return allUserListings;
+            // how do i return the index of the ListingPreview ?
+
+            return allUserListings.map((listing) => ({
+                ...listing,
+                previewIndex: listing.images.findIndex(
+                    (image) => image.resourceType === "LISTINGPREVIEW"
+                ),
+            }));
         }),
 
     getOne: publicProcedure
@@ -575,21 +597,32 @@ export const listingRouter = createTRPCRouter({
                             listingId: id,
                         },
                     });
-                    await Promise.all(
-                        allExistingImages.map(async (image, i) => {
-                            if (i === preview.index) {
-                                return ctx.prisma.images.update({
-                                    where: {
-                                        id: image.id,
-                                    },
-                                    data: {
-                                        resourceType: "LISTINGPREVIEW",
-                                    },
-                                });
-                            }
-                            return image;
-                        })
-                    );
+                    // await Promise.all(
+                    //     allExistingImages.map(async (image, i) => {
+                    //         if (i === preview.index) {
+                    //             return ctx.prisma.images.update({
+                    //                 where: {
+                    //                     id: image.id,
+                    //                 },
+                    //                 data: {
+                    //                     resourceType: "LISTINGPREVIEW",
+                    //                 },
+                    //             });
+                    //         }
+                    //         return image;
+                    //     })
+                    // );
+                    const imageToUpdate = allExistingImages[preview.index];
+                    if (imageToUpdate) {
+                        await ctx.prisma.images.update({
+                            where: {
+                                id: imageToUpdate.id,
+                            },
+                            data: {
+                                resourceType: "LISTINGPREVIEW",
+                            },
+                        });
+                    }
                 }
 
                 if (images && images.length > 0) {

@@ -22,6 +22,7 @@ interface UpdateListingProps {
 interface EachListing extends Listing {
     images: Images[];
     _count: { comments: number };
+    previewIndex: number;
 }
 
 interface ErrorsObj {
@@ -49,6 +50,7 @@ interface Image {
 }
 
 interface ListingData {
+    id: string;
     sellerId: string;
     title: string;
     keycaps: string;
@@ -77,11 +79,10 @@ export default function UpdateListing({
     const [switchType, setSwitchType] = useState<string>(listing.switchType);
     const [switches, setSwitches] = useState<string>(listing.switches);
     const [title, setTitle] = useState<string>(listing.title);
-    const [price, setPrice] = useState<number>(listing.price);
-    // const [preview, setPreview] = useState<number>(0);
+    const [price, setPrice] = useState<number>(listing.price / 100);
     const [preview, setPreview] = useState<{ source: string; index: number }>({
         source: "prev",
-        index: 0,
+        index: listing.previewIndex,
     });
     const [activeDeletedImageIds, setActiveDeletedImageIds] = useState<
         string[]
@@ -117,17 +118,16 @@ export default function UpdateListing({
             closeModal();
         },
     });
-    const { mutate: updateListing } = api.listing.create.useMutation({
+    const { mutate: updateListing } = api.listing.update.useMutation({
         onSuccess: () => {
-            toast.success("Listing Complete!", {
-                icon: "👏",
+            toast.success("Listing Updated!", {
                 style: {
                     borderRadius: "10px",
                     background: "#333",
                     color: "#fff",
                 },
             });
-            void ctx.listing.getAll.invalidate();
+            void ctx.listing.getAllByUserId.invalidate();
             closeModal();
         },
     });
@@ -135,19 +135,13 @@ export default function UpdateListing({
     useEffect(() => {
         const maxFileSize = 8 * 1024 * 1024;
         const errorsObj: ErrorsObj = {};
-        // if (imageFiles.length > 15) {
-        //     errorsObj.imageExcess = "Cannot provide more than 15 photos";
-        // }
-        // if (imageFiles.length < 5) {
-        //     errorsObj.imageShortage = "Please provide at least 5 photos";
-        // }
 
         const totalImageCount =
             (imageFiles.length ?? 0) +
             (listing.images?.length ?? 0) -
             (activeDeletedImageIds.length ?? 0);
-        if (totalImageCount > 25) {
-            errorsObj.imageExcess = "Cannot provide more than 25 photos";
+        if (totalImageCount > 15) {
+            errorsObj.imageExcess = "Cannot provide more than 15 photos";
         }
 
         if (totalImageCount < 5) {
@@ -267,6 +261,7 @@ export default function UpdateListing({
                 }
 
                 const data: ListingData = {
+                    id: listing.id,
                     sellerId: sessionUserId,
                     title,
                     keycaps,
@@ -385,6 +380,7 @@ export default function UpdateListing({
                             width={400}
                             height={400}
                             className=" h-40 w-40 rounded-md border-4 border-[#2f2f2f] object-cover"
+                            priority
                         />
 
                         <div className="matrix-contents flex h-24 w-full flex-col justify-center rounded-r-xl border-b-2 border-t-2 border-[#2f2f2f] bg-black bg-opacity-30 px-5">
@@ -904,7 +900,7 @@ export default function UpdateListing({
                                             </div>
                                         </div>
                                     ) : (
-                                        "Submit Listing"
+                                        "Update Listing"
                                     )}
                                 </button>
                             </div>
