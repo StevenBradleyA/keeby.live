@@ -1039,7 +1039,7 @@ input[type="checkbox"]:hover {
 
 /* Manage Listing Cards  */
 
-.manage-listing-card {
+/* .manage-listing-card {
     transition: all 0.3s ease;
 }
 .manage-listing-card:hover {
@@ -1056,13 +1056,9 @@ input[type="checkbox"]:hover {
     top: 20px;
     color: rgb(34 197 94);
     background-image: url("../../public/Gifs/matrix.gif");
-
     background-repeat: no-repeat;
-    background-position: center;
-    background-size: 150%;
-}
-
-
+    background-size: 130%;
+} */
 
 /* --------------         END PROFILE         --------------  */
 
@@ -1077,6 +1073,10 @@ input[type="checkbox"]:hover {
 
 .matrix-full-screen {
     z-index: 1;
+}
+
+.matrix-contents {
+    z-index: 10;
 }
 
 /* --------------     404    --------------  */

@@ -110,6 +110,9 @@ export const listingRouter = createTRPCRouter({
                 },
                 include: {
                     images: true,
+                    _count: {
+                        select: { comments: true },
+                    },
                 },
             });
 
