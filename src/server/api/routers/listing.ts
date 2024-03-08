@@ -22,6 +22,19 @@ type CreateData = {
     sold: boolean;
     soundTest?: string;
 };
+type UpdateData = {
+    title: string;
+    text: string;
+    keycaps: string;
+    switches: string;
+    switchType: string;
+    soundType: string;
+    layoutType: string;
+    pcbType: string;
+    assemblyType: string;
+    price: number;
+    soundTest?: string;
+};
 
 interface PreviewListing extends Listing {
     _count: {
@@ -471,6 +484,163 @@ export const listingRouter = createTRPCRouter({
                 return {
                     newListing,
                     createdImages,
+                };
+            }
+
+            throw new Error("Invalid userId");
+        }),
+
+    update: protectedProcedure
+        .input(
+            z.object({
+                id: z.string(),
+                title: z.string(),
+                text: z.string(),
+                price: z.number(),
+                keycaps: z.string(),
+                switches: z.string(),
+                switchType: z.string(),
+                soundType: z.string(),
+                layoutType: z.string(),
+                pcbType: z.string(),
+                assemblyType: z.string(),
+                soundTest: z.string().optional(),
+                preview: z.object({ source: z.string(), index: z.number() }),
+                deleteImageIds: z.array(z.string()).optional(),
+                sellerId: z.string(),
+                images: z.array(
+                    z.object({
+                        link: z.string(),
+                    })
+                ),
+            })
+        )
+        .mutation(async ({ input, ctx }) => {
+            const {
+                id,
+                title,
+                text,
+                price,
+                keycaps,
+                switches,
+                switchType,
+                soundType,
+                pcbType,
+                layoutType,
+                assemblyType,
+                soundTest,
+                preview,
+                sellerId,
+                images,
+                deleteImageIds,
+            } = input;
+            if (
+                ctx.session.user.id === sellerId &&
+                ctx.session.user.isVerified
+            ) {
+                const updateData: UpdateData = {
+                    title,
+                    text,
+                    keycaps,
+                    switches,
+                    switchType,
+                    soundType,
+                    layoutType,
+                    pcbType,
+                    assemblyType,
+                    price,
+                };
+                if (soundTest) {
+                    updateData.soundTest = soundTest;
+                }
+
+                const updatedListing = await ctx.prisma.listing.update({
+                    where: { id: id },
+                    data: updateData,
+                });
+
+                await ctx.prisma.images.updateMany({
+                    where: {
+                        listingId: id,
+                        resourceType: "LISTINGPREVIEW",
+                    },
+                    data: {
+                        resourceType: "LISTING",
+                    },
+                });
+
+                if (preview.source === "prev") {
+                    const allExistingImages = await ctx.prisma.images.findMany({
+                        where: {
+                            listingId: id,
+                        },
+                    });
+                    await Promise.all(
+                        allExistingImages.map(async (image, i) => {
+                            if (i === preview.index) {
+                                return ctx.prisma.images.update({
+                                    where: {
+                                        id: image.id,
+                                    },
+                                    data: {
+                                        resourceType: "LISTINGPREVIEW",
+                                    },
+                                });
+                            }
+                            return image;
+                        })
+                    );
+                }
+
+                if (images && images.length > 0) {
+                    await Promise.all(
+                        images.map(async (image, i) => {
+                            const imageType =
+                                preview.source === "new" && preview.index === i
+                                    ? "LISTINGPREVIEW"
+                                    : "LISTING";
+
+                            return ctx.prisma.images.create({
+                                data: {
+                                    link: image.link,
+                                    resourceType: imageType,
+                                    listingId: id,
+                                    userId: sellerId,
+                                },
+                            });
+                        })
+                    );
+                }
+
+                if (deleteImageIds && deleteImageIds.length > 0) {
+                    const images = await ctx.prisma.images.findMany({
+                        where: {
+                            id: { in: deleteImageIds },
+                        },
+                    });
+                    const removeFilePromises = images.map(async (image) => {
+                        try {
+                            await removeFileFromS3(image.link);
+                        } catch (err) {
+                            console.error(
+                                `Failed to remove file from S3: `,
+                                err
+                            );
+                            throw new Error(`Failed to remove file from S3: `);
+                        }
+                    });
+
+                    await Promise.all(removeFilePromises);
+
+                    await ctx.prisma.images.deleteMany({
+                        where: {
+                            id: { in: deleteImageIds },
+                        },
+                    });
+                }
+
+                return {
+                    updatedListing,
                 };
             }
 

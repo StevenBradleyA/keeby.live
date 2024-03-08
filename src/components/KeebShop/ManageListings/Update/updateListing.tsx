@@ -61,7 +61,8 @@ interface ListingData {
     soundTest?: string;
     price: number;
     text: string;
-    preview: number;
+    preview: { source: string; index: number };
+    deleteImageIds: string[];
     images: Image[];
 }
 
@@ -77,7 +78,15 @@ export default function UpdateListing({
     const [switches, setSwitches] = useState<string>(listing.switches);
     const [title, setTitle] = useState<string>(listing.title);
     const [price, setPrice] = useState<number>(listing.price);
-    const [preview, setPreview] = useState<number>(0);
+    // const [preview, setPreview] = useState<number>(0);
+    const [preview, setPreview] = useState<{ source: string; index: number }>({
+        source: "prev",
+        index: 0,
+    });
+    const [activeDeletedImageIds, setActiveDeletedImageIds] = useState<
+        string[]
+    >([]);
+
     const [imageFiles, setImageFiles] = useState<File[]>([]);
     const [errors, setErrors] = useState<ErrorsObj>({});
     const [enableErrorDisplay, setEnableErrorDisplay] =
@@ -126,10 +135,22 @@ export default function UpdateListing({
     useEffect(() => {
         const maxFileSize = 8 * 1024 * 1024;
         const errorsObj: ErrorsObj = {};
-        if (imageFiles.length > 15) {
-            errorsObj.imageExcess = "Cannot provide more than 15 photos";
+        // if (imageFiles.length > 15) {
+        //     errorsObj.imageExcess = "Cannot provide more than 15 photos";
+        // }
+        // if (imageFiles.length < 5) {
+        //     errorsObj.imageShortage = "Please provide at least 5 photos";
+        // }
+
+        const totalImageCount =
+            (imageFiles.length ?? 0) +
+            (listing.images?.length ?? 0) -
+            (activeDeletedImageIds.length ?? 0);
+        if (totalImageCount > 25) {
+            errorsObj.imageExcess = "Cannot provide more than 25 photos";
         }
-        if (imageFiles.length < 5) {
+
+        if (totalImageCount < 5) {
             errorsObj.imageShortage = "Please provide at least 5 photos";
         }
 
@@ -217,6 +238,8 @@ export default function UpdateListing({
         layoutType,
         assemblyType,
         pcbType,
+        activeDeletedImageIds,
+        listing.images,
     ]);
 
     const handleDeleteListing = () => {
@@ -256,6 +279,7 @@ export default function UpdateListing({
                     text: description,
                     price: price * 100,
                     preview,
+                    deleteImageIds: activeDeletedImageIds,
                     images: [],
                 };
 
@@ -736,18 +760,19 @@ export default function UpdateListing({
                                 </div>
                             </div>
 
-                            {imageFiles.length > 0 && (
-                                <>
-                                    <div className="mb-1 mt-5  flex justify-center text-darkGray">
-                                        Select your preview image by clicking on
-                                        it. (16:9 aspect ratio is recommended)
-                                    </div>
-                                    <div className="flex w-full flex-wrap justify-center gap-10 rounded-md bg-white bg-opacity-40 p-10 ">
-                                        {imageFiles.map((e, i) => (
+                            <>
+                                <div className="mb-1 mt-5  flex justify-center text-darkGray">
+                                    Select your preview image by clicking on it.
+                                    (16:9 aspect ratio is recommended)
+                                </div>
+                                <div className="flex w-full flex-wrap justify-center gap-10 rounded-md bg-white bg-opacity-40 p-10 ">
+                                    {imageFiles.length > 0 &&
+                                        imageFiles.map((e, i) => (
                                             <div key={i} className="relative">
                                                 <Image
                                                     className={`h-28 w-auto cursor-pointer rounded-lg object-cover shadow-sm hover:scale-105 hover:shadow-md ${
-                                                        i === preview
+                                                        i === preview.index &&
+                                                        preview.source === "new"
                                                             ? "border-4 border-green-500"
                                                             : "border-4 border-black border-opacity-0"
                                                     } `}
@@ -756,7 +781,10 @@ export default function UpdateListing({
                                                     width={100}
                                                     height={100}
                                                     onClick={() =>
-                                                        setPreview(i)
+                                                        setPreview({
+                                                            source: "new",
+                                                            index: i,
+                                                        })
                                                     }
                                                 />
                                                 <button
@@ -773,16 +801,73 @@ export default function UpdateListing({
                                                         setImageFiles(
                                                             newImageFiles
                                                         );
-                                                        setPreview(0);
+                                                        setPreview({
+                                                            source: "new",
+                                                            index: 0,
+                                                        });
                                                     }}
                                                 >
                                                     &times;
                                                 </button>
                                             </div>
                                         ))}
-                                    </div>
-                                </>
-                            )}
+
+                                    {listing.images &&
+                                        listing.images.length > 0 &&
+                                        listing.images.map((image, i) =>
+                                            !activeDeletedImageIds.includes(
+                                                image.id
+                                            ) ? (
+                                                <div
+                                                    key={i}
+                                                    className="relative"
+                                                >
+                                                    <Image
+                                                        className={`h-28 w-auto cursor-pointer rounded-lg object-cover shadow-sm hover:scale-105 hover:shadow-md ${
+                                                            i ===
+                                                                preview.index &&
+                                                            preview.source ===
+                                                                "prev"
+                                                                ? "border-4 border-green-500"
+                                                                : "border-4 border-black border-opacity-0"
+                                                        } `}
+                                                        alt={`listing-${i}`}
+                                                        src={image.link}
+                                                        width={100}
+                                                        height={100}
+                                                        onClick={() =>
+                                                            setPreview({
+                                                                source: "prev",
+                                                                index: i,
+                                                            })
+                                                        }
+                                                    />
+                                                    <button
+                                                        className="absolute right-[-10px] top-[-32px] transform p-1 text-2xl text-gray-600 transition-transform duration-300 ease-in-out hover:rotate-45 hover:scale-110 hover:text-red-500"
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            const newDeletedImageIds =
+                                                                [
+                                                                    ...activeDeletedImageIds,
+                                                                    image.id,
+                                                                ];
+                                                            setActiveDeletedImageIds(
+                                                                newDeletedImageIds
+                                                            );
+                                                            setPreview({
+                                                                source: "prev",
+                                                                index: 0,
+                                                            });
+                                                        }}
+                                                    >
+                                                        &times;
+                                                    </button>
+                                                </div>
+                                            ) : null
+                                        )}
+                                </div>
+                            </>
+
                             {errors.imageExcess && (
                                 <p className=" text-red-400">
                                     {errors.imageExcess}
