@@ -62,7 +62,6 @@ interface ListingPage extends Listing {
     };
 }
 
-
 type ExtendedListing = Listing & {
     images: Images[];
     _count: {
@@ -577,7 +576,7 @@ export const listingRouter = createTRPCRouter({
                             listingId: id,
                         },
                     });
-                
+
                     const imageToUpdate = allExistingImages[preview.index];
                     if (imageToUpdate) {
                         await ctx.prisma.images.update({

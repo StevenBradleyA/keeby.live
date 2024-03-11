@@ -89,7 +89,6 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
     const { mutate } = api.listing.create.useMutation({
         onSuccess: async () => {
             toast.success("Listing Complete!", {
-                icon: "👏",
                 style: {
                     borderRadius: "10px",
                     background: "#333",
@@ -291,7 +290,7 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                     className=" h-40 w-40 rounded-md border-4 border-[#2f2f2f] object-cover"
                 />
 
-                <div className="flex h-24 w-full flex-col justify-center border-b-2 border-t-2 border-[#2f2f2f] rounded-r-xl bg-keebyGray bg-opacity-80 px-5">
+                <div className="flex h-24 w-full flex-col justify-center rounded-r-xl border-b-2 border-t-2 border-[#2f2f2f] bg-keebyGray bg-opacity-80 px-5">
                     <div className="flex justify-between ">
                         <div>
                             <div className="flex justify-between text-3xl">
@@ -301,7 +300,10 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                                 {session.user.username}
                             </h3>
                         </div>
-                        <button onClick={() => setShowCreate(false)} className="text-green-500">
+                        <button
+                            onClick={() => setShowCreate(false)}
+                            className="text-green-500"
+                        >
                             <BackArrow />
                         </button>
                     </div>

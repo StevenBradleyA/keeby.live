@@ -1,31 +1,21 @@
-import { api } from "~/utils/api";
 import { Canvas } from "@react-three/fiber";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import RotatingSphere from "~/components/Profile/ThreeScenes/RotatingSphere";
-import DisplayKeebs from "~/components/Profile/Keeb/DisplayKeeb";
-import ModalDialog from "~/components/Modal";
-import CreateKeeb from "~/components/Profile/Keeb/CreateKeeb";
-import ManageKeeb from "~/components/Profile/Keeb/ManageKeeb";
 import { getCookies, setCookie } from "cookies-next";
-import { motion } from "framer-motion";
-import DisplayReviews from "~/components/Reviews/DisplayReviews";
 import defaultProfile from "@public/Profile/profile-default.png";
 import keebyLiveTitle from "@public/Profile/keebylive-title.png";
-import futureComputer from "@public/Profile/future-future.png";
-import errorComputer from "@public/Profile/error-error-error.png";
 import gridFunnel from "@public/Profile/profile-idea.png";
 import HackermanConsoleCommands from "~/components/Profile/Hackerman";
 import computerShare from "@public/Profile/computer-share.png";
 import computerShop from "@public/Profile/computer-shop.png";
 import computerType from "@public/Profile/computer-type.png";
 import MainFooter from "~/components/Footer";
-import DisplayFavoriteListings from "~/components/Profile/Favorites";
-import ChevronRound from "~/components/Svgs/chevron";
 import ManageListings from "~/components/KeebShop/ManageListings";
 import ManagePosts from "~/components/KeebShare/ManagePosts";
+import DisplayFavoriteListings from "~/components/KeebShop/DisplayFavoriteListings";
 
 export default function UserProfile() {
     // mdn digest() -- might be useful for us here
@@ -545,7 +535,10 @@ export default function UserProfile() {
                         <button className="  border-2 border-black bg-black  px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray">
                             Offers
                         </button>
-                        <button className="  border-2 border-black bg-black  px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray">
+                        <button
+                            className="  border-2 border-black bg-black  px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray"
+                            onClick={() => setKeebShopCategory("FAVORITES")}
+                        >
                             Favorites
                         </button>
                         <button className="  border-2 border-black bg-black  px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray">
@@ -562,7 +555,10 @@ export default function UserProfile() {
                             My Posts
                         </button>
 
-                        <button className="  border-2 border-black bg-black  px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray">
+                        <button
+                            className="  border-2 border-black bg-black  px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray"
+                            onClick={() => setKeebShareCategory("FAVORITES")}
+                        >
                             Favorites
                         </button>
                     </div>
@@ -582,277 +578,13 @@ export default function UserProfile() {
                 {toggle === "KEEBSHOP" && keebShopCategory === "LISTINGS" && (
                     <ManageListings userId={sessionData.user.id} />
                 )}
+                {toggle === "KEEBSHOP" && keebShopCategory === "FAVORITES" && (
+                    <DisplayFavoriteListings userId={sessionData.user.id}/>
+                )}
 
                 {toggle === "KEEBSHARE" && keebShareCategory === "POSTS" && (
                     <ManagePosts userId={sessionData.user.id} />
                 )}
-
-                {/* {toggle === "KEEBSHOP" && (
-                    <div className="mt-10 flex w-full gap-20">
-                        <div className="w-1/2 flex-col  ">
-                            <div className="mt-5 flex w-full justify-between gap-5 border-2 border-[#616161] p-5">
-                                <Link
-                                    href="/manage-listings"
-                                    aria-label="manage listings"
-                                    className="rounded border-2 border-[#616161] px-4 py-2 transition  duration-150 ease-in-out hover:border-green-500"
-                                >
-                                    MY LISTINGS
-                                </Link>
-                                <button className="rounded border-2 border-[#616161] px-4 py-2 transition  duration-150 ease-in-out hover:border-green-500">
-                                    MY ORDERS
-                                </button>
-                            </div>
-
-                            <h1>REVIEWS</h1>
-                            <h1>leave a review</h1>
-                            <Link
-                                href={`profile/public/${sessionData.user.username}`}
-                                aria-label="public profile"
-                            >
-                                reviews about me
-                            </Link>
-                        </div>
-                        <div className="flex w-1/2 flex-col gap-5">
-                            <div className=" w-full border-2 border-[#616161] p-5">
-                                <button
-                                    onClick={() =>
-                                        setShowFavorites(!showFavorites)
-                                    }
-                                    className="flex items-center gap-5 text-xl "
-                                >
-                                    <h1>FAVORITES</h1>
-
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="w-7"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                    >
-                                        <path
-                                            d="M2 9.1371C2 14 6.01943 16.5914 8.96173 18.9109C10 19.7294 11 20.5 12 20.5C13 20.5 14 19.7294 15.0383 18.9109C17.9806 16.5914 22 14 22 9.1371C22 4.27416 16.4998 0.825464 12 5.50063C7.50016 0.825464 2 4.27416 2 9.1371Z"
-                                            stroke="#616161"
-                                            strokeWidth="1.5"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                        />
-                                        <path
-                                            opacity="0.5"
-                                            d="M12 5.50073L10.5 8.5001L14 11.0001L11 14.5001L13 16.5001L12 20.5001"
-                                            stroke="#616161"
-                                            stroke-width="1.5"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                        />
-                                    </svg>
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="w-7"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                    >
-                                        <path
-                                            d="M2 9.1371C2 14 6.01943 16.5914 8.96173 18.9109C10 19.7294 11 20.5 12 20.5C13 20.5 14 19.7294 15.0383 18.9109C17.9806 16.5914 22 14 22 9.1371C22 4.27416 16.4998 0.825464 12 5.50063C7.50016 0.825464 2 4.27416 2 9.1371Z"
-                                            stroke="#616161"
-                                            strokeWidth="1.5"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                        />
-                                        <path
-                                            opacity="0.5"
-                                            d="M12 5.50073L10.5 8.5001L14 11.0001L11 14.5001L13 16.5001L12 20.5001"
-                                            stroke="#616161"
-                                            stroke-width="1.5"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                        />
-                                    </svg>
-
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="w-7"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                    >
-                                        <path
-                                            d="M2 9.1371C2 14 6.01943 16.5914 8.96173 18.9109C10 19.7294 11 20.5 12 20.5C13 20.5 14 19.7294 15.0383 18.9109C17.9806 16.5914 22 14 22 9.1371C22 4.27416 16.4998 0.825464 12 5.50063C7.50016 0.825464 2 4.27416 2 9.1371Z"
-                                            stroke="#616161"
-                                            strokeWidth="1.5"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                        />
-                                        <path
-                                            opacity="0.5"
-                                            d="M12 5.50073L10.5 8.5001L14 11.0001L11 14.5001L13 16.5001L12 20.5001"
-                                            stroke="#616161"
-                                            stroke-width="1.5"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                        />
-                                    </svg>
-
-                                    <div
-                                        className={`w-5 ${
-                                            showFavorites
-                                                ? "rotate-0"
-                                                : "rotate-180"
-                                        } `}
-                                    >
-                                        <ChevronRound />
-                                    </div>
-                                </button>
-                                {showFavorites && (
-                                    <DisplayFavoriteListings
-                                        userId={sessionData.user.id}
-                                    />
-                                )}
-                            </div>
-                            <div className=" w-full border-2 border-[#616161] p-5">
-                                <button
-                                    onClick={() => setShowOffers(!showOffers)}
-                                    className="flex items-center gap-5 text-xl "
-                                >
-                                    <h1>OFFERS</h1>
-                                    <h1>OFFERS</h1>
-                                    <h1>OFFERS</h1>
-                                    <h1>OFFERS</h1>
-                                    <h1>OFFERS</h1>
-
-                                    <div
-                                        className={`w-5 ${
-                                            showOffers
-                                                ? "rotate-0"
-                                                : "rotate-180"
-                                        } `}
-                                    >
-                                        <ChevronRound />
-                                    </div>
-                                </button>
-                                {showOffers && (
-                                    <div>
-                                        hello display offers with agree and
-                                        delete with confirms
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    </div>
-                )} */}
-
-                {/* {toggle === "KEEBSHARE" && (
-                    <div className="mt-1 flex w-full gap-20">
-                        <div className="w-1/2 flex-col  ">
-                            <div className="mt-5 flex w-full justify-between gap-5 border-2 border-[#616161] p-5">
-                                <Link
-                                    href="/manage-listings"
-                                    aria-label="manage listings"
-                                    className="rounded border-2 border-[#616161] px-4 py-2 transition  duration-150 ease-in-out hover:border-green-500"
-                                >
-                                    MY POSTS
-                                </Link>
-                                <button className="rounded border-2 border-[#616161] px-4 py-2 transition  duration-150 ease-in-out hover:border-green-500">
-                                    IDK
-                                </button>
-                            </div>
-                        </div>
-                        <div className="flex w-1/2 flex-col gap-5">
-                            <div className=" w-full border-2 border-[#616161] p-5">
-                                <button
-                                    onClick={() =>
-                                        setShowFavorites(!showFavorites)
-                                    }
-                                    className="flex items-center gap-5 text-xl "
-                                >
-                                    <h1>FAVORITES</h1>
-
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="w-7"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                    >
-                                        <path
-                                            d="M2 9.1371C2 14 6.01943 16.5914 8.96173 18.9109C10 19.7294 11 20.5 12 20.5C13 20.5 14 19.7294 15.0383 18.9109C17.9806 16.5914 22 14 22 9.1371C22 4.27416 16.4998 0.825464 12 5.50063C7.50016 0.825464 2 4.27416 2 9.1371Z"
-                                            stroke="#616161"
-                                            strokeWidth="1.5"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                        />
-                                        <path
-                                            opacity="0.5"
-                                            d="M12 5.50073L10.5 8.5001L14 11.0001L11 14.5001L13 16.5001L12 20.5001"
-                                            stroke="#616161"
-                                            stroke-width="1.5"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                        />
-                                    </svg>
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="w-7"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                    >
-                                        <path
-                                            d="M2 9.1371C2 14 6.01943 16.5914 8.96173 18.9109C10 19.7294 11 20.5 12 20.5C13 20.5 14 19.7294 15.0383 18.9109C17.9806 16.5914 22 14 22 9.1371C22 4.27416 16.4998 0.825464 12 5.50063C7.50016 0.825464 2 4.27416 2 9.1371Z"
-                                            stroke="#616161"
-                                            strokeWidth="1.5"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                        />
-                                        <path
-                                            opacity="0.5"
-                                            d="M12 5.50073L10.5 8.5001L14 11.0001L11 14.5001L13 16.5001L12 20.5001"
-                                            stroke="#616161"
-                                            stroke-width="1.5"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                        />
-                                    </svg>
-
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="w-7"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                    >
-                                        <path
-                                            d="M2 9.1371C2 14 6.01943 16.5914 8.96173 18.9109C10 19.7294 11 20.5 12 20.5C13 20.5 14 19.7294 15.0383 18.9109C17.9806 16.5914 22 14 22 9.1371C22 4.27416 16.4998 0.825464 12 5.50063C7.50016 0.825464 2 4.27416 2 9.1371Z"
-                                            stroke="#616161"
-                                            strokeWidth="1.5"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                        />
-                                        <path
-                                            opacity="0.5"
-                                            d="M12 5.50073L10.5 8.5001L14 11.0001L11 14.5001L13 16.5001L12 20.5001"
-                                            stroke="#616161"
-                                            stroke-width="1.5"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                        />
-                                    </svg>
-
-                                    <div
-                                        className={`w-5 ${
-                                            showFavorites
-                                                ? "rotate-0"
-                                                : "rotate-180"
-                                        } `}
-                                    >
-                                        <ChevronRound />
-                                    </div>
-                                </button>
-                                {showFavorites && (
-                                    <DisplayFavoriteListings
-                                        userId={sessionData.user.id}
-                                    />
-                                )}
-                            </div>
-                        </div>
-                    </div> 
-
-        
-                )}*/}
 
                 {/* {toggle === "KEEBTYPE" && (
                     <div className=" flex flex-col items-center">

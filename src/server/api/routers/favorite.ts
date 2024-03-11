@@ -4,6 +4,28 @@ import {
     publicProcedure,
     protectedProcedure,
 } from "~/server/api/trpc";
+import type { Post, Images, Listing } from "@prisma/client";
+
+// type ExtendedPost = Post & {
+//     images: Images[];
+//     _count: {
+//         comments: number;
+//         postLikes: number;
+//     };
+//     previewIndex?: number;
+// };
+
+interface ListingImage {
+    id: string;
+    link: string;
+}
+
+type ExtendedListing = Listing & {
+    _count: {
+        comments: number;
+    };
+    images: ListingImage[];
+};
 
 export const favoriteRouter = createTRPCRouter({
     checkIfListingIsFavorited: publicProcedure
@@ -56,28 +78,55 @@ export const favoriteRouter = createTRPCRouter({
             })
         )
         .query(({ ctx, input }) => {
-            return ctx.prisma.favorites.findMany({
-                where: {
-                    userId: input.userId,
-                },
-                include: {
-                    listing: {
-                        select: {
-                            id: true,
-                            title: true,
-                            price: true,
-                            switchType: true,
-                            images: {
-                                where: {
-                                    resourceType: "LISTINGPREVIEW",
+            return ctx.prisma.favorites
+                .findMany({
+                    where: {
+                        userId: input.userId,
+                        listingId: { not: null },
+                        postId: null,
+                    },
+                    select: {
+                        listing: {
+                            include: {
+                                _count: {
+                                    select: { comments: true },
                                 },
-                                select: { id: true, link: true },
+                                images: {
+                                    where: { resourceType: "LISTINGPREVIEW" },
+                                    select: { id: true, link: true },
+                                },
                             },
                         },
                     },
-                },
-            });
+                })
+                .then((favorites) => {
+                    if (favorites.length === 0) {
+                        return null;
+                    }
+                    return favorites.map(
+                        (favorite) => favorite.listing as ExtendedListing
+                    );
+                });
         }),
+    // getAllFavoritePosts: publicProcedure
+    //     .input(
+    //         z.object({
+    //             userId: z.string(),
+    //         })
+    //     )
+    //     .query(({ ctx, input })  => {
+    //         return ctx.prisma.favorites.findMany({
+    //             where: {
+    //                 userId: input.userId,
+    //             },
+    //             include: {
+    //                 images: true,
+    //                 _count: {
+    //                     select: { comments: true, postLikes: true },
+    //                 },
+    //             },
+    //         });
+    //     }),
 
     createListingFavorite: protectedProcedure
         .input(
