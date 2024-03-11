@@ -16,6 +16,7 @@ import MainFooter from "~/components/Footer";
 import ManageListings from "~/components/KeebShop/ManageListings";
 import ManagePosts from "~/components/KeebShare/ManagePosts";
 import DisplayFavoriteListings from "~/components/KeebShop/DisplayFavoriteListings";
+import DisplayFavoritePosts from "~/components/KeebShare/DisplayFavoritePosts";
 
 export default function UserProfile() {
     // mdn digest() -- might be useful for us here
@@ -579,11 +580,15 @@ export default function UserProfile() {
                     <ManageListings userId={sessionData.user.id} />
                 )}
                 {toggle === "KEEBSHOP" && keebShopCategory === "FAVORITES" && (
-                    <DisplayFavoriteListings userId={sessionData.user.id}/>
+                    <DisplayFavoriteListings userId={sessionData.user.id} />
                 )}
 
                 {toggle === "KEEBSHARE" && keebShareCategory === "POSTS" && (
                     <ManagePosts userId={sessionData.user.id} />
+                )}
+
+                {toggle === "KEEBSHARE" && keebShareCategory === "FAVORITES" && (
+                    <DisplayFavoritePosts userId={sessionData.user.id} />
                 )}
 
                 {/* {toggle === "KEEBTYPE" && (

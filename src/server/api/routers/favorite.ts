@@ -6,15 +6,6 @@ import {
 } from "~/server/api/trpc";
 import type { Post, Images, Listing } from "@prisma/client";
 
-// type ExtendedPost = Post & {
-//     images: Images[];
-//     _count: {
-//         comments: number;
-//         postLikes: number;
-//     };
-//     previewIndex?: number;
-// };
-
 interface ListingImage {
     id: string;
     link: string;
@@ -25,6 +16,13 @@ type ExtendedListing = Listing & {
         comments: number;
     };
     images: ListingImage[];
+};
+type ExtendedPost = Post & {
+    _count: {
+        comments: number;
+        postLikes: number;
+    };
+    images: Images[];
 };
 
 export const favoriteRouter = createTRPCRouter({
@@ -77,7 +75,7 @@ export const favoriteRouter = createTRPCRouter({
                 userId: z.string(),
             })
         )
-        .query(({ ctx, input }) => {
+        .query(async ({ ctx, input }) => {
             return ctx.prisma.favorites
                 .findMany({
                     where: {
@@ -108,25 +106,61 @@ export const favoriteRouter = createTRPCRouter({
                     );
                 });
         }),
-    // getAllFavoritePosts: publicProcedure
-    //     .input(
-    //         z.object({
-    //             userId: z.string(),
-    //         })
-    //     )
-    //     .query(({ ctx, input })  => {
-    //         return ctx.prisma.favorites.findMany({
-    //             where: {
-    //                 userId: input.userId,
-    //             },
-    //             include: {
-    //                 images: true,
-    //                 _count: {
-    //                     select: { comments: true, postLikes: true },
-    //                 },
-    //             },
-    //         });
-    //     }),
+    getAllFavoritePosts: publicProcedure
+        .input(
+            z.object({
+                userId: z.string(),
+            })
+        )
+        .query(async ({ ctx, input }) => {
+            const posts = await ctx.prisma.favorites
+                .findMany({
+                    where: {
+                        userId: input.userId,
+                        listingId: null,
+                        postId: { not: null },
+                    },
+                    select: {
+                        post: {
+                            include: {
+                                _count: {
+                                    select: { comments: true, postLikes: true },
+                                },
+                                images: true,
+                            },
+                        },
+                    },
+                })
+                .then((favorites) => {
+                    if (favorites.length === 0) {
+                        return null;
+                    }
+                    return favorites.map(
+                        (favorite) => favorite.post as ExtendedPost
+                    );
+                });
+
+            if (posts && posts.length > 0) {
+                posts.forEach((post) => {
+                    post.images.sort((a, b) => {
+                        if (
+                            a.resourceType === "POSTPREVIEW" &&
+                            b.resourceType !== "POSTPREVIEW"
+                        ) {
+                            return -1;
+                        } else if (
+                            a.resourceType !== "POSTPREVIEW" &&
+                            b.resourceType === "POSTPREVIEW"
+                        ) {
+                            return 1;
+                        }
+                        return 0;
+                    });
+                });
+            }
+
+            return posts;
+        }),
 
     createListingFavorite: protectedProcedure
         .input(
