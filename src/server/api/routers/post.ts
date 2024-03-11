@@ -711,7 +711,7 @@ export const postRouter = createTRPCRouter({
                                     id: imageToUpdate.id,
                                 },
                                 data: {
-                                    resourceType: "LISTINGPREVIEW",
+                                    resourceType: "POSTPREVIEW",
                                 },
                             });
                         }
@@ -722,8 +722,8 @@ export const postRouter = createTRPCRouter({
                                 const imageType =
                                     preview.source === "new" &&
                                     preview.index === i
-                                        ? "LISTINGPREVIEW"
-                                        : "LISTING";
+                                        ? "POSTPREVIEW"
+                                        : "POST";
 
                                 return ctx.prisma.images.create({
                                     data: {

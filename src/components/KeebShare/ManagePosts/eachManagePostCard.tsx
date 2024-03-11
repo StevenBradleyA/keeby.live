@@ -6,6 +6,7 @@ import ChevronRound from "~/components/Svgs/chevron";
 import DisplayYouTubePostPreview from "../DisplayPosts/DisplayPostPreviews/displayYouTubePreview";
 import keebo from "@public/Profile/keebo.png";
 import ModalDialog from "~/components/Modal";
+import UpdatePost from "./Update";
 
 interface EachManagePostCardProps {
     post: EachPost;
@@ -31,8 +32,6 @@ export default function ManageEachPostCard({ post }: EachManagePostCardProps) {
                 (prevIndex - 1 + post.images.length) % post.images.length
         );
     };
-
- 
 
     const openModal = () => {
         setIsOpen(true);
@@ -302,15 +301,8 @@ export default function ManageEachPostCard({ post }: EachManagePostCardProps) {
                 </svg>
             </button>
             <ModalDialog isOpen={isOpen} onClose={closeModal}>
-                {/* <UpdateListing listing={listing} closeModal={closeModal} /> */}
-
-
-
-                
+                <UpdatePost post={post} closeModal={closeModal} />
             </ModalDialog>
-
-
-
         </>
     );
 }
