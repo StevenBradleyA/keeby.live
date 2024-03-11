@@ -689,7 +689,7 @@ export const postRouter = createTRPCRouter({
                 if (images || deleteImageIds || preview) {
                     await ctx.prisma.images.updateMany({
                         where: {
-                            listingId: id,
+                            postId: id,
                             resourceType: "POSTPREVIEW",
                         },
                         data: {
@@ -729,7 +729,7 @@ export const postRouter = createTRPCRouter({
                                     data: {
                                         link: image.link,
                                         resourceType: imageType,
-                                        listingId: id,
+                                        postId: id,
                                         userId: userId,
                                     },
                                 });

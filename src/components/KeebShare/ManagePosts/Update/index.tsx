@@ -35,6 +35,7 @@ interface Image {
 }
 
 interface PostData {
+    id: string;
     userId: string;
     title: string;
     tag: string;
@@ -126,6 +127,7 @@ export default function UpdatePost({ post, closeModal }: UpdatePostProps) {
                 }
 
                 const data: PostData = {
+                    id: post.id,
                     userId: sessionUserId,
                     title,
                     tag,
@@ -196,7 +198,7 @@ export default function UpdatePost({ post, closeModal }: UpdatePostProps) {
             (post.images?.length ?? 0) -
             (activeDeletedImageIds.length ?? 0);
         if (totalImageCount > 10) {
-            errorsObj.imageExcess = "Cannot provide more than 1 photos";
+            errorsObj.imageExcess = "Cannot provide more than 10 photos";
         }
 
         if (!title.length) {
@@ -226,9 +228,6 @@ export default function UpdatePost({ post, closeModal }: UpdatePostProps) {
 
         setErrors(errorsObj);
     }, [imageFiles, title, link, post.images, activeDeletedImageIds]);
-
-    console.log("uhhh broken", imageFiles.length);
-    console.log("uhhh broken", post.images.length);
 
     return (
         <div className=" font-poppins text-darkGray">
@@ -503,6 +502,16 @@ export default function UpdatePost({ post, closeModal }: UpdatePostProps) {
                                         )}
                                 </div>
                             )}
+                            {enableErrorDisplay && errors.imageExcess && (
+                                <p className="text-sm text-red-400">
+                                    {errors.imageExcess}
+                                </p>
+                            )}
+                            {enableErrorDisplay && errors.imageLarge && (
+                                <p className="text-sm text-red-400">
+                                    {errors.imageLarge}
+                                </p>
+                            )}
                             {showLinkInput && (
                                 <div className="mt-2">
                                     <input
@@ -544,7 +553,7 @@ export default function UpdatePost({ post, closeModal }: UpdatePostProps) {
                                             </div>
                                         </div>
                                     ) : (
-                                        "Post"
+                                        "Update"
                                     )}
                                 </button>
                             </div>
