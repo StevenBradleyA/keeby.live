@@ -75,6 +75,9 @@ export default function SpeedMode({ gameLength, setGameOver }: SpeedModeProps) {
         //   Logic to move back to the previous word?
     };
 
+    // ABSOLUTE CUROSR
+    // ABSOLUTE
+
     return (
         <div className="flex w-2/3 flex-col">
             <SentenceGenerator gameLength={gameLength} setPrompt={setPrompt} />
@@ -113,9 +116,17 @@ export default function SpeedMode({ gameLength, setGameOver }: SpeedModeProps) {
                                 userInput.length === word.length &&
                                 letterIndex === word.length - 1;
 
-                            const isExtraCursor =
-                                isCurrentWord &&
-                                userInput.length === letterIndex + 1;
+                            // const isExtraCursor =
+                            //     isCurrentWord &&
+                            //     userInput.length === letterIndex + 1;
+
+                            // index ===
+                            //                                 userInput.length -
+                            //                                     word.length -
+                            //                                     1
+                            //                                     ? " border-r-opacity-100 border-blue-500 border-l-transparent"
+                            //                                     : " border-l-transparent border-r-transparent"
+                            //                             }  `}
 
                             const extraInput = userInput
                                 .substring(word.length)
@@ -123,39 +134,42 @@ export default function SpeedMode({ gameLength, setGameOver }: SpeedModeProps) {
 
                             return (
                                 <div
-                                    className={` flex
+                                    className="relative flex"
+                                    key={letterIndex}
+                                >
+                                    <span
+                                        className={`  flex
                                     ${wordHit ? "text-white" : ""}
                                     ${wordMiss ? "text-red-500" : ""}
                                     ${letterHit ? "text-white" : ""}
                                     ${letterMiss ? "text-red-500" : ""}
-                                    ${
-                                        isCursor
-                                            ? "border-l-2 border-blue-500 border-opacity-100"
-                                            : isCursorLastLetter
-                                            ? "border-r-opacity-100 border-r-2 border-blue-500"
-                                            : "border-l-2 border-r-2 border-transparent"
-                                    }
                                     `}
-                                    key={letterIndex}
-                                >
-                                    {letter}
+                                    >
+                                        {letter}
+                                    </span>
+                                    {isCursor && (
+                                        <div className="absolute bottom-0 left-0 top-0 w-0.5 bg-blue-500"></div>
+                                    )}
+                                    {isCursorLastLetter && (
+                                        <div className="absolute bottom-0 right-0 top-0 w-0.5 bg-blue-500"></div>
+                                    )}
+
                                     {extra && (
-                                        <div className={` text-red-500  `}>
+                                        <div className={` flex text-red-500 `}>
                                             {extraInput.map(
                                                 (eachExtra, index) => (
-                                                    <span
+                                                    <div
+                                                        className="relative"
                                                         key={index}
-                                                        className={` border-r-2  ${
-                                                            index ===
+                                                    >
+                                                        <span>{eachExtra}</span>
+                                                        {index ===
                                                             userInput.length -
                                                                 word.length -
-                                                                1
-                                                                ? " border-blue-500"
-                                                                : " border-transparent"
-                                                        }  `}
-                                                    >
-                                                        {eachExtra}
-                                                    </span>
+                                                                1 && (
+                                                            <div className="absolute bottom-0 right-0 top-0 w-0.5 bg-blue-500"></div>
+                                                        )}
+                                                    </div>
                                                 )
                                             )}
                                         </div>
@@ -177,10 +191,72 @@ export default function SpeedMode({ gameLength, setGameOver }: SpeedModeProps) {
                     value={userInput}
                     onChange={(e) => handleInputChange(e.target.value)}
                     onKeyDown={(e) => handleKeyDown(e)}
-                    className="w-full bg-dark text-red-600 "
+                    className="mt-5 w-full bg-dark text-red-600 "
                     maxLength={30}
                 />
             </div>
         </div>
     );
 }
+// return (
+//     <div
+//         className={` flex border-l-2 border-r-2
+//         ${wordHit ? "text-white" : ""}
+//         ${wordMiss ? "text-red-500" : ""}
+//         ${letterHit ? "text-white" : ""}
+//         ${letterMiss ? "text-red-500" : ""}
+//         ${
+//             isCursor
+//                 ? "border-l-opacity-100 border-l-2 border-blue-500 border-r-transparent"
+//                 : isCursorLastLetter
+//                 ? "border-r-opacity-100 border-blue-500  border-l-transparent"
+//                 : " border-l-transparent border-r-transparent"
+//         }
+//         `}
+//         key={letterIndex}
+//     >
+//         {letter}
+//         {extra && (
+//             <div className={` text-red-500  `}>
+//                 {extraInput.map(
+//                     (eachExtra, index) => (
+//                         <span
+//                             key={index}
+//                             className={` border-l-2 border-r-2  ${
+//                                 index ===
+//                                 userInput.length -
+//                                     word.length -
+//                                     1
+//                                     ? " border-r-opacity-100 border-blue-500 border-l-transparent"
+//                                     : " border-l-transparent border-r-transparent"
+//                             }  `}
+//                         >
+//                             {eachExtra}
+//                         </span>
+//                     )
+//                 )}
+//             </div>
+//         )}
+//         {extraCharacters[index] &&
+//             letterIndex === word.length - 1 && (
+//                 <div className={`text-red-500 `}>
+//                     {extraCharacters[index]}
+//                 </div>
+//             )}
+//     </div>
+// );
+// })}
+// </div>
+// ))}
+// </div>
+// <div>
+// <input
+// value={userInput}
+// onChange={(e) => handleInputChange(e.target.value)}
+// onKeyDown={(e) => handleKeyDown(e)}
+// className="mt-5 w-full bg-dark text-red-600 "
+// maxLength={30}
+// />
+// </div>
+// </div>
+// );
