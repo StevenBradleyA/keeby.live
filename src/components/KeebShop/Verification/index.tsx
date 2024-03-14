@@ -17,8 +17,7 @@ export default function KeebShopVerifyUser({
     const { mutate } = api.user.verifyUser.useMutation({
         onSuccess: async () => {
             try {
-                toast.success("Profile Verified!", {
-                    icon: "👏",
+                toast.success("Seller Verified!", {
                     style: {
                         borderRadius: "10px",
                         background: "#333",

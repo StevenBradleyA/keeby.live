@@ -62,7 +62,6 @@ export default function CreatePostModal({ closeModal }: CreatePostModalProps) {
     const { mutate } = api.post.create.useMutation({
         onSuccess: async (data) => {
             toast.success("Post Complete!", {
-                icon: "👏",
                 style: {
                     borderRadius: "10px",
                     background: "#333",
