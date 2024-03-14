@@ -39,6 +39,7 @@ export default function SpeedMode({ gameLength, setGameOver }: SpeedModeProps) {
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        // logic for moving forward
         if (e.key === " ") {
             const activeWord = prompt[activeWordIndex] ?? "";
 
@@ -70,21 +71,22 @@ export default function SpeedMode({ gameLength, setGameOver }: SpeedModeProps) {
             // Prevent the space key from being input into the text field
             e.preventDefault();
         }
+
+        //   Logic to move back to the previous word?
     };
 
     return (
         <div className="flex w-2/3 flex-col">
             <SentenceGenerator gameLength={gameLength} setPrompt={setPrompt} />
             <div
-                className={`flex w-full flex-wrap gap-2 px-10 text-2xl text-white/30 `}
+                className={`flex w-full transform flex-wrap gap-2 px-10 text-2xl text-white/30 transition 
+                
+                
+                
+                `}
             >
                 {prompt.map((word, index) => (
-                    <div
-                        className={`flex ${
-                            index === activeWordIndex ? "active" : "word"
-                        }`}
-                        key={index}
-                    >
+                    <div className={`flex`} key={index}>
                         {word.split("").map((letter, letterIndex) => {
                             const wordHit =
                                 wordStatus[index] && index < activeWordIndex;
@@ -105,6 +107,12 @@ export default function SpeedMode({ gameLength, setGameOver }: SpeedModeProps) {
                             const isCursor =
                                 isCurrentWord &&
                                 userInput.length === letterIndex;
+
+                            const isCursorLastLetter =
+                                isCurrentWord &&
+                                userInput.length === word.length &&
+                                letterIndex === word.length - 1;
+
                             const isExtraCursor =
                                 isCurrentWord &&
                                 userInput.length === letterIndex + 1;
@@ -115,39 +123,35 @@ export default function SpeedMode({ gameLength, setGameOver }: SpeedModeProps) {
 
                             return (
                                 <div
-                                    className={`flex
+                                    className={` flex
                                     ${wordHit ? "text-white" : ""}
                                     ${wordMiss ? "text-red-500" : ""}
                                     ${letterHit ? "text-white" : ""}
                                     ${letterMiss ? "text-red-500" : ""}
                                     ${
                                         isCursor
-                                            ? "border-l-2 border-blue-500"
-                                            : ""
+                                            ? "border-l-2 border-blue-500 border-opacity-100"
+                                            : isCursorLastLetter
+                                            ? "border-r-opacity-100 border-r-2 border-blue-500"
+                                            : "border-l-2 border-r-2 border-transparent"
                                     }
                                     `}
                                     key={letterIndex}
                                 >
                                     {letter}
                                     {extra && (
-                                        <div
-                                            className={`text-red-500  ${
-                                                isExtraCursor
-                                                    ? "border-l-2 border-blue-500"
-                                                    : ""
-                                            }  `}
-                                        >
+                                        <div className={` text-red-500  `}>
                                             {extraInput.map(
                                                 (eachExtra, index) => (
                                                     <span
                                                         key={index}
-                                                        className={`  ${
+                                                        className={` border-r-2  ${
                                                             index ===
                                                             userInput.length -
                                                                 word.length -
                                                                 1
-                                                                ? "border-r-2 border-blue-500"
-                                                                : ""
+                                                                ? " border-blue-500"
+                                                                : " border-transparent"
                                                         }  `}
                                                     >
                                                         {eachExtra}

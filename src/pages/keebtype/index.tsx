@@ -37,6 +37,14 @@ export default function KeebType() {
     const [isFocused, setIsFocused] = useState<boolean>(false);
     const [keeb, setKeeb] = useState<string>("");
 
+
+// save the game itself... 
+// deal with rank an tag within game routes? 
+
+// add a reset button and next game 
+
+
+
     useEffect(() => {
         if (cookies.mode) {
             setMode(cookies.mode);
