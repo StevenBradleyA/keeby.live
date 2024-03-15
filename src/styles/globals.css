@@ -299,8 +299,13 @@ li:not(:first-child) span {
 
 /* --------------     KEEB TYPE    --------------  */
 
+.keeb-type-pause-menu {
+    z-index: 5;
+}
 
-
+.keeb-type-input{
+    z-index: 10;
+}
 
 .blinking-cursor {
     animation: blink-animation 0.70s linear infinite alternate;

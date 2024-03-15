@@ -37,7 +37,7 @@ export default function SpeedMode({
 
     // game
     const [finishedGameId, setFinishedGameId] = useState<string>("");
-    const [isPaused, setIsPaused] = useState<boolean>(false);
+    const [isVisualPaused, setIsVisualPaused] = useState<boolean>(false);
     const inputRef = useRef<HTMLInputElement>(null);
 
     // todo need a variable that keeps track of total words typed going to need to reference this to spread the prev index into the userInput for backspace
@@ -47,14 +47,7 @@ export default function SpeedMode({
     const [isRunning, setIsRunning] = useState<boolean>(false);
     const [elapsedTime, setElapsedTime] = useState<number>(0);
 
-    // if not signed in display wpm but nothing else
-    // const {mutation: createGame} =
-
-    // after game is working flawless then implement styling / pausing / end game stats etc.....
-
-    // todo saving stats when finished
-
-    // console.log(wordStatus);
+        
 
     const { mutate: createGame } = api.game.create.useMutation({
         onSuccess: (data) => {
@@ -86,6 +79,7 @@ export default function SpeedMode({
     //     }
 
     // }
+
     useEffect(() => {
         if (inputRef.current) {
             inputRef.current.focus();
@@ -134,16 +128,17 @@ export default function SpeedMode({
         setUserInput(inputValue);
     };
 
+    const handleBlur = () => {
+        setIsRunning(false);
+        setIsVisualPaused(true);
+    };
+
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         // logic for moving forward
-        if ((e.key >= 'a' && e.key <= 'z') || (e.key >= '0' && e.key <= '9')) {
+        if ((e.key >= "a" && e.key <= "z") || (e.key >= "0" && e.key <= "9")) {
             // setStartGame(true);
-            setIsRunning(true)
-
-
+            setIsRunning(true);
         }
-
-
 
         if (e.key === " ") {
             // Retrieve the active word from the prompt based on the current activeWordIndex.
@@ -252,13 +247,16 @@ export default function SpeedMode({
                                                 {letter}
                                             </span>
                                             {isCursor && !isRunning && (
-                                                <div className="absolute bottom-0 left-0 top-0 w-0.5 bg-blue-500 blinking-cursor"></div>
+                                                <div className="blinking-cursor absolute bottom-0 left-0 top-0 w-0.5 bg-green-500"></div>
                                             )}
                                             {isCursor && isRunning && (
-                                                <div className="absolute bottom-0 left-0 top-0 w-0.5 bg-blue-500"></div>
+                                                <div className="absolute bottom-0 left-0 top-0 w-0.5 bg-green-500"></div>
                                             )}
-                                            {isCursorLastLetter && (
-                                                <div className="absolute bottom-0 right-0 top-0 w-0.5 bg-blue-500"></div>
+                                            {isCursorLastLetter && isRunning && (
+                                                <div className="absolute bottom-0 right-0 top-0 w-0.5 bg-green-500"></div>
+                                            )}
+                                               {isCursorLastLetter && !isRunning && (
+                                                <div className="absolute bottom-0 right-0 top-0 w-0.5 bg-green-500 blinking-cursor"></div>
                                             )}
 
                                             {extra && (
@@ -277,8 +275,14 @@ export default function SpeedMode({
                                                                 {index ===
                                                                     userInput.length -
                                                                         word.length -
-                                                                        1 && (
-                                                                    <div className="absolute bottom-0 right-0 top-0 w-0.5 bg-blue-500"></div>
+                                                                        1 && isRunning && (
+                                                                    <div className="absolute bottom-0 right-0 top-0 w-0.5 bg-green-500"></div>
+                                                                )}
+                                                                  {index ===
+                                                                    userInput.length -
+                                                                        word.length -
+                                                                        1 && !isRunning && (
+                                                                    <div className="blinking-cursor absolute bottom-0 right-0 top-0 w-0.5 bg-green-500"></div>
                                                                 )}
                                                             </div>
                                                         )
@@ -303,12 +307,19 @@ export default function SpeedMode({
                         <input
                             id="gameInput"
                             ref={inputRef}
+                            onBlur={handleBlur}
+                            onFocus={() => setIsVisualPaused(false)}
                             value={userInput}
                             onChange={(e) => handleInputChange(e.target.value)}
                             onKeyDown={(e) => handleKeyDown(e)}
-                            className=" absolute bottom-0 left-0 right-0 top-0 opacity-0 "
+                            className=" keeb-type-input absolute bottom-0 left-0 right-0 top-0 opacity-0  "
                             maxLength={30}
                         />
+                        {isVisualPaused && (
+                            <div className="keeb-type-pause-menu absolute bottom-0 left-0 right-0  top-0 flex items-center justify-center text-xl text-green-500 backdrop-blur-sm ">
+                                Paused
+                            </div>
+                        )}
                     </div>
                 </div>
             )}
