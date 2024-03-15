@@ -1,5 +1,5 @@
 import { useSession } from "next-auth/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import type { ChangeEvent } from "react";
 import { api } from "~/utils/api";
 import { setCookie } from "cookies-next";
@@ -13,6 +13,8 @@ interface LeftMenuProps {
     setTheme: (theme: string) => void;
     keeb: string;
     setKeeb: (keeb: string) => void;
+    keebId: string;
+    setKeebId: (keebId: string) => void;
 }
 
 export default function LeftMenu({
@@ -24,18 +26,27 @@ export default function LeftMenu({
     setTheme,
     keeb,
     setKeeb,
+    keebId,
+    setKeebId,
 }: LeftMenuProps) {
     // todo refactor theme to be session so its accessible in nav
     // theme needs to have context...
+    // todo we need the keeb id
 
     const { data: keebData } = api.keeb.getAll.useQuery();
     const { data: session } = useSession();
+    const [selectedKeeb, setSelectedKeeb] = useState<{
+        id: string;
+        name: string;
+    } | null>(null);
 
     useEffect(() => {
         if (session && keebData && keebData[0] && keeb === "") {
             setKeeb(keebData[0].name);
+            setKeebId(keebData[0].id);
+            setSelectedKeeb({ id: keebData[0].id, name: keebData[0].name });
         }
-    }, [session, keebData, keeb, setKeeb]);
+    }, [session, keebData, keeb, setKeeb, setKeebId]);
 
     //      ------ Setting Cookies && State -------
     const handleModeChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -66,12 +77,28 @@ export default function LeftMenu({
         });
     };
     const handleKeebChange = (e: ChangeEvent<HTMLSelectElement>) => {
-        const newKeeb: string = e.target.value;
-        setKeeb(newKeeb);
-        setCookie("keeb", newKeeb, {
-            maxAge: 60 * 60 * 24 * 365,
-            path: "/",
-        });
+        // const newKeeb: string = e.target.value;
+        // const keebId =
+        //     e.target.options[e.target.selectedIndex].getAttribute(
+        //         "data-keebid"
+        //     );
+        const newKeebId: string = e.target.value;
+        if (keebData && keebData.length > 0) {
+            const newKeeb = keebData.find((keeb) => keeb.id === newKeebId);
+
+            if (newKeeb) {
+                setKeeb(newKeeb.name);
+                setKeebId(newKeebId);
+                setCookie("keeb", newKeeb.name, {
+                    maxAge: 60 * 60 * 24 * 365,
+                    path: "/",
+                });
+                setCookie("keebId", newKeebId, {
+                    maxAge: 60 * 60 * 24 * 365,
+                    path: "/",
+                });
+            }
+        }
     };
 
     return (
@@ -128,11 +155,11 @@ export default function LeftMenu({
                         <select
                             className={`
                     bg-black px-2 py-1 text-green-500 `}
-                            value={keeb}
+                            value={selectedKeeb ? selectedKeeb.id : ""}
                             onChange={handleKeebChange}
                         >
-                            {keebData.map((e, i) => (
-                                <option key={i} value={`${e.name}`}>
+                            {keebData.map((e) => (
+                                <option key={e.id} value={e.id}>
                                     {e.name}
                                 </option>
                             ))}

@@ -25,25 +25,25 @@ export default function KeebType() {
 
     // learn mode --- type quotes to learn things like biology,  vocab, software enginnering, biology,
 
-    // state to keep track of hiding left and right menu 
+    // state to keep track of hiding left and right menu
 
-    // 
+    //
 
     const cookies = getCookies();
     const [mode, setMode] = useState<string>("speed");
     const [gameLength, setGameLength] = useState<number>(20);
     const [theme, setTheme] = useState<string>("keeby");
     const [gameOver, setGameOver] = useState<boolean>(false);
+    const [gameStart, setGameStart] = useState<boolean>(false);
+
     const [isFocused, setIsFocused] = useState<boolean>(false);
     const [keeb, setKeeb] = useState<string>("");
+    const [keebId, setKeebId] = useState<string>("");
 
+    // save the game itself...
+    // deal with rank an tag within game routes?
 
-// save the game itself... 
-// deal with rank an tag within game routes? 
-
-// add a reset button and next game 
-
-
+    console.log("STATUS", gameOver);
 
     useEffect(() => {
         if (cookies.mode) {
@@ -59,6 +59,7 @@ export default function KeebType() {
             setTheme(cookies.theme);
         }
     }, [cookies]);
+    console.log(keebId)
 
     return (
         <>
@@ -72,12 +73,20 @@ export default function KeebType() {
                     setTheme={setTheme}
                     keeb={keeb}
                     setKeeb={setKeeb}
+                    keebId={keebId}
+                    setKeebId={setKeebId}
                 />
 
                 {mode === "speed" && (
                     <SpeedMode
                         gameLength={gameLength}
                         setGameOver={setGameOver}
+                        gameStart={gameStart}
+                        gameOver={gameOver}
+                        setGameStart={setGameStart}
+                        mode={mode}
+                        keebId={keebId}
+        
                     />
                 )}
                 {mode === "quote" && <SelectQuote />}

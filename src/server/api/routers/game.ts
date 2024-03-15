@@ -33,7 +33,7 @@ export const gameRouter = createTRPCRouter({
                     data: input,
                 });
 
-                return newGame;
+                return newGame.id;
             }
 
             throw new Error("Invalid userId");
