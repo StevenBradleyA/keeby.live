@@ -90,8 +90,8 @@ model Favorites {
 
 model Game {
     id        String   @id @default(cuid())
-    wpm       Int
-    pureWpm    Int
+    wpm       Float
+    pureWpm   Float
     accuracy  Float
     mode      String
     createdAt DateTime @default(now())
@@ -99,9 +99,9 @@ model Game {
 
     userId String
     keebId String?
-
-    user User  @relation(fields: [userId], references: [id], onDelete: Cascade)
-    keeb Keeb? @relation(fields: [keebId], references: [id])
+    // fix this weird user glitch laterrr
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    keeb   Keeb?   @relation(fields: [keebId], references: [id])
 }
 
 model Images {

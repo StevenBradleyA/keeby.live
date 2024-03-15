@@ -19,7 +19,7 @@ export const gameRouter = createTRPCRouter({
         .input(
             z.object({
                 wpm: z.number(),
-                pureWpm: z.number(), 
+                pureWpm: z.number(),
                 accuracy: z.number(),
                 mode: z.string(),
                 userId: z.string(),
@@ -27,12 +27,22 @@ export const gameRouter = createTRPCRouter({
             })
         )
         .mutation(async ({ input, ctx }) => {
+            const { wpm, pureWpm, accuracy, mode, userId, keebId } = input;
             if (
                 ctx.session.user.hasProfile &&
                 ctx.session.user.id === input.userId
             ) {
+                const createData = {
+                    wpm,
+                    pureWpm,
+                    accuracy,
+                    mode,
+                    userId,
+                    keebId,
+                };
+
                 const newGame = await ctx.prisma.game.create({
-                    data: input,
+                    data: createData,
                 });
 
                 return newGame.id;

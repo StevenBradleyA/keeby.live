@@ -48,7 +48,7 @@ export default function SpeedMode({
     // npm i react-use-precision-timer
     // const [timerId, setTimerId] = useState<NodeJS.Timer | null>(null);
     const [isRunning, setIsRunning] = useState<boolean>(false);
-    const [elapsedTime, setElapsedTime] = useState<number>(0);
+    // const [elapsedTime, setElapsedTime] = useState<number>(0);
 
     const stopwatch = useStopwatch();
 
@@ -91,7 +91,8 @@ export default function SpeedMode({
             const totalPromptCharacters = prompt.join(" ").length;
 
             // calculations
-            const timeInMinutes = elapsedTime / 60000;
+            const timeInSeconds = stopwatch.getElapsedRunningTime() / 1000;
+            const timeInMinutes = timeInSeconds / 60;
             const pureWpm = totalTypedCharacters / 5 / timeInMinutes;
             const wpm = totalCorrectlyTypedCharacters / 5 / timeInMinutes;
             const accuracy =
@@ -109,7 +110,6 @@ export default function SpeedMode({
                 accuracy: accuracy,
                 mode: mode,
             };
-
             createGame(data);
         }
     };
@@ -235,7 +235,7 @@ export default function SpeedMode({
         }
         if (gameOver) {
             stopwatch.pause();
-            setElapsedTime(stopwatch.getElapsedRunningTime());
+            // setElapsedTime(stopwatch.getElapsedRunningTime());
             handleSubmitGame();
         }
     }, [isRunning, gameOver, stopwatch]);
