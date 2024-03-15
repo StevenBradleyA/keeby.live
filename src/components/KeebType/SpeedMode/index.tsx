@@ -74,14 +74,45 @@ export default function SpeedMode({
     //     },
     // });
 
-    // const handleSubmitGame = ()=>{
+    const handleSubmitGame = () => {
+        if (gameOver && session?.user.id && keebId) {
+            // wpm
+            const totalTypedWords = totalUserInput.trim().split(" ");
+            const correctlyTypedWords = totalTypedWords.filter(
+                (word, index) => wordStatus[index]
+            );
+            const totalCorrectlyTypedCharacters =
+                correctlyTypedWords.join(" ").length;
 
-    //     if(gameOver && session?.user.id)
-    //     const data: {
+            // pure wpm
+            const totalTypedCharacters = totalUserInput.length;
 
-    //     }
+            // accuracy
+            const totalPromptCharacters = prompt.join(" ").length;
 
-    // }
+            // calculations
+            const timeInMinutes = elapsedTime / 60000;
+            const pureWpm = totalTypedCharacters / 5 / timeInMinutes;
+            const wpm = totalCorrectlyTypedCharacters / 5 / timeInMinutes;
+            const accuracy =
+                (totalCorrectlyTypedCharacters / totalPromptCharacters) * 100;
+
+            // wpm - total number of characters in the correctly typed words (including spaces), divided by 5 and normalised to 60 seconds.
+            // pure wpm - calculated just like wpm, but also includes incorrect words.
+            // accuracy - percentage of correctly pressed keys.
+
+            const data = {
+                userId: session.user.id,
+                keebId: keebId,
+                wpm: wpm,
+                pureWpm: pureWpm,
+                accuracy: accuracy,
+                mode: mode,
+            };
+
+            createGame(data);
+        }
+    };
 
     // typing
     useEffect(() => {
@@ -199,22 +230,18 @@ export default function SpeedMode({
     // timer
 
     useEffect(() => {
-
-        if(!isRunning){
-            stopwatch.pause()
+        if (!isRunning) {
+            stopwatch.pause();
         }
-        if(gameOver){
-            stopwatch.pause()
-            setElapsedTime(stopwatch.getElapsedRunningTime())
+        if (gameOver) {
+            stopwatch.pause();
+            setElapsedTime(stopwatch.getElapsedRunningTime());
+            handleSubmitGame();
         }
-
-
     }, [isRunning, gameOver, stopwatch]);
 
-
-    console.log('elapsed time', stopwatch.getElapsedRunningTime())
-    console.log('words type', totalUserInput)
-
+    console.log("elapsed time", stopwatch.getElapsedRunningTime());
+    console.log("words type", totalUserInput);
 
     // todo implement logic where one word back always backspace to take you back...
 

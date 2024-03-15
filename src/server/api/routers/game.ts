@@ -19,6 +19,8 @@ export const gameRouter = createTRPCRouter({
         .input(
             z.object({
                 wpm: z.number(),
+                pureWpm: z.number(), 
+                accuracy: z.number(),
                 mode: z.string(),
                 userId: z.string(),
                 keebId: z.string(),
