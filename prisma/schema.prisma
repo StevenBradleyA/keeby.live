@@ -91,6 +91,8 @@ model Favorites {
 model Game {
     id        String   @id @default(cuid())
     wpm       Int
+    pureWpm    Int
+    accuracy  Float
     mode      String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
