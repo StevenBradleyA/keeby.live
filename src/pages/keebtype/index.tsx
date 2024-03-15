@@ -43,8 +43,6 @@ export default function KeebType() {
     // save the game itself...
     // deal with rank an tag within game routes?
 
-    console.log("STATUS", gameOver);
-
     useEffect(() => {
         if (cookies.mode) {
             setMode(cookies.mode);
@@ -59,7 +57,6 @@ export default function KeebType() {
             setTheme(cookies.theme);
         }
     }, [cookies]);
-    console.log(keebId)
 
     return (
         <>
@@ -86,7 +83,6 @@ export default function KeebType() {
                         setGameStart={setGameStart}
                         mode={mode}
                         keebId={keebId}
-        
                     />
                 )}
                 {mode === "quote" && <SelectQuote />}

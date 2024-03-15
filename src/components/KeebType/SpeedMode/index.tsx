@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import SentenceGenerator from "./sentenceGenerator";
 import { api } from "~/utils/api";
 import { useSession } from "next-auth/react";
+import { useStopwatch } from "react-use-precision-timer";
+
 interface SpeedModeProps {
     gameLength: number;
     gameOver: boolean;
@@ -43,11 +45,12 @@ export default function SpeedMode({
     // todo need a variable that keeps track of total words typed going to need to reference this to spread the prev index into the userInput for backspace
 
     // timer
-    const [timerId, setTimerId] = useState<number | null>(null);
+    // npm i react-use-precision-timer
+    // const [timerId, setTimerId] = useState<NodeJS.Timer | null>(null);
     const [isRunning, setIsRunning] = useState<boolean>(false);
     const [elapsedTime, setElapsedTime] = useState<number>(0);
 
-        
+    const stopwatch = useStopwatch();
 
     const { mutate: createGame } = api.game.create.useMutation({
         onSuccess: (data) => {
@@ -80,6 +83,7 @@ export default function SpeedMode({
 
     // }
 
+    // typing
     useEffect(() => {
         if (inputRef.current) {
             inputRef.current.focus();
@@ -134,10 +138,19 @@ export default function SpeedMode({
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        // logic for moving forward
-        if ((e.key >= "a" && e.key <= "z") || (e.key >= "0" && e.key <= "9")) {
-            // setStartGame(true);
+        // here we want to start the game...
+        // going to want different logic depending on if the game is starting vs if the game is resuming
+        if (
+            !isRunning &&
+            ((e.key >= "a" && e.key <= "z") || (e.key >= "0" && e.key <= "9"))
+        ) {
             setIsRunning(true);
+            if (totalUserInput.length === 0) {
+                stopwatch.start();
+            }
+            if (totalUserInput.length > 0) {
+                stopwatch.resume();
+            }
         }
 
         if (e.key === " ") {
@@ -183,7 +196,25 @@ export default function SpeedMode({
         //   Logic to move back to the previous word?
     };
 
-    // todo fix game ending where typing the max amount of words on the final word ends the game whether correct or not
+    // timer
+
+    useEffect(() => {
+
+        if(!isRunning){
+            stopwatch.pause()
+        }
+        if(gameOver){
+            stopwatch.pause()
+            setElapsedTime(stopwatch.getElapsedRunningTime())
+        }
+
+
+    }, [isRunning, gameOver, stopwatch]);
+
+
+    console.log('elapsed time', stopwatch.getElapsedRunningTime())
+    console.log('words type', totalUserInput)
+
 
     // todo implement logic where one word back always backspace to take you back...
 
@@ -252,12 +283,14 @@ export default function SpeedMode({
                                             {isCursor && isRunning && (
                                                 <div className="absolute bottom-0 left-0 top-0 w-0.5 bg-green-500"></div>
                                             )}
-                                            {isCursorLastLetter && isRunning && (
-                                                <div className="absolute bottom-0 right-0 top-0 w-0.5 bg-green-500"></div>
-                                            )}
-                                               {isCursorLastLetter && !isRunning && (
-                                                <div className="absolute bottom-0 right-0 top-0 w-0.5 bg-green-500 blinking-cursor"></div>
-                                            )}
+                                            {isCursorLastLetter &&
+                                                isRunning && (
+                                                    <div className="absolute bottom-0 right-0 top-0 w-0.5 bg-green-500"></div>
+                                                )}
+                                            {isCursorLastLetter &&
+                                                !isRunning && (
+                                                    <div className="blinking-cursor absolute bottom-0 right-0 top-0 w-0.5 bg-green-500"></div>
+                                                )}
 
                                             {extra && (
                                                 <div
@@ -275,15 +308,17 @@ export default function SpeedMode({
                                                                 {index ===
                                                                     userInput.length -
                                                                         word.length -
-                                                                        1 && isRunning && (
-                                                                    <div className="absolute bottom-0 right-0 top-0 w-0.5 bg-green-500"></div>
-                                                                )}
-                                                                  {index ===
+                                                                        1 &&
+                                                                    isRunning && (
+                                                                        <div className="absolute bottom-0 right-0 top-0 w-0.5 bg-green-500"></div>
+                                                                    )}
+                                                                {index ===
                                                                     userInput.length -
                                                                         word.length -
-                                                                        1 && !isRunning && (
-                                                                    <div className="blinking-cursor absolute bottom-0 right-0 top-0 w-0.5 bg-green-500"></div>
-                                                                )}
+                                                                        1 &&
+                                                                    !isRunning && (
+                                                                        <div className="blinking-cursor absolute bottom-0 right-0 top-0 w-0.5 bg-green-500"></div>
+                                                                    )}
                                                             </div>
                                                         )
                                                     )}
@@ -332,3 +367,37 @@ export default function SpeedMode({
         </>
     );
 }
+
+// timer
+// useEffect(() => {
+//     return () => {
+//         if (timerId !== null) clearTimeout(timerId);
+//     };
+// }, [timerId]);
+
+// const startTimer = () => {
+//     if (!isRunning) {
+//         setIsRunning(true);
+//         const id = window.setInterval(() => {
+//             setElapsedTime((prevTime) => prevTime + 1);
+//         }, 1000);
+//         setTimerId(id);
+//     }
+// };
+
+// const pauseTimer = () => {
+//     if (isRunning && timerId !== null) {
+//         clearInterval(timerId);
+//         setIsRunning(false);
+//         setTimerId(null);
+//     }
+// };
+
+// const stopTimer = () => {
+//     if (timerId !== null) {
+//         clearInterval(timerId);
+//     }
+//     setIsRunning(false);
+//     setTimerId(null);
+//     setElapsedTime(0);
+// };
