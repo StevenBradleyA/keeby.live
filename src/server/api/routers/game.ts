@@ -15,6 +15,28 @@ export const gameRouter = createTRPCRouter({
         });
     }),
 
+    getGameResults: publicProcedure
+        .input(
+            z.object({
+                id: z.string(),
+            })
+        )
+        .query(({ input, ctx }) => {
+            const { id } = input;
+
+            return ctx.prisma.game.findUnique({
+                where: { id: id },
+            });
+
+            // want to display last game info
+            // also want to display all user previous games... rank etc...
+            // total games played for speed mode... 
+
+            // keeb info 
+            // 
+            // user info
+        }),
+
     create: protectedProcedure
         .input(
             z.object({

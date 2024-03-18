@@ -99,7 +99,7 @@ model Game {
 
     userId String
     keebId String?
-    // fix this weird user glitch laterrr
+    
     user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
     keeb   Keeb?   @relation(fields: [keebId], references: [id])
 }

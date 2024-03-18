@@ -3,6 +3,7 @@ import SentenceGenerator from "./sentenceGenerator";
 import { api } from "~/utils/api";
 import { useSession } from "next-auth/react";
 import { useStopwatch } from "react-use-precision-timer";
+import SpeedModeResults from "./results";
 
 interface SpeedModeProps {
     gameLength: number;
@@ -235,7 +236,6 @@ export default function SpeedMode({
         }
         if (gameOver) {
             stopwatch.pause();
-            // setElapsedTime(stopwatch.getElapsedRunningTime());
             handleSubmitGame();
         }
     }, [isRunning, gameOver, stopwatch]);
@@ -387,8 +387,8 @@ export default function SpeedMode({
             )}
 
             {gameOver && finishedGameId && (
-                <div className="flex w-2/3 text-white">
-                    hey the game is finished
+                <div className="flex w-full text-white">
+                    <SpeedModeResults gameId={finishedGameId} />
                 </div>
             )}
         </>
