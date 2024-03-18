@@ -386,9 +386,14 @@ export default function SpeedMode({
                 </div>
             )}
 
-            {gameOver && finishedGameId && (
+            {gameOver && finishedGameId && session && session.user && (
                 <div className="flex w-full text-white">
-                    <SpeedModeResults gameId={finishedGameId} />
+                    <SpeedModeResults
+                        gameId={finishedGameId}
+                        userId={session.user.id}
+                        mode={mode}
+                        keebId={keebId}
+                    />
                 </div>
             )}
         </>

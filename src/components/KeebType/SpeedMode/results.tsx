@@ -4,12 +4,22 @@ import EachGameResultCard from "./eachGameResultCard";
 
 interface SpeedModeResultsProps {
     gameId: string;
+    userId: string;
+    keebId: string;
+    mode: string;
 }
 
-export default function SpeedModeResults({ gameId }: SpeedModeResultsProps) {
-    const { data: session } = useSession();
+export default function SpeedModeResults({
+    gameId,
+    userId,
+    mode,
+    keebId,
+}: SpeedModeResultsProps) {
     const { data: gameResults } = api.game.getGameResults.useQuery({
         id: gameId,
+        userId: userId,
+        mode: mode,
+        keebId: keebId,
     });
 
     return (

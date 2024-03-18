@@ -19,22 +19,67 @@ export const gameRouter = createTRPCRouter({
         .input(
             z.object({
                 id: z.string(),
+                userId: z.string(),
+                mode: z.string(),
+                keebId: z.string(),
             })
         )
-        .query(({ input, ctx }) => {
-            const { id } = input;
+        .query(async ({ input, ctx }) => {
+            const { id, userId, mode, keebId } = input;
 
-            return ctx.prisma.game.findUnique({
+            const gameResults = await ctx.prisma.game.findUnique({
                 where: { id: id },
+                include: {
+                    keeb: {
+                        select: {
+                            id: true,
+                            name: true,
+                            keycaps: true,
+                            switches: true,
+                        },
+                    },
+                    user: {
+                        select: {
+                            rank: {
+                                select: {
+                                    name: true,
+                                },
+                            },
+                        },
+                    },
+                },
             });
 
-            // want to display last game info
-            // also want to display all user previous games... rank etc...
-            // total games played for speed mode... 
+            const allGameResults = await ctx.prisma.game.findMany({
+                where: {
+                    userId: userId,
+                    mode: mode,
+                    keebId: keebId,
+                },
+                select: {
+                    id: true,
+                    wpm: true,
+                    accuracy: true,
+                },
+            });
 
-            // keeb info 
-            // 
-            // user info
+            const totalGamesPlayed = allGameResults.length;
+
+            let averageWpm = 0;
+            let averageAccuracy = 0;
+
+            if (totalGamesPlayed > 0) {
+                averageWpm =
+                    allGameResults.reduce((acc, game) => acc + game.wpm, 0) /
+                    totalGamesPlayed;
+                averageAccuracy =
+                    allGameResults.reduce(
+                        (acc, game) => acc + game.accuracy,
+                        0
+                    ) / totalGamesPlayed;
+            }
+
+            return { gameResults, allGameResults, averageWpm, averageAccuracy };
         }),
 
     create: protectedProcedure
