@@ -25,7 +25,7 @@ export default function SpeedModeResults({
     return (
         <div className="flex w-full flex-col ">
             <button>reset game here</button>
-            {statistics && statistics.gameResults !== null &&  <EachGameResultCard statistics={statistics} />}
+            {statistics &&  <EachGameResultCard statistics={statistics} />}
         </div>
     );
 }

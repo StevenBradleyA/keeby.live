@@ -16,6 +16,9 @@ type GameResult = Game & {
     user: {
         rank: {
             name: string;
+            image: string;
+            minWpm: number;
+            maxWpm: number;
         } | null;
     };
 };
@@ -71,6 +74,9 @@ export const gameRouter = createTRPCRouter({
                             rank: {
                                 select: {
                                     name: true,
+                                    image: true,
+                                    minWpm: true,
+                                    maxWpm: true,
                                 },
                             },
                         },
