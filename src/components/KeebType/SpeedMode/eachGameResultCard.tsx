@@ -98,7 +98,7 @@ export default function EachGameResultCard({
                     <div className="mt-10 h-full w-1/4 rounded-2xl bg-keebyGray p-3 shadow-md">
                         {statistics.gameResults.keeb && (
                             <>
-                                <h2>{statistics.gameResults.keeb.name}</h2>
+                                <h2>Keyboard</h2>
                                 <p>{statistics.gameResults.keeb.name}</p>
                             </>
                         )}

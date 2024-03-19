@@ -146,6 +146,86 @@ export const gameRouter = createTRPCRouter({
                     data: createData,
                 });
 
+                const player = await ctx.prisma.user.findUnique({
+                    where: { id: userId },
+                    select: {
+                        rank: {
+                            select: {
+                                name: true,
+                            },
+                        },
+                        _count: {
+                            select: {
+                                games: true,
+                            },
+                        },
+                    },
+                });
+
+                if (
+                    player &&
+                    (player.rank === null || player._count.games < 10)
+                ) {
+                    const unranked = await ctx.prisma.rank.findUnique({
+                        where: {
+                            name: "Unranked",
+                        },
+                        select: {
+                            id: true,
+                        },
+                    });
+
+                    if (unranked) {
+                        await ctx.prisma.user.update({
+                            where: { id: userId },
+                            data: { rankId: unranked.id },
+                        });
+                    }
+                }
+
+                // check top 10 highest wpm games with mode speed ... (all ranked game modes)
+                //  assign a rank based on the top average 10 wpm games
+                if (player && player._count.games >= 10) {
+                    const topGames = await ctx.prisma.game.findMany({
+                        where: {
+                            userId: userId,
+                            mode: "speed", // change later for other ranked modes
+                        },
+                        orderBy: {
+                            wpm: "desc",
+                        },
+                        take: 10,
+                    });
+
+                    const averageWpm =
+                        topGames.reduce((acc, game) => acc + game.wpm, 0) /
+                        topGames.length;
+
+                    const ranks = await ctx.prisma.rank.findMany({
+                        where: {
+                            minWpm: {
+                                lte: averageWpm,
+                            },
+                            maxWpm: {
+                                gte: averageWpm,
+                            },
+                        },
+                    });
+
+                    // Assuming ranks are exclusive and the query returns exactly one rank
+                    if (ranks.length === 1 && ranks[0]) {
+                        const userRankId = ranks[0].id;
+
+                        // Update user's rank
+                        await ctx.prisma.user.update({
+                            where: { id: userId },
+                            data: { rankId: userRankId },
+                        });
+                    }
+                }
+                // probably want to return a boolean if a user gets assigned a new rank or something so we can send a hot toast when they rank up!
+                
+
                 return newGame.id;
             }
 

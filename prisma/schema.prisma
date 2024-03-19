@@ -99,9 +99,9 @@ model Game {
 
     userId String
     keebId String?
-    
-    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-    keeb   Keeb?   @relation(fields: [keebId], references: [id])
+
+    user User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+    keeb Keeb? @relation(fields: [keebId], references: [id])
 }
 
 model Images {
@@ -237,7 +237,7 @@ model PostLike {
 model Rank {
     id     String @id @default(cuid())
     image  String
-    name   String
+    name   String @unique
     minWpm Int
     maxWpm Int
     users  User[]
