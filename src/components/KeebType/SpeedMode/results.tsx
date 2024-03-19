@@ -15,7 +15,7 @@ export default function SpeedModeResults({
     mode,
     keebId,
 }: SpeedModeResultsProps) {
-    const { data: gameResults } = api.game.getGameResults.useQuery({
+    const { data: statistics } = api.game.getGameResults.useQuery({
         id: gameId,
         userId: userId,
         mode: mode,
@@ -25,7 +25,7 @@ export default function SpeedModeResults({
     return (
         <div className="flex w-full flex-col ">
             <button>reset game here</button>
-            {gameResults && <EachGameResultCard gameResults={gameResults} />}
+            {statistics && statistics.gameResults !== null &&  <EachGameResultCard statistics={statistics} />}
         </div>
     );
 }

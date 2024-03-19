@@ -26,6 +26,10 @@ export default function SpeedMode({
 }: SpeedModeProps) {
     const { data: session } = useSession();
 
+    // TODO Going to want to keep track of interval data for a game. idk about db saving but just pass to component
+    // interval accuracy and interval wpm
+    //  also pass time
+
     // typing
     const [prompt, setPrompt] = useState<string[]>([]);
     const [totalUserInput, setTotalUserInput] = useState<string>("");
@@ -77,19 +81,40 @@ export default function SpeedMode({
 
     const handleSubmitGame = () => {
         if (gameOver && session?.user.id && keebId) {
+            console.log(prompt);
+            console.log(totalUserInput);
+
+            // todo fix calculations so they are accurate maybe we should iterate and compare each letter to letter to the prompt?
+
             // wpm
             const totalTypedWords = totalUserInput.trim().split(" ");
+            console.log("totalTypedWords", totalTypedWords);
             const correctlyTypedWords = totalTypedWords.filter(
                 (word, index) => wordStatus[index]
             );
+            console.log("correctlyTypedWords", correctlyTypedWords);
+
             const totalCorrectlyTypedCharacters =
                 correctlyTypedWords.join(" ").length;
+            console.log(
+                "totalCorrectlyTypedCharacters",
+                totalCorrectlyTypedCharacters
+            );
+            console.log(
+                "totalCorrectlyTypedCharacters",
+                correctlyTypedWords.join(" ")
+            );
 
             // pure wpm
             const totalTypedCharacters = totalUserInput.length;
 
+            console.log("totalTypedCharacters", totalTypedCharacters);
+            console.log("total user input", totalUserInput);
+            console.log("total typed words", totalTypedWords);
+
             // accuracy
-            const totalPromptCharacters = prompt.join(" ").length;
+            const totalPromptCharacters = prompt.join(" ").trim().length;
+            console.log("totalPromptCharacters", totalPromptCharacters);
 
             // calculations
             const timeInSeconds = stopwatch.getElapsedRunningTime() / 1000;
@@ -98,6 +123,8 @@ export default function SpeedMode({
             const wpm = totalCorrectlyTypedCharacters / 5 / timeInMinutes;
             const accuracy =
                 (totalCorrectlyTypedCharacters / totalPromptCharacters) * 100;
+
+            console.log("accuracy", accuracy);
 
             // wpm - total number of characters in the correctly typed words (including spaces), divided by 5 and normalised to 60 seconds.
             // pure wpm - calculated just like wpm, but also includes incorrect words.
@@ -146,6 +173,7 @@ export default function SpeedMode({
 
             // If activeWordIndex matches the length of the prompt
             // and the last word is spelled correctly, setGameOver to true
+            setTotalUserInput(totalUserInput + userInput);
 
             setGameOver(true);
             // setUserInput(""); not sure if we need to do this at all the game will end soooo
@@ -158,6 +186,7 @@ export default function SpeedMode({
         wordStatus,
         gameOver,
         setGameOver,
+        totalUserInput,
     ]);
 
     const handleInputChange = (inputValue: string) => {
@@ -225,7 +254,7 @@ export default function SpeedMode({
             e.preventDefault();
         }
 
-        //   Logic to move back to the previous word?
+        //todo   Logic to move back to the previous word?
     };
 
     // timer
@@ -240,8 +269,8 @@ export default function SpeedMode({
         }
     }, [isRunning, gameOver, stopwatch]);
 
-    console.log("elapsed time", stopwatch.getElapsedRunningTime());
-    console.log("words type", totalUserInput);
+    // console.log("elapsed time", stopwatch.getElapsedRunningTime());
+    // console.log("words type", totalUserInput);
 
     // todo implement logic where one word back always backspace to take you back...
 
@@ -399,37 +428,3 @@ export default function SpeedMode({
         </>
     );
 }
-
-// timer
-// useEffect(() => {
-//     return () => {
-//         if (timerId !== null) clearTimeout(timerId);
-//     };
-// }, [timerId]);
-
-// const startTimer = () => {
-//     if (!isRunning) {
-//         setIsRunning(true);
-//         const id = window.setInterval(() => {
-//             setElapsedTime((prevTime) => prevTime + 1);
-//         }, 1000);
-//         setTimerId(id);
-//     }
-// };
-
-// const pauseTimer = () => {
-//     if (isRunning && timerId !== null) {
-//         clearInterval(timerId);
-//         setIsRunning(false);
-//         setTimerId(null);
-//     }
-// };
-
-// const stopTimer = () => {
-//     if (timerId !== null) {
-//         clearInterval(timerId);
-//     }
-//     setIsRunning(false);
-//     setTimerId(null);
-//     setElapsedTime(0);
-// };

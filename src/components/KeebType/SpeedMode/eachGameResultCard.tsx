@@ -1,27 +1,61 @@
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import defaultProfile from "@public/Profile/profile-default.png";
+import type { Game } from "@prisma/client";
 
-interface EachGameResultCard {}
+interface GameResult extends Game {
+    keeb: {
+        id: string;
+        name: string;
+        keycaps: string;
+        switches: string;
+    } | null;
+    user: {
+        rank: {
+            name: string;
+        } | null;
+    };
+}
 
-export default function EachGameResultCard({ gameResults }) {
+interface GameStatistics {
+    id: string;
+    wpm: number;
+    accuracy: number;
+}
+
+interface GameResultsResponse {
+    gameResults: GameResult;
+    allGameResults: GameStatistics[];
+    averageWpm: number;
+    averageAccuracy: number;
+}
+
+interface EachGameResultCardProps {
+    statistics: GameResultsResponse;
+}
+
+export default function EachGameResultCard({
+    statistics,
+}: EachGameResultCardProps) {
     const { data: session } = useSession();
     // react-vis
     return (
         <div className="flex w-full flex-col ">
-            <div className="w-full bg-green-300 ">{gameResults.mode}</div>
+            <div className="w-full bg-green-300 ">
+                {statistics.gameResults.mode}
+            </div>
             <div className="flex w-full gap-5  bg-red-200">
                 <div className="mt-10 h-full w-1/4 shadow-md">
                     <div className="border-2 border-green-500 p-3">
                         <h2>wpm</h2>
-                        {gameResults.wpm}
+                        {statistics.gameResults.wpm}
                         <h2>purewpm </h2>
-                        {gameResults.pureWpm}
+                        {statistics.gameResults.pureWpm}
                     </div>
 
                     <div>
                         <h2>accuracy</h2>
-                        {gameResults.accuracy}
+                        {statistics.gameResults.accuracy}
                     </div>
 
                     {session && session.user && (

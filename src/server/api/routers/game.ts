@@ -4,6 +4,34 @@ import {
     publicProcedure,
     protectedProcedure,
 } from "~/server/api/trpc";
+import type { Game } from "@prisma/client";
+
+type GameResult = Game & {
+    keeb: {
+        id: string;
+        name: string;
+        keycaps: string;
+        switches: string;
+    } | null;
+    user: {
+        rank: {
+            name: string;
+        } | null;
+    };
+};
+
+type GameStatistics = {
+    id: string;
+    wpm: number;
+    accuracy: number;
+};
+
+type GameResultsResponse = {
+    gameResults: GameResult | null;
+    allGameResults: GameStatistics[];
+    averageWpm: number;
+    averageAccuracy: number;
+};
 
 export const gameRouter = createTRPCRouter({
     getAll: publicProcedure.query(({ ctx }) => {
@@ -24,7 +52,7 @@ export const gameRouter = createTRPCRouter({
                 keebId: z.string(),
             })
         )
-        .query(async ({ input, ctx }) => {
+        .query(async ({ input, ctx }): Promise<GameResultsResponse> => {
             const { id, userId, mode, keebId } = input;
 
             const gameResults = await ctx.prisma.game.findUnique({
