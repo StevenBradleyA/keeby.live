@@ -7,6 +7,7 @@ interface SpeedModeResultsProps {
     userId: string;
     keebId: string;
     mode: string;
+    wpmIntervals: number[];
 }
 
 export default function SpeedModeResults({
@@ -14,6 +15,7 @@ export default function SpeedModeResults({
     userId,
     mode,
     keebId,
+    wpmIntervals
 }: SpeedModeResultsProps) {
     const { data: statistics } = api.game.getGameResults.useQuery({
         id: gameId,
@@ -25,7 +27,7 @@ export default function SpeedModeResults({
     return (
         <div className="flex w-full flex-col ">
             <button>reset game here</button>
-            {statistics &&  <EachGameResultCard statistics={statistics} />}
+            {statistics && <EachGameResultCard statistics={statistics} wpmIntervals={wpmIntervals} />}
         </div>
     );
 }

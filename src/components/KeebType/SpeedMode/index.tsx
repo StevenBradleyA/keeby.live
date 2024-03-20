@@ -45,16 +45,11 @@ export default function SpeedMode({
     // game
     const [finishedGameId, setFinishedGameId] = useState<string>("");
     const [isVisualPaused, setIsVisualPaused] = useState<boolean>(false);
+    const [isRunning, setIsRunning] = useState<boolean>(false);
     const inputRef = useRef<HTMLInputElement>(null);
 
-    // todo need a variable that keeps track of total words typed going to need to reference this to spread the prev index into the userInput for backspace
-
-    // timer
-    // npm i react-use-precision-timer
-    // const [timerId, setTimerId] = useState<NodeJS.Timer | null>(null);
-    const [isRunning, setIsRunning] = useState<boolean>(false);
-    // const [elapsedTime, setElapsedTime] = useState<number>(0);
-
+    // stats
+    const [wpmIntervals, setWpmIntervals] = useState<number[]>([]);
     const stopwatch = useStopwatch();
 
     const { mutate: createGame } = api.game.create.useMutation({
@@ -65,26 +60,10 @@ export default function SpeedMode({
         },
     });
 
-    // const { mutate } = api.listing.create.useMutation({
-    //     onSuccess: async () => {
-    //         toast.success("Listing Complete!", {
-    //             style: {
-    //                 borderRadius: "10px",
-    //                 background: "#333",
-    //                 color: "#fff",
-    //             },
-    //         });
-    //         void ctx.listing.getAll.invalidate();
-    //         await router.push("/");
-    //     },
-    // });
-
     const handleSubmitGame = () => {
         if (gameOver && session?.user.id && keebId) {
             console.log(prompt);
             console.log(totalUserInput);
-
-            // todo fix calculations so they are accurate maybe we should iterate and compare each letter to letter to the prompt?
 
             // wpm
             const totalTypedWords = totalUserInput.trim().split(" ");
@@ -258,7 +237,6 @@ export default function SpeedMode({
     };
 
     // timer
-
     useEffect(() => {
         if (!isRunning) {
             stopwatch.pause();
@@ -269,8 +247,26 @@ export default function SpeedMode({
         }
     }, [isRunning, gameOver, stopwatch]);
 
-    // console.log("elapsed time", stopwatch.getElapsedRunningTime());
-    // console.log("words type", totalUserInput);
+    // intervals for post game stats
+    // useEffect(() => {
+    //     if (isRunning && !gameOver) {
+    //         const interval = setInterval(() => {
+    //             const timeInSeconds = stopwatch.getElapsedRunningTime() / 1000;
+    //             const timeInMinutes = timeInSeconds / 60;
+    //             const totalTypedCharacters = totalUserInput.length;
+    //             const wpm = totalTypedCharacters / 5 / timeInMinutes;
+
+    //             setWpmIntervals((prevIntervals) => [...prevIntervals, wpm]);
+    //         }, 1000); // Calculate WPM every milliseconds
+
+    //         return () => clearInterval(interval);
+    //     }
+    // }, [totalUserInput, stopwatch, gameOver, isRunning]);
+
+    // would be cool to display a graph that shows wpm over time 
+    // accuracy over time, 
+    // time it takes to type each word? record time and length of each word typed everytime the active word index changes 
+    
 
     // todo implement logic where one word back always backspace to take you back...
 
@@ -422,6 +418,7 @@ export default function SpeedMode({
                         userId={session.user.id}
                         mode={mode}
                         keebId={keebId}
+                        wpmIntervals={wpmIntervals}
                     />
                 </div>
             )}
