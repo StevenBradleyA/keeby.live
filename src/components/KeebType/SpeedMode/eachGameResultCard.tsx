@@ -2,19 +2,20 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import defaultProfile from "@public/Profile/profile-default.png";
 import type { Game } from "@prisma/client";
-import React, { PureComponent } from "react";
-import {
-    LineChart,
-    Line,
-    XAxis,
-    YAxis,
-    CartesianGrid,
-    Tooltip,
-    Legend,
-    ResponsiveContainer,
-    PieChart,
-    Pie,
-} from "recharts";
+// import {
+//     LineChart,
+//     Line,
+//     XAxis,
+//     YAxis,
+//     CartesianGrid,
+//     Tooltip,
+//     Legend,
+//     ResponsiveContainer,
+//     PieChart,
+//     Pie,
+//     ScatterChart,
+//     Scatter,
+// } from "recharts";
 
 interface GameResult extends Game {
     keeb: {
@@ -57,12 +58,12 @@ export default function EachGameResultCard({
 }: EachGameResultCardProps) {
     const { data: session } = useSession();
     // npm install recharts
+    // npm i react-chartjs-2 chart.js
 
     console.log(statistics.allGameResults);
     const wpmData = statistics.allGameResults.map((result) => ({
         wpm: result.wpm,
     }));
-
 
     return (
         statistics.gameResults !== null && (
@@ -119,17 +120,7 @@ export default function EachGameResultCard({
 
                     <div className="h-[50vh] w-1/2 ">
                         graph data (wpm over time and accuracy rate over time)
-                        <ResponsiveContainer width="100%" height="100%">
-                            <LineChart data={wpmData} width={300} height={100}>
-                                <Tooltip />
-                                <Line
-                                    type="monotone"
-                                    dataKey="wpm"
-                                    stroke="#8884d8"
-                                    strokeWidth={2}
-                                />
-                            </LineChart>
-                        </ResponsiveContainer>
+                        {/* lets just display the time it takes to type each word... or a segment  */}
                     </div>
 
                     <div className="mt-10 h-full w-1/4 rounded-2xl bg-keebyGray p-3 shadow-md">
