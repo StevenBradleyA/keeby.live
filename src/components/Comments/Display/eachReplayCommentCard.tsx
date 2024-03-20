@@ -135,7 +135,7 @@ export default function EachReplyCommentCard({
 
                 {reply.referencedUser ? (
                     <div>
-                        <div className="flex whitespace-pre-wrap ">
+                        <div className="flex whitespace-pre-wrap text-white">
                             <span>
                                 <span className="text-green-500">{`@${reply.referencedUser} `}</span>
                                 {isTooLong && !isExpanded
@@ -154,7 +154,7 @@ export default function EachReplyCommentCard({
                     </div>
                 ) : (
                     <div>
-                        <div className="whitespace-pre-wrap ">
+                        <div className="whitespace-pre-wrap text-white ">
                             {isTooLong && !isExpanded
                                 ? lines.slice(0, maxLines).join("\n")
                                 : reply.text}

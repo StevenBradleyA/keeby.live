@@ -138,7 +138,7 @@ export default function EachCommentCard({
                     </div>
 
                     <div>
-                        <div className="text-md whitespace-pre-wrap">
+                        <div className="text-md whitespace-pre-wrap text-white">
                             {isTooLong && !isExpanded
                                 ? lines.slice(0, maxLines).join("\n")
                                 : comment.text}

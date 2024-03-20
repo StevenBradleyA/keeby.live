@@ -7,19 +7,19 @@ import NotificationSvg from "~/components/Svgs/notification";
 import { getCookies } from "cookies-next";
 import { setCookie } from "cookies-next";
 import CreatePostModal from "~/components/KeebShare/CreatePost";
-import { api } from "~/utils/api";
 import DisplayNewPostPreviews from "~/components/KeebShare/DisplayPosts/DisplayPostPreviews/displayNewPostPreviews";
 import DisplayPopularPostPreviews from "~/components/KeebShare/DisplayPosts/DisplayPostPreviews/displayPopularPostPreviews";
 import MainFooter from "~/components/Footer";
+import { debounce } from "lodash";
 
 export default function KeebShare() {
-   
-
     const cookies = getCookies();
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     const [filter, setFilter] = useState<string>("Hot");
     const [searchInput, setSearchInput] = useState<string>("");
+    const [debouncedSearchQuery, setDebouncedSearchQuery] =
+        useState<string>("");
     const [isSearchFocus, setIsSearchFocus] = useState<boolean>(false);
     const [isSpecify, setIsSpecify] = useState<boolean>(false);
     const [tag, setTag] = useState<string>("");
@@ -62,6 +62,16 @@ export default function KeebShare() {
             }
         }
     };
+    useEffect(() => {
+        const handler = debounce(() => {
+            setDebouncedSearchQuery(searchInput);
+        }, 250);
+
+        handler();
+        return () => {
+            handler.cancel();
+        };
+    }, [searchInput]);
 
     useEffect(() => {
         if (cookies.filter) {
@@ -256,7 +266,7 @@ export default function KeebShare() {
                         {filter === "New" && (
                             <div>
                                 <DisplayNewPostPreviews
-                                    searchInput={searchInput}
+                                    searchInput={debouncedSearchQuery}
                                     tag={tag}
                                 />
                             </div>
@@ -264,7 +274,7 @@ export default function KeebShare() {
                         {filter === "Hot" && (
                             <div>
                                 <DisplayPopularPostPreviews
-                                    searchInput={searchInput}
+                                    searchInput={debouncedSearchQuery}
                                     tag={tag}
                                 />
                             </div>

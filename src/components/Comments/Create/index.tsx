@@ -101,7 +101,7 @@ export default function CreateComment({ typeId, type }: CreateCommentProps) {
     return (
         <form className="mb-5 flex flex-col justify-between gap-2">
             <textarea
-                className="comment-input-box w-full rounded-lg border-none bg-pogGray p-2 outline-none"
+                className="comment-input-box w-full rounded-lg border-none bg-pogGray p-2 outline-none text-white"
                 value={text}
                 placeholder="Write a comment..."
                 onChange={(e) => setText(e.target.value)}

@@ -138,7 +138,7 @@ export default function CreateReplyComment({
                     />
 
                     <textarea
-                        className="reply-input w-full  border-none bg-transparent p-2 outline-none"
+                        className="reply-input w-full  border-none bg-transparent p-2 text-white outline-none"
                         value={text}
                         placeholder="Add a reply..."
                         onChange={(e) => setText(e.target.value)}
