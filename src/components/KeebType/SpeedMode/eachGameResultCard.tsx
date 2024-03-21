@@ -67,31 +67,31 @@ export default function EachGameResultCard({
 
     return (
         statistics.gameResults !== null && (
-            <div className="flex w-full flex-col p-5 ">
-                <div className="w-full bg-green-300 ">
-                    {statistics.gameResults.mode}
-                </div>
+            <div className="flex w-full flex-col ">
                 <div className="flex w-full gap-5  ">
                     <div className="mt-10 h-full w-1/4 rounded-2xl bg-keebyGray bg-opacity-30 p-3  shadow-md">
-                        <div className="flex flex-col border-b-2 border-green-500 p-3">
-                            <h2>WPM</h2>
-                            <p className="border-y-2 border-green-500">
-                                {statistics.gameResults.wpm}
+                        <div className="flex flex-col items-start px-3 pt-3">
+                            <h2 className="flex gap-2">
+                                {statistics.gameResults.mode}
+                            </h2>
+                            <p className="mt-2 border-y-2 border-green-300  border-opacity-50 p-2 text-3xl">
+                                {Math.round(statistics.gameResults.wpm)}{" "}
+                                <span className="text-sm text-darkGray ">
+                                    WPM
+                                </span>
                             </p>
-                            <h2>purewpm </h2>
-                            {statistics.gameResults.pureWpm}
+                            <p className=" p-2 text-xl ">
+                                <span className="text-xs text-darkGray">
+                                    Pure WPM
+                                </span>{" "}
+                                {Math.round(statistics.gameResults.pureWpm)}
+                            </p>
+                            <h2>Accuracy</h2>
                         </div>
 
-                        <div>
-                            <h2>accuracy</h2>
-                            <div className="flex">
-                                {statistics.gameResults.accuracy}
-                                <div className="h-96 w-96">
-                                    {/* <KeebTypePieChart accuracy={statistics.gameResults.accuracy}/> */}
-                                </div>
-                            </div>
+                        <div className="w-full rounded-lg bg-green-300 bg-opacity-50 px-3 py-2 text-3xl">
+                             {`${Math.round(statistics.gameResults.accuracy)}%`}
                         </div>
-
                         {session && session.user && (
                             <div className="flex ">
                                 <div className="h-full">
@@ -118,8 +118,9 @@ export default function EachGameResultCard({
                         )}
                     </div>
 
-                    <div className="h-[50vh] w-1/2 ">
+                    <div className=" w-1/2 ">
                         graph data (wpm over time and accuracy rate over time)
+                        or jus wpm
                         {/* lets just display the time it takes to type each word... or a segment  */}
                     </div>
 

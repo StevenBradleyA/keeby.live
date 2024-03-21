@@ -9,8 +9,6 @@ interface SpeedModeProps {
     gameLength: number;
     gameOver: boolean;
     setGameOver: (gameOver: boolean) => void;
-    gameStart: boolean;
-    setGameStart: (gameStart: boolean) => void;
     mode: string;
     keebId: string;
 }
@@ -19,8 +17,6 @@ export default function SpeedMode({
     gameLength,
     gameOver,
     setGameOver,
-    gameStart,
-    setGameStart,
     keebId,
     mode,
 }: SpeedModeProps) {
@@ -42,6 +38,7 @@ export default function SpeedMode({
         new Array(gameLength).fill("")
     );
     const [trigger, setTrigger] = useState<number>(0);
+    const [newGame, setNewGame] = useState<boolean>(false);
 
     // game
     const [finishedGameId, setFinishedGameId] = useState<string>("");
@@ -131,6 +128,8 @@ export default function SpeedMode({
         setUserInput("");
         setTotalUserInput("");
         setActiveWordIndex(0);
+        setWordStatus(new Array(gameLength).fill(false));
+        setExtraCharacters(new Array(gameLength).fill(""));
         if (inputRef.current) {
             inputRef.current.focus();
             setIsVisualPaused(false);
@@ -139,18 +138,16 @@ export default function SpeedMode({
     };
 
     const handleNextGame = () => {
-        setTrigger((prev) => prev + 1);
         setGameOver(false);
+        setTrigger((prev) => prev + 1);
         setTotalUserInput("");
         setUserInput("");
         setActiveWordIndex(0);
         setWordStatus(new Array(gameLength).fill(false));
         setExtraCharacters(new Array(gameLength).fill(""));
-        if (inputRef.current) {
-            inputRef.current.focus();
-            setIsVisualPaused(false);
-        }
         stopwatch.stop();
+        setIsVisualPaused(false);
+        setIsRunning(false);
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -211,11 +208,16 @@ export default function SpeedMode({
     };
 
     // typing
+    // useEffect(() => {
+    //     if (inputRef.current) {
+    //         inputRef.current.focus();
+    //     }
+    // }, []);
     useEffect(() => {
-        if (inputRef.current) {
+        if (!gameOver && inputRef.current) {
             inputRef.current.focus();
         }
-    }, []);
+    }, [gameOver, trigger]);
 
     useEffect(() => {
         const currentWord = prompt[activeWordIndex];
@@ -299,7 +301,7 @@ export default function SpeedMode({
     return (
         <div className="flex w-2/3 flex-shrink-0 flex-col">
             {gameOver === false && (
-                <div className="mt-60 flex w-full flex-col">
+                <div className="mt-72 flex w-full flex-col">
                     <SentenceGenerator
                         gameLength={gameLength}
                         setPrompt={setPrompt}
@@ -439,7 +441,29 @@ export default function SpeedMode({
             )}
 
             {gameOver && finishedGameId && session && session.user && (
-                <div className="flex w-full text-white">
+                <div className="flex w-full flex-col text-white">
+                    <div className="w-full rounded-lg bg-green-300 bg-opacity-50 px-5 py-2">
+                        <button
+                            onClick={handleNextGame}
+                            className="flex items-center hover:text-green-500"
+                        >
+                            Next Game
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                className="w-7 -rotate-90   "
+                                fill="none"
+                            >
+                                <path
+                                    d="M7 10L12 15L17 10"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                            </svg>
+                        </button>
+                    </div>
                     <SpeedModeResults
                         gameId={finishedGameId}
                         userId={session.user.id}
@@ -449,10 +473,40 @@ export default function SpeedMode({
                     />
                 </div>
             )}
-            <div className="mt-20 flex w-full justify-center">
-                <button onClick={handleNextGame}>next game</button>
-                <button onClick={handleResetGame}>reset</button>
-            </div>
+            {!gameOver && (
+                <div className="mt-20 flex w-full justify-center gap-10">
+                    <button
+                        onClick={handleResetGame}
+                        className="text-darkGray hover:text-green-500"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor"
+                            className="w-6"
+                            viewBox="0 0 24 24"
+                        >
+                            <path d="M12 16c1.671 0 3-1.331 3-3s-1.329-3-3-3-3 1.331-3 3 1.329 3 3 3z" />
+                            <path d="M20.817 11.186a8.94 8.94 0 0 0-1.355-3.219 9.053 9.053 0 0 0-2.43-2.43 8.95 8.95 0 0 0-3.219-1.355 9.028 9.028 0 0 0-1.838-.18V2L8 5l3.975 3V6.002c.484-.002.968.044 1.435.14a6.961 6.961 0 0 1 2.502 1.053 7.005 7.005 0 0 1 1.892 1.892A6.967 6.967 0 0 1 19 13a7.032 7.032 0 0 1-.55 2.725 7.11 7.11 0 0 1-.644 1.188 7.2 7.2 0 0 1-.858 1.039 7.028 7.028 0 0 1-3.536 1.907 7.13 7.13 0 0 1-2.822 0 6.961 6.961 0 0 1-2.503-1.054 7.002 7.002 0 0 1-1.89-1.89A6.996 6.996 0 0 1 5 13H3a9.02 9.02 0 0 0 1.539 5.034 9.096 9.096 0 0 0 2.428 2.428A8.95 8.95 0 0 0 12 22a9.09 9.09 0 0 0 1.814-.183 9.014 9.014 0 0 0 3.218-1.355 8.886 8.886 0 0 0 1.331-1.099 9.228 9.228 0 0 0 1.1-1.332A8.952 8.952 0 0 0 21 13a9.09 9.09 0 0 0-.183-1.814z" />
+                        </svg>
+                    </button>
+                    <button onClick={handleNextGame}>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            className="w-9 -rotate-90 text-darkGray hover:text-green-500 "
+                            fill="none"
+                        >
+                            <path
+                                d="M7 10L12 15L17 10"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            />
+                        </svg>
+                    </button>
+                </div>
+            )}
         </div>
     );
 }
