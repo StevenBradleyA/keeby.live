@@ -96,10 +96,10 @@ export default function LeftMenu({
     };
 
     return (
-        <div className="flex w-3/4 flex-col rounded-xl border-2 border-green-500 bg-black/40 p-5">
-            <label className="text-darkGray">Mode</label>
+        <div className="flex w-3/4 flex-col rounded-xl border-2 border-green-300 border-opacity-50 bg-green-300/30 p-5 text-white">
+            <label className="">Mode</label>
             <select
-                className=" w-full rounded-md  bg-darkGray py-1 text-green-500 shadow-lg "
+                className=" w-full rounded-md  bg-darkGray py-1  shadow-lg "
                 value={mode}
                 onChange={handleModeChange}
             >
@@ -110,9 +110,9 @@ export default function LeftMenu({
 
             {mode === "speed" && (
                 <>
-                    <label className="mt-2 text-darkGray">Length</label>
+                    <label className="mt-2 ">Length</label>
                     <select
-                        className=" rounded-md  bg-black py-1 text-green-500"
+                        className=" rounded-md  bg-darkGray py-1 "
                         value={gameLength}
                         onChange={handleGameLength}
                     >
@@ -124,10 +124,10 @@ export default function LeftMenu({
                     </select>
                 </>
             )}
-            <label className="mt-2 text-darkGray">Theme</label>
+            <label className="mt-2 ">Theme</label>
             <select
                 className={`
-                    rounded-md bg-black py-1 text-green-500 `}
+                    rounded-md bg-darkGray py-1  `}
                 value={theme}
                 onChange={handleThemeChange}
             >
@@ -143,10 +143,10 @@ export default function LeftMenu({
                 keebData &&
                 keebData.length > 0 && (
                     <>
-                        <label className="mt-2 text-darkGray">Keeb</label>
+                        <label className="mt-2 ">Keeb</label>
                         <select
                             className={`
-                    rounded-md bg-black py-1 text-green-500`}
+                    rounded-md bg-darkGray py-1 `}
                             value={selectedKeeb ? selectedKeeb.id : ""}
                             onChange={handleKeebChange}
                         >

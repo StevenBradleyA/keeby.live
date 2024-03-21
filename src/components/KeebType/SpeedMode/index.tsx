@@ -442,7 +442,7 @@ export default function SpeedMode({
 
             {gameOver && finishedGameId && session && session.user && (
                 <div className="flex w-full flex-col text-white">
-                    <div className="w-full rounded-lg bg-green-300 bg-opacity-50 px-5 py-2">
+                    <div className="w-full rounded-lg bg-green-300 bg-opacity-30 border-2 border-green-300 border-opacity-50 px-5 py-2">
                         <button
                             onClick={handleNextGame}
                             className="flex items-center hover:text-green-500"
