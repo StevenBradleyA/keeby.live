@@ -9,6 +9,10 @@ export default function SentenceGenerator({
     gameLength,
     setPrompt,
 }: SentenceGeneratorProps) {
+
+// todo prevent repeat words 
+// 
+
     useEffect(() => {
         const wordBank: string[] = [
             "the",

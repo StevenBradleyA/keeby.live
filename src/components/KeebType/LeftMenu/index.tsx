@@ -77,15 +77,9 @@ export default function LeftMenu({
         });
     };
     const handleKeebChange = (e: ChangeEvent<HTMLSelectElement>) => {
-        // const newKeeb: string = e.target.value;
-        // const keebId =
-        //     e.target.options[e.target.selectedIndex].getAttribute(
-        //         "data-keebid"
-        //     );
         const newKeebId: string = e.target.value;
         if (keebData && keebData.length > 0) {
             const newKeeb = keebData.find((keeb) => keeb.id === newKeebId);
-
             if (newKeeb) {
                 setKeeb(newKeeb.name);
                 setKeebId(newKeebId);
@@ -102,13 +96,11 @@ export default function LeftMenu({
     };
 
     return (
-        <div className="flex w-36 flex-col rounded-2xl border border-green-500 bg-black px-3 py-2">
-            {/* <button>Rank</button> */}
-            <div className="flex justify-center">Mode</div>
+        <div className="flex w-3/4 flex-col rounded-xl border-2 border-green-500 bg-black/40 p-5">
+            <label className="text-darkGray">Mode</label>
             <select
-                className=" bg-black px-2 py-1 text-green-500"
+                className=" w-full rounded-md  bg-darkGray py-1 text-green-500 shadow-lg "
                 value={mode}
-                // onChange={(e) => setMode(e.target.value)}
                 onChange={handleModeChange}
             >
                 <option value="speed">Speed</option>
@@ -117,10 +109,10 @@ export default function LeftMenu({
             </select>
 
             {mode === "speed" && (
-                <div className="flex gap-5">
-                    <div>Length</div>
+                <>
+                    <label className="mt-2 text-darkGray">Length</label>
                     <select
-                        className=" bg-black px-2 py-1 text-green-500"
+                        className=" rounded-md  bg-black py-1 text-green-500"
                         value={gameLength}
                         onChange={handleGameLength}
                     >
@@ -130,12 +122,12 @@ export default function LeftMenu({
                         </option>
                         <option value={50}>50</option>
                     </select>
-                </div>
+                </>
             )}
-            <div className="flex justify-center">Theme</div>
+            <label className="mt-2 text-darkGray">Theme</label>
             <select
                 className={`
-                    bg-black px-2 py-1 text-green-500 `}
+                    rounded-md bg-black py-1 text-green-500 `}
                 value={theme}
                 onChange={handleThemeChange}
             >
@@ -151,10 +143,10 @@ export default function LeftMenu({
                 keebData &&
                 keebData.length > 0 && (
                     <>
-                        <div className="flex justify-center">Keeb</div>
+                        <label className="mt-2 text-darkGray">Keeb</label>
                         <select
                             className={`
-                    bg-black px-2 py-1 text-green-500 `}
+                    rounded-md bg-black py-1 text-green-500`}
                             value={selectedKeeb ? selectedKeeb.id : ""}
                             onChange={handleKeebChange}
                         >

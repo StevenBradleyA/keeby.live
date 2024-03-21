@@ -60,19 +60,21 @@ export default function KeebType() {
 
     return (
         <>
-            <div className="mt-40 flex w-full items-center justify-between overflow-hidden p-10">
-                <LeftMenu
-                    mode={mode}
-                    setMode={setMode}
-                    gameLength={gameLength}
-                    setGameLength={setGameLength}
-                    theme={theme}
-                    setTheme={setTheme}
-                    keeb={keeb}
-                    setKeeb={setKeeb}
-                    keebId={keebId}
-                    setKeebId={setKeebId}
-                />
+            <div className=" flex w-full gap-10 p-10 ">
+                <div className="w-1/3  mt-40">
+                    <LeftMenu
+                        mode={mode}
+                        setMode={setMode}
+                        gameLength={gameLength}
+                        setGameLength={setGameLength}
+                        theme={theme}
+                        setTheme={setTheme}
+                        keeb={keeb}
+                        setKeeb={setKeeb}
+                        keebId={keebId}
+                        setKeebId={setKeebId}
+                    />
+                </div>
 
                 {mode === "speed" && (
                     <SpeedMode
@@ -86,8 +88,9 @@ export default function KeebType() {
                     />
                 )}
                 {mode === "quote" && <SelectQuote />}
-
-                <RightMenu />
+                <div className="w-1/3 mt-40">
+                    <RightMenu />
+                </div>
             </div>
             <HomepageFooter />
         </>

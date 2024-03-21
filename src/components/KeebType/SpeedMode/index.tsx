@@ -41,6 +41,7 @@ export default function SpeedMode({
     const [extraCharacters, setExtraCharacters] = useState<string[]>(
         new Array(gameLength).fill("")
     );
+    const [trigger, setTrigger] = useState<number>(0);
 
     // game
     const [finishedGameId, setFinishedGameId] = useState<string>("");
@@ -121,60 +122,35 @@ export default function SpeedMode({
         }
     };
 
-    // typing
-    useEffect(() => {
-        if (inputRef.current) {
-            inputRef.current.focus();
-        }
-    }, []);
-
-    useEffect(() => {
-        const currentWord = prompt[activeWordIndex];
-        if (
-            gameOver === false &&
-            currentWord &&
-            activeWordIndex === gameLength - 1 &&
-            userInput.length === currentWord.length
-        ) {
-            // Retrieve the active word from the prompt based on the current activeWordIndex.
-            const activeWord = prompt[activeWordIndex] ?? "";
-            // Check if the user's input matches the active word, implying the word was typed correctly.
-            const isCorrect = activeWord === userInput;
-            // If the word is correctly spelled:
-            if (isCorrect) {
-                // Update the word status array to reflect that the current word is correctly spelled.
-                // This is done by creating a copy of the wordStatus array and setting the element
-                // at the activeWordIndex to true (indicating a correctly spelled word).
-                const newWordStatus = [...wordStatus];
-                newWordStatus[activeWordIndex] = true;
-                setWordStatus(newWordStatus);
-            }
-
-            // If activeWordIndex matches the length of the prompt
-            // and the last word is spelled correctly, setGameOver to true
-            setTotalUserInput(totalUserInput + userInput);
-
-            setGameOver(true);
-            // setUserInput(""); not sure if we need to do this at all the game will end soooo
-        }
-    }, [
-        activeWordIndex,
-        userInput,
-        gameLength,
-        prompt,
-        wordStatus,
-        gameOver,
-        setGameOver,
-        totalUserInput,
-    ]);
-
-    const handleInputChange = (inputValue: string) => {
-        setUserInput(inputValue);
-    };
-
     const handleBlur = () => {
         setIsRunning(false);
         setIsVisualPaused(true);
+    };
+
+    const handleResetGame = () => {
+        setUserInput("");
+        setTotalUserInput("");
+        setActiveWordIndex(0);
+        if (inputRef.current) {
+            inputRef.current.focus();
+            setIsVisualPaused(false);
+        }
+        stopwatch.stop();
+    };
+
+    const handleNextGame = () => {
+        setTrigger((prev) => prev + 1);
+        setGameOver(false);
+        setTotalUserInput("");
+        setUserInput("");
+        setActiveWordIndex(0);
+        setWordStatus(new Array(gameLength).fill(false));
+        setExtraCharacters(new Array(gameLength).fill(""));
+        if (inputRef.current) {
+            inputRef.current.focus();
+            setIsVisualPaused(false);
+        }
+        stopwatch.stop();
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -232,8 +208,57 @@ export default function SpeedMode({
             // Prevent the space key from being input into the text field
             e.preventDefault();
         }
+    };
 
-        //todo   Logic to move back to the previous word?
+    // typing
+    useEffect(() => {
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, []);
+
+    useEffect(() => {
+        const currentWord = prompt[activeWordIndex];
+        if (
+            gameOver === false &&
+            currentWord &&
+            activeWordIndex === gameLength - 1 &&
+            userInput.length === currentWord.length
+        ) {
+            // Retrieve the active word from the prompt based on the current activeWordIndex.
+            const activeWord = prompt[activeWordIndex] ?? "";
+            // Check if the user's input matches the active word, implying the word was typed correctly.
+            const isCorrect = activeWord === userInput;
+            // If the word is correctly spelled:
+            if (isCorrect) {
+                // Update the word status array to reflect that the current word is correctly spelled.
+                // This is done by creating a copy of the wordStatus array and setting the element
+                // at the activeWordIndex to true (indicating a correctly spelled word).
+                const newWordStatus = [...wordStatus];
+                newWordStatus[activeWordIndex] = true;
+                setWordStatus(newWordStatus);
+            }
+
+            // If activeWordIndex matches the length of the prompt
+            // and the last word is spelled correctly, setGameOver to true
+            setTotalUserInput(totalUserInput + userInput);
+
+            setGameOver(true);
+            // setUserInput(""); not sure if we need to do this at all the game will end soooo
+        }
+    }, [
+        activeWordIndex,
+        userInput,
+        gameLength,
+        prompt,
+        wordStatus,
+        gameOver,
+        setGameOver,
+        totalUserInput,
+    ]);
+
+    const handleInputChange = (inputValue: string) => {
+        setUserInput(inputValue);
     };
 
     // timer
@@ -263,20 +288,22 @@ export default function SpeedMode({
     //     }
     // }, [totalUserInput, stopwatch, gameOver, isRunning]);
 
-    // would be cool to display a graph that shows wpm over time 
-    // accuracy over time, 
-    // time it takes to type each word? record time and length of each word typed everytime the active word index changes 
-    
+    // would be cool to display a graph that shows wpm over time
+    // accuracy over time,
+    // time it takes to type each word? record time and length of each word typed everytime the active word index changes
 
     // todo implement logic where one word back always backspace to take you back...
+    // lets implement a rest and next game button
+    // going to need to
 
     return (
-        <>
+        <div className="flex w-2/3 flex-shrink-0 flex-col">
             {gameOver === false && (
-                <div className="flex w-2/3 flex-col">
+                <div className="mt-60 flex w-full flex-col">
                     <SentenceGenerator
                         gameLength={gameLength}
                         setPrompt={setPrompt}
+                        key={trigger}
                     />
                     <div className="relative flex w-full flex-wrap gap-2 px-10 text-2xl text-white/30">
                         {prompt.map((word, index) => (
@@ -422,6 +449,10 @@ export default function SpeedMode({
                     />
                 </div>
             )}
-        </>
+            <div className="mt-20 flex w-full justify-center">
+                <button onClick={handleNextGame}>next game</button>
+                <button onClick={handleResetGame}>reset</button>
+            </div>
+        </div>
     );
 }
