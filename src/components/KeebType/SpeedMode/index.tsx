@@ -277,10 +277,7 @@ export default function SpeedMode({
 
     // interval
     useEffect(() => {
-        if (
-            isRunning &&
-            totalUserInput.length > 0
-        ) {
+        if (isRunning && totalUserInput.length > 0) {
             const timeInSeconds = stopwatch.getElapsedRunningTime() / 1000;
             const timeInMinutes = timeInSeconds / 60;
             const totalTypedWords = totalUserInput.length / 5;
@@ -440,7 +437,7 @@ export default function SpeedMode({
 
             {gameOver && finishedGameId && session && session.user && (
                 <div className="flex w-full flex-col text-white">
-                    <div className="w-full rounded-lg border-2 border-green-300 border-opacity-50 bg-green-300 bg-opacity-30 px-5 py-2">
+                    <div className="z-10 w-full rounded-lg border-2 border-green-300 border-opacity-50 bg-green-300 bg-opacity-30 px-5 py-2">
                         <button
                             onClick={handleNextGame}
                             className="flex items-center hover:text-green-300"

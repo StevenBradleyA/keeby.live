@@ -101,7 +101,7 @@ export default function EachGameResultCard({
 
     // Transform the averagedWpmIntervals into a suitable format for the graph
     const data = averagedWpmIntervals.map((wpm, index) => ({
-        index: `Interval ${index + 1}`, // Naming intervals for clarity
+        index: `${index + 1}`,
         wpm: wpm,
     }));
 
@@ -174,25 +174,51 @@ export default function EachGameResultCard({
                         )}
                     </div>
 
-                    <div className=" flex h-full w-1/2 items-end px-5">
-                        <ResponsiveContainer
-                            width="100%"
-                            height={300}
-                            className=" text-green-300"
-                        >
-                            <LineChart data={data}>
-                                <XAxis dataKey="index" />
-                                <Tooltip />
-                                <Legend />
-                                <Line
-                                    type="monotone"
-                                    dataKey="wpm"
-                                    // stroke="#8884d8"
-                                    className="text-green-300"
-                                    activeDot={{ r: 8 }}
+                    <div className=" relative flex h-full w-1/2 ">
+                        <div className=" absolute -left-5 -right-5 -top-12 object-cover opacity-100  ">
+                            <video className="-z-10 w-full" autoPlay loop muted>
+                                <source
+                                    src="/Videos/matrix-fade-green-222.mp4"
+                                    type="video/mp4"
                                 />
-                            </LineChart>
-                        </ResponsiveContainer>
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                        <div className=" absolute -left-5 -right-5 -top-12 bottom-1/3 z-20 bg-gradient-to-b from-[rgba(0,0,0,0)] to-[#222]  object-cover "></div>
+                        <div className=" z-30 mt-10 flex h-full w-full items-end bg-opacity-0 px-5 text-green-300">
+                            <ResponsiveContainer width="100%" height="50%">
+                                <LineChart data={data}>
+                                    <Legend />
+                                    <XAxis dataKey="index" />
+                                    <Tooltip
+                                        contentStyle={{
+                                            backgroundColor:
+                                                "rgba(134, 239, 172, 0.3)",
+                                            borderColor:
+                                                "rgba(134, 239, 172, 0.5)",
+                                            borderRadius: "8px",
+                                            color: "white",
+                                        }}
+                                    />
+                                    <Line
+                                        type="monotone"
+                                        dataKey="wpm"
+                                        stroke="rgba(134, 239, 172, 0.5)"
+                                        dot={{
+                                            fill: "rgba(134, 239, 172, 0.5)",
+                                            stroke: "rgba(134, 239, 172, 0.5)",
+                                            strokeWidth: 1,
+                                        }}
+                                        activeDot={{
+                                            r: 8,
+                                            fill: "rgba(134, 239, 172)",
+                                            stroke: "rgba(134, 239, 172)",
+                                            strokeWidth: 2,
+                                        }}
+                                    />
+                                </LineChart>
+                            </ResponsiveContainer>
+                        </div>
                     </div>
 
                     <div className="mt-10 h-[92%] w-1/4 rounded-2xl bg-keebyGray bg-opacity-30 px-3 pt-3  shadow-md">
