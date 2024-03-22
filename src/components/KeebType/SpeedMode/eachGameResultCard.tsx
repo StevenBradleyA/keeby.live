@@ -3,6 +3,14 @@ import Image from "next/image";
 import defaultProfile from "@public/Profile/profile-default.png";
 import type { Game } from "@prisma/client";
 import { useEffect, useMemo, useState } from "react";
+import {
+    Legend,
+    Line,
+    LineChart,
+    ResponsiveContainer,
+    Tooltip,
+    XAxis,
+} from "recharts";
 // import {
 //     LineChart,
 //     Line,
@@ -64,41 +72,44 @@ export default function EachGameResultCard({
     // npm install recharts
     // npm i react-chartjs-2 chart.js
 
-//     const calculateAveragedWpmIntervals = (wpmIntervals: number[]) => {
-//         const intervalCount = 10;
-//         const totalIntervals = wpmIntervals.length;
-//         const intervalSize = Math.floor(totalIntervals / intervalCount);
-//         let remainder = totalIntervals % intervalCount;
-//         let startIndex = 0;
-//         const averagedWpmIntervals = [];
-    
-//         for (let i = 0; i < intervalCount; i++) {
-//             let endIndex = startIndex + intervalSize + (remainder > 0 ? 1 : 0);
-//             if (remainder > 0) remainder--; // Distribute the remainder among the first few intervals
-    
-//             const intervalSlice = wpmIntervals.slice(startIndex, endIndex);
-//             const average =
-//                 intervalSlice.reduce((acc, cur) => acc + cur, 0) / intervalSlice.length;
-//             averagedWpmIntervals.push(isNaN(average) ? 0 : average);
-    
-//             startIndex = endIndex;
-//         }
-    
-//         return averagedWpmIntervals;
-//     };
-    
-//     // Use this function to calculate averagedWpmIntervals when needed
-//     const averagedWpmIntervals = calculateAveragedWpmIntervals(wpmIntervals);
+    console.log("check ", wpmIntervals);
+    const calculateAveragedWpmIntervals = (wpmIntervals: number[]) => {
+        const intervalCount = 10;
+        const totalIntervals = wpmIntervals.length;
+        const intervalSize = Math.floor(totalIntervals / intervalCount);
+        let remainder = totalIntervals % intervalCount;
+        let startIndex = 0;
+        const averagedWpmIntervals = [];
 
+        for (let i = 0; i < intervalCount; i++) {
+            const endIndex =
+                startIndex + intervalSize + (remainder > 0 ? 1 : 0);
+            if (remainder > 0) remainder--;
+            const intervalSlice = wpmIntervals.slice(startIndex, endIndex);
+            const average =
+                intervalSlice.reduce((acc, cur) => acc + cur, 0) /
+                intervalSlice.length;
+            averagedWpmIntervals.push(isNaN(average) ? 0 : average);
 
-// console.log('uuhhhhhh ', averagedWpmIntervals)
+            startIndex = endIndex;
+        }
 
+        return averagedWpmIntervals;
+    };
+
+    const averagedWpmIntervals = calculateAveragedWpmIntervals(wpmIntervals);
+
+    // Transform the averagedWpmIntervals into a suitable format for the graph
+    const data = averagedWpmIntervals.map((wpm, index) => ({
+        index: `Interval ${index + 1}`, // Naming intervals for clarity
+        wpm: wpm,
+    }));
 
     return (
         statistics.gameResults !== null && (
             <div className="flex w-full flex-col ">
-                <div className="flex h-[45vh] w-full gap-5 ">
-                    <div className="mt-10 h-full w-1/4 rounded-2xl bg-keebyGray bg-opacity-30 p-3  shadow-md">
+                <div className="flex h-[50vh] w-full gap-5">
+                    <div className="mt-10 h-[92%] w-1/4 rounded-2xl bg-keebyGray bg-opacity-30 p-3  shadow-md">
                         <div className="flex flex-col items-start px-3 pt-3">
                             <h2 className="flex gap-2 text-green-300">
                                 {statistics.gameResults.mode}
@@ -163,13 +174,28 @@ export default function EachGameResultCard({
                         )}
                     </div>
 
-                    <div className=" w-1/2 ">
-                        graph data (wpm over time and accuracy rate over time)
-                        or jus wpm
-                        {/* lets just display the time it takes to type each word... or a segment  */}
+                    <div className=" flex h-full w-1/2 items-end px-5">
+                        <ResponsiveContainer
+                            width="100%"
+                            height={300}
+                            className=" text-green-300"
+                        >
+                            <LineChart data={data}>
+                                <XAxis dataKey="index" />
+                                <Tooltip />
+                                <Legend />
+                                <Line
+                                    type="monotone"
+                                    dataKey="wpm"
+                                    // stroke="#8884d8"
+                                    className="text-green-300"
+                                    activeDot={{ r: 8 }}
+                                />
+                            </LineChart>
+                        </ResponsiveContainer>
                     </div>
 
-                    <div className="mt-10 h-full w-1/4 rounded-2xl bg-keebyGray bg-opacity-30 px-3 pt-3  shadow-md">
+                    <div className="mt-10 h-[92%] w-1/4 rounded-2xl bg-keebyGray bg-opacity-30 px-3 pt-3  shadow-md">
                         <div className="flex flex-col items-start px-3 pt-3">
                             {statistics.gameResults.keeb && (
                                 <div className="flex w-full flex-col">

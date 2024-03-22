@@ -275,23 +275,16 @@ export default function SpeedMode({
         }
     }, [isRunning, gameOver, stopwatch]);
 
-
-    console.log("yo", wpmIntervals);
-
+    // interval
     useEffect(() => {
         if (
             isRunning &&
-            stopwatch.getElapsedRunningTime() > 0 &&
             totalUserInput.length > 0
         ) {
             const timeInSeconds = stopwatch.getElapsedRunningTime() / 1000;
             const timeInMinutes = timeInSeconds / 60;
-            // Assuming every word is roughly 5 characters, as per standard WPM calculation
             const totalTypedWords = totalUserInput.length / 5;
             const currentWpm = totalTypedWords / timeInMinutes;
-
-            // This checks to ensure that you're not adding WPM calculations when no typing has occurred.
-            // It's a simple way to prevent unnecessary calculations or updates, especially at the start.
             if (currentWpm > 0) {
                 setWpmIntervals((prev) => [...prev, currentWpm]);
             }
