@@ -235,12 +235,13 @@ model PostLike {
 }
 
 model Rank {
-    id     String @id @default(cuid())
-    image  String
-    name   String @unique
-    minWpm Int
-    maxWpm Int
-    users  User[]
+    id       String @id @default(cuid())
+    image    String
+    name     String @unique
+    standing Float
+    minWpm   Int
+    maxWpm   Int
+    users    User[]
 }
 
 // could just create ranks in admin to avoid using seeders this way i could change ranks anytime

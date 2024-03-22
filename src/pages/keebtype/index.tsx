@@ -60,8 +60,8 @@ export default function KeebType() {
 
     return (
         <>
-            <div className=" flex w-full gap-10 p-10 ">
-                <div className="w-1/3  mt-40">
+            <div className=" flex w-full gap-10 p-10  h-[80vh] relative">
+                <div className=" mt-40  flex w-1/3 justify-center">
                     <LeftMenu
                         mode={mode}
                         setMode={setMode}
@@ -80,19 +80,20 @@ export default function KeebType() {
                     <SpeedMode
                         gameLength={gameLength}
                         setGameOver={setGameOver}
-                        gameStart={gameStart}
                         gameOver={gameOver}
-                        setGameStart={setGameStart}
                         mode={mode}
                         keebId={keebId}
                     />
                 )}
                 {mode === "quote" && <SelectQuote />}
-                <div className="w-1/3 mt-40">
+                <div className="mt-40 flex w-1/3 justify-center">
                     <RightMenu />
                 </div>
             </div>
+            <div className=" absolute bottom-3">
             <HomepageFooter />
+
+            </div>
         </>
     );
 }

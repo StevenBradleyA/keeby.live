@@ -38,10 +38,10 @@ export default function SpeedMode({
         new Array(gameLength).fill("")
     );
     const [trigger, setTrigger] = useState<number>(0);
-    const [newGame, setNewGame] = useState<boolean>(false);
 
     // game
     const [finishedGameId, setFinishedGameId] = useState<string>("");
+    const [rankWpm, setRankWpm] = useState<number>(0);
     const [isVisualPaused, setIsVisualPaused] = useState<boolean>(false);
     const [isRunning, setIsRunning] = useState<boolean>(false);
     const inputRef = useRef<HTMLInputElement>(null);
@@ -52,9 +52,8 @@ export default function SpeedMode({
 
     const { mutate: createGame } = api.game.create.useMutation({
         onSuccess: (data) => {
-            console.log("hey");
-
-            setFinishedGameId(data);
+            setFinishedGameId(data.gameId);
+            if(data.averageWpm) setRankWpm(data.averageWpm)
         },
     });
 
@@ -307,7 +306,13 @@ export default function SpeedMode({
                         setPrompt={setPrompt}
                         key={trigger}
                     />
-                    <div className="relative flex w-full flex-wrap gap-2 px-10 text-2xl text-white/30">
+                    <div
+                        className={`relative flex w-full flex-wrap gap-2 px-10 text-2xl text-white/30 ${
+                            gameLength === 10
+                                ? "justify-center"
+                                : "justify-start"
+                        }`}
+                    >
                         {prompt.map((word, index) => (
                             <div className="flex" key={index}>
                                 {word.split("").map((letter, letterIndex) => {
@@ -359,18 +364,18 @@ export default function SpeedMode({
                                                 {letter}
                                             </span>
                                             {isCursor && !isRunning && (
-                                                <div className="blinking-cursor absolute bottom-0 left-0 top-0 w-0.5 bg-green-500"></div>
+                                                <div className="blinking-cursor absolute bottom-0 left-0 top-0 w-0.5 bg-green-300"></div>
                                             )}
                                             {isCursor && isRunning && (
-                                                <div className="absolute bottom-0 left-0 top-0 w-0.5 bg-green-500"></div>
+                                                <div className="absolute bottom-0 left-0 top-0 w-0.5 bg-green-300"></div>
                                             )}
                                             {isCursorLastLetter &&
                                                 isRunning && (
-                                                    <div className="absolute bottom-0 right-0 top-0 w-0.5 bg-green-500"></div>
+                                                    <div className="absolute bottom-0 right-0 top-0 w-0.5 bg-green-300"></div>
                                                 )}
                                             {isCursorLastLetter &&
                                                 !isRunning && (
-                                                    <div className="blinking-cursor absolute bottom-0 right-0 top-0 w-0.5 bg-green-500"></div>
+                                                    <div className="blinking-cursor absolute bottom-0 right-0 top-0 w-0.5 bg-green-300"></div>
                                                 )}
 
                                             {extra && (
@@ -391,14 +396,14 @@ export default function SpeedMode({
                                                                         word.length -
                                                                         1 &&
                                                                     isRunning && (
-                                                                        <div className="absolute bottom-0 right-0 top-0 w-0.5 bg-green-500"></div>
+                                                                        <div className="absolute bottom-0 right-0 top-0 w-0.5 bg-green-300"></div>
                                                                     )}
                                                                 {index ===
                                                                     userInput.length -
                                                                         word.length -
                                                                         1 &&
                                                                     !isRunning && (
-                                                                        <div className="blinking-cursor absolute bottom-0 right-0 top-0 w-0.5 bg-green-500"></div>
+                                                                        <div className="blinking-cursor absolute bottom-0 right-0 top-0 w-0.5 bg-green-300"></div>
                                                                     )}
                                                             </div>
                                                         )
@@ -421,7 +426,6 @@ export default function SpeedMode({
                         ))}
 
                         <input
-                            id="gameInput"
                             ref={inputRef}
                             onBlur={handleBlur}
                             onFocus={() => setIsVisualPaused(false)}
@@ -432,7 +436,7 @@ export default function SpeedMode({
                             maxLength={30}
                         />
                         {isVisualPaused && (
-                            <div className="keeb-type-pause-menu absolute bottom-0 left-0 right-0  top-0 flex items-center justify-center text-xl text-green-500 backdrop-blur-sm ">
+                            <div className="keeb-type-pause-menu absolute bottom-0 left-0 right-0  top-0 flex items-center justify-center text-xl text-green-300 backdrop-blur-sm ">
                                 Paused
                             </div>
                         )}
@@ -442,10 +446,10 @@ export default function SpeedMode({
 
             {gameOver && finishedGameId && session && session.user && (
                 <div className="flex w-full flex-col text-white">
-                    <div className="w-full rounded-lg bg-green-300 bg-opacity-30 border-2 border-green-300 border-opacity-50 px-5 py-2">
+                    <div className="w-full rounded-lg border-2 border-green-300 border-opacity-50 bg-green-300 bg-opacity-30 px-5 py-2">
                         <button
                             onClick={handleNextGame}
-                            className="flex items-center hover:text-green-500"
+                            className="flex items-center hover:text-green-300"
                         >
                             Next Game
                             <svg
@@ -470,6 +474,7 @@ export default function SpeedMode({
                         mode={mode}
                         keebId={keebId}
                         wpmIntervals={wpmIntervals}
+                        rankWpm={rankWpm}
                     />
                 </div>
             )}
@@ -477,7 +482,7 @@ export default function SpeedMode({
                 <div className="mt-20 flex w-full justify-center gap-10">
                     <button
                         onClick={handleResetGame}
-                        className="text-darkGray hover:text-green-500"
+                        className="text-darkGray hover:text-green-300"
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -493,7 +498,7 @@ export default function SpeedMode({
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24"
-                            className="w-9 -rotate-90 text-darkGray hover:text-green-500 "
+                            className="w-9 -rotate-90 text-darkGray hover:text-green-300 "
                             fill="none"
                         >
                             <path

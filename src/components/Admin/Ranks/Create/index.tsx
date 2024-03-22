@@ -16,6 +16,8 @@ export default function AdminCreateRank({
 
     const [rankName, setRankName] = useState<string>("");
     const [minWpm, setMinWpm] = useState<number>(0);
+    const [standing, setStanding] = useState<number>(0);
+
     const [maxWpm, setMaxWpm] = useState<number>(0);
     const [imageFiles, setImageFiles] = useState<File[]>([]);
 
@@ -72,6 +74,7 @@ export default function AdminCreateRank({
             const data = {
                 name: rankName,
                 minWpm: minWpm,
+                standing: standing,
                 maxWpm: maxWpm,
                 image: imageUrlArr.map((imageUrl) => ({
                     link: imageUrl || "",
@@ -124,6 +127,22 @@ export default function AdminCreateRank({
                         onChange={(e) => setMaxWpm(Math.floor(+e.target.value))}
                         className="h-10 w-full rounded-md bg-darkGray p-1"
                         placeholder="maxWpm"
+                    />
+                </div>
+                <div className="flex flex-col gap-1">
+                    <label htmlFor="standingInput" className="text-darkGray">
+                        Standing (top -- %)
+                    </label>
+                    <input
+                        id="standingInput"
+                        type="number"
+                        min={0}
+                        value={standing}
+                        onChange={(e) =>
+                            setStanding(Math.floor(+e.target.value))
+                        }
+                        className="h-10 w-full rounded-md bg-darkGray p-1"
+                        placeholder="standing"
                     />
                 </div>
             </div>

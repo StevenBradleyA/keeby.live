@@ -13,13 +13,12 @@ interface AdminEachDisplayRankProps {
         image: string;
         minWpm: number;
         maxWpm: number;
+        standing: number;
     };
 }
 export default function AdminEachDisplayRank({
     rank,
 }: AdminEachDisplayRankProps) {
-    // add update and delete
-
     const ctx = api.useContext();
 
     const { data: session } = useSession();
@@ -64,10 +63,11 @@ export default function AdminEachDisplayRank({
     };
 
     return (
-        <div className="relative p-5 border-2 border-black rounded-xl w-60">
-            <h1 className="text-3xl font-titillium">{rank.name}</h1>
+        <div className="relative w-60 rounded-xl border-2 border-black p-5">
+            <h1 className="font-titillium text-3xl">{rank.name}</h1>
+            <p className="text-darkGray">{`min wpm ${rank.minWpm}`}</p>
             <p className="text-darkGray">{`max wpm ${rank.maxWpm}`}</p>
-            <p className="mb-1 text-darkGray">{`min wpm ${rank.minWpm}`}</p>
+            <p className="mb-1 text-darkGray">{`standing top ${rank.standing}%`}</p>
 
             <Image
                 alt="rank"

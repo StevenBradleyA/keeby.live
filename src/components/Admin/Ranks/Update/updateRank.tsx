@@ -15,6 +15,7 @@ interface EachRank {
     name: string;
     minWpm: number;
     maxWpm: number;
+    standing: number;
     image: string;
 }
 
@@ -28,6 +29,7 @@ export default function AdminUpdateRank({
     const [rankName, setRankName] = useState<string>(rank.name);
     const [minWpm, setMinWpm] = useState<number>(rank.minWpm);
     const [maxWpm, setMaxWpm] = useState<number>(rank.maxWpm);
+    const [standing, setStanding] = useState<number>(rank.standing);
     const [imageFiles, setImageFiles] = useState<File[]>([]);
 
     const { mutate: updateRank } = api.rank.update.useMutation({
@@ -85,6 +87,7 @@ export default function AdminUpdateRank({
                 name: rankName,
                 minWpm: minWpm,
                 maxWpm: maxWpm,
+                standing: standing,
                 oldImage: rank.image,
                 image: imageUrlArr.map((imageUrl) => ({
                     link: imageUrl || "",
@@ -137,6 +140,22 @@ export default function AdminUpdateRank({
                         onChange={(e) => setMaxWpm(Math.floor(+e.target.value))}
                         className="h-10 w-full rounded-md bg-darkGray p-1"
                         placeholder="maxWpm"
+                    />
+                </div>
+                <div className="flex flex-col gap-1">
+                    <label htmlFor="standingInput" className="text-darkGray">
+                        Standing (top -- %)
+                    </label>
+                    <input
+                        id="standingInput"
+                        type="number"
+                        min={0}
+                        value={standing}
+                        onChange={(e) =>
+                            setStanding(Math.floor(+e.target.value))
+                        }
+                        className="h-10 w-full rounded-md bg-darkGray p-1"
+                        placeholder="standing"
                     />
                 </div>
             </div>

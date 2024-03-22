@@ -1,9 +1,9 @@
 export default function RightMenu() {
     return (
-        <div className="flex flex-col rounded-2xl border border-green-500 bg-black p-10 w-full">
-            <div>three</div>
-            <div>vertical</div>
-            <div>listings</div>
+        <div className="flex w-[85%] h-[55%] flex-col rounded-xl border-2 border-green-300 border-opacity-50 bg-green-300/30 p-5 text-white ">
+            <div>three listings</div>
+            <div>or personalized ads </div>
+           
         </div>
     );
 }

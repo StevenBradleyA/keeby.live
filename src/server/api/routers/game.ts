@@ -222,11 +222,13 @@ export const gameRouter = createTRPCRouter({
                             data: { rankId: userRankId },
                         });
                     }
+
+                    return {gameId: newGame.id, averageWpm: averageWpm }
                 }
                 // probably want to return a boolean if a user gets assigned a new rank or something so we can send a hot toast when they rank up!
                 
 
-                return newGame.id;
+                return {gameId: newGame.id};
             }
 
             throw new Error("Invalid userId");

@@ -6,12 +6,7 @@ import {
 } from "~/server/api/trpc";
 import { removeFileFromS3 } from "../utils";
 
-
-
-
 // todo assign tags at certain ranks in keeb type
-
-
 
 export const rankRouter = createTRPCRouter({
     getAll: publicProcedure.query(({ ctx }) => {
@@ -29,6 +24,7 @@ export const rankRouter = createTRPCRouter({
                 ),
                 minWpm: z.number(),
                 maxWpm: z.number(),
+                standing: z.number(),
             })
         )
         .mutation(({ ctx, input }) => {
@@ -39,6 +35,7 @@ export const rankRouter = createTRPCRouter({
                         image: input.image[0].link,
                         minWpm: input.minWpm,
                         maxWpm: input.maxWpm,
+                        standing: input.standing,
                     },
                 });
             }
@@ -53,6 +50,7 @@ export const rankRouter = createTRPCRouter({
                 name: z.string(),
                 maxWpm: z.number(),
                 minWpm: z.number(),
+                standing: z.number(),
                 oldImage: z.string(),
                 image: z.array(
                     z.object({
@@ -62,7 +60,8 @@ export const rankRouter = createTRPCRouter({
             })
         )
         .mutation(async ({ input, ctx }) => {
-            const { id, name, minWpm, maxWpm, image, oldImage } = input;
+            const { id, name, minWpm, maxWpm, image, oldImage, standing } =
+                input;
 
             if (ctx.session.user.isAdmin && image[0]) {
                 await removeFileFromS3(oldImage);
@@ -75,6 +74,7 @@ export const rankRouter = createTRPCRouter({
                         name: name,
                         minWpm: minWpm,
                         maxWpm: maxWpm,
+                        standing: standing,
                         image: image[0].link,
                     },
                 });

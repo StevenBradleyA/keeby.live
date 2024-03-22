@@ -16,7 +16,7 @@ export default function KeebTypeFooter() {
     };
 
     return (
-        <div className="mt-96 flex gap-5 text-white/30">
+        <div className=" flex gap-5 text-white/30">
             <div>
                 Powered by <button>Hacktime</button>
             </div>

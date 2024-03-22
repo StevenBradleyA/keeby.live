@@ -50,11 +50,13 @@ interface GameResultsResponse {
 interface EachGameResultCardProps {
     statistics: GameResultsResponse;
     wpmIntervals: number[];
+    rankWpm: number;
 }
 
 export default function EachGameResultCard({
     statistics,
     wpmIntervals,
+    rankWpm,
 }: EachGameResultCardProps) {
     const { data: session } = useSession();
     // npm install recharts
@@ -68,13 +70,13 @@ export default function EachGameResultCard({
     return (
         statistics.gameResults !== null && (
             <div className="flex w-full flex-col ">
-                <div className="flex w-full gap-5  ">
+                <div className="flex h-[45vh] w-full gap-5 ">
                     <div className="mt-10 h-full w-1/4 rounded-2xl bg-keebyGray bg-opacity-30 p-3  shadow-md">
                         <div className="flex flex-col items-start px-3 pt-3">
                             <h2 className="flex gap-2 text-green-300">
                                 {statistics.gameResults.mode}
                             </h2>
-                            <p className="mt-2 border-y-2 border-green-300  border-opacity-50 p-2 text-3xl">
+                            <p className="mt-3 border-y-2 border-green-300  border-opacity-50 p-2 text-3xl">
                                 {Math.round(statistics.gameResults.wpm)}{" "}
                                 <span className="text-sm text-darkGray ">
                                     WPM
@@ -93,7 +95,7 @@ export default function EachGameResultCard({
                              {`${Math.round(statistics.gameResults.accuracy)}%`}
                         </div>
                         {session && session.user && (
-                            <div className="mt-4 flex h-36 w-full gap-5 ">
+                            <div className="mt-6 flex h-36 w-full gap-5 ">
                                 <div className="h-full w-1/2 bg-black">
                                     <Image
                                         alt="profile"
@@ -111,20 +113,20 @@ export default function EachGameResultCard({
                                     <h2 className="border-b-2 border-green-300 border-opacity-50 text-darkGray ">
                                         Games Played
                                     </h2>
-                                    <div className="text-green-500">
+                                    <div className="text-green-300">
                                         {statistics.allGameResults.length}
                                     </div>
                                     <h2 className="border-b-2 border-green-300 border-opacity-50 text-darkGray ">
                                         Avg WPM
                                     </h2>
 
-                                    <div className="text-green-500">
+                                    <div className="text-green-300">
                                         {Math.round(statistics.averageWpm)}
                                     </div>
                                     <h2 className="border-b-2 border-green-300 border-opacity-50 text-darkGray ">
                                         Avg Accurary
                                     </h2>
-                                    <div className="text-green-500">
+                                    <div className="text-green-300">
                                         {` ${Math.round(
                                             statistics.averageAccuracy
                                         )}%`}
@@ -140,7 +142,7 @@ export default function EachGameResultCard({
                         {/* lets just display the time it takes to type each word... or a segment  */}
                     </div>
 
-                    <div className="mt-10 h-full w-1/4 rounded-2xl bg-keebyGray bg-opacity-30 p-3  shadow-md">
+                    <div className="mt-10 h-full w-1/4 rounded-2xl bg-keebyGray bg-opacity-30 px-3 pt-3  shadow-md">
                         <div className="flex flex-col items-start px-3 pt-3">
                             {statistics.gameResults.keeb && (
                                 <div className="flex w-full flex-col">
@@ -157,37 +159,36 @@ export default function EachGameResultCard({
                                     <h2 className="text-darkGray">Rank</h2>
                                     <div className="flex w-full justify-center gap-2 ">
                                         <div className="flex w-full flex-col overflow-hidden rounded-2xl border-2 border-green-300  border-opacity-50 p-3">
-                                            <h2 className="flex justify-center border-b-2 border-green-300 border-opacity-50 text-darkGray ">
-                                                Avg WPM
+                                            <h2 className="flex justify-center border-b-2 border-green-300 border-opacity-50 text-sm text-darkGray ">
+                                                Standing
                                             </h2>
-                                            <p className="mt-1 flex justify-center">
+                                            <p className="mt-1 flex justify-center text-green-300">
                                                 top 0.001%
                                             </p>
-                                            <h2 className="mt-3 flex justify-center border-b-2 border-green-300 border-opacity-50 text-darkGray">
+                                            <h2 className="mt-3 flex justify-center border-b-2 border-green-300 border-opacity-50 text-sm text-darkGray">
                                                 Rank min
                                             </h2>
-                                            <p className="mt-1 flex justify-center gap-1 text-darkGray">
+                                            <p className="mt-1 flex justify-center gap-1 text-green-300">
                                                 {
                                                     statistics.gameResults.user
                                                         .rank.minWpm
                                                 }
-                                                <span>WPM</span>
                                             </p>
                                         </div>
                                         <div className="border-2xl flex w-full flex-col rounded-2xl border-2 border-green-300 border-opacity-50  p-3">
-                                            <h2 className="flex justify-center border-b-2 border-green-300 border-opacity-50 text-darkGray ">
-                                                Avg WPM
+                                            <h2 className="flex justify-center border-b-2 border-green-300 border-opacity-50 text-sm text-darkGray ">
+                                                Rank WPM
                                             </h2>
 
                                             <div className="mt-1 flex justify-center text-green-300">
-                                                {Math.round(
-                                                    statistics.averageWpm
-                                                )}
+                                                {rankWpm > 0
+                                                    ? Math.round(rankWpm)
+                                                    : "---"}
                                             </div>
-                                            <h2 className="mt-3 flex justify-center border-b-2 border-green-300 border-opacity-50 text-darkGray">
+                                            <h2 className="mt-3 flex justify-center border-b-2 border-green-300 border-opacity-50 text-sm text-darkGray">
                                                 Rank max
                                             </h2>
-                                            <p className="mt-1 flex justify-center text-darkGray">
+                                            <p className="mt-1 flex justify-center text-green-300">
                                                 {
                                                     statistics.gameResults.user
                                                         .rank.maxWpm
@@ -210,7 +211,7 @@ export default function EachGameResultCard({
                                         }
                                         width={400}
                                         height={400}
-                                        className="mt-10 h-28 w-28 rounded-md object-cover"
+                                        className="mt-3 h-20 w-32 rounded-md object-cover"
                                     />
                                 </div>
                             )}
