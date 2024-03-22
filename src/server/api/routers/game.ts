@@ -19,6 +19,7 @@ type GameResult = Game & {
             image: string;
             minWpm: number;
             maxWpm: number;
+            standing: number
         } | null;
     };
 };
@@ -77,6 +78,7 @@ export const gameRouter = createTRPCRouter({
                                     image: true,
                                     minWpm: true,
                                     maxWpm: true,
+                                    standing: true, 
                                 },
                             },
                         },
@@ -183,13 +185,12 @@ export const gameRouter = createTRPCRouter({
                     }
                 }
 
-                // check top 10 highest wpm games with mode speed ... (all ranked game modes)
-                //  assign a rank based on the top average 10 wpm games
+            //   todo Also assign a selected tag matching the name of the rank if it exsists
                 if (player && player._count.games >= 10) {
                     const topGames = await ctx.prisma.game.findMany({
                         where: {
                             userId: userId,
-                            mode: "speed", // change later for other ranked modes
+                            mode: "speed", //todo change later for other ranked modes
                         },
                         orderBy: {
                             wpm: "desc",

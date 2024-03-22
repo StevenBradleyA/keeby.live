@@ -53,7 +53,7 @@ export default function SpeedMode({
     const { mutate: createGame } = api.game.create.useMutation({
         onSuccess: (data) => {
             setFinishedGameId(data.gameId);
-            if(data.averageWpm) setRankWpm(data.averageWpm)
+            if (data.averageWpm) setRankWpm(data.averageWpm);
         },
     });
 
@@ -134,6 +134,7 @@ export default function SpeedMode({
             setIsVisualPaused(false);
         }
         stopwatch.stop();
+        setWpmIntervals([]);
     };
 
     const handleNextGame = () => {
@@ -147,6 +148,7 @@ export default function SpeedMode({
         stopwatch.stop();
         setIsVisualPaused(false);
         setIsRunning(false);
+        setWpmIntervals([]);
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -273,29 +275,28 @@ export default function SpeedMode({
         }
     }, [isRunning, gameOver, stopwatch]);
 
-    // intervals for post game stats
-    // useEffect(() => {
-    //     if (isRunning && !gameOver) {
-    //         const interval = setInterval(() => {
-    //             const timeInSeconds = stopwatch.getElapsedRunningTime() / 1000;
-    //             const timeInMinutes = timeInSeconds / 60;
-    //             const totalTypedCharacters = totalUserInput.length;
-    //             const wpm = totalTypedCharacters / 5 / timeInMinutes;
 
-    //             setWpmIntervals((prevIntervals) => [...prevIntervals, wpm]);
-    //         }, 1000); // Calculate WPM every milliseconds
+    console.log("yo", wpmIntervals);
 
-    //         return () => clearInterval(interval);
-    //     }
-    // }, [totalUserInput, stopwatch, gameOver, isRunning]);
+    useEffect(() => {
+        if (
+            isRunning &&
+            stopwatch.getElapsedRunningTime() > 0 &&
+            totalUserInput.length > 0
+        ) {
+            const timeInSeconds = stopwatch.getElapsedRunningTime() / 1000;
+            const timeInMinutes = timeInSeconds / 60;
+            // Assuming every word is roughly 5 characters, as per standard WPM calculation
+            const totalTypedWords = totalUserInput.length / 5;
+            const currentWpm = totalTypedWords / timeInMinutes;
 
-    // would be cool to display a graph that shows wpm over time
-    // accuracy over time,
-    // time it takes to type each word? record time and length of each word typed everytime the active word index changes
-
-    // todo implement logic where one word back always backspace to take you back...
-    // lets implement a rest and next game button
-    // going to need to
+            // This checks to ensure that you're not adding WPM calculations when no typing has occurred.
+            // It's a simple way to prevent unnecessary calculations or updates, especially at the start.
+            if (currentWpm > 0) {
+                setWpmIntervals((prev) => [...prev, currentWpm]);
+            }
+        }
+    }, [totalUserInput, gameOver, isRunning, stopwatch]);
 
     return (
         <div className="flex w-2/3 flex-shrink-0 flex-col">

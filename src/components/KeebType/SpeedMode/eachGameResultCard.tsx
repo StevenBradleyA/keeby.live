@@ -2,6 +2,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import defaultProfile from "@public/Profile/profile-default.png";
 import type { Game } from "@prisma/client";
+import { useEffect, useMemo, useState } from "react";
 // import {
 //     LineChart,
 //     Line,
@@ -30,6 +31,7 @@ interface GameResult extends Game {
             image: string;
             minWpm: number;
             maxWpm: number;
+            standing: number;
         } | null;
     };
 }
@@ -62,10 +64,35 @@ export default function EachGameResultCard({
     // npm install recharts
     // npm i react-chartjs-2 chart.js
 
-    console.log(statistics.allGameResults);
-    const wpmData = statistics.allGameResults.map((result) => ({
-        wpm: result.wpm,
-    }));
+//     const calculateAveragedWpmIntervals = (wpmIntervals: number[]) => {
+//         const intervalCount = 10;
+//         const totalIntervals = wpmIntervals.length;
+//         const intervalSize = Math.floor(totalIntervals / intervalCount);
+//         let remainder = totalIntervals % intervalCount;
+//         let startIndex = 0;
+//         const averagedWpmIntervals = [];
+    
+//         for (let i = 0; i < intervalCount; i++) {
+//             let endIndex = startIndex + intervalSize + (remainder > 0 ? 1 : 0);
+//             if (remainder > 0) remainder--; // Distribute the remainder among the first few intervals
+    
+//             const intervalSlice = wpmIntervals.slice(startIndex, endIndex);
+//             const average =
+//                 intervalSlice.reduce((acc, cur) => acc + cur, 0) / intervalSlice.length;
+//             averagedWpmIntervals.push(isNaN(average) ? 0 : average);
+    
+//             startIndex = endIndex;
+//         }
+    
+//         return averagedWpmIntervals;
+//     };
+    
+//     // Use this function to calculate averagedWpmIntervals when needed
+//     const averagedWpmIntervals = calculateAveragedWpmIntervals(wpmIntervals);
+
+
+// console.log('uuhhhhhh ', averagedWpmIntervals)
+
 
     return (
         statistics.gameResults !== null && (
@@ -163,21 +190,22 @@ export default function EachGameResultCard({
                                                 Standing
                                             </h2>
                                             <p className="mt-1 flex justify-center text-green-300">
-                                                top 0.001%
+                                                {`top ${statistics.gameResults.user.rank.standing}%`}
                                             </p>
                                             <h2 className="mt-3 flex justify-center border-b-2 border-green-300 border-opacity-50 text-sm text-darkGray">
                                                 Rank min
                                             </h2>
                                             <p className="mt-1 flex justify-center gap-1 text-green-300">
-                                                {
-                                                    statistics.gameResults.user
-                                                        .rank.minWpm
-                                                }
+                                                {statistics.gameResults.user
+                                                    .rank.minWpm === 0
+                                                    ? "---"
+                                                    : statistics.gameResults
+                                                          .user.rank.minWpm}
                                             </p>
                                         </div>
                                         <div className="border-2xl flex w-full flex-col rounded-2xl border-2 border-green-300 border-opacity-50  p-3">
                                             <h2 className="flex justify-center border-b-2 border-green-300 border-opacity-50 text-sm text-darkGray ">
-                                                Rank WPM
+                                                Ranked WPM
                                             </h2>
 
                                             <div className="mt-1 flex justify-center text-green-300">
@@ -189,10 +217,13 @@ export default function EachGameResultCard({
                                                 Rank max
                                             </h2>
                                             <p className="mt-1 flex justify-center text-green-300">
-                                                {
-                                                    statistics.gameResults.user
-                                                        .rank.maxWpm
-                                                }
+                                                {statistics.gameResults.user
+                                                    .rank.maxWpm === 10 ||
+                                                statistics.gameResults.user.rank
+                                                    .maxWpm === 999999
+                                                    ? "---"
+                                                    : statistics.gameResults
+                                                          .user.rank.maxWpm}
                                             </p>
                                         </div>
                                     </div>

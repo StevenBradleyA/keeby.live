@@ -60,7 +60,7 @@ export default function KeebType() {
 
     return (
         <>
-            <div className=" flex w-full gap-10 p-10  h-[80vh] relative">
+            <div className=" relative flex h-[80vh] w-full  gap-10 p-10">
                 <div className=" mt-40  flex w-1/3 justify-center">
                     <LeftMenu
                         mode={mode}
@@ -85,14 +85,15 @@ export default function KeebType() {
                         keebId={keebId}
                     />
                 )}
-                {mode === "quote" && <SelectQuote />}
+                {/* {mode === "quote" && <SelectQuote />} */}
+
+                
                 <div className="mt-40 flex w-1/3 justify-center">
                     <RightMenu />
                 </div>
             </div>
             <div className=" absolute bottom-3">
-            <HomepageFooter />
-
+                <HomepageFooter />
             </div>
         </>
     );

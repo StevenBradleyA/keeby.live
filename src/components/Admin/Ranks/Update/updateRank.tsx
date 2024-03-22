@@ -151,9 +151,7 @@ export default function AdminUpdateRank({
                         type="number"
                         min={0}
                         value={standing}
-                        onChange={(e) =>
-                            setStanding(Math.floor(+e.target.value))
-                        }
+                        onChange={(e) => setStanding(+e.target.value)}
                         className="h-10 w-full rounded-md bg-darkGray p-1"
                         placeholder="standing"
                     />
