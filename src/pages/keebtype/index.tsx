@@ -60,8 +60,8 @@ export default function KeebType() {
 
     return (
         <>
-            <div className=" relative flex h-[80vh] w-full  gap-10 p-10">
-                <div className=" mt-40  flex w-1/3 justify-center">
+            <div className=" relative flex h-[80vh] w-full gap-2 desktop:gap-10 desktop:p-10 laptop:p-2">
+                <div className=" mt-40  flex desktop:w-1/3 laptop:w-1/4 justify-center">
                     <LeftMenu
                         mode={mode}
                         setMode={setMode}
@@ -88,7 +88,7 @@ export default function KeebType() {
                 {/* {mode === "quote" && <SelectQuote />} */}
 
                 
-                <div className="mt-40 flex w-1/3 justify-center">
+                <div className="mt-40 flex desktop:w-1/3 laptop:w-1/4 justify-center">
                     <RightMenu />
                 </div>
             </div>

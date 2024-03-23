@@ -122,7 +122,7 @@ export default function NavBar() {
                   router.asPath === "/" || router.asPath === "/keebshare"
                       ? "bg-dark"
                       : "bg-none"
-              }  menu-index py-4 text-white`}
+              }  menu-index py-4 text-white desktop:pl-14 pl-2`}
             aria-label="Main Navigation"
         >
             <Link href="/" aria-label="Home">
@@ -131,11 +131,11 @@ export default function NavBar() {
                     alt="home"
                     width={homeButton.width}
                     height={homeButton.height}
-                    className="ml-14 w-72"
+                    className="w-72"
                     priority
                 />
             </Link>
-            <div className="flex items-center gap-32 text-darkGray">
+            <div className="flex items-center desktop:gap-32 gap-14 text-darkGray">
                 {router.asPath === "/keebshare" ? (
                     <Link href="/" aria-label="shop">
                         <h1>KEEB SHOP</h1>
@@ -154,7 +154,7 @@ export default function NavBar() {
                 <motion.button
                     onClick={toggleMenu}
                     ref={menuButtonRef}
-                    className="mr-10 w-36 rounded-3xl px-6 py-2"
+                    className="desktop:mr-10 mr-5 w-36 rounded-3xl px-6 py-2"
                     animate={
                         isMenuOpen
                             ? { rotate: [0, 5, 10, isMenuGif ? 0 : 90] }

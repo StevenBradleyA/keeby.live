@@ -11,20 +11,6 @@ import {
     Tooltip,
     XAxis,
 } from "recharts";
-// import {
-//     LineChart,
-//     Line,
-//     XAxis,
-//     YAxis,
-//     CartesianGrid,
-//     Tooltip,
-//     Legend,
-//     ResponsiveContainer,
-//     PieChart,
-//     Pie,
-//     ScatterChart,
-//     Scatter,
-// } from "recharts";
 
 interface GameResult extends Game {
     keeb: {
@@ -70,7 +56,6 @@ export default function EachGameResultCard({
 }: EachGameResultCardProps) {
     const { data: session } = useSession();
     // npm install recharts
-    // npm i react-chartjs-2 chart.js
 
     console.log("check ", wpmIntervals);
     const calculateAveragedWpmIntervals = (wpmIntervals: number[]) => {
@@ -79,7 +64,7 @@ export default function EachGameResultCard({
         const intervalSize = Math.floor(totalIntervals / intervalCount);
         let remainder = totalIntervals % intervalCount;
         let startIndex = 0;
-        const averagedWpmIntervals = [];
+        const data = [];
 
         for (let i = 0; i < intervalCount; i++) {
             const endIndex =
@@ -89,27 +74,26 @@ export default function EachGameResultCard({
             const average =
                 intervalSlice.reduce((acc, cur) => acc + cur, 0) /
                 intervalSlice.length;
-            averagedWpmIntervals.push(isNaN(average) ? 0 : average);
-
+            const roundedAverage = isNaN(average)
+                ? 0
+                : Number(average.toFixed(2));
+            data.push({
+                index: `${i + 1}`,
+                wpm: roundedAverage,
+            });
             startIndex = endIndex;
         }
 
-        return averagedWpmIntervals;
+        return data;
     };
 
-    const averagedWpmIntervals = calculateAveragedWpmIntervals(wpmIntervals);
-
-    // Transform the averagedWpmIntervals into a suitable format for the graph
-    const data = averagedWpmIntervals.map((wpm, index) => ({
-        index: `${index + 1}`,
-        wpm: wpm,
-    }));
+    const data = calculateAveragedWpmIntervals(wpmIntervals);
 
     return (
         statistics.gameResults !== null && (
             <div className="flex w-full flex-col ">
-                <div className="flex h-[50vh] w-full gap-5">
-                    <div className="mt-10 h-[92%] w-1/4 rounded-2xl bg-keebyGray bg-opacity-30 p-3  shadow-md">
+                <div className="flex h-[60vh] w-full gap-5 desktop:h-[50vh]">
+                    <div className="z-40 h-[92%] w-1/4 rounded-2xl bg-keebyGray bg-opacity-30 p-3 shadow-md  laptop:mt-5 desktop:mt-10">
                         <div className="flex flex-col items-start px-3 pt-3">
                             <h2 className="flex gap-2 text-green-300">
                                 {statistics.gameResults.mode}
@@ -147,7 +131,7 @@ export default function EachGameResultCard({
                                         className="h-full w-full rounded-md object-cover"
                                     />
                                 </div>
-                                <div className="flex h-full w-1/2 flex-col justify-between">
+                                <div className="desktop:text-base flex h-full w-1/2 flex-col justify-between laptop:text-sm">
                                     <h2 className="border-b-2 border-green-300 border-opacity-50 text-darkGray ">
                                         Games Played
                                     </h2>
@@ -175,7 +159,7 @@ export default function EachGameResultCard({
                     </div>
 
                     <div className=" relative flex h-full w-1/2 ">
-                        <div className=" absolute -left-5 -right-5 -top-12 object-cover opacity-100  ">
+                        <div className=" absolute -left-5 -right-5 -top-12 bottom-1/3  ">
                             <video className="-z-10 w-full" autoPlay loop muted>
                                 <source
                                     src="/Videos/matrix-fade-green-222.mp4"
@@ -186,7 +170,7 @@ export default function EachGameResultCard({
                         </div>
                         <div className=" absolute -left-5 -right-5 -top-12 bottom-1/3 z-20 bg-gradient-to-b from-[rgba(0,0,0,0)] to-[#222]  object-cover "></div>
                         <div className=" z-30 mt-10 flex h-full w-full items-end bg-opacity-0 px-5 text-green-300">
-                            <ResponsiveContainer width="100%" height="50%">
+                            <ResponsiveContainer width="100%" height="45%">
                                 <LineChart data={data}>
                                     <Legend />
                                     <XAxis dataKey="index" />
@@ -221,30 +205,30 @@ export default function EachGameResultCard({
                         </div>
                     </div>
 
-                    <div className="mt-10 h-[92%] w-1/4 rounded-2xl bg-keebyGray bg-opacity-30 px-3 pt-3  shadow-md">
+                    <div className="z-40 h-[92%] w-1/4 rounded-2xl bg-keebyGray bg-opacity-30 px-3 pt-3 shadow-md  laptop:mt-5 desktop:mt-10">
                         <div className="flex flex-col items-start px-3 pt-3">
                             {statistics.gameResults.keeb && (
                                 <div className="flex w-full flex-col">
                                     <h2 className="flex justify-center text-green-300">
                                         Keyboard
                                     </h2>
-                                    <p className="flex justify-center rounded-lg border-2 border-green-300 border-opacity-50 bg-green-300 bg-opacity-30 px-3 py-2  ">
+                                    <p className="flex justify-center rounded-lg border-2 border-green-300 border-opacity-50 bg-green-300 bg-opacity-30 px-3 py-2 desktop:mt-1 ">
                                         {statistics.gameResults.keeb.name}
                                     </p>
                                 </div>
                             )}
                             {statistics.gameResults.user.rank && (
-                                <div className="mt-2 flex w-full flex-col items-center">
-                                    <h2 className="text-darkGray">Rank</h2>
-                                    <div className="flex w-full justify-center gap-2 ">
-                                        <div className="flex w-full flex-col overflow-hidden rounded-2xl border-2 border-green-300  border-opacity-50 p-3">
-                                            <h2 className="flex justify-center border-b-2 border-green-300 border-opacity-50 text-sm text-darkGray ">
+                                <div className="mt-2 flex w-full flex-col items-center laptop:text-xs desktop:text-sm desktop:mt-3">
+                                    <h2 className="text-darkGray text-base">Rank</h2>
+                                    <div className="flex w-full justify-center gap-2 desktop:mt-1 ">
+                                        <div className=" flex w-full flex-col overflow-hidden rounded-2xl border-2  border-green-300 border-opacity-50 p-3">
+                                            <h2 className="flex justify-center border-b-2 border-green-300 border-opacity-50 text-darkGray ">
                                                 Standing
                                             </h2>
                                             <p className="mt-1 flex justify-center text-green-300">
                                                 {`top ${statistics.gameResults.user.rank.standing}%`}
                                             </p>
-                                            <h2 className="mt-3 flex justify-center border-b-2 border-green-300 border-opacity-50 text-sm text-darkGray">
+                                            <h2 className="mt-3 flex justify-center border-b-2 border-green-300 border-opacity-50 text-darkGray">
                                                 Rank min
                                             </h2>
                                             <p className="mt-1 flex justify-center gap-1 text-green-300">
@@ -256,8 +240,8 @@ export default function EachGameResultCard({
                                             </p>
                                         </div>
                                         <div className="border-2xl flex w-full flex-col rounded-2xl border-2 border-green-300 border-opacity-50  p-3">
-                                            <h2 className="flex justify-center border-b-2 border-green-300 border-opacity-50 text-sm text-darkGray ">
-                                                Ranked WPM
+                                            <h2 className="flex justify-center border-b-2 border-green-300 border-opacity-50 text-darkGray ">
+                                                Rank
                                             </h2>
 
                                             <div className="mt-1 flex justify-center text-green-300">
@@ -265,7 +249,7 @@ export default function EachGameResultCard({
                                                     ? Math.round(rankWpm)
                                                     : "---"}
                                             </div>
-                                            <h2 className="mt-3 flex justify-center border-b-2 border-green-300 border-opacity-50 text-sm text-darkGray">
+                                            <h2 className="mt-3 flex justify-center border-b-2 border-green-300 border-opacity-50 text-darkGray">
                                                 Rank max
                                             </h2>
                                             <p className="mt-1 flex justify-center text-green-300">

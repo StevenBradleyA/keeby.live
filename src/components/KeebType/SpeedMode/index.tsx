@@ -289,7 +289,7 @@ export default function SpeedMode({
     }, [totalUserInput, gameOver, isRunning, stopwatch]);
 
     return (
-        <div className="flex w-2/3 flex-shrink-0 flex-col">
+        <div className="flex desktop:w-2/3 laptop:w-3/4 flex-shrink-0 flex-col">
             {gameOver === false && (
                 <div className="mt-72 flex w-full flex-col">
                     <SentenceGenerator

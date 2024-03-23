@@ -17,6 +17,7 @@ import ManageListings from "~/components/KeebShop/ManageListings";
 import ManagePosts from "~/components/KeebShare/ManagePosts";
 import DisplayFavoriteListings from "~/components/KeebShop/DisplayFavoriteListings";
 import DisplayFavoritePosts from "~/components/KeebShare/DisplayFavoritePosts";
+import DisplayProfileKeebs from "~/components/Profile/Keeb/DisplayKeebs";
 
 export default function UserProfile() {
     // mdn digest() -- might be useful for us here
@@ -32,13 +33,15 @@ export default function UserProfile() {
     const [toggle, setToggle] = useState<string>("KEEBSHOP");
 
     // keebshop
-    const [keebShopCategory, setKeebShopCategory] = useState<string>("");
+    const [keebShopCategory, setKeebShopCategory] =
+        useState<string>("FAVORITES");
 
     // keebshare
-    const [keebShareCategory, setKeebShareCategory] = useState<string>("");
+    const [keebShareCategory, setKeebShareCategory] =
+        useState<string>("FAVORITES");
 
     // keebtype
-    const [keebTypeCategory, setKeebTypeCategory] = useState<string>("");
+    const [keebTypeCategory, setKeebTypeCategory] = useState<string>("STATS");
 
     // const { data: keebData } = api.keeb.getAll.useQuery();
 
@@ -526,51 +529,94 @@ export default function UserProfile() {
                 </div>
 
                 {toggle === "KEEBSHOP" && (
-                    <div className="mt-10 flex  w-full justify-between border-2 border-[#616161] p-5">
+                    <div className="mt-10 flex  w-full justify-evenly border-2 border-[#616161] p-5">
                         <button
-                            className="  border-2 border-black bg-black  px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray"
-                            onClick={() => setKeebShopCategory("LISTINGS")}
-                        >
-                            My Listings
-                        </button>
-                        <button className="  border-2 border-black bg-black  px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray">
-                            Offers
-                        </button>
-                        <button
-                            className="  border-2 border-black bg-black  px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray"
+                            className={`border-2 ${
+                                keebShopCategory === "FAVORITES"
+                                    ? "border-green-500"
+                                    : "border-[#616161]"
+                            } rounded-lg bg-darkGray  px-6 py-2 text-green-500 hover:border-green-500 `}
                             onClick={() => setKeebShopCategory("FAVORITES")}
                         >
                             Favorites
                         </button>
-                        <button className="  border-2 border-black bg-black  px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray">
+                        <button
+                            className={`border-2 ${
+                                keebShopCategory === "LISTINGS"
+                                    ? "border-green-500"
+                                    : "border-[#616161]"
+                            } rounded-lg bg-darkGray  px-6 py-2 text-green-500 hover:border-green-500 `}
+                            onClick={() => setKeebShopCategory("LISTINGS")}
+                        >
+                            My Listings
+                        </button>
+                        <button
+                            className={`border-2 ${
+                                keebShopCategory === "OFFERS"
+                                    ? "border-green-500"
+                                    : "border-[#616161]"
+                            } rounded-lg bg-darkGray  px-6 py-2 text-green-500 hover:border-green-500 `}
+                            onClick={() => setKeebShopCategory("OFFERS")}
+                        >
+                            Offers
+                        </button>
+                        <button
+                            className={`border-2 ${
+                                keebShopCategory === "REVIEWS"
+                                    ? "border-green-500"
+                                    : "border-[#616161]"
+                            } rounded-lg bg-darkGray  px-6 py-2 text-green-500 hover:border-green-500 `}
+                            onClick={() => setKeebShopCategory("REVIEWS")}
+                        >
                             Reviews
                         </button>
                     </div>
                 )}
                 {toggle === "KEEBSHARE" && (
-                    <div className="mt-10 flex  w-full justify-between border-2 border-[#616161] p-5">
+                    <div className="mt-10 flex  w-full justify-evenly border-2 border-[#616161] p-5">
                         <button
-                            className="  border-2 border-black bg-black  px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray"
-                            onClick={() => setKeebShareCategory("POSTS")}
-                        >
-                            My Posts
-                        </button>
-
-                        <button
-                            className="  border-2 border-black bg-black  px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray"
+                            className={`border-2 ${
+                                keebShareCategory === "FAVORITES"
+                                    ? "border-green-500"
+                                    : "border-[#616161]"
+                            } rounded-lg bg-darkGray  px-6 py-2 text-green-500 hover:border-green-500 `}
                             onClick={() => setKeebShareCategory("FAVORITES")}
                         >
                             Favorites
                         </button>
+                        <button
+                            className={`border-2 ${
+                                keebShareCategory === "POSTS"
+                                    ? "border-green-500"
+                                    : "border-[#616161]"
+                            } rounded-lg bg-darkGray  px-6 py-2 text-green-500 hover:border-green-500 `}
+                            onClick={() => setKeebShareCategory("POSTS")}
+                        >
+                            My Posts
+                        </button>
                     </div>
                 )}
                 {toggle === "KEEBTYPE" && (
-                    <div className="mt-10 flex  w-full justify-between border-2 border-[#616161] p-5">
-                        <button className="  border-2 border-black bg-black  px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray">
+                    <div className="mt-10 flex  w-full justify-evenly border-2 border-[#616161] p-5">
+                        <button
+                            className={`border-2 ${
+                                keebTypeCategory === "STATS"
+                                    ? "border-green-500"
+                                    : "border-[#616161]"
+                            } rounded-lg bg-darkGray  px-6 py-2 text-green-500 hover:border-green-500 `}
+                            onClick={() => setKeebTypeCategory("STATS")}
+                        >
                             Stats
                         </button>
 
-                        <button className="  border-2 border-black bg-black  px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray">
+                        <button
+                            className={`border-2 ${
+                                keebTypeCategory === "KEEBS"
+                                    ? "border-green-500"
+                                    : "border-[#616161]"
+                            } rounded-lg bg-darkGray  px-6 py-2 text-green-500 hover:border-green-500 `}
+                            onClick={() => setKeebTypeCategory("KEEBS")}
+                        >
                             My Keebs
                         </button>
                     </div>
@@ -587,8 +633,22 @@ export default function UserProfile() {
                     <ManagePosts userId={sessionData.user.id} />
                 )}
 
-                {toggle === "KEEBSHARE" && keebShareCategory === "FAVORITES" && (
-                    <DisplayFavoritePosts userId={sessionData.user.id} />
+                {toggle === "KEEBSHARE" &&
+                    keebShareCategory === "FAVORITES" && (
+                        <DisplayFavoritePosts userId={sessionData.user.id} />
+                    )}
+
+                {toggle === "KEEBTYPE" && keebTypeCategory === "STATS" && (
+                    <div>hey</div>
+                )}
+                {toggle === "KEEBTYPE" && keebTypeCategory === "KEEBS" && (
+                    // <div className="flex flex-wrap gap-10">
+                    //     {keebData?.map((keeb, i) => (
+                    //         <DisplayKeebs key={i} keeb={keeb} />
+                    //     ))}
+                    // </div>
+                    <DisplayProfileKeebs userId={sessionData.user.id}/>
+                    
                 )}
 
                 {/* {toggle === "KEEBTYPE" && (
