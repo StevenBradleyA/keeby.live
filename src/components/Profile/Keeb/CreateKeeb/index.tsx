@@ -1,5 +1,10 @@
+import { useSession } from "next-auth/react";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { api } from "~/utils/api";
+import defaultProfile from "@public/Profile/profile-default.png";
+import keebo from "@public/Profile/keebo.png";
+import toast from "react-hot-toast";
 
 interface CreateKeebProps {
     closeModal: () => void;
@@ -24,10 +29,19 @@ export default function CreateKeeb({ closeModal, userId }: CreateKeebProps) {
     const [errors, setErrors] = useState<ErrorsObj>({});
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const ctx = api.useContext();
+    const { data: sessionData } = useSession();
 
     const { mutate } = api.keeb.create.useMutation({
         onSuccess: () => {
-            void ctx.keeb.getAll.invalidate();
+            void ctx.keeb.getAllByUserId.invalidate();
+            toast.success("New Keed Created!", {
+                style: {
+                    borderRadius: "10px",
+                    background: "#333",
+                    color: "#fff",
+                },
+            });
+
             closeModal();
         },
     });
@@ -66,36 +80,69 @@ export default function CreateKeeb({ closeModal, userId }: CreateKeebProps) {
 
     return (
         <>
-            <form>
+            <form className="flex w-96 flex-col gap-5 ">
+                <div className="flex items-center">
+                    <Image
+                        alt="keeb"
+                        src={
+                            sessionData?.user.profile
+                                ? sessionData.user.profile
+                                : defaultProfile
+                        }
+                        width={300}
+                        height={300}
+                        className="h-20 w-20 border-2 border-[#616161] object-cover "
+                    />
+                    <div className="relative flex  w-full items-center border-b-2 border-t-2 border-[#616161] p-2 ">
+                        <div className="ml-2 flex items-center gap-2">
+                            <h1 className="text-2xl text-green-500">
+                                Create a Keeb
+                            </h1>
+                            <Image
+                                alt="keebo"
+                                src={keebo}
+                                className="h-6 w-6"
+                            />
+                        </div>
+                        <h3 className="absolute -top-5 right-0 text-xs text-darkGray">
+                            {sessionData?.user.username}
+                        </h3>
+                    </div>
+                </div>
+
                 <input
                     value={keyboard}
                     onChange={(e) => setKeyboard(e.target.value)}
-                    className=" rounded-md p-2 text-xl text-purple-300 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-200"
-                    placeholder="Keyboard"
+                    className="h-10 w-full rounded-md bg-darkGray p-1 "
+                    placeholder="Name"
                 ></input>
                 <input
                     value={switches}
                     onChange={(e) => setSwitches(e.target.value)}
-                    className=" rounded-md p-2 text-xl text-purple-300 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-200"
+                    className="h-10 w-full rounded-md bg-darkGray p-1 "
                     placeholder="Switches"
                 ></input>
                 <input
                     value={keycaps}
                     onChange={(e) => setKeycaps(e.target.value)}
-                    className=" rounded-md p-2 text-xl text-purple-300 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-200"
+                    className="h-10 w-full rounded-md bg-darkGray p-1 "
                     placeholder="Keycaps"
                 ></input>
-
-                <button
-                    onClick={(e) => {
-                        e.preventDefault();
-                        void submit(e);
-                    }}
-                    disabled={isSubmitting}
-                    className={`rounded-2xl bg-black px-6 py-2 `}
-                >
-                    {isSubmitting ? "Uploading..." : "Submit"}
-                </button>
+                <div className="flex justify-center">
+                    <button
+                        onClick={(e) => {
+                            e.preventDefault();
+                            void submit(e);
+                        }}
+                        disabled={isSubmitting}
+                        className={`rounded-md border-2 border-green-500 bg-keebyGray px-6 py-1 text-green-500 hover:bg-green-500 hover:text-black
+                    ${
+                        isSubmitting ? "text-green-500" : ""
+                    } transition-all duration-300 ease-in-out`}
+                    >
+                        {isSubmitting ? "Uploading..." : "Submit"}
+                    </button>
+                </div>
             </form>
         </>
     );
