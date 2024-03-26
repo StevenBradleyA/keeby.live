@@ -192,7 +192,7 @@ export const gameRouter = createTRPCRouter({
                     const topGames = await ctx.prisma.game.findMany({
                         where: {
                             userId: userId,
-                            mode: "speed", //todo change later for other ranked modes
+                            mode: "Speed", //todo change later for other ranked modes
                         },
                         orderBy: {
                             wpm: "desc",

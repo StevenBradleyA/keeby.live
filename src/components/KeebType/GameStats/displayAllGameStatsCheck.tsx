@@ -1,6 +1,6 @@
 import { api } from "~/utils/api";
 import LoadingSpinner from "~/components/Loading";
-import DisplayAllGameStats from "./displayAllGameStats";
+import DisplayAllGameStats from "./gameStatsConfigurator";
 
 export default function DisplayAllGameStatsCheck({
     userId,

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import type { ChangeEvent } from "react";
 import { api } from "~/utils/api";
 import { setCookie } from "cookies-next";
+import MenuKeebSelection from "./keebSelection";
 
 interface LeftMenuProps {
     mode: string;
@@ -32,83 +33,55 @@ export default function LeftMenu({
     // todo refactor theme to be session so its accessible in nav
     // theme needs to have context...
     // todo we need the keeb id
+    //todo  what if not signed in??????
 
-    const { data: keebData } = api.keeb.getAll.useQuery();
     const { data: session } = useSession();
-    const [selectedKeeb, setSelectedKeeb] = useState<{
-        id: string;
-        name: string;
-    } | null>(null);
-
-    useEffect(() => {
-        if (session && keebData && keebData[0] && keeb === "") {
-            setKeeb(keebData[0].name);
-            setKeebId(keebData[0].id);
-            setSelectedKeeb({ id: keebData[0].id, name: keebData[0].name });
-        }
-    }, [session, keebData, keeb, setKeeb, setKeebId]);
 
     //      ------ Setting Cookies && State -------
     const handleModeChange = (e: ChangeEvent<HTMLSelectElement>) => {
         const newMode: string = e.target.value;
 
-        setMode(newMode);
         setCookie("mode", newMode, {
             maxAge: 60 * 60 * 24 * 365,
             path: "/",
         });
+        setMode(newMode);
     };
 
     const handleGameLength = (e: ChangeEvent<HTMLSelectElement>) => {
         const newGameLength: number = +e.target.value;
-        setGameLength(newGameLength);
         setCookie("gameLength", newGameLength, {
             maxAge: 60 * 60 * 24 * 365,
             path: "/",
         });
+        setGameLength(newGameLength);
     };
 
     const handleThemeChange = (e: ChangeEvent<HTMLSelectElement>) => {
         const newTheme: string = e.target.value;
-        setTheme(newTheme);
         setCookie("theme", newTheme, {
             maxAge: 60 * 60 * 24 * 365,
             path: "/",
         });
-    };
-    const handleKeebChange = (e: ChangeEvent<HTMLSelectElement>) => {
-        const newKeebId: string = e.target.value;
-        if (keebData && keebData.length > 0) {
-            const newKeeb = keebData.find((keeb) => keeb.id === newKeebId);
-            if (newKeeb) {
-                setKeeb(newKeeb.name);
-                setKeebId(newKeebId);
-                setCookie("keeb", newKeeb.name, {
-                    maxAge: 60 * 60 * 24 * 365,
-                    path: "/",
-                });
-                setCookie("keebId", newKeebId, {
-                    maxAge: 60 * 60 * 24 * 365,
-                    path: "/",
-                });
-            }
-        }
+        setTheme(newTheme);
     };
 
+    // todo keeb functionality needs its own component that is dependent on being signed in
+
     return (
-        <div className="flex desktop:w-[85%] laptop:w-full desktop:h-[55%] laptop:h-[65%] flex-col rounded-xl border-2 border-green-300 border-opacity-50 bg-green-300/30 p-5 text-white ">
+        <div className="flex flex-col rounded-xl border-2 border-green-300 border-opacity-50 bg-green-300/30 p-5 text-white laptop:h-[65%] laptop:w-full desktop:h-[55%] desktop:w-[85%] ">
             <label className="">Mode</label>
             <select
                 className=" w-full rounded-md  bg-white/30 py-1  shadow-lg "
                 value={mode}
                 onChange={handleModeChange}
             >
-                <option value="speed">Speed</option>
+                <option value="Speed">Speed</option>
                 <option value="quote">Quote</option>
                 <option value="hacktime">It&apos;s Hacking Time</option>
             </select>
 
-            {mode === "speed" && (
+            {mode === "Speed" && (
                 <>
                     <label className="mt-2 ">Length</label>
                     <select
@@ -137,27 +110,15 @@ export default function LeftMenu({
                 <option value="primeagen">primeagen</option>
                 <option value="hipyo">hipyo</option>
             </select>
-            {session &&
-                session.user.hasProfile &&
-                keeb.length > 0 &&
-                keebData &&
-                keebData.length > 0 && (
-                    <>
-                        <label className="mt-2 ">Keeb</label>
-                        <select
-                            className={`
-                    rounded-md bg-white/30 py-1 `}
-                            value={selectedKeeb ? selectedKeeb.id : ""}
-                            onChange={handleKeebChange}
-                        >
-                            {keebData.map((e) => (
-                                <option key={e.id} value={e.id}>
-                                    {e.name}
-                                </option>
-                            ))}
-                        </select>
-                    </>
-                )}
+            {session && session.user.hasProfile && (
+                <MenuKeebSelection
+                    userId={session.user.id}
+                    keeb={keeb}
+                    keebId={keebId}
+                    setKeeb={setKeeb}
+                    setKeebId={setKeebId}
+                />
+            )}
         </div>
     );
 }

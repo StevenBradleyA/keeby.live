@@ -30,7 +30,7 @@ export default function KeebType() {
     //
 
     const cookies = getCookies();
-    const [mode, setMode] = useState<string>("speed");
+    const [mode, setMode] = useState<string>("Speed");
     const [gameLength, setGameLength] = useState<number>(20);
     const [theme, setTheme] = useState<string>("keeby");
     const [gameOver, setGameOver] = useState<boolean>(false);
@@ -42,8 +42,7 @@ export default function KeebType() {
 
     // save the game itself...
     // deal with rank an tag within game routes?
-    console.log('hello', keeb)
-    console.log('hi', keebId)
+
 
     useEffect(() => {
         if (cookies.mode) {
@@ -54,6 +53,9 @@ export default function KeebType() {
         }
         if (cookies.keeb) {
             setKeeb(cookies.keeb);
+        }
+        if (cookies.keebId) {
+            setKeebId(cookies.keebId);
         }
         if (cookies.theme) {
             setTheme(cookies.theme);
@@ -78,7 +80,7 @@ export default function KeebType() {
                     />
                 </div>
 
-                {mode === "speed" && (
+                {mode === "Speed" && (
                     <SpeedMode
                         gameLength={gameLength}
                         setGameOver={setGameOver}
