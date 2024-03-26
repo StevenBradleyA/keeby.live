@@ -42,6 +42,8 @@ export default function KeebType() {
 
     // save the game itself...
     // deal with rank an tag within game routes?
+    console.log('hello', keeb)
+    console.log('hi', keebId)
 
     useEffect(() => {
         if (cookies.mode) {

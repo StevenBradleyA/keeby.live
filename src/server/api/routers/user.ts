@@ -8,6 +8,21 @@ import { env } from "~/env.mjs";
 import { compare } from "bcryptjs";
 import { removeFileFromS3 } from "../utils";
 
+interface UserWithGamesAndRank {
+    rank: {
+        name: string;
+        image: string;
+        standing: number;
+        minWpm: number;
+        maxWpm: number;
+    } | null;
+    games: {
+        id: string;
+        wpm: number;
+        accuracy: number;
+    }[];
+}
+
 export const userRouter = createTRPCRouter({
     getAll: publicProcedure
         .input(
@@ -60,6 +75,70 @@ export const userRouter = createTRPCRouter({
             });
             return { seller, allSellerStars };
         }),
+
+    getUserGameData: publicProcedure
+        .input(
+            z.object({
+                userId: z.string(),
+                mode: z.string(),
+                keebId: z.string(),
+            })
+        )
+        .query(async ({ input, ctx }) => {
+            const { userId, mode, keebId } = input;
+
+            const userWithGameResultsAndRank: UserWithGamesAndRank | null =
+                await ctx.prisma.user.findUnique({
+                    where: { id: userId },
+                    select: {
+                        rank: {
+                            select: {
+                                name: true,
+                                image: true,
+                                standing: true,
+                                minWpm: true,
+                                maxWpm: true,
+                            },
+                        },
+                        games: {
+                            where: {
+                                mode: mode,
+                                keebId: keebId,
+                            },
+                            select: {
+                                id: true,
+                                wpm: true,
+                                accuracy: true,
+                            },
+                        },
+                        keebs: {
+                            select:{
+                                id: true, 
+                                name: true, 
+                            }
+                        }
+                    },
+                });
+
+            const allGameResults = userWithGameResultsAndRank?.games ?? [];
+            const totalGamesPlayed = allGameResults.length;
+            let averageWpm = 0;
+            let averageAccuracy = 0;
+
+            if (totalGamesPlayed > 0) {
+                averageWpm =
+                    allGameResults.reduce((acc, game) => acc + game.wpm, 0) /
+                    totalGamesPlayed;
+                averageAccuracy =
+                    allGameResults.reduce(
+                        (acc, game) => acc + game.accuracy,
+                        0
+                    ) / totalGamesPlayed;
+            }
+
+            return { allGameResults, averageWpm, averageAccuracy };
+        }),
+
     getUserPublic: publicProcedure.input(z.string()).query(({ input, ctx }) => {
         const userInfo = ctx.prisma.user.findUnique({
             where: { username: input },

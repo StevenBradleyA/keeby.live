@@ -19,7 +19,7 @@ type GameResult = Game & {
             image: string;
             minWpm: number;
             maxWpm: number;
-            standing: number
+            standing: number;
         } | null;
     };
 };
@@ -78,7 +78,7 @@ export const gameRouter = createTRPCRouter({
                                     image: true,
                                     minWpm: true,
                                     maxWpm: true,
-                                    standing: true, 
+                                    standing: true,
                                 },
                             },
                         },
@@ -117,6 +117,8 @@ export const gameRouter = createTRPCRouter({
 
             return { gameResults, allGameResults, averageWpm, averageAccuracy };
         }),
+
+   
 
     create: protectedProcedure
         .input(
@@ -185,7 +187,7 @@ export const gameRouter = createTRPCRouter({
                     }
                 }
 
-            //   todo Also assign a selected tag matching the name of the rank if it exsists
+                //   todo Also assign a selected tag matching the name of the rank if it exsists
                 if (player && player._count.games >= 10) {
                     const topGames = await ctx.prisma.game.findMany({
                         where: {
@@ -224,12 +226,11 @@ export const gameRouter = createTRPCRouter({
                         });
                     }
 
-                    return {gameId: newGame.id, averageWpm: averageWpm }
+                    return { gameId: newGame.id, averageWpm: averageWpm };
                 }
                 // probably want to return a boolean if a user gets assigned a new rank or something so we can send a hot toast when they rank up!
-                
 
-                return {gameId: newGame.id};
+                return { gameId: newGame.id };
             }
 
             throw new Error("Invalid userId");

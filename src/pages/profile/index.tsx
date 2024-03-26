@@ -18,6 +18,8 @@ import ManagePosts from "~/components/KeebShare/ManagePosts";
 import DisplayFavoriteListings from "~/components/KeebShop/DisplayFavoriteListings";
 import DisplayFavoritePosts from "~/components/KeebShare/DisplayFavoritePosts";
 import DisplayProfileKeebs from "~/components/Profile/Keeb/DisplayKeebs";
+import DisplayAllGameStats from "~/components/KeebType/GameStats/displayAllGameStatsCheck";
+import DisplayAllGameStatsCheck from "~/components/KeebType/GameStats/displayAllGameStatsCheck";
 
 export default function UserProfile() {
     // mdn digest() -- might be useful for us here
@@ -45,26 +47,8 @@ export default function UserProfile() {
 
     // const { data: keebData } = api.keeb.getAll.useQuery();
 
-    const [isCreateKeebModalOpen, setIsCreateKeebModalOpen] =
-        useState<boolean>(false);
-    const [isManageKeebModalOpen, setIsManageKeebModalOpen] =
-        useState<boolean>(false);
+
     const [title, setTitle] = useState("");
-
-    const openCreateKeebModal = () => {
-        setIsCreateKeebModalOpen(true);
-    };
-
-    const closeCreateKeebModalModal = () => {
-        setIsCreateKeebModalOpen(false);
-    };
-    const openManageKeebModal = () => {
-        setIsManageKeebModalOpen(true);
-    };
-
-    const closeManageKeebModalModal = () => {
-        setIsManageKeebModalOpen(false);
-    };
 
     const handleRetroMode = () => {
         setIsRetro(!isRetro);
@@ -639,7 +623,11 @@ export default function UserProfile() {
                     )}
 
                 {toggle === "KEEBTYPE" && keebTypeCategory === "STATS" && (
-                    <div>hey</div>
+                    // display all wpm for each game mode
+                    // be able to switch keebs and game modes to track progress...
+                    // user re chart to display all games with a trend line
+                    // total games played rank info etc
+                    <DisplayAllGameStatsCheck userId={sessionData.user.id} />
                 )}
                 {toggle === "KEEBTYPE" && keebTypeCategory === "KEEBS" && (
                     // <div className="flex flex-wrap gap-10">
@@ -647,66 +635,8 @@ export default function UserProfile() {
                     //         <DisplayKeebs key={i} keeb={keeb} />
                     //     ))}
                     // </div>
-                    <DisplayProfileKeebs userId={sessionData.user.id}/>
-                    
+                    <DisplayProfileKeebs userId={sessionData.user.id} />
                 )}
-
-                {/* {toggle === "KEEBTYPE" && (
-                    <div className=" flex flex-col items-center">
-                        <div>graph with wpm date and keeb etc</div>
-                        <div>next to graph is a list of ten fastest wpm</div>
-                        <div>
-                            Rank information maybe link to a page that explains
-                            ranking system
-                        </div>
-
-                        <div className="text-3xl">Keebs</div>
-                        <div className="flex">
-                            <button
-                                className="rounded-2xl bg-green-600 px-6 py-2"
-                                onClick={openCreateKeebModal}
-                            >
-                                add a keeb
-                            </button>
-                            <button
-                                className="rounded-2xl bg-green-600 px-6 py-2"
-                                onClick={openManageKeebModal}
-                            >
-                                manage
-                            </button>
-                        </div>
-
-                        <ModalDialog
-                            isOpen={isCreateKeebModalOpen}
-                            onClose={closeCreateKeebModalModal}
-                        >
-                            <CreateKeeb
-                                closeModal={closeCreateKeebModalModal}
-                                userId={sessionData.user.id}
-                            />
-                        </ModalDialog>
-
-                        <ModalDialog
-                            isOpen={isManageKeebModalOpen}
-                            onClose={closeManageKeebModalModal}
-                        >
-                            <ManageKeeb
-                                closeModal={closeManageKeebModalModal}
-                                userId={sessionData.user.id}
-                            />
-                        </ModalDialog>
-
-                        <div className="flex flex-wrap gap-10">
-                            {keebData?.map((keeb, i) => (
-                                <DisplayKeebs key={i} keeb={keeb} />
-                            ))}
-                        </div>
-
-                        <div>
-                            clicking on a keeb will show data for that keeb{" "}
-                        </div>
-                    </div>
-                )} */}
 
                 <MainFooter />
             </div>
