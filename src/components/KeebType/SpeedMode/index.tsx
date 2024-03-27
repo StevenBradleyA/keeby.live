@@ -458,7 +458,7 @@ export default function SpeedMode({
                                                 letterIndex ===
                                                     word.length - 1 && (
                                                     <div
-                                                        className={`text-red-500 `}
+                                                        className={`${styles.miss} `}
                                                     >
                                                         {extraCharacters[index]}
                                                     </div>
@@ -480,7 +480,9 @@ export default function SpeedMode({
                             maxLength={30}
                         />
                         {isVisualPaused && (
-                            <div className="keeb-type-pause-menu absolute bottom-0 left-0 right-0  top-0 flex items-center justify-center text-xl text-green-300 backdrop-blur-sm ">
+                            <div
+                                className={`keeb-type-pause-menu absolute bottom-0 left-0 right-0  top-0 flex items-center justify-center text-xl ${styles.pause} backdrop-blur-sm `}
+                            >
                                 Paused
                             </div>
                         )}
@@ -489,11 +491,13 @@ export default function SpeedMode({
             )}
 
             {gameOver && finishedGameId && session && session.user && (
-                <div className="flex w-full flex-col text-white">
-                    <div className="z-10 w-full rounded-lg border-2 border-green-300 border-opacity-50 bg-green-300 bg-opacity-30 px-5 py-2">
+                <div className={`flex w-full flex-col ${styles.hit}`}>
+                    <div
+                        className={`z-10 w-full rounded-lg border-2 ${styles.border} border-opacity-50 ${styles.backgroundColor} bg-opacity-30 px-5 py-2`}
+                    >
                         <button
                             onClick={handleNextGame}
-                            className="flex items-center hover:text-green-300"
+                            className={`flex items-center hover:${styles.pause}`}
                         >
                             Next Game
                             <svg
@@ -519,16 +523,19 @@ export default function SpeedMode({
                         keebId={keebId}
                         wpmIntervals={wpmIntervals}
                         rankWpm={rankWpm}
+                        theme={theme}
                     />
                 </div>
             )}
 
             {gameOver && session === null && (
-                <div className="flex w-full flex-col text-white">
-                    <div className="z-10 w-full rounded-lg border-2 border-green-300 border-opacity-50 bg-green-300 bg-opacity-30 px-5 py-2">
+                <div className={`flex w-full flex-col ${styles.hit}`}>
+                    <div
+                        className={`z-10 w-full rounded-lg border-2 ${styles.border} border-opacity-50 ${styles.backgroundColor} bg-opacity-30 px-5 py-2`}
+                    >
                         <button
                             onClick={handleNextGame}
-                            className="flex items-center hover:text-green-300"
+                            className={`flex items-center hover:${styles.pause}`}
                         >
                             Next Game
                             <svg
@@ -560,7 +567,7 @@ export default function SpeedMode({
                 <div className="mt-20 flex w-full justify-center gap-10">
                     <button
                         onClick={handleResetGame}
-                        className="text-darkGray hover:text-green-300"
+                        className={`${styles.textColor} hover:${styles.pause}`}
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -576,7 +583,7 @@ export default function SpeedMode({
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24"
-                            className="w-9 -rotate-90 text-darkGray hover:text-green-300 "
+                            className={`w-9 -rotate-90 ${styles.textColor} hover:${styles.pause} `}
                             fill="none"
                         >
                             <path
