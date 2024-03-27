@@ -247,12 +247,6 @@ export default function SpeedMode({
         }
     };
 
-    // typing
-    // useEffect(() => {
-    //     if (inputRef.current) {
-    //         inputRef.current.focus();
-    //     }
-    // }, []);
     useEffect(() => {
         if (!gameOver && inputRef.current) {
             inputRef.current.focus();
@@ -328,7 +322,7 @@ export default function SpeedMode({
     }, [totalUserInput, gameOver, isRunning, stopwatch]);
 
     return (
-        <div className="flex flex-shrink-0 flex-col laptop:w-3/4 desktop:w-2/3 z-10">
+        <div className="z-10 flex flex-shrink-0 flex-col laptop:w-3/4 desktop:w-2/3">
             {gameOver === false && (
                 <div className="mt-72 flex w-full flex-col">
                     <SentenceGenerator

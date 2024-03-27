@@ -71,7 +71,7 @@ export default function LeftMenu({
         >
             <label className="">Mode</label>
             <select
-                className={` w-full rounded-md  ${styles.menuInputBackground} py-1  shadow-lg `}
+                className={` w-full rounded-md  ${styles.menuInputBackground} py-1 shadow-sm `}
                 value={mode}
                 onChange={handleModeChange}
             >
@@ -84,7 +84,7 @@ export default function LeftMenu({
                 <>
                     <label className="mt-2 ">Length</label>
                     <select
-                        className={` rounded-md  ${styles.menuInputBackground} py-1 `}
+                        className={` rounded-md shadow-sm ${styles.menuInputBackground} py-1 `}
                         value={gameLength}
                         onChange={handleGameLength}
                     >
@@ -99,7 +99,7 @@ export default function LeftMenu({
             <label className="mt-2 ">Theme</label>
             <select
                 className={`
-                    rounded-md ${styles.menuInputBackground} py-1  `}
+                    rounded-md ${styles.menuInputBackground} py-1 shadow-sm `}
                 value={theme}
                 onChange={handleThemeChange}
             >
@@ -115,6 +115,7 @@ export default function LeftMenu({
                     keebId={keebId}
                     setKeeb={setKeeb}
                     setKeebId={setKeebId}
+                    background={styles.menuInputBackground}
                 />
             )}
         </div>

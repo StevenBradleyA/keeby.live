@@ -235,14 +235,20 @@ export default function EachGameResultCard({
                         </div>
                     </div>
 
-                    <div className="z-40 h-[92%] w-1/4 rounded-2xl bg-keebyGray bg-opacity-30 px-3 pt-3 shadow-md  laptop:mt-5 desktop:mt-10">
+                    <div
+                        className={`z-40 h-[92%] w-1/4 rounded-2xl ${styles.secondaryBase} bg-opacity-30 px-3 pt-3 shadow-md  laptop:mt-5 desktop:mt-10`}
+                    >
                         <div className="flex flex-col items-start px-3 pt-3">
                             {statistics.gameResults.keeb && (
                                 <div className="flex w-full flex-col">
-                                    <h2 className={`flex justify-center ${styles.pause}`}>
+                                    <h2
+                                        className={`flex justify-center ${styles.pause}`}
+                                    >
                                         Keyboard
                                     </h2>
-                                    <p className={`flex justify-center rounded-lg border-2 ${styles.border} border-opacity-50 ${styles.backgroundColor} bg-opacity-30 px-3 py-2 desktop:mt-1 `}>
+                                    <p
+                                        className={`flex justify-center rounded-lg border-2 ${styles.border} border-opacity-50 ${styles.backgroundColor} bg-opacity-30 px-3 py-2 desktop:mt-1 `}
+                                    >
                                         {statistics.gameResults.keeb.name}
                                     </p>
                                 </div>

@@ -1,14 +1,14 @@
 export type ThemeName = "KEEBY" | "PIGGY";
 
 interface ThemeStyle {
-    title: string; 
+    title: string;
     baseColor: string;
     secondaryBase: string;
     backgroundColor: string;
     menuInputBackground: string;
     border: string;
     cursor: string;
-    hoverText: string; 
+    hoverText: string;
     hit: string;
     miss: string;
     pause: string;
@@ -37,21 +37,20 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
         graphHighlight: "rgba(134, 239, 172)",
     },
     PIGGY: {
-        title: 'png-red',
-        baseColor: "bg-white",
-        secondaryBase: "bg-keebyGray",
-        backgroundColor: "bg-pink-300",
-        border: "border-pink-300",
-        textColor: "text-darkGray",
-        menuInputBackground: "bg-white/30",
-
-        hoverText: "hover:text-pink-300",
-        cursor: "bg-pink-300",
-        pause: "text-pink-300",
-        hit: "text-white",
-        miss: "text-red-500",
-        graphBackground: "rgba(134, 239, 172, 0.3)",
-        graphBorder: "rgba(134, 239, 172, 0.5)",
-        graphHighlight: "rgba(134, 239, 172)",
+        title: "png-white",
+        baseColor: "bg-[#fcd5ce]",
+        secondaryBase: "bg-[#f8edeb]",
+        backgroundColor: "bg-[#f9dcc4]",
+        border: "border-[#ffff]",
+        textColor: "text-[#383838]",
+        hoverText: "hover:text-[#fab4a9]",
+        cursor: "bg-[#ffffff]",
+        menuInputBackground: "bg-[#f8edeb]/30",
+        pause: "text-[#fab4a9]",
+        hit: "text-[#ffffff]",
+        miss: "text-[#ffccd5]",
+        graphBackground: "rgba(252, 213, 206, 0.3)",
+        graphBorder: "rgba(252, 213, 206, 0.5)",
+        graphHighlight: "rgba(252, 213, 206)",
     },
 };

@@ -6,6 +6,7 @@ import { Toaster } from "react-hot-toast";
 import "~/styles/globals.css";
 import Layout from "../components/layout";
 import MobileProvider from "~/components/Context/Mobile";
+import ThemeProvider from "~/components/Context/Theme";
 
 const MyApp: AppType<{ session: Session | null }> = ({
     Component,
@@ -15,10 +16,11 @@ const MyApp: AppType<{ session: Session | null }> = ({
         <SessionProvider session={session}>
             <Toaster />
             <MobileProvider>
-            
-            <Layout>
-                <Component {...pageProps} />
-            </Layout>
+                <ThemeProvider>
+                    <Layout>
+                        <Component {...pageProps} />
+                    </Layout>
+                </ThemeProvider>
             </MobileProvider>
         </SessionProvider>
     );

@@ -13,6 +13,7 @@ import { useRouter } from "next/router";
 import { getCookies } from "cookies-next";
 import { themeStyles } from "../KeebType/Theme/themeStyles";
 import type { ThemeName } from "../KeebType/Theme/themeStyles";
+import { useTheme } from "../Context/Theme";
 
 export default function NavBar() {
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -24,10 +25,7 @@ export default function NavBar() {
     const router = useRouter();
 
     const { data: sessionData } = useSession();
-
-    const [theme, setTheme] = useState<string>("KEEBY");
-    const cookies = getCookies();
-
+    const { theme } = useTheme();
     const styles = themeStyles[theme as ThemeName] || themeStyles["KEEBY"];
 
     // console.log(sessionData);
@@ -124,15 +122,6 @@ export default function NavBar() {
         };
     }, [isMenuOpen, handleClose, handleOutsideClick, isMenuGif]);
 
-    useEffect(() => {
-        if (cookies.theme) {
-            setTheme(cookies.theme);
-        }
-    }, [cookies]);
-    
-    console.log(cookies.theme)
-    console.log(theme);
-
     return (
         <nav
             className={`sticky top-0 z-10 flex items-center justify-between 
@@ -176,7 +165,7 @@ export default function NavBar() {
                     </Link>
                 ) : router.asPath === "/keebtype" ? (
                     <Link
-                        href="/keebtype"
+                        href="/"
                         aria-label="type"
                         className={`${styles.textColor}`}
                     >

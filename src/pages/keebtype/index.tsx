@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import { getCookies } from "cookies-next";
 import { themeStyles } from "~/components/KeebType/Theme/themeStyles";
 import type { ThemeName } from "~/components/KeebType/Theme/themeStyles";
+import { useTheme } from "~/components/Context/Theme";
 
 export default function KeebType() {
     // normal mode aka speedy speed boi (word count changes)
@@ -25,10 +26,9 @@ export default function KeebType() {
     const cookies = getCookies();
     const [mode, setMode] = useState<string>("Speed");
     const [gameLength, setGameLength] = useState<number>(20);
-    const [theme, setTheme] = useState<string>("KEEBY");
+    const { theme, setTheme } = useTheme();
     const [gameOver, setGameOver] = useState<boolean>(false);
     const [gameStart, setGameStart] = useState<boolean>(false);
-
     const [isFocused, setIsFocused] = useState<boolean>(false);
     const [keeb, setKeeb] = useState<string>("");
     const [keebId, setKeebId] = useState<string>("");
@@ -48,9 +48,9 @@ export default function KeebType() {
         if (cookies.keebId) {
             setKeebId(cookies.keebId);
         }
-        if (cookies.theme) {
-            setTheme(cookies.theme);
-        }
+        // if (cookies.theme) {
+        //     setTheme(cookies.theme);
+        // }
     }, [cookies]);
 
     return (

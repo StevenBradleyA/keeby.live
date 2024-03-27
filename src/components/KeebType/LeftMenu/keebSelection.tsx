@@ -9,6 +9,7 @@ interface MenuKeebSelectionProps {
     setKeeb: (keeb: string) => void;
     keebId: string;
     setKeebId: (keebId: string) => void;
+    background: string;
 }
 
 export default function MenuKeebSelection({
@@ -17,6 +18,7 @@ export default function MenuKeebSelection({
     setKeeb,
     keebId,
     setKeebId,
+    background,
 }: MenuKeebSelectionProps) {
     const { data: keebData } = api.keeb.getAllByUserId.useQuery(userId);
 
@@ -66,7 +68,7 @@ export default function MenuKeebSelection({
                     <label className="mt-2 ">Keeb</label>
                     <select
                         className={`
-                    rounded-md bg-white/30 py-1 `}
+                    rounded-md ${background} py-1 shadow-sm`}
                         value={selectedKeeb ? selectedKeeb.id : ""}
                         onChange={handleKeebChange}
                     >
