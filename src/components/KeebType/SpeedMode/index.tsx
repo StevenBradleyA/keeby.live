@@ -328,7 +328,7 @@ export default function SpeedMode({
     }, [totalUserInput, gameOver, isRunning, stopwatch]);
 
     return (
-        <div className="flex flex-shrink-0 flex-col laptop:w-3/4 desktop:w-2/3">
+        <div className="flex flex-shrink-0 flex-col laptop:w-3/4 desktop:w-2/3 z-10">
             {gameOver === false && (
                 <div className="mt-72 flex w-full flex-col">
                     <SentenceGenerator
@@ -497,7 +497,7 @@ export default function SpeedMode({
                     >
                         <button
                             onClick={handleNextGame}
-                            className={`flex items-center hover:${styles.pause}`}
+                            className={`flex items-center ${styles.hoverText}`}
                         >
                             Next Game
                             <svg
@@ -535,7 +535,7 @@ export default function SpeedMode({
                     >
                         <button
                             onClick={handleNextGame}
-                            className={`flex items-center hover:${styles.pause}`}
+                            className={`flex items-center ${styles.hoverText}`}
                         >
                             Next Game
                             <svg
@@ -567,7 +567,7 @@ export default function SpeedMode({
                 <div className="mt-20 flex w-full justify-center gap-10">
                     <button
                         onClick={handleResetGame}
-                        className={`${styles.textColor} hover:${styles.pause}`}
+                        className={`${styles.textColor} ${styles.hoverText}`}
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -583,7 +583,7 @@ export default function SpeedMode({
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24"
-                            className={`w-9 -rotate-90 ${styles.textColor} hover:${styles.pause} `}
+                            className={`w-9 -rotate-90 ${styles.textColor} ${styles.hoverText} `}
                             fill="none"
                         >
                             <path

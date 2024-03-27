@@ -150,7 +150,7 @@ export default function EachGameResultCard({
                                     >
                                         Games Played
                                     </h2>
-                                    <div className="text-green-300">
+                                    <div className={`${styles.pause}`}>
                                         {statistics.allGameResults.length}
                                     </div>
                                     <h2
@@ -159,7 +159,7 @@ export default function EachGameResultCard({
                                         Avg WPM
                                     </h2>
 
-                                    <div className="text-green-300">
+                                    <div className={`${styles.pause}`}>
                                         {Math.round(statistics.averageWpm)}
                                     </div>
                                     <h2
@@ -239,31 +239,43 @@ export default function EachGameResultCard({
                         <div className="flex flex-col items-start px-3 pt-3">
                             {statistics.gameResults.keeb && (
                                 <div className="flex w-full flex-col">
-                                    <h2 className="flex justify-center text-green-300">
+                                    <h2 className={`flex justify-center ${styles.pause}`}>
                                         Keyboard
                                     </h2>
-                                    <p className="flex justify-center rounded-lg border-2 border-green-300 border-opacity-50 bg-green-300 bg-opacity-30 px-3 py-2 desktop:mt-1 ">
+                                    <p className={`flex justify-center rounded-lg border-2 ${styles.border} border-opacity-50 ${styles.backgroundColor} bg-opacity-30 px-3 py-2 desktop:mt-1 `}>
                                         {statistics.gameResults.keeb.name}
                                     </p>
                                 </div>
                             )}
                             {statistics.gameResults.user.rank && (
                                 <div className="mt-2 flex w-full flex-col items-center laptop:text-xs desktop:mt-3 desktop:text-sm">
-                                    <h2 className="text-base text-darkGray">
+                                    <h2
+                                        className={`text-base ${styles.textColor}`}
+                                    >
                                         Rank
                                     </h2>
                                     <div className="flex w-full justify-center gap-2 desktop:mt-1 ">
-                                        <div className=" flex w-full flex-col overflow-hidden rounded-2xl border-2  border-green-300 border-opacity-50 p-3">
-                                            <h2 className="flex justify-center border-b-2 border-green-300 border-opacity-50 text-darkGray ">
+                                        <div
+                                            className={` flex w-full flex-col overflow-hidden rounded-2xl border-2  ${styles.border} border-opacity-50 p-3`}
+                                        >
+                                            <h2
+                                                className={`flex justify-center border-b-2 ${styles.border} border-opacity-50 ${styles.textColor} `}
+                                            >
                                                 Standing
                                             </h2>
-                                            <p className="mt-1 flex justify-center text-green-300">
+                                            <p
+                                                className={`mt-1 flex justify-center ${styles.pause}`}
+                                            >
                                                 {`top ${statistics.gameResults.user.rank.standing}%`}
                                             </p>
-                                            <h2 className="mt-3 flex justify-center border-b-2 border-green-300 border-opacity-50 text-darkGray">
+                                            <h2
+                                                className={`mt-3 flex justify-center border-b-2 ${styles.border} border-opacity-50 ${styles.textColor}`}
+                                            >
                                                 Rank min
                                             </h2>
-                                            <p className="mt-1 flex justify-center gap-1 text-green-300">
+                                            <p
+                                                className={`mt-1 flex justify-center gap-1 ${styles.pause}`}
+                                            >
                                                 {statistics.gameResults.user
                                                     .rank.minWpm === 0
                                                     ? "---"
@@ -271,20 +283,30 @@ export default function EachGameResultCard({
                                                           .user.rank.minWpm}
                                             </p>
                                         </div>
-                                        <div className="border-2xl flex w-full flex-col rounded-2xl border-2 border-green-300 border-opacity-50  p-3">
-                                            <h2 className="flex justify-center border-b-2 border-green-300 border-opacity-50 text-darkGray ">
+                                        <div
+                                            className={`border-2xl flex w-full flex-col rounded-2xl border-2 ${styles.border} border-opacity-50  p-3`}
+                                        >
+                                            <h2
+                                                className={`flex justify-center border-b-2 ${styles.border} border-opacity-50 ${styles.textColor} `}
+                                            >
                                                 Rank
                                             </h2>
 
-                                            <div className="mt-1 flex justify-center text-green-300">
+                                            <div
+                                                className={`mt-1 flex justify-center ${styles.pause}`}
+                                            >
                                                 {rankWpm > 0
                                                     ? Math.round(rankWpm)
                                                     : "---"}
                                             </div>
-                                            <h2 className="mt-3 flex justify-center border-b-2 border-green-300 border-opacity-50 text-darkGray">
+                                            <h2
+                                                className={`mt-3 flex justify-center border-b-2 ${styles.border} border-opacity-50 ${styles.textColor}`}
+                                            >
                                                 Rank max
                                             </h2>
-                                            <p className="mt-1 flex justify-center text-green-300">
+                                            <p
+                                                className={`mt-1 flex justify-center ${styles.pause}`}
+                                            >
                                                 {statistics.gameResults.user
                                                     .rank.maxWpm === 10 ||
                                                 statistics.gameResults.user.rank
@@ -295,7 +317,9 @@ export default function EachGameResultCard({
                                             </p>
                                         </div>
                                     </div>
-                                    <p className="mt-3 flex w-full justify-center rounded-lg border-2 border-green-300 border-opacity-50 bg-green-300 bg-opacity-30 px-3 py-2  ">
+                                    <p
+                                        className={`mt-3 flex w-full justify-center rounded-lg border-2 ${styles.border} border-opacity-50 ${styles.backgroundColor} bg-opacity-30 px-3 py-2  `}
+                                    >
                                         {statistics.gameResults.user.rank.name}
                                     </p>
 

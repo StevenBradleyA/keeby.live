@@ -2,6 +2,8 @@ import { useSession } from "next-auth/react";
 import type { ChangeEvent } from "react";
 import { setCookie } from "cookies-next";
 import MenuKeebSelection from "./keebSelection";
+import { themeStyles } from "../Theme/themeStyles";
+import type { ThemeName } from "../Theme/themeStyles";
 
 interface LeftMenuProps {
     mode: string;
@@ -33,7 +35,8 @@ export default function LeftMenu({
 
     const { data: session } = useSession();
 
-    //      ------ Setting Cookies && State -------
+    const styles = themeStyles[theme as ThemeName] || themeStyles["KEEBY"];
+
     const handleModeChange = (e: ChangeEvent<HTMLSelectElement>) => {
         const newMode: string = e.target.value;
 
@@ -62,13 +65,13 @@ export default function LeftMenu({
         setTheme(newTheme);
     };
 
-    // todo keeb functionality needs its own component that is dependent on being signed in
-
     return (
-        <div className="flex flex-col rounded-xl border-2 border-green-300 border-opacity-50 bg-green-300/30 p-5 text-white laptop:h-[65%] laptop:w-full desktop:h-[55%] desktop:w-[85%] ">
+        <div
+            className={`flex flex-col rounded-xl border-2 ${styles.border} border-opacity-50 ${styles.backgroundColor} bg-opacity-30 p-5 ${styles.hit} laptop:h-[65%] laptop:w-full desktop:h-[55%] desktop:w-[85%] `}
+        >
             <label className="">Mode</label>
             <select
-                className=" w-full rounded-md  bg-white/30 py-1  shadow-lg "
+                className={` w-full rounded-md  ${styles.menuInputBackground} py-1  shadow-lg `}
                 value={mode}
                 onChange={handleModeChange}
             >
@@ -81,7 +84,7 @@ export default function LeftMenu({
                 <>
                     <label className="mt-2 ">Length</label>
                     <select
-                        className=" rounded-md  bg-white/30 py-1 "
+                        className={` rounded-md  ${styles.menuInputBackground} py-1 `}
                         value={gameLength}
                         onChange={handleGameLength}
                     >
@@ -96,7 +99,7 @@ export default function LeftMenu({
             <label className="mt-2 ">Theme</label>
             <select
                 className={`
-                    rounded-md bg-white/30 py-1  `}
+                    rounded-md ${styles.menuInputBackground} py-1  `}
                 value={theme}
                 onChange={handleThemeChange}
             >

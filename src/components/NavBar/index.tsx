@@ -6,9 +6,13 @@ import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import menuBurger from "../../../public/Nav/menu.png";
 import menuBurgerGif from "../../../public/Gifs/menu-glitch.gif";
-import homeButton from "../../../public/Nav/home-test.png";
+import homeButton from "../../../public/Nav/home.png";
+import homeButtonBlack from "../../../public/Nav/home-black.png";
 import defaultProfile from "@public/Profile/profile-default.png";
 import { useRouter } from "next/router";
+import { getCookies } from "cookies-next";
+import { themeStyles } from "../KeebType/Theme/themeStyles";
+import type { ThemeName } from "../KeebType/Theme/themeStyles";
 
 export default function NavBar() {
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -20,6 +24,11 @@ export default function NavBar() {
     const router = useRouter();
 
     const { data: sessionData } = useSession();
+
+    const [theme, setTheme] = useState<string>("KEEBY");
+    const cookies = getCookies();
+
+    const styles = themeStyles[theme as ThemeName] || themeStyles["KEEBY"];
 
     // console.log(sessionData);
     // todo figure out potential userID hash for the session so we never actually give userId
@@ -115,6 +124,14 @@ export default function NavBar() {
         };
     }, [isMenuOpen, handleClose, handleOutsideClick, isMenuGif]);
 
+    useEffect(() => {
+        if (cookies.theme) {
+            setTheme(cookies.theme);
+        }
+    }, [cookies]);
+
+    console.log(theme);
+
     return (
         <nav
             className={`sticky top-0 z-10 flex items-center justify-between 
@@ -122,20 +139,31 @@ export default function NavBar() {
                   router.asPath === "/" || router.asPath === "/keebshare"
                       ? "bg-dark"
                       : "bg-none"
-              }  menu-index py-4 text-white desktop:pl-14 pl-2`}
+              }  menu-index py-4 pl-2 text-white desktop:pl-14`}
             aria-label="Main Navigation"
         >
             <Link href="/" aria-label="Home">
-                <Image
-                    src={homeButton}
-                    alt="home"
-                    width={homeButton.width}
-                    height={homeButton.height}
-                    className="w-72"
-                    priority
-                />
+                {router.asPath === "/keebtype" ? (
+                    <Image
+                        src={theme === "KEEBY" ? homeButton : homeButtonBlack}
+                        alt="home"
+                        width={homeButton.width}
+                        height={homeButton.height}
+                        className={`w-72 ${styles.title}`}
+                        priority
+                    />
+                ) : (
+                    <Image
+                        src={homeButton}
+                        alt="home"
+                        width={homeButton.width}
+                        height={homeButton.height}
+                        className="w-72"
+                        priority
+                    />
+                )}
             </Link>
-            <div className="flex items-center desktop:gap-32 gap-14 text-darkGray">
+            <div className="flex items-center gap-14 text-darkGray desktop:gap-32">
                 {router.asPath === "/keebshare" ? (
                     <Link href="/" aria-label="shop">
                         <h1>KEEB SHOP</h1>
@@ -144,6 +172,14 @@ export default function NavBar() {
                   router.asPath === "/" ? (
                     <Link href="/keebshare" aria-label="share">
                         <h1>KEEB SHARE</h1>
+                    </Link>
+                ) : router.asPath === "/keebtype" ? (
+                    <Link
+                        href="/keebtype"
+                        aria-label="type"
+                        className={`${styles.textColor}`}
+                    >
+                        <h1>KEEB SHOP</h1>
                     </Link>
                 ) : (
                     <Link href="/" aria-label="shop">
@@ -154,7 +190,7 @@ export default function NavBar() {
                 <motion.button
                     onClick={toggleMenu}
                     ref={menuButtonRef}
-                    className="desktop:mr-10 mr-5 w-36 rounded-3xl px-6 py-2"
+                    className="mr-5 w-36 rounded-3xl px-6 py-2 desktop:mr-10"
                     animate={
                         isMenuOpen
                             ? { rotate: [0, 5, 10, isMenuGif ? 0 : 90] }
