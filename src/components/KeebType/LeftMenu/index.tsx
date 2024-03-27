@@ -104,8 +104,6 @@ export default function LeftMenu({
                 onChange={handleThemeChange}
             >
                 <option value="KEEBY">keeby</option>
-                <option value="pastel-blue">blue</option>
-                <option value="pastel-pink">pink</option>
                 <option value="PRIMEAGEN">primeagen</option>
                 <option value="PIGGY">piggy</option>
                 <option value="HIPYO">hipyo</option>

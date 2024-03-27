@@ -129,7 +129,8 @@ export default function NavBar() {
             setTheme(cookies.theme);
         }
     }, [cookies]);
-
+    
+    console.log(cookies.theme)
     console.log(theme);
 
     return (
