@@ -82,10 +82,20 @@ export const userRouter = createTRPCRouter({
                 userId: z.string(),
                 mode: z.string(),
                 keebId: z.string(),
+                isTotalData: z.boolean(),
             })
         )
         .query(async ({ input, ctx }) => {
-            const { userId, mode, keebId } = input;
+            const { userId, mode, keebId, isTotalData } = input;
+
+            const gamesWhereClause = isTotalData
+                ? undefined
+                : {
+                      where: {
+                          mode: mode,
+                          keebId: keebId,
+                      },
+                  };
 
             const userWithGameResultsAndRank: UserWithGamesAndRank | null =
                 await ctx.prisma.user.findUnique({
@@ -101,10 +111,7 @@ export const userRouter = createTRPCRouter({
                             },
                         },
                         games: {
-                            where: {
-                                mode: mode,
-                                keebId: keebId,
-                            },
+                            ...gamesWhereClause,
                             select: {
                                 id: true,
                                 wpm: true,
@@ -112,11 +119,11 @@ export const userRouter = createTRPCRouter({
                             },
                         },
                         keebs: {
-                            select:{
-                                id: true, 
-                                name: true, 
-                            }
-                        }
+                            select: {
+                                id: true,
+                                name: true,
+                            },
+                        },
                     },
                 });
 
@@ -136,7 +143,7 @@ export const userRouter = createTRPCRouter({
                     ) / totalGamesPlayed;
             }
 
-            return { allGameResults, averageWpm, averageAccuracy };
+            return { userWithGameResultsAndRank, averageWpm, averageAccuracy };
         }),
 
     getUserPublic: publicProcedure.input(z.string()).query(({ input, ctx }) => {

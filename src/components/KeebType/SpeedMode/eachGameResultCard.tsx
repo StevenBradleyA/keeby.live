@@ -2,7 +2,6 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import defaultProfile from "@public/Profile/profile-default.png";
 import type { Game } from "@prisma/client";
-import { useEffect, useMemo, useState } from "react";
 import {
     Legend,
     Line,
@@ -131,7 +130,7 @@ export default function EachGameResultCard({
                                         className="h-full w-full rounded-md object-cover"
                                     />
                                 </div>
-                                <div className="desktop:text-base flex h-full w-1/2 flex-col justify-between laptop:text-sm">
+                                <div className="flex h-full w-1/2 flex-col justify-between laptop:text-sm desktop:text-base">
                                     <h2 className="border-b-2 border-green-300 border-opacity-50 text-darkGray ">
                                         Games Played
                                     </h2>
@@ -218,8 +217,10 @@ export default function EachGameResultCard({
                                 </div>
                             )}
                             {statistics.gameResults.user.rank && (
-                                <div className="mt-2 flex w-full flex-col items-center laptop:text-xs desktop:text-sm desktop:mt-3">
-                                    <h2 className="text-darkGray text-base">Rank</h2>
+                                <div className="mt-2 flex w-full flex-col items-center laptop:text-xs desktop:mt-3 desktop:text-sm">
+                                    <h2 className="text-base text-darkGray">
+                                        Rank
+                                    </h2>
                                     <div className="flex w-full justify-center gap-2 desktop:mt-1 ">
                                         <div className=" flex w-full flex-col overflow-hidden rounded-2xl border-2  border-green-300 border-opacity-50 p-3">
                                             <h2 className="flex justify-center border-b-2 border-green-300 border-opacity-50 text-darkGray ">

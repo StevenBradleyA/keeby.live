@@ -1,7 +1,5 @@
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
 import type { ChangeEvent } from "react";
-import { api } from "~/utils/api";
 import { setCookie } from "cookies-next";
 import MenuKeebSelection from "./keebSelection";
 
@@ -30,10 +28,8 @@ export default function LeftMenu({
     keebId,
     setKeebId,
 }: LeftMenuProps) {
-    // todo refactor theme to be session so its accessible in nav
+    // todo refactor theme to be session so its accessible in nav to apply title png state variables????
     // theme needs to have context...
-    // todo we need the keeb id
-    //todo  what if not signed in??????
 
     const { data: session } = useSession();
 
@@ -104,11 +100,12 @@ export default function LeftMenu({
                 value={theme}
                 onChange={handleThemeChange}
             >
-                <option value="keeby">keeby</option>
+                <option value="KEEBY">keeby</option>
                 <option value="pastel-blue">blue</option>
                 <option value="pastel-pink">pink</option>
-                <option value="primeagen">primeagen</option>
-                <option value="hipyo">hipyo</option>
+                <option value="PRIMEAGEN">primeagen</option>
+                <option value="PIGGY">piggy</option>
+                <option value="HIPYO">hipyo</option>
             </select>
             {session && session.user.hasProfile && (
                 <MenuKeebSelection

@@ -32,7 +32,7 @@ export default function KeebType() {
     const cookies = getCookies();
     const [mode, setMode] = useState<string>("Speed");
     const [gameLength, setGameLength] = useState<number>(20);
-    const [theme, setTheme] = useState<string>("keeby");
+    const [theme, setTheme] = useState<string>("KEEBY");
     const [gameOver, setGameOver] = useState<boolean>(false);
     const [gameStart, setGameStart] = useState<boolean>(false);
 
@@ -87,6 +87,7 @@ export default function KeebType() {
                         gameOver={gameOver}
                         mode={mode}
                         keebId={keebId}
+                        theme={theme}
                     />
                 )}
                 {/* {mode === "quote" && <SelectQuote />} */}

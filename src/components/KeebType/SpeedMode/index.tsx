@@ -4,6 +4,9 @@ import { api } from "~/utils/api";
 import { useSession } from "next-auth/react";
 import { useStopwatch } from "react-use-precision-timer";
 import SpeedModeResults from "./results";
+import OfflineGameResults from "../GameStats/offlineGameResults";
+import { themeStyles } from "../Theme/themeStyles";
+import type { ThemeName } from "../Theme/themeStyles";
 
 interface SpeedModeProps {
     gameLength: number;
@@ -11,6 +14,7 @@ interface SpeedModeProps {
     setGameOver: (gameOver: boolean) => void;
     mode: string;
     keebId: string;
+    theme: string;
 }
 
 export default function SpeedMode({
@@ -19,12 +23,16 @@ export default function SpeedMode({
     setGameOver,
     keebId,
     mode,
+    theme,
 }: SpeedModeProps) {
     const { data: session } = useSession();
 
     // TODO Going to want to keep track of interval data for a game. idk about db saving but just pass to component
     // interval accuracy and interval wpm
     //  also pass time
+
+    // theme
+    const styles = themeStyles[theme as ThemeName] || themeStyles["KEEBY"];
 
     // typing
     const [prompt, setPrompt] = useState<string[]>([]);
@@ -48,6 +56,10 @@ export default function SpeedMode({
 
     // stats
     const [wpmIntervals, setWpmIntervals] = useState<number[]>([]);
+    const [offlineWpm, setOfflineWpm] = useState<number>(0);
+    const [offlineAccuracy, setOfflineAccuracy] = useState<number>(0);
+    const [offlinePureWpm, setOfflinePureWpm] = useState<number>(0);
+
     const stopwatch = useStopwatch();
 
     const { mutate: createGame } = api.game.create.useMutation({
@@ -115,6 +127,33 @@ export default function SpeedMode({
                 mode: mode,
             };
             createGame(data);
+        }
+
+        // offline
+        if (gameOver && session === null) {
+            // wpm
+            const totalTypedWords = totalUserInput.trim().split(" ");
+            const correctlyTypedWords = totalTypedWords.filter(
+                (word, index) => wordStatus[index]
+            );
+            const totalCorrectlyTypedCharacters =
+                correctlyTypedWords.join(" ").length;
+
+            // pure wpm
+            const totalTypedCharacters = totalUserInput.length;
+
+            // accuracy
+            const totalPromptCharacters = prompt.join(" ").trim().length;
+
+            // calculations
+            const timeInSeconds = stopwatch.getElapsedRunningTime() / 1000;
+            const timeInMinutes = timeInSeconds / 60;
+            setOfflinePureWpm(totalTypedCharacters / 5 / timeInMinutes);
+
+            setOfflineWpm(totalCorrectlyTypedCharacters / 5 / timeInMinutes);
+            setOfflineAccuracy(
+                (totalCorrectlyTypedCharacters / totalPromptCharacters) * 100
+            );
         }
     };
 
@@ -289,7 +328,7 @@ export default function SpeedMode({
     }, [totalUserInput, gameOver, isRunning, stopwatch]);
 
     return (
-        <div className="flex desktop:w-2/3 laptop:w-3/4 flex-shrink-0 flex-col">
+        <div className="flex flex-shrink-0 flex-col laptop:w-3/4 desktop:w-2/3">
             {gameOver === false && (
                 <div className="mt-72 flex w-full flex-col">
                     <SentenceGenerator
@@ -298,7 +337,9 @@ export default function SpeedMode({
                         key={trigger}
                     />
                     <div
-                        className={`relative flex w-full flex-wrap gap-2 px-10 text-2xl text-white/30 ${
+                        className={`relative flex w-full flex-wrap gap-2 px-10 text-2xl ${
+                            styles.textColor
+                        } ${
                             gameLength === 10
                                 ? "justify-center"
                                 : "justify-start"
@@ -346,32 +387,40 @@ export default function SpeedMode({
                                         >
                                             <span
                                                 className={`  flex
-                                    ${wordHit ? "text-white" : ""}
-                                    ${wordMiss ? "text-red-500" : ""}
-                                    ${letterHit ? "text-white" : ""}
-                                    ${letterMiss ? "text-red-500" : ""}
+                                    ${wordHit ? styles.hit : ""}
+                                    ${wordMiss ? styles.miss : ""}
+                                    ${letterHit ? styles.hit : ""}
+                                    ${letterMiss ? styles.miss : ""}
                                     `}
                                             >
                                                 {letter}
                                             </span>
                                             {isCursor && !isRunning && (
-                                                <div className="blinking-cursor absolute bottom-0 left-0 top-0 w-0.5 bg-green-300"></div>
+                                                <div
+                                                    className={`blinking-cursor absolute bottom-0 left-0 top-0 w-0.5 ${styles.cursor}`}
+                                                ></div>
                                             )}
                                             {isCursor && isRunning && (
-                                                <div className="absolute bottom-0 left-0 top-0 w-0.5 bg-green-300"></div>
+                                                <div
+                                                    className={`absolute bottom-0 left-0 top-0 w-0.5 ${styles.cursor}`}
+                                                ></div>
                                             )}
                                             {isCursorLastLetter &&
                                                 isRunning && (
-                                                    <div className="absolute bottom-0 right-0 top-0 w-0.5 bg-green-300"></div>
+                                                    <div
+                                                        className={`absolute bottom-0 right-0 top-0 w-0.5 ${styles.cursor}`}
+                                                    ></div>
                                                 )}
                                             {isCursorLastLetter &&
                                                 !isRunning && (
-                                                    <div className="blinking-cursor absolute bottom-0 right-0 top-0 w-0.5 bg-green-300"></div>
+                                                    <div
+                                                        className={`blinking-cursor absolute bottom-0 right-0 top-0 w-0.5 ${styles.cursor}`}
+                                                    ></div>
                                                 )}
 
                                             {extra && (
                                                 <div
-                                                    className={` flex text-red-500 `}
+                                                    className={` flex ${styles.miss} `}
                                                 >
                                                     {extraInput.map(
                                                         (eachExtra, index) => (
@@ -387,14 +436,18 @@ export default function SpeedMode({
                                                                         word.length -
                                                                         1 &&
                                                                     isRunning && (
-                                                                        <div className="absolute bottom-0 right-0 top-0 w-0.5 bg-green-300"></div>
+                                                                        <div
+                                                                            className={`absolute bottom-0 right-0 top-0 w-0.5 ${styles.cursor}`}
+                                                                        ></div>
                                                                     )}
                                                                 {index ===
                                                                     userInput.length -
                                                                         word.length -
                                                                         1 &&
                                                                     !isRunning && (
-                                                                        <div className="blinking-cursor absolute bottom-0 right-0 top-0 w-0.5 bg-green-300"></div>
+                                                                        <div
+                                                                            className={`blinking-cursor absolute bottom-0 right-0 top-0 w-0.5 ${styles.cursor}`}
+                                                                        ></div>
                                                                     )}
                                                             </div>
                                                         )
@@ -466,6 +519,40 @@ export default function SpeedMode({
                         keebId={keebId}
                         wpmIntervals={wpmIntervals}
                         rankWpm={rankWpm}
+                    />
+                </div>
+            )}
+
+            {gameOver && session === null && (
+                <div className="flex w-full flex-col text-white">
+                    <div className="z-10 w-full rounded-lg border-2 border-green-300 border-opacity-50 bg-green-300 bg-opacity-30 px-5 py-2">
+                        <button
+                            onClick={handleNextGame}
+                            className="flex items-center hover:text-green-300"
+                        >
+                            Next Game
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                className="w-7 -rotate-90   "
+                                fill="none"
+                            >
+                                <path
+                                    d="M7 10L12 15L17 10"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                            </svg>
+                        </button>
+                    </div>
+                    <OfflineGameResults
+                        mode={mode}
+                        offlineAccuracy={offlineAccuracy}
+                        offlinePureWpm={offlinePureWpm}
+                        offlineWpm={offlineWpm}
+                        wpmIntervals={wpmIntervals}
                     />
                 </div>
             )}
