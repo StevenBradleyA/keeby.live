@@ -82,14 +82,12 @@ export default function KeebType() {
                 )}
                 {mode === "Scholar" && (
                     <ScholarMode
-                        gameLength={gameLength}
                         setGameOver={setGameOver}
                         gameOver={gameOver}
                         mode={mode}
                         keebId={keebId}
                         theme={theme}
                         scholarType={scholarType}
-                        setScholarType={setScholarType}
                     />
                 )}
                 {mode === "Gitgud" && <div>uh gitgud</div>}

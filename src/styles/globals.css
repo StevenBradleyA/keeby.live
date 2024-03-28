@@ -62,7 +62,12 @@
 }
 .pink-hue-effect {
     filter: hue-rotate(130deg) saturate(2);
-  }
+}
+
+.png-primeagen {
+    filter: invert(99%) sepia(61%) saturate(1651%) hue-rotate(164deg)
+        brightness(88%) contrast(93%);
+}
 
 /* --------------              colors              --------------  */
 
@@ -81,7 +86,6 @@ $blue: #2033c1; */
 .admin-search::placeholder {
     color: #ff0000;
 }
-
 
 /* cool pulse animation maybe for profile */
 

@@ -16,7 +16,6 @@ interface ScholarModeProps {
     keebId: string;
     theme: string;
     scholarType: string;
-    setScholarType: (scholarType: string) => void;
 }
 
 export default function ScholarMode({
@@ -26,8 +25,10 @@ export default function ScholarMode({
     keebId,
     theme,
     scholarType,
-    setScholarType,
 }: ScholarModeProps) {
+    // todo not sure if we want this to be ranked or unranked.
+    // todo fix create game to be scholar specific
+
     const { data: session } = useSession();
 
     // theme
@@ -224,6 +225,38 @@ export default function ScholarMode({
             // Prevent the space key from being input into the text field
             e.preventDefault();
         }
+
+        if (
+            e.key === "Backspace" &&
+            userInput.length === 0 &&
+            wordStatus[activeWordIndex - 1] === false &&
+            activeWordIndex > 0
+        ) {
+            const totalInputArray = totalUserInput.split(" ");
+
+            if (totalInputArray[totalInputArray.length - 1] === "") {
+                totalInputArray.pop();
+            }
+            const lastWord = totalInputArray.pop() || "";
+
+            const newExtraCharacters = [...extraCharacters];
+            if (newExtraCharacters[activeWordIndex - 1]) {
+                newExtraCharacters[activeWordIndex - 1] = "";
+                setExtraCharacters(newExtraCharacters);
+            }
+
+            setTotalUserInput(
+                totalInputArray.join(" ") +
+                    (totalInputArray.length > 0 ? " " : "")
+            );
+
+            if (lastWord) {
+                setUserInput(lastWord);
+            }
+
+            setActiveWordIndex(activeWordIndex - 1);
+            e.preventDefault();
+        }
     };
 
     useEffect(() => {
@@ -310,10 +343,9 @@ export default function ScholarMode({
                         key={trigger}
                     /> */}
                     <ScholarGenerator
-                    setPrompt={setPrompt}
-                    key={trigger}
-                    scholarType={scholarType}
-                    
+                        setPrompt={setPrompt}
+                        key={trigger}
+                        scholarType={scholarType}
                     />
                     <div
                         className={`relative flex w-full flex-wrap gap-2 px-10 text-2xl ${

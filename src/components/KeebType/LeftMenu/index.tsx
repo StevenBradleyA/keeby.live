@@ -88,9 +88,9 @@ export default function LeftMenu({
                 value={mode}
                 onChange={handleModeChange}
             >
-                <option value="Gitgud">git gud</option>
+                {/* <option value="Gitgud">git gud</option> */}
                 <option value="Freeplay">Freeplay</option>
-                <option value="Hacktime">It&apos;s Hacking Time</option>
+                {/* <option value="Hacktime">It&apos;s Hacking Time</option> */}
                 <option value="Scholar">Scholar</option>
                 <option value="Speed">Speed</option>
             </select>
@@ -123,9 +123,9 @@ export default function LeftMenu({
                         <option value="Animal">animal</option>
                         <option value="Vocab">vocab</option>
                         <option value="Keyboards">keyboards</option>
-                        <option value="SoftwareEngineering">
+                        {/* <option value="SoftwareEngineering">
                             software engineering
-                        </option>
+                        </option> */}
                     </select>
                 </>
             )}
