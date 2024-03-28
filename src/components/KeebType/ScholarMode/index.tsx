@@ -1,31 +1,33 @@
-import { useEffect, useRef, useState } from "react";
-import SentenceGenerator from "./sentenceGenerator";
-import { api } from "~/utils/api";
 import { useSession } from "next-auth/react";
-import { useStopwatch } from "react-use-precision-timer";
-import SpeedModeResults from "./results";
-import OfflineGameResults from "../GameStats/offlineGameResults";
 import { themeStyles } from "../Theme/themeStyles";
 import type { ThemeName } from "../Theme/themeStyles";
+import { useEffect, useRef, useState } from "react";
+import { useStopwatch } from "react-use-precision-timer";
+import { api } from "~/utils/api";
+import SentenceGenerator from "../SpeedMode/sentenceGenerator";
+import SpeedModeResults from "../SpeedMode/results";
+import OfflineGameResults from "../GameStats/offlineGameResults";
+import ScholarGenerator from "./scholarGenerator";
 
-interface SpeedModeProps {
-    gameLength: number;
+interface ScholarModeProps {
     gameOver: boolean;
     setGameOver: (gameOver: boolean) => void;
     mode: string;
     keebId: string;
     theme: string;
+    scholarType: string;
+    setScholarType: (scholarType: string) => void;
 }
 
-export default function SpeedMode({
-    gameLength,
+export default function ScholarMode({
     gameOver,
     setGameOver,
-    keebId,
     mode,
+    keebId,
     theme,
-}: SpeedModeProps) {
-    
+    scholarType,
+    setScholarType,
+}: ScholarModeProps) {
     const { data: session } = useSession();
 
     // theme
@@ -37,10 +39,10 @@ export default function SpeedMode({
     const [userInput, setUserInput] = useState<string>("");
     const [activeWordIndex, setActiveWordIndex] = useState<number>(0);
     const [wordStatus, setWordStatus] = useState<boolean[]>(
-        new Array(gameLength).fill(false)
+        new Array(prompt.length).fill(false)
     );
     const [extraCharacters, setExtraCharacters] = useState<string[]>(
-        new Array(gameLength).fill("")
+        new Array(prompt.length).fill("")
     );
     const [trigger, setTrigger] = useState<number>(0);
 
@@ -68,7 +70,6 @@ export default function SpeedMode({
 
     const handleSubmitGame = () => {
         if (gameOver && session?.user.id && keebId) {
-
             // wpm
             const totalTypedWords = totalUserInput.trim().split(" ");
             const correctlyTypedWords = totalTypedWords.filter(
@@ -91,7 +92,6 @@ export default function SpeedMode({
             const wpm = totalCorrectlyTypedCharacters / 5 / timeInMinutes;
             const accuracy =
                 (totalCorrectlyTypedCharacters / totalPromptCharacters) * 100;
-
 
             // wpm - total number of characters in the correctly typed words (including spaces), divided by 5 and normalised to 60 seconds.
             // pure wpm - calculated just like wpm, but also includes incorrect words.
@@ -145,8 +145,8 @@ export default function SpeedMode({
         setUserInput("");
         setTotalUserInput("");
         setActiveWordIndex(0);
-        setWordStatus(new Array(gameLength).fill(false));
-        setExtraCharacters(new Array(gameLength).fill(""));
+        setWordStatus(new Array(prompt.length).fill(false));
+        setExtraCharacters(new Array(prompt.length).fill(""));
         if (inputRef.current) {
             inputRef.current.focus();
             setIsVisualPaused(false);
@@ -161,8 +161,8 @@ export default function SpeedMode({
         setTotalUserInput("");
         setUserInput("");
         setActiveWordIndex(0);
-        setWordStatus(new Array(gameLength).fill(false));
-        setExtraCharacters(new Array(gameLength).fill(""));
+        setWordStatus(new Array(prompt.length).fill(false));
+        setExtraCharacters(new Array(prompt.length).fill(""));
         stopwatch.stop();
         setIsVisualPaused(false);
         setIsRunning(false);
@@ -217,7 +217,7 @@ export default function SpeedMode({
             setUserInput("");
             // Increase activeWordIndex by one
             // Check if the game is over (i.e., if the activeWordIndex reaches the last word).
-            if (activeWordIndex === gameLength - 1) {
+            if (activeWordIndex === prompt.length - 1) {
                 setGameOver(true);
             }
             setActiveWordIndex(activeWordIndex + 1);
@@ -237,7 +237,7 @@ export default function SpeedMode({
         if (
             gameOver === false &&
             currentWord &&
-            activeWordIndex === gameLength - 1 &&
+            activeWordIndex === prompt.length - 1 &&
             userInput.length === currentWord.length
         ) {
             // Retrieve the active word from the prompt based on the current activeWordIndex.
@@ -264,7 +264,7 @@ export default function SpeedMode({
     }, [
         activeWordIndex,
         userInput,
-        gameLength,
+        prompt.length,
         prompt,
         wordStatus,
         gameOver,
@@ -304,16 +304,22 @@ export default function SpeedMode({
         <div className="z-10 flex flex-shrink-0 flex-col laptop:w-3/4 desktop:w-2/3">
             {gameOver === false && (
                 <div className="mt-72 flex w-full flex-col">
-                    <SentenceGenerator
-                        gameLength={gameLength}
+                    {/* <SentenceGenerator
+                        prompt.length={prompt.length}
                         setPrompt={setPrompt}
                         key={trigger}
+                    /> */}
+                    <ScholarGenerator
+                    setPrompt={setPrompt}
+                    key={trigger}
+                    scholarType={scholarType}
+                    
                     />
                     <div
                         className={`relative flex w-full flex-wrap gap-2 px-10 text-2xl ${
                             styles.textColor
                         } ${
-                            gameLength === 10
+                            prompt.length === 10
                                 ? "justify-center"
                                 : "justify-start"
                         }`}

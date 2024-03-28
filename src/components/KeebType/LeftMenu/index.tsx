@@ -16,6 +16,8 @@ interface LeftMenuProps {
     setKeeb: (keeb: string) => void;
     keebId: string;
     setKeebId: (keebId: string) => void;
+    scholarType: string;
+    setScholarType: (scholarType: string) => void;
 }
 
 export default function LeftMenu({
@@ -29,6 +31,8 @@ export default function LeftMenu({
     setKeeb,
     keebId,
     setKeebId,
+    scholarType,
+    setScholarType,
 }: LeftMenuProps) {
     // todo refactor theme to be session so its accessible in nav to apply title png state variables????
     // theme needs to have context...
@@ -65,6 +69,15 @@ export default function LeftMenu({
         setTheme(newTheme);
     };
 
+    const handleScholarTypeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+        const newScholarType: string = e.target.value;
+        setCookie("scholarType", newScholarType, {
+            maxAge: 60 * 60 * 24 * 365,
+            path: "/",
+        });
+        setScholarType(newScholarType);
+    };
+
     return (
         <div
             className={`flex flex-col rounded-xl border-2 ${styles.border} border-opacity-50 ${styles.backgroundColor} bg-opacity-30 p-5 ${styles.hit} laptop:h-[65%] laptop:w-full desktop:h-[55%] desktop:w-[85%] `}
@@ -75,9 +88,11 @@ export default function LeftMenu({
                 value={mode}
                 onChange={handleModeChange}
             >
+                <option value="Gitgud">git gud</option>
+                <option value="Freeplay">Freeplay</option>
+                <option value="Hacktime">It&apos;s Hacking Time</option>
+                <option value="Scholar">Scholar</option>
                 <option value="Speed">Speed</option>
-                <option value="quote">Quote</option>
-                <option value="hacktime">It&apos;s Hacking Time</option>
             </select>
 
             {mode === "Speed" && (
@@ -93,6 +108,24 @@ export default function LeftMenu({
                             20
                         </option>
                         <option value={50}>50</option>
+                    </select>
+                </>
+            )}
+            {mode === "Scholar" && (
+                <>
+                    <label className="mt-2 ">Type</label>
+                    <select
+                        className={`
+                    rounded-md ${styles.menuInputBackground} py-1 shadow-sm `}
+                        value={scholarType}
+                        onChange={handleScholarTypeChange}
+                    >
+                        <option value="Animal">animal</option>
+                        <option value="Vocab">vocab</option>
+                        <option value="Keyboards">keyboards</option>
+                        <option value="SoftwareEngineering">
+                            software engineering
+                        </option>
                     </select>
                 </>
             )}

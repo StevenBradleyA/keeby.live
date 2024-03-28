@@ -1,4 +1,4 @@
-export type ThemeName = "KEEBY" | "PIGGY";
+export type ThemeName = "KEEBY" | "PIGGY"| "PRIMEAGEN";
 
 interface ThemeStyle {
     title: string;
@@ -48,9 +48,26 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
         menuInputBackground: "bg-[#f8edeb]/30",
         pause: "text-[#fab4a9]",
         hit: "text-[#ffffff]",
-        miss: "text-[#ffccd5]",
-        graphBackground: "rgba(252, 213, 206, 0.3)",
-        graphBorder: "rgba(252, 213, 206, 0.5)",
-        graphHighlight: "rgba(252, 213, 206)",
+        miss: "text-[#db7093]",
+        graphBackground: "rgba(0, 0, 0, 0.1)",
+        graphBorder: "rgba(255, 225, 225)",
+        graphHighlight: "rgba(255, 225, 225)",
+    },
+    PRIMEAGEN: {
+        title: "",
+        baseColor: "bg-dark",
+        secondaryBase: "bg-keebyGray",
+        backgroundColor: "bg-green-300",
+        border: "border-green-300",
+        textColor: "text-darkGray",
+        hoverText: "hover:text-green-300",
+        cursor: "bg-green-300",
+        menuInputBackground: "bg-white/30",
+        pause: "text-green-300",
+        hit: "text-white",
+        miss: "text-red-500",
+        graphBackground: "rgba(134, 239, 172, 0.3)",
+        graphBorder: "rgba(134, 239, 172, 0.5)",
+        graphHighlight: "rgba(134, 239, 172)",
     },
 };
