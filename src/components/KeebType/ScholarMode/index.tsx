@@ -4,7 +4,6 @@ import type { ThemeName } from "../Theme/themeStyles";
 import { useEffect, useRef, useState } from "react";
 import { useStopwatch } from "react-use-precision-timer";
 import { api } from "~/utils/api";
-import SentenceGenerator from "../SpeedMode/sentenceGenerator";
 import SpeedModeResults from "../SpeedMode/results";
 import OfflineGameResults from "../GameStats/offlineGameResults";
 import ScholarGenerator from "./scholarGenerator";
@@ -66,6 +65,9 @@ export default function ScholarMode({
         onSuccess: (data) => {
             setFinishedGameId(data.gameId);
             if (data.averageWpm) setRankWpm(data.averageWpm);
+
+
+
         },
     });
 

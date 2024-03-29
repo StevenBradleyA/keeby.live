@@ -18,6 +18,7 @@ interface LeftMenuProps {
     setKeebId: (keebId: string) => void;
     scholarType: string;
     setScholarType: (scholarType: string) => void;
+    setGameOver: (gameOver: boolean) => void;
 }
 
 export default function LeftMenu({
@@ -33,6 +34,7 @@ export default function LeftMenu({
     setKeebId,
     scholarType,
     setScholarType,
+    setGameOver,
 }: LeftMenuProps) {
     // todo refactor theme to be session so its accessible in nav to apply title png state variables????
     // theme needs to have context...
@@ -48,6 +50,7 @@ export default function LeftMenu({
             maxAge: 60 * 60 * 24 * 365,
             path: "/",
         });
+        setGameOver(false);
         setMode(newMode);
     };
 
@@ -88,11 +91,11 @@ export default function LeftMenu({
                 value={mode}
                 onChange={handleModeChange}
             >
+                <option value="Speed">Speed</option>
                 {/* <option value="Gitgud">git gud</option> */}
                 <option value="Freeplay">Freeplay</option>
                 {/* <option value="Hacktime">It&apos;s Hacking Time</option> */}
                 <option value="Scholar">Scholar</option>
-                <option value="Speed">Speed</option>
             </select>
 
             {mode === "Speed" && (

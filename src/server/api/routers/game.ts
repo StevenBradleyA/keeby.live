@@ -118,8 +118,6 @@ export const gameRouter = createTRPCRouter({
             return { gameResults, allGameResults, averageWpm, averageAccuracy };
         }),
 
-   
-
     create: protectedProcedure
         .input(
             z.object({
@@ -133,6 +131,7 @@ export const gameRouter = createTRPCRouter({
         )
         .mutation(async ({ input, ctx }) => {
             const { wpm, pureWpm, accuracy, mode, userId, keebId } = input;
+            let rankChange = false
             if (
                 ctx.session.user.hasProfile &&
                 ctx.session.user.id === input.userId
@@ -155,6 +154,7 @@ export const gameRouter = createTRPCRouter({
                     select: {
                         rank: {
                             select: {
+                                id: true,
                                 name: true,
                             },
                         },
@@ -187,7 +187,6 @@ export const gameRouter = createTRPCRouter({
                     }
                 }
 
-                //   todo Also assign a selected tag matching the name of the rank if it exsists
                 if (player && player._count.games >= 10) {
                     const topGames = await ctx.prisma.game.findMany({
                         where: {
@@ -218,19 +217,62 @@ export const gameRouter = createTRPCRouter({
                     // Assuming ranks are exclusive and the query returns exactly one rank
                     if (ranks.length === 1 && ranks[0]) {
                         const userRankId = ranks[0].id;
+                        const userRankName = ranks[0].name;
 
-                        // Update user's rank
-                        await ctx.prisma.user.update({
-                            where: { id: userId },
-                            data: { rankId: userRankId },
-                        });
+                        if (player.rank && player.rank.id !== userRankId) {
+                            // Update user's rank
+                            await ctx.prisma.user.update({
+                                where: { id: userId },
+                                data: { rankId: userRankId },
+                            });
+
+                            rankChange = true
+
+                            // find tag associated with rank
+                            const existingRankTag =
+                                await ctx.prisma.tag.findUnique({
+                                    where: {
+                                        name: userRankName,
+                                    },
+                                });
+                            if (existingRankTag) {
+                                // check if user owns tag...
+                                const doesUserOwnTag =
+                                    await ctx.prisma.user.findUnique({
+                                        where: { id: userId },
+                                        select: {
+                                            tags: {
+                                                where: {
+                                                    id: existingRankTag.id,
+                                                },
+                                            },
+                                        },
+                                    });
+
+                                if (
+                                    doesUserOwnTag &&
+                                    doesUserOwnTag.tags.length === 0
+                                ) {
+                                    // If the user does not already have this tag, associate the tag with the user
+                                    await ctx.prisma.user.update({
+                                        where: { id: userId },
+                                        data: {
+                                            tags: {
+                                                connect: {
+                                                    id: existingRankTag.id,
+                                                },
+                                            },
+                                        },
+                                    });
+                                }
+                            }
+                        }
                     }
 
-                    return { gameId: newGame.id, averageWpm: averageWpm };
+                    return { gameId: newGame.id, averageWpm: averageWpm, rankChange: rankChange };
                 }
-                // probably want to return a boolean if a user gets assigned a new rank or something so we can send a hot toast when they rank up!
 
-                return { gameId: newGame.id };
+                return { gameId: newGame.id, rankChange: rankChange };
             }
 
             throw new Error("Invalid userId");

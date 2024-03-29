@@ -58,7 +58,6 @@ export default function EachGameResultCard({
     theme,
 }: EachGameResultCardProps) {
     const { data: session } = useSession();
-    // npm install recharts
 
     // theme
     const styles = themeStyles[theme as ThemeName] || themeStyles["KEEBY"];

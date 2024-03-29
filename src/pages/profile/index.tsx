@@ -88,7 +88,7 @@ export default function UserProfile() {
     return (
         sessionData &&
         sessionData.user && (
-            <div className="flex w-3/4 flex-col font-retro text-green-500 ">
+            <div className="flex desktop:w-3/4 desktop:px-0 w-full px-10 flex-col font-retro text-green-500 ">
                 {isRetro && <div className="retro-scanlines"></div>}
 
                 <div className="flex gap-20">

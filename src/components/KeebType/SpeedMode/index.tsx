@@ -7,6 +7,7 @@ import SpeedModeResults from "./results";
 import OfflineGameResults from "../GameStats/offlineGameResults";
 import { themeStyles } from "../Theme/themeStyles";
 import type { ThemeName } from "../Theme/themeStyles";
+import toast from "react-hot-toast";
 
 interface SpeedModeProps {
     gameLength: number;
@@ -25,7 +26,6 @@ export default function SpeedMode({
     mode,
     theme,
 }: SpeedModeProps) {
-    
     const { data: session } = useSession();
 
     // theme
@@ -63,12 +63,28 @@ export default function SpeedMode({
         onSuccess: (data) => {
             setFinishedGameId(data.gameId);
             if (data.averageWpm) setRankWpm(data.averageWpm);
+            if (data.rankChange === true) {
+                toast.success("Rank Up!", {
+                    position: "bottom-center",
+                    style: {
+                        borderRadius: "10px",
+                        background: "#333",
+                        color: "rgb(34 197 94)",
+                        padding: "12px",
+                        fontSize: "1.25rem",
+                    },
+                    iconTheme: {
+                        primary: "black",
+                        secondary: "rgb(34 197 94)",
+                    },
+                    duration: 3000,
+                });
+            }
         },
     });
 
     const handleSubmitGame = () => {
         if (gameOver && session?.user.id && keebId) {
-
             // wpm
             const totalTypedWords = totalUserInput.trim().split(" ");
             const correctlyTypedWords = totalTypedWords.filter(
@@ -91,7 +107,6 @@ export default function SpeedMode({
             const wpm = totalCorrectlyTypedCharacters / 5 / timeInMinutes;
             const accuracy =
                 (totalCorrectlyTypedCharacters / totalPromptCharacters) * 100;
-
 
             // wpm - total number of characters in the correctly typed words (including spaces), divided by 5 and normalised to 60 seconds.
             // pure wpm - calculated just like wpm, but also includes incorrect words.

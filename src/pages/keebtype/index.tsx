@@ -67,6 +67,7 @@ export default function KeebType() {
                         setKeebId={setKeebId}
                         scholarType={scholarType}
                         setScholarType={setScholarType}
+                        setGameOver={setGameOver}
                     />
                 </div>
 
