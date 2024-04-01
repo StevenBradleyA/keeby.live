@@ -131,7 +131,7 @@ export const gameRouter = createTRPCRouter({
         )
         .mutation(async ({ input, ctx }) => {
             const { wpm, pureWpm, accuracy, mode, userId, keebId } = input;
-            let rankChange = false
+            let rankChange = false;
             if (
                 ctx.session.user.hasProfile &&
                 ctx.session.user.id === input.userId
@@ -226,7 +226,7 @@ export const gameRouter = createTRPCRouter({
                                 data: { rankId: userRankId },
                             });
 
-                            rankChange = true
+                            rankChange = true;
 
                             // find tag associated with rank
                             const existingRankTag =
@@ -245,14 +245,14 @@ export const gameRouter = createTRPCRouter({
                                                 where: {
                                                     id: existingRankTag.id,
                                                 },
+                                                select: {
+                                                    id: true
+                                                }
                                             },
                                         },
                                     });
 
-                                if (
-                                    doesUserOwnTag &&
-                                    doesUserOwnTag.tags.length === 0
-                                ) {
+                                if (doesUserOwnTag && doesUserOwnTag.tags.length === 0) {
                                     // If the user does not already have this tag, associate the tag with the user
                                     await ctx.prisma.user.update({
                                         where: { id: userId },
@@ -269,7 +269,11 @@ export const gameRouter = createTRPCRouter({
                         }
                     }
 
-                    return { gameId: newGame.id, averageWpm: averageWpm, rankChange: rankChange };
+                    return {
+                        gameId: newGame.id,
+                        averageWpm: averageWpm,
+                        rankChange: rankChange,
+                    };
                 }
 
                 return { gameId: newGame.id, rankChange: rankChange };
