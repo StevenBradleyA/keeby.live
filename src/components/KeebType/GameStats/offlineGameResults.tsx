@@ -1,8 +1,11 @@
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import defaultProfile from "@public/Profile/profile-default.png";
+import offlineRank from "@public/Ranks/offline.png";
+import keeboOffline from "@public/Profile/keebo-offline.png";
+
 import { themeStyles } from "../Theme/themeStyles";
 import type { ThemeName } from "../Theme/themeStyles";
+
 import {
     Legend,
     Line,
@@ -94,38 +97,38 @@ export default function OfflineGameResults({
                     >
                          {`${Math.round(offlineAccuracy)}%`}
                     </div>
-                        <div className="mt-6 flex h-36 w-full gap-5 ">
-                            <div className="h-full w-1/2">
-                                <Image
-                                    alt="profile"
-                                    src={defaultProfile}
-                                    width={400}
-                                    height={400}
-                                    className="h-full w-full rounded-md object-cover"
-                                />
-                            </div>
-                            <div className="flex h-full w-1/2 flex-col justify-between laptop:text-sm desktop:text-base">
-                                <h2
-                                    className={`border-b-2 ${styles.border} border-opacity-50 ${styles.textColor} `}
-                                >
-                                    Games Played
-                                </h2>
-                                <div className={`${styles.pause}`}>---</div>
-                                <h2
-                                    className={`border-b-2 ${styles.border} border-opacity-50 ${styles.textColor} `}
-                                >
-                                    Avg WPM
-                                </h2>
-
-                                <div className={`${styles.pause}`}>---</div>
-                                <h2
-                                    className={`border-b-2 ${styles.border} border-opacity-50 ${styles.textColor} `}
-                                >
-                                    Avg Accurary
-                                </h2>
-                                <div className={`${styles.pause}`}>---</div>
-                            </div>
+                    <div className="mt-6 flex h-36 w-full gap-5 ">
+                        <div className="h-full w-1/2">
+                            <Image
+                                alt="profile"
+                                src={keeboOffline}
+                                width={400}
+                                height={400}
+                                className="h-full w-full rounded-md object-cover"
+                            />
                         </div>
+                        <div className="flex h-full w-1/2 flex-col justify-between laptop:text-sm desktop:text-base">
+                            <h2
+                                className={`border-b-2 ${styles.border} border-opacity-50 ${styles.textColor} `}
+                            >
+                                Games Played
+                            </h2>
+                            <div className={`${styles.pause}`}>---</div>
+                            <h2
+                                className={`border-b-2 ${styles.border} border-opacity-50 ${styles.textColor} `}
+                            >
+                                Avg WPM
+                            </h2>
+
+                            <div className={`${styles.pause}`}>---</div>
+                            <h2
+                                className={`border-b-2 ${styles.border} border-opacity-50 ${styles.textColor} `}
+                            >
+                                Avg Accurary
+                            </h2>
+                            <div className={`${styles.pause}`}>---</div>
+                        </div>
+                    </div>
                 </div>
 
                 <div className=" relative flex h-full w-1/2 flex-col ">
@@ -264,10 +267,10 @@ export default function OfflineGameResults({
 
                             <Image
                                 alt="profile"
-                                src={defaultProfile}
+                                src={offlineRank}
                                 width={400}
                                 height={400}
-                                className="mt-3 h-20 w-32 rounded-md object-cover"
+                                className="mt-3 h-20 w-full rounded-md object-contain "
                             />
                         </div>
                     </div>
