@@ -145,13 +145,6 @@ Typing game should defo have a rank based on the top percentage of users
 (unranked till you typed 10 times)
 HotSwap Hero
 
-(bronze - plat are switches colored)
-Bronze Switch (I, II, III)
-Silver
-Gold
-Platinum  (top 50%)
-ClackChampion
-ThockMaster III (top 75%) ----
 
 
 ---
@@ -209,14 +202,3 @@ Store
 - sell merch - maybe develop a keyboard - maybe make a marketplace that shows products from other sites and links to them
 
 Add achievements - allow people to select tags - their rank or when they buy a keyboard they get a tag etc.
-
-
-
-
-
------- MASCOT
-
-KEEBO
-
-
- -->

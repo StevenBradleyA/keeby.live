@@ -519,7 +519,7 @@ export default function SpeedMode({
             {gameOver && session === null && (
                 <div className={`flex w-full flex-col ${styles.hit}`}>
                     <div
-                        className={`z-10 w-full rounded-lg border-2 ${styles.border} border-opacity-50 ${styles.backgroundColor} bg-opacity-30 px-5 py-2`}
+                        className={`z-10 w-full rounded-lg border-2 ${styles.border} border-opacity-50 ${styles.backgroundColor} bg-opacity-30 px-5 py-2 flex justify-between`}
                     >
                         <button
                             onClick={handleNextGame}
@@ -541,6 +541,7 @@ export default function SpeedMode({
                                 />
                             </svg>
                         </button>
+                        <div className="flex items-center">Offline mode. Sign in to save your progress</div>
                     </div>
                     <OfflineGameResults
                         mode={mode}
@@ -548,6 +549,7 @@ export default function SpeedMode({
                         offlinePureWpm={offlinePureWpm}
                         offlineWpm={offlineWpm}
                         wpmIntervals={wpmIntervals}
+                        theme={theme}
                     />
                 </div>
             )}

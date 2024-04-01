@@ -66,9 +66,9 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
         pause: "text-[#9ccfd8]",
         hit: "text-[#e0def4]",
         miss: "text-[#eb6f92]",
-        graphBackground: "rgba(134, 239, 172, 0.3)",
-        graphBorder: "rgba(134, 239, 172, 0.5)",
-        graphHighlight: "rgba(134, 239, 172)",
+        graphBackground: "rgba(224, 222, 244, 0.3)",
+        graphBorder: "rgba(224, 222, 244, 0.5)",
+        graphHighlight: "rgba(156, 207, 216)",
     },
 };
 // night runner

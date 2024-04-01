@@ -20,6 +20,7 @@ import DisplayFavoritePosts from "~/components/KeebShare/DisplayFavoritePosts";
 import DisplayProfileKeebs from "~/components/Profile/Keeb/DisplayKeebs";
 import DisplayAllGameStats from "~/components/KeebType/GameStats/displayAllGameStatsCheck";
 import DisplayAllGameStatsCheck from "~/components/KeebType/GameStats/displayAllGameStatsCheck";
+import UpdateUserTag from "~/components/Profile/User/Update/Tag";
 
 export default function UserProfile() {
     // mdn digest() -- might be useful for us here
@@ -27,7 +28,7 @@ export default function UserProfile() {
 
     // todo add notifcations here for comments, offers, likes etc...
 
-    const { data: sessionData } = useSession();
+    const { data: sessionData, update  } = useSession();
 
     const cookies = getCookies();
 
@@ -46,7 +47,6 @@ export default function UserProfile() {
     const [keebTypeCategory, setKeebTypeCategory] = useState<string>("STATS");
 
     // const { data: keebData } = api.keeb.getAll.useQuery();
-
 
     const [title, setTitle] = useState("");
 
@@ -88,7 +88,7 @@ export default function UserProfile() {
     return (
         sessionData &&
         sessionData.user && (
-            <div className="flex desktop:w-3/4 desktop:px-0 w-full px-10 flex-col font-retro text-green-500 ">
+            <div className="flex w-full flex-col px-10 font-retro text-green-500 desktop:w-3/4 desktop:px-0 ">
                 {isRetro && <div className="retro-scanlines"></div>}
 
                 <div className="flex gap-20">
@@ -131,7 +131,12 @@ export default function UserProfile() {
                             className="png-green my-10 w-[80%] "
                         />
                         <div className="mb-2 flex items-center justify-between">
-                            <div>tag select</div>
+                            {/* <div>{sessionData.user.selectedTag}</div> */}
+                            <UpdateUserTag
+                                userId={sessionData.user.id}
+                                currentTag={sessionData.user.selectedTag}
+                                updateSession={update}
+                            />
                             <svg
                                 width="12"
                                 height="12"

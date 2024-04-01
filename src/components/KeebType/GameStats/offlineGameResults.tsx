@@ -1,8 +1,8 @@
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import defaultProfile from "@public/Profile/profile-default.png";
-import type { Game } from "@prisma/client";
-import { useEffect, useMemo, useState } from "react";
+import { themeStyles } from "../Theme/themeStyles";
+import type { ThemeName } from "../Theme/themeStyles";
 import {
     Legend,
     Line,
@@ -18,6 +18,7 @@ interface OfflineGameResultsProps {
     offlineAccuracy: number;
     offlinePureWpm: number;
     wpmIntervals: number[];
+    theme: string;
 }
 
 export default function OfflineGameResults({
@@ -26,9 +27,11 @@ export default function OfflineGameResults({
     offlinePureWpm,
     offlineAccuracy,
     wpmIntervals,
+    theme,
 }: OfflineGameResultsProps) {
     const { data: session } = useSession();
-    // npm install recharts
+
+    const styles = themeStyles[theme as ThemeName] || themeStyles["KEEBY"];
 
     const calculateAveragedWpmIntervals = (wpmIntervals: number[]) => {
         const intervalCount = 10;
@@ -64,105 +67,115 @@ export default function OfflineGameResults({
     return (
         <div className="flex w-full flex-col ">
             <div className="flex h-[60vh] w-full gap-5 desktop:h-[50vh]">
-                <div className="z-40 h-[92%] w-1/4 rounded-2xl bg-keebyGray bg-opacity-30 p-3 shadow-md  laptop:mt-5 desktop:mt-10">
+                <div
+                    className={`z-40 h-[92%] w-1/4 rounded-2xl ${styles.secondaryBase} bg-opacity-30 p-3 shadow-md  laptop:mt-5 desktop:mt-10`}
+                >
                     <div className="flex flex-col items-start px-3 pt-3">
-                        <h2 className="flex gap-2 text-green-300">{mode}</h2>
-                        <p className="mt-3 border-y-2 border-green-300  border-opacity-50 p-2 text-3xl">
-                            {/* {Math.round(statistics.gameResults.wpm)}{" "} */}
-                            <span className="text-sm text-darkGray ">WPM</span>
+                        <h2 className={`flex gap-2 ${styles.pause}`}>{mode}</h2>
+                        <p
+                            className={`mt-3 border-y-2 ${styles.border}  border-opacity-50 p-2 text-3xl`}
+                        >
+                            {Math.round(offlineWpm)}{" "}
+                            <span className={`text-sm ${styles.textColor} `}>
+                                WPM
+                            </span>
                         </p>
                         <p className=" p-2 text-xl ">
-                            <span className="text-xs text-darkGray">
+                            <span className={`text-xs ${styles.textColor}`}>
                                 Pure WPM
                             </span>{" "}
-                            {/* {Math.round(statistics.gameResults.pureWpm)} */}
+                            {Math.round(offlinePureWpm)}
                         </p>
                         <h2 className="text-darkGray">Accuracy</h2>
                     </div>
 
-                    <div className="w-full rounded-lg border-2 border-green-300 border-opacity-50 bg-green-300 bg-opacity-30 px-3 py-2 text-3xl">
-                        {/*  {`${Math.round(statistics.gameResults.accuracy)}%`} */}
+                    <div
+                        className={`w-full rounded-lg border-2 ${styles.border} border-opacity-50 ${styles.backgroundColor} bg-opacity-30 px-3 py-2 text-3xl`}
+                    >
+                         {`${Math.round(offlineAccuracy)}%`}
                     </div>
-                    {session && session.user && (
                         <div className="mt-6 flex h-36 w-full gap-5 ">
-                            <div className="h-full w-1/2 bg-black">
+                            <div className="h-full w-1/2">
                                 <Image
                                     alt="profile"
-                                    src={
-                                        session.user.profile
-                                            ? session.user.profile
-                                            : defaultProfile
-                                    }
+                                    src={defaultProfile}
                                     width={400}
                                     height={400}
                                     className="h-full w-full rounded-md object-cover"
                                 />
                             </div>
                             <div className="flex h-full w-1/2 flex-col justify-between laptop:text-sm desktop:text-base">
-                                <h2 className="border-b-2 border-green-300 border-opacity-50 text-darkGray ">
+                                <h2
+                                    className={`border-b-2 ${styles.border} border-opacity-50 ${styles.textColor} `}
+                                >
                                     Games Played
                                 </h2>
-                                <div className="text-green-300">
-                                    {/* {statistics.allGameResults.length} */}
-                                </div>
-                                <h2 className="border-b-2 border-green-300 border-opacity-50 text-darkGray ">
+                                <div className={`${styles.pause}`}>---</div>
+                                <h2
+                                    className={`border-b-2 ${styles.border} border-opacity-50 ${styles.textColor} `}
+                                >
                                     Avg WPM
                                 </h2>
 
-                                <div className="text-green-300">
-                                    {/* {Math.round(statistics.averageWpm)} */}
-                                </div>
-                                <h2 className="border-b-2 border-green-300 border-opacity-50 text-darkGray ">
+                                <div className={`${styles.pause}`}>---</div>
+                                <h2
+                                    className={`border-b-2 ${styles.border} border-opacity-50 ${styles.textColor} `}
+                                >
                                     Avg Accurary
                                 </h2>
-                                <div className="text-green-300">
-                                    {/* {` ${Math.round(
-                                        statistics.averageAccuracy
-                                    )}%`} */}
-                                </div>
+                                <div className={`${styles.pause}`}>---</div>
                             </div>
                         </div>
-                    )}
                 </div>
 
-                <div className=" relative flex h-full w-1/2 ">
-                    <div className=" absolute -left-5 -right-5 -top-12 bottom-1/3  ">
-                        <video className="-z-10 w-full" autoPlay loop muted>
-                            <source
-                                src="/Videos/matrix-fade-green-222.mp4"
-                                type="video/mp4"
-                            />
-                            Your browser does not support the video tag.
-                        </video>
-                    </div>
-                    <div className=" absolute -left-5 -right-5 -top-12 bottom-1/3 z-20 bg-gradient-to-b from-[rgba(0,0,0,0)] to-[#222]  object-cover "></div>
-                    <div className=" z-30 mt-10 flex h-full w-full items-end bg-opacity-0 px-5 text-green-300">
+                <div className=" relative flex h-full w-1/2 flex-col ">
+                    {theme === "KEEBY" && (
+                        <>
+                            <div className=" absolute -left-5 -right-5 -top-12 bottom-[40%] overflow-hidden  ">
+                                <video
+                                    className="-z-10 w-full object-cover"
+                                    autoPlay
+                                    loop
+                                    muted
+                                >
+                                    <source
+                                        src="/Videos/matrix-fade-green-222.mp4"
+                                        type="video/mp4"
+                                    />
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
+                            <div className=" absolute -left-5 -right-5 -top-12 bottom-[40%] z-20 bg-gradient-to-b from-[rgba(0,0,0,0)] to-[#222]  object-cover"></div>
+                        </>
+                    )}
+                    <div
+                        className={` z-30 mt-10 flex h-full w-full items-end bg-opacity-0 px-5 ${styles.pause}`}
+                    >
                         <ResponsiveContainer width="100%" height="45%">
                             <LineChart data={data}>
                                 <Legend />
                                 <XAxis dataKey="index" />
                                 <Tooltip
                                     contentStyle={{
-                                        backgroundColor:
-                                            "rgba(134, 239, 172, 0.3)",
-                                        borderColor: "rgba(134, 239, 172, 0.5)",
+                                        backgroundColor: styles.graphBackground,
+                                        borderColor: styles.graphBorder,
                                         borderRadius: "8px",
-                                        color: "white",
+                                        color: styles.graphHighlight,
                                     }}
                                 />
                                 <Line
                                     type="monotone"
                                     dataKey="wpm"
-                                    stroke="rgba(134, 239, 172, 0.5)"
+                                    stroke={`${styles.graphBorder}`}
                                     dot={{
-                                        fill: "rgba(134, 239, 172, 0.5)",
-                                        stroke: "rgba(134, 239, 172, 0.5)",
+                                        fill: styles.graphBorder,
+                                        stroke: styles.graphBorder,
                                         strokeWidth: 1,
                                     }}
                                     activeDot={{
                                         r: 8,
-                                        fill: "rgba(134, 239, 172)",
-                                        stroke: "rgba(134, 239, 172)",
+                                        fill: styles.graphHighlight,
+                                        stroke: styles.graphHighlight,
                                         strokeWidth: 2,
                                     }}
                                 />
@@ -171,63 +184,82 @@ export default function OfflineGameResults({
                     </div>
                 </div>
 
-                <div className="z-40 h-[92%] w-1/4 rounded-2xl bg-keebyGray bg-opacity-30 px-3 pt-3 shadow-md  laptop:mt-5 desktop:mt-10">
+                <div
+                    className={`z-40 h-[92%] w-1/4 rounded-2xl ${styles.secondaryBase} bg-opacity-30 px-3 pt-3 shadow-md  laptop:mt-5 desktop:mt-10`}
+                >
                     <div className="flex flex-col items-start px-3 pt-3">
                         <div className="flex w-full flex-col">
-                            <h2 className="flex justify-center text-green-300">
+                            <h2
+                                className={`flex justify-center ${styles.pause}`}
+                            >
                                 Keyboard
                             </h2>
-                            <p className="flex justify-center rounded-lg border-2 border-green-300 border-opacity-50 bg-green-300 bg-opacity-30 px-3 py-2 desktop:mt-1 ">
-                                {/* {statistics.gameResults.keeb.name} */}
+                            <p
+                                className={`flex justify-center rounded-lg border-2 ${styles.border} border-opacity-50 ${styles.backgroundColor} bg-opacity-30 px-3 py-2 desktop:mt-1 `}
+                            >
+                                ---
                             </p>
                         </div>
+
                         <div className="mt-2 flex w-full flex-col items-center laptop:text-xs desktop:mt-3 desktop:text-sm">
-                            <h2 className="text-base text-darkGray">Rank</h2>
+                            <h2 className={`text-base ${styles.textColor}`}>
+                                Rank
+                            </h2>
                             <div className="flex w-full justify-center gap-2 desktop:mt-1 ">
-                                <div className=" flex w-full flex-col overflow-hidden rounded-2xl border-2  border-green-300 border-opacity-50 p-3">
-                                    <h2 className="flex justify-center border-b-2 border-green-300 border-opacity-50 text-darkGray ">
+                                <div
+                                    className={` flex w-full flex-col overflow-hidden rounded-2xl border-2  ${styles.border} border-opacity-50 p-3`}
+                                >
+                                    <h2
+                                        className={`flex justify-center border-b-2 ${styles.border} border-opacity-50 ${styles.textColor} `}
+                                    >
                                         Standing
                                     </h2>
-                                    <p className="mt-1 flex justify-center text-green-300">
-                                        {/* {`top ${statistics.gameResults.user.rank.standing}%`} */}
+                                    <p
+                                        className={`mt-1 flex justify-center ${styles.pause}`}
+                                    >
+                                        {`top --- %`}
                                     </p>
-                                    <h2 className="mt-3 flex justify-center border-b-2 border-green-300 border-opacity-50 text-darkGray">
+                                    <h2
+                                        className={`mt-3 flex justify-center border-b-2 ${styles.border} border-opacity-50 ${styles.textColor}`}
+                                    >
                                         Rank min
                                     </h2>
-                                    <p className="mt-1 flex justify-center gap-1 text-green-300">
-                                        {/* {statistics.gameResults.user.rank
-                                                .minWpm === 0
-                                                ? "---"
-                                                : statistics.gameResults.user
-                                                      .rank.minWpm} */}
+                                    <p
+                                        className={`mt-1 flex justify-center gap-1 ${styles.pause}`}
+                                    >
+                                        ---
                                     </p>
                                 </div>
-                                <div className="border-2xl flex w-full flex-col rounded-2xl border-2 border-green-300 border-opacity-50  p-3">
-                                    <h2 className="flex justify-center border-b-2 border-green-300 border-opacity-50 text-darkGray ">
+                                <div
+                                    className={`border-2xl flex w-full flex-col rounded-2xl border-2 ${styles.border} border-opacity-50  p-3`}
+                                >
+                                    <h2
+                                        className={`flex justify-center border-b-2 ${styles.border} border-opacity-50 ${styles.textColor} `}
+                                    >
                                         Rank
                                     </h2>
 
-                                    <div className="mt-1 flex justify-center text-green-300">
-                                        {/* {rankWpm > 0
-                                                ? Math.round(rankWpm)
-                                                : "---"} */}
+                                    <div
+                                        className={`mt-1 flex justify-center ${styles.pause}`}
+                                    >
+                                        ---
                                     </div>
-                                    <h2 className="mt-3 flex justify-center border-b-2 border-green-300 border-opacity-50 text-darkGray">
+                                    <h2
+                                        className={`mt-3 flex justify-center border-b-2 ${styles.border} border-opacity-50 ${styles.textColor}`}
+                                    >
                                         Rank max
                                     </h2>
-                                    <p className="mt-1 flex justify-center text-green-300">
-                                        {/* {statistics.gameResults.user.rank
-                                                .maxWpm === 10 ||
-                                            statistics.gameResults.user.rank
-                                                .maxWpm === 999999
-                                                ? "---"
-                                                : statistics.gameResults.user
-                                                      .rank.maxWpm} */}
+                                    <p
+                                        className={`mt-1 flex justify-center ${styles.pause}`}
+                                    >
+                                        ---
                                     </p>
                                 </div>
                             </div>
-                            <p className="mt-3 flex w-full justify-center rounded-lg border-2 border-green-300 border-opacity-50 bg-green-300 bg-opacity-30 px-3 py-2  ">
-                                {/* {statistics.gameResults.user.rank.name} */}
+                            <p
+                                className={`mt-3 flex w-full justify-center rounded-lg border-2 ${styles.border} border-opacity-50 ${styles.backgroundColor} bg-opacity-30 px-3 py-2  `}
+                            >
+                                ---
                             </p>
 
                             <Image
