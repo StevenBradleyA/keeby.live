@@ -172,7 +172,6 @@ export const userRouter = createTRPCRouter({
 
         return userInfo;
     }),
-    // need to grab keeb info aswell and top wpm for each keeb
 
     getUserTags: publicProcedure
         .input(z.string())

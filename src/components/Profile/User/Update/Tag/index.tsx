@@ -22,7 +22,7 @@ export default function UpdateUserTag({
 
     const { mutate } = api.user.updateUserTag.useMutation({
         onSuccess: async () => {
-            toast.success("Tag Selected", {
+            toast.success("Tag Updated", {
                 style: {
                     borderRadius: "10px",
                     background: "#333",

@@ -30,10 +30,10 @@ export default function UserProfile() {
 
     // todo add notifcations here for comments, offers, likes etc...
 
-    const { data: sessionData } = useSession();
+    const { data: sessionData, update } = useSession();
 
     const cookies = getCookies();
-
+    const [key, setKey] = useState(0);
     const [isRetro, setIsRetro] = useState<boolean>(false);
     const [toggle, setToggle] = useState<string>("KEEBSHOP");
     const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -139,7 +139,12 @@ export default function UserProfile() {
                         </div>
 
                         <ModalDialog isOpen={isOpen} onClose={closeModal}>
-                            <UpdateProfile userId={sessionData.user.id} />
+                            <UpdateProfile
+                                userId={sessionData.user.id}
+                                closeModal={closeModal}
+                                key={key}
+                                setKey={setKey}
+                            />
                         </ModalDialog>
 
                         <Image
@@ -149,6 +154,7 @@ export default function UserProfile() {
                         />
                         <div className="mb-2 flex items-center justify-between">
                             <UpdateUserTag
+                                key={key}
                                 userId={sessionData.user.id}
                                 currentTag={sessionData.user.selectedTag}
                             />

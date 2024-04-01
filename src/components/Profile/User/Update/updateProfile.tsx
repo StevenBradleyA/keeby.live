@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import _ from "lodash";
 import LoadingSpinner from "~/components/Loading";
 import { motion } from "framer-motion";
+import type { Session } from "next-auth";
 
 interface ErrorsObj {
     image?: string;
@@ -29,7 +30,17 @@ interface UserData {
     images?: Image[];
     selectedTag?: string;
 }
-export default function UpdateProfile({ userId }: { userId: string }) {
+export default function UpdateProfile({
+    userId,
+    closeModal,
+    key,
+    setKey,
+}: {
+    userId: string;
+    closeModal: () => void;
+    key: number;
+    setKey: (newKey: number) => void;
+}) {
     const { data: sessionData, update } = useSession();
 
     const ctx = api.useContext();
@@ -67,8 +78,11 @@ export default function UpdateProfile({ userId }: { userId: string }) {
                         color: "#fff",
                     },
                 });
-                void ctx.user.invalidate();
                 await update();
+                void ctx.user.invalidate();
+                const newKey = key + 1;
+                setKey(newKey);
+                closeModal();
             } catch (error) {
                 console.error("Error while navigating:", error);
             }
@@ -115,7 +129,11 @@ export default function UpdateProfile({ userId }: { userId: string }) {
 
         setEnableErrorDisplay(true);
 
-        if (!Object.values(errors).length && !usernameCheck && !isSubmitting) {
+        if (
+            !Object.values(errors).length &&
+            (!usernameCheck || sessionData?.user.username === username) &&
+            !isSubmitting
+        ) {
             try {
                 const sessionUserId = sessionData?.user?.id;
 
@@ -217,6 +235,8 @@ export default function UpdateProfile({ userId }: { userId: string }) {
                                     alt="profile"
                                     className="h-full w-full rounded-md   border-2 border-[#616161] object-cover"
                                     priority
+                                    width={200}
+                                    height={200}
                                 />
                             </div>
                         )}
@@ -260,11 +280,13 @@ export default function UpdateProfile({ userId }: { userId: string }) {
                             {errors.usernameExcess}
                         </p>
                     )}
-                    {enableErrorDisplay && usernameCheck && (
-                        <p className="text-sm text-red-400">
-                            Username already in use
-                        </p>
-                    )}
+                    {enableErrorDisplay &&
+                        usernameCheck &&
+                        sessionData.user.username !== username && (
+                            <p className="text-sm text-red-400">
+                                Username already in use
+                            </p>
+                        )}
                 </div>
                 <label className="mt-5">
                     Selected Tag
@@ -339,7 +361,7 @@ export default function UpdateProfile({ userId }: { userId: string }) {
                     >
                         {isSubmitting ? (
                             <div className="flex items-center gap-1">
-                                Saving Data
+                                Updating
                                 <div className="w-6">
                                     <LoadingSpinner size="16px" />
                                 </div>
