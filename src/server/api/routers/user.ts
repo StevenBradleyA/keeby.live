@@ -207,179 +207,132 @@ export const userRouter = createTRPCRouter({
                 throw new Error("Error checking username");
             }
         }),
-    // updateNewUser: protectedProcedure
-    //     .input(
-    //         z.object({
-    //             userId: z.string(),
-    //             username: z.string(),
-    //             images: z
-    //                 .array(
-    //                     z.object({
-    //                         link: z.string(),
-    //                     })
-    //                 )
-    //                 .optional(),
-    //             name: z.string(),
-    //             switches: z.string(),
-    //             keycaps: z.string(),
-    //         })
-    //     )
-    //     .mutation(async ({ input, ctx }) => {
-    //         const { userId, username, images, name, switches, keycaps } = input;
-    //         const sessionUserId = ctx.session.user.id;
+    update: protectedProcedure
+        .input(
+            z.object({
+                userId: z.string(),
+                username: z.string().optional(),
+                images: z
+                    .array(
+                        z.object({
+                            link: z.string(),
+                        })
+                    )
+                    .optional(),
+                selectedTag: z.string().optional(),
+            })
+        )
+        .mutation(async ({ input, ctx }) => {
+            const { userId, username, images, selectedTag } = input;
+            const sessionUserId = ctx.session.user.id;
 
-    //         if (sessionUserId !== userId) {
-    //             throw new Error("Invalid userId");
-    //         }
+            if (sessionUserId !== userId) {
+                throw new Error("Invalid userId");
+            }
 
-    //         const updateData: {
-    //             username: string;
-    //             hasProfile?: boolean;
-    //             profile?: string;
-    //             selectedTag?: string;
-    //         } = {
-    //             username,
-    //             hasProfile: true,
-    //             // selectedTag: "Novice",
-    //         };
+            const userData: {
+                username?: string;
+                selectedTag?: string;
+                profile?: string;
+            } = {};
 
-    //         if (images && images[0]) {
-    //             updateData.profile = images[0].link;
-    //         }
-    //         const createKeeb = await ctx.prisma.keeb.create({
-    //             data: {
-    //                 name,
-    //                 switches,
-    //                 keycaps,
-    //                 userId,
-    //             },
-    //         });
+            if (images && images[0]) {
+                const checkUserProfile = await ctx.prisma.user.findUnique({
+                    where: { id: userId },
+                    select: {
+                        profile: true,
+                    },
+                });
+                if (checkUserProfile && checkUserProfile.profile !== null) {
+                    try {
+                        await removeFileFromS3(checkUserProfile.profile);
+                    } catch (err) {
+                        console.error("An unexpected AWS error occurred:", err);
+                    }
+                }
+                userData.profile = images[0].link;
+            }
 
-    //         const NoviceCheck = await ctx.prisma.tag.findUnique({
-    //             where: {
-    //                 name: 'Novice'
-    //             }
-    //         })
-    //         if(!NoviceCheck ){
-    //             await ctx.prisma.tag.create({
-    //                 data: {
-    //                     name: 'Novice', 
-    //                     description: 'Just getting started.'
-    //                 }
-    //             })
+            if (username) {
+                userData.username = username;
+            }
+            if (selectedTag) {
+                userData.selectedTag = selectedTag;
+            }
 
-    //             const existingNoviceTag =
-    //             await ctx.prisma.tag.findUnique({
-    //                 where: {
-    //                     name: 'Novice',
-    //                 },
-    //             });
-    //             if(existingNoviceTag){
+            if (username || selectedTag || (images && images[0])) {
+                return await ctx.prisma.user.update({
+                    where: { id: userId },
+                    data: {
+                        ...userData,
+                    },
+                });
+            }
+        }),
 
-
-    //                 updateData.selectedTag = existingNoviceTag?.name
-                    
-    //                 await ctx.prisma.user.update({
-    //                     where: { id: userId },
-    //                     data: {
-    //                         tags: {
-    //                             connect: {
-    //                                 id: existingNoviceTag.id,
-    //                             },
-    //                         },
-    //                     },
-    //                 });
-                    
-    //             }
-
-    //         }
-    //         if(NoviceCheck){
-    //             updateData.selectedTag = NoviceCheck.name
-                    
-    //             await ctx.prisma.user.update({
-    //                 where: { id: userId },
-    //                 data: {
-    //                     tags: {
-    //                         connect: {
-    //                             id: NoviceCheck.id,
-    //                         },
-    //                     },
-    //                 },
-    //             });
-    //         }
-
-
-
-
-
-    //         const updatedUser = await ctx.prisma.user.update({
-    //             where: { id: userId },
-    //             data: updateData,
-    //         });
-
-    //         return { createKeeb, updatedUser };
-    //     }),
     updateNewUser: protectedProcedure
-    .input(
-        z.object({
-            userId: z.string(),
-            username: z.string(),
-            images: z
-                .array(
-                    z.object({
-                        link: z.string(),
-                    })
-                )
-                .optional(),
-            name: z.string(),
-            switches: z.string(),
-            keycaps: z.string(),
-        })
-    )
-    .mutation(async ({ input, ctx }) => {
-        const { userId, username, images, name, switches, keycaps } = input;
-        const sessionUserId = ctx.session.user.id;
+        .input(
+            z.object({
+                userId: z.string(),
+                username: z.string(),
+                images: z
+                    .array(
+                        z.object({
+                            link: z.string(),
+                        })
+                    )
+                    .optional(),
+                name: z.string(),
+                switches: z.string(),
+                keycaps: z.string(),
+            })
+        )
+        .mutation(async ({ input, ctx }) => {
+            const { userId, username, images, name, switches, keycaps } = input;
+            const sessionUserId = ctx.session.user.id;
 
-        // Validate session user
-        if (sessionUserId !== userId) {
-            throw new Error("Invalid userId");
-        }
+            // Validate session user
+            if (sessionUserId !== userId) {
+                throw new Error("Invalid userId");
+            }
 
-        // Prepare user update data
-        const updateData = {
-            username,
-            hasProfile: true,
-            ...(images && images[0] ? { profile: images[0].link } : {}),
-        };
+            // Prepare user update data
+            const updateData = {
+                username,
+                hasProfile: true,
+                ...(images && images[0] ? { profile: images[0].link } : {}),
+            };
 
-        const result = await ctx.prisma.$transaction(async (prisma) => {
+            const result = await ctx.prisma.$transaction(async (prisma) => {
+                const createKeeb = await prisma.keeb.create({
+                    data: { name, switches, keycaps, userId },
+                });
 
-            const createKeeb = await prisma.keeb.create({
-                data: { name, switches, keycaps, userId },
+                // let's check if 'Novice' tag exists or create it if it doesn't
+                const noviceTag = await prisma.tag.upsert({
+                    where: { name: "Novice" },
+                    update: {},
+                    create: {
+                        name: "Novice",
+                        description: "Just getting started.",
+                    },
+                });
+
+                // Connect that 'Novice' tag to the user
+                const updatedUser = await prisma.user.update({
+                    where: { id: userId },
+                    data: {
+                        ...updateData,
+                        tags: { connect: { id: noviceTag.id } },
+                        selectedTag: noviceTag.name,
+                    },
+                });
+
+                return { createKeeb, updatedUser };
             });
 
-            // let's check if 'Novice' tag exists or create it if it doesn't
-            const noviceTag = await prisma.tag.upsert({
-                where: { name: 'Novice' },
-                update: {},
-                create: { name: 'Novice', description: 'Just getting started.' },
-            });
-
-            // Connect that 'Novice' tag to the user
-            const updatedUser = await prisma.user.update({
-                where: { id: userId },
-                data: {
-                    ...updateData,
-                    tags: { connect: { id: noviceTag.id } },
-                    selectedTag: noviceTag.name,
-                },
-            });
-
-            return { createKeeb, updatedUser };
-        });
-
-        return result;
-    }),
+            return result;
+        }),
 
     updateUserTag: protectedProcedure
         .input(
@@ -429,6 +382,20 @@ export const userRouter = createTRPCRouter({
         .input(z.string())
         .mutation(async ({ input, ctx }) => {
             if (ctx.session.user.isAdmin) {
+                const checkUserProfile = await ctx.prisma.user.findUnique({
+                    where: { id: input },
+                    select: {
+                        profile: true,
+                    },
+                });
+                if (checkUserProfile && checkUserProfile.profile !== null) {
+                    try {
+                        await removeFileFromS3(checkUserProfile.profile);
+                    } catch (err) {
+                        console.error("An unexpected AWS error occurred:", err);
+                    }
+                }
+
                 return ctx.prisma.user.update({
                     where: { id: input },
                     data: { profile: null },

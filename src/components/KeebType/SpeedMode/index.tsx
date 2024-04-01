@@ -79,6 +79,24 @@ export default function SpeedMode({
                     },
                     duration: 3000,
                 });
+
+                setTimeout(() => {
+                    toast.success("New Tag Unlocked!", {
+                        position: "bottom-center",
+                        style: {
+                            borderRadius: "10px",
+                            background: "#333",
+                            color: "#ffdd57",
+                            padding: "12px",
+                            fontSize: "1.25rem",
+                        },
+                        iconTheme: {
+                            primary: "black",
+                            secondary: "#ffdd57",
+                        },
+                        duration: 3000,
+                    });
+                }, 3500);
             }
         },
     });
@@ -519,7 +537,7 @@ export default function SpeedMode({
             {gameOver && session === null && (
                 <div className={`flex w-full flex-col ${styles.hit}`}>
                     <div
-                        className={`z-10 w-full rounded-lg border-2 ${styles.border} border-opacity-50 ${styles.backgroundColor} bg-opacity-30 px-5 py-2 flex justify-between`}
+                        className={`z-10 w-full rounded-lg border-2 ${styles.border} border-opacity-50 ${styles.backgroundColor} flex justify-between bg-opacity-30 px-5 py-2`}
                     >
                         <button
                             onClick={handleNextGame}
@@ -541,7 +559,9 @@ export default function SpeedMode({
                                 />
                             </svg>
                         </button>
-                        <div className="flex items-center">Offline mode. Sign in to save your progress</div>
+                        <div className="flex items-center">
+                            Offline mode. Sign in to save your progress
+                        </div>
                     </div>
                     <OfflineGameResults
                         mode={mode}

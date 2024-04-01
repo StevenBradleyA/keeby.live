@@ -21,6 +21,8 @@ import DisplayProfileKeebs from "~/components/Profile/Keeb/DisplayKeebs";
 import DisplayAllGameStats from "~/components/KeebType/GameStats/displayAllGameStatsCheck";
 import DisplayAllGameStatsCheck from "~/components/KeebType/GameStats/displayAllGameStatsCheck";
 import UpdateUserTag from "~/components/Profile/User/Update/Tag";
+import ModalDialog from "~/components/Modal";
+import UpdateProfile from "~/components/Profile/User/Update/updateProfile";
 
 export default function UserProfile() {
     // mdn digest() -- might be useful for us here
@@ -28,12 +30,21 @@ export default function UserProfile() {
 
     // todo add notifcations here for comments, offers, likes etc...
 
-    const { data: sessionData, update  } = useSession();
+    const { data: sessionData } = useSession();
 
     const cookies = getCookies();
 
     const [isRetro, setIsRetro] = useState<boolean>(false);
     const [toggle, setToggle] = useState<string>("KEEBSHOP");
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+
+    const openModal = () => {
+        setIsOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsOpen(false);
+    };
 
     // keebshop
     const [keebShopCategory, setKeebShopCategory] =
@@ -108,7 +119,10 @@ export default function UserProfile() {
                         />
                         <div className="mt-2 flex justify-between">
                             <h1>PROFILE DATA</h1>
-                            <button className="flex flex-col leading-none">
+                            <button
+                                className="flex flex-col leading-none"
+                                onClick={openModal}
+                            >
                                 <p className="text-xs">
                                     EDIT YOUR PROFILE EDIT YOUR PROFILE EDIT
                                     YOUR PROFILE
@@ -117,7 +131,6 @@ export default function UserProfile() {
                                     EDIT YOUR PROFILE EDIT YOUR PROFILE EDIT
                                     YOUR PROFILE
                                 </p>
-
                                 <p className="text-xs">
                                     EDIT YOUR PROFILE EDIT YOUR PROFILE EDIT
                                     YOUR PROFILE
@@ -125,17 +138,19 @@ export default function UserProfile() {
                             </button>
                         </div>
 
+                        <ModalDialog isOpen={isOpen} onClose={closeModal}>
+                            <UpdateProfile userId={sessionData.user.id} />
+                        </ModalDialog>
+
                         <Image
                             alt="profile matrix"
                             src={keebyLiveTitle}
                             className="png-green my-10 w-[80%] "
                         />
                         <div className="mb-2 flex items-center justify-between">
-                            {/* <div>{sessionData.user.selectedTag}</div> */}
                             <UpdateUserTag
                                 userId={sessionData.user.id}
                                 currentTag={sessionData.user.selectedTag}
-                                updateSession={update}
                             />
                             <svg
                                 width="12"

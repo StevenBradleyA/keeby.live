@@ -48,20 +48,18 @@ export default function UpdateUserTag({
     };
 
     return (
-        <>
-            <select
-                className="bg-dark"
-                value={selectedTag}
-                onChange={handleSelectTag}
-            >
-                {userTags &&
-                    userTags.tags.length > 0 &&
-                    userTags.tags.map((e) => (
-                        <option key={e.id} value={e.name}>
-                            {e.name}
-                        </option>
-                    ))}
-            </select>
-        </>
+        <select
+            className="cursor-pointer bg-dark pr-6"
+            value={selectedTag}
+            onChange={handleSelectTag}
+        >
+            {userTags &&
+                userTags.tags.length > 0 &&
+                userTags.tags.map((e) => (
+                    <option key={e.id} value={e.name}>
+                        {e.name}
+                    </option>
+                ))}
+        </select>
     );
 }

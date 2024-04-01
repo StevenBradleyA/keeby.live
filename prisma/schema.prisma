@@ -289,7 +289,6 @@ model User {
     rankId           String?
     username         String?   @unique
     selectedTag      String?
-    stripeCustomerId String?   @unique
 
     isVerified   Boolean @default(false)
     isAdmin      Boolean @default(false)
