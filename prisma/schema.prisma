@@ -190,14 +190,10 @@ model ListingOffer {
 model ListingTransaction {
     id        String   @id @default(cuid())
     price     Int
-    // this will be as cents
     name      String
     status    String
-    // PENDING CANCELED COMPLETE
-    //  stripePaymentId String?  // Unique identifier for the Stripe payment
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-
     userId    String
     listingId String
 
