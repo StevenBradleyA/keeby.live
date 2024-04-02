@@ -1,5 +1,4 @@
 import { api } from "~/utils/api";
-import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { uploadFileToS3 } from "~/utils/aws";
 import { useSession } from "next-auth/react";

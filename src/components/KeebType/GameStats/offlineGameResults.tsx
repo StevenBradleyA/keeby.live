@@ -1,4 +1,3 @@
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 import offlineRank from "@public/Ranks/offline.png";
 import keeboOffline from "@public/Profile/keebo-offline.png";
@@ -32,8 +31,6 @@ export default function OfflineGameResults({
     wpmIntervals,
     theme,
 }: OfflineGameResultsProps) {
-    const { data: session } = useSession();
-
     const styles = themeStyles[theme as ThemeName] || themeStyles["KEEBY"];
 
     const calculateAveragedWpmIntervals = (wpmIntervals: number[]) => {

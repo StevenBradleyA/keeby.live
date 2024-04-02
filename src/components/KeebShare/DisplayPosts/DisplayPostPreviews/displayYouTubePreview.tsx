@@ -13,13 +13,6 @@ interface DisplayYouTubePostPreview {
     link: string;
 }
 
-const calculateResponsiveSize = () => {
-    // Example calculation, adjust according to your needs
-    const width = Math.min(1260, window.innerWidth - 40); // Ensure video is not wider than the screen minus some margin
-    const height = (width * 9) / 16; // Maintain a 16:9 aspect ratio
-    return { width: width.toString(), height: height.toString() };
-};
-
 export default function DisplayYouTubePostPreview({
     link,
 }: DisplayYouTubePostPreview) {

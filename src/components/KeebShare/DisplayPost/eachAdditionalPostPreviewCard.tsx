@@ -1,15 +1,8 @@
 import type { Images } from "@prisma/client";
-import PostPreviewCreateFavorite from "../DisplayPosts/DisplayPostPreviews/Favorite/createFavorite";
-import PostPreviewDeleteFavorite from "../DisplayPosts/DisplayPostPreviews/Favorite/deleteFavorite";
-import PostPreviewCreateLike from "../DisplayPosts/DisplayPostPreviews/Like/createLike";
-import PostPreviewDeleteLike from "../DisplayPosts/DisplayPostPreviews/Like/deleteLike";
 import Link from "next/link";
 import DisplayYouTubePostPreview from "../DisplayPosts/DisplayPostPreviews/displayYouTubePreview";
-import SignInModal from "~/components/Comments/Modal/signInModal";
-import ModalDialog from "~/components/Modal";
 import ChevronRound from "~/components/Svgs/chevron";
 import Image from "next/image";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
 import keebo from "@public/Profile/keebo.png";
 
@@ -41,7 +34,7 @@ interface Count {
 export default function PostPagePreviewCard({
     post,
 }: EachPostCardPreviewProps) {
-    const { data: session } = useSession();
+
     const [imageIndex, setImageIndex] = useState<number>(0);
 
     const goToNextImage = () => {

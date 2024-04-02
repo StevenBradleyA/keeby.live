@@ -5,7 +5,6 @@ import { useState } from "react";
 import ChevronRound from "~/components/Svgs/chevron";
 import DisplayYouTubePostPreview from "../DisplayPosts/DisplayPostPreviews/displayYouTubePreview";
 import keebo from "@public/Profile/keebo.png";
-import ModalDialog from "~/components/Modal";
 
 interface EachFavoritePostCardProps {
     post: EachPost;
@@ -19,7 +18,7 @@ interface EachPost extends Post {
 export default function EachFavoritePostCard({
     post,
 }: EachFavoritePostCardProps) {
-    const [isOpen, setIsOpen] = useState<boolean>(false);
+    // const [isOpen, setIsOpen] = useState<boolean>(false);
     const [imageIndex, setImageIndex] = useState<number>(0);
 
     const goToNextImage = () => {
@@ -33,13 +32,13 @@ export default function EachFavoritePostCard({
         );
     };
 
-    const openModal = () => {
-        setIsOpen(true);
-    };
+    // const openModal = () => {
+    //     setIsOpen(true);
+    // };
 
-    const closeModal = () => {
-        setIsOpen(false);
-    };
+    // const closeModal = () => {
+    //     setIsOpen(false);
+    // };
 
     return (
         <>

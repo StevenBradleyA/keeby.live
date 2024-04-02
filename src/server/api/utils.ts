@@ -16,6 +16,8 @@ export const s3 = new S3({
 
 const removeFileFromS3 = (imageUrl: string): Promise<void> => {
     const key = imageUrl.split("/").pop()!;
+    // const key = imageUrl.split("/").pop()!;
+
 
     const params: S3.DeleteObjectRequest = {
         Bucket: BUCKET_NAME,

@@ -20,7 +20,6 @@ import CreateComment from "~/components/Comments/Create";
 import { api } from "~/utils/api";
 import LoadingSpinner from "~/components/Loading";
 import EachCommentCard from "~/components/Comments/Display/eachCommentCard";
-import DisplayNewPostPreviews from "../DisplayPosts/DisplayPostPreviews/displayNewPostPreviews";
 import PostPagePreviews from "./additionalPostPreviews";
 
 interface DisplayPostPageProps {

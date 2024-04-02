@@ -1,4 +1,4 @@
-import type { Images, Comment, Listing } from "@prisma/client";
+import type { Images, Listing } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import { api } from "~/utils/api";
@@ -11,7 +11,6 @@ import ChevronRound from "~/components/Svgs/chevron";
 import ListingPageFavorite from "./Favorite";
 import CreateComment from "~/components/Comments/Create";
 import EachCommentCard from "~/components/Comments/Display/eachCommentCard";
-import DisplayListingPreviews from "./DisplayListingsPreview";
 import ListingPagePreviews from "./DisplayListingsPreview/listingPagePreviews";
 
 interface DisplayListingPageProps {

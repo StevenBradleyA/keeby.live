@@ -1,6 +1,5 @@
 import { createTRPCRouter } from "~/server/api/trpc";
 import { commentRouter } from "./routers/comment";
-import { imageRouter } from "./routers/image";
 import { keebRouter } from "./routers/keeb";
 import { postRouter } from "./routers/post";
 import { reviewRouter } from "./routers/review";
@@ -21,7 +20,6 @@ export const appRouter = createTRPCRouter({
     comment: commentRouter,
     favorite: favoriteRouter,
     game: gameRouter,
-    image: imageRouter,
     keeb: keebRouter,
     like: likeRouter,
     listing: listingRouter,

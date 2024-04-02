@@ -1,18 +1,9 @@
 import { useSession } from "next-auth/react";
-import { api } from "~/utils/api";
-import toast from "react-hot-toast";
-import { env } from "~/env.mjs";
-import { useState } from "react";
 import MainFooter from "~/components/Footer";
-import { useRouter } from "next/router";
-import LoadingSpinner from "~/components/Loading";
-import Image from "next/image";
 import KeebShopVerifyUser from "~/components/KeebShop/Verification";
 
 export default function VerifySeller() {
-    const { data: session, update } = useSession();
-    const ctx = api.useContext();
-    const router = useRouter();
+    const { data: session } = useSession();
 
     // WHEN LIVE INTEGRATE PAYPAL LOGIN HERE FOR SELLERS
     // BUYERS ONLY NEED PAYPAL EXPRESS
