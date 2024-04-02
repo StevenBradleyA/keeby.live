@@ -44,7 +44,6 @@ export default function UpdateComment({
             } else {
                 void ctx.comment.getAllByTypeId.invalidate();
             }
-            void ctx.comment.getAmountByTypeId.invalidate();
             closeModal();
         },
     });

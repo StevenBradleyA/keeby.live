@@ -5,7 +5,7 @@ import {
     protectedProcedure,
 } from "~/server/api/trpc";
 import { removeFileFromS3 } from "../utils";
-import type { Images, Prisma } from "@prisma/client";
+import type { Prisma, Listing, Images } from "@prisma/client";
 
 type CreateData = {
     title: string;
@@ -22,26 +22,184 @@ type CreateData = {
     sold: boolean;
     soundTest?: string;
 };
+type UpdateData = {
+    title: string;
+    text: string;
+    keycaps: string;
+    switches: string;
+    switchType: string;
+    soundType: string;
+    layoutType: string;
+    pcbType: string;
+    assemblyType: string;
+    price: number;
+    soundTest?: string;
+};
+
+interface PreviewListing extends Listing {
+    _count: {
+        comments: number;
+    };
+    images: ListingPreviewImage[];
+}
+
+interface ListingPreviewImage {
+    id: string;
+    link: string;
+}
+
+interface ListingPage extends Listing {
+    images: Images[];
+    _count: {
+        comments: number;
+    };
+    seller: {
+        id: string;
+        username: string | null;
+        selectedTag: string | null;
+        profile: string | null;
+        avgRating?: number | null;
+    };
+}
+
+type ExtendedListing = Listing & {
+    images: Images[];
+    _count: {
+        comments: number;
+    };
+    previewIndex: number;
+};
 
 export const listingRouter = createTRPCRouter({
-   
+    getAll: publicProcedure
+        .input(
+            z.object({
+                searchQuery: z.string().optional(),
+            })
+        )
+        .query(({ input, ctx }) => {
+            const { searchQuery } = input;
+            const whereFilters = {
+                AND: [
+                    searchQuery
+                        ? {
+                              OR: [
+                                  {
+                                      title: {
+                                          contains: searchQuery,
+                                      },
+                                  },
+                                  {
+                                      text: {
+                                          contains: searchQuery,
+                                      },
+                                  },
+                              ],
+                          }
+                        : {},
+                ].filter((obj) => Object.keys(obj).length > 0),
+            };
+
+            return ctx.prisma.listing.findMany({
+                where: {
+                    ...whereFilters,
+                },
+                select: {
+                    id: true,
+                    title: true,
+                    sellerId: true,
+                    images: {
+                        where: {
+                            resourceType: "LISTINGPREVIEW",
+                        },
+                    },
+                },
+            });
+        }),
+    getAllByUserId: publicProcedure
+        .input(
+            z.object({
+                userId: z.string(),
+            })
+        )
+        .query(async ({ input, ctx }): Promise<ExtendedListing[]> => {
+            const { userId } = input;
+
+            const allUserListings = await ctx.prisma.listing.findMany({
+                where: {
+                    sellerId: userId,
+                },
+                include: {
+                    images: true,
+                    _count: {
+                        select: { comments: true },
+                    },
+                },
+            });
+
+            return allUserListings.map((listing) => ({
+                ...listing,
+                previewIndex: listing.images.findIndex(
+                    (image) => image.resourceType === "LISTINGPREVIEW"
+                ),
+            }));
+        }),
+
     getOne: publicProcedure
         .input(
             z.object({
                 id: z.string(),
             })
         )
-        .query(({ input, ctx }) => {
-            return ctx.prisma.listing.findUnique({
-                where: {
-                    id: input.id,
-                },
-            });
-        }),
+        .query(async ({ input, ctx }) => {
+            const listingWithImages: ListingPage | null =
+                await ctx.prisma.listing.findUnique({
+                    where: {
+                        id: input.id,
+                    },
+                    include: {
+                        images: true,
+                        _count: {
+                            select: { comments: true },
+                        },
+                        seller: {
+                            select: {
+                                id: true,
+                                username: true,
+                                profile: true,
+                                selectedTag: true,
+                            },
+                        },
+                    },
+                });
 
-    getAll: publicProcedure.query(({ ctx }) => {
-        return ctx.prisma.listing.findMany();
-    }),
+            if (listingWithImages) {
+                const averageStarRating = await ctx.prisma.review.aggregate({
+                    where: { sellerId: listingWithImages.seller.id },
+                    _avg: { starRating: true },
+                });
+
+                listingWithImages.seller.avgRating =
+                    averageStarRating._avg.starRating;
+
+                listingWithImages.images.sort((a, b) => {
+                    if (
+                        a.resourceType === "LISTINGPREVIEW" &&
+                        b.resourceType !== "LISTINGPREVIEW"
+                    ) {
+                        return -1;
+                    } else if (
+                        a.resourceType !== "LISTINGPREVIEW" &&
+                        b.resourceType === "LISTINGPREVIEW"
+                    ) {
+                        return 1;
+                    }
+                    return 0;
+                });
+            }
+
+            return listingWithImages;
+        }),
 
     getAllWithFilters: publicProcedure
         .input(
@@ -74,101 +232,62 @@ export const listingRouter = createTRPCRouter({
             } = input;
 
             const limit = input.limit ?? 12;
-            const queryOptions: Prisma.ListingFindManyArgs = {
-                select: {
-                    id: true,
-                    title: true,
-                    price: true,
-                    switchType: true,
-                    images: {
-                        where: {
-                            resourceType: "LISTINGPREVIEW",
-                        },
-                        select: { id: true, link: true },
-                    },
-                },
-                orderBy: priceOrder
-                    ? priceOrder === "asc"
-                        ? [{ price: "asc" }, { createdAt: "desc" }]
-                        : [{ price: "desc" }, { createdAt: "desc" }]
-                    : [{ createdAt: "desc" }],
-                take: limit + 1,
-                skip: cursor ? 1 : undefined,
-                cursor: cursor ? { id: cursor } : undefined,
+
+            const whereFilters: Prisma.ListingWhereInput = {
+                AND: [
+                    switchType ? { switchType } : {},
+                    soundType ? { soundType } : {},
+                    assemblyType ? { assemblyType } : {},
+                    hotSwapType ? { hotSwapType } : {},
+                    layoutType ? { layoutType } : {},
+                    minPrice ? { price: { gte: minPrice } } : {},
+                    maxPrice ? { price: { lte: maxPrice } } : {},
+                    searchQuery
+                        ? {
+                              OR: [
+                                  {
+                                      title: {
+                                          contains: searchQuery,
+                                      },
+                                  },
+                                  {
+                                      text: {
+                                          contains: searchQuery,
+                                      },
+                                  },
+                              ],
+                          }
+                        : {},
+                ].filter((obj) => Object.keys(obj).length > 0),
             };
 
-            const filters: Prisma.ListingWhereInput[] = [];
-
-            if (switchType) {
-                filters.push({
-                    switchType: {
-                        equals: switchType,
+            const listings: PreviewListing[] =
+                await ctx.prisma.listing.findMany({
+                    where: whereFilters,
+                    include: {
+                        _count: {
+                            select: { comments: true },
+                        },
+                        images: {
+                            where: { resourceType: "LISTINGPREVIEW" },
+                            select: { id: true, link: true },
+                        },
                     },
+                    take: limit + 1,
+                    skip: cursor ? 1 : 0,
+                    cursor: cursor ? { id: cursor } : undefined,
+                    orderBy: priceOrder
+                        ? priceOrder === "asc"
+                            ? [{ price: "asc" }, { createdAt: "desc" }]
+                            : [{ price: "desc" }, { createdAt: "desc" }]
+                        : [{ createdAt: "desc" }],
                 });
-            }
-            if (soundType) {
-                filters.push({
-                    soundType: {
-                        equals: soundType,
-                    },
-                });
-            }
-            if (assemblyType) {
-                filters.push({
-                    assemblyType: {
-                        equals: assemblyType,
-                    },
-                });
-            }
-            if (layoutType) {
-                filters.push({
-                    layoutType: {
-                        equals: layoutType,
-                    },
-                });
-            }
-            if (hotSwapType) {
-                filters.push({
-                    pcbType: {
-                        equals: hotSwapType,
-                    },
-                });
-            }
-            if (minPrice) {
-                filters.push({
-                    price: {
-                        gte: minPrice,
-                    },
-                });
-            }
-            if (maxPrice) {
-                filters.push({
-                    price: {
-                        lte: maxPrice,
-                    },
-                });
-            }
-
-            if (searchQuery) {
-                filters.push({
-                    title: {
-                        contains: searchQuery,
-                    },
-                });
-            }
-            if (filters.length > 0) {
-                queryOptions.where = {
-                    AND: filters,
-                };
-            }
-
-            const listings = await ctx.prisma.listing.findMany(queryOptions);
 
             let nextCursor: typeof cursor | undefined = undefined;
             if (listings.length > limit) {
-                const nextItem = listings.pop(); // Remove the extra item
+                const nextItem = listings.pop();
                 if (nextItem !== undefined) {
-                    nextCursor = nextItem.id; // Set the next cursor to the ID of the extra item
+                    nextCursor = nextItem.id;
                 }
             }
 
@@ -177,6 +296,7 @@ export const listingRouter = createTRPCRouter({
                 nextCursor,
             };
         }),
+
     getAllSortedByPopularityWithFilters: publicProcedure
         .input(
             z.object({
@@ -208,122 +328,71 @@ export const listingRouter = createTRPCRouter({
             } = input;
             const limit = input.limit ?? 12;
 
-            // Step 1: Aggregate comment counts
-            const commentCounts = await ctx.prisma.comment.groupBy({
-                by: ["typeId"],
-                where: { type: "LISTING" },
-                _count: true,
-            });
-
-            // Step 2: Apply filters and retrieve listings
-            const queryOptions: Prisma.ListingFindManyArgs = {
-                select: {
-                    id: true,
-                    title: true,
-                    price: true,
-                    switchType: true,
-                    images: {
-                        where: {
-                            resourceType: "LISTINGPREVIEW",
-                        },
-                        select: { id: true, link: true },
-                    },
-                },
-                take: limit + 1,
-                skip: cursor ? 1 : undefined,
-                cursor: cursor ? { id: cursor } : undefined,
+            const whereFilters: Prisma.ListingWhereInput = {
+                AND: [
+                    switchType ? { switchType } : {},
+                    soundType ? { soundType } : {},
+                    assemblyType ? { assemblyType } : {},
+                    hotSwapType ? { hotSwapType } : {},
+                    layoutType ? { layoutType } : {},
+                    minPrice ? { price: { gte: minPrice } } : {},
+                    maxPrice ? { price: { lte: maxPrice } } : {},
+                    searchQuery
+                        ? {
+                              OR: [
+                                  {
+                                      title: {
+                                          contains: searchQuery,
+                                      },
+                                  },
+                                  {
+                                      text: {
+                                          contains: searchQuery,
+                                      },
+                                  },
+                              ],
+                          }
+                        : {},
+                ].filter((obj) => Object.keys(obj).length > 0),
             };
 
-            const filters: Prisma.ListingWhereInput[] = [];
+            const listings: PreviewListing[] =
+                await ctx.prisma.listing.findMany({
+                    where: whereFilters,
+                    include: {
+                        _count: {
+                            select: { comments: true },
+                        },
+                        images: {
+                            where: { resourceType: "LISTINGPREVIEW" },
+                            select: { id: true, link: true },
+                        },
+                    },
+                    take: limit + 1,
+                    skip: cursor ? 1 : 0,
+                    cursor: cursor ? { id: cursor } : undefined,
+                });
 
-            if (switchType) {
-                filters.push({
-                    switchType: {
-                        equals: switchType,
-                    },
-                });
-            }
-            if (soundType) {
-                filters.push({
-                    soundType: {
-                        equals: soundType,
-                    },
-                });
-            }
-            if (assemblyType) {
-                filters.push({
-                    assemblyType: {
-                        equals: assemblyType,
-                    },
-                });
-            }
-            if (layoutType) {
-                filters.push({
-                    layoutType: {
-                        equals: layoutType,
-                    },
-                });
-            }
-            if (hotSwapType) {
-                filters.push({
-                    pcbType: {
-                        equals: hotSwapType,
-                    },
-                });
-            }
-            if (minPrice) {
-                filters.push({
-                    price: {
-                        gte: minPrice,
-                    },
-                });
-            }
-            if (maxPrice) {
-                filters.push({
-                    price: {
-                        lte: maxPrice,
-                    },
-                });
-            }
+            // sort by popularity (comment count)
+            let popularListings = listings.sort(
+                (a, b) => b._count.comments - a._count.comments
+            );
 
-            if (searchQuery) {
-                filters.push({
-                    title: {
-                        contains: searchQuery,
-                    },
-                });
-            }
-            if (filters.length > 0) {
-                queryOptions.where = {
-                    AND: filters,
-                };
-            }
-            const listings = await ctx.prisma.listing.findMany(queryOptions);
-
-            // Step 3: Merge listings with comment counts
-            const popularListings = listings.map((listing) => {
-                const commentCount =
-                    commentCounts.find((c) => c.typeId === listing.id)
-                        ?._count ?? 0;
-                return { ...listing, commentCount };
-            });
-
-            // Step 4: Sort listings by comment counts
-            popularListings.sort((a, b) => b.commentCount - a.commentCount);
-
-            // Step 5: Sort listings by priceOrder if specified
+            // if priceOrder then sort based on that
             if (priceOrder === "asc") {
-                popularListings.sort((a, b) => a.price - b.price);
+                popularListings = popularListings.sort(
+                    (a, b) => a.price - b.price
+                );
             } else if (priceOrder === "desc") {
-                popularListings.sort((a, b) => b.price - a.price);
+                popularListings = popularListings.sort(
+                    (a, b) => b.price - a.price
+                );
             }
 
             let nextCursor: typeof cursor | undefined = undefined;
             if (popularListings.length > limit) {
-                const nextItem = popularListings.pop(); // Remove the extra item
-                if (nextItem !== undefined) {
-                    nextCursor = nextItem.id; // Set the next cursor to the ID of the extra item
-                }
+                const nextItem = popularListings.pop();
+                nextCursor = nextItem?.id;
             }
 
             return {
@@ -331,7 +400,6 @@ export const listingRouter = createTRPCRouter({
                 nextCursor,
             };
         }),
-
     create: protectedProcedure
         .input(
             z.object({
@@ -423,21 +491,129 @@ export const listingRouter = createTRPCRouter({
             throw new Error("Invalid userId");
         }),
 
-    delete: protectedProcedure
+    update: protectedProcedure
         .input(
             z.object({
                 id: z.string(),
-                userId: z.string(),
-                imageIds: z.array(z.string()),
+                title: z.string(),
+                text: z.string(),
+                price: z.number(),
+                keycaps: z.string(),
+                switches: z.string(),
+                switchType: z.string(),
+                soundType: z.string(),
+                layoutType: z.string(),
+                pcbType: z.string(),
+                assemblyType: z.string(),
+                soundTest: z.string().optional(),
+                preview: z.object({ source: z.string(), index: z.number() }),
+                deleteImageIds: z.array(z.string()).optional(),
+                sellerId: z.string(),
+                images: z.array(
+                    z.object({
+                        link: z.string(),
+                    })
+                ),
             })
         )
         .mutation(async ({ input, ctx }) => {
-            const { id, imageIds, userId } = input;
-            if (ctx.session.user.id === userId || ctx.session.user.isAdmin) {
-                if (imageIds.length > 0) {
+            const {
+                id,
+                title,
+                text,
+                price,
+                keycaps,
+                switches,
+                switchType,
+                soundType,
+                pcbType,
+                layoutType,
+                assemblyType,
+                soundTest,
+                preview,
+                sellerId,
+                images,
+                deleteImageIds,
+            } = input;
+            if (
+                ctx.session.user.id === sellerId &&
+                ctx.session.user.isVerified
+            ) {
+                const updateData: UpdateData = {
+                    title,
+                    text,
+                    keycaps,
+                    switches,
+                    switchType,
+                    soundType,
+                    layoutType,
+                    pcbType,
+                    assemblyType,
+                    price,
+                };
+                if (soundTest) {
+                    updateData.soundTest = soundTest;
+                }
+
+                const updatedListing = await ctx.prisma.listing.update({
+                    where: { id: id },
+                    data: updateData,
+                });
+
+                await ctx.prisma.images.updateMany({
+                    where: {
+                        listingId: id,
+                        resourceType: "LISTINGPREVIEW",
+                    },
+                    data: {
+                        resourceType: "LISTING",
+                    },
+                });
+
+                if (preview.source === "prev") {
+                    const allExistingImages = await ctx.prisma.images.findMany({
+                        where: {
+                            listingId: id,
+                        },
+                    });
+
+                    const imageToUpdate = allExistingImages[preview.index];
+                    if (imageToUpdate) {
+                        await ctx.prisma.images.update({
+                            where: {
+                                id: imageToUpdate.id,
+                            },
+                            data: {
+                                resourceType: "LISTINGPREVIEW",
+                            },
+                        });
+                    }
+                }
+
+                if (images && images.length > 0) {
+                    await Promise.all(
+                        images.map(async (image, i) => {
+                            const imageType =
+                                preview.source === "new" && preview.index === i
+                                    ? "LISTINGPREVIEW"
+                                    : "LISTING";
+
+                            return ctx.prisma.images.create({
+                                data: {
+                                    link: image.link,
+                                    resourceType: imageType,
+                                    listingId: id,
+                                    userId: sellerId,
+                                },
+                            });
+                        })
+                    );
+                }
+
+                if (deleteImageIds && deleteImageIds.length > 0) {
                     const images = await ctx.prisma.images.findMany({
                         where: {
-                            id: { in: imageIds },
+                            id: { in: deleteImageIds },
                         },
                     });
                     const removeFilePromises = images.map(async (image) => {
@@ -456,16 +632,69 @@ export const listingRouter = createTRPCRouter({
 
                     await ctx.prisma.images.deleteMany({
                         where: {
-                            id: { in: imageIds },
+                            id: { in: deleteImageIds },
                         },
                     });
                 }
 
-                await ctx.prisma.listing.delete({ where: { id: id } });
-
-                return "Successfully deleted";
+                return {
+                    updatedListing,
+                };
             }
 
             throw new Error("Invalid userId");
+        }),
+
+    delete: protectedProcedure
+        .input(
+            z.object({
+                id: z.string(),
+                sellerId: z.string(),
+            })
+        )
+        .mutation(async ({ input, ctx }) => {
+            const { id, sellerId } = input;
+            if (ctx.session.user.id === sellerId || ctx.session.user.isAdmin) {
+                const images = await ctx.prisma.images.findMany({
+                    where: {
+                        listingId: id,
+                    },
+                });
+
+                if (images.length > 0) {
+                    const imageIds = images.map((image) => image.id);
+                    const removeFilePromises = images.map((image) =>
+                        removeFileFromS3(image.link)
+                    );
+                    try {
+                        // here we are waiting for all promises and capturing those that are rejected
+                        const results = await Promise.allSettled(
+                            removeFilePromises
+                        );
+                        const errors = results.filter(
+                            (result) => result.status === "rejected"
+                        );
+
+                        if (errors.length > 0) {
+                            console.error(
+                                "Errors occurred while removing files from S3:",
+                                errors
+                            );
+                        }
+
+                        await ctx.prisma.images.deleteMany({
+                            where: {
+                                id: { in: imageIds },
+                            },
+                        });
+                    } catch (err) {
+                        console.error("An unexpected error occurred:", err);
+                    }
+                }
+            }
+
+            await ctx.prisma.listing.delete({ where: { id: id } });
+
+            return "Successfully deleted";
         }),
 });

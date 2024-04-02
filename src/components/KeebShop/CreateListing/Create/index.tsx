@@ -89,7 +89,6 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
     const { mutate } = api.listing.create.useMutation({
         onSuccess: async () => {
             toast.success("Listing Complete!", {
-                icon: "👏",
                 style: {
                     borderRadius: "10px",
                     background: "#333",
@@ -291,7 +290,7 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                     className=" h-40 w-40 rounded-md border-4 border-[#2f2f2f] object-cover"
                 />
 
-                <div className="flex h-24 w-full flex-col justify-center border-b-2 border-t-2 border-[#2f2f2f] bg-black bg-opacity-60 px-5">
+                <div className="flex h-24 w-full flex-col justify-center rounded-r-xl border-b-2 border-t-2 border-[#2f2f2f] bg-keebyGray bg-opacity-80 px-5">
                     <div className="flex justify-between ">
                         <div>
                             <div className="flex justify-between text-3xl">
@@ -301,14 +300,17 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                                 {session.user.username}
                             </h3>
                         </div>
-                        <button onClick={() => setShowCreate(false)}>
+                        <button
+                            onClick={() => setShowCreate(false)}
+                            className="text-green-500"
+                        >
                             <BackArrow />
                         </button>
                     </div>
                 </div>
             </div>
-            <div className="mb-32 mt-5 flex w-2/3 flex-col items-center rounded-xl bg-black bg-opacity-50 px-10 py-5  ">
-                <form className="w-full text-black">
+            <div className="mb-32 mt-5 flex w-2/3 flex-col items-center rounded-xl bg-keebyGray bg-opacity-80 px-10 py-5  ">
+                <form className="w-full text-white">
                     <div className="flex justify-between gap-10">
                         <div className="flex w-1/3 flex-col gap-5">
                             <div className="flex flex-col gap-1">
@@ -322,7 +324,7 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                                     id="titleInput"
                                     value={title}
                                     onChange={(e) => setTitle(e.target.value)}
-                                    className="h-10 w-full rounded-md bg-white p-1 "
+                                    className="h-10 w-full rounded-md bg-darkGray p-1 "
                                     placeholder="Title"
                                 />
                                 {enableErrorDisplay && errors.title && (
@@ -346,7 +348,7 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                                 </label>
                                 <select
                                     id="soundTypeInput"
-                                    className=" h-10 w-3/4 rounded-md bg-green-500 p-1 px-2 py-1"
+                                    className=" h-10 w-3/4 rounded-md bg-green-500 p-1 px-2 py-1 text-black"
                                     value={soundType}
                                     onChange={(e) =>
                                         setSoundType(e.target.value)
@@ -377,7 +379,7 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                                     onChange={(e) =>
                                         setSoundTest(e.target.value)
                                     }
-                                    className="h-10 w-3/4 rounded-md bg-white p-1"
+                                    className="h-10 w-3/4 rounded-md bg-darkGray p-1"
                                     placeholder="Sound Test Link"
                                 />
                                 {enableErrorDisplay && errors.soundTest && (
@@ -402,7 +404,7 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                                     onChange={(e) =>
                                         setPrice(Math.floor(+e.target.value))
                                     }
-                                    className="h-10 w-3/4 rounded-md bg-white p-1"
+                                    className="h-10 w-3/4 rounded-md bg-darkGray p-1"
                                     placeholder="$ Price"
                                 />
 
@@ -446,13 +448,12 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                                     }}
                                 />
                                 <button className="h-28 w-full rounded-md bg-green-500">
-                                    <span className=" text-center">
+                                    <span className=" text-center text-black">
                                         Choose Files
                                     </span>
                                 </button>
                             </div>
                         </div>
-
                         <div className="flex w-2/3 flex-col gap-5">
                             <div className="flex w-full gap-5 ">
                                 <div className="flex w-5/12 flex-col  gap-1">
@@ -468,7 +469,7 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                                         onChange={(e) =>
                                             setKeycaps(e.target.value)
                                         }
-                                        className="h-10 w-full rounded-md bg-white p-1"
+                                        className="h-10 w-full rounded-md bg-darkGray p-1"
                                         placeholder="Keycaps"
                                     />
                                     {enableErrorDisplay && errors.keycaps && (
@@ -490,7 +491,7 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                                         onChange={(e) =>
                                             setSwitches(e.target.value)
                                         }
-                                        className="h-10 w-full rounded-md bg-white p-1"
+                                        className="h-10 w-full rounded-md bg-darkGray p-1"
                                         placeholder="Switches"
                                     />
                                     {enableErrorDisplay && errors.switches && (
@@ -499,7 +500,7 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                                         </p>
                                     )}
                                 </div>
-                                <div className="flex w-2/12 flex-col gap-1 ">
+                                <div className="flex w-2/12 flex-col gap-1 text-black ">
                                     <label
                                         htmlFor="switchTypeInput"
                                         className="text-darkGray"
@@ -537,7 +538,7 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                                     </label>
                                     <select
                                         id="layoutTypeInput"
-                                        className=" h-10 w-full rounded-md bg-green-500 p-1 px-2 py-1"
+                                        className=" h-10 w-full rounded-md bg-green-500 p-1 px-2 py-1 text-black"
                                         value={layoutType}
                                         onChange={(e) =>
                                             setLayoutType(e.target.value)
@@ -556,7 +557,7 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                                             </p>
                                         )}
                                 </div>
-                                <div className="flex w-1/3 flex-col gap-1">
+                                <div className="flex w-1/3 flex-col gap-1 text-black">
                                     <label
                                         htmlFor="pcbTypeInput"
                                         className="text-darkGray"
@@ -582,7 +583,7 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                                         </p>
                                     )}
                                 </div>
-                                <div className="flex w-1/3 flex-col gap-1">
+                                <div className="flex w-1/3 flex-col gap-1 text-black">
                                     <label
                                         htmlFor="assemblyTypeInput"
                                         className="text-darkGray"
@@ -622,7 +623,7 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                                     onChange={(e) =>
                                         setDescription(e.target.value)
                                     }
-                                    className="h-72 w-full rounded-md bg-white p-1 "
+                                    className="h-72 w-full rounded-md bg-darkGray p-1 "
                                     placeholder="Description"
                                 ></textarea>
 
@@ -635,13 +636,12 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                         </div>
                     </div>
 
-                    {imageFiles.length && (
+                    {imageFiles.length > 0 && (
                         <>
                             <div className="mb-1 mt-5  flex justify-center text-darkGray">
                                 Select your preview image by clicking on it.
                                 (16:9 aspect ratio is recommended)
                             </div>
-
                             <div className="flex w-full flex-wrap justify-center gap-10 rounded-md bg-white bg-opacity-40 p-10 ">
                                 {imageFiles.map((e, i) => (
                                     <div key={i} className="relative">
@@ -690,19 +690,17 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                         </p>
                     )}
                     <div className="mt-5 flex justify-center">
-                        <motion.button
-                            whileHover={{
-                                scale: 1.1,
-                            }}
-                            whileTap={{ scale: 0.95 }}
+                        <button
                             onClick={(e) => {
                                 e.preventDefault();
                                 void submit(e);
                             }}
                             disabled={hasSubmitted || isSubmitting}
-                            className={`rounded-xl border-2 border-green-500 bg-black px-6 py-2 text-green-500 hover:bg-keebyGray ${
-                                hasSubmitted ? "text-red-500" : ""
-                            } ${isSubmitting ? "text-red-500" : ""}`}
+                            className={`rounded-md border-2 border-green-500 bg-keebyGray bg-opacity-60 px-6 py-2 text-green-500 hover:bg-green-500 hover:bg-opacity-100 hover:text-black ${
+                                hasSubmitted ? "text-green-500" : ""
+                            } ${
+                                isSubmitting ? "text-green-500" : ""
+                            } transition-all duration-300 ease-in-out`}
                         >
                             {isSubmitting ? (
                                 <div className="flex items-center gap-1">
@@ -714,7 +712,7 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                             ) : (
                                 "Submit Listing"
                             )}
-                        </motion.button>
+                        </button>
                     </div>
                 </form>
             </div>

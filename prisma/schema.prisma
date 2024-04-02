@@ -35,46 +35,31 @@ model Account {
     @@unique([provider, providerAccountId])
 }
 
-model UserFavorites {
-    id        String @id @default(cuid())
-    userId    String
-    listingId String
-
-    user    User    @relation(fields: [userId], references: [id])
-    listing Listing @relation(fields: [listingId], references: [id])
-
-    @@unique([userId, listingId])
-}
-
-model Post {
-    id        String   @id @default(cuid())
-    title     String
-    text      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    userId String
-
-    user     User       @relation(fields: [userId], references: [id])
-    postLike PostLike[]
-    images   Images[]
-}
-
 model Comment {
     id   String @id @default(cuid())
     text String
 
     userId         String
-    type           String
-    typeId         String
     parentId       String? // ID of the parent comment, null if top-level comment
     referencedUser String?
 
-    user User @relation(fields: [userId], references: [id])
+    // New explicit relations
+    listingId String?
+    postId    String?
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     parent      Comment?      @relation("ParentComment", fields: [parentId], references: [id])
     replies     Comment[]     @relation("ParentComment")
     commentLike CommentLike[]
+
+    // New explicit relations to Listing and Post
+    listing Listing? @relation(fields: [listingId], references: [id], onDelete: Cascade)
+    post    Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+    @@unique([userId, id])
+    @@index([listingId], name: "idxCommentListingId")
+    @@index([postId], name: "idxCommentPostId")
 }
 
 model CommentLike {
@@ -82,15 +67,32 @@ model CommentLike {
     userId    String
     commentId String
 
-    user    User    @relation(fields: [userId], references: [id])
-    comment Comment @relation(fields: [commentId], references: [id])
+    user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    comment Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
 
     @@unique([userId, commentId])
 }
 
+model Favorites {
+    id        String  @id @default(cuid())
+    userId    String
+    listingId String?
+    postId    String?
+
+    user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    listing Listing? @relation(fields: [listingId], references: [id], onDelete: Cascade)
+    post    Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+    @@unique([userId, listingId, postId])
+    @@index([listingId], name: "idxUserFavoritesListingId")
+    @@index([postId], name: "idxUserFavoritesPostId")
+}
+
 model Game {
     id        String   @id @default(cuid())
-    wpm       Int
+    wpm       Float
+    pureWpm   Float
+    accuracy  Float
     mode      String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -98,20 +100,8 @@ model Game {
     userId String
     keebId String?
 
-    user User  @relation(fields: [userId], references: [id])
+    user User  @relation(fields: [userId], references: [id], onDelete: Cascade)
     keeb Keeb? @relation(fields: [keebId], references: [id])
-}
-
-model Keeb {
-    id       String @id @default(cuid())
-    name     String
-    switches String
-    keycaps  String
-
-    userId String
-
-    user User   @relation(fields: [userId], references: [id])
-    Game Game[]
 }
 
 model Images {
@@ -123,7 +113,7 @@ model Images {
 
     // Relations
     userId String
-    user   User   @relation(fields: [userId], references: [id])
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     // Polymorphic relations
     listingId String?
@@ -131,6 +121,21 @@ model Images {
 
     listing Listing? @relation(fields: [listingId], references: [id])
     post    Post?    @relation(fields: [postId], references: [id])
+
+    @@index([listingId], name: "idxImagesListingId")
+    @@index([postId], name: "idxImagesPostId")
+}
+
+model Keeb {
+    id       String @id @default(cuid())
+    name     String
+    switches String
+    keycaps  String
+
+    userId String
+
+    user User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    Game Game[]
 }
 
 model Listing {
@@ -154,14 +159,15 @@ model Listing {
     sellerId String
     buyerId  String?
 
-    seller User  @relation("Seller", fields: [sellerId], references: [id])
+    seller User  @relation("Seller", fields: [sellerId], references: [id], onDelete: Cascade)
     buyer  User? @relation("Buyer", fields: [buyerId], references: [id])
 
     reviews            Review[]
-    favorites          UserFavorites[]
+    favorites          Favorites[]
     listingTransaction ListingTransaction[]
     listingOffer       ListingOffer[]
     images             Images[]
+    comments           Comment[]
 }
 
 model ListingOffer {
@@ -177,7 +183,7 @@ model ListingOffer {
     listingId String
     buyerId   String
 
-    listing Listing @relation(fields: [listingId], references: [id])
+    listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
     buyer   User    @relation(fields: [buyerId], references: [id])
 }
 
@@ -195,8 +201,26 @@ model ListingTransaction {
     userId    String
     listingId String
 
-    user    User    @relation(fields: [userId], references: [id])
-    listing Listing @relation(fields: [listingId], references: [id])
+    user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+}
+
+model Post {
+    id        String   @id @default(cuid())
+    title     String
+    text      String?
+    tag       String
+    link      String?
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    userId String
+
+    user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+    postLikes PostLike[]
+    images    Images[]
+    comments  Comment[]
+    favorites Favorites[]
 }
 
 model PostLike {
@@ -204,18 +228,20 @@ model PostLike {
     userId String
     postId String
 
-    user User @relation(fields: [userId], references: [id])
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
     post Post @relation(fields: [postId], references: [id])
 
     @@unique([userId, postId])
 }
 
 model Rank {
-    id     String @id @default(cuid())
-    name   String
-    minWpm Int
-    maxWpm Int
-    users  User[]
+    id       String @id @default(cuid())
+    image    String
+    name     String @unique
+    standing Float
+    minWpm   Int
+    maxWpm   Int
+    users    User[]
 }
 
 // could just create ranks in admin to avoid using seeders this way i could change ranks anytime
@@ -231,9 +257,9 @@ model Review {
     userId    String
     listingId String
 
-    seller  User    @relation("SellerRelation", fields: [sellerId], references: [id])
-    user    User    @relation("UserRelation", fields: [userId], references: [id])
-    listing Listing @relation(fields: [listingId], references: [id])
+    seller  User    @relation("SellerRelation", fields: [sellerId], references: [id], onDelete: Cascade)
+    user    User    @relation("UserRelation", fields: [userId], references: [id], onDelete: Cascade)
+    listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
 }
 
 model Tag {
@@ -257,12 +283,12 @@ model User {
     name             String?
     email            String?   @unique
     emailVerified    DateTime?
+    internetPoints   Int       @default(0)
     image            String?
     profile          String?
     rankId           String?
     username         String?   @unique
     selectedTag      String?
-    stripeCustomerId String?   @unique
 
     isVerified   Boolean @default(false)
     isAdmin      Boolean @default(false)
@@ -271,7 +297,7 @@ model User {
 
     accounts        Account[]
     sessions        Session[]
-    favorites       UserFavorites[]
+    favorites       Favorites[]
     posts           Post[]
     comments        Comment[]
     images          Images[]

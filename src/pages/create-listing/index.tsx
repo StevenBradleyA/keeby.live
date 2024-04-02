@@ -30,8 +30,13 @@ export default function CreateListingAgreement() {
 
     return (
         <>
-            <div className="matrix-full-screen fixed left-0 right-0 bottom-0 top-0 opacity-50  ">
-                <video className="-z-10 w-full" autoPlay loop muted>
+            <div className="matrix-full-screen fixed bottom-0 left-0 right-0 top-0 h-full w-full opacity-80  ">
+                <video
+                    className="absolute bottom-0 left-0 right-0 top-0 -z-10 h-full w-full object-cover  object-center"
+                    autoPlay
+                    loop
+                    muted
+                >
                     <source
                         src="/Videos/matrix-fade-green.mp4"
                         type="video/mp4"
@@ -47,8 +52,8 @@ export default function CreateListingAgreement() {
                         <div className="z-10 flex justify-center text-5xl">
                             <TitleScripts page={"createListing"} />
                         </div>
-                        <div className="z-10 mt-10 flex w-1/2 flex-col gap-10 rounded-2xl bg-keebyGray bg-opacity-90 p-10">
-                            <div className="flex items-end text-2xl text-green-500 gap-10">
+                        <div className="z-10 mt-10 flex w-1/2 flex-col gap-10 rounded-2xl bg-keebyGray bg-opacity-80 p-10">
+                            <div className="flex items-end gap-10 text-2xl text-green-500">
                                 <Image
                                     alt="keebo"
                                     src={keebo}
@@ -58,20 +63,13 @@ export default function CreateListingAgreement() {
                                     Please read and accept our guidelines along
                                     with scam prevention tips before listing
                                 </h1>
-
                             </div>
 
                             <div className=" flex  w-full justify-evenly  gap-10">
                                 <div className="flex items-center gap-5 ">
-                                    <motion.button
-                                        whileHover={{
-                                            scale: 1.1,
-                                        }}
-                                        whileTap={{ scale: 0.95 }}
-                                        className=" rounded-xl border-2 border-black bg-black px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray"
-                                    >
+                                    <button className=" rounded-md border-2 border-black bg-black px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray">
                                         Keeby Rules
-                                    </motion.button>
+                                    </button>
 
                                     <input
                                         type="checkbox"
@@ -83,15 +81,9 @@ export default function CreateListingAgreement() {
                                 </div>
 
                                 <div className="flex items-center gap-5 ">
-                                    <motion.button
-                                        whileHover={{
-                                            scale: 1.1,
-                                        }}
-                                        whileTap={{ scale: 0.95 }}
-                                        className=" rounded-xl border-2 border-black bg-black px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray"
-                                    >
+                                    <button className=" rounded-md border-2 border-black bg-black px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray">
                                         Preventing Scams
-                                    </motion.button>
+                                    </button>
                                     <input
                                         type="checkbox"
                                         name="Preventing Scams"
@@ -107,7 +99,7 @@ export default function CreateListingAgreement() {
                             {preventScamsAgreed && rulesAgreed ? (
                                 <div className=" flex justify-center">
                                     <motion.button
-                                        className=" rounded-xl border-2 border-black bg-black px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray"
+                                        className=" rounded-md border-2 border-black bg-black px-6 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray"
                                         onClick={handleShowCreate}
                                     >
                                         Access Granted
@@ -115,7 +107,7 @@ export default function CreateListingAgreement() {
                                 </div>
                             ) : (
                                 <div className=" flex justify-center">
-                                    <div className=" rounded-xl border-2 border-[#616161] bg-darkGray px-6 py-2 text-blackAlternative hover:bg-darkGray">
+                                    <div className=" rounded-md border-2 border-[#616161] border-opacity-60 bg-darkGray bg-opacity-60 px-6 py-2 text-blackAlternative hover:bg-darkGray">
                                         Access Denied
                                     </div>
                                 </div>

@@ -7,12 +7,12 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 import ToggleCommentLike from "~/components/KeebShop/Likes/CommentLikes/ToggleLike";
 import DisplayReplyComments from "./displayReplyComments";
-import DisplayReplyViewerComments from "./displayReplyViewerComments";
 import ModalDialog from "~/components/Modal";
-import CommentSignInModal from "../Modal/signInModal";
 import UpdateComment from "../Update";
+import SignInModal from "../Modal/signInModal";
 
 interface EachCommentCardProps {
+    type: string;
     typeId: string;
     comment: CommentContents;
 }
@@ -32,8 +32,8 @@ interface CommentContents {
     id: string;
     text: string;
     userId: string;
-    type: string;
-    typeId: string;
+    listingId: string | null;
+    postId: string | null;
     parentId: string | null;
     referencedUser: string | null;
     user: CommentUser;
@@ -44,6 +44,7 @@ interface CommentContents {
 export default function EachCommentCard({
     comment,
     typeId,
+    type,
 }: EachCommentCardProps) {
     const [showTopLevelCommentReply, setShowTopLevelCommentReply] =
         useState<boolean>(false);
@@ -82,23 +83,18 @@ export default function EachCommentCard({
         <div className="mb-5 flex flex-col">
             <div className="flex gap-3">
                 <div className="mt-1 h-12 w-12">
-                    {comment.user.profile === null ? (
-                        <Image
-                            src={defaultProfile}
-                            alt="profile"
-                            height={600}
-                            width={600}
-                            className="h-full w-full object-cover"
-                        />
-                    ) : (
-                        <Image
-                            src={comment.user.profile}
-                            alt="profile"
-                            height={600}
-                            width={600}
-                            className="h-full w-full object-cover"
-                        />
-                    )}
+                    <Image
+                        src={
+                            comment.user.profile
+                                ? comment.user.profile
+                                : defaultProfile
+                        }
+                        alt="profile"
+                        height={600}
+                        width={600}
+                        className="h-full w-full object-cover"
+                        priority
+                    />
                 </div>
                 <div className=" relative w-full flex-wrap text-sm ">
                     <div className="flex w-full justify-between">
@@ -110,23 +106,25 @@ export default function EachCommentCard({
                                 {comment.user.username}
                             </Link>
                         )}
-                        {session && session.user.id === comment.userId && (
-                            <button
-                                className="absolute right-0"
-                                onClick={openModal}
-                            >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="18"
-                                    height="18"
-                                    fill="#616161"
+                        {session &&
+                            (session.user.id === comment.userId ||
+                                session.user.isAdmin) && (
+                                <button
+                                    className="absolute right-0"
+                                    onClick={openModal}
                                 >
-                                    <circle cx="9" cy="4.5" r="1.5" />
-                                    <circle cx="9" cy="9" r="1.5" />
-                                    <circle cx="9" cy="13.5" r="1.5" />
-                                </svg>
-                            </button>
-                        )}
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="18"
+                                        height="18"
+                                        fill="#616161"
+                                    >
+                                        <circle cx="9" cy="4.5" r="1.5" />
+                                        <circle cx="9" cy="9" r="1.5" />
+                                        <circle cx="9" cy="13.5" r="1.5" />
+                                    </svg>
+                                </button>
+                            )}
                         <ModifyCommentModal
                             isOpen={isModalOpen}
                             onClose={closeModal}
@@ -140,7 +138,7 @@ export default function EachCommentCard({
                     </div>
 
                     <div>
-                        <div className="text-md whitespace-pre-wrap">
+                        <div className="text-md whitespace-pre-wrap text-white">
                             {isTooLong && !isExpanded
                                 ? lines.slice(0, maxLines).join("\n")
                                 : comment.text}
@@ -165,6 +163,7 @@ export default function EachCommentCard({
                                     userId={session.user.id}
                                     isLiked={comment.isLiked}
                                     topLevel={true}
+                                    ownerId={comment.user.id}
                                 />
                             ) : (
                                 <button onClick={openSignInModal}>
@@ -187,7 +186,7 @@ export default function EachCommentCard({
                             isOpen={isSignInModalOpen}
                             onClose={closeSignInModal}
                         >
-                            <CommentSignInModal closeModal={closeSignInModal} />
+                            <SignInModal closeModal={closeSignInModal} />
                         </ModalDialog>
                         {session && session.user ? (
                             <button
@@ -211,8 +210,8 @@ export default function EachCommentCard({
                     </div>
                     {showTopLevelCommentReply && (
                         <CreateReplyComment
+                            type={type}
                             typeId={typeId}
-                            type={"LISTING"}
                             parentId={comment.id}
                             setShowTopLevelCommentReply={
                                 setShowTopLevelCommentReply
@@ -222,7 +221,6 @@ export default function EachCommentCard({
                     )}
                 </div>
             </div>
-
             {comment._count.replies > 0 && (
                 <button
                     onClick={() => setOpenReplies(!openReplies)}
@@ -250,16 +248,10 @@ export default function EachCommentCard({
                     </div>
                 </button>
             )}
-            {openReplies && session && session.user && (
+            {openReplies && (
                 <DisplayReplyComments
                     parentId={comment.id}
-                    typeId={typeId}
-                    userId={session.user.id}
-                />
-            )}
-            {openReplies && session === null && (
-                <DisplayReplyViewerComments
-                    parentId={comment.id}
+                    type={type}
                     typeId={typeId}
                 />
             )}

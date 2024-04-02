@@ -13,10 +13,22 @@ export default function PublicProfileUserInfo({
     username,
 }: PublicProfileProps) {
     const { data: profile } = api.user.getUserPublic.useQuery(username);
+
+    {
+        /* <div className="matrix-full-screen fixed bottom-0 left-0 right-0 top-0 h-full w-full opacity-50  ">
+                <video
+                    className="absolute bottom-0 left-0 right-0 top-0 -z-10 h-full w-full object-cover  object-center" */
+    }
+
     return (
         <div className="flex w-full justify-center ">
-            <div className="matrix-full-screen fixed left-0 top-0 opacity-40  ">
-                <video className="-z-10 w-full" autoPlay loop muted>
+            <div className="matrix-full-screen fixed bottom-0 left-0 right-0 top-0 h-full w-full object-cover object-center opacity-40  ">
+                <video
+                    className="absolute bottom-0 left-0 right-0 top-0 -z-10 h-full w-full object-cover object-center"
+                    autoPlay
+                    loop
+                    muted
+                >
                     <source src="/Videos/space-purple.mp4" type="video/mp4" />
                     Your browser does not support the video tag.
                 </video>
@@ -33,7 +45,7 @@ export default function PublicProfileUserInfo({
                         <div className="rounded-xl border-4 border-purple-600  p-5">
                             <div className="flex justify-between ">
                                 <div className="flex w-2/3 flex-col ">
-                                    <div className=" flex h-5/6 items-center justify-center font-titillium text-4xl text-purple-600">
+                                    <div className=" text-purple-600 flex h-5/6 items-center justify-center font-titillium text-4xl">
                                         {profile?.username}
                                     </div>
 

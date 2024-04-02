@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { api } from "~/utils/api";
 import React from "react";
 import ModalDialog from "~/components/Modal";
-import CommentSignInModal from "../Modal/signInModal";
+import SignInModal from "../Modal/signInModal";
 
 interface CreateCommentProps {
     typeId: string;
@@ -25,10 +25,11 @@ export default function CreateComment({ typeId, type }: CreateCommentProps) {
 
     const ctx = api.useContext();
 
-    const { mutate } = api.comment.create.useMutation({
+    const { mutate } = api.comment.createComment.useMutation({
         onSuccess: () => {
             void ctx.comment.getAllByTypeId.invalidate();
-            void ctx.comment.getAmountByTypeId.invalidate();
+            if (type === "listing") void ctx.listing.getOne.invalidate();
+            if (type === "post") void ctx.post.getOneById.invalidate();
         },
     });
 
@@ -76,8 +77,8 @@ export default function CreateComment({ typeId, type }: CreateCommentProps) {
             const data = {
                 text,
                 userId: session.user.id,
-                type: type,
                 typeId: typeId,
+                type: type,
             };
 
             setText("");
@@ -100,7 +101,7 @@ export default function CreateComment({ typeId, type }: CreateCommentProps) {
     return (
         <form className="mb-5 flex flex-col justify-between gap-2">
             <textarea
-                className="comment-input-box w-full rounded-lg border-none bg-pogGray p-2 outline-none"
+                className="comment-input-box w-full rounded-lg border-none bg-pogGray p-2 outline-none text-white"
                 value={text}
                 placeholder="Write a comment..."
                 onChange={(e) => setText(e.target.value)}
@@ -125,7 +126,7 @@ export default function CreateComment({ typeId, type }: CreateCommentProps) {
                 </div>
             )}
             <ModalDialog isOpen={isSignInModalOpen} onClose={closeSignInModal}>
-                <CommentSignInModal closeModal={closeSignInModal} />
+                <SignInModal closeModal={closeSignInModal} />
             </ModalDialog>
         </form>
     );

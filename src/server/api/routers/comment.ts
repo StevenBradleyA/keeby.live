@@ -6,22 +6,27 @@ import {
 } from "~/server/api/trpc";
 
 export const commentRouter = createTRPCRouter({
-    // getAll: publicProcedure.query(({ ctx }) => {
-    //     return ctx.prisma.comment.findMany();
-    // }),
     getAllByTypeId: publicProcedure
         .input(
             z.object({
                 type: z.string(),
                 typeId: z.string(),
-                userId: z.string(),
+                userId: z.string().optional(),
+                cursor: z.string().nullish(),
+                limit: z.number().min(1).max(100).nullish(),
             })
         )
         .query(async ({ ctx, input }) => {
-            const allComments = await ctx.prisma.comment.findMany({
+            const { typeId, userId, type, cursor } = input;
+
+            const limit = input.limit ?? 20;
+
+            const commentType =
+                type === "listing" ? { listingId: typeId } : { postId: typeId };
+
+            const comments = await ctx.prisma.comment.findMany({
                 where: {
-                    type: input.type,
-                    typeId: input.typeId,
+                    ...commentType,
                     parentId: null,
                 },
                 include: {
@@ -35,150 +40,167 @@ export const commentRouter = createTRPCRouter({
                         },
                     },
                 },
+                take: limit + 1,
+                skip: cursor ? 1 : 0,
+                cursor: cursor ? { id: cursor } : undefined,
             });
-
-            const userLikes = await ctx.prisma.commentLike.findMany({
-                where: {
-                    userId: input.userId,
-                },
-                select: { commentId: true },
-            });
-
-            const commentsWithLikes = allComments.map((comment) => ({
-                ...comment,
-                isLiked: userLikes.some(
-                    (like) => like.commentId === comment.id
-                ),
-            }));
-
-            return commentsWithLikes;
-        }),
-    getAllByTypeIdForViewers: publicProcedure
-        .input(
-            z.object({
-                type: z.string(),
-                typeId: z.string(),
-            })
-        )
-        .query(({ ctx, input }) => {
-            return ctx.prisma.comment.findMany({
-                where: {
-                    type: input.type,
-                    typeId: input.typeId,
-                    parentId: null,
-                },
-                include: {
-                    user: {
-                        select: { id: true, username: true, profile: true },
+            if (userId) {
+                const userLikes = await ctx.prisma.commentLike.findMany({
+                    where: {
+                        userId: userId,
                     },
-                    _count: {
-                        select: {
-                            commentLike: true,
-                            replies: true,
-                        },
-                    },
-                },
-            });
+                    select: { commentId: true },
+                    take: limit + 1,
+                    skip: cursor ? 1 : 0,
+                    cursor: cursor ? { id: cursor } : undefined,
+                });
+
+                const commentsWithLikes = comments.map((comment) => ({
+                    ...comment,
+                    isLiked: userLikes.some(
+                        (like) => like.commentId === comment.id
+                    ),
+                }));
+
+                let nextCursor: typeof cursor | undefined = undefined;
+                if (commentsWithLikes.length > limit) {
+                    const nextItem = commentsWithLikes.pop();
+                    if (nextItem !== undefined) {
+                        nextCursor = nextItem.id;
+                    }
+                }
+
+                return { comments: commentsWithLikes, nextCursor };
+            }
+
+            let nextCursor: typeof cursor | undefined = undefined;
+            if (comments.length > limit) {
+                const nextItem = comments.pop();
+                if (nextItem !== undefined) {
+                    nextCursor = nextItem.id;
+                }
+            }
+            return { comments, nextCursor };
         }),
     getAllReplysByTypeId: publicProcedure
         .input(
             z.object({
-                type: z.string(),
                 typeId: z.string(),
-                userId: z.string(),
+                type: z.string(),
+                userId: z.string().optional(),
                 parentId: z.string(),
             })
         )
         .query(async ({ ctx, input }) => {
-            const allComments = await ctx.prisma.comment.findMany({
-                where: {
-                    type: input.type,
-                    typeId: input.typeId,
-                    parentId: input.parentId,
-                },
-                include: {
-                    user: {
-                        select: { id: true, username: true, profile: true },
+            const { typeId, type, userId, parentId } = input;
+
+            if (type === "listing") {
+                const allComments = await ctx.prisma.comment.findMany({
+                    where: {
+                        listingId: typeId,
+                        parentId: parentId,
                     },
-                    _count: {
-                        select: {
-                            commentLike: true,
+                    include: {
+                        user: {
+                            select: { id: true, username: true, profile: true },
+                        },
+                        _count: {
+                            select: {
+                                commentLike: true,
+                            },
                         },
                     },
-                },
-            });
+                });
+                if (userId) {
+                    const userLikes = await ctx.prisma.commentLike.findMany({
+                        where: {
+                            userId: userId,
+                        },
+                        select: { commentId: true },
+                    });
 
-            const userLikes = await ctx.prisma.commentLike.findMany({
-                where: {
-                    userId: input.userId,
-                },
-                select: { commentId: true },
-            });
+                    const commentsWithLikes = allComments.map((comment) => ({
+                        ...comment,
+                        isLiked: userLikes.some(
+                            (like) => like.commentId === comment.id
+                        ),
+                    }));
 
-            const commentsWithLikes = allComments.map((comment) => ({
-                ...comment,
-                isLiked: userLikes.some(
-                    (like) => like.commentId === comment.id
-                ),
-            }));
+                    return commentsWithLikes;
+                }
 
-            return commentsWithLikes;
-        }),
-    getAllViewerReplysByTypeId: publicProcedure
-        .input(
-            z.object({
-                type: z.string(),
-                typeId: z.string(),
-                parentId: z.string(),
-            })
-        )
-        .query(async ({ ctx, input }) => {
-            return ctx.prisma.comment.findMany({
-                where: {
-                    type: input.type,
-                    typeId: input.typeId,
-                    parentId: input.parentId,
-                },
-                include: {
-                    user: {
-                        select: { id: true, username: true, profile: true },
+                return allComments;
+            } else if (type === "post") {
+                const allComments = await ctx.prisma.comment.findMany({
+                    where: {
+                        postId: typeId,
+                        parentId: parentId,
                     },
-                    _count: {
-                        select: {
-                            commentLike: true,
+                    include: {
+                        user: {
+                            select: { id: true, username: true, profile: true },
+                        },
+                        _count: {
+                            select: {
+                                commentLike: true,
+                            },
                         },
                     },
-                },
-            });
-        }),
+                });
+                if (userId) {
+                    const userLikes = await ctx.prisma.commentLike.findMany({
+                        where: {
+                            userId: userId,
+                        },
+                        select: { commentId: true },
+                    });
 
-    getAmountByTypeId: publicProcedure
-        .input(
-            z.object({
-                type: z.string(),
-                typeId: z.string(),
-            })
-        )
-        .query(({ ctx, input }) => {
-            return ctx.prisma.comment.count({
-                where: { type: input.type, typeId: input.typeId },
-            });
+                    const commentsWithLikes = allComments.map((comment) => ({
+                        ...comment,
+                        isLiked: userLikes.some(
+                            (like) => like.commentId === comment.id
+                        ),
+                    }));
+
+                    return commentsWithLikes;
+                }
+
+                return allComments;
+            }
         }),
-    create: protectedProcedure
+    createComment: protectedProcedure
         .input(
             z.object({
                 text: z.string(),
                 userId: z.string(),
-                type: z.string(),
                 typeId: z.string(),
+                type: z.string(),
             })
         )
         .mutation(async ({ input, ctx }) => {
+            const { text, userId, typeId, type } = input;
+
             if (ctx.session.user.id === input.userId) {
-                const newComment = await ctx.prisma.comment.create({
-                    data: input,
-                });
-                return newComment;
+                if (type === "listing") {
+                    const newComment = await ctx.prisma.comment.create({
+                        data: {
+                            text: text,
+                            userId: userId,
+                            listingId: typeId,
+                        },
+                    });
+                    return newComment;
+                }
+                if (type === "post") {
+                    const newComment = await ctx.prisma.comment.create({
+                        data: {
+                            text: text,
+                            userId: userId,
+                            postId: typeId,
+                        },
+                    });
+                    return newComment;
+                }
             }
             throw new Error("Invalid userId");
         }),
@@ -195,32 +217,40 @@ export const commentRouter = createTRPCRouter({
             })
         )
         .mutation(async ({ input, ctx }) => {
-            if (ctx.session.user.id !== input.userId) {
+            const { text, userId, type, typeId, parentId, referencedUser } =
+                input;
+
+            if (ctx.session.user.id !== userId) {
                 throw new Error("Invalid userId");
             }
 
-            // parentID validation --- (ensure it refers to an existing comment)
-            if (input.parentId) {
-                const parentComment = await ctx.prisma.comment.findUnique({
-                    where: { id: input.parentId },
+            if (type === "listing") {
+                const newComment = await ctx.prisma.comment.create({
+                    data: {
+                        text: text,
+                        userId: userId,
+                        listingId: typeId,
+                        parentId: parentId,
+                        referencedUser: referencedUser || null,
+                    },
                 });
-                if (!parentComment) {
-                    throw new Error("Invalid parentId");
-                }
+
+                return newComment;
             }
 
-            const newComment = await ctx.prisma.comment.create({
-                data: {
-                    text: input.text,
-                    userId: input.userId,
-                    type: input.type,
-                    typeId: input.typeId,
-                    parentId: input.parentId,
-                    referencedUser: input.referencedUser || null,
-                },
-            });
+            if (type === "post") {
+                const newComment = await ctx.prisma.comment.create({
+                    data: {
+                        text: text,
+                        userId: userId,
+                        postId: typeId,
+                        parentId: parentId,
+                        referencedUser: referencedUser || null,
+                    },
+                });
 
-            return newComment;
+                return newComment;
+            }
         }),
     update: protectedProcedure
         .input(
@@ -255,46 +285,22 @@ export const commentRouter = createTRPCRouter({
         )
         .mutation(async ({ input, ctx }) => {
             const { id, parentId, userId } = input;
-            if (ctx.session.user.id === userId) {
+            if (ctx.session.user.id === userId || ctx.session.user.isAdmin) {
                 // Top-level comment
                 if (!parentId) {
-                    // ---- get all replies
-                    const replies = await ctx.prisma.comment.findMany({
-                        where: { parentId: id },
-                        select: { id: true },
-                    });
-
-                    const replyIds = replies.map((reply) => reply.id);
-
-                    // --- Delete all likes associated with the replies
-                    await ctx.prisma.commentLike.deleteMany({
-                        where: { commentId: { in: replyIds } },
-                    });
-
-                    // --- Delete all likes associated with the top-level comment
-                    await ctx.prisma.commentLike.deleteMany({
-                        where: { commentId: id },
-                    });
-
-                    // -- Delete all replies
                     await ctx.prisma.comment.deleteMany({
                         where: { parentId: id },
                     });
-
-                    // - Finally, delete the top-level comment itself
                     return ctx.prisma.comment.delete({ where: { id: id } });
                 } else {
-                    // Not a top-level comment, delete its likes and then the comment itself
-                    await ctx.prisma.commentLike.deleteMany({
-                        where: { commentId: id },
-                    });
-
+                    // Not a top-level comment
                     return ctx.prisma.comment.delete({ where: { id: id } });
                 }
             }
 
             throw new Error("Invalid userId");
         }),
+
     // prisma transaction test. this makes it so that if the operation partially fails it wont go through. Definetly want to implement this for images and lots of stuff if it works
     // delete: protectedProcedure
     //     .input(

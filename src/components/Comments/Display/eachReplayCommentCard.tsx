@@ -6,12 +6,13 @@ import CreateReplyComment from "../Create/CreateReplyComment";
 import { useState } from "react";
 import ToggleCommentLike from "~/components/KeebShop/Likes/CommentLikes/ToggleLike";
 import ModalDialog from "~/components/Modal";
-import CommentSignInModal from "../Modal/signInModal";
 import ModifyCommentModal from "../Modal";
 import UpdateComment from "../Update";
+import SignInModal from "../Modal/signInModal";
 
 interface EachReplyCardProps {
     typeId: string;
+    type: string;
     reply: ReplyContents;
     parentId: string;
 }
@@ -30,8 +31,8 @@ interface ReplyContents {
     id: string;
     text: string;
     userId: string;
-    type: string;
-    typeId: string;
+    listingId: string | null;
+    postId: string | null;
     parentId: string | null;
     referencedUser: string | null;
     _count: CommentLike;
@@ -41,6 +42,7 @@ interface ReplyContents {
 export default function EachReplyCommentCard({
     reply,
     typeId,
+    type,
     parentId,
 }: EachReplyCardProps) {
     const { data: session } = useSession();
@@ -77,23 +79,16 @@ export default function EachReplyCommentCard({
     return (
         <div className="mb-5 flex gap-2 pl-16">
             <div className="mt-1">
-                {reply.user.profile === null ? (
-                    <Image
-                        src={defaultProfile}
-                        alt="profile"
-                        height={600}
-                        width={600}
-                        className="h-10 w-10 object-cover"
-                    />
-                ) : (
-                    <Image
-                        src={reply.user.profile}
-                        alt="profile"
-                        height={600}
-                        width={600}
-                        className="h-10 w-10 object-cover"
-                    />
-                )}
+                <Image
+                    src={
+                        reply.user.profile ? reply.user.profile : defaultProfile
+                    }
+                    alt="profile"
+                    height={600}
+                    width={600}
+                    className="h-10 w-10 object-cover"
+                    priority
+                />
             </div>
             <div className=" w-full flex-wrap text-sm ">
                 <div className="relative flex justify-between">
@@ -106,23 +101,25 @@ export default function EachReplyCommentCard({
                         </Link>
                     )}
 
-                    {session && session.user.id === reply.userId && (
-                        <button
-                            className="absolute right-0"
-                            onClick={openModal}
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="18"
-                                height="18"
-                                fill="#616161"
+                    {session &&
+                        (session.user.id === reply.userId ||
+                            session.user.isAdmin) && (
+                            <button
+                                className="absolute right-0"
+                                onClick={openModal}
                             >
-                                <circle cx="9" cy="4.5" r="1.5" />
-                                <circle cx="9" cy="9" r="1.5" />
-                                <circle cx="9" cy="13.5" r="1.5" />
-                            </svg>
-                        </button>
-                    )}
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="18"
+                                    height="18"
+                                    fill="#616161"
+                                >
+                                    <circle cx="9" cy="4.5" r="1.5" />
+                                    <circle cx="9" cy="9" r="1.5" />
+                                    <circle cx="9" cy="13.5" r="1.5" />
+                                </svg>
+                            </button>
+                        )}
                     <ModifyCommentModal
                         isOpen={isModalOpen}
                         onClose={closeModal}
@@ -138,7 +135,7 @@ export default function EachReplyCommentCard({
 
                 {reply.referencedUser ? (
                     <div>
-                        <div className="flex whitespace-pre-wrap ">
+                        <div className="flex whitespace-pre-wrap text-white">
                             <span>
                                 <span className="text-green-500">{`@${reply.referencedUser} `}</span>
                                 {isTooLong && !isExpanded
@@ -157,7 +154,7 @@ export default function EachReplyCommentCard({
                     </div>
                 ) : (
                     <div>
-                        <div className="whitespace-pre-wrap ">
+                        <div className="whitespace-pre-wrap text-white ">
                             {isTooLong && !isExpanded
                                 ? lines.slice(0, maxLines).join("\n")
                                 : reply.text}
@@ -182,6 +179,7 @@ export default function EachReplyCommentCard({
                                 userId={session.user.id}
                                 isLiked={reply.isLiked}
                                 topLevel={false}
+                                ownerId={reply.user.id}
                             />
                         ) : (
                             <button onClick={openSignInModal}>
@@ -203,7 +201,7 @@ export default function EachReplyCommentCard({
                         isOpen={isSignInModalOpen}
                         onClose={closeSignInModal}
                     >
-                        <CommentSignInModal closeModal={closeSignInModal} />
+                        <SignInModal closeModal={closeSignInModal} />
                     </ModalDialog>
 
                     {session && session.user ? (
@@ -225,7 +223,7 @@ export default function EachReplyCommentCard({
                 {showNestedReply && reply.user.username && (
                     <CreateReplyComment
                         typeId={typeId}
-                        type={"LISTING"}
+                        type={type}
                         parentId={parentId}
                         replyId={reply.id}
                         referencedUser={reply.user.username}

@@ -5,8 +5,11 @@ import {
     protectedProcedure,
 } from "~/server/api/trpc";
 
-export const commentLikeRouter = createTRPCRouter({
-    getUserLikes: publicProcedure
+
+// todo decide if we want to remove internet increment if userId matches post id cuz spamming would be a thing 
+// downside is we get spamming or a lot of db calls for abuse, also can promote your listing by just spamming... 
+export const likeRouter = createTRPCRouter({
+    getUserCommentLikes: publicProcedure
         .input(
             z.object({
                 userId: z.string(),
@@ -21,19 +24,30 @@ export const commentLikeRouter = createTRPCRouter({
             });
         }),
 
-    toggleLike: publicProcedure
+    toggleCommentLike: publicProcedure
         .input(
             z.object({
                 commentId: z.string(),
                 userId: z.string(),
                 isLiked: z.boolean(),
+                ownerId: z.string(),
             })
         )
         .mutation(async ({ ctx, input }) => {
-            const { commentId, userId, isLiked } = input;
+            const { commentId, userId, isLiked, ownerId } = input;
             if (isLiked) {
                 await ctx.prisma.commentLike.deleteMany({
                     where: { commentId: commentId, userId: userId },
+                });
+                await ctx.prisma.user.update({
+                    data: {
+                        internetPoints: {
+                            decrement: 1,
+                        },
+                    },
+                    where: {
+                        id: ownerId,
+                    },
                 });
             } else {
                 await ctx.prisma.commentLike.create({
@@ -42,78 +56,82 @@ export const commentLikeRouter = createTRPCRouter({
                         commentId: commentId,
                     },
                 });
+                await ctx.prisma.user.update({
+                    data: {
+                        internetPoints: {
+                            increment: 1,
+                        },
+                    },
+                    where: {
+                        id: ownerId,
+                    },
+                });
             }
 
             return { success: true };
         }),
 
-    // getAmountByTypeId: publicProcedure
-    //     .input(
-    //         z.object({
-    //             type: z.string(),
-    //             typeId: z.string(),
-    //         })
-    //     )
-    //     .query(({ ctx, input }) => {
-    //         return ctx.prisma.like.count({
-    //             where: { type: input.type, typeId: input.typeId },
-    //         });
-    //     }),
-    // checkisLiked: publicProcedure
-    //     .input(
-    //         z.object({
-    //             userId: z.string(),
-    //             type: z.string(),
-    //             typeId: z.string(),
-    //         })
-    //     )
-    //     .query(async ({ ctx, input }) => {
-    //         const like = await ctx.prisma.like.findFirst({
-    //             where: {
-    //                 userId: input.userId,
-    //                 type: input.type,
-    //                 typeId: input.typeId,
-    //             },
-    //             select: {
-    //                 id: true,
-    //             },
-    //         });
-    //         return like ? like.id : null;
-    //     }),
+    createPostLike: publicProcedure
+        .input(
+            z.object({
+                postId: z.string(),
+                userId: z.string(),
+                ownerId: z.string(),
+            })
+        )
+        .mutation(async ({ ctx, input }) => {
+            const { postId, userId, ownerId } = input;
 
-    // create: protectedProcedure
-    //     .input(
-    //         z.object({
-    //             userId: z.string(),
-    //             type: z.string(),
-    //             typeId: z.string(),
-    //         })
-    //     )
-    //     .mutation(async ({ input, ctx }) => {
-    //         if (ctx.session.user.id === input.userId) {
-    //             const createLike = await ctx.prisma.like.create({
-    //                 data: input,
-    //             });
-    //             return createLike;
-    //         }
-    //         throw new Error("Invalid userId");
-    //     }),
-    // delete: protectedProcedure
-    //     .input(
-    //         z.object({
-    //             id: z.string(),
-    //             userId: z.string(),
-    //             type: z.string(),
-    //             typeId: z.string(),
-    //         })
-    //     )
-    //     .mutation(async ({ input, ctx }) => {
-    //         if (ctx.session.user.id === input.userId) {
-    //             await ctx.prisma.like.delete({ where: { id: input.id } });
+            await ctx.prisma.postLike.create({
+                data: {
+                    userId: userId,
+                    postId: postId,
+                },
+            });
+            await ctx.prisma.user.update({
+                data: {
+                    internetPoints: {
+                        increment: 1,
+                    },
+                },
+                where: {
+                    id: ownerId,
+                },
+            });
 
-    //             return "Successfully deleted";
-    //         }
+            return { success: true };
+        }),
 
-    //         throw new Error("Invalid userId");
-    //     }),
+    deletePostLike: publicProcedure
+        .input(
+            z.object({
+                id: z.string(),
+                userId: z.string(),
+                ownerId: z.string(),
+            })
+        )
+        .mutation(async ({ ctx, input }) => {
+            const { id, userId, ownerId } = input;
+
+            if (userId === ctx.session?.user.id || ctx.session?.user.isAdmin) {
+                await ctx.prisma.postLike.delete({
+                    where: {
+                        id: id,
+                    },
+                });
+
+                await ctx.prisma.user.update({
+                    data: {
+                        internetPoints: {
+                            decrement: 1,
+                        },
+                    },
+                    where: {
+                        id: ownerId,
+                    },
+                });
+
+                return { success: true };
+            }
+        }),
 });

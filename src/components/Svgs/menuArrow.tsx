@@ -1,7 +1,7 @@
 const BackArrow = () => (
     <>
         <svg
-            className=" rotate-180 text-green-500"
+            className=" rotate-180"
             xmlns="http://www.w3.org/2000/svg"
             width="24"
             height="24"

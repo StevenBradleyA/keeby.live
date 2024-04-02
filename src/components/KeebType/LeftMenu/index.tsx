@@ -1,8 +1,9 @@
 import { useSession } from "next-auth/react";
-import { useEffect } from "react";
 import type { ChangeEvent } from "react";
-import { api } from "~/utils/api";
 import { setCookie } from "cookies-next";
+import MenuKeebSelection from "./keebSelection";
+import { themeStyles } from "../Theme/themeStyles";
+import type { ThemeName } from "../Theme/themeStyles";
 
 interface LeftMenuProps {
     mode: string;
@@ -13,6 +14,11 @@ interface LeftMenuProps {
     setTheme: (theme: string) => void;
     keeb: string;
     setKeeb: (keeb: string) => void;
+    keebId: string;
+    setKeebId: (keebId: string) => void;
+    scholarType: string;
+    setScholarType: (scholarType: string) => void;
+    setGameOver: (gameOver: boolean) => void;
 }
 
 export default function LeftMenu({
@@ -24,76 +30,79 @@ export default function LeftMenu({
     setTheme,
     keeb,
     setKeeb,
+    keebId,
+    setKeebId,
+    scholarType,
+    setScholarType,
+    setGameOver,
 }: LeftMenuProps) {
-    // todo refactor theme to be session so its accessible in nav
+    // todo refactor theme to be session so its accessible in nav to apply title png state variables????
     // theme needs to have context...
 
-    const { data: keebData } = api.keeb.getAll.useQuery();
     const { data: session } = useSession();
 
-    useEffect(() => {
-        if (session && keebData && keebData[0] && keeb === "") {
-            setKeeb(keebData[0].name);
-        }
-    }, [session, keebData, keeb, setKeeb]);
+    const styles = themeStyles[theme as ThemeName] || themeStyles["KEEBY"];
 
-    //      ------ Setting Cookies && State -------
     const handleModeChange = (e: ChangeEvent<HTMLSelectElement>) => {
         const newMode: string = e.target.value;
 
-        setMode(newMode);
         setCookie("mode", newMode, {
             maxAge: 60 * 60 * 24 * 365,
             path: "/",
         });
+        setGameOver(false);
+        setMode(newMode);
     };
 
     const handleGameLength = (e: ChangeEvent<HTMLSelectElement>) => {
         const newGameLength: number = +e.target.value;
-        setGameLength(newGameLength);
         setCookie("gameLength", newGameLength, {
             maxAge: 60 * 60 * 24 * 365,
             path: "/",
         });
+        setGameLength(newGameLength);
     };
 
     const handleThemeChange = (e: ChangeEvent<HTMLSelectElement>) => {
         const newTheme: string = e.target.value;
-        setTheme(newTheme);
         setCookie("theme", newTheme, {
             maxAge: 60 * 60 * 24 * 365,
             path: "/",
         });
+        setTheme(newTheme);
     };
-    const handleKeebChange = (e: ChangeEvent<HTMLSelectElement>) => {
-        const newKeeb: string = e.target.value;
-        setKeeb(newKeeb);
-        setCookie("keeb", newKeeb, {
+
+    const handleScholarTypeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+        const newScholarType: string = e.target.value;
+        setCookie("scholarType", newScholarType, {
             maxAge: 60 * 60 * 24 * 365,
             path: "/",
         });
+        setScholarType(newScholarType);
     };
 
     return (
-        <div className="flex w-36 flex-col rounded-2xl border border-green-500 bg-black px-3 py-2">
-            {/* <button>Rank</button> */}
-            <div className="flex justify-center">Mode</div>
+        <div
+            className={`flex flex-col rounded-xl border-2 ${styles.border} border-opacity-50 ${styles.backgroundColor} bg-opacity-30 p-5 ${styles.hit} laptop:h-[65%] laptop:w-full desktop:h-[55%] desktop:w-[85%] `}
+        >
+            <label className="">Mode</label>
             <select
-                className=" bg-black px-2 py-1 text-green-500"
+                className={` w-full rounded-md  ${styles.menuInputBackground} py-1 shadow-sm `}
                 value={mode}
-                // onChange={(e) => setMode(e.target.value)}
                 onChange={handleModeChange}
             >
-                <option value="speed">Speed</option>
-                <option value="quote">Quote</option>
-                <option value="hacktime">It&apos;s Hacking Time</option>
+                <option value="Speed">Speed</option>
+                {/* <option value="Gitgud">git gud</option> */}
+                <option value="Freeplay">Freeplay</option>
+                {/* <option value="Hacktime">It&apos;s Hacking Time</option> */}
+                <option value="Scholar">Scholar</option>
             </select>
 
-            {mode === "speed" && (
-                <div className="flex gap-5">
-                    <div>Length</div>
+            {mode === "Speed" && (
+                <>
+                    <label className="mt-2 ">Length</label>
                     <select
-                        className=" bg-black px-2 py-1 text-green-500"
+                        className={` rounded-md shadow-sm ${styles.menuInputBackground} py-1 `}
                         value={gameLength}
                         onChange={handleGameLength}
                     >
@@ -103,42 +112,48 @@ export default function LeftMenu({
                         </option>
                         <option value={50}>50</option>
                     </select>
-                </div>
+                </>
             )}
-            <div className="flex justify-center">Theme</div>
+            {mode === "Scholar" && (
+                <>
+                    <label className="mt-2 ">Type</label>
+                    <select
+                        className={`
+                    rounded-md ${styles.menuInputBackground} py-1 shadow-sm `}
+                        value={scholarType}
+                        onChange={handleScholarTypeChange}
+                    >
+                        <option value="Animal">animal</option>
+                        <option value="Vocab">vocab</option>
+                        <option value="Keyboards">keyboards</option>
+                        {/* <option value="SoftwareEngineering">
+                            software engineering
+                        </option> */}
+                    </select>
+                </>
+            )}
+            <label className="mt-2 ">Theme</label>
             <select
                 className={`
-                    bg-black px-2 py-1 text-green-500 `}
+                    rounded-md ${styles.menuInputBackground} py-1 shadow-sm `}
                 value={theme}
                 onChange={handleThemeChange}
             >
-                <option value="keeby">keeby</option>
-                <option value="pastel-blue">blue</option>
-                <option value="pastel-pink">pink</option>
-                <option value="primeagen">primeagen</option>
-                <option value="hipyo">hipyo</option>
+                <option value="KEEBY">keeby</option>
+                <option value="PRIMEAGEN">primeagen</option>
+                <option value="PIGGY">piggy</option>
+                <option value="HIPYO">hipyo</option>
             </select>
-            {session &&
-                session.user.hasProfile &&
-                keeb.length > 0 &&
-                keebData &&
-                keebData.length > 0 && (
-                    <>
-                        <div className="flex justify-center">Keeb</div>
-                        <select
-                            className={`
-                    bg-black px-2 py-1 text-green-500 `}
-                            value={keeb}
-                            onChange={handleKeebChange}
-                        >
-                            {keebData.map((e, i) => (
-                                <option key={i} value={`${e.name}`}>
-                                    {e.name}
-                                </option>
-                            ))}
-                        </select>
-                    </>
-                )}
+            {session && session.user.hasProfile && (
+                <MenuKeebSelection
+                    userId={session.user.id}
+                    keeb={keeb}
+                    keebId={keebId}
+                    setKeeb={setKeeb}
+                    setKeebId={setKeebId}
+                    background={styles.menuInputBackground}
+                />
+            )}
         </div>
     );
 }

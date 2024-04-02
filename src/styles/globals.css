@@ -56,8 +56,20 @@
     filter: invert(100%) sepia(6%) saturate(7476%) hue-rotate(215deg)
         brightness(110%) contrast(105%);
 }
+.png-red {
+    filter: invert(26%) sepia(83%) saturate(7492%) hue-rotate(356deg)
+        brightness(112%) contrast(123%);
+}
+.pink-hue-effect {
+    filter: hue-rotate(130deg) saturate(2);
+}
 
-/* --------------                            --------------  */
+.png-primeagen {
+    filter: invert(99%) sepia(61%) saturate(1651%) hue-rotate(164deg)
+        brightness(88%) contrast(93%);
+}
+
+/* --------------              colors              --------------  */
 
 /* rgb(34 197 94) this is text-green-500 */
 /* #22C55E */
@@ -69,186 +81,11 @@ $blue: #2033c1; */
 
 /* --------------                            --------------  */
 
-/* -----------test  */
+/* --------------         ADMIN          --------------  */
 
-#paragraph {
-    color: #646669;
+.admin-search::placeholder {
+    color: #ff0000;
 }
-.result-details {
-    color: white;
-}
-::selection {
-    color: #fff;
-    background: #58cc00;
-}
-.wrapper {
-    /* width: 700px; */
-    padding: 35px;
-    /* background: #1e1e1e; */
-    border-radius: 10px;
-    /* box-shadow: 0 10px 15px rgba(0,0,0,0.05); */
-}
-.wrapper .input-field {
-    opacity: 0;
-    z-index: -999;
-    position: absolute;
-}
-.wrapper .content-box {
-    padding: 13px 20px 0;
-    /* border-radius: 10px; */
-    /* border: 4px solid #36cc00; */
-}
-.content-box .typing-text {
-    overflow: hidden;
-    max-height: 256px;
-}
-.typing-text::-webkit-scrollbar {
-    width: 0;
-}
-.typing-text p {
-    font-size: 1.5rem;
-    text-align: justify;
-    letter-spacing: 1px;
-    /* word-break: break-all; */
-    color: #646669;
-}
-.typing-text p span {
-    position: relative;
-}
-.typing-text p span.correct {
-    color: #d1d0c5;
-}
-.typing-text p span.incorrect {
-    color: #ca4754;
-}
-.typing-text p span.active {
-    color: #81f36f;
-}
-.typing-text p span.active::before {
-    position: absolute;
-    content: "";
-    height: 2px;
-    width: 100%;
-    bottom: 0;
-    left: 0;
-    opacity: 0;
-    border-radius: 5px;
-    background: #1bcc00;
-    animation: blink 1s ease-in-out infinite;
-}
-@keyframes blink {
-    50% {
-        opacity: 1;
-    }
-}
-.content-box .content {
-    margin-top: 17px;
-    display: flex;
-    padding: 12px 0;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    border-top: 3px solid #1bcc00;
-}
-.content button {
-    outline: none;
-    border: none;
-    width: 105px;
-    color: #1bcc00;
-    padding: 8px 0;
-    font-size: 17px;
-    font-weight: 600;
-    cursor: pointer;
-    border-radius: 15px;
-    border: 3px solid #1bcc00;
-    background: none;
-    transition: transform 0.2s ease;
-}
-.content button:active {
-    transform: scale(0.89);
-}
-.content button:hover {
-    background: #ffffff;
-}
-.content .result-details {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    width: calc(100% - 140px);
-    justify-content: space-between;
-}
-.result-details li {
-    display: flex;
-    height: 20px;
-    list-style: none;
-    position: relative;
-    align-items: center;
-}
-.result-details li:not(:first-child) {
-    padding-left: 22px;
-    border-left: 2px solid #bfbfbf;
-}
-.result-details li p {
-    font-size: 13px;
-}
-.result-details li span {
-    display: block;
-    font-size: 13px;
-    margin-left: 10px;
-}
-li span b {
-    font-weight: 500;
-}
-li:not(:first-child) span {
-    font-weight: 500;
-}
-@media (max-width: 745px) {
-    .wrapper {
-        padding: 20px;
-    }
-    .content-box .content {
-        padding: 20px 0;
-    }
-    .content-box .typing-text {
-        max-height: 100%;
-    }
-    .typing-text p {
-        font-size: 19px;
-        text-align: left;
-    }
-    .content button {
-        width: 100%;
-        font-size: 15px;
-        padding: 10px 0;
-        margin-top: 20px;
-    }
-    .content .result-details {
-        width: 100%;
-    }
-    .result-details li:not(:first-child) {
-        border-left: 0;
-        padding: 0;
-    }
-    .result-details li p,
-    .result-details li span {
-        font-size: 15px;
-    }
-}
-@media (max-width: 518px) {
-    .wrapper .content-box {
-        padding: 10px 15px 0;
-    }
-    .typing-text p {
-        font-size: 13px;
-    }
-    .result-details li {
-        margin-bottom: 10px;
-    }
-    .content button {
-        margin-top: 10px;
-    }
-}
-/* --------------                            --------------  */
 
 /* cool pulse animation maybe for profile */
 
@@ -285,37 +122,26 @@ li:not(:first-child) span {
     z-index: 50;
 }
 
-/* --------------     game     --------------  */
+/* --------------     KEEB TYPE    --------------  */
 
-/* word */
-.active {
+.keeb-type-pause-menu {
+    z-index: 5;
 }
 
-.word {
+.keeb-type-input {
+    z-index: 10;
 }
 
-.wordError {
-}
-
-/* letter */
-.correct {
-    color: #58cc00;
-}
-.correct-typing {
-    color: #58cc00;
-}
-
-.incorrect {
-    color: red;
-}
-
-.cursor-blink {
-    animation: blink-animation 0.8s step-end infinite;
+.blinking-cursor {
+    animation: blink-animation 0.7s linear infinite alternate;
 }
 
 @keyframes blink-animation {
+    from {
+        opacity: 1;
+    }
     to {
-        visibility: hidden;
+        opacity: 0;
     }
 }
 
@@ -423,6 +249,20 @@ li:not(:first-child) span {
 
 /* --------------         KEEB SHOP          --------------  */
 
+.keebshop-listing-preview-container {
+}
+.keebshop-listing-preview {
+    visibility: visible;
+    transition: visibility 0s linear 0.5s, opacity 0.5s ease-in-out 0s;
+    opacity: 1;
+}
+
+.keebshop-listing-preview-container:hover .keebshop-listing-preview {
+    visibility: hidden;
+    /* transition: visibility 0s, opacity 0.2s ease-in-out; */
+    opacity: 0;
+}
+
 .very-sticky {
     position: -webkit-sticky; /* for Safari */
     position: sticky;
@@ -463,8 +303,6 @@ li:not(:first-child) span {
     filter: invert(48%) sepia(5%) saturate(3277%) hue-rotate(72deg)
         brightness(116%) contrast(126%);
 }
-
-
 
 /*  ----    Listings Hover effect    ---- */
 .listing-preview-hover-effect {
@@ -628,6 +466,22 @@ li:not(:first-child) span {
 }
 
 .pog-title:hover {
+    font-variation-settings: "wght" 100, "ital" 0;
+    text-shadow: none;
+}
+
+.pob-title {
+    transition: all 0.2s;
+    -webkit-text-stroke: 0.53px #616161;
+    font-variation-settings: "wght" 900, "ital" 1;
+    font-size: 2rem;
+    color: transparent;
+    text-shadow: 1.33px 1.33px 0px #07bccc, 2px 2px 0px #e601c0,
+        2.67px 2.67px 0px #e9019a, 3.33px 3.33px 0px #f40468,
+        6px 6px 1.33px #482896;
+}
+
+.pob-title:hover {
     font-variation-settings: "wght" 100, "ital" 0;
     text-shadow: none;
 }
@@ -821,7 +675,45 @@ input[type="checkbox"]:hover {
     outline: none;
 }
 
-/* --------------     Profile    --------------  */
+/* --------------         KEEB SHARE          --------------  */
+
+.post-preview-tag-container {
+}
+
+.post-preview-tag-container:hover .post-preview-tag {
+    visibility: hidden;
+}
+
+.post-page-user-container {
+    z-index: 2;
+}
+
+.post-page-user-contents {
+    z-index: 20;
+}
+
+.post-page-user-overlay {
+    /* clip-path: polygon(0 15%, 100% 0%, 100% 100%, 0 100%); */
+    clip-path: polygon(0 25%, 75% 0%, 100% 10%, 100% 100%, 0 100%);
+    /* clip-path: polygon(0 10%, 10% 0, 90% 0, 100% 10%, 100% 100%, 0 100%); */
+}
+
+.post-preview-container {
+}
+.post-preview-link {
+    visibility: hidden;
+}
+.post-preview-container:hover .post-preview-link {
+    visibility: visible;
+}
+
+.post-preview-container:hover .post-preview-tag {
+    visibility: hidden;
+}
+
+/* --------------         END KEEB SHARE          --------------  */
+
+/* --------------         PROFILE          --------------  */
 
 @import url(https://fonts.googleapis.com/css?family=VT323);
 .retroVT {
@@ -959,6 +851,12 @@ input[type="checkbox"]:hover {
     scrollbar-width: none; /* Firefox */
 }
 
+.display-keeb-card-overlay {
+    clip-path: polygon(0 15%, 100% 0%, 100% 100%, 0 100%);
+}
+
+/* --------------         END PROFILE         --------------  */
+
 /* --------------     Public Profile    --------------  */
 
 .public-profile-background {
@@ -972,14 +870,14 @@ input[type="checkbox"]:hover {
     z-index: 1;
 }
 
+.matrix-contents {
+    z-index: 10;
+}
+
 /* --------------     404    --------------  */
 
 .lost-index {
-    position: fixed; /* This will fix the position relative to the viewport */
     z-index: 10; /* Higher z-index to ensure it's above the video */
-    top: 50%; /* Example positioning */
-    left: 50%;
-    transform: translate(-50%, -50%);
 }
 
 /* --------------     Loading    --------------  */

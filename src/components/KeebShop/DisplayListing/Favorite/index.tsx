@@ -14,17 +14,20 @@ export default function ListingPageFavorite({
     const { data: favoriteId, isLoading } =
         api.favorite.checkIfListingIsFavorited.useQuery({ userId, listingId });
 
-    const { mutate: favorite } = api.favorite.create.useMutation({
-        onSuccess: () => {
-            void ctx.favorite.checkIfListingIsFavorited.invalidate();
-        },
-    });
+    const { mutate: favorite } = api.favorite.createListingFavorite.useMutation(
+        {
+            onSuccess: () => {
+                void ctx.favorite.checkIfListingIsFavorited.invalidate();
+            },
+        }
+    );
 
-    const { mutate: unfavorite } = api.favorite.delete.useMutation({
-        onSuccess: () => {
-            void ctx.favorite.checkIfListingIsFavorited.invalidate();
-        },
-    });
+    const { mutate: unfavorite } =
+        api.favorite.deleteListingFavorite.useMutation({
+            onSuccess: () => {
+                void ctx.favorite.checkIfListingIsFavorited.invalidate();
+            },
+        });
 
     const handleFavoriteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();

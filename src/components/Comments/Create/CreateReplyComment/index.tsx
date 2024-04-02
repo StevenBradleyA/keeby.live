@@ -4,7 +4,7 @@ import { api } from "~/utils/api";
 import Image from "next/image";
 import defaultProfile from "@public/Profile/profile-default.png";
 import ModalDialog from "~/components/Modal";
-import CommentSignInModal from "../../Modal/signInModal";
+import SignInModal from "../../Modal/signInModal";
 
 interface CreateReplyCommentProps {
     type: string;
@@ -51,7 +51,8 @@ export default function CreateReplyComment({
         onSuccess: () => {
             void ctx.comment.getAllByTypeId.invalidate();
             void ctx.comment.getAllReplysByTypeId.invalidate();
-            void ctx.comment.getAmountByTypeId.invalidate();
+            if (type === "listing") void ctx.listing.getOne.invalidate();
+            if (type === "post") void ctx.post.getOneById.invalidate();
         },
     });
 
@@ -137,7 +138,7 @@ export default function CreateReplyComment({
                     />
 
                     <textarea
-                        className="reply-input w-full  border-none bg-transparent p-2 outline-none"
+                        className="reply-input w-full  border-none bg-transparent p-2 text-white outline-none"
                         value={text}
                         placeholder="Add a reply..."
                         onChange={(e) => setText(e.target.value)}
@@ -166,7 +167,7 @@ export default function CreateReplyComment({
                     isOpen={isSignInModalOpen}
                     onClose={closeSignInModal}
                 >
-                    <CommentSignInModal closeModal={closeSignInModal} />
+                    <SignInModal closeModal={closeSignInModal} />
                 </ModalDialog>
             </form>
         </div>

@@ -1,37 +1,19 @@
 import Image from "next/image";
 import Link from "next/link";
 import defaultProfile from "@public/Profile/profile-default.png";
-// import StarDisplay from "~/components/Reviews/Star";
 import StarRating from "~/components/Reviews/Star/starRating";
 
-interface Seller {
-    profile: string | null;
-    username: string | null;
-    selectedTag: string | null;
-}
-interface ReviewAggregate {
-    _avg: {
-        starRating: number | null;
+interface SellerListingProps {
+    seller: {
+        id: string;
+        username: string | null;
+        selectedTag: string | null;
+        profile: string | null;
+        avgRating?: number | null;
     };
 }
 
-interface SellerInfo {
-    seller: Seller | null;
-    allSellerStars: ReviewAggregate;
-}
-
-interface SellerListingProps {
-    sellerInfo: SellerInfo;
-}
-
-export default function SellerListingCard({ sellerInfo }: SellerListingProps) {
-    const { seller, allSellerStars } = sellerInfo;
-
-    // todo is user is not verified take to /verification otherwise we allow them to actually buy the board
-
-    // also going to allow them to make an offer
-    // todo not sure the best way to handle offers. only one offer at a time? make it unique if the buyer counters the offer or something . maybe it needs a string that determines which way its going aka buyer or seller
-
+export default function SellerListingCard({ seller }: SellerListingProps) {
     return (
         <div className="flex h-full w-full gap-5 p-5">
             {seller && seller.username && (
@@ -70,15 +52,15 @@ export default function SellerListingCard({ sellerInfo }: SellerListingProps) {
                         </div>
                     )}
 
-                    {allSellerStars._avg.starRating === null ? (
+                    {seller.avgRating ? (
+                        <StarRating rating={seller.avgRating} />
+                    ) : (
                         <div className="flex flex-col">
                             <div className="text-darkGray">
                                 Unreviewed seller
                             </div>
                             <StarRating rating={0} />
                         </div>
-                    ) : (
-                        <StarRating rating={allSellerStars._avg.starRating} />
                     )}
                 </div>
             </div>

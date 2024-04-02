@@ -3,8 +3,7 @@ import { api } from "~/utils/api";
 import EachListingCardPreview from "./eachListingCardPreview";
 import Image from "next/image";
 import keebo from "@public/Profile/keebo.png";
-import { useEffect } from "react";
-import { throttle } from "lodash";
+import { useEffect, useRef } from "react";
 
 interface DisplayListingPreviewsProps {
     searchInput: string;
@@ -32,19 +31,6 @@ interface Filters {
     priceOrder?: string;
 }
 
-interface EachKeeb {
-    id: string;
-    title: string;
-    price: number;
-    switchType: string;
-    images: EachPreviewImage[];
-}
-
-interface EachPreviewImage {
-    id: string;
-    link: string;
-}
-
 export default function DisplayListingPreviews({
     searchInput,
     switchType,
@@ -58,6 +44,7 @@ export default function DisplayListingPreviews({
     hotSwapType,
     priceOrder,
 }: DisplayListingPreviewsProps) {
+    const scrollFlagRef = useRef<HTMLDivElement | null>(null);
     const queryInputs: Filters = {};
 
     if (searchInput.length > 0) {
@@ -121,24 +108,26 @@ export default function DisplayListingPreviews({
     );
 
     useEffect(() => {
-        const handleScroll = throttle(() => {
-            const nearBottom =
-                window.innerHeight + window.scrollY >=
-                document.documentElement.offsetHeight - 300; // pagination fetch distance from bottom px
-            if (
-                nearBottom &&
-                hasNextPage &&
-                !isLoading &&
-                !isFetchingNextPage
-            ) {
-                void fetchNextPage();
-            }
-        }, 100);
+        if (isLoading || isFetchingNextPage || !hasNextPage) return;
 
-        window.addEventListener("scroll", handleScroll);
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0] && entries[0].isIntersecting) {
+                    void fetchNextPage();
+                }
+            },
+            { threshold: 1.0 }
+        );
+
+        const currentFlag = scrollFlagRef.current;
+        if (currentFlag) {
+            observer.observe(currentFlag);
+        }
+
         return () => {
-            window.removeEventListener("scroll", handleScroll);
-            handleScroll.cancel();
+            if (observer && currentFlag) {
+                observer.unobserve(currentFlag);
+            }
         };
     }, [hasNextPage, isLoading, isFetchingNextPage, fetchNextPage]);
 
@@ -158,11 +147,13 @@ export default function DisplayListingPreviews({
                         page.listings.map((keeb, i) => (
                             <EachListingCardPreview
                                 key={keeb.id}
-                                keeb={keeb as unknown as EachKeeb}
+                                keeb={keeb}
                                 index={i}
                             />
                         ))
                     )}
+
+                    <div ref={scrollFlagRef} className="h-10 w-full"></div>
                 </div>
             )}
             {isFetchingNextPage && (

@@ -1,7 +1,6 @@
 import LoadingSpinner from "~/components/Loading";
 import { api } from "~/utils/api";
-import { useEffect } from "react";
-import { throttle } from "lodash";
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 import EachListingCardPreview from "./eachListingCardPreview";
 import keebo from "@public/Profile/keebo.png";
@@ -32,19 +31,19 @@ interface Filters {
     priceOrder?: string;
 }
 
-interface EachKeeb {
-    id: string;
-    title: string;
-    price: number;
-    switchType: string;
-    images: EachPreviewImage[];
-    commentCount: number;
-}
+// interface EachKeeb {
+//     id: string;
+//     title: string;
+//     price: number;
+//     switchType: string;
+//     images: EachPreviewImage[];
+//     commentCount: number;
+// }
 
-interface EachPreviewImage {
-    id: string;
-    link: string;
-}
+// interface EachPreviewImage {
+//     id: string;
+//     link: string;
+// }
 
 export default function DisplayPopularListingPreviews({
     searchInput,
@@ -59,6 +58,7 @@ export default function DisplayPopularListingPreviews({
     hotSwapType,
     priceOrder,
 }: DisplayPopularListingPreviewsProps) {
+    const scrollFlagRef = useRef<HTMLDivElement | null>(null);
     const queryInputs: Filters = {};
 
     if (searchInput.length > 0) {
@@ -122,24 +122,26 @@ export default function DisplayPopularListingPreviews({
     );
 
     useEffect(() => {
-        const handleScroll = throttle(() => {
-            const nearBottom =
-                window.innerHeight + window.scrollY >=
-                document.documentElement.offsetHeight - 300; // pagination fetch distance from bottom px
-            if (
-                nearBottom &&
-                hasNextPage &&
-                !isLoading &&
-                !isFetchingNextPage
-            ) {
-                void fetchNextPage();
-            }
-        }, 100);
+        if (isLoading || isFetchingNextPage || !hasNextPage) return;
 
-        window.addEventListener("scroll", handleScroll);
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0] && entries[0].isIntersecting) {
+                    void fetchNextPage();
+                }
+            },
+            { threshold: 1.0 }
+        );
+
+        const currentFlag = scrollFlagRef.current;
+        if (currentFlag) {
+            observer.observe(currentFlag);
+        }
+
         return () => {
-            window.removeEventListener("scroll", handleScroll);
-            handleScroll.cancel();
+            if (observer && currentFlag) {
+                observer.unobserve(currentFlag);
+            }
         };
     }, [hasNextPage, isLoading, isFetchingNextPage, fetchNextPage]);
 
@@ -159,11 +161,12 @@ export default function DisplayPopularListingPreviews({
                         page.popularListings.map((keeb, i) => (
                             <EachListingCardPreview
                                 key={keeb.id}
-                                keeb={keeb as unknown as EachKeeb}
+                                keeb={keeb}
                                 index={i}
                             />
                         ))
                     )}
+                    <div ref={scrollFlagRef} className="h-10 w-full"></div>
                 </div>
             )}
             {isFetchingNextPage && (

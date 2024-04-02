@@ -37,6 +37,7 @@ export const env = createEnv({
         STRIPE_SECRET: z.string(),
         PAYPAL_CLIENT_ID: z.string(),
         PAYPAL_SECRET: z.string(),
+        POGWORD: z.string(),
     },
 
     /**
@@ -80,6 +81,7 @@ export const env = createEnv({
         STRIPE_SECRET: process.env.STRIPE_SECRET,
         PAYPAL_CLIENT_ID: process.env.PAYPAL_CLIENT_ID,
         PAYPAL_SECRET: process.env.PAYPAL_SECRET,
+        POGWORD: process.env.POGWORD,
     },
     /**
      * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.
