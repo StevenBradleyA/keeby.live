@@ -5,10 +5,10 @@ export default function Custom404() {
     return (
         <div className="font-mono text-gray-400 w-full h-full">
             <div className="matrix-full-screen fixed bottom-0 left-0 right-0 top-0 object-cover h-full w-full ">
-                <video className="w-full h-full object-cover" autoPlay loop muted>
+                {/* <video className="w-full h-full object-cover" autoPlay loop muted>
                     <source src="/Videos/404.mp4" type="video/mp4" />
                     Your browser does not support the video tag.
-                </video>
+                </video> */}
             </div>
             <div className=" lost-index text-purple-500 absolute left-1/2 -translate-x-1/2 rounded-xl border-2 border-purple-500 bg-black bg-opacity-70 p-10  ">
                 <div className="text-purple-500 rounded-md  p-3 text-lg leading-relaxed shadow-xl">

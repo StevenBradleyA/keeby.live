@@ -23,7 +23,7 @@ export default function PublicProfileUserInfo({
     return (
         <div className="flex w-full justify-center ">
             <div className="matrix-full-screen fixed bottom-0 left-0 right-0 top-0 h-full w-full object-cover object-center opacity-40  ">
-                <video
+                {/* <video
                     className="absolute bottom-0 left-0 right-0 top-0 -z-10 h-full w-full object-cover object-center"
                     autoPlay
                     loop
@@ -31,7 +31,7 @@ export default function PublicProfileUserInfo({
                 >
                     <source src="/Videos/space-purple.mp4" type="video/mp4" />
                     Your browser does not support the video tag.
-                </video>
+                </video> */}
             </div>
 
             <div className="public-profile-container mt-10 flex w-2/3 rounded-2xl border-4 border-pink-500">

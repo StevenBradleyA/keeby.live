@@ -31,7 +31,7 @@ export default function CreateListingAgreement() {
     return (
         <>
             <div className="matrix-full-screen fixed bottom-0 left-0 right-0 top-0 h-full w-full opacity-80  ">
-                <video
+                {/* <video
                     className="absolute bottom-0 left-0 right-0 top-0 -z-10 h-full w-full object-cover  object-center"
                     autoPlay
                     loop
@@ -42,7 +42,7 @@ export default function CreateListingAgreement() {
                         type="video/mp4"
                     />
                     Your browser does not support the video tag.
-                </video>
+                </video> */}
             </div>
             <div className="z-10 flex w-full flex-col items-center justify-center">
                 {showCreate ? (

@@ -598,7 +598,7 @@ export default function Home() {
 
                                     {isSearchFocus && (
                                         <div className=" search-input-matrix absolute -bottom-[70vh] left-0 top-0 -m-5 rounded-md opacity-70  ">
-                                            <video
+                                            {/* <video
                                                 className="h-full object-cover"
                                                 autoPlay
                                                 loop
@@ -610,7 +610,7 @@ export default function Home() {
                                                 />
                                                 Your browser does not support
                                                 the video tag.
-                                            </video>
+                                            </video> */}
                                         </div>
                                     )}
                                 </div>

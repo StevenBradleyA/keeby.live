@@ -180,7 +180,7 @@ export default function EachGameResultCard({
                         {theme === "KEEBY" && (
                             <>
                                 <div className=" absolute -left-5 -right-5 -top-12 bottom-[40%] overflow-hidden  ">
-                                    <video
+                                    {/* <video
                                         className="-z-10 w-full object-cover"
                                         autoPlay
                                         loop
@@ -192,7 +192,7 @@ export default function EachGameResultCard({
                                         />
                                         Your browser does not support the video
                                         tag.
-                                    </video>
+                                    </video> */}
                                 </div>
                                 <div className=" absolute -left-5 -right-5 -top-12 bottom-[40%] z-20 bg-gradient-to-b from-[rgba(0,0,0,0)] to-[#222]  object-cover"></div>
                             </>

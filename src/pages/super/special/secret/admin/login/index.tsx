@@ -36,7 +36,7 @@ export default function SuperSpecialSecretAdminLogin() {
     return (
         <div className="relative h-full w-full text-green-500 ">
             <div className="matrix-full-screen fixed bottom-0 left-0 right-0 top-0  ">
-                <video
+                {/* <video
                     className="absolute bottom-0 left-0 right-0 top-0 -z-10 h-full w-full object-cover object-center"
                     autoPlay
                     loop
@@ -47,7 +47,7 @@ export default function SuperSpecialSecretAdminLogin() {
                         type="video/mp4"
                     />
                     Your browser does not support the video tag.
-                </video>
+                </video> */}
             </div>
             <div className=" absolute left-1/2 z-10 flex w-1/2 -translate-x-1/2   transform flex-col items-center justify-center rounded-2xl bg-black p-20 ">
                 {sessionData === null ? (
