@@ -1,33 +1,25 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-    provider        = "prisma-client-js"
-    previewFeatures = ["jsonProtocol"]
+    provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "sqlite"
-    // NOTE: When using mysql or sqlserver, uncomment the @db.Text annotations in model Account below
-    // Further reading:
-    // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
-    // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
+    provider = "postgresql"
     url      = env("DATABASE_URL")
 }
 
-// Necessary for Next auth
+// next-auth
 model Account {
     id                String  @id @default(cuid())
     userId            String
     type              String
     provider          String
     providerAccountId String
-    refresh_token     String? // @db.Text
-    access_token      String? // @db.Text
+    refresh_token     String?
+    access_token      String?
     expires_at        Int?
     token_type        String?
     scope             String?
-    id_token          String? // @db.Text
+    id_token          String?
     session_state     String?
 
     user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -40,7 +32,7 @@ model Comment {
     text String
 
     userId         String
-    parentId       String? // ID of the parent comment, null if top-level comment
+    parentId       String?
     referencedUser String?
 
     // New explicit relations
@@ -240,8 +232,6 @@ model Rank {
     users    User[]
 }
 
-// could just create ranks in admin to avoid using seeders this way i could change ranks anytime
-
 model Review {
     id         String   @id @default(cuid())
     text       String
@@ -275,16 +265,16 @@ model Session {
 }
 
 model User {
-    id               String    @id @default(cuid())
-    name             String?
-    email            String?   @unique
-    emailVerified    DateTime?
-    internetPoints   Int       @default(0)
-    image            String?
-    profile          String?
-    rankId           String?
-    username         String?   @unique
-    selectedTag      String?
+    id             String    @id @default(cuid())
+    name           String?
+    email          String?   @unique
+    emailVerified  DateTime?
+    internetPoints Int       @default(0)
+    image          String?
+    profile        String?
+    rankId         String?
+    username       String?   @unique
+    selectedTag    String?
 
     isVerified   Boolean @default(false)
     isAdmin      Boolean @default(false)
