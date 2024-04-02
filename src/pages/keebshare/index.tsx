@@ -89,7 +89,7 @@ export default function KeebShare() {
 
     return (
         <>
-            <div className="mt-10 flex w-full flex-col px-16 text-darkGray">
+            <div className="mt-10 flex w-full flex-col tablet:px-5 desktop:px-16 text-darkGray">
                 <div className=" flex w-full  gap-10 ">
                     <div className=" very-sticky flex w-1/4 flex-col">
                         <div className="mb-5 flex gap-5 ">
@@ -122,7 +122,7 @@ export default function KeebShare() {
                             </div>
                         </div>
 
-                        <div className=" relative h-[70vh] w-full overflow-hidden rounded-xl bg-keebyGray p-5 text-darkGray">
+                        <div className=" relative tablet:h-[68vh] desktop:h-[72vh] w-full overflow-auto rounded-xl bg-keebyGray p-5 text-darkGray">
                             {isSpecify ? (
                                 <div className="flex w-full flex-col items-start gap-5">
                                     <div className="flex w-full flex-col items-start">

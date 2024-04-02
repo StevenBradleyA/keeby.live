@@ -8,7 +8,7 @@ export default function MainFooter() {
     return (
         <div className=" w-full bg-keebyGray px-20 pt-10 text-darkGray">
             <div className="flex w-full justify-between">
-                <div className="flex flex-col w-96">
+                <div className="flex w-96 flex-col">
                     <div className="flex items-center">
                         <Image
                             alt="hacktime logo"
@@ -169,13 +169,6 @@ export default function MainFooter() {
                             className="hover:text-green-500"
                         >
                             What do we sell?
-                        </Link>
-                        <Link
-                            href="/privacy-policy"
-                            aria-label="privacy"
-                            className="hover:text-green-500"
-                        >
-                            How does Keeby Profit?
                         </Link>
                     </div>
                     <div className="flex flex-col gap-1">
