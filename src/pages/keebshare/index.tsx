@@ -288,7 +288,7 @@ export default function KeebShare() {
                     </div>
                 </div>
             </div>
-            <div className="mt-40 w-full">
+            <div className="mt-96 w-full">
                 <MainFooter />
             </div>
         </>
