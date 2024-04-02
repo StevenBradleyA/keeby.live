@@ -33,10 +33,10 @@ export const env = createEnv({
         NEXT_PUBLIC_AWS_ACCESS_KEY_ID: z.string(),
         NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY: z.string(),
         NEXT_PUBLIC_REGION: z.string(),
-        NEXT_PUBLIC_STRIPE_API: z.string(),
-        STRIPE_SECRET: z.string(),
-        PAYPAL_CLIENT_ID: z.string(),
-        PAYPAL_SECRET: z.string(),
+        // NEXT_PUBLIC_STRIPE_API: z.string(),
+        // STRIPE_SECRET: z.string(),
+        // PAYPAL_CLIENT_ID: z.string(),
+        // PAYPAL_SECRET: z.string(),
         POGWORD: z.string(),
     },
 
@@ -51,7 +51,7 @@ export const env = createEnv({
         NEXT_PUBLIC_AWS_ACCESS_KEY_ID: z.string(),
         NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY: z.string(),
         NEXT_PUBLIC_REGION: z.string(),
-        NEXT_PUBLIC_STRIPE_API: z.string(),
+        // NEXT_PUBLIC_STRIPE_API: z.string(),
     },
 
     /**
@@ -77,10 +77,10 @@ export const env = createEnv({
             process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY,
         NEXT_PUBLIC_BUCKET_NAME: process.env.NEXT_PUBLIC_BUCKET_NAME,
         NEXT_PUBLIC_REGION: process.env.NEXT_PUBLIC_REGION,
-        NEXT_PUBLIC_STRIPE_API: process.env.NEXT_PUBLIC_STRIPE_API,
-        STRIPE_SECRET: process.env.STRIPE_SECRET,
-        PAYPAL_CLIENT_ID: process.env.PAYPAL_CLIENT_ID,
-        PAYPAL_SECRET: process.env.PAYPAL_SECRET,
+        // NEXT_PUBLIC_STRIPE_API: process.env.NEXT_PUBLIC_STRIPE_API,
+        // STRIPE_SECRET: process.env.STRIPE_SECRET,
+        // PAYPAL_CLIENT_ID: process.env.PAYPAL_CLIENT_ID,
+        // PAYPAL_SECRET: process.env.PAYPAL_SECRET,
         POGWORD: process.env.POGWORD,
     },
     /**
