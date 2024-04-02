@@ -7,7 +7,6 @@ import { getCookies } from "cookies-next";
 import { themeStyles } from "~/components/KeebType/Theme/themeStyles";
 import type { ThemeName } from "~/components/KeebType/Theme/themeStyles";
 import { useTheme } from "~/components/Context/Theme";
-import QuoteMode from "~/components/KeebType/ScholarMode";
 import ScholarMode from "~/components/KeebType/ScholarMode";
 
 export default function KeebType() {
@@ -31,7 +30,7 @@ export default function KeebType() {
     // mode specific
     const [gameLength, setGameLength] = useState<number>(20);
     const [scholarType, setScholarType] = useState<string>("Vocab");
-    const [letterSelect, setLetterSelect] = useState<string>("Cycle");
+    // const [letterSelect, setLetterSelect] = useState<string>("Cycle");
 
     const styles = themeStyles[theme as ThemeName] || themeStyles["KEEBY"];
 

@@ -19,7 +19,6 @@ import ManagePosts from "~/components/KeebShare/ManagePosts";
 import DisplayFavoriteListings from "~/components/KeebShop/DisplayFavoriteListings";
 import DisplayFavoritePosts from "~/components/KeebShare/DisplayFavoritePosts";
 import DisplayProfileKeebs from "~/components/Profile/Keeb/DisplayKeebs";
-import DisplayAllGameStats from "~/components/KeebType/GameStats/displayAllGameStatsCheck";
 import DisplayAllGameStatsCheck from "~/components/KeebType/GameStats/displayAllGameStatsCheck";
 import UpdateUserTag from "~/components/Profile/User/Update/Tag";
 import ModalDialog from "~/components/Modal";
@@ -31,7 +30,7 @@ export default function UserProfile() {
 
     // todo add notifcations here for comments, offers, likes etc...
 
-    const { data: sessionData, update } = useSession();
+    const { data: sessionData } = useSession();
 
     const cookies = getCookies();
     const [key, setKey] = useState(0);

@@ -1,7 +1,5 @@
-import Custom404 from "~/pages/404";
 import { api } from "~/utils/api";
 import Image from "next/image";
-import profileBackground from "@public/Profile/profile-plus.png";
 import synthGirl from "@public/Profile/synth-girl.png";
 import stockProfile from "@public/Profile/profile-default.png";
 

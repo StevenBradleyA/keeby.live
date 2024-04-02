@@ -6,9 +6,7 @@ import { uploadFileToS3 } from "~/utils/aws";
 import Image from "next/image";
 import defaultProfile from "@public/Profile/profile-default.png";
 import gridBackground from "@public/Profile/profile-plus.png";
-
 import toast from "react-hot-toast";
-import _ from "lodash";
 import LoadingSpinner from "~/components/Loading";
 import { motion } from "framer-motion";
 

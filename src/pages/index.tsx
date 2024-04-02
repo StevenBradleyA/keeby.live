@@ -22,7 +22,6 @@ export default function Home() {
     const cookies = getCookies();
 
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const [isNewFilter, setIsNewFilter] = useState<boolean>(false);
     const [filter, setFilter] = useState<string>("Hot");
 
     const [isSpecify, setIsSpecify] = useState<boolean>(false);

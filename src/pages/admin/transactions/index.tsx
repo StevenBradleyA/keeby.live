@@ -1,10 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import hackerman from "@public/Admin/admin-black.png";
-import { api } from "~/utils/api";
 import Custom404 from "~/pages/404";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
 
 export default function AdminTransactions() {
     const { data: session } = useSession();

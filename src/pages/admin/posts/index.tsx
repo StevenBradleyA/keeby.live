@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import hackerman from "@public/Admin/admin-black.png";
 import { api } from "~/utils/api";
-import EachAdminListing from "~/components/Admin/Listings";
 import Custom404 from "~/pages/404";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";

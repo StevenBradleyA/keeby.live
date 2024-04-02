@@ -573,6 +573,7 @@ export default function ScholarMode({
                         offlinePureWpm={offlinePureWpm}
                         offlineWpm={offlineWpm}
                         wpmIntervals={wpmIntervals}
+                        theme={theme}
                     />
                 </div>
             )}
