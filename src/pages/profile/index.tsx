@@ -675,11 +675,6 @@ export default function UserProfile() {
                         />
                     )}
                     {toggle === "KEEBTYPE" && keebTypeCategory === "KEEBS" && (
-                        // <div className="flex flex-wrap gap-10">
-                        //     {keebData?.map((keeb, i) => (
-                        //         <DisplayKeebs key={i} keeb={keeb} />
-                        //     ))}
-                        // </div>
                         <DisplayProfileKeebs userId={sessionData.user.id} />
                     )}
                 </div>

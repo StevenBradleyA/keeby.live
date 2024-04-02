@@ -26,27 +26,27 @@ export const reviewRouter = createTRPCRouter({
             return ctx.prisma.review.findFirst({ where: { listingId, userId } });
         }),
 
-    create: protectedProcedure
-        .input(
-            z.object({
-                text: z.string(),
-                starRating: z.number(),
-                userId: z.string(),
-                listingId: z.string(),
-            })
-        )
-        .mutation(async ({ input, ctx }) => {
+    // create: protectedProcedure
+    //     .input(
+    //         z.object({
+    //             text: z.string(),
+    //             starRating: z.number(),
+    //             userId: z.string(),
+    //             listingId: z.string(),
+    //         })
+    //     )
+    //     .mutation(async ({ input, ctx }) => {
         
-            if (ctx.session.user.id === input.userId) {
-                const newReview = await ctx.prisma.review.create({
-                    data: input,
-                });
+    //         if (ctx.session.user.id === input.userId) {
+    //             const newReview = await ctx.prisma.review.create({
+    //                 data: input,
+    //             });
 
-                return newReview;
-            }
+    //             return newReview;
+    //         }
 
-            throw new Error("Invalid userId");
-        }),
+    //         throw new Error("Invalid userId");
+    //     }),
 
     update: protectedProcedure
         .input(

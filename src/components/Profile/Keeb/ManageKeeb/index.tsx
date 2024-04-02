@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { api } from "~/utils/api";
 import type { Keeb } from "@prisma/client";
-import UpdateKeeb from "../UpdateKeeb";
 import { deleteCookie, hasCookie } from "cookies-next";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
