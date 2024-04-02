@@ -12,6 +12,7 @@ import HackermanConsoleCommands from "~/components/Profile/Hackerman";
 import computerShare from "@public/Profile/computer-share.png";
 import computerShop from "@public/Profile/computer-shop.png";
 import computerType from "@public/Profile/computer-type.png";
+import hacktime from "@public/Vectors/hacktime.png";
 import MainFooter from "~/components/Footer";
 import ManageListings from "~/components/KeebShop/ManageListings";
 import ManagePosts from "~/components/KeebShare/ManagePosts";
@@ -110,12 +111,16 @@ export default function UserProfile() {
                         <div className=" mt-2 border-b-2 border-[#616161] "></div>
                         <div className="my-2 flex justify-between">
                             <h2 className="moving-title">{title}</h2>
-                            <div>add grid graphic here or hacktime logo</div>
+                            <Image
+                                alt="hacktime logo"
+                                src={hacktime}
+                                className=" png-dark-gray h-6 w-6 object-cover"
+                            />
                         </div>
                         <Image
                             alt="profile matrix"
                             src={gridFunnel}
-                            className=" h-40 border-2 border-[#616161] object-cover "
+                            className=" h-40 w-full border-2 border-[#616161] object-cover "
                         />
                         <div className="mt-2 flex justify-between">
                             <h1>PROFILE DATA</h1>

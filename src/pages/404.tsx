@@ -3,9 +3,9 @@ import { motion } from "framer-motion";
 
 export default function Custom404() {
     return (
-        <div className="font-mono text-gray-400">
-            <div className="matrix-full-screen fixed left-0 top-0  ">
-                <video className="w-full" autoPlay loop muted>
+        <div className="font-mono text-gray-400 w-full h-full">
+            <div className="matrix-full-screen fixed bottom-0 left-0 right-0 top-0 object-cover h-full w-full ">
+                <video className="w-full h-full object-cover" autoPlay loop muted>
                     <source src="/Videos/404.mp4" type="video/mp4" />
                     Your browser does not support the video tag.
                 </video>
