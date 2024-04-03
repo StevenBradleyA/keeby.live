@@ -196,7 +196,7 @@ export default function Home() {
 
     return (
         <>
-            <div className="mt-10 flex w-full flex-col tablet:px-5 desktop:px-16 text-darkGray">
+            <div className="mt-10 flex w-full flex-col text-darkGray tablet:px-5 desktop:px-16">
                 <div className=" flex w-full  gap-10 ">
                     <div className=" very-sticky flex w-1/4 flex-col">
                         <div className="mb-5 flex gap-5 ">
@@ -237,9 +237,9 @@ export default function Home() {
                             </div>
                         </div>
 
-                        <div className=" relative tablet:h-[68vh] desktop:h-[72vh] w-full overflow-auto rounded-xl bg-keebyGray p-5 text-darkGray">
+                        <div className={` relative w-full ${isSpecify? 'overflow-auto': 'overflow-hidden'} rounded-xl bg-keebyGray p-5 text-darkGray tablet:h-[68vh] desktop:h-[72vh]`}>
                             {isSpecify ? (
-                                <div className="flex w-full flex-col items-start gap-5">
+                                <div className="flex w-full flex-col items-start gap-5 ">
                                     <div className="flex w-full flex-col items-start">
                                         <div className="relative flex w-full">
                                             <h1 className="text-green-500">
@@ -258,7 +258,7 @@ export default function Home() {
                                                     "tactile"
                                                 )
                                             }
-                                            className={`${
+                                            className={` hover:text-white ${
                                                 switchType === "tactile"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -270,7 +270,7 @@ export default function Home() {
                                             onClick={() =>
                                                 handleSwitchTypeSelect("linear")
                                             }
-                                            className={`${
+                                            className={`hover:text-white ${
                                                 switchType === "linear"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -282,7 +282,7 @@ export default function Home() {
                                             onClick={() =>
                                                 handleSwitchTypeSelect("clicky")
                                             }
-                                            className={`${
+                                            className={`hover:text-white ${
                                                 switchType === "clicky"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -294,7 +294,7 @@ export default function Home() {
                                             onClick={() =>
                                                 handleSwitchTypeSelect("other")
                                             }
-                                            className={`${
+                                            className={`hover:text-white ${
                                                 switchType === "other"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -312,7 +312,7 @@ export default function Home() {
                                             onClick={() =>
                                                 handleSoundTypeSelect("thock")
                                             }
-                                            className={`${
+                                            className={`hover:text-white ${
                                                 soundType === "thock"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -324,7 +324,7 @@ export default function Home() {
                                             onClick={() =>
                                                 handleSoundTypeSelect("clack")
                                             }
-                                            className={`${
+                                            className={`hover:text-white ${
                                                 soundType === "clack"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -336,7 +336,7 @@ export default function Home() {
                                             onClick={() =>
                                                 handleSoundTypeSelect("click")
                                             }
-                                            className={`${
+                                            className={`hover:text-white ${
                                                 soundType === "click"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -348,7 +348,7 @@ export default function Home() {
                                             onClick={() =>
                                                 handleSoundTypeSelect("silent")
                                             }
-                                            className={`${
+                                            className={`hover:text-white ${
                                                 soundType === "silent"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -448,7 +448,7 @@ export default function Home() {
                                             onClick={() =>
                                                 handleLayoutTypeSelect("100%")
                                             }
-                                            className={`${
+                                            className={`hover:text-white ${
                                                 layoutType === "100%"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -460,7 +460,7 @@ export default function Home() {
                                             onClick={() =>
                                                 handleLayoutTypeSelect("75%")
                                             }
-                                            className={`${
+                                            className={`hover:text-white ${
                                                 layoutType === "75%"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -472,7 +472,7 @@ export default function Home() {
                                             onClick={() =>
                                                 handleLayoutTypeSelect("65%")
                                             }
-                                            className={`${
+                                            className={`hover:text-white ${
                                                 layoutType === "65%"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -484,7 +484,7 @@ export default function Home() {
                                             onClick={() =>
                                                 handleLayoutTypeSelect("60%")
                                             }
-                                            className={`${
+                                            className={`hover:text-white ${
                                                 layoutType === "60%"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -496,7 +496,7 @@ export default function Home() {
                                             onClick={() =>
                                                 handleLayoutTypeSelect("40%")
                                             }
-                                            className={`${
+                                            className={`hover:text-white ${
                                                 layoutType === "40%"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -517,7 +517,7 @@ export default function Home() {
                                                         "assembled"
                                                     )
                                                 }
-                                                className={`${
+                                                className={`hover:text-white ${
                                                     assemblyType === "assembled"
                                                         ? "border-b border-white text-white"
                                                         : "border-b border-white border-opacity-0"
@@ -531,7 +531,7 @@ export default function Home() {
                                                         "unassembled"
                                                     )
                                                 }
-                                                className={`${
+                                                className={`hover:text-white ${
                                                     assemblyType ===
                                                     "unassembled"
                                                         ? "border-b border-white text-white"
@@ -552,7 +552,7 @@ export default function Home() {
                                                         "hotswap"
                                                     )
                                                 }
-                                                className={`${
+                                                className={`hover:text-white ${
                                                     hotSwapType === "hotswap"
                                                         ? "border-b border-white text-white"
                                                         : "border-b border-white border-opacity-0"
@@ -566,7 +566,7 @@ export default function Home() {
                                                         "soldered"
                                                     )
                                                 }
-                                                className={`${
+                                                className={`hover:text-white ${
                                                     hotSwapType === "soldered"
                                                         ? "border-b border-white text-white"
                                                         : "border-b border-white border-opacity-0"
@@ -578,7 +578,7 @@ export default function Home() {
                                     </div>
                                 </div>
                             ) : (
-                                <div className="relative w-full ">
+                                <div className="relative w-full  ">
                                     <input
                                         id="searchInput"
                                         value={searchInput}

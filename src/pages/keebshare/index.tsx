@@ -141,7 +141,7 @@ export default function KeebShare() {
                                             onClick={() =>
                                                 handleTagSelect("builds")
                                             }
-                                            className={`${
+                                            className={` hover:text-white ${
                                                 tag === "builds"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -153,7 +153,7 @@ export default function KeebShare() {
                                             onClick={() =>
                                                 handleTagSelect("memes")
                                             }
-                                            className={`${
+                                            className={`hover:text-white ${
                                                 tag === "memes"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -165,7 +165,7 @@ export default function KeebShare() {
                                             onClick={() =>
                                                 handleTagSelect("tutorials")
                                             }
-                                            className={`${
+                                            className={`hover:text-white ${
                                                 tag === "tutorials"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -177,7 +177,7 @@ export default function KeebShare() {
                                             onClick={() =>
                                                 handleTagSelect("discussion")
                                             }
-                                            className={`${
+                                            className={`hover:text-white ${
                                                 tag === "discussion"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"

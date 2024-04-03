@@ -1,3 +1,4 @@
+import MainFooter from "~/components/Footer";
 import DisplayListingPage from "~/components/KeebShop/DisplayListing";
 import LoadingSpinner from "~/components/Loading";
 import { api } from "~/utils/api";
@@ -9,10 +10,8 @@ interface DisplayListingCheckProps {
 export default function DisplayListingCheck({
     listingId,
 }: DisplayListingCheckProps) {
-
-
     // todo add seller info here make custom ts
-    
+
     const { data: listing, isLoading } = api.listing.getOne.useQuery({
         id: listingId,
     });
@@ -25,8 +24,11 @@ export default function DisplayListingCheck({
         );
 
     return (
-        <div className="w-full  px-16 text-black">
-            {listing && <DisplayListingPage listing={listing} />}
-        </div>
+        <>
+            <div className="w-full desktop:px-16 text-black mb-96">
+                {listing && <DisplayListingPage listing={listing} />}
+            </div>
+            <MainFooter />
+        </>
     );
 }

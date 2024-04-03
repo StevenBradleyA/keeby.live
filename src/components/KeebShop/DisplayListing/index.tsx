@@ -6,7 +6,6 @@ import Image from "next/image";
 import LoadingSpinner from "~/components/Loading";
 import SellerListingCard from "./SellerCard";
 import ListingSoundTest from "./SoundTest";
-import MainFooter from "~/components/Footer";
 import ChevronRound from "~/components/Svgs/chevron";
 import ListingPageFavorite from "./Favorite";
 import CreateComment from "~/components/Comments/Create";
@@ -108,6 +107,7 @@ export default function DisplayListingPage({
         );
 
     return (
+
         <div className="flex flex-col text-white">
             <div className="flex h-[80vh] w-full ">
                 <div className="flex w-1/4 flex-col items-center px-5 ">
@@ -201,10 +201,10 @@ export default function DisplayListingPage({
                         <SellerListingCard seller={listing.seller} />
                     </div>
                 </div>
-                <div className="flex h-full w-1/4 flex-col items-center gap-10  px-5">
-                    <div className=" h-1/3 w-full overflow-hidden rounded-xl  bg-keebyGray px-10 py-5 ">
-                        <h1 className="mb-2 text-2xl ">Keeb Specs</h1>
-                        <div className="h-full overflow-auto">
+                <div className="flex h-full w-1/4 flex-col items-center gap-10 px-5">
+                    <div className=" h-1/3 w-full overflow-hidden rounded-xl bg-keebyGray   desktop:p-10 tablet:p-5  ">
+                        <h1 className=" text-xl desktop:text-2xl ">Keeb Specs</h1>
+                        <div className="h-full overflow-auto desktop:mt-2 ">
                             <h3 className=" text-darkGray">{listing.title}</h3>
                             <h3 className="flex gap-2">
                                 <span className="text-darkGray">{`Keycaps `}</span>
@@ -228,11 +228,11 @@ export default function DisplayListingPage({
                             </h3>
                         </div>
                     </div>
-                    <div className="h-2/3 w-full overflow-hidden rounded-xl bg-keebyGray p-10 ">
+                    <div className="h-2/3 w-full overflow-hidden rounded-xl bg-keebyGray desktop:p-10 tablet:p-5 ">
                         <h1 className="mb-2 text-3xl text-purple">
                             Description
                         </h1>
-                        <div className="h-full overflow-auto">
+                        <div className="h-full overflow-auto pb-20">
                             <p className=" break-words">{listing.text}</p>
                         </div>
                     </div>
@@ -296,7 +296,8 @@ export default function DisplayListingPage({
                 </div>
             </div>
 
-            <MainFooter />
         </div>
+
+
     );
 }
