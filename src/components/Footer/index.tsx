@@ -61,15 +61,15 @@ export default function MainFooter() {
                             </svg>
                         </a>
                         <a
-                            href="https://www.youtube.com/@KeebyLive?sub_confirmation=1"
+                            href="https://www.instagram.com/keeby.live/?hl=en"
                             target="_blank"
                             rel="noopener noreferrer"
                             role="button"
-                            aria-label="Subscribe on YouTube"
+                            aria-label="Follow on Instagram"
                             onClick={(e) => {
                                 e.preventDefault();
                                 window.open(
-                                    "https://www.youtube.com/@KeebyLive?sub_confirmation=1",
+                                    "https://www.instagram.com/keeby.live/?hl=en",
                                     "_blank"
                                 );
                             }}
@@ -99,15 +99,15 @@ export default function MainFooter() {
                             </svg>
                         </a>
                         <a
-                            href="https://www.youtube.com/@KeebyLive?sub_confirmation=1"
+                            href="https://www.linkedin.com/in/stevenanderson-dev/"
                             target="_blank"
                             rel="noopener noreferrer"
                             role="button"
-                            aria-label="Subscribe on YouTube"
+                            aria-label="Follow on LinkedIn"
                             onClick={(e) => {
                                 e.preventDefault();
                                 window.open(
-                                    "https://www.youtube.com/@KeebyLive?sub_confirmation=1",
+                                    "https://www.linkedin.com/in/stevenanderson-dev/",
                                     "_blank"
                                 );
                             }}
@@ -235,7 +235,7 @@ export default function MainFooter() {
                 </div>
                 <div className="flex gap-5">
                     <Link
-                        href="/privacy-policy"
+                        href="/terms-of-service"
                         aria-label="privacy"
                         className="hover:text-green-500"
                     >
@@ -249,7 +249,7 @@ export default function MainFooter() {
                         Privacy
                     </Link>
                     <Link
-                        href="/privacy-policy"
+                        href="/cookie-policy"
                         aria-label="privacy"
                         className="hover:text-green-500"
                     >

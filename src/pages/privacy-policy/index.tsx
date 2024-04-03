@@ -1,22 +1,22 @@
+import MainFooter from "~/components/Footer";
+
 export default function PrivacyPolicy() {
+    // todo add section about advertisements when implementing...
+
     return (
         <>
-            <div className="w-1/2 text-green-500">
-                <div className="flex justify-center text-5xl ">
+            <div className="mb-40 w-2/3 text-white/40 desktop:w-1/2">
+                <h1 className="flex justify-center text-5xl text-green-500 ">
                     Privacy Policy
-                </div>
+                </h1>
 
-                <div className="mb-5 flex justify-between text-white">
-                    <div className="bg-darkGlass rounded-lg p-2">
-                        Effective on 10-15-2023
-                    </div>
-                    <div className="bg-darkGlass rounded-lg p-2">
-                        Last updated on 10-15-2023
-                    </div>
+                <div className="mb-5 flex items-center justify-between text-sm text-darkGray ">
+                    <div>Effective on 4-2-2024</div>
+                    <div>Last updated on 4-2-2024</div>
                 </div>
-                <p className="bg-darkGlass mb-5 rounded-2xl p-4 text-white">
-                    {`Thanks for trusting Genevieve Clare Hair
-                    ('GenevieveClareHair', 'we', 'us', 'our') with your personal
+                <p className="mb-5 rounded-md bg-keebyGray p-5 ">
+                    {`Thanks for trusting keeby.live
+                    ("we", "us", or "our") with your personal
                     information! We take our responsibility to you very
                     seriously, and so this Privacy Statement describes how we
                     handle your data. This Privacy Statement applies to all
@@ -31,131 +31,162 @@ export default function PrivacyPolicy() {
                     Statement.`}
                 </p>
 
-                <div className="mb-5 text-4xl ">Information We Collect</div>
-                <div className="mb-2 text-xl ">Personal Information</div>
-                <p className="bg-darkGlass mb-5 rounded-2xl p-4 text-white ">
-                    {` We may collect personal information, such as your name, email address, phone number, hair color, hair type and other contact or identification information that you voluntarily provide to us when you interact with the Website, such as when you make an appointment or sign up.`}
+                <h2 className="mb-5 text-4xl text-green-500 ">
+                    Information We Collect
+                </h2>
+                <h3 className="mb-2 text-xl text-darkGray ">
+                    Personal Information
+                </h3>
+                <p className="mb-5 rounded-md bg-keebyGray p-5  ">
+                    {` We may collect personal information, such as your name, username, email address, typing game results, provided keyboard data, and other contact or identification information that you voluntarily provide to us when you interact with the Website, such as when you list a keyboard or make a post.`}
                 </p>
-                <div className="mb-2 text-xl ">Password Security</div>
-                <p className="bg-darkGlass mb-5 rounded-2xl p-4 text-white ">
+
+                <h3 className="mb-2 text-xl text-darkGray ">
+                    Password Security
+                </h3>
+                <p className="mb-5 rounded-md bg-keebyGray p-5  ">
                     {` Your security is our priority. We use OAuth, a secure authentication protocol, to ensure the confidentiality of your account credentials. We never store your passwords directly. OAuth allows us to access your account securely without having access to your password, providing an extra layer of protection for your sensitive information.`}
                 </p>
-                <div className="mb-2 text-xl "> Communication Preferences</div>
-                <p className="bg-darkGlass mb-5 rounded-2xl p-4 text-white ">
-                    {` Providing your phone number is optional. If you choose to provide your phone number, we will use it to send appointment confirmations and essential communications related to your bookings.`}
+                <h3 className="mb-2 text-xl text-darkGray ">Data Security</h3>
+                <p className="mb-5 rounded-md bg-keebyGray p-5  ">
+                    We have implemented measures designed to secure your
+                    personal information from accidental loss and from
+                    unauthorized access, use, alteration, and disclosure. All
+                    payment transactions are conducted through our third-party
+                    payment processor, PayPal, which uses its own secure and
+                    encrypted channels.
                 </p>
-
-                <div className="mb-5 text-4xl ">
+                <h2 className="mb-5 text-4xl text-green-500 ">
                     How We Use Your Information
-                </div>
-                <div className="mb-2 text-xl ">Providing Services</div>
+                </h2>
+                <p className="mb-5 rounded-md bg-keebyGray p-5  ">{`We use the information that we collect about you or that you provide to us, including any personal information: to present our Website and its contents to you; to provide you with information, products, or services that you request from us; to fulfill any other purpose for which you provide it; to carry out our obligations and enforce our rights arising from any contracts entered into between you and us, including for billing and collection; to notify you about changes to our Website or any products or services we offer or provide though it; in any other way we may describe when you provide the information; and for any other purpose with your consent.`}</p>
 
-                <p className="bg-darkGlass mb-5 rounded-2xl p-4 text-white ">
-                    {` We use your personal information to provide you with the services you request, such as booking appointments and communicating with you about your appointments.`}
+                <h3 className="mb-2 text-xl text-darkGray ">
+                    Sharing Of Your Information
+                </h3>
+
+                <p className="mb-5 rounded-md bg-keebyGray p-5  ">
+                    We do not sell or rent your personal information to third
+                    parties. However, we may share personal information with
+                    third parties for certain purposes, such as processing
+                    transactions via PayPal, providing advertising on our
+                    platform, for analytics and improvement of our services, and
+                    as required by law.
                 </p>
-                <div className="mb-2 text-xl ">Communication</div>
-                <p className="bg-darkGlass mb-5 rounded-2xl p-4 text-white ">
-                    {`We may use your email address or phone number to send you transactional emails or messages related to your appointments. We may also send you promotional and marketing communications if you have opted in to receive them.`}
+                <h3 className="mb-2 text-xl text-darkGray ">
+                    Providing Services
+                </h3>
+                <p className="mb-5 rounded-md bg-keebyGray p-5  ">{`We use your personal information to provide you with the services you request, such as purchasing or selling keyboards, and communicating with you about your purchases. `}</p>
+
+                <h3 className="mb-2 text-xl text-darkGray ">
+                    Publicly Visible Information
+                </h3>
+                <p className="mb-5 rounded-md bg-keebyGray p-5  ">
+                    Some of your activities on our Website, including posting
+                    comments, keeb type game results, and creating social media
+                    posts about keyboards, are public by nature. When you create
+                    an account, your username and any content you post under
+                    that account will be visible to other users of the Website.
+                    Additionally, participating in our typing games may result
+                    in your game results, including scores and rankings, being
+                    publicly displayed alongside your username. Please be
+                    mindful of your privacy and security when deciding what
+                    information to share as part of your public profile and
+                    posts.
                 </p>
-                <div className="mb-2 text-xl ">Improving Our Services</div>
-                <p className="bg-darkGlass mb-5 rounded-2xl p-4 text-white ">
-                    {`We analyze usage data to improve the functionality and user experience of the Website and Services.`}
+
+                <h3 className="mb-2 text-xl text-darkGray ">
+                    Control Over Your Information
+                </h3>
+                <p className="mb-5 rounded-md bg-keebyGray p-5  ">
+                    {`We provide you with the ability to control and manage the
+                    personal information you share with us. This includes tools
+                    to edit and delete your posts and manage your public
+                    profile. It's important to understand that once you have
+                    shared information publicly, it may be copied or saved by
+                    other individuals or third parties outside of our control.
+                    If you have concerns about any personal information you have
+                    made public on our platform, please contact us for
+                    assistance.`}
                 </p>
-                <div className="mb-2 text-xl ">Providing Services</div>
-                <p className="bg-darkGlass mb-5 rounded-2xl p-4 text-white ">
-                    {`We use your personal information to provide you with the services you request, such as booking appointments and communicating with you about your appointments.`}
-                </p>
-                <div className="mb-2 text-xl ">Phone Number Removal</div>
-                <p className="bg-darkGlass mb-5 rounded-2xl p-4 text-white ">
-                    {`If you wish to have your phone number removed from our records or stop receiving SMS notifications, please contact us at the provided contact information. We will promptly remove your phone number and cease sending messages to it upon your request.`}
-                </p>
-                <div className="mb-5 text-4xl ">
+                <h2 className="mb-5 text-4xl text-green-500 ">
                     Information Sharing and Disclosure
-                </div>
-                <div className="mb-2 text-xl ">Service Providers</div>
-                <p className="bg-darkGlass mb-5 rounded-2xl p-4 text-white ">
+                </h2>
+
+                <h3 className="mb-2 text-xl text-darkGray ">
+                    Service Providers
+                </h3>
+                <p className="mb-5 rounded-md bg-keebyGray p-5  ">
                     {`We may share your personal information with third-party service providers who perform services on our behalf, such as payment processing, data analysis, email delivery, hosting services, and customer service.`}
                 </p>
-                <div className="mb-2 text-xl ">Legal Compliance</div>
-                <p className="bg-darkGlass mb-5 rounded-2xl p-4 text-white ">
+                <h3 className="mb-2 text-xl text-darkGray ">
+                    Legal Compliance
+                </h3>
+                <p className="mb-5 rounded-md bg-keebyGray p-5  ">
                     {`We may disclose your information if required by law, regulation, court order, or other governmental authority or when we believe in good faith that disclosure is necessary to protect our rights, protect your safety or the safety of others, investigate fraud, or respond to a government request.`}
                 </p>
 
-                <div className="mb-5 text-4xl ">How Do We Store Your Data?</div>
-                <p className="bg-darkGlass mb-5 rounded-2xl p-4 text-white ">
-                    {`Genevieve Clare Hair stores your data securly using Prisma`}
+                <h3 className="mb-2 text-xl text-darkGray ">
+                    Your Choices About Your Information
+                </h3>
+                <p className="mb-5 rounded-md bg-keebyGray p-5  ">
+                    {`You have choices regarding the personal information you
+                    provide to us and how it's used. This includes the ability
+                    to control privacy settings, manage marketing preferences,
+                    and opt-out of certain data collections. You also have the
+                    right to request access to, correction of, or deletion of
+                    your personal information.`}
                 </p>
 
-                <div className="mb-5 text-4xl ">What Are Cookies?</div>
-                <p className="bg-darkGlass mb-5 rounded-2xl p-4 text-white ">
-                    {`Cookies are small pieces of text sent by your web browser by a website you visit. A cookie file is stored in your web browser and allows the Website or a third-party service to recognize you and make your next visit easier and the Website more useful to you.`}
+                <h2 className="mb-5 text-4xl text-green-500 ">
+                    What are Cookies?
+                </h2>
+                <p className="mb-5 rounded-md bg-keebyGray p-5  ">
+                    {` Cookies are small pieces of data stored on your device (computer or mobile device) when you visit a website. They are widely used to make websites work more efficiently and to provide information to the owners of the site.`}
+                </p>
+                <h3 className="mb-2 text-xl text-darkGray ">Cookie Policy</h3>
+                <p className="mb-5 rounded-md bg-keebyGray p-5 ">
+                    {`This Cookie Policy explains how Keeby ("we", "us", or "our") uses cookies on our website www.keeby.live ("Site"). By using our Site, you consent to the use of cookies as described in this Cookie Policy.`}
                 </p>
 
-                <div className="mb-5 text-4xl ">How Do We Use Cookies?</div>
-                <div className="mb-2 text-xl ">Authentication</div>
+                <h2 className="mb-5 text-4xl text-green-500 ">
+                    How We Use Cookies
+                </h2>
 
-                <p className="bg-darkGlass mb-5 rounded-2xl p-4 text-white ">
-                    {`We use cookies to keep you signed in while you navigate our Website. These cookies are essential for the proper functioning of our authentication system.`}
-                </p>
-                <div className="mb-5 text-4xl ">
-                    Your Choices Regarding Cookies
-                </div>
-                <div className="mb-2 text-xl ">Disabling Cookies</div>
-                <p className="bg-darkGlass mb-5 rounded-2xl p-4 text-white ">
-                    {`You can choose to disable cookies through your individual browser options. However, please note that if you disable cookies, you may not be able to use some portions of our Website properly.`}
-                </p>
-                <div className="mb-2 text-xl ">Opting Out</div>
-                <p className="bg-darkGlass mb-5 rounded-2xl p-4 text-white ">
-                    {`You can opt-out of cookies by adjusting the settings in your web browser. Please refer to your browser's "help" section or a similar feature to learn more about how to manage cookie preferences.`}
-                </p>
+                <p className="mb-5 rounded-md bg-keebyGray p-5  ">{` We use cookies to keep you signed in and to remember your active settings. This allows us to provide you with a more personalized experience and saves you time by eliminating the need to re-enter information.`}</p>
+                <h3 className="mb-2 text-xl text-darkGray ">
+                    Performance and Analytics
+                </h3>
+                <p className="mb-5 rounded-md bg-keebyGray p-5  ">{`We use cookies to collect information about how you interact with our Site, including the pages you visit and any errors you may encounter. This helps us improve the performance and functionality of our Site and better understand how our users navigate and use our services. `}</p>
+                <h3 className="mb-2 text-xl text-darkGray ">
+                    Third-Party Cookies
+                </h3>
+                <p className="mb-5 rounded-md bg-keebyGray p-5  ">{`We may also allow third-party service providers, such as Google Analytics, to use cookies on our Site to analyze traffic and usage patterns. These cookies are subject to the privacy policies of these third parties. `}</p>
 
-                <div className="mb-5 text-4xl ">
-                    What Are Your Data Protection Rights?
-                </div>
-                <p className="bg-darkGlass mb-5 rounded-2xl p-4 text-white">
-                    {` Every user is entitled
-                    to the following: The right to access. You have the right
-                    to request Genevieve Clare Hair for copies of your personal data. We
-                    may limit the number of times this request can be made to
-                    depending on the size of the request. The right to
-                    rectification. You have the right to request that
-                    Genevieve Clare Hair correct any information you believe is
-                    inaccurate. You also have the right to request Genevieve Clare Hair to
-                    complete the information you believe is incomplete. The
-                    right to erasure. You have the right to request that
-                    Genevieve Clare Hair erase your personal data, under certain
-                    conditions. The right to restrict processing. You have the
-                    right to request that Genevieve Clare Hair restrict the processing of
-                    your personal data, under certain conditions. The right to
-                    object to processing. You have the right to object to
-                    Genevieve Clare Hair processing of your personal data, under certain
-                    conditions. The right to data portability. You have the
-                    right to request that Genevieve Clare Hair transfer the data that we
-                    have collected to another organization, or directly to you,
-                    under certain conditions.`}
-                </p>
+                <h2 className="mb-5 text-4xl text-green-500 ">
+                    Managing Cookies
+                </h2>
 
-                <div className="mb-5 text-4xl ">
-                    Personal Information Request
-                </div>
-                <p className="bg-darkGlass mb-5 rounded-2xl p-4 text-white">
-                    You have the right to request access to the personal
-                    information we collect from you, change that information, or
-                    delete it. To request to review, update, or delete your
-                    personal information, please visit: email
-                    genevieveclare.hair@outlook.com to request data stored.
+                <p className="mb-5 rounded-md bg-keebyGray p-5  ">{`You can control and manage cookies in various ways. Please note that disabling cookies may affect the functionality of our Site and may prevent you from accessing certain features. Most web browsers allow you to control cookies through their settings. You can usually find these settings in the "Options" or "Preferences" menu of your browser. For more information, refer to your browser's help documentation. You can opt out of certain cookies by using the opt-out tools provided by third-party analytics providers, such as Google Analytics.`}</p>
+
+                <h2 className="mb-5 text-4xl text-green-500 ">
+                    Changes to Our Privacy Policy
+                </h2>
+                <p className="mb-5 rounded-md bg-keebyGray p-5  ">
+                    {` keeby.live may revise this Privacy Policy at any time without prior notice. The updated
+                     version will be indicated by an updated "Last Updated" date.
+                     We encourage you to review the privacy policy periodically
+                     to stay informed about how we use cookies and handle your data. You are responsible for ensuring we have an
+                    up-to-date active and deliverable email address for you, and
+                    for periodically visiting our Website and this privacy
+                    policy to check for any changes.`}
                 </p>
-                <div className="mb-5 text-4xl ">
-                    Privacy Policy Modification
-                </div>
-                <p className="bg-darkGlass mb-5 rounded-2xl p-4 text-white">
-                    {`Genevieveclare.hair may revise this Privacy Policy for its
-                    Website at any time without prior notice. The updated
-                    version will be indicated by an updated "Last Updated" date.
-                    We encourage you to review this Cookie Policy periodically
-                    to stay informed about how we use cookies.`}
-                </p>
+                <h2 className="mb-5 text-4xl text-green-500 ">Contact Us</h2>
+
+                <p className="mb-5 rounded-md bg-keebyGray p-5  ">{`If you have any questions about this Cookie Policy or our use of cookies, please contact us at hacktimesupport@outlook.com.`}</p>
             </div>
+
+            <MainFooter />
         </>
     );
 }
