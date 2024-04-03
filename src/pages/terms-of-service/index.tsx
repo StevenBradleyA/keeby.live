@@ -1,177 +1,274 @@
 import Link from "next/link";
+import MainFooter from "~/components/Footer";
 
 export default function TermsOfService() {
+    // the goal of keeby is to create a safe space to buy and sell mechanical keyboards and enjoy the hobby.
+    // not responsible for keyboard losses during shipping. we do not guarentee that your product will arrive. we are just a middle man connecting buyers and sellers.
+    // revise returns and disputes
+    // i want the ability to cancel charges if peeps are getting scammed if both parties say they are getting scammed but the board looks similar in the seller and buyers video i have right to refuse. I can decide based off video evidence you agree to the terms when you purchase a keeb via keeby.
+
     return (
         <>
-            <div className="w-1/2 text-green-500">
-                <div className="flex justify-center text-5xl ">
+            <div className="mb-40 w-2/3 text-white/40 desktop:w-1/2">
+                <h1 className="flex justify-center text-5xl text-green-500 ">
                     Terms of Service
+                </h1>
+                <div className="mb-5 flex items-center justify-between text-sm text-darkGray ">
+                    <div>Effective on 4-2-2024</div>
+                    <div>Last updated on 4-2-2024</div>
                 </div>
-                <div className="mb-5 flex text-white">
-                    <div className="bg-darkGlass rounded-lg p-2">
-                        Last updated on 10-15-2023
-                    </div>
-                </div>
-                <div className="mb-5 text-4xl "> Agreement</div>
-                <p className="mb-5 rounded-2xl bg-black p-4 text-white ">
-                    {` Welcome to Genevieve Clare Hair! These Terms of Service
-                    govern your use of our website located at genevieveclare.hair. 
+                <h2 className="mb-5 text-4xl text-green-500 ">Agreement</h2>
+                <p className="mb-5 rounded-md bg-keebyGray p-5 ">
+                    {` Welcome to keeby.live! These Terms of Service
+                    govern your use of our website located at keeby.live. 
                     Please read these Terms of Service carefully
                     before accessing or using the Website. By accessing this
-                    Website, accessible from genevieveclare.hair, you are
+                    Website, accessible from keeby.live, you are
                     agreeing to be bound by these Website Terms of Service and
                     agree that you are responsible for the agreement in
                     accordance with any applicable local laws. IF YOU DO NOT
                     AGREE TO ALL THE TERMS AND CONDITIONS OF THIS AGREEMENT, YOU
                     ARE NOT PERMITTED TO ACCESS OR USE OUR SERVICES.`}
                 </p>
-                <div className="mb-5 text-4xl "> Use of the Website</div>
-                <div className="mb-2 text-xl "> Eligibility</div>
-                <p className="mb-5 rounded-2xl bg-black p-4 text-white ">
-                    {` You must be at least 18 years old to use the Website. By using the Website, you represent and warrant that you are at least 18 years old.`}
+                <h2 className="mb-5 text-4xl text-green-500 ">
+                    Use of the Website
+                </h2>
+                <h3 className="mb-2 text-xl">Eligibility</h3>
+                <p className="mb-5 rounded-md bg-keebyGray p-5">
+                    You must be at least 18 years old to use the Website. By
+                    using the Website, you represent and warrant that you are at
+                    least 18 years old.
                 </p>
-                <div className="mb-2 text-xl "> Personal Information</div>
-                <p className="mb-5 rounded-2xl bg-black p-4 text-white ">
-                    {` You agree to provide accurate, current, and complete information during the registration or appointment booking process and to update such information to keep it accurate, current, and complete.`}
+                <h3 className="mb-2 text-xl">Personal Information</h3>
+                <p className="mb-5 rounded-md bg-keebyGray p-5">
+                    You agree to provide accurate, current, and complete
+                    information during the registration or appointment booking
+                    process and to update such information to keep it accurate,
+                    current, and complete.
                 </p>
-                <div className="mb-2 text-xl "> Prohibited Activities</div>
-                <p className="mb-5 rounded-2xl bg-black p-4 text-white ">
-                    {` You may not use the Website for any illegal or unauthorized purpose. You may not, in the use of the Website, violate any applicable laws, regulations, or rights of others.`}
+                <h3 className="mb-2 text-xl">Prohibited Activities</h3>
+                <p className="mb-5 rounded-md bg-keebyGray p-5">
+                    You may not use the Website for any illegal or unauthorized
+                    purpose. You may not, in the use of the Website, violate any
+                    applicable laws, regulations, or rights of others.
                 </p>
-                <div className="mb-5 text-4xl "> Appointments and Services</div>
-                <div className="mb-2 text-xl "> Booking Appointments</div>
-                <p className="mb-5 rounded-2xl bg-black p-4 text-white ">
-                    {` Genevieve Clare Hair offers online appointment booking services through our Website. All appointments are subject to availability. By booking an appointment through our Website, you agree to abide by the terms and conditions outlined in this section.`}
+                <h3 className="mb-2 text-xl">User Content and Conduct</h3>
+                <p className="mb-5 rounded-md bg-keebyGray p-5">
+                    {`You are solely responsible for your account's security and
+                    all activities that occur under your account. You must not
+                    upload, post, host, or transmit any content that is
+                    unlawful, defamatory, infringing on intellectual property
+                    rights, or otherwise harmful to others. Keeby.live reserves
+                    the right, but is not obligated, to remove or disable access
+                    to any content that violates these provisions without prior
+                    notice.`}
                 </p>
-                <div className="mb-2 text-xl "> Right to Refuse Service</div>
-                <p className="mb-5 rounded-2xl bg-black p-4 text-white ">
-                    {`  Genevieve Clare Hair reserves the right to refuse service to anyone for any reason at any time. We take pride in providing a safe and respectful environment for both our customers and our staff.`}
+                <h3 className="mb-2 text-xl">Rights of Keeby.live</h3>
+                <p className="mb-5 rounded-md bg-keebyGray p-5">
+                    Keeby.live reserves the right to remove or disable access to
+                    any account or content on the Website at any time and for
+                    any reason, without prior notice, if we believe there has
+                    been a violation of these Terms. We also reserve the right
+                    to modify or discontinue, temporarily or permanently, any
+                    part of the Services with or without notice.
                 </p>
-                <div className="mb-2 text-xl ">
-                    Cancellation and Modification of Appointments
-                </div>
-                <p className="mb-5 rounded-2xl bg-black p-4 text-white ">
-                    {` Genevieve Clare Hair understands that plans can change. If you need to cancel or modify your appointment, we request that you do so within the timeframe specified in our cancellation policy, which can be found on the Website. Failure to adhere to the cancellation policy may result in applicable fees or penalties.`}
+                <h3 className="mb-2 text-xl">
+                    Legal Compliance and Law Enforcement
+                </h3>
+                <p className="mb-5 rounded-md bg-keebyGray p-5">
+                    You agree to comply with all local, state, national, and
+                    international laws and regulations applicable to your use of
+                    the Website. Keeby.live may disclose any information about
+                    you to government or law enforcement officials as we, in our
+                    sole discretion, believe necessary or appropriate to respond
+                    to claims and legal process, to protect the property and
+                    rights of Keeby.live or a third party, to protect the safety
+                    of the public or any person, or to prevent or stop any
+                    activity we may consider to be, or to pose a risk of being,
+                    illegal, unethical, or legally actionable.
                 </p>
-                <div className="mb-2 text-xl ">{`Salon's Right to Cancel`}</div>
-                <p className="mb-5 rounded-2xl bg-black p-4 text-white ">
-                    {` In rare circumstances, Genevieve Clare Hair may need to cancel a booked appointment due to unforeseen events or emergencies. In such cases, we will make every effort to reschedule your appointment at a convenient time for you.`}
+                <h3 className="mb-2 text-xl">Limitation of Liability</h3>
+                <p className="mb-5 rounded-md bg-keebyGray p-5">
+                    Keeby.live shall not be liable for any indirect, incidental,
+                    special, consequential, or punitive damages, including
+                    without limitation, loss of profits, data, use, goodwill, or
+                    other intangible losses, resulting from your access to or
+                    use of or inability to access or use the Services; any
+                    conduct or content of any third party on the Services; any
+                    content obtained from the Services; and unauthorized access,
+                    use or alteration of your transmissions or content, whether
+                    based on warranty, contract, tort (including negligence) or
+                    any other legal theory, whether or not we have been informed
+                    of the possibility of such damage, and even if a remedy set
+                    forth herein is found to have failed its essential purpose.
                 </p>
-                <div className="mb-2 text-xl ">Rescheduling Appointments</div>
-                <p className="mb-5 rounded-2xl bg-black p-4 text-white ">
-                    {`If you wish to reschedule a booking, you are required to reach out to Genevieve Clare Hair promptly. Please contact us via phone or email to discuss the options for rescheduling your appointment. We appreciate your cooperation in maintaining our scheduling accuracy.`}
-                </p>
-                <div className="mb-2 text-xl ">Booking through the Website</div>
-                <p className="mb-5 rounded-2xl bg-black p-4 text-white ">
-                    {`When booking an appointment through our Website, you agree that you are bound by our cancellation policy. Booking through the site indicates your acceptance of the terms and conditions related to cancellations and modifications.`}
-                </p>
-                <div className="mb-5 text-4xl "> Cancellation Policy</div>
-                <div className="mb-2 text-xl ">Notice Period</div>
-                <p className="mb-5 rounded-2xl bg-black p-4 text-white ">
-                    {`To accommodate our high appointment demand, we kindly request a minimum of 24 hours' notice for any cancellations.`}
-                </p>
-                <div className="mb-2 text-xl ">Cancellation Charges</div>
-                <p className="mb-5 rounded-2xl bg-black p-4 text-white ">
-                    {`Appointments canceled with less than 24 hours' notice will incur a charge equivalent to 50% of the total service cost. No-show appointments will be charged 100% of the service cost.`}
-                </p>
-                <div className="mb-5 text-4xl "> Intellectual Property</div>
-                <div className="mb-2 text-xl "> Ownership</div>
-                <p className="mb-5 rounded-2xl bg-black p-4 text-white ">
-                    {` All content and materials available on the Website, including but not limited to text, graphics, logos, button icons, images, audio clips, data compilations, and software, are the property of Genevieve Clare Hair or its content suppliers and protected by copyright laws.`}
-                </p>
-                <div className="mb-2 text-xl "> Trademarks</div>
-                <p className="mb-5 rounded-2xl bg-black p-4 text-white ">
-                    {` Genevieve Clare Hair and any other trademarks, service marks, graphics, and logos used in connection with the Website are trademarks or registered trademarks of Genevieve Clare Hair or its licensors.`}
-                </p>
-                <div className="mb-5 text-4xl ">
-                    Terms of Service Modification
-                </div>
-                <p className="mb-5 rounded-2xl bg-black p-4 text-white">
-                    Genevieveclare.hair may revise these Terms of Service for
-                    its Website at any time without prior notice. By using this
-                    Website, you are agreeing to be bound by the current version
-                    of these Terms of Service.
-                </p>
-                <div className="mb-5 text-4xl "> Review Policy</div>
-                <div className="mb-2 text-xl "> Content Moderation</div>
-                <p className="mb-5 rounded-2xl bg-black p-4 text-white ">
-                    {`At Genevieve Clare Hair, we value honest feedback and reviews from our customers. We encourage you to share your experiences on our Website. However, we reserve the right to moderate and remove any review that is deemed offensive, inappropriate, or violates our content guidelines.`}
-                </p>
-                <div className="mb-2 text-xl ">Offensive Content</div>
-                <p className="mb-5 rounded-2xl bg-black p-4 text-white ">
-                    {`Reviews that contain offensive language, discriminatory remarks, or violate the privacy of our staff or other customers will be promptly removed. We believe in maintaining a respectful and positive online environment for everyone.`}
-                </p>{" "}
-                <div className="mb-2 text-xl ">Moderation Process </div>
-                <p className="mb-5 rounded-2xl bg-black p-4 text-white ">
-                    {`Our moderation process aims to ensure that the reviews displayed on our Website are constructive, helpful, and relevant to the experiences of our customers. While we encourage your honest opinions, we request that you express them in a respectful manner.`}
-                </p>{" "}
-                <div className="mb-2 text-xl "> Right to Remove</div>
-                <p className="mb-5 rounded-2xl bg-black p-4 text-white ">
-                    {`We have the ability to remove any review that we find offensive to others. If you believe your review was removed in error, please contact our customer support team at genevieveclare.hair@outlook.com to address your concerns.`}
-                </p>{" "}
-                <div className="mb-2 text-xl "> Feedback Welcome</div>
-                <p className="mb-5 rounded-2xl bg-black p-4 text-white ">
-                    {`We appreciate your understanding and cooperation in maintaining a respectful review environment. If you have any feedback or questions about our review policy, please feel free to reach out to us.`}
-                </p>{" "}
-                <div className="mb-5 text-4xl "> Privacy Policy</div>
-                <p className="mb-5 rounded-2xl bg-black p-4 text-white ">
-                    If you use our Services, you must abide by our{" "}
+                <h2 className="mb-5 text-4xl text-green-500">
+                    Adherence to Our Privacy Policy
+                </h2>
+                <h3 className="mb-2 text-xl">Compliance with Privacy Policy</h3>
+                <p className="mb-5 rounded-md bg-keebyGray p-5">
+                    By accessing and using our Services, you affirm that you
+                    have read, understood, and agreed to the terms outlined in
+                    our{" "}
                     <Link
                         href="/privacy-policy"
                         aria-label="privacy policy"
-                        className="text-violet-300"
+                        className="text-green-500"
                     >
                         Privacy Policy
                     </Link>
-                    . You acknowledge that you have read our Privacy Policy and
-                    understand that it sets forth how we collect, use, and store
-                    your information. If you do not agree with our Privacy
-                    Statement, then you must stop using the Services
-                    immediately. Any person, entity, or service collecting data
-                    from the Services must comply with our Privacy Statement.
-                    Misuse of any User&apos;s Personal Information is
-                    prohibited. If you collect any Personal Information from a
-                    User, you agree that you will only use the Personal
-                    Information you gather for the purpose for which the User
-                    has authorized it. You agree that you will reasonably secure
-                    any Personal Information you have gathered from the
-                    Services, and you will respond promptly to complaints,
-                    removal requests, and &apos;do not contact&apos; requests
-                    from us or Users.
+                    . Our Privacy Policy explains in detail the types of
+                    information we collect from you and how we use, process, and
+                    safeguard that information. It is imperative that you review
+                    our Privacy Policy thoroughly before using the Services to
+                    ensure you are fully informed about our data practices.
                 </p>
-                <div className="mb-5 text-4xl "> Limitations</div>
-                <p className="mb-5 rounded-2xl bg-black p-4 text-white">
-                    {`    To the fullest extent permitted by applicable law, Genevieve
-                    Clare Hair shall not be liable for any indirect, incidental,
-                    special, consequential, or punitive damages, or any loss of
-                    profits or revenues, whether incurred directly or
-                    indirectly, or any loss of data, use, goodwill, or other
-                    intangible losses, resulting from (a) your use or inability
-                    to use the Website; (b) any unauthorized access to or use of
-                    our servers and/or any personal information stored therein.`}
+                <h3 className="mb-2 text-xl">
+                    Responsibilities of Data Collection
+                </h3>
+                <p className="mb-5 rounded-md bg-keebyGray p-5">
+                    If, during your use of the Services, you collect any
+                    Personal Information from other Users, you must ensure that
+                    such collection is for a clear and legitimate purpose
+                    consented to by the User. You are obligated to adhere
+                    strictly to the guidelines set forth in our Privacy Policy
+                    regarding the collection, use, and safeguarding of Personal
+                    Information. Furthermore, you must implement all reasonable
+                    security measures to protect the stored Personal Information
+                    against unauthorized access, disclosure, alteration, and
+                    destruction.
                 </p>
-                <div className="mb-5 text-4xl "> Disclaimer</div>
+                <h3 className="mb-2 text-xl">Protection of User Information</h3>
+                <p className="mb-5 rounded-md bg-keebyGray p-5">
+                    The security of User Information is paramount. You agree to
+                    handle all Personal Information collected from the Services
+                    with the highest degree of care. This includes adhering to
+                    all applicable laws and regulations governing the protection
+                    of personal data. In the event of any data breach or
+                    unauthorized access to User Personal Information, you commit
+                    to notifying the affected Users and us promptly and taking
+                    immediate steps to mitigate any potential harm or loss.
+                </p>
+                <h3 className="mb-2 text-xl">Reporting and Compliance</h3>
+                <p className="mb-5 rounded-md bg-keebyGray p-5">
+                    {` You are expected to respond swiftly to any complaints,
+                    removal requests, or 'do not contact' orders from both us
+                    and the Users. In alignment with our commitment to user
+                    privacy, you agree to cooperate fully with any
+                    investigations or inquiries from us regarding the handling
+                    of Personal Information obtained through the Services.
+                    Non-compliance with our Privacy Policy, misuse of Personal
+                    Information, or failure to adequately protect such
+                    information may result in restricted access to the Services,
+                    legal action, and other measures to enforce compliance.`}
+                </p>
+                <h2 className="mb-5 text-4xl text-green-500">
+                    Marketplace Transactions
+                </h2>
+                <h3 className="mb-2 text-xl">Refunds and Returns</h3>
+                <p className="mb-5 rounded-md bg-keebyGray p-5">
+                    {`Keeby operates as a facilitator in the marketplace,
+                    connecting buyers and sellers of keyboards without directly
+                    handling the products. As such, Keeby is not responsible for
+                    the condition of the items sold, their delivery, or their
+                    conformity to description. Buyers are encouraged to review
+                    the seller's refund and return policies before making a
+                    purchase. While Keeby facilitates a platform for transaction
+                    disputes, it does not guarantee refunds or returns. All
+                    disputes must be accompanied by video proof of the product's
+                    condition upon delivery. The decision to issue a refund lies
+                    solely with the seller, under their specified terms.`}
+                </p>
+                <h3 className="mb-2 text-xl">Dispute Resolution</h3>
+                <p className="mb-5 rounded-md bg-keebyGray p-5">
+                    {`   In the event of a dispute, Keeby provides a platform for
+                    buyers and sellers to attempt resolution. For a dispute to
+                    be considered, the complaining party must submit video
+                    evidence showcasing the discrepancy between the product's
+                    advertised condition and its state upon delivery. Keeby will
+                    facilitate communication between the buyer and seller to
+                    resolve disputes but does not partake in the final
+                    decision-making regarding refunds or returns. Keeby's role
+                    is strictly as an intermediary platform.`}
+                </p>
+                <h3 className="mb-2 text-xl">Liability Limitation</h3>
+                <p className="mb-5 rounded-md bg-keebyGray p-5">
+                    Keeby aims to create a safe and trustworthy marketplace for
+                    keyboard enthusiasts. However, Keeby does not assume
+                    liability for the condition of items sold, the accuracy of
+                    listings, or the actions of users on the platform. By using
+                    the marketplace, you acknowledge that Keeby is not involved
+                    in the actual transaction between buyers and sellers. Any
+                    agreement for the sale of items is solely between the buyer
+                    and seller. Users agree that Keeby bears no responsibility
+                    for any unsatisfactory or non-conforming items, delivery
+                    issues, or disputes between users.
+                </p>
+                <h3 className="mb-2 text-xl">Fee Acknowledgment</h3>
+                <p className="mb-5 rounded-md bg-keebyGray p-5">
+                    Users acknowledge that Keeby charges a nominal fee for
+                    facilitating transactions within the marketplace. This fee
+                    is non-refundable and is charged to support the operation of
+                    the marketplace platform. By listing or purchasing an item,
+                    users agree to this fee structure and understand that
+                    additional seller or buyer fees may apply according to the
+                    terms set forth by individual sellers.
+                </p>
+                <h2 className="mb-5 text-4xl text-green-500 ">
+                    Intellectual Property
+                </h2>
+                <div className="mb-2 text-xl "> Ownership</div>
+                <p className="mb-5 rounded-md bg-keebyGray p-5 ">
+                    {` All content and materials available on the Website, including but not limited to text, graphics, logos, button icons, images, audio clips, data compilations, and software, are the property of keeby.live or its content suppliers and protected by copyright laws.`}
+                </p>
+                <div className="mb-2 text-xl "> Trademarks</div>
+                <p className="mb-5 rounded-md bg-keebyGray p-5 ">
+                    {` keeby.live and any other trademarks, service marks, graphics, and logos used in connection with the Website are trademarks or registered trademarks of keeby.live or its licensors.`}
+                </p>
+                <h2 className="mb-5 text-4xl text-green-500 ">
+                    Terms of Service Modification
+                </h2>
+                <p className="mb-5 rounded-md bg-keebyGray p-5 ">
+                    Keeby.live may revise these Terms of Service for its Website
+                    at any time without prior notice. By using this Website, you
+                    are agreeing to be bound by the current version of these
+                    Terms of Service.
+                </p>
+
+                <h2 className="mb-5 text-4xl text-green-500 ">Disclaimer</h2>
+                <p className="mb-5 rounded-md bg-keebyGray p-5 ">
+                    {`EXCLUDING THE EXPLICITLY STATED WARRANTIES WITHIN THESE TERMS, KEEBY.LIVE OFFERS ITS SERVICES ON AN 'AS-IS' AND 'AS-AVAILABLE' BASIS. YOUR ACCESS TO AND USE OF THE SERVICES OR ANY CONTENT IS AT YOUR SOLE RISK. YOU UNDERSTAND AND AGREE THAT THE SERVICES AND CONTENT ARE PROVIDED TO YOU ON AN 'AS IS,' 'WITH ALL FAULTS,' AND 'AS AVAILABLE' BASIS. WITHOUT LIMITING THE FOREGOING, TO THE FULL EXTENT PERMITTED BY LAW, KEEBY.LIVE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT. TO THE EXTENT SUCH DISCLAIMER CONFLICTS WITH APPLICABLE LAW, THE SCOPE AND DURATION OF ANY APPLICABLE WARRANTY WILL BE THE MINIMUM PERMITTED UNDER SUCH LAW.
+
+KEEBY.LIVE MAKES NO REPRESENTATIONS, WARRANTIES, OR GUARANTEES AS TO THE RELIABILITY, TIMELINESS, QUALITY, SUITABILITY, AVAILABILITY, ACCURACY, OR COMPLETENESS OF THE SERVICES OR ANY CONTENT. KEEBY.LIVE DOES NOT GUARANTEE THAT (A) THE SERVICES WILL BE SECURE, TIMELY, UNINTERRUPTED, OR ERROR-FREE, OR OPERATE IN COMBINATION WITH ANY OTHER HARDWARE, SOFTWARE, SYSTEM, OR DATA, (B) THE SERVICES WILL MEET YOUR REQUIREMENTS OR EXPECTATIONS, (C) ANY STORED DATA WILL BE ACCURATE OR RELIABLE, (D) THE QUALITY OF ANY PRODUCTS, SERVICES, INFORMATION, OR OTHER MATERIAL PURCHASED OR OBTAINED BY YOU THROUGH THE SERVICES WILL MEET YOUR REQUIREMENTS OR EXPECTATIONS, (E) ERRORS OR DEFECTS WILL BE CORRECTED, OR (F) THE SERVICE OR THE SERVER(S) THAT MAKE THE SERVICE AVAILABLE ARE FREE OF VIRUSES OR OTHER HARMFUL COMPONENTS.
+
+KEEBY.LIVE ALSO MAKES NO REPRESENTATIONS OR WARRANTIES OF ANY KIND WITH RESPECT TO CONTENT; USER CONTENT IS PROVIDED BY AND IS SOLELY THE RESPONSIBILITY OF THE USERS PROVIDING THAT CONTENT. NO ADVICE OR INFORMATION, WHETHER ORAL OR WRITTEN, OBTAINED FROM KEEBY.LIVE OR THROUGH THE SERVICES, WILL CREATE ANY WARRANTY NOT EXPRESSLY MADE HEREIN.
+
+KEEBY.LIVE DOES NOT WARRANT, ENDORSE, GUARANTEE, OR ASSUME RESPONSIBILITY FOR ANY PRODUCT OR SERVICE ADVERTISED OR OFFERED BY A THIRD PARTY THROUGH THE KEEBY.LIVE SERVICE OR ANY HYPERLINKED WEBSITE OR SERVICE, AND KEEBY.LIVE WILL NOT BE A PARTY TO OR IN ANY WAY MONITOR ANY TRANSACTION BETWEEN YOU AND THIRD-PARTY PROVIDERS OF PRODUCTS OR SERVICES.
+
+IN NO EVENT SHALL KEEBY.LIVE BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR EXEMPLARY DAMAGES, INCLUDING BUT NOT LIMITED TO, DAMAGES FOR LOSS OF PROFITS, GOODWILL, USE, DATA, OR OTHER INTANGIBLE LOSSES (EVEN IF KEEBY.LIVE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES), RESULTING FROM THE USE OR THE INABILITY TO USE THE SERVICE.
+
+IF APPLICABLE LAW DOES NOT ALLOW THE EXCLUSION OF SOME OR ALL OF THE ABOVE IMPLIED OR STATUTORY WARRANTIES TO APPLY TO YOU, THE ABOVE EXCLUSIONS WILL APPLY TO YOU TO THE FULLEST EXTENT PERMITTED BY APPLICABLE LAW.`}
+                </p>
                 <div className="mb-2 text-xl "> Accuracy of Information</div>
-                <p className="mb-5 rounded-2xl bg-black p-4 text-white ">
-                    {`While we strive to provide accurate and up-to-date information on our Website, Genevieve Clare Hair makes no representations or warranties of any kind, express or implied, about the completeness, accuracy, reliability, suitability, or availability concerning the Website or the information, products, services, or related graphics contained on the Website for any purpose. Any reliance you place on such information is therefore strictly at your own risk.`}
+                <p className="mb-5 rounded-md bg-keebyGray p-5 ">
+                    {`While we strive to provide accurate and up-to-date information on our Website, Keeby.live makes no representations or warranties of any kind, express or implied, about the completeness, accuracy, reliability, suitability, or availability concerning the Website or the information, products, services, or related graphics contained on the Website for any purpose. Any reliance you place on such information is therefore strictly at your own risk.`}
                 </p>
                 <div className="mb-2 text-xl ">Service Availability</div>
-                <p className="mb-5 rounded-2xl bg-black p-4 text-white ">
-                    {` Genevieve Clare Hair reserves the right to modify, suspend, or discontinue any part of the Website or the services provided at any time without prior notice. We will not be liable if, for any reason, all or any part of the Website is unavailable at any time or for any period.`}
+                <p className="mb-5 rounded-md bg-keebyGray p-5 ">
+                    {` keeby.live reserves the right to modify, suspend, or discontinue any part of the Website or the services provided at any time without prior notice. We will not be liable if, for any reason, all or any part of the Website is unavailable at any time or for any period.`}
                 </p>
                 <div className="mb-2 text-xl ">Third-Party Links </div>
-                <p className="mb-5 rounded-2xl bg-black p-4 text-white ">
-                    {`Our Website may contain links to third-party websites or services that are not owned or controlled by Genevieve Clare Hair. We have no control over and assume no responsibility for the content, privacy policies, or practices of any third-party websites or services. You further acknowledge and agree that Genevieve Clare Hair shall not be responsible or liable, directly or indirectly, for any damage or loss caused or alleged to be caused by or in connection with the use of or reliance on any such content, goods, or services available on or through any such websites or services.`}
+                <p className="mb-5 rounded-md bg-keebyGray p-5 ">
+                    {`Our Website may contain links to third-party websites or services that are not owned or controlled by keeby.live. We have no control over and assume no responsibility for the content, privacy policies, or practices of any third-party websites or services. You further acknowledge and agree that Genevieve Clare Hair shall not be responsible or liable, directly or indirectly, for any damage or loss caused or alleged to be caused by or in connection with the use of or reliance on any such content, goods, or services available on or through any such websites or services.`}
                 </p>
                 <div className="mb-2 text-xl "> User Responsibilities</div>
-                <p className="mb-5 rounded-2xl bg-black p-4 text-white ">
-                    {`Users are responsible for their interactions with other users and third parties. Genevieve Clare Hair disclaims any liability arising from such interactions. Users are also responsible for maintaining the confidentiality of their account information and for ensuring the security of their passwords.`}
+                <p className="mb-5 rounded-md bg-keebyGray p-5 ">
+                    {`Users are responsible for their interactions with other users and third parties. keeby.live disclaims any liability arising from such interactions. Users are also responsible for maintaining the confidentiality of their account information and for ensuring the security of their passwords.`}
                 </p>
-                <div className="mb-5 text-4xl "> Contact</div>
-                <div className="mb-5 rounded-2xl bg-black p-4 text-white">
-                    <h3>bigpogtimenow@gmail.com</h3>
-                </div>
+                <h2 className="mb-5 text-4xl text-green-500 ">Contact Us</h2>
+                <p className="mb-5 rounded-md bg-keebyGray p-5  ">{`Please contact us at hacktimesupport@outlook.com.`}</p>
             </div>
+            <MainFooter />
         </>
     );
 }
