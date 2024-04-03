@@ -597,19 +597,19 @@ export default function Home() {
 
                                     {isSearchFocus && (
                                         <div className=" search-input-matrix absolute -bottom-[70vh] left-0 top-0 -m-5 rounded-md opacity-70  ">
-                                            {/* <video
+                                            <video
                                                 className="h-full object-cover"
                                                 autoPlay
                                                 loop
                                                 muted
                                             >
                                                 <source
-                                                    src="/Videos/matrix-fade-green.mp4"
+                                                    src="https://s3.us-west-2.amazonaws.com/keeby.live/matrix-fade-green.mp4"
                                                     type="video/mp4"
                                                 />
                                                 Your browser does not support
                                                 the video tag.
-                                            </video> */}
+                                            </video>
                                         </div>
                                     )}
                                 </div>
