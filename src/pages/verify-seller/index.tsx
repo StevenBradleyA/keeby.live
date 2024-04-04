@@ -6,7 +6,8 @@ import { env } from "~/env.mjs";
 import { api } from "~/utils/api";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { setCookie, getCookie } from "cookies-next";
 
 export default function VerifySeller() {
     // npm i @paypal/react-paypal-js not sure if going to use quite yet or at all tbh... currently installed
@@ -15,20 +16,10 @@ export default function VerifySeller() {
     const ctx = api.useContext();
     const router = useRouter();
     const { code } = router.query;
-    const [userId, setUserId] = useState<string>("");
-    const persistedUserId = sessionStorage.getItem("userId");
-
-    useEffect(() => {
-        const storedUserId = sessionStorage.getItem("userId");
-        if (storedUserId) {
-            setUserId(storedUserId);
-        }
-    }, []);
 
     useEffect(() => {
         if (code) {
             if (code && typeof code === "string") {
-                console.log("we are in here");
                 handleVerify(code);
             }
         }
@@ -36,12 +27,12 @@ export default function VerifySeller() {
 
     const handleVerify = (authCode: string) => {
         console.log("handleVerify called with authCode:", authCode);
-        console.log("session test", sessionData?.user.id);
-        const storedUserId = sessionStorage.getItem("userId");
-        if (storedUserId && authCode) {
-            console.log("Session Data User ID:", storedUserId);
+        const userId = getCookie("verify");
+        console.log("hallllooo user", userId);
+        if (userId && authCode) {
+            console.log("Session Data User ID:", userId);
             const data = {
-                userId: storedUserId,
+                userId: userId,
                 authCode: authCode,
             };
             console.log("Preparing to mutate with data:", data);
@@ -76,8 +67,13 @@ export default function VerifySeller() {
 
     const handleVerifySellerClick = () => {
         if (sessionData && sessionData.user && sessionData.user.id) {
-            const userId = sessionData.user.id;
-            sessionStorage.setItem("userId", userId.toString());
+            // const userId = sessionData.user.id;
+            // sessionStorage.setItem("userId", userId.toString());
+
+            setCookie("verify", sessionData.user.id.toString(), {
+                maxAge: 60 * 60 * 24 * 365,
+                path: "/",
+            });
             window.location.href = paypalLoginUrl;
         }
     };
