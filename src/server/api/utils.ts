@@ -44,7 +44,9 @@ const PAYPAL_CLIENT_ID = env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
 const exchangeAuthCodeForAccessToken = async (
     authCode: string
 ): Promise<string> => {
-    const response = await fetch("https://api.paypal.com/v1/oauth2/token", {
+    const response = await fetch("https://api.sandbox.paypal.com/v1/oauth2/token", {
+    // const response = await fetch("https://api.paypal.com/v1/oauth2/token", {
+
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
@@ -69,8 +71,9 @@ const exchangeAuthCodeForAccessToken = async (
 };
 
 const retrieveUserInfo = async (accessToken: string): Promise<string> => {
+    // "https://api.paypal.com/v1/identity/oauth2/userinfo?schema=paypalv1.1",
     const response = await fetch(
-        "https://api.paypal.com/v1/identity/oauth2/userinfo?schema=paypalv1.1",
+        "https://api.sandbox.paypal.com/v1/identity/oauth2/userinfo?schema=paypalv1.1",
         {
             method: "GET",
             headers: {

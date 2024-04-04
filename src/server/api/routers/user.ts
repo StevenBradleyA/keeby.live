@@ -469,9 +469,9 @@ export const userRouter = createTRPCRouter({
         .mutation(async ({ input, ctx }) => {
             const { userId, authCode } = input;
 
-            if (ctx.session.user.id !== userId) {
-                throw new Error("Invalid userId");
-            }
+            // if (ctx.session.user.id !== userId) {
+            //     throw new Error("Invalid userId");
+            // }
             try {
                 const accessToken = await exchangeAuthCodeForAccessToken(
                     authCode

@@ -26,16 +26,12 @@ export default function VerifySeller() {
     }, [code]);
 
     const handleVerify = (authCode: string) => {
-        console.log("handleVerify called with authCode:", authCode);
         const userId = getCookie("verify");
-        console.log("hallllooo user", userId);
         if (userId && authCode) {
-            console.log("Session Data User ID:", userId);
             const data = {
                 userId: userId,
                 authCode: authCode,
             };
-            console.log("Preparing to mutate with data:", data);
             mutate(data);
         }
     };
@@ -67,9 +63,6 @@ export default function VerifySeller() {
 
     const handleVerifySellerClick = () => {
         if (sessionData && sessionData.user && sessionData.user.id) {
-            // const userId = sessionData.user.id;
-            // sessionStorage.setItem("userId", userId.toString());
-
             setCookie("verify", sessionData.user.id.toString(), {
                 maxAge: 60 * 60 * 24 * 365,
                 path: "/",
