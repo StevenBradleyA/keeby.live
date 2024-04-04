@@ -1,6 +1,5 @@
 import { useSession } from "next-auth/react";
 import MainFooter from "~/components/Footer";
-import KeebShopVerifyUser from "~/components/KeebShop/Verification";
 import defaultProfile from "@public/Profile/profile-default.png";
 import Image from "next/image";
 import { env } from "~/env.mjs";
@@ -79,16 +78,6 @@ export default function VerifySeller() {
                             </button>
 
                             {/* <div className="bg-keebyGray p-10 w-full mt-10 rounded-xl"> hi</div> */}
-
-                            {sessionData.user.isVerified ? (
-                                <button className="mt-20 rounded-xl bg-gray-500 px-10 py-2">
-                                    You are already verified :D
-                                </button>
-                            ) : (
-                                <KeebShopVerifyUser
-                                    userId={sessionData.user.id}
-                                />
-                            )}
                         </div>
                         <div className=" w-1/3">
                             <div className="flex w-full flex-col gap-5 rounded-xl bg-keebyGray p-10">
@@ -163,7 +152,12 @@ export default function VerifySeller() {
                 payment method's validity and charge you or pay you at a later
                 time depending on if you buy or sell.`}
                     </p>
-
+   <Image
+                alt="paypal button"
+                src="https://www.paypalobjects.com/devdoc/log-in-with-paypal-button.png"
+                width={200}
+                height={200}
+            />
                     {sessionData &&
                     sessionData.user &&
                     !sessionData.user.isVerified ? (
