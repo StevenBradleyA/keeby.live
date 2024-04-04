@@ -8,9 +8,11 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { setCookie, getCookie } from "cookies-next";
+import PayPalLogin from "~/components/KeebShop/VerifySeller";
 
 export default function VerifySeller() {
     // npm i @paypal/react-paypal-js not sure if going to use quite yet or at all tbh... currently installed
+    // we will use your paypal email to send you payouts when your keyboard sells.
     const { data: sessionData, update } = useSession();
 
     const ctx = api.useContext();
@@ -20,56 +22,77 @@ export default function VerifySeller() {
     useEffect(() => {
         if (code) {
             if (code && typeof code === "string") {
-                handleVerify(code);
+                handleAccessToken(code);
             }
         }
     }, [code]);
 
-    const handleVerify = (authCode: string) => {
+    const handleAccessToken = (authCode: string) => {
         const userId = getCookie("verify");
-        if (userId && authCode) {
-            const data = {
+        if (authCode && userId) {
+            getPayPalAccessToken({
                 userId: userId,
-                authCode: authCode,
-            };
-            mutate(data);
+                authorizationCode: authCode,
+            });
         }
     };
 
-    const { mutate } = api.user.verifyUser.useMutation({
-        onSuccess: async () => {
-            try {
-                toast.success("Seller Verified!", {
-                    style: {
-                        borderRadius: "10px",
-                        background: "#333",
-                        color: "#fff",
-                    },
-                });
+    const { mutate: getPayPalAccessToken } =
+        api.user.getPayPalAccessToken.useMutation({
+            onSuccess: async () => {
+                try {
+                    toast.success("Profile Verified!", {
+                        style: {
+                            borderRadius: "10px",
+                            background: "#333",
+                            color: "#fff",
+                        },
+                    });
+                    await update();
+                    await ctx.user.invalidate();
+                } catch (error) {
+                    console.error("Error while navigating:", error);
+                }
+            },
+            onError: (error) => {
+                console.error("Mutation failed with error:", error);
+            },
+        });
 
-                void ctx.user.invalidate();
-                await update();
-            } catch (error) {
-                console.error("Error while navigating:", error);
-            }
-        },
-        onError: (error) => {
-            console.error("Mutation failed with error:", error);
-        },
-    });
+    // const { mutate } = api.user.verifyUser.useMutation({
+    //     onSuccess: async () => {
+    //         try {
+    //             toast.success("Seller Verified!", {
+    //                 style: {
+    //                     borderRadius: "10px",
+    //                     background: "#333",
+    //                     color: "#fff",
+    //                 },
+    //             });
+
+    //             void ctx.user.invalidate();
+    //             await update();
+    //         } catch (error) {
+    //             console.error("Error while navigating:", error);
+    //         }
+    //     },
+    //     onError: (error) => {
+    //         console.error("Mutation failed with error:", error);
+    //     },
+    // });
 
     // const paypalLoginUrl = `https://www.paypal.com/signin/authorize?client_id=${env.NEXT_PUBLIC_PAYPAL_CLIENT_ID}&response_type=code&scope=email&redirect_uri=https://www.keeby.live/verify-seller`;
-    const paypalLoginUrl = `https://sandbox.paypal.com/signin/authorize?client_id=${env.NEXT_PUBLIC_PAYPAL_CLIENT_ID}&response_type=code&scope=email&redirect_uri=https://www.keeby.live/verify-seller`;
+    // const paypalLoginUrl = `https://sandbox.paypal.com/signin/authorize?client_id=${env.NEXT_PUBLIC_PAYPAL_CLIENT_ID}&response_type=code&scope=email&redirect_uri=https://www.keeby.live/verify-seller`;
 
-    const handleVerifySellerClick = () => {
-        if (sessionData && sessionData.user && sessionData.user.id) {
-            setCookie("verify", sessionData.user.id.toString(), {
-                maxAge: 60 * 60 * 24 * 365,
-                path: "/",
-            });
-            window.location.href = paypalLoginUrl;
-        }
-    };
+    // const handleVerifySellerClick = () => {
+    //     if (sessionData && sessionData.user && sessionData.user.id) {
+    //         setCookie("verify", sessionData.user.id.toString(), {
+    //             maxAge: 60 * 60 * 24 * 365,
+    //             path: "/",
+    //         });
+    //         window.location.href = paypalLoginUrl;
+    //     }
+    // };
 
     return (
         <>
@@ -85,11 +108,7 @@ export default function VerifySeller() {
                                 to register your paypal account.`}
                             </p>
 
-                            <button onClick={handleVerifySellerClick}>
-                                Become a verified Seller
-                            </button>
-
-                            {/* <div className="bg-keebyGray p-10 w-full mt-10 rounded-xl"> hi</div> */}
+                            <PayPalLogin />
                         </div>
                         <div className=" w-1/3">
                             <div className="flex w-full flex-col gap-5 rounded-xl bg-keebyGray p-10">

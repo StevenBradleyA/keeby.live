@@ -6,11 +6,22 @@ import {
 } from "~/server/api/trpc";
 import { env } from "~/env.mjs";
 import { compare } from "bcryptjs";
-import {
-    removeFileFromS3,
-    exchangeAuthCodeForAccessToken,
-    retrieveUserInfo,
-} from "../utils";
+import { removeFileFromS3 } from "../utils";
+import fetch from "node-fetch";
+// import type { Response } from "node-fetch";
+// npm i node-fetch
+// npm install --save-dev @types/node-fetch
+interface TokenData {
+    scope: string;
+    access_token: string;
+    token_type: string;
+    expires_in: string;
+    refresh_token: string;
+    nonce: string;
+}
+interface UserInfoData {
+    user_id: string;
+}
 
 interface UserWithGamesAndRank {
     rank: {
@@ -459,38 +470,145 @@ export const userRouter = createTRPCRouter({
             }
         }),
 
-    verifyUser: protectedProcedure
+    getPayPalAccessToken: publicProcedure
         .input(
             z.object({
                 userId: z.string(),
-                authCode: z.string(),
+                authorizationCode: z.string(),
             })
         )
         .mutation(async ({ input, ctx }) => {
-            const { userId, authCode } = input;
+            const { authorizationCode, userId } = input;
+            const clientId = env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
+            const clientSecret = env.PAYPAL_SECRET;
+            const basicAuth = Buffer.from(
+                `${clientId}:${clientSecret}`
+            ).toString("base64");
 
-            // if (ctx.session.user.id !== userId) {
-            //     throw new Error("Invalid userId");
-            // }
             try {
-                const accessToken = await exchangeAuthCodeForAccessToken(
-                    authCode
+                const tokenResponse = await fetch(
+                    "https://api-m.sandbox.paypal.com/v1/oauth2/token",
+                    {
+                        method: "POST",
+                        headers: {
+                            Authorization: `Basic ${basicAuth}`,
+                            "Content-Type": "application/x-www-form-urlencoded",
+                        },
+                        body: new URLSearchParams({
+                            grant_type: "authorization_code",
+                            code: authorizationCode,
+                        }),
+                    }
                 );
-                const paypalEmail = await retrieveUserInfo(accessToken);
 
-                console.log('hey', paypalEmail)
+                const tokenData = (await tokenResponse.json()) as TokenData;
 
-                if (paypalEmail) {
-                    return ctx.prisma.user.update({
-                        where: { id: userId },
-                        data: { isVerified: true, paypalEmail: paypalEmail },
-                    });
+                if (!tokenResponse.ok) {
+                    throw new Error(`Error from PayPal`);
                 }
+                if (tokenData) {
+                    const userInfoResponse = await fetch(
+                        "https://api-m.sandbox.paypal.com/v1/identity/oauth2/userinfo?schema=openid",
+                        {
+                            method: "GET",
+                            headers: {
+                                Authorization: `Bearer ${tokenData.access_token}`,
+                                "Content-Type": "application/json",
+                            },
+                        }
+                    );
+
+                    const userInfo =
+                        (await userInfoResponse.json()) as UserInfoData;
+                    // do i save the refresh token? and the user_id from paypal?
+                    // that way later when i need to send a payout I just get a new access token and send them the amount to the paypal userId?
+                    if (userInfo) {
+                        return ctx.prisma.user.update({
+                            where: { id: userId },
+                            data: {
+                                isVerified: true,
+                                refreshToken: tokenData.refresh_token,
+                                paypalId: userInfo.user_id,
+                            },
+                        });
+                    }
+
+                    if (!userInfoResponse.ok) {
+                        throw new Error(
+                            `Failed to fetch user info from PayPal`
+                        );
+                    }
+                }
+
+                // return data;
             } catch (error) {
-                console.error("Error verifying user with PayPal:", error);
-                throw new Error("Verification failed");
+                console.error("Failed to exchange authorization code:", error);
+                throw new Error("Failed to exchange authorization code.");
             }
         }),
+
+    // getPayPalUserInfo: publicProcedure
+
+    // verifyUser: protectedProcedure
+    //     .input(
+    //         z.object({
+    //             userId: z.string(),
+    //             authCode: z.string(),
+    //         })
+    //     )
+    //     .mutation(async ({ input, ctx }) => {
+    //         const { userId, authCode } = input;
+
+    // if (ctx.session.user.id !== userId) {
+    //     throw new Error("Invalid userId");
+    // }
+    // https://api-m.sandbox.paypal.com/v1/oauth2/token
+    // const tokenUrl = 'https://api-m.sandbox.paypal.com/v1/oauth2/token';
+    //     const params = new URLSearchParams({
+    //       grant_type: 'authorization_code',
+    //       code: authCode,
+    //       redirect_uri: 'https://www.keeby.live/verify-seller',
+    //     });
+
+    //     const credentials = Buffer.from(`${env.NEXT_PUBLIC_PAYPAL_CLIENT_ID}:${env.PAYPAL_SECRET}`).toString('base64');
+    //     try {
+    //         const response: Response = await fetch(tokenUrl, {
+    //           method: 'POST',
+    //           headers: {
+    //             'Authorization': `Basic ${credentials}`,
+    //             'Content-Type': 'application/x-www-form-urlencoded',
+    //           },
+    //           body: params,
+    //         });
+
+    //         const data = await response.json();
+
+    //         if (!response.ok) {
+    //           throw new Error(`Failed to exchange code for token: ${data.error_description || 'Unknown error'}`);
+    //         }
+
+    // Success - the access token is now ready for further API calls on behalf of the user
+    // return { accessToken: data.access_token };
+
+    // try {
+    //     const accessToken = await exchangeAuthCodeForAccessToken(
+    //         authCode
+    //     );
+    //     const paypalEmail = await retrieveUserInfo(accessToken);
+
+    //     console.log('hey', paypalEmail)
+
+    //     if (paypalEmail) {
+    //         return ctx.prisma.user.update({
+    //             where: { id: userId },
+    //             data: { isVerified: true, paypalEmail: paypalEmail },
+    //         });
+    //     }
+    // } catch (error) {
+    //     console.error("Error verifying user with PayPal:", error);
+    //     throw new Error("Verification failed");
+    // }
+    // }),
     // verifyUser: protectedProcedure
     // .input(z.string())
     // .mutation(async ({ input, ctx }) => {

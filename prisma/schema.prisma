@@ -5,7 +5,7 @@ generator client {
 datasource db {
     provider = "postgresql"
     // provider = "sqlite"
-    url = env("DATABASE_URL")
+    url      = env("DATABASE_URL")
 }
 
 // next-auth
@@ -270,13 +270,14 @@ model User {
     name           String?
     email          String?   @unique
     emailVerified  DateTime?
-    paypalEmail    String?
     internetPoints Int       @default(0)
     image          String?
     profile        String?
     rankId         String?
     username       String?   @unique
     selectedTag    String?
+    refreshToken   String?
+    paypalId       String?
 
     isVerified   Boolean @default(false)
     isAdmin      Boolean @default(false)
