@@ -15,12 +15,26 @@ interface TokenData {
     scope: string;
     access_token: string;
     token_type: string;
-    expires_in: string;
+    expires_in: number;
     refresh_token: string;
     nonce: string;
 }
 interface UserInfoData {
-    user_id: string;
+    user_id?: string;
+    sub?: string;
+    name: string;
+    email: string;
+    verified?: string | boolean;
+    payer_id?: string;
+    address?: {
+        street_address?: string;
+        locality?: string;
+        region?: string;
+        postal_code?: string;
+        country?: string;
+    };
+    verified_account?: string | boolean;
+    email_verified?: boolean;
 }
 
 interface UserWithGamesAndRank {
@@ -502,14 +516,13 @@ export const userRouter = createTRPCRouter({
                 );
 
                 const tokenData = (await tokenResponse.json()) as TokenData;
-                console.log("\n\n\n hey \n\n\n", tokenData);
 
                 if (!tokenResponse.ok) {
                     throw new Error(`Error from PayPal`);
                 }
                 if (tokenData) {
                     const userInfoResponse = await fetch(
-                        "https://api-m.sandbox.paypal.com/v1/identity/oauth2/userinfo?schema=openid",
+                        "https://api-m.sandbox.paypal.com/v1/identity/openidconnect/userinfo?schema=openid",
                         {
                             method: "GET",
                             headers: {
@@ -521,41 +534,28 @@ export const userRouter = createTRPCRouter({
 
                     const userInfo =
                         (await userInfoResponse.json()) as UserInfoData;
-                    console.log("\n\n\n hey \n\n\n", userInfo);
 
                     if (!userInfoResponse.ok) {
                         throw new Error(
                             `Failed to fetch user info from PayPal`
                         );
                     }
-                    // do i save the refresh token? and the user_id from paypal?
-                    // that way later when i need to send a payout I just get a new access token and send them the amount to the paypal userId?
-                    if (
-                        userInfo &&
-                        tokenData.refresh_token &&
-                        userInfo.user_id
-                    ) {
-                        const updateUser = await ctx.prisma.user.update({
+                    if (userInfo && tokenData.refresh_token && userInfo.email) {
+                        return await ctx.prisma.user.update({
                             where: { id: userId },
                             data: {
                                 isVerified: true,
                                 refreshToken: tokenData.refresh_token,
-                                paypalId: userInfo.user_id,
+                                paypalId: userInfo.email,
                             },
                         });
-                        return { userInfo, updateUser, tokenData };
                     }
-                    return { userInfo, tokenData };
                 }
-
-                // return data;
             } catch (error) {
                 console.error("Failed to exchange authorization code:", error);
                 throw new Error("Failed to exchange authorization code.");
             }
         }),
-
-    // getPayPalUserInfo: publicProcedure
 
     // verifyUser: protectedProcedure
     //     .input(

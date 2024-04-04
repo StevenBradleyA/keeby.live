@@ -9,7 +9,7 @@ export default function PayPalLogin() {
     const appId = env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
 
     useEffect(() => {
-        let scriptLoaded = false;
+        // let scriptLoaded = false;
 
         const loadPaypalScript = () => {
             if (window.paypal) {
@@ -18,7 +18,7 @@ export default function PayPalLogin() {
                 const script = document.createElement("script");
                 script.src = "https://www.paypalobjects.com/js/external/api.js";
                 script.onload = () => {
-                    scriptLoaded = true;
+                    // scriptLoaded = true;
                     renderPaypalButton();
                 };
                 document.body.appendChild(script);
@@ -52,18 +52,18 @@ export default function PayPalLogin() {
 
         loadPaypalScript();
 
-        return () => {
-            if (scriptLoaded) {
+        // return () => {
+        //     if (scriptLoaded) {
                 // Remove the PayPal script when the component unmounts
                 // This step is optional and should be tailored to your specific use case
-                const script = document.querySelector(
-                    "script[src='https://www.paypalobjects.com/js/external/api.js']"
-                );
-                if (script) {
-                    document.body.removeChild(script);
-                }
-            }
-        };
+            //     const script = document.querySelector(
+            //         "script[src='https://www.paypalobjects.com/js/external/api.js']"
+            //     );
+            //     if (script) {
+            //         document.body.removeChild(script);
+            //     }
+            // }
+        // };
     }, []);
 
     return (

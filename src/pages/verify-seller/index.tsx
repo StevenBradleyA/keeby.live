@@ -7,7 +7,7 @@ import { api } from "~/utils/api";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { setCookie, getCookie } from "cookies-next";
+import { getCookie } from "cookies-next";
 import PayPalLogin from "~/components/KeebShop/VerifySeller";
 
 export default function VerifySeller() {
@@ -29,17 +29,17 @@ export default function VerifySeller() {
 
     const handleAccessToken = (authCode: string) => {
         const userId = getCookie("verify");
-        // if (authCode && userId) {
-        //     getPayPalAccessToken({
-        //         userId: userId,
-        //         authorizationCode: authCode,
-        //     });
-        // }
+        if (authCode && userId) {
+            getPayPalAccessToken({
+                userId: userId,
+                authorizationCode: authCode,
+            });
+        }
     };
 
     const { mutate: getPayPalAccessToken } =
         api.user.getPayPalAccessToken.useMutation({
-            onSuccess: async (data) => {
+            onSuccess: async () => {
                 try {
                     toast.success("Profile Verified!", {
                         style: {
@@ -48,9 +48,6 @@ export default function VerifySeller() {
                             color: "#fff",
                         },
                     });
-                    console.log("heyyy token data", data?.tokenData);
-                    console.log("heyyy token data", data?.userInfo);
-
                     await update();
                     await ctx.user.invalidate();
                 } catch (error) {
