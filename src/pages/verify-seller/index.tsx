@@ -48,7 +48,7 @@ export default function VerifySeller() {
                             color: "#fff",
                         },
                     });
-                    console.log(data)
+                    console.log(data);
                     await update();
                     await ctx.user.invalidate();
                 } catch (error) {
@@ -59,41 +59,6 @@ export default function VerifySeller() {
                 console.error("Mutation failed with error:", error);
             },
         });
-
-    // const { mutate } = api.user.verifyUser.useMutation({
-    //     onSuccess: async () => {
-    //         try {
-    //             toast.success("Seller Verified!", {
-    //                 style: {
-    //                     borderRadius: "10px",
-    //                     background: "#333",
-    //                     color: "#fff",
-    //                 },
-    //             });
-
-    //             void ctx.user.invalidate();
-    //             await update();
-    //         } catch (error) {
-    //             console.error("Error while navigating:", error);
-    //         }
-    //     },
-    //     onError: (error) => {
-    //         console.error("Mutation failed with error:", error);
-    //     },
-    // });
-
-    // const paypalLoginUrl = `https://www.paypal.com/signin/authorize?client_id=${env.NEXT_PUBLIC_PAYPAL_CLIENT_ID}&response_type=code&scope=email&redirect_uri=https://www.keeby.live/verify-seller`;
-    // const paypalLoginUrl = `https://sandbox.paypal.com/signin/authorize?client_id=${env.NEXT_PUBLIC_PAYPAL_CLIENT_ID}&response_type=code&scope=email&redirect_uri=https://www.keeby.live/verify-seller`;
-
-    // const handleVerifySellerClick = () => {
-    //     if (sessionData && sessionData.user && sessionData.user.id) {
-    //         setCookie("verify", sessionData.user.id.toString(), {
-    //             maxAge: 60 * 60 * 24 * 365,
-    //             path: "/",
-    //         });
-    //         window.location.href = paypalLoginUrl;
-    //     }
-    // };
 
     return (
         <>

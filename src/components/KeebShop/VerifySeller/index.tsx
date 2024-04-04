@@ -8,30 +8,77 @@ export default function PayPalLogin() {
 
     const appId = env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
 
-    useEffect(() => {
-        // let scriptLoaded = false;
+    // useEffect(() => {
+    //     // let scriptLoaded = false;
 
+    //     const loadPaypalScript = () => {
+    //         if (window.paypal) {
+    //             renderPaypalButton();
+    //         } else {
+    //             const script = document.createElement("script");
+    //             script.src = "https://www.paypalobjects.com/js/external/api.js";
+    //             script.onload = () => {
+    //                 // scriptLoaded = true;
+    //                 renderPaypalButton();
+    //             };
+    //             document.body.appendChild(script);
+    //         }
+    //     };
+
+    //     const renderPaypalButton = () => {
+    //         if (window.paypal && sessionData) {
+    //             setCookie("verify", sessionData.user.id.toString(), {
+    //                 maxAge: 60 * 60 * 24 * 365,
+    //                 path: "/",
+    //             });
+
+    //             window.paypal.use(["login"], function (login) {
+    //                 login.render({
+    //                     appid: appId,
+    //                     authend: "sandbox",
+    //                     scopes: "email",
+    //                     containerid: "lippButton",
+    //                     responseType: "code",
+    //                     locale: "en-us",
+    //                     buttonType: "LWP",
+    //                     buttonShape: "pill",
+    //                     buttonSize: "lg",
+    //                     fullPage: "true",
+    //                     returnurl: "https://www.keeby.live/verify-seller",
+    //                 });
+    //             });
+    //         }
+    //     };
+
+    //     loadPaypalScript();
+
+    //     // return () => {
+    //     //     if (scriptLoaded) {
+    //             // Remove the PayPal script when the component unmounts
+    //             // This step is optional and should be tailored to your specific use case
+    //         //     const script = document.querySelector(
+    //         //         "script[src='https://www.paypalobjects.com/js/external/api.js']"
+    //         //     );
+    //         //     if (script) {
+    //         //         document.body.removeChild(script);
+    //         //     }
+    //         // }
+    //     // };
+    // }, []);
+    useEffect(() => {
         const loadPaypalScript = () => {
             if (window.paypal) {
                 renderPaypalButton();
             } else {
                 const script = document.createElement("script");
                 script.src = "https://www.paypalobjects.com/js/external/api.js";
-                script.onload = () => {
-                    // scriptLoaded = true;
-                    renderPaypalButton();
-                };
+                script.onload = renderPaypalButton;
                 document.body.appendChild(script);
             }
         };
 
         const renderPaypalButton = () => {
-            if (window.paypal && sessionData) {
-                setCookie("verify", sessionData.user.id.toString(), {
-                    maxAge: 60 * 60 * 24 * 365,
-                    path: "/",
-                });
-
+            if (window.paypal) {
                 window.paypal.use(["login"], function (login) {
                     login.render({
                         appid: appId,
@@ -52,18 +99,14 @@ export default function PayPalLogin() {
 
         loadPaypalScript();
 
-        // return () => {
-        //     if (scriptLoaded) {
-                // Remove the PayPal script when the component unmounts
-                // This step is optional and should be tailored to your specific use case
-            //     const script = document.querySelector(
-            //         "script[src='https://www.paypalobjects.com/js/external/api.js']"
-            //     );
-            //     if (script) {
-            //         document.body.removeChild(script);
-            //     }
-            // }
-        // };
+        return () => {
+            const paypalScript = document.querySelector(
+                "script[src='https://www.paypalobjects.com/js/external/api.js']"
+            );
+            if (paypalScript) {
+                document.body.removeChild(paypalScript);
+            }
+        };
     }, []);
 
     return (

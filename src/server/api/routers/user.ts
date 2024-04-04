@@ -516,41 +516,48 @@ export const userRouter = createTRPCRouter({
                 );
 
                 const tokenData = (await tokenResponse.json()) as TokenData;
-                    return tokenData
-                // if (!tokenResponse.ok) {
-                //     throw new Error(`Error from PayPal`);
-                // }
-                // if (tokenData) {
-                //     const userInfoResponse = await fetch(
-                //         "https://api-m.sandbox.paypal.com/v1/identity/openidconnect/userinfo?schema=openid",
-                //         {
-                //             method: "GET",
-                //             headers: {
-                //                 Authorization: `Bearer ${tokenData.access_token}`,
-                //                 "Content-Type": "application/json",
-                //             },
-                //         }
-                //     );
 
-                //     const userInfo =
-                //         (await userInfoResponse.json()) as UserInfoData;
+                if (
+                    tokenData &&
+                    tokenData.access_token &&
+                    tokenData.refresh_token
+                ) {
+                    try {
+                        const userInfoResponse = await fetch(
+                            "https://api-m.sandbox.paypal.com/v1/identity/openidconnect/userinfo?schema=openid",
+                            {
+                                method: "GET",
+                                headers: {
+                                    Authorization: `Bearer ${tokenData.access_token}`,
+                                    "Content-Type":
+                                        "application/x-www-form-urlencoded",
+                                },
+                            }
+                        );
+                        const userInfo =
+                            (await userInfoResponse.json()) as UserInfoData;
 
-                //     if (!userInfoResponse.ok) {
-                //         throw new Error(
-                //             `Failed to fetch user info from PayPal`
-                //         );
-                //     }
-                //     if (userInfo && tokenData.refresh_token && userInfo.email) {
-                //         return await ctx.prisma.user.update({
-                //             where: { id: userId },
-                //             data: {
-                //                 isVerified: true,
-                //                 refreshToken: tokenData.refresh_token,
-                //                 paypalId: userInfo.email,
-                //             },
-                //         });
-                //     }
-                // }
+                        if (
+                            userInfo &&
+                            tokenData.refresh_token &&
+                            userInfo.email
+                        ) {
+                            return await ctx.prisma.user.update({
+                                where: { id: userId },
+                                data: {
+                                    isVerified: true,
+                                    refreshToken: tokenData.refresh_token,
+                                    paypalId: userInfo.email,
+                                },
+                            });
+                        }
+                    } catch (error) {
+                        console.error("Failed to get user info");
+                        throw new Error("Failed to get user info");
+                    }
+                }
+
+                return tokenData;
             } catch (error) {
                 console.error("Failed to exchange authorization code:", error);
                 throw new Error("Failed to exchange authorization code.");
