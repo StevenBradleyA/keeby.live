@@ -29,12 +29,12 @@ export default function VerifySeller() {
 
     const handleAccessToken = (authCode: string) => {
         const userId = getCookie("verify");
-        if (authCode && userId) {
-            getPayPalAccessToken({
-                userId: userId,
-                authorizationCode: authCode,
-            });
-        }
+        // if (authCode && userId) {
+        //     getPayPalAccessToken({
+        //         userId: userId,
+        //         authorizationCode: authCode,
+        //     });
+        // }
     };
 
     const { mutate: getPayPalAccessToken } =
