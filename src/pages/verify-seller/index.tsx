@@ -10,8 +10,8 @@ import { useEffect } from "react";
 
 export default function VerifySeller() {
     // npm i @paypal/react-paypal-js not sure if going to use quite yet or at all tbh... currently installed
-
     const { data: sessionData, update } = useSession();
+
     const ctx = api.useContext();
     const router = useRouter();
     const { code } = router.query;
@@ -32,7 +32,10 @@ export default function VerifySeller() {
 
     const handleVerify = (authCode: string) => {
         console.log("handleVerify called with authCode:", authCode);
-        if (sessionData && sessionData.user && authCode) {
+        console.log("session test", sessionData?.user.id);
+
+        if (sessionData && authCode) {
+            console.log("Session Data User ID:", sessionData.user.id);
             const data = {
                 userId: sessionData.user.id,
                 authCode: authCode,
@@ -58,6 +61,9 @@ export default function VerifySeller() {
             } catch (error) {
                 console.error("Error while navigating:", error);
             }
+        },
+        onError: (error) => {
+            console.error("Mutation failed with error:", error);
         },
     });
 
