@@ -6,7 +6,7 @@ import { env } from "~/env.mjs";
 import { api } from "~/utils/api";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function VerifySeller() {
     // npm i @paypal/react-paypal-js not sure if going to use quite yet or at all tbh... currently installed
@@ -15,14 +15,18 @@ export default function VerifySeller() {
     const ctx = api.useContext();
     const router = useRouter();
     const { code } = router.query;
-    useEffect(() => {
-        console.log("Code from URL:", code);
-        if (code) {
-            // Here you can call your tRPC route, passing the authorization code
-            // For example:
-            console.log("hello");
-            console.log(typeof code);
+    const [userId, setUserId] = useState<string>("");
+    const persistedUserId = sessionStorage.getItem("userId");
 
+    useEffect(() => {
+        const storedUserId = sessionStorage.getItem("userId");
+        if (storedUserId) {
+            setUserId(storedUserId);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (code) {
             if (code && typeof code === "string") {
                 console.log("we are in here");
                 handleVerify(code);
@@ -33,11 +37,11 @@ export default function VerifySeller() {
     const handleVerify = (authCode: string) => {
         console.log("handleVerify called with authCode:", authCode);
         console.log("session test", sessionData?.user.id);
-
-        if (sessionData && authCode) {
-            console.log("Session Data User ID:", sessionData.user.id);
+        const storedUserId = sessionStorage.getItem("userId");
+        if (storedUserId && authCode) {
+            console.log("Session Data User ID:", storedUserId);
             const data = {
-                userId: sessionData.user.id,
+                userId: storedUserId,
                 authCode: authCode,
             };
             console.log("Preparing to mutate with data:", data);
@@ -71,7 +75,11 @@ export default function VerifySeller() {
     const paypalLoginUrl = `https://sandbox.paypal.com/signin/authorize?client_id=${env.NEXT_PUBLIC_PAYPAL_CLIENT_ID}&response_type=code&scope=email&redirect_uri=https://www.keeby.live/verify-seller`;
 
     const handleVerifySellerClick = () => {
-        window.location.href = paypalLoginUrl;
+        if (sessionData && sessionData.user && sessionData.user.id) {
+            const userId = sessionData.user.id;
+            sessionStorage.setItem("userId", userId.toString());
+            window.location.href = paypalLoginUrl;
+        }
     };
 
     return (
