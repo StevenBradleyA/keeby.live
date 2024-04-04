@@ -27,11 +27,13 @@ export default function VerifySeller() {
     }, [code]);
 
     const handleVerify = (authCode: string) => {
+        console.log("handleVerify called with authCode:", authCode);
         if (sessionData && sessionData.user && authCode) {
             const data = {
                 userId: sessionData.user.id,
                 authCode: authCode,
             };
+            console.log("Preparing to mutate with data:", data);
             mutate(data);
         }
     };

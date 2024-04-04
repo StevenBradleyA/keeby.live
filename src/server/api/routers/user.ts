@@ -478,6 +478,8 @@ export const userRouter = createTRPCRouter({
                 );
                 const paypalEmail = await retrieveUserInfo(accessToken);
 
+                console.log('hey', paypalEmail)
+
                 if (paypalEmail) {
                     return ctx.prisma.user.update({
                         where: { id: userId },
