@@ -83,7 +83,7 @@ export default function PayPalLogin() {
                     login.render({
                         appid: appId,
                         authend: "sandbox",
-                        scopes: "email",
+                        scopes: "openid profile email address https://uri.paypal.com/services/paypalattributes",
                         containerid: "lippButton",
                         responseType: "code",
                         locale: "en-us",

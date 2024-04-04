@@ -541,7 +541,7 @@ export const userRouter = createTRPCRouter({
                         method: "GET",
                         headers: {
                             Authorization: `Bearer ${access}`,
-                            "Content-Type": "application/x-www-form-urlencoded",
+                            'Content-Type': 'application/json',
                         },
                     }
                 );
