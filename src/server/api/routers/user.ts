@@ -20,21 +20,21 @@ interface TokenData {
     nonce: string;
 }
 interface UserInfoData {
-    user_id?: string;
-    sub?: string;
-    name: string;
+    // user_id?: string;
+    // sub?: string;
+    // name: string;
     email: string;
-    verified?: string | boolean;
-    payer_id?: string;
-    address?: {
-        street_address?: string;
-        locality?: string;
-        region?: string;
-        postal_code?: string;
-        country?: string;
-    };
-    verified_account?: string | boolean;
-    email_verified?: boolean;
+    // verified?: string | boolean;
+    // payer_id?: string;
+    // address?: {
+    //     street_address?: string;
+    //     locality?: string;
+    //     region?: string;
+    //     postal_code?: string;
+    //     country?: string;
+    // };
+    // verified_account?: string | boolean;
+    // email_verified?: boolean;
 }
 
 interface UserWithGamesAndRank {
@@ -516,41 +516,41 @@ export const userRouter = createTRPCRouter({
                 );
 
                 const tokenData = (await tokenResponse.json()) as TokenData;
+                    return tokenData
+                // if (!tokenResponse.ok) {
+                //     throw new Error(`Error from PayPal`);
+                // }
+                // if (tokenData) {
+                //     const userInfoResponse = await fetch(
+                //         "https://api-m.sandbox.paypal.com/v1/identity/openidconnect/userinfo?schema=openid",
+                //         {
+                //             method: "GET",
+                //             headers: {
+                //                 Authorization: `Bearer ${tokenData.access_token}`,
+                //                 "Content-Type": "application/json",
+                //             },
+                //         }
+                //     );
 
-                if (!tokenResponse.ok) {
-                    throw new Error(`Error from PayPal`);
-                }
-                if (tokenData) {
-                    const userInfoResponse = await fetch(
-                        "https://api-m.sandbox.paypal.com/v1/identity/openidconnect/userinfo?schema=openid",
-                        {
-                            method: "GET",
-                            headers: {
-                                Authorization: `Bearer ${tokenData.access_token}`,
-                                "Content-Type": "application/json",
-                            },
-                        }
-                    );
+                //     const userInfo =
+                //         (await userInfoResponse.json()) as UserInfoData;
 
-                    const userInfo =
-                        (await userInfoResponse.json()) as UserInfoData;
-
-                    if (!userInfoResponse.ok) {
-                        throw new Error(
-                            `Failed to fetch user info from PayPal`
-                        );
-                    }
-                    if (userInfo && tokenData.refresh_token && userInfo.email) {
-                        return await ctx.prisma.user.update({
-                            where: { id: userId },
-                            data: {
-                                isVerified: true,
-                                refreshToken: tokenData.refresh_token,
-                                paypalId: userInfo.email,
-                            },
-                        });
-                    }
-                }
+                //     if (!userInfoResponse.ok) {
+                //         throw new Error(
+                //             `Failed to fetch user info from PayPal`
+                //         );
+                //     }
+                //     if (userInfo && tokenData.refresh_token && userInfo.email) {
+                //         return await ctx.prisma.user.update({
+                //             where: { id: userId },
+                //             data: {
+                //                 isVerified: true,
+                //                 refreshToken: tokenData.refresh_token,
+                //                 paypalId: userInfo.email,
+                //             },
+                //         });
+                //     }
+                // }
             } catch (error) {
                 console.error("Failed to exchange authorization code:", error);
                 throw new Error("Failed to exchange authorization code.");

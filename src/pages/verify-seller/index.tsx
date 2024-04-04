@@ -39,7 +39,7 @@ export default function VerifySeller() {
 
     const { mutate: getPayPalAccessToken } =
         api.user.getPayPalAccessToken.useMutation({
-            onSuccess: async () => {
+            onSuccess: async (data) => {
                 try {
                     toast.success("Profile Verified!", {
                         style: {
@@ -48,6 +48,7 @@ export default function VerifySeller() {
                             color: "#fff",
                         },
                     });
+                    console.log(data)
                     await update();
                     await ctx.user.invalidate();
                 } catch (error) {
