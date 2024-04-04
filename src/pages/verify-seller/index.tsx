@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { getCookie } from "cookies-next";
 import PayPalLogin from "~/components/KeebShop/VerifySeller";
+import { verify } from "crypto";
 
 export default function VerifySeller() {
     // npm i @paypal/react-paypal-js not sure if going to use quite yet or at all tbh... currently installed
@@ -28,10 +29,8 @@ export default function VerifySeller() {
     }, [code]);
 
     const handleAccessToken = (authCode: string) => {
-        const userId = getCookie("verify");
-        if (authCode && userId) {
+        if (authCode) {
             getPayPalAccessToken({
-                userId: userId,
                 authorizationCode: authCode,
             });
         }
@@ -41,7 +40,7 @@ export default function VerifySeller() {
         api.user.getPayPalAccessToken.useMutation({
             onSuccess: async (data) => {
                 try {
-                    toast.success("Profile Verified!", {
+                    toast.success("token acquired!", {
                         style: {
                             borderRadius: "10px",
                             background: "#333",
@@ -49,8 +48,14 @@ export default function VerifySeller() {
                         },
                     });
                     console.log(data);
-                    await update();
-                    await ctx.user.invalidate();
+                    const userId = getCookie("verify");
+                    if (userId && data.access_token && data.refresh_token) {
+                        verifyUser({
+                            userId: userId,
+                            access: data.access_token,
+                            refresh: data.refresh_token,
+                        });
+                    }
                 } catch (error) {
                     console.error("Error while navigating:", error);
                 }
@@ -59,6 +64,28 @@ export default function VerifySeller() {
                 console.error("Mutation failed with error:", error);
             },
         });
+
+    const { mutate: verifyUser } = api.user.verifyUser.useMutation({
+        onSuccess: async () => {
+            try {
+                toast.success("verified!", {
+                    style: {
+                        borderRadius: "10px",
+                        background: "#333",
+                        color: "#fff",
+                    },
+                });
+
+                await update();
+                await ctx.user.invalidate();
+            } catch (error) {
+                console.error("Error while navigating:", error);
+            }
+        },
+        onError: (error) => {
+            console.error("Mutation failed with error:", error);
+        },
+    });
 
     return (
         <>
