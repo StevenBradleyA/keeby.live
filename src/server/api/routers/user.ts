@@ -540,24 +540,25 @@ export const userRouter = createTRPCRouter({
                     {
                         method: "GET",
                         headers: {
-                            Authorization: `Bearer ${access}`,
-                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${access}`,
+                            'Content-Type': 'application/x-www-form-urlencoded',
                         },
                     }
                 );
+
                 const userInfo =
                     (await userInfoResponse.json()) as UserInfoData;
-
-                if (userInfo.email) {
-                    return await ctx.prisma.user.update({
-                        where: { id: userId },
-                        data: {
-                            isVerified: true,
-                            refreshToken: refresh,
-                            paypalId: userInfo.email,
-                        },
-                    });
-                }
+                    return userInfo
+                // if (userInfo.email) {
+                //     return await ctx.prisma.user.update({
+                //         where: { id: userId },
+                //         data: {
+                //             isVerified: true,
+                //             refreshToken: refresh,
+                //             paypalId: userInfo.email,
+                //         },
+                //     });
+                // }
             } catch (error) {
                 console.error("Failed to get user info");
                 throw new Error("Failed to get user info");

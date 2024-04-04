@@ -66,7 +66,7 @@ export default function VerifySeller() {
         });
 
     const { mutate: verifyUser } = api.user.verifyUser.useMutation({
-        onSuccess: async () => {
+        onSuccess: async (data) => {
             try {
                 toast.success("verified!", {
                     style: {
@@ -75,7 +75,7 @@ export default function VerifySeller() {
                         color: "#fff",
                     },
                 });
-
+                console.log(data)
                 await update();
                 await ctx.user.invalidate();
             } catch (error) {
