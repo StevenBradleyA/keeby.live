@@ -38,7 +38,7 @@ export default function VerifySeller() {
 
     const { mutate: getPayPalAccessToken } =
         api.user.getPayPalAccessToken.useMutation({
-            onSuccess: async (data) => {
+            onSuccess: (data) => {
                 try {
                     toast.success("token acquired!", {
                         style: {
