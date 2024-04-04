@@ -517,45 +517,45 @@ export const userRouter = createTRPCRouter({
 
                 const tokenData = (await tokenResponse.json()) as TokenData;
 
-                if (
-                    tokenData &&
-                    tokenData.access_token &&
-                    tokenData.refresh_token
-                ) {
-                    try {
-                        const userInfoResponse = await fetch(
-                            "https://api-m.sandbox.paypal.com/v1/identity/openidconnect/userinfo?schema=openid",
-                            {
-                                method: "GET",
-                                headers: {
-                                    Authorization: `Bearer ${tokenData.access_token}`,
-                                    "Content-Type":
-                                        "application/x-www-form-urlencoded",
-                                },
-                            }
-                        );
-                        const userInfo =
-                            (await userInfoResponse.json()) as UserInfoData;
+                // if (
+                //     tokenData &&
+                //     tokenData.access_token &&
+                //     tokenData.refresh_token
+                // ) {
+                //     try {
+                //         const userInfoResponse = await fetch(
+                //             "https://api-m.sandbox.paypal.com/v1/identity/openidconnect/userinfo?schema=openid",
+                //             {
+                //                 method: "GET",
+                //                 headers: {
+                //                     Authorization: `Bearer ${tokenData.access_token}`,
+                //                     "Content-Type":
+                //                         "application/x-www-form-urlencoded",
+                //                 },
+                //             }
+                //         );
+                //         const userInfo =
+                //             (await userInfoResponse.json()) as UserInfoData;
 
-                        if (
-                            userInfo &&
-                            tokenData.refresh_token &&
-                            userInfo.email
-                        ) {
-                            return await ctx.prisma.user.update({
-                                where: { id: userId },
-                                data: {
-                                    isVerified: true,
-                                    refreshToken: tokenData.refresh_token,
-                                    paypalId: userInfo.email,
-                                },
-                            });
-                        }
-                    } catch (error) {
-                        console.error("Failed to get user info");
-                        throw new Error("Failed to get user info");
-                    }
-                }
+                //         if (
+                //             userInfo &&
+                //             tokenData.refresh_token &&
+                //             userInfo.email
+                //         ) {
+                //             return await ctx.prisma.user.update({
+                //                 where: { id: userId },
+                //                 data: {
+                //                     isVerified: true,
+                //                     refreshToken: tokenData.refresh_token,
+                //                     paypalId: userInfo.email,
+                //                 },
+                //             });
+                //         }
+                //     } catch (error) {
+                //         console.error("Failed to get user info");
+                //         throw new Error("Failed to get user info");
+                //     }
+                // }
 
                 return tokenData;
             } catch (error) {
