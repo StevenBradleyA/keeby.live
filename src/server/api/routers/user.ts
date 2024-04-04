@@ -6,7 +6,11 @@ import {
 } from "~/server/api/trpc";
 import { env } from "~/env.mjs";
 import { compare } from "bcryptjs";
-import { removeFileFromS3 } from "../utils";
+import {
+    removeFileFromS3,
+    exchangeAuthCodeForAccessToken,
+    retrieveUserInfo,
+} from "../utils";
 
 interface UserWithGamesAndRank {
     rank: {
@@ -456,17 +460,47 @@ export const userRouter = createTRPCRouter({
         }),
 
     verifyUser: protectedProcedure
-        .input(z.string())
+        .input(
+            z.object({
+                userId: z.string(),
+                authCode: z.string(),
+            })
+        )
         .mutation(async ({ input, ctx }) => {
-            if (ctx.session.user.id === input) {
-                return ctx.prisma.user.update({
-                    where: { id: input },
-                    data: { isVerified: true },
-                });
-            } else {
+            const { userId, authCode } = input;
+
+            if (ctx.session.user.id !== userId) {
                 throw new Error("Invalid userId");
             }
+            try {
+                const accessToken = await exchangeAuthCodeForAccessToken(
+                    authCode
+                );
+                const paypalEmail = await retrieveUserInfo(accessToken);
+
+                if (paypalEmail) {
+                    return ctx.prisma.user.update({
+                        where: { id: userId },
+                        data: { isVerified: true, paypalEmail: paypalEmail },
+                    });
+                }
+            } catch (error) {
+                console.error("Error verifying user with PayPal:", error);
+                throw new Error("Verification failed");
+            }
         }),
+    // verifyUser: protectedProcedure
+    // .input(z.string())
+    // .mutation(async ({ input, ctx }) => {
+    //     if (ctx.session.user.id === input) {
+    //         return ctx.prisma.user.update({
+    //             where: { id: input },
+    //             data: { isVerified: true },
+    //         });
+    //     } else {
+    //         throw new Error("Invalid userId");
+    //     }
+    // }),
 
     // paypalRedirect: protectedProcedure.query(({ ctx }) => {
     //     const clientId = env.PAYPAL_CLIENT_ID;
