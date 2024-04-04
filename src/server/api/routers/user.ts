@@ -502,6 +502,7 @@ export const userRouter = createTRPCRouter({
                 );
 
                 const tokenData = (await tokenResponse.json()) as TokenData;
+                console.log("\n\n\n hey \n\n\n", tokenData);
 
                 if (!tokenResponse.ok) {
                     throw new Error(`Error from PayPal`);
@@ -520,10 +521,21 @@ export const userRouter = createTRPCRouter({
 
                     const userInfo =
                         (await userInfoResponse.json()) as UserInfoData;
+                    console.log("\n\n\n hey \n\n\n", userInfo);
+
+                    if (!userInfoResponse.ok) {
+                        throw new Error(
+                            `Failed to fetch user info from PayPal`
+                        );
+                    }
                     // do i save the refresh token? and the user_id from paypal?
                     // that way later when i need to send a payout I just get a new access token and send them the amount to the paypal userId?
-                    if (userInfo) {
-                        return ctx.prisma.user.update({
+                    if (
+                        userInfo &&
+                        tokenData.refresh_token &&
+                        userInfo.user_id
+                    ) {
+                        const updateUser = await ctx.prisma.user.update({
                             where: { id: userId },
                             data: {
                                 isVerified: true,
@@ -531,13 +543,9 @@ export const userRouter = createTRPCRouter({
                                 paypalId: userInfo.user_id,
                             },
                         });
+                        return { userInfo, updateUser, tokenData };
                     }
-
-                    if (!userInfoResponse.ok) {
-                        throw new Error(
-                            `Failed to fetch user info from PayPal`
-                        );
-                    }
+                    return { userInfo, tokenData };
                 }
 
                 // return data;
