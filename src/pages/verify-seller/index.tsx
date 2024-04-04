@@ -15,12 +15,14 @@ export default function VerifySeller() {
     const ctx = api.useContext();
     const router = useRouter();
     const { code } = router.query;
-
     useEffect(() => {
+        console.log('Code from URL:', code);
         if (code) {
             // Here you can call your tRPC route, passing the authorization code
             // For example:
-            if (typeof code === "string") void handleVerify(code);
+            console.log('hello')
+            console.log(code)
+            if ( code === "string") handleVerify(code);
         }
     }, [code]);
 
