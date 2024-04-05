@@ -500,7 +500,7 @@ export const userRouter = createTRPCRouter({
 
             try {
                 const tokenResponse = await fetch(
-                    "https://api-m.paypal.com/v1/oauth2/token",
+                    "https://api-m.sandbox.paypal.com/v1/oauth2/token",
                     {
                         method: "POST",
                         headers: {
@@ -536,7 +536,7 @@ export const userRouter = createTRPCRouter({
 
             try {
                 const userInfoResponse = await fetch(
-                    "https://api-m.paypal.com/v1/identity/openidconnect/userinfo?schema=openid",
+                    "https://api-m.sandbox.paypal.com/v1/identity/openidconnect/userinfo?schema=openid",
                     {
                         method: "GET",
                         headers: {

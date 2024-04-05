@@ -10,11 +10,6 @@ import { useEffect } from "react";
 import { getCookie, setCookie } from "cookies-next";
 
 export default function VerifySeller() {
-    // npm i @paypal/react-paypal-js not sure if going to use quite yet or at all tbh... currently installed
-
-    // npm install requirejs --save
-
-    // we will use your paypal email to send you payouts when your keyboard sells.
     const { data: sessionData, update } = useSession();
 
     const ctx = api.useContext();
