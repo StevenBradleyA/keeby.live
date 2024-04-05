@@ -35,7 +35,6 @@ export default function PayPalLogin() {
                 window.paypal.use(["login"], function (login) {
                     login.render({
                         appid: appId,
-                        authend: "sandbox",
                         scopes: "openid profile email",
                         containerid: "lippButton",
                         responseType: "code",

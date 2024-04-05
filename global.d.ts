@@ -2,7 +2,7 @@ export {};
 
 interface PayPalLoginOptions {
     appid: string;
-    authend: string;
+    authend?: string;
     scopes: string;
     containerid: string;
     responseType: string;

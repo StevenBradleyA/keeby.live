@@ -500,7 +500,7 @@ export const userRouter = createTRPCRouter({
 
             try {
                 const tokenResponse = await fetch(
-                    "https://api-m.sandbox.paypal.com/v1/oauth2/token",
+                    "https://api-m.paypal.com/v1/oauth2/token",
                     {
                         method: "POST",
                         headers: {
@@ -536,29 +536,28 @@ export const userRouter = createTRPCRouter({
 
             try {
                 const userInfoResponse = await fetch(
-                    "https://api-m.sandbox.paypal.com/v1/identity/openidconnect/userinfo?schema=openid",
+                    "https://api-m.paypal.com/v1/identity/openidconnect/userinfo?schema=openid",
                     {
                         method: "GET",
                         headers: {
-                            'Authorization': `Bearer ${access}`,
-                            'Content-Type': 'application/x-www-form-urlencoded',
+                            Authorization: `Bearer ${access}`,
+                            "Content-Type": "application/x-www-form-urlencoded",
                         },
                     }
                 );
 
                 const userInfo =
                     (await userInfoResponse.json()) as UserInfoData;
-                    return userInfo
-                // if (userInfo.email) {
-                //     return await ctx.prisma.user.update({
-                //         where: { id: userId },
-                //         data: {
-                //             isVerified: true,
-                //             refreshToken: refresh,
-                //             paypalId: userInfo.email,
-                //         },
-                //     });
-                // }
+                if (userInfo.email) {
+                    return await ctx.prisma.user.update({
+                        where: { id: userId },
+                        data: {
+                            isVerified: true,
+                            refreshToken: refresh,
+                            paypalId: userInfo.email,
+                        },
+                    });
+                }
             } catch (error) {
                 console.error("Failed to get user info");
                 throw new Error("Failed to get user info");
