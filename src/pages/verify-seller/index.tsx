@@ -7,17 +7,20 @@ import { api } from "~/utils/api";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { setCookie, getCookie } from "cookies-next";
-import PayPalLogin from "~/components/KeebShop/VerifySeller";
+import { getCookie, setCookie } from "cookies-next";
 
 export default function VerifySeller() {
     // npm i @paypal/react-paypal-js not sure if going to use quite yet or at all tbh... currently installed
+
+    // npm install requirejs --save
+
     // we will use your paypal email to send you payouts when your keyboard sells.
     const { data: sessionData, update } = useSession();
 
     const ctx = api.useContext();
     const router = useRouter();
     const { code } = router.query;
+    const appId = env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
 
     useEffect(() => {
         if (code) {
@@ -28,10 +31,8 @@ export default function VerifySeller() {
     }, [code]);
 
     const handleAccessToken = (authCode: string) => {
-        const userId = getCookie("verify");
-        if (authCode && userId) {
+        if (authCode) {
             getPayPalAccessToken({
-                userId: userId,
                 authorizationCode: authCode,
             });
         }
@@ -39,20 +40,24 @@ export default function VerifySeller() {
 
     const { mutate: getPayPalAccessToken } =
         api.user.getPayPalAccessToken.useMutation({
-            onSuccess: async (data) => {
+            onSuccess: (data) => {
                 try {
-                    toast.success("Profile Verified!", {
+                    toast.success("token acquired!", {
                         style: {
                             borderRadius: "10px",
                             background: "#333",
                             color: "#fff",
                         },
                     });
-                    console.log("heyyy token data", data?.tokenData);
-                    console.log("heyyy token data", data?.userInfo);
-
-                    await update();
-                    await ctx.user.invalidate();
+                    console.log(data);
+                    const userId = getCookie("verify");
+                    if (userId && data.access_token && data.refresh_token) {
+                        verifyUser({
+                            userId: userId,
+                            access: data.access_token,
+                            refresh: data.refresh_token,
+                        });
+                    }
                 } catch (error) {
                     console.error("Error while navigating:", error);
                 }
@@ -62,40 +67,44 @@ export default function VerifySeller() {
             },
         });
 
-    // const { mutate } = api.user.verifyUser.useMutation({
-    //     onSuccess: async () => {
-    //         try {
-    //             toast.success("Seller Verified!", {
-    //                 style: {
-    //                     borderRadius: "10px",
-    //                     background: "#333",
-    //                     color: "#fff",
-    //                 },
-    //             });
+    const { mutate: verifyUser } = api.user.verifyUser.useMutation({
+        onSuccess: async (data) => {
+            try {
+                toast.success("verified!", {
+                    style: {
+                        borderRadius: "10px",
+                        background: "#333",
+                        color: "#fff",
+                    },
+                });
+                console.log(data);
+                await update();
+                await ctx.user.invalidate();
+            } catch (error) {
+                console.error("Error while navigating:", error);
+            }
+        },
+        onError: (error) => {
+            console.error("Mutation failed with error:", error);
+        },
+    });
 
-    //             void ctx.user.invalidate();
-    //             await update();
-    //         } catch (error) {
-    //             console.error("Error while navigating:", error);
-    //         }
-    //     },
-    //     onError: (error) => {
-    //         console.error("Mutation failed with error:", error);
-    //     },
-    // });
-
-    // const paypalLoginUrl = `https://www.paypal.com/signin/authorize?client_id=${env.NEXT_PUBLIC_PAYPAL_CLIENT_ID}&response_type=code&scope=email&redirect_uri=https://www.keeby.live/verify-seller`;
-    // const paypalLoginUrl = `https://sandbox.paypal.com/signin/authorize?client_id=${env.NEXT_PUBLIC_PAYPAL_CLIENT_ID}&response_type=code&scope=email&redirect_uri=https://www.keeby.live/verify-seller`;
-
-    // const handleVerifySellerClick = () => {
-    //     if (sessionData && sessionData.user && sessionData.user.id) {
-    //         setCookie("verify", sessionData.user.id.toString(), {
-    //             maxAge: 60 * 60 * 24 * 365,
-    //             path: "/",
-    //         });
-    //         window.location.href = paypalLoginUrl;
-    //     }
-    // };
+    const handleClick = () => {
+        const scope = "openid email profile";
+        const returnUrl = encodeURIComponent(
+            "https://www.keeby.live/verify-seller"
+        );
+        if (sessionData) {
+            setCookie("verify", sessionData.user.id.toString(), {
+                maxAge: 60 * 60 * 24 * 365,
+                path: "/",
+            });
+            window.open(
+                `https://www.sandbox.paypal.com/signin/authorize?flowEntry=static&client_id=${appId}&scope=${scope}&redirect_uri=${returnUrl}`,
+                "_blank"
+            );
+        }
+    };
 
     return (
         <>
@@ -110,8 +119,18 @@ export default function VerifySeller() {
                                 {`I wanted to create a fun and safe place to buy and sell keyboards, which is how keeby started!  To sell a mechanical keyboard on keeby you have
                                 to register your paypal account.`}
                             </p>
-
-                            <PayPalLogin />
+                            <button
+                                className="relative mt-10 w-56  rounded-md bg-[#0070BA]"
+                                onClick={handleClick}
+                            >
+                                <Image
+                                    alt="paypal button"
+                                    src="https://www.paypalobjects.com/devdoc/log-in-with-paypal-button.png"
+                                    width={800}
+                                    height={800}
+                                    className="h-full w-full"
+                                />
+                            </button>
                         </div>
                         <div className=" w-1/3">
                             <div className="flex w-full flex-col gap-5 rounded-xl bg-keebyGray p-10">
@@ -150,57 +169,6 @@ export default function VerifySeller() {
                             </div>
                         </div>
                     </div>
-                    {/* <div>email is already verified because we use OAUTH</div>
-  <p>
-                                    {" "}
-                                    {`Keeby uses
-                                paypal to protect buyers and sellers from
-                                getting scammed. Just a reminder keeby takes a
-                                5% fee from your sale and seller's are
-                                responsible for shipping so price accordingly.
-                                you can check out the rules here.`}
-                                </p>
-                    <div>
-                        {`     We don't save or interact with your payment data its all securly
-                stored via stripe`}
-                    </div>
-                    <div>going to want to verify payment via stripe</div>
-                    <div>
-                        I wanted to create a safe fun place to buy and sell
-                        keyboards
-                    </div>
-                    <button>How we prevent scams</button>
-                    <button>
-                        We take a 5% fee from the final price of the seller.
-                    </button>
-                    <div>How do I stay safe as a seller? </div>
-                    <div>
-                        --page that explains taking a video of your keyboard
-                        working before sale will protect you from buyers
-                        claiming non working keyboards. *fire idea just make
-                        short lil hackerman style video on youtube*
-                    </div>
-                    <p>
-                        {`keeby live is a market place by verifying your account we will
-                use strip to securely collect payment details to verify the
-                payment method's validity and charge you or pay you at a later
-                time depending on if you buy or sell.`}
-                    </p>
-   <Image
-                alt="paypal button"
-                src="https://www.paypalobjects.com/devdoc/log-in-with-paypal-button.png"
-                width={200}
-                height={200}
-            />
-                    {sessionData &&
-                    sessionData.user &&
-                    !sessionData.user.isVerified ? (
-                        <KeebShopVerifyUser userId={sessionData.user.id} />
-                    ) : (
-                        <button className="mt-20 rounded-xl bg-gray-500 px-10 py-2">
-                            You are already verified :D
-                        </button>
-                    )} */}
                 </div>
             )}
             <MainFooter />
