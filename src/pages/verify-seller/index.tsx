@@ -7,18 +7,20 @@ import { api } from "~/utils/api";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { getCookie } from "cookies-next";
-import PayPalLogin from "~/components/KeebShop/VerifySeller";
-import { verify } from "crypto";
+import { getCookie, setCookie } from "cookies-next";
 
 export default function VerifySeller() {
     // npm i @paypal/react-paypal-js not sure if going to use quite yet or at all tbh... currently installed
+
+    // npm install requirejs --save
+
     // we will use your paypal email to send you payouts when your keyboard sells.
     const { data: sessionData, update } = useSession();
 
     const ctx = api.useContext();
     const router = useRouter();
     const { code } = router.query;
+    const appId = env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
 
     useEffect(() => {
         if (code) {
@@ -75,7 +77,7 @@ export default function VerifySeller() {
                         color: "#fff",
                     },
                 });
-                console.log(data)
+                console.log(data);
                 await update();
                 await ctx.user.invalidate();
             } catch (error) {
@@ -86,6 +88,23 @@ export default function VerifySeller() {
             console.error("Mutation failed with error:", error);
         },
     });
+
+    const handleClick = () => {
+        const scope = "openid email profile";
+        const returnUrl = encodeURIComponent(
+            "http://localhost:3000/verify-seller"
+        );
+        if (sessionData) {
+            setCookie("verify", sessionData.user.id.toString(), {
+                maxAge: 60 * 60 * 24 * 365,
+                path: "/",
+            });
+            window.open(
+                `https://www.paypal.com/signin/authorize?flowEntry=static&client_id=${appId}&scope=${scope}&redirect_uri=${returnUrl}`,
+                "_blank"
+            );
+        }
+    };
 
     return (
         <>
@@ -100,8 +119,18 @@ export default function VerifySeller() {
                                 {`I wanted to create a fun and safe place to buy and sell keyboards, which is how keeby started!  To sell a mechanical keyboard on keeby you have
                                 to register your paypal account.`}
                             </p>
-
-                            <PayPalLogin />
+                            <button
+                                className="relative w-56 rounded-md  bg-[#0070BA] mt-10"
+                                onClick={handleClick}
+                            >
+                                <Image
+                                    alt="paypal button"
+                                    src="https://www.paypalobjects.com/devdoc/log-in-with-paypal-button.png"
+                                    width={800}
+                                    height={800}
+                                    className="h-full w-full"
+                                />
+                            </button>
                         </div>
                         <div className=" w-1/3">
                             <div className="flex w-full flex-col gap-5 rounded-xl bg-keebyGray p-10">
@@ -140,57 +169,6 @@ export default function VerifySeller() {
                             </div>
                         </div>
                     </div>
-                    {/* <div>email is already verified because we use OAUTH</div>
-  <p>
-                                    {" "}
-                                    {`Keeby uses
-                                paypal to protect buyers and sellers from
-                                getting scammed. Just a reminder keeby takes a
-                                5% fee from your sale and seller's are
-                                responsible for shipping so price accordingly.
-                                you can check out the rules here.`}
-                                </p>
-                    <div>
-                        {`     We don't save or interact with your payment data its all securly
-                stored via stripe`}
-                    </div>
-                    <div>going to want to verify payment via stripe</div>
-                    <div>
-                        I wanted to create a safe fun place to buy and sell
-                        keyboards
-                    </div>
-                    <button>How we prevent scams</button>
-                    <button>
-                        We take a 5% fee from the final price of the seller.
-                    </button>
-                    <div>How do I stay safe as a seller? </div>
-                    <div>
-                        --page that explains taking a video of your keyboard
-                        working before sale will protect you from buyers
-                        claiming non working keyboards. *fire idea just make
-                        short lil hackerman style video on youtube*
-                    </div>
-                    <p>
-                        {`keeby live is a market place by verifying your account we will
-                use strip to securely collect payment details to verify the
-                payment method's validity and charge you or pay you at a later
-                time depending on if you buy or sell.`}
-                    </p>
-   <Image
-                alt="paypal button"
-                src="https://www.paypalobjects.com/devdoc/log-in-with-paypal-button.png"
-                width={200}
-                height={200}
-            />
-                    {sessionData &&
-                    sessionData.user &&
-                    !sessionData.user.isVerified ? (
-                        <KeebShopVerifyUser userId={sessionData.user.id} />
-                    ) : (
-                        <button className="mt-20 rounded-xl bg-gray-500 px-10 py-2">
-                            You are already verified :D
-                        </button>
-                    )} */}
                 </div>
             )}
             <MainFooter />

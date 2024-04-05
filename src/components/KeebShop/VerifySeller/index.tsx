@@ -4,6 +4,8 @@ import { env } from "~/env.mjs";
 import { setCookie } from "cookies-next";
 
 export default function PayPalLogin() {
+    // npm install requirejs --save
+
     const { data: sessionData } = useSession();
 
     const appId = env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
@@ -27,10 +29,7 @@ export default function PayPalLogin() {
 
         const renderPaypalButton = () => {
             if (window.paypal && sessionData) {
-                setCookie("verify", sessionData.user.id.toString(), {
-                    maxAge: 60 * 60 * 24 * 365,
-                    path: "/",
-                });
+             
 
                 window.paypal.use(["login"], function (login) {
                     login.render({
