@@ -120,7 +120,7 @@ export default function VerifySeller() {
                                 to register your paypal account.`}
                             </p>
                             <button
-                                className="relative w-56 rounded-md  bg-[#0070BA] mt-10"
+                                className="relative mt-10 w-56  rounded-md bg-[#0070BA]"
                                 onClick={handleClick}
                             >
                                 <Image
