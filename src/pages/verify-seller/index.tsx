@@ -83,6 +83,26 @@ export default function VerifySeller() {
             console.error("Mutation failed with error:", error);
         },
     });
+    const { mutate: verifyTesting } = api.user.verifyTesting.useMutation({
+        onSuccess: async () => {
+            try {
+                toast.success("verified!", {
+                    style: {
+                        borderRadius: "10px",
+                        background: "#333",
+                        color: "#fff",
+                    },
+                });
+                await update();
+                await ctx.user.invalidate();
+            } catch (error) {
+                console.error("Error while navigating:", error);
+            }
+        },
+        onError: (error) => {
+            console.error("Mutation failed with error:", error);
+        },
+    });
 
     const handleClick = () => {
         const scope = "openid email profile";
@@ -101,6 +121,12 @@ export default function VerifySeller() {
         }
     };
 
+    const handleTesting = () => {
+        if (sessionData?.user.id) {
+            verifyTesting({ userId: sessionData.user.id });
+        }
+    };
+
     return (
         <>
             {sessionData && sessionData.user && (
@@ -116,7 +142,7 @@ export default function VerifySeller() {
                             </p>
                             <button
                                 className="relative mt-10 w-56  rounded-md bg-[#0070BA]"
-                                onClick={handleClick}
+                                onClick={handleTesting}
                             >
                                 <Image
                                     alt="paypal button"

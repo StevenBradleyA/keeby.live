@@ -1,7 +1,7 @@
 import Image from "next/image";
 import offlineRank from "@public/Ranks/offline.png";
 import keeboOffline from "@public/Profile/keebo-offline.png";
-
+import primeagen from "@public/KeebType/Coconut-oily-primeagen.png";
 import { themeStyles } from "../Theme/themeStyles";
 import type { ThemeName } from "../Theme/themeStyles";
 
@@ -148,7 +148,7 @@ export default function OfflineGameResults({
                             <div className=" absolute -left-5 -right-5 -top-12 bottom-[40%] z-20 bg-gradient-to-b from-[rgba(0,0,0,0)] to-[#222]  object-cover"></div>
                         </>
                     )}
-                     {theme === "KEEBYRED" && (
+                    {theme === "KEEBYRED" && (
                         <>
                             <div className=" absolute -left-5 -right-5 -top-12 bottom-[40%] overflow-hidden  ">
                                 <video
@@ -158,13 +158,43 @@ export default function OfflineGameResults({
                                     muted
                                 >
                                     <source
-                                        src="https://s3.us-west-2.amazonaws.com/keeby.live/matrix-red-fade.mp4"
+                                        src="https://s3.us-west-2.amazonaws.com/keeby.live/matrix-fade-red-222.mp4"
                                         type="video/mp4"
                                     />
                                     Your browser does not support the video tag.
                                 </video>
                             </div>
                             <div className=" absolute -left-5 -right-5 -top-12 bottom-[40%] z-20 bg-gradient-to-b from-[rgba(0,0,0,0)] to-[#222]  object-cover"></div>
+                        </>
+                    )}
+                    {theme === "KEEBYRED" && (
+                        <>
+                            <div className=" absolute -left-5 -right-5 -top-12 bottom-[40%] overflow-hidden  ">
+                                <video
+                                    className="-z-10 w-full object-cover"
+                                    autoPlay
+                                    loop
+                                    muted
+                                >
+                                    <source
+                                        src="https://s3.us-west-2.amazonaws.com/keeby.live/matrix-fade-red-222.mp4"
+                                        type="video/mp4"
+                                    />
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
+                            <div className=" absolute -left-5 -right-5 -top-12 bottom-[40%] z-20 bg-gradient-to-b from-[rgba(0,0,0,0)] to-[#222]  object-cover"></div>
+                        </>
+                    )}
+                    {theme === "PRIMEAGEN" && (
+                        <>
+                            <div className=" absolute left-20 right-20 top-10 opacity-70  ">
+                                <Image
+                                    src={primeagen}
+                                    alt="coconut oily"
+                                    className="object-contain"
+                                />
+                            </div>
                         </>
                     )}
                     <div

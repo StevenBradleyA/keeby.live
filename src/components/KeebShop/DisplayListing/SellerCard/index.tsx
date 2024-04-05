@@ -35,7 +35,7 @@ export default function SellerListingCard({ seller }: SellerListingProps) {
                 </div>
             )}
             <div className="flex h-full w-5/6 flex-col ">
-                <div className="h-1/2 w-full"> hey buy stuff here</div>
+                <div className="h-1/2 w-full"> hey buy stuff</div>
 
                 <div className="flex h-1/2 w-full items-center justify-between ">
                     {seller && seller.username && (

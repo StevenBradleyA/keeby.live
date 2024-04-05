@@ -42,6 +42,11 @@
     filter: invert(48%) sepia(5%) saturate(3277%) hue-rotate(72deg)
         brightness(116%) contrast(126%);
 }
+
+.png-hackerman {
+    filter: invert(65%) sepia(25%) saturate(7375%) hue-rotate(74deg)
+        brightness(117%) contrast(123%);
+}
 .png-light-gray {
     filter: invert(80%) sepia(6%) saturate(10%) hue-rotate(341deg)
         brightness(88%) contrast(85%);

@@ -116,8 +116,8 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
         if (!title.length) {
             errorsObj.title = "Please provide a title for your listing";
         }
-        if (title.length > 50) {
-            errorsObj.titleExcess = "Title cannot exceed 50 characters";
+        if (title.length > 30) {
+            errorsObj.titleExcess = "Title cannot exceed 30 characters";
         }
 
         if (!keycaps.length) {

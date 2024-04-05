@@ -1,4 +1,11 @@
-export type ThemeName = "KEEBY" | "PIGGY" | "PRIMEAGEN" | "BANANA" | "HIPYO" | "KEEBYRED";
+export type ThemeName =
+    | "KEEBY"
+    | "PIGGY"
+    | "PRIMEAGEN"
+    | "BANANA"
+    | "HIPYO"
+    | "KEEBYRED"
+    | "HACKERMAN";
 
 interface ThemeStyle {
     title: string;
@@ -53,6 +60,34 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
         graphBorder: "rgba(134, 239, 172, 0.5)",
         graphHighlight: "rgba(134, 239, 172)",
     },
+    // matrix
+    // --bg-color: #000000;
+    //   --main-color: #15ff00;
+    //   --caret-color: #15ff00;
+    //   --sub-color: #006500;
+    //   --sub-alt-color: #032000;
+    //   --text-color: #d1ffcd;
+    //   --error-color: #da3333;
+    //   --error-extra-color: #791717;
+    //   --colorful-error-color: #da3333;
+    //   --colorful-error-extra-color: #791717;
+    HACKERMAN: {
+        title: "png-hackerman",
+        baseColor: "bg-[#000000]",
+        secondaryBase: "bg-keebyGray",
+        backgroundColor: "bg-black",
+        border: "border-[#15ff00]",
+        textColor: "text-darkGray",
+        hoverText: "hover:text-darkGray",
+        cursor: "bg-[#15ff00]",
+        menuInputBackground: "bg-white/30",
+        pause: "text-darkGray",
+        hit: "text-[#15ff00]",
+        miss: "text-red-800",
+        graphBackground: "rgba(21, 255, 0, 0.3)",
+        graphBorder: "rgba(21, 255, 0, 0.5)",
+        graphHighlight: "rgba(21, 255, 0, 1)",
+    },
     PIGGY: {
         title: "png-white",
         baseColor: "bg-[#fcd5ce]",
@@ -89,20 +124,20 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
     },
     HIPYO: {
         title: "png-hipyo",
-        baseColor: "bg-[#6A4C93]", 
+        baseColor: "bg-[#6A4C93]",
         secondaryBase: "bg-[#9C77B0]",
         backgroundColor: "bg-[#BAB1D7]", //#EDE7F6 #CEC5EB
-        border: "border-[#9575CD]", 
-        textColor: "text-[#D1C4E9]", 
-        hoverText: "hover:text-[#B39DDB]", 
+        border: "border-[#9575CD]",
+        textColor: "text-[#D1C4E9]",
+        hoverText: "hover:text-[#B39DDB]",
         cursor: "bg-[#B39DDB]",
         menuInputBackground: "bg-white/30",
         pause: "text-[#EDE7F6]",
-        hit: "text-[#9575CD]", 
-        miss: "text-[#F06292]", 
-        graphBackground: "rgba(189, 168, 212, 0.3)", 
-        graphBorder: "rgba(173, 158, 202, 0.5)", 
-        graphHighlight: "rgba(209, 196, 233)", 
+        hit: "text-[#9575CD]",
+        miss: "text-[#F06292]",
+        graphBackground: "rgba(189, 168, 212, 0.3)",
+        graphBorder: "rgba(173, 158, 202, 0.5)",
+        graphHighlight: "rgba(209, 196, 233)",
     },
     BANANA: {
         title: "png-white",
@@ -111,17 +146,16 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
         backgroundColor: "bg-[#FFFBEA]",
         border: "border-[#ffff]",
         textColor: "text-[#8A6201]",
-        hoverText: "hover:text-[#fdd835]", 
-        cursor: "bg-[#fdd835]", 
-        menuInputBackground: "bg-white/30", 
-        pause: "text-[#AED581]", 
-        hit: "text-[#FEE528]", 
+        hoverText: "hover:text-[#fdd835]",
+        cursor: "bg-[#fdd835]",
+        menuInputBackground: "bg-white/30",
+        pause: "text-[#AED581]",
+        hit: "text-[#FEE528]",
         miss: "text-[#FF7043]",
-        graphBackground: "rgba(255, 250, 205, 0.3)", 
+        graphBackground: "rgba(255, 250, 205, 0.3)",
         graphBorder: "rgba(255, 235, 59, 0.5)",
         graphHighlight: "rgba(246, 232, 177)",
     },
-    
 };
 // night runner
 // --bg-color: #212121;
@@ -173,15 +207,3 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
 // --error-extra-color: #d22a2a;
 // --colorful-error-color: #ff5f5f;
 // --colorful-error-extra-color: #d22a2a;
-
-// matrix
-// --bg-color: #000000;
-//   --main-color: #15ff00;
-//   --caret-color: #15ff00;
-//   --sub-color: #006500;
-//   --sub-alt-color: #032000;
-//   --text-color: #d1ffcd;
-//   --error-color: #da3333;
-//   --error-extra-color: #791717;
-//   --colorful-error-color: #da3333;
-//   --colorful-error-extra-color: #791717;

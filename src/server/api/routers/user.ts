@@ -563,4 +563,21 @@ export const userRouter = createTRPCRouter({
                 throw new Error("Failed to get user info");
             }
         }),
+
+    verifyTesting: protectedProcedure
+        .input(
+            z.object({
+                userId: z.string(),
+            })
+        )
+        .mutation(async ({ input, ctx }) => {
+            const { userId } = input;
+
+            return await ctx.prisma.user.update({
+                where: { id: userId },
+                data: {
+                    isVerified: true,
+                },
+            });
+        }),
 });
