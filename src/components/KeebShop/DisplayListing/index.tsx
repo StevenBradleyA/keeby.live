@@ -198,7 +198,7 @@ export default function DisplayListingPage({
                         )}
                     </div>
                     <div className="h-[30%] w-full overflow-hidden rounded-xl bg-keebyGray">
-                        <SellerListingCard seller={listing.seller} />
+                        <SellerListingCard listing={listing} />
                     </div>
                 </div>
                 <div className="flex h-full w-1/4 flex-col items-center gap-10 px-5">
