@@ -68,6 +68,10 @@
     filter: invert(99%) sepia(61%) saturate(1651%) hue-rotate(164deg)
         brightness(88%) contrast(93%);
 }
+.png-hipyo {
+    filter: invert(54%) sepia(20%) saturate(1111%) hue-rotate(220deg)
+        brightness(91%) contrast(89%);
+}
 
 /* --------------              colors              --------------  */
 

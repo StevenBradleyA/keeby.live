@@ -1,4 +1,4 @@
-export type ThemeName = "KEEBY" | "PIGGY" | "PRIMEAGEN";
+export type ThemeName = "KEEBY" | "PIGGY" | "PRIMEAGEN" | "BANANA" | "HIPYO" | "KEEBYRED";
 
 interface ThemeStyle {
     title: string;
@@ -32,6 +32,23 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
         pause: "text-green-300",
         hit: "text-white",
         miss: "text-red-500",
+        graphBackground: "rgba(134, 239, 172, 0.3)",
+        graphBorder: "rgba(134, 239, 172, 0.5)",
+        graphHighlight: "rgba(134, 239, 172)",
+    },
+    KEEBYRED: {
+        title: "",
+        baseColor: "bg-dark",
+        secondaryBase: "bg-keebyGray",
+        backgroundColor: "bg-red-500",
+        border: "border-red-500",
+        textColor: "text-darkGray",
+        hoverText: "hover:text-red-500",
+        cursor: "bg-red-500",
+        menuInputBackground: "bg-white/30",
+        pause: "text-red-500",
+        hit: "text-white",
+        miss: "text-red-800",
         graphBackground: "rgba(134, 239, 172, 0.3)",
         graphBorder: "rgba(134, 239, 172, 0.5)",
         graphHighlight: "rgba(134, 239, 172)",
@@ -70,6 +87,41 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
         graphBorder: "rgba(224, 222, 244, 0.5)",
         graphHighlight: "rgba(156, 207, 216)",
     },
+    HIPYO: {
+        title: "png-hipyo",
+        baseColor: "bg-[#6A4C93]", 
+        secondaryBase: "bg-[#9C77B0]",
+        backgroundColor: "bg-[#BAB1D7]", //#EDE7F6 #CEC5EB
+        border: "border-[#9575CD]", 
+        textColor: "text-[#D1C4E9]", 
+        hoverText: "hover:text-[#B39DDB]", 
+        cursor: "bg-[#B39DDB]",
+        menuInputBackground: "bg-white/30",
+        pause: "text-[#EDE7F6]",
+        hit: "text-[#9575CD]", 
+        miss: "text-[#F06292]", 
+        graphBackground: "rgba(189, 168, 212, 0.3)", 
+        graphBorder: "rgba(173, 158, 202, 0.5)", 
+        graphHighlight: "rgba(209, 196, 233)", 
+    },
+    BANANA: {
+        title: "png-white",
+        baseColor: "bg-[#FDF4C9]",
+        secondaryBase: "bg-[#F9F0AC]",
+        backgroundColor: "bg-[#FFFBEA]",
+        border: "border-[#ffff]",
+        textColor: "text-[#8A6201]",
+        hoverText: "hover:text-[#fdd835]", 
+        cursor: "bg-[#fdd835]", 
+        menuInputBackground: "bg-white/30", 
+        pause: "text-[#AED581]", 
+        hit: "text-[#FEE528]", 
+        miss: "text-[#FF7043]",
+        graphBackground: "rgba(255, 250, 205, 0.3)", 
+        graphBorder: "rgba(255, 235, 59, 0.5)",
+        graphHighlight: "rgba(246, 232, 177)",
+    },
+    
 };
 // night runner
 // --bg-color: #212121;

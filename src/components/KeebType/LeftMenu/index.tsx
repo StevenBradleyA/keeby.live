@@ -140,9 +140,12 @@ export default function LeftMenu({
                 onChange={handleThemeChange}
             >
                 <option value="KEEBY">keeby</option>
+                <option value="KEEBYRED">keeby red</option>
                 <option value="PRIMEAGEN">primeagen</option>
                 <option value="PIGGY">piggy</option>
                 <option value="HIPYO">hipyo</option>
+                <option value="BANANA">banana</option>
+
             </select>
             {session && session.user.hasProfile && (
                 <MenuKeebSelection
