@@ -92,7 +92,7 @@ export default function VerifySeller() {
     const handleClick = () => {
         const scope = "openid email profile";
         const returnUrl = encodeURIComponent(
-            "http://localhost:3000/verify-seller"
+            "https://www.keeby.live/verify-seller"
         );
         if (sessionData) {
             setCookie("verify", sessionData.user.id.toString(), {
@@ -100,7 +100,7 @@ export default function VerifySeller() {
                 path: "/",
             });
             window.open(
-                `https://www.paypal.com/signin/authorize?flowEntry=static&client_id=${appId}&scope=${scope}&redirect_uri=${returnUrl}`,
+                `https://www.sandbox.paypal.com/signin/authorize?flowEntry=static&client_id=${appId}&scope=${scope}&redirect_uri=${returnUrl}`,
                 "_blank"
             );
         }
