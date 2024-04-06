@@ -46,17 +46,15 @@ export default function EachFavoriteListingCard({
                         />
                         <div></div>
 
-                        <div
+                        <h1
                             className={`${
                                 isPhotoHover
                                     ? "show-listing-hover-content"
                                     : "hide-listing-hover-content"
                             }   absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform`}
                         >
-                            <div className="text-green-500  ">
-                                {listing.title}
-                            </div>
-                        </div>
+                            {listing.title}
+                        </h1>
 
                         <div className=" keebshop-listing-preview absolute bottom-2 right-2 flex gap-5 rounded-md bg-white bg-opacity-20 px-4 py-2 text-xs text-green-500 ">
                             <h2>{`$${listing.price / 100}`}</h2>

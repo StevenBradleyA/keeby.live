@@ -202,9 +202,9 @@ export default function DisplayListingPage({
                     </div>
                 </div>
                 <div className="flex h-full w-1/4 flex-col items-center gap-10 px-5">
-                    <div className=" h-1/3 w-full overflow-hidden rounded-xl bg-keebyGray   desktop:p-10 tablet:p-5  ">
-                        <h1 className=" text-xl desktop:text-2xl ">Keeb Specs</h1>
-                        <div className="h-full overflow-auto desktop:mt-2 ">
+                    <div className=" h-1/3 w-full overflow-hidden rounded-xl bg-keebyGray   desktop:p-10 tablet:p-4  ">
+                        <h2 className=" text-xl desktop:text-2xl ">Keeb Specs</h2>
+                        <div className="h-full overflow-auto desktop:mt-2 pb-5 ">
                             <h3 className=" text-darkGray">{listing.title}</h3>
                             <h3 className="flex gap-2">
                                 <span className="text-darkGray">{`Keycaps `}</span>
@@ -228,10 +228,10 @@ export default function DisplayListingPage({
                             </h3>
                         </div>
                     </div>
-                    <div className="h-2/3 w-full overflow-hidden rounded-xl bg-keebyGray desktop:p-10 tablet:p-5 ">
-                        <h1 className="mb-2 text-3xl text-purple">
+                    <div className="h-2/3 w-full overflow-hidden rounded-xl bg-keebyGray desktop:p-10 tablet:p-4 ">
+                        <h2 className="mb-2 text-3xl text-purple">
                             Description
-                        </h1>
+                        </h2>
                         <div className="h-full overflow-auto pb-20">
                             <p className=" break-words">{listing.text}</p>
                         </div>

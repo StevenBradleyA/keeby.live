@@ -351,7 +351,7 @@ export default function UpdateListing({
                     <h1 className="text-center text-xl text-green-500">
                         Are you sure you want to delete
                         <span className="ml-1 text-darkGray">
-                            ${listing.title}
+                            {listing.title}
                         </span>
                         ?
                     </h1>

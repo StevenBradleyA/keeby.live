@@ -207,7 +207,7 @@ export default function CreatePostModal({ closeModal }: CreatePostModalProps) {
                     </div>
                 </div>
             ) : (
-                <div className="p-2 ">
+                <div className="h-[600px] overflow-auto p-2 ">
                     <div className="flex items-center">
                         <Image
                             alt="keeb"
@@ -371,6 +371,16 @@ export default function CreatePostModal({ closeModal }: CreatePostModalProps) {
                                 ))}
                             </div>
                         )}
+                        {enableErrorDisplay && errors.imageExcess && (
+                            <p className="text-sm text-red-400">
+                                {errors.imageExcess}
+                            </p>
+                        )}
+                         {enableErrorDisplay && errors.imageLarge && (
+                            <p className="text-sm text-red-400">
+                                {errors.imageLarge}
+                            </p>
+                        )}
                         {showLinkInput && (
                             <div className="mt-2">
                                 <input
@@ -382,7 +392,6 @@ export default function CreatePostModal({ closeModal }: CreatePostModalProps) {
                                 />
                             </div>
                         )}
-
                         <textarea
                             value={text}
                             onChange={(e) => setText(e.target.value)}

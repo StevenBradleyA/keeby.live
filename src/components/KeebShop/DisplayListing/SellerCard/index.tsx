@@ -47,7 +47,7 @@ export default function SellerListingCard({
     };
 
     return (
-        <div className="flex h-full w-full gap-5 p-5">
+        <div className="flex h-full w-full gap-5 desktop:p-5 p-2">
             {listing.seller && listing.seller.username && (
                 <div className="h-full w-1/6">
                     <Link
@@ -70,25 +70,23 @@ export default function SellerListingCard({
             )}
             <div className="flex h-full w-5/6 flex-col ">
                 <div className="flex h-1/2 w-full items-center justify-between text-darkGray">
-                    <h3 className="flex justify-end text-2xl text-purple">{`Price: $${
+                    <h3 className="flex justify-end text-purple desktop:text-2xl">{`Price: $${
                         listing.price / 100
                     }`}</h3>
 
-                    <div className="flex flex-col ">
-                        <div className="flex gap-5">
-                            <button
-                                className="rounded-md border-2 border-[#616161] bg-darkGray px-4 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray"
-                                onClick={openBuyModal}
-                            >
-                                Buy Now
-                            </button>
-                            <button
-                                className="rounded-md border-2 border-[#616161] bg-darkGray px-4 py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray"
-                                onClick={openOfferModal}
-                            >
-                                Make Offer
-                            </button>
-                        </div>
+                    <div className="flex gap-5">
+                        <button
+                            className="rounded-md border-2 border-[#616161] bg-darkGray px-4 py-1 desktop:py-2  text-green-500 hover:border-green-500 hover:bg-keebyGray"
+                            onClick={openBuyModal}
+                        >
+                            Buy Now
+                        </button>
+                        <button
+                            className="rounded-md border-2 border-[#616161] bg-darkGray px-4 py-1 desktop:py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray"
+                            onClick={openOfferModal}
+                        >
+                            Make Offer
+                        </button>
                     </div>
                 </div>
                 <ModalDialog isOpen={isBuyModalOpen} onClose={closeBuyModal}>
@@ -104,7 +102,7 @@ export default function SellerListingCard({
                 <div className="flex h-1/2 w-full items-center justify-between ">
                     {listing.seller && listing.seller.username && (
                         <div className="flex flex-col">
-                            <div className="text-green-500">Listed by:</div>
+                            <h3 className="text-green-500">Listed by:</h3>
                             <Link
                                 href={`/profile/public/${listing.seller.username}`}
                                 aria-label="seller profile"
@@ -112,7 +110,6 @@ export default function SellerListingCard({
                             >
                                 {listing.seller.username}
                             </Link>
-                            <div className="text-green-500"></div>
                         </div>
                     )}
 
@@ -120,9 +117,9 @@ export default function SellerListingCard({
                         <StarRating rating={listing.seller.avgRating} />
                     ) : (
                         <div className="flex flex-col">
-                            <div className="text-darkGray">
+                            <h3 className="text-darkGray">
                                 Unreviewed seller
-                            </div>
+                            </h3>
                             <StarRating rating={0} />
                         </div>
                     )}

@@ -146,11 +146,11 @@ export default function DisplayPostPage({ post }: DisplayPostPageProps) {
 
     return (
         <>
-            <div className="w-full tablet:px-5 desktop:px-16 text-darkGray ">
+            <div className="w-full text-darkGray tablet:px-5 desktop:px-16 ">
                 <div className="flex  w-full gap-10">
                     <div className="flex w-3/4 flex-col ">
                         <div className="flex w-full gap-10">
-                            <div className=" post-page-user-container  relative h-[70vh] w-1/3 desktop:overflow-hidden tablet:overflow-auto  rounded-xl bg-keebyGray px-10 py-8">
+                            <div className=" post-page-user-container  relative h-[70vh] w-1/3 rounded-xl bg-keebyGray  px-10 py-8 tablet:overflow-auto desktop:overflow-hidden">
                                 <div className="h-full w-full">
                                     {post.user.selectedTag && (
                                         <h3 className="mb-2 flex justify-center text-sm">
@@ -174,7 +174,7 @@ export default function DisplayPostPage({ post }: DisplayPostPageProps) {
                                         priority
                                     />
 
-                                    <div className="post-page-user-overlay absolute bottom-0 left-0 top-1/4 -z-10 desktop:h-full tablet:h-5/6 w-full  bg-darkGray"></div>
+                                    <div className="post-page-user-overlay absolute bottom-0 left-0 top-1/4 -z-10 h-full w-full  bg-darkGray"></div>
                                     {post.user && post.user.username && (
                                         <div className="post-page-user-contents text-green-500">
                                             <Link

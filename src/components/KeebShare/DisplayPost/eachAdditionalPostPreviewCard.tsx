@@ -77,7 +77,7 @@ export default function PostPagePreviewCard({
                                 </button>
                             </>
                         )}
-                        <h1 className="  absolute top-0 flex h-1/5 w-full flex-col justify-center break-words bg-white bg-opacity-20 pl-3 text-lg text-green-500">
+                        <h1 className="  absolute top-0 flex  w-full flex-col break-words bg-white bg-opacity-20 p-2 text-lg text-green-500">
                             {post.title}
                         </h1>
                         <h1 className="absolute bottom-2 left-2 z-10 rounded-3xl bg-white bg-opacity-20 px-4 py-2 text-green-500">
