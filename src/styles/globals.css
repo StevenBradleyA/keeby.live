@@ -686,6 +686,47 @@ input[type="checkbox"]:hover {
 
 /* --------------         KEEB SHARE          --------------  */
 
+.keeb-share-preview-button {
+    overflow: hidden;
+}
+
+.keeb-share-preview-button-text {
+    transition: transform 0.4s cubic-bezier(0.35, 0, 0, 1),
+        opacity 0.4s cubic-bezier(0.35, 0, 0, 1);
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.keeb-share-preview-button-circle {
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 0.4s cubic-bezier(0.35, 0, 0, 1);
+}
+
+.keeb-share-preview-button-arrow {
+    transition: opacity 0.4s cubic-bezier(0.35, 0, 0, 1),
+        transform 0.4s cubic-bezier(0.35, 0, 0, 1);
+    opacity: 0;
+    transform: scale(0) translateX(0);
+    visibility: hidden;
+}
+
+.keeb-share-preview-button:hover .keeb-share-preview-button-circle {
+    opacity: 0;
+    transform: scale(0.9);
+    visibility: hidden;
+    transition-delay: 0s, 0s;
+}
+
+.keeb-share-preview-button:hover .keeb-share-preview-button-arrow {
+    opacity: 1;
+    transform: scale(1) translateX(15px);
+    visibility: visible;
+}
+.keeb-share-preview-button:hover .keeb-share-preview-button-text {
+    transform: translateX(15px);
+}
+
 .post-preview-tag-container {
 }
 

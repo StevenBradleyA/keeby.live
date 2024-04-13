@@ -202,7 +202,7 @@ export default function Home() {
                         <div className="mb-5 flex gap-5 ">
                             <button
                                 onClick={handleSearchClick}
-                                className={`${
+                                className={`hover:text-white ${
                                     !isSpecify
                                         ? "border-b border-white text-white"
                                         : "border-b border-white border-opacity-0"
@@ -213,7 +213,7 @@ export default function Home() {
                             <div className="relative flex">
                                 <button
                                     onClick={handleSpecifyClick}
-                                    className={`${
+                                    className={` hover:text-white ${
                                         isSpecify
                                             ? "border-b border-white text-white"
                                             : "border-b border-white border-opacity-0"
@@ -237,7 +237,11 @@ export default function Home() {
                             </div>
                         </div>
 
-                        <div className={` relative w-full ${isSpecify? 'overflow-auto': 'overflow-hidden'} rounded-xl bg-keebyGray p-5 text-darkGray tablet:h-[68vh] desktop:h-[72vh]`}>
+                        <div
+                            className={` relative w-full ${
+                                isSpecify ? "overflow-auto" : "overflow-hidden"
+                            } rounded-xl bg-keebyGray p-5 text-darkGray tablet:h-[68vh] desktop:h-[72vh]`}
+                        >
                             {isSpecify ? (
                                 <div className="flex w-full flex-col items-start gap-5 ">
                                     <div className="flex w-full flex-col items-start">
@@ -621,7 +625,7 @@ export default function Home() {
                         <div className=" very-sticky flex w-full justify-between bg-dark">
                             <div className="mb-5 flex gap-5 text-white/40">
                                 <button
-                                    className={`${
+                                    className={`hover:text-white ${
                                         filter === "Hot"
                                             ? "border-b border-white text-white"
                                             : "border-b border-white border-opacity-0"
@@ -631,7 +635,7 @@ export default function Home() {
                                     Hot
                                 </button>
                                 <button
-                                    className={`${
+                                    className={`hover:text-white ${
                                         filter === "New"
                                             ? "border-b border-white text-white"
                                             : "border-b border-white border-opacity-0"

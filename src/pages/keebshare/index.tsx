@@ -89,13 +89,13 @@ export default function KeebShare() {
 
     return (
         <>
-            <div className="mt-10 flex w-full flex-col tablet:px-5 desktop:px-16 text-darkGray">
+            <div className="mt-10 flex w-full flex-col text-darkGray tablet:px-5 desktop:px-16">
                 <div className=" flex w-full  gap-10 ">
                     <div className=" very-sticky flex w-1/4 flex-col">
                         <div className="mb-5 flex gap-5 ">
                             <button
                                 onClick={handleSearchClick}
-                                className={`${
+                                className={`hover:text-white ${
                                     !isSpecify
                                         ? "border-b border-white text-white"
                                         : "border-b border-white border-opacity-0"
@@ -106,7 +106,7 @@ export default function KeebShare() {
                             <div className="relative flex">
                                 <button
                                     onClick={handleSpecifyClick}
-                                    className={`${
+                                    className={`hover:text-white ${
                                         isSpecify
                                             ? "border-b border-white text-white"
                                             : "border-b border-white border-opacity-0"
@@ -122,7 +122,11 @@ export default function KeebShare() {
                             </div>
                         </div>
 
-                        <div className=" relative tablet:h-[68vh] desktop:h-[72vh] w-full overflow-auto rounded-xl bg-keebyGray p-5 text-darkGray">
+                        <div
+                            className={` relative tablet:h-[68vh] desktop:h-[72vh] ${
+                                isSpecify ? "overflow-auto" : "overflow-hidden"
+                            } w-full rounded-xl bg-keebyGray p-5 text-darkGray`}
+                        >
                             {isSpecify ? (
                                 <div className="flex w-full flex-col items-start gap-5">
                                     <div className="flex w-full flex-col items-start">
@@ -229,9 +233,9 @@ export default function KeebShare() {
 
                     <div className=" flex w-3/4 flex-col">
                         <div className=" very-sticky flex w-full justify-between bg-dark">
-                            <div className="mb-5 flex gap-5 text-white/40">
+                            <div className="mb-5 flex gap-5 text-white/40 ">
                                 <button
-                                    className={`${
+                                    className={`hover:text-white ${
                                         filter === "Hot"
                                             ? "border-b border-white text-white"
                                             : "border-b border-white border-opacity-0"
@@ -241,7 +245,7 @@ export default function KeebShare() {
                                     Hot
                                 </button>
                                 <button
-                                    className={`${
+                                    className={`hover:text-white ${
                                         filter === "New"
                                             ? "border-b border-white text-white"
                                             : "border-b border-white border-opacity-0"

@@ -35,6 +35,7 @@ export default function DisplayListingPage({
 }: DisplayListingPageProps) {
     const { data: session } = useSession();
     const scrollFlagRef = useRef<HTMLDivElement | null>(null);
+    const scrollRef = useRef<HTMLDivElement | null>(null);
 
     const {
         data: comments,
@@ -107,7 +108,6 @@ export default function DisplayListingPage({
         );
 
     return (
-
         <div className="flex flex-col text-white">
             <div className="flex h-[80vh] w-full ">
                 <div className="flex w-1/4 flex-col items-center px-5 ">
@@ -117,7 +117,7 @@ export default function DisplayListingPage({
                                 className={`absolute left-1/2 top-2 w-7 -translate-x-1/2 transform ${
                                     currentIndex === 0
                                         ? "text-darkGray"
-                                        : "text-white"
+                                        : "text-white hover:text-green-500"
                                 }`}
                                 onClick={prevImage}
                             >
@@ -127,7 +127,7 @@ export default function DisplayListingPage({
                                 className={`absolute bottom-2 left-1/2 w-7 -translate-x-1/2 rotate-180 transform ${
                                     currentIndex === maxIndex
                                         ? "text-darkGray"
-                                        : "text-white"
+                                        : "text-white hover:text-green-500"
                                 }`}
                                 onClick={nextImage}
                             >
@@ -202,9 +202,11 @@ export default function DisplayListingPage({
                     </div>
                 </div>
                 <div className="flex h-full w-1/4 flex-col items-center gap-10 px-5">
-                    <div className=" h-1/3 w-full overflow-hidden rounded-xl bg-keebyGray   desktop:p-10 tablet:p-4  ">
-                        <h2 className=" text-xl desktop:text-2xl ">Keeb Specs</h2>
-                        <div className="h-full overflow-auto desktop:mt-2 pb-5 ">
+                    <div className=" h-1/3 w-full overflow-hidden rounded-xl bg-keebyGray tablet:p-4 desktop:p-10  ">
+                        <h2 className=" text-xl desktop:text-2xl ">
+                            Keeb Specs
+                        </h2>
+                        <div className="h-full overflow-auto pb-5 desktop:mt-2 desktop:pb-0 ">
                             <h3 className=" text-darkGray">{listing.title}</h3>
                             <h3 className="flex gap-2">
                                 <span className="text-darkGray">{`Keycaps `}</span>
@@ -228,7 +230,7 @@ export default function DisplayListingPage({
                             </h3>
                         </div>
                     </div>
-                    <div className="h-2/3 w-full overflow-hidden rounded-xl bg-keebyGray desktop:p-10 tablet:p-4 ">
+                    <div className="h-2/3 w-full overflow-hidden rounded-xl bg-keebyGray tablet:p-4 desktop:p-10 ">
                         <h2 className="mb-2 text-3xl text-purple">
                             Description
                         </h2>
@@ -295,9 +297,6 @@ export default function DisplayListingPage({
                     </div>
                 </div>
             </div>
-
         </div>
-
-
     );
 }

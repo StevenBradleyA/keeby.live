@@ -114,11 +114,37 @@ export default function EachPostCardPreview({
                                     }}
                                 >
                                     <button
-                                        className="text-md rounded-md bg-green-500 px-4 py-2 "
+                                        className="text-md keeb-share-preview-button flex items-center gap-2 rounded-md bg-green-500 py-2 pr-4 text-black "
                                         style={{
                                             boxShadow: "0 0 20px #22C55E",
                                         }}
-                                    >{`Let's Go `}</button>
+                                    >
+                                        <svg
+                                            className="keeb-share-preview-button-arrow w-4"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                stroke="currentColor"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth="3"
+                                                d="M3.515 12h16.97m0 0L13.01 4.525M20.485 12l-7.475 7.476"
+                                            ></path>
+                                        </svg>
+                                        <span className="keeb-share-preview-button-text">
+                                            {`Let's Go `}
+                                        </span>
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor"
+                                            className="keeb-share-preview-button-circle w-2"
+                                            viewBox="0 0 32 32"
+                                        >
+                                            <circle cx="16" cy="16" r="16" />
+                                        </svg>
+                                    </button>
                                 </Link>
                             </div>
 
@@ -131,9 +157,9 @@ export default function EachPostCardPreview({
                                         >
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
-                                                className="w-full"
+                                                className="w-full hover:text-white"
                                                 viewBox="0 0 512 512"
-                                                fill="#616161"
+                                                fill="currentColor"
                                             >
                                                 <path d="M313.4 32.9c26 5.2 42.9 30.5 37.7 56.5l-2.3 11.4c-5.3 26.7-15.1 52.1-28.8 75.2H464c26.5 0 48 21.5 48 48c0 18.5-10.5 34.6-25.9 42.6C497 275.4 504 288.9 504 304c0 23.4-16.8 42.9-38.9 47.1c4.4 7.3 6.9 15.8 6.9 24.9c0 21.3-13.9 39.4-33.1 45.6c.7 3.3 1.1 6.8 1.1 10.4c0 26.5-21.5 48-48 48H294.5c-19 0-37.5-5.6-53.3-16.1l-38.5-25.7C176 420.4 160 390.4 160 358.3V320 272 247.1c0-29.2 13.3-56.7 36-75l7.4-5.9c26.5-21.2 44.6-51 51.2-84.2l2.3-11.4c5.2-26 30.5-42.9 56.5-37.7zM32 192H96c17.7 0 32 14.3 32 32V448c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32V224c0-17.7 14.3-32 32-32z" />
                                             </svg>
@@ -192,7 +218,7 @@ export default function EachPostCardPreview({
                                     <button onClick={openSignInModal}>
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
-                                            className="w-6"
+                                            className="w-6 hover:text-white"
                                             viewBox="0 0 24 24"
                                             fill="none"
                                         >
@@ -200,7 +226,7 @@ export default function EachPostCardPreview({
                                                 fillRule="evenodd"
                                                 clipRule="evenodd"
                                                 d="M12 6.00019C10.2006 3.90317 7.19377 3.2551 4.93923 5.17534C2.68468 7.09558 2.36727 10.3061 4.13778 12.5772C5.60984 14.4654 10.0648 18.4479 11.5249 19.7369C11.6882 19.8811 11.7699 19.9532 11.8652 19.9815C11.9483 20.0062 12.0393 20.0062 12.1225 19.9815C12.2178 19.9532 12.2994 19.8811 12.4628 19.7369C13.9229 18.4479 18.3778 14.4654 19.8499 12.5772C21.6204 10.3061 21.3417 7.07538 19.0484 5.17534C16.7551 3.2753 13.7994 3.90317 12 6.00019Z"
-                                                stroke="#616161"
+                                                stroke="currentColor"
                                                 strokeWidth="2"
                                                 strokeLinecap="round"
                                                 strokeLinejoin="round"
@@ -255,11 +281,37 @@ export default function EachPostCardPreview({
                                     }}
                                 >
                                     <button
-                                        className="text-md rounded-md bg-green-500 px-4 py-2 "
+                                        className="text-md keeb-share-preview-button flex items-center gap-2 rounded-md bg-green-500 py-2 pr-4 text-black "
                                         style={{
                                             boxShadow: "0 0 20px #22C55E",
                                         }}
-                                    >{`Let's Go `}</button>
+                                    >
+                                        <svg
+                                            className="keeb-share-preview-button-arrow w-4"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                stroke="currentColor"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth="3"
+                                                d="M3.515 12h16.97m0 0L13.01 4.525M20.485 12l-7.475 7.476"
+                                            ></path>
+                                        </svg>
+                                        <span className="keeb-share-preview-button-text">
+                                            {`Let's Go `}
+                                        </span>
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor"
+                                            className="keeb-share-preview-button-circle w-2"
+                                            viewBox="0 0 32 32"
+                                        >
+                                            <circle cx="16" cy="16" r="16" />
+                                        </svg>
+                                    </button>
                                 </Link>
                             </div>
 
@@ -272,9 +324,9 @@ export default function EachPostCardPreview({
                                         >
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
-                                                className="w-full"
+                                                className="w-full hover:text-white"
                                                 viewBox="0 0 512 512"
-                                                fill="#616161"
+                                                fill="currentColor"
                                             >
                                                 <path d="M313.4 32.9c26 5.2 42.9 30.5 37.7 56.5l-2.3 11.4c-5.3 26.7-15.1 52.1-28.8 75.2H464c26.5 0 48 21.5 48 48c0 18.5-10.5 34.6-25.9 42.6C497 275.4 504 288.9 504 304c0 23.4-16.8 42.9-38.9 47.1c4.4 7.3 6.9 15.8 6.9 24.9c0 21.3-13.9 39.4-33.1 45.6c.7 3.3 1.1 6.8 1.1 10.4c0 26.5-21.5 48-48 48H294.5c-19 0-37.5-5.6-53.3-16.1l-38.5-25.7C176 420.4 160 390.4 160 358.3V320 272 247.1c0-29.2 13.3-56.7 36-75l7.4-5.9c26.5-21.2 44.6-51 51.2-84.2l2.3-11.4c5.2-26 30.5-42.9 56.5-37.7zM32 192H96c17.7 0 32 14.3 32 32V448c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32V224c0-17.7 14.3-32 32-32z" />
                                             </svg>
@@ -333,7 +385,7 @@ export default function EachPostCardPreview({
                                     <button onClick={openSignInModal}>
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
-                                            className="w-6"
+                                            className="w-6 hover:text-white"
                                             viewBox="0 0 24 24"
                                             fill="none"
                                         >
@@ -341,7 +393,7 @@ export default function EachPostCardPreview({
                                                 fillRule="evenodd"
                                                 clipRule="evenodd"
                                                 d="M12 6.00019C10.2006 3.90317 7.19377 3.2551 4.93923 5.17534C2.68468 7.09558 2.36727 10.3061 4.13778 12.5772C5.60984 14.4654 10.0648 18.4479 11.5249 19.7369C11.6882 19.8811 11.7699 19.9532 11.8652 19.9815C11.9483 20.0062 12.0393 20.0062 12.1225 19.9815C12.2178 19.9532 12.2994 19.8811 12.4628 19.7369C13.9229 18.4479 18.3778 14.4654 19.8499 12.5772C21.6204 10.3061 21.3417 7.07538 19.0484 5.17534C16.7551 3.2753 13.7994 3.90317 12 6.00019Z"
-                                                stroke="#616161"
+                                                stroke="currentColor"
                                                 strokeWidth="2"
                                                 strokeLinecap="round"
                                                 strokeLinejoin="round"
@@ -393,11 +445,37 @@ export default function EachPostCardPreview({
                                     }}
                                 >
                                     <button
-                                        className="text-md rounded-md bg-green-500 px-4 py-2 "
+                                        className="text-md keeb-share-preview-button flex items-center gap-2 rounded-md bg-green-500 py-2 pr-4 text-black "
                                         style={{
                                             boxShadow: "0 0 20px #22C55E",
                                         }}
-                                    >{`Let's Go `}</button>
+                                    >
+                                        <svg
+                                            className="keeb-share-preview-button-arrow w-4"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                stroke="currentColor"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth="3"
+                                                d="M3.515 12h16.97m0 0L13.01 4.525M20.485 12l-7.475 7.476"
+                                            ></path>
+                                        </svg>
+                                        <span className="keeb-share-preview-button-text">
+                                            {`Let's Go `}
+                                        </span>
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor"
+                                            className="keeb-share-preview-button-circle w-2"
+                                            viewBox="0 0 32 32"
+                                        >
+                                            <circle cx="16" cy="16" r="16" />
+                                        </svg>
+                                    </button>
                                 </Link>
                             </div>
 
@@ -410,9 +488,9 @@ export default function EachPostCardPreview({
                                         >
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
-                                                className="w-full"
+                                                className="w-full hover:text-white"
                                                 viewBox="0 0 512 512"
-                                                fill="#616161"
+                                                fill="currentColor"
                                             >
                                                 <path d="M313.4 32.9c26 5.2 42.9 30.5 37.7 56.5l-2.3 11.4c-5.3 26.7-15.1 52.1-28.8 75.2H464c26.5 0 48 21.5 48 48c0 18.5-10.5 34.6-25.9 42.6C497 275.4 504 288.9 504 304c0 23.4-16.8 42.9-38.9 47.1c4.4 7.3 6.9 15.8 6.9 24.9c0 21.3-13.9 39.4-33.1 45.6c.7 3.3 1.1 6.8 1.1 10.4c0 26.5-21.5 48-48 48H294.5c-19 0-37.5-5.6-53.3-16.1l-38.5-25.7C176 420.4 160 390.4 160 358.3V320 272 247.1c0-29.2 13.3-56.7 36-75l7.4-5.9c26.5-21.2 44.6-51 51.2-84.2l2.3-11.4c5.2-26 30.5-42.9 56.5-37.7zM32 192H96c17.7 0 32 14.3 32 32V448c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32V224c0-17.7 14.3-32 32-32z" />
                                             </svg>
@@ -471,7 +549,7 @@ export default function EachPostCardPreview({
                                     <button onClick={openSignInModal}>
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
-                                            className="w-6"
+                                            className="w-6 hover:text-white"
                                             viewBox="0 0 24 24"
                                             fill="none"
                                         >
@@ -479,7 +557,7 @@ export default function EachPostCardPreview({
                                                 fillRule="evenodd"
                                                 clipRule="evenodd"
                                                 d="M12 6.00019C10.2006 3.90317 7.19377 3.2551 4.93923 5.17534C2.68468 7.09558 2.36727 10.3061 4.13778 12.5772C5.60984 14.4654 10.0648 18.4479 11.5249 19.7369C11.6882 19.8811 11.7699 19.9532 11.8652 19.9815C11.9483 20.0062 12.0393 20.0062 12.1225 19.9815C12.2178 19.9532 12.2994 19.8811 12.4628 19.7369C13.9229 18.4479 18.3778 14.4654 19.8499 12.5772C21.6204 10.3061 21.3417 7.07538 19.0484 5.17534C16.7551 3.2753 13.7994 3.90317 12 6.00019Z"
-                                                stroke="#616161"
+                                                stroke="currentColor"
                                                 strokeWidth="2"
                                                 strokeLinecap="round"
                                                 strokeLinejoin="round"
@@ -530,11 +608,37 @@ export default function EachPostCardPreview({
                                     }}
                                 >
                                     <button
-                                        className="text-md rounded-md bg-green-500 px-4 py-2 "
+                                        className="text-md keeb-share-preview-button flex items-center gap-2 rounded-md bg-green-500 py-2 pr-4 text-black "
                                         style={{
                                             boxShadow: "0 0 20px #22C55E",
                                         }}
-                                    >{`Let's Go `}</button>
+                                    >
+                                        <svg
+                                            className="keeb-share-preview-button-arrow w-4"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                stroke="currentColor"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth="3"
+                                                d="M3.515 12h16.97m0 0L13.01 4.525M20.485 12l-7.475 7.476"
+                                            ></path>
+                                        </svg>
+                                        <span className="keeb-share-preview-button-text">
+                                            {`Let's Go `}
+                                        </span>
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor"
+                                            className="keeb-share-preview-button-circle w-2"
+                                            viewBox="0 0 32 32"
+                                        >
+                                            <circle cx="16" cy="16" r="16" />
+                                        </svg>
+                                    </button>
                                 </Link>
                             </div>
 
@@ -547,9 +651,9 @@ export default function EachPostCardPreview({
                                         >
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
-                                                className="w-full"
+                                                className="w-full hover:text-white"
                                                 viewBox="0 0 512 512"
-                                                fill="#616161"
+                                                fill="currentColor"
                                             >
                                                 <path d="M313.4 32.9c26 5.2 42.9 30.5 37.7 56.5l-2.3 11.4c-5.3 26.7-15.1 52.1-28.8 75.2H464c26.5 0 48 21.5 48 48c0 18.5-10.5 34.6-25.9 42.6C497 275.4 504 288.9 504 304c0 23.4-16.8 42.9-38.9 47.1c4.4 7.3 6.9 15.8 6.9 24.9c0 21.3-13.9 39.4-33.1 45.6c.7 3.3 1.1 6.8 1.1 10.4c0 26.5-21.5 48-48 48H294.5c-19 0-37.5-5.6-53.3-16.1l-38.5-25.7C176 420.4 160 390.4 160 358.3V320 272 247.1c0-29.2 13.3-56.7 36-75l7.4-5.9c26.5-21.2 44.6-51 51.2-84.2l2.3-11.4c5.2-26 30.5-42.9 56.5-37.7zM32 192H96c17.7 0 32 14.3 32 32V448c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32V224c0-17.7 14.3-32 32-32z" />
                                             </svg>
@@ -608,7 +712,7 @@ export default function EachPostCardPreview({
                                     <button onClick={openSignInModal}>
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
-                                            className="w-6"
+                                            className="w-6 hover:text-white"
                                             viewBox="0 0 24 24"
                                             fill="none"
                                         >
@@ -616,7 +720,7 @@ export default function EachPostCardPreview({
                                                 fillRule="evenodd"
                                                 clipRule="evenodd"
                                                 d="M12 6.00019C10.2006 3.90317 7.19377 3.2551 4.93923 5.17534C2.68468 7.09558 2.36727 10.3061 4.13778 12.5772C5.60984 14.4654 10.0648 18.4479 11.5249 19.7369C11.6882 19.8811 11.7699 19.9532 11.8652 19.9815C11.9483 20.0062 12.0393 20.0062 12.1225 19.9815C12.2178 19.9532 12.2994 19.8811 12.4628 19.7369C13.9229 18.4479 18.3778 14.4654 19.8499 12.5772C21.6204 10.3061 21.3417 7.07538 19.0484 5.17534C16.7551 3.2753 13.7994 3.90317 12 6.00019Z"
-                                                stroke="#616161"
+                                                stroke="currentColor"
                                                 strokeWidth="2"
                                                 strokeLinecap="round"
                                                 strokeLinejoin="round"

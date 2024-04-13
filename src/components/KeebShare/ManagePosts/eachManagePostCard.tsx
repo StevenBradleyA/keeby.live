@@ -87,11 +87,37 @@ export default function ManageEachPostCard({ post }: EachManagePostCardProps) {
                                     }}
                                 >
                                     <button
-                                        className="text-md rounded-md bg-green-500 px-4 py-2 text-black  "
+                                        className="text-md keeb-share-preview-button flex items-center gap-2 rounded-md bg-green-500 py-2 pr-4 text-black "
                                         style={{
                                             boxShadow: "0 0 20px #22C55E",
                                         }}
-                                    >{`Let's Go `}</button>
+                                    >
+                                        <svg
+                                            className="keeb-share-preview-button-arrow w-4"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                stroke="currentColor"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth="3"
+                                                d="M3.515 12h16.97m0 0L13.01 4.525M20.485 12l-7.475 7.476"
+                                            ></path>
+                                        </svg>
+                                        <span className="keeb-share-preview-button-text">
+                                            {`Let's Go `}
+                                        </span>
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor"
+                                            className="keeb-share-preview-button-circle w-2"
+                                            viewBox="0 0 32 32"
+                                        >
+                                            <circle cx="16" cy="16" r="16" />
+                                        </svg>
+                                    </button>
                                 </Link>
                             </div>
                             <div className="absolute bottom-2 right-2 z-10 flex gap-5 rounded-3xl bg-white bg-opacity-20 px-4 py-2 text-green-500">
@@ -140,11 +166,37 @@ export default function ManageEachPostCard({ post }: EachManagePostCardProps) {
                                     }}
                                 >
                                     <button
-                                        className="text-md rounded-md bg-green-500 px-4 py-2 text-black  "
+                                        className="text-md keeb-share-preview-button flex items-center gap-2 rounded-md bg-green-500 py-2 pr-4 text-black "
                                         style={{
                                             boxShadow: "0 0 20px #22C55E",
                                         }}
-                                    >{`Let's Go `}</button>
+                                    >
+                                        <svg
+                                            className="keeb-share-preview-button-arrow w-4"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                stroke="currentColor"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth="3"
+                                                d="M3.515 12h16.97m0 0L13.01 4.525M20.485 12l-7.475 7.476"
+                                            ></path>
+                                        </svg>
+                                        <span className="keeb-share-preview-button-text">
+                                            {`Let's Go `}
+                                        </span>
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor"
+                                            className="keeb-share-preview-button-circle w-2"
+                                            viewBox="0 0 32 32"
+                                        >
+                                            <circle cx="16" cy="16" r="16" />
+                                        </svg>
+                                    </button>
                                 </Link>
                             </div>
                             <div className="post-preview-tag absolute bottom-2 right-2 z-10 flex gap-5 rounded-3xl bg-white bg-opacity-20 px-4 py-2 text-green-500">
@@ -197,11 +249,37 @@ export default function ManageEachPostCard({ post }: EachManagePostCardProps) {
                                     }}
                                 >
                                     <button
-                                        className="text-md rounded-md bg-green-500 px-4 py-2 text-black "
+                                        className="text-md keeb-share-preview-button flex items-center gap-2 rounded-md bg-green-500 py-2 pr-4 text-black "
                                         style={{
                                             boxShadow: "0 0 20px #22C55E",
                                         }}
-                                    >{`Let's Go `}</button>
+                                    >
+                                        <svg
+                                            className="keeb-share-preview-button-arrow w-4"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                stroke="currentColor"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth="3"
+                                                d="M3.515 12h16.97m0 0L13.01 4.525M20.485 12l-7.475 7.476"
+                                            ></path>
+                                        </svg>
+                                        <span className="keeb-share-preview-button-text">
+                                            {`Let's Go `}
+                                        </span>
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor"
+                                            className="keeb-share-preview-button-circle w-2"
+                                            viewBox="0 0 32 32"
+                                        >
+                                            <circle cx="16" cy="16" r="16" />
+                                        </svg>
+                                    </button>
                                 </Link>
                             </div>
                             <div className="absolute bottom-2 right-2 z-10 flex gap-5 rounded-3xl bg-white bg-opacity-20 px-4 py-2 text-green-500">
@@ -241,11 +319,37 @@ export default function ManageEachPostCard({ post }: EachManagePostCardProps) {
                                 }}
                             >
                                 <button
-                                    className="text-md rounded-md bg-green-500 px-4 py-2 text-black "
+                                    className="text-md keeb-share-preview-button flex items-center gap-2 rounded-md bg-green-500 py-2 pr-4 text-black "
                                     style={{
                                         boxShadow: "0 0 20px #22C55E",
                                     }}
-                                >{`Let's Go `}</button>
+                                >
+                                    <svg
+                                        className="keeb-share-preview-button-arrow w-4"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            stroke="currentColor"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="3"
+                                            d="M3.515 12h16.97m0 0L13.01 4.525M20.485 12l-7.475 7.476"
+                                        ></path>
+                                    </svg>
+                                    <span className="keeb-share-preview-button-text">
+                                        {`Let's Go `}
+                                    </span>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="currentColor"
+                                        className="keeb-share-preview-button-circle w-2"
+                                        viewBox="0 0 32 32"
+                                    >
+                                        <circle cx="16" cy="16" r="16" />
+                                    </svg>
+                                </button>
                             </Link>
                         </div>
                         <h1 className="flex h-1/2 items-center justify-center break-words bg-white bg-opacity-20 pl-3 text-center text-lg text-green-500">
