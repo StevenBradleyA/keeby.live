@@ -770,6 +770,43 @@ input[type="checkbox"]:hover {
     font-family: "retro", sans-serif;
 }
 
+.profile-retro-button {
+    color: #616161;
+}
+.profile-retro-button-text {
+    color: rgb(34 197 94);
+}
+.profile-retro-button:hover {
+    color: white;
+}
+.profile-retro-button:hover .profile-retro-button-text {
+    color: white;
+}
+
+.console-switch {
+    transition: opacity 0.4s cubic-bezier(0.35, 0, 0, 1),
+        transform 0.4s cubic-bezier(0.35, 0, 0, 1);
+    filter: invert(39%) sepia(0%) saturate(0%) hue-rotate(351deg)
+        brightness(96%) contrast(99%);
+    transform: rotate(0);
+}
+.console-switch:hover {
+    filter: invert(48%) sepia(5%) saturate(3277%) hue-rotate(72deg)
+        brightness(116%) contrast(126%);
+    transform: rotate(180deg);
+}
+
+.png-computer {
+    filter: invert(48%) sepia(5%) saturate(3277%) hue-rotate(72deg)
+        brightness(116%) contrast(126%);
+    /* color: #22c55e; */
+}
+.png-computer:hover {
+    filter: invert(100%) sepia(6%) saturate(7476%) hue-rotate(215deg)
+        brightness(110%) contrast(105%);
+    color: white;
+}
+
 /* Scanlines && Flicker  */
 
 @keyframes blink {

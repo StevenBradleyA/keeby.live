@@ -8,7 +8,7 @@ import { getCookies, setCookie } from "cookies-next";
 import defaultProfile from "@public/Profile/profile-default.png";
 import keebyLiveTitle from "@public/Profile/keebylive-title.png";
 import gridFunnel from "@public/Profile/profile-idea.png";
-import HackermanConsoleCommands from "~/components/Profile/Hackerman";
+import HackermanConsoleCommands from "~/components/Profile/Hackerman/hackermanConsoleCommands";
 import computerShare from "@public/Profile/computer-share.png";
 import computerShop from "@public/Profile/computer-shop.png";
 import computerType from "@public/Profile/computer-type.png";
@@ -23,6 +23,7 @@ import DisplayAllGameStatsCheck from "~/components/KeebType/GameStats/displayAll
 import UpdateUserTag from "~/components/Profile/User/Update/Tag";
 import ModalDialog from "~/components/Modal";
 import UpdateProfile from "~/components/Profile/User/Update/updateProfile";
+import HackermanTypeBinary from "~/components/Profile/Hackerman/hackermanTypeBinary";
 
 export default function UserProfile() {
     // mdn digest() -- might be useful for us here
@@ -37,6 +38,7 @@ export default function UserProfile() {
     const [isRetro, setIsRetro] = useState<boolean>(false);
     const [toggle, setToggle] = useState<string>("KEEBSHOP");
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [isHackType, setIsHackType] = useState<boolean>(false);
 
     const openModal = () => {
         setIsOpen(true);
@@ -111,11 +113,15 @@ export default function UserProfile() {
                             <div className=" mt-2 border-b-2 border-[#616161] "></div>
                             <div className="my-2 flex justify-between">
                                 <h2 className="moving-title">{title}</h2>
-                                <Image
-                                    alt="hacktime logo"
-                                    src={hacktime}
-                                    className=" png-dark-gray h-6 w-6 object-cover"
-                                />
+                                <button
+                                    onClick={() => setIsHackType(!isHackType)}
+                                >
+                                    <Image
+                                        alt="hacktime logo"
+                                        src={hacktime}
+                                        className=" console-switch h-6 w-6 object-cover"
+                                    />
+                                </button>
                             </div>
                             <Image
                                 alt="profile matrix"
@@ -125,7 +131,7 @@ export default function UserProfile() {
                             <div className="mt-2 flex justify-between">
                                 <h1>PROFILE DATA</h1>
                                 <button
-                                    className="flex flex-col leading-none"
+                                    className="flex flex-col leading-none hover:text-white"
                                     onClick={openModal}
                                 >
                                     <p className="text-xs">
@@ -175,6 +181,7 @@ export default function UserProfile() {
                                 <Link
                                     href={`profile/public/${sessionData.user.username}`}
                                     aria-label="public profile"
+                                    className="hover:text-white"
                                 >
                                     VIEW PUBLIC PROFILE
                                 </Link>
@@ -182,8 +189,9 @@ export default function UserProfile() {
                                     width="12"
                                     height="12"
                                     viewBox="0 0 100 100"
+                                    className="text-darkGray"
                                     xmlns="http://www.w3.org/2000/svg"
-                                    fill="#616161"
+                                    fill="currentColor"
                                 >
                                     <circle cx="50" cy="50" r="40" />
                                 </svg>
@@ -195,8 +203,9 @@ export default function UserProfile() {
                                         xmlns="http://www.w3.org/2000/svg"
                                         height="30px"
                                         width="30px"
+                                        className="text-darkGray hover:text-white"
                                         viewBox="0 0 512 512"
-                                        fill="#616161"
+                                        fill="currentColor"
                                     >
                                         <path d="m34,256l26.2,26.2c108,108 283.7,108 391.7,0l26.1-26.2-26.2-26.2c-108-108-283.7-108-391.7,0l-26.1,26.2zm222,126.2c-75.8,0-151.6-28.9-209.3-86.6l-32.9-32.9c-3.7-3.7-3.7-9.7 0-13.5l32.9-32.9c115.4-115.4 303.2-115.4 418.6,0l32.9,32.9c3.7,3.7 3.7,9.7 0,13.5l-32.9,32.9c-57.7,57.7-133.5,86.6-209.3,86.6z" />
                                         <path d="m256,183.5c-40,0-72.5,32.5-72.5,72.5s32.5,72.5 72.5,72.5c40,0 72.5-32.5 72.5-72.5s-32.5-72.5-72.5-72.5zm0,164c-50.5,0-91.5-41.1-91.5-91.5 0-50.5 41.1-91.5 91.5-91.5s91.5,41.1 91.5,91.5c0,50.5-41,91.5-91.5,91.5z" />
@@ -205,78 +214,96 @@ export default function UserProfile() {
                             </div>
 
                             <div className="h-80  overflow-hidden border-2 border-[#616161] ">
-                                <HackermanConsoleCommands />
+                                {isHackType ? (
+                                    <HackermanTypeBinary />
+                                ) : (
+                                    <HackermanConsoleCommands />
+                                )}
                             </div>
                         </div>
                         <div className="flex w-1/2 flex-col">
-                            <button
-                                className="flex items-center justify-end gap-2"
-                                onClick={handleRetroMode}
-                            >
-                                <div className="flex gap-1 ">
-                                    <svg
-                                        width="12"
-                                        height="12"
-                                        viewBox="0 0 100 100"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        stroke="#616161"
-                                        strokeWidth="10"
-                                    >
-                                        <circle cx="50" cy="50" r="40" />
-                                    </svg>
-                                    <svg
-                                        width="12"
-                                        height="12"
-                                        viewBox="0 0 100 100"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        stroke="#616161"
-                                        strokeWidth="10"
-                                    >
-                                        <circle cx="50" cy="50" r="40" />
-                                    </svg>
-                                    <svg
-                                        width="12"
-                                        height="12"
-                                        viewBox="0 0 100 100"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        stroke="#616161"
-                                        strokeWidth="10"
-                                    >
-                                        <circle cx="50" cy="50" r="40" />
-                                    </svg>
-                                </div>
-
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    height="30px"
-                                    width="30px"
-                                    viewBox="0 0 512 512"
-                                    fill="#616161"
+                            <div className="flex w-full justify-end">
+                                <button
+                                    className="profile-retro-button flex items-center gap-2"
+                                    onClick={handleRetroMode}
                                 >
-                                    <path d="m34,256l26.2,26.2c108,108 283.7,108 391.7,0l26.1-26.2-26.2-26.2c-108-108-283.7-108-391.7,0l-26.1,26.2zm222,126.2c-75.8,0-151.6-28.9-209.3-86.6l-32.9-32.9c-3.7-3.7-3.7-9.7 0-13.5l32.9-32.9c115.4-115.4 303.2-115.4 418.6,0l32.9,32.9c3.7,3.7 3.7,9.7 0,13.5l-32.9,32.9c-57.7,57.7-133.5,86.6-209.3,86.6z" />
-                                    <path d="m256,183.5c-40,0-72.5,32.5-72.5,72.5s32.5,72.5 72.5,72.5c40,0 72.5-32.5 72.5-72.5s-32.5-72.5-72.5-72.5zm0,164c-50.5,0-91.5-41.1-91.5-91.5 0-50.5 41.1-91.5 91.5-91.5s91.5,41.1 91.5,91.5c0,50.5-41,91.5-91.5,91.5z" />
-                                </svg>
-                                {isRetro ? (
-                                    <div className="mb-2 flex flex-col text-xs ">
-                                        <h3 className="leading-none">Future</h3>
-                                        <h3 className="leading-none">to the</h3>
-                                        <h3 className="leading-none">Future</h3>
+                                    <div className="flex gap-1 ">
+                                        <svg
+                                            width="12"
+                                            height="12"
+                                            viewBox="0 0 100 100"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="10"
+                                        >
+                                            <circle cx="50" cy="50" r="40" />
+                                        </svg>
+                                        <svg
+                                            width="12"
+                                            height="12"
+                                            viewBox="0 0 100 100"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="10"
+                                        >
+                                            <circle cx="50" cy="50" r="40" />
+                                        </svg>
+                                        <svg
+                                            width="12"
+                                            height="12"
+                                            viewBox="0 0 100 100"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="10"
+                                        >
+                                            <circle cx="50" cy="50" r="40" />
+                                        </svg>
                                     </div>
-                                ) : (
-                                    <div className="mb-2 flex flex-col text-xs ">
-                                        <h3 className="leading-none">Retro</h3>
-                                        <h3 className="leading-none">Retro</h3>
-                                        <h3 className="leading-none">Retro</h3>
-                                    </div>
-                                )}
-                            </button>
+
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        height="30px"
+                                        width="30px"
+                                        viewBox="0 0 512 512"
+                                        fill="currentColor"
+                                    >
+                                        <path d="m34,256l26.2,26.2c108,108 283.7,108 391.7,0l26.1-26.2-26.2-26.2c-108-108-283.7-108-391.7,0l-26.1,26.2zm222,126.2c-75.8,0-151.6-28.9-209.3-86.6l-32.9-32.9c-3.7-3.7-3.7-9.7 0-13.5l32.9-32.9c115.4-115.4 303.2-115.4 418.6,0l32.9,32.9c3.7,3.7 3.7,9.7 0,13.5l-32.9,32.9c-57.7,57.7-133.5,86.6-209.3,86.6z" />
+                                        <path d="m256,183.5c-40,0-72.5,32.5-72.5,72.5s32.5,72.5 72.5,72.5c40,0 72.5-32.5 72.5-72.5s-32.5-72.5-72.5-72.5zm0,164c-50.5,0-91.5-41.1-91.5-91.5 0-50.5 41.1-91.5 91.5-91.5s91.5,41.1 91.5,91.5c0,50.5-41,91.5-91.5,91.5z" />
+                                    </svg>
+                                    {isRetro ? (
+                                        <div className="profile-retro-button-text mb-2 flex flex-col text-xs ">
+                                            <h3 className="leading-none">
+                                                Future
+                                            </h3>
+                                            <h3 className="leading-none">
+                                                to the
+                                            </h3>
+                                            <h3 className="leading-none">
+                                                Future
+                                            </h3>
+                                        </div>
+                                    ) : (
+                                        <div className="profile-retro-button-text mb-2 flex flex-col text-xs  ">
+                                            <h3 className="leading-none">
+                                                Retro
+                                            </h3>
+                                            <h3 className="leading-none">
+                                                Retro
+                                            </h3>
+                                            <h3 className="leading-none">
+                                                Retro
+                                            </h3>
+                                        </div>
+                                    )}
+                                </button>
+                            </div>
 
                             <div className="h-[400px] border-2 border-[#616161] ">
                                 <Canvas
-                                    className="h-full w-full cursor-pointer"
+                                    className="h-full w-full"
                                     camera={{ position: [4, 0, 1] }}
                                 >
                                     <ambientLight intensity={0.5} />
@@ -457,7 +484,7 @@ export default function UserProfile() {
                                         className={`${
                                             toggle === "KEEBSHOP"
                                                 ? "png-light-gray"
-                                                : "png-green"
+                                                : "png-computer"
                                         } w-20 cursor-pointer object-cover`}
                                         onClick={() => setToggle("KEEBSHOP")}
                                     />
@@ -473,7 +500,7 @@ export default function UserProfile() {
                                         keeb shop tab
                                     </h2>
                                 </div>
-                                <div className="flex items-center justify-center gap-10 text-xs">
+                                <div className="flex items-center justify-center gap-10 text-xs ">
                                     <Image
                                         src={computerShare}
                                         alt="computer"
@@ -482,7 +509,7 @@ export default function UserProfile() {
                                         className={`${
                                             toggle === "KEEBSHARE"
                                                 ? "png-light-gray"
-                                                : "png-green"
+                                                : "png-computer"
                                         } w-20 cursor-pointer object-cover`}
                                         onClick={() => setToggle("KEEBSHARE")}
                                     />
@@ -490,7 +517,7 @@ export default function UserProfile() {
                                         className={`${
                                             toggle === "KEEBSHARE"
                                                 ? "text-darkGray"
-                                                : "text-green-500"
+                                                : ""
                                         }`}
                                     >
                                         check your favorite posts, see your
@@ -507,7 +534,7 @@ export default function UserProfile() {
                                         className={`${
                                             toggle === "KEEBTYPE"
                                                 ? "png-light-gray"
-                                                : "png-green"
+                                                : "png-computer"
                                         } w-20 cursor-pointer object-cover`}
                                         onClick={() => setToggle("KEEBTYPE")}
                                     />
