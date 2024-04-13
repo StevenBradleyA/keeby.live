@@ -24,6 +24,7 @@ import UpdateUserTag from "~/components/Profile/User/Update/Tag";
 import ModalDialog from "~/components/Modal";
 import UpdateProfile from "~/components/Profile/User/Update/updateProfile";
 import HackermanTypeBinary from "~/components/Profile/Hackerman/hackermanTypeBinary";
+import MatrixRain from "~/components/Profile/Hackerman/matrix";
 
 export default function UserProfile() {
     // mdn digest() -- might be useful for us here
@@ -123,11 +124,17 @@ export default function UserProfile() {
                                     />
                                 </button>
                             </div>
-                            <Image
-                                alt="profile matrix"
-                                src={gridFunnel}
-                                className=" h-40 w-full border-2 border-[#616161] object-cover "
-                            />
+                            <div className=" h-40 w-full overflow-hidden border-2 border-[#616161]">
+                                {isHackType ? (
+                                    <MatrixRain />
+                                ) : (
+                                    <Image
+                                        alt="profile matrix"
+                                        src={gridFunnel}
+                                        className=" h-full w-full object-cover "
+                                    />
+                                )}
+                            </div>
                             <div className="mt-2 flex justify-between">
                                 <h1>PROFILE DATA</h1>
                                 <button
