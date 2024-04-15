@@ -807,6 +807,123 @@ input[type="checkbox"]:hover {
     color: white;
 }
 
+.profile-favorites-button {
+    overflow: hidden;
+    transition: background-color 0.4s cubic-bezier(0.35, 0, 0, 1);
+}
+.profile-favorites-button:hover {
+    background-color: #2f2f2f;
+
+}
+
+.profile-favorites-button-text {
+    transition: transform 0.4s cubic-bezier(0.35, 0, 0, 1),
+        opacity 0.4s cubic-bezier(0.35, 0, 0, 1);
+    opacity: 1;
+}
+
+.profile-favorites-button-circle {
+    opacity: 1;
+    transform: scale(1);
+    position: relative;
+    right: 15px;
+    transition: opacity 0.4s cubic-bezier(0.35, 0, 0, 1);
+}
+@keyframes scaleUpDown {
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(2);
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+.profile-favorites-button-heart {
+    position: relative;
+    transition: opacity 0.4s cubic-bezier(0.35, 0, 0, 1),
+        transform 0.4s cubic-bezier(0.35, 0, 0, 1);
+    opacity: 0;
+    transform: scale(1);
+    visibility: hidden;
+    left: 1px;
+}
+
+.profile-favorites-button:hover .profile-favorites-button-circle {
+    animation: profileButton 1s cubic-bezier(0.35, 0, 0, 1) forwards;
+    transition-delay: 0s, 0s;
+}
+
+.profile-favorites-button:hover .profile-favorites-button-heart {
+    opacity: 1;
+    transform: scale(1);
+    visibility: visible;
+    transition-delay: 0.45s, 0.45s;
+}
+
+.profile-select-button {
+    overflow: hidden;
+    transition: background-color 0.4s cubic-bezier(0.35, 0, 0, 1);
+}
+.profile-select-button:hover {
+    background-color: #2f2f2f;
+}
+
+.profile-select-button-text {
+    transition: transform 0.4s cubic-bezier(0.35, 0, 0, 1),
+        opacity 0.4s cubic-bezier(0.35, 0, 0, 1);
+    opacity: 1;
+}
+
+.profile-select-button-square {
+    opacity: 1;
+    transform: scale(1);
+    position: relative;
+    right: 15px;
+    transition: opacity 0.4s cubic-bezier(0.35, 0, 0, 1);
+}
+@keyframes profileButton {
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.8);
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+.profile-select-button-arrow {
+    position: relative;
+    transition: opacity 0.4s cubic-bezier(0.35, 0, 0, 1),
+        transform 0.4s cubic-bezier(0.35, 0, 0, 1);
+    opacity: 0;
+    transform: scale(1);
+    visibility: hidden;
+    left: 3px;
+}
+
+.profile-select-button:hover .profile-select-button-square {
+    animation: scaleUpDown 1s cubic-bezier(0.35, 0, 0, 1) forwards;
+    transition-delay: 0s, 0s;
+}
+
+.profile-select-button:hover .profile-select-button-arrow {
+    opacity: 1;
+    transform: scale(1);
+    visibility: visible;
+    transition-delay: 0.45s, 0.45s;
+}
+
 /* Scanlines && Flicker  */
 
 @keyframes blink {

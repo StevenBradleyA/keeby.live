@@ -165,6 +165,9 @@ export const gameRouter = createTRPCRouter({
                         },
                     },
                 });
+                if (!player) {
+                    throw new Error("User ID not found");
+                }
 
                 if (
                     player &&
@@ -246,13 +249,16 @@ export const gameRouter = createTRPCRouter({
                                                     id: existingRankTag.id,
                                                 },
                                                 select: {
-                                                    id: true
-                                                }
+                                                    id: true,
+                                                },
                                             },
                                         },
                                     });
 
-                                if (doesUserOwnTag && doesUserOwnTag.tags.length === 0) {
+                                if (
+                                    doesUserOwnTag &&
+                                    doesUserOwnTag.tags.length === 0
+                                ) {
                                     // If the user does not already have this tag, associate the tag with the user
                                     await ctx.prisma.user.update({
                                         where: { id: userId },

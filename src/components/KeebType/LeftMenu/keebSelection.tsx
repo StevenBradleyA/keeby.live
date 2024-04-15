@@ -32,12 +32,14 @@ export default function MenuKeebSelection({
 
     useEffect(() => {
         if (keeb === "" || keebId === "") {
-            setKeeb(keebData && keebData[0] ? keebData[0].name : "");
-            setKeebId(keebData && keebData[0] ? keebData[0].id : "");
-            setSelectedKeeb({
-                id: keebData && keebData[0] ? keebData[0].id : "",
-                name: keebData && keebData[0] ? keebData[0].name : "",
-            });
+            if (keebData) {
+                setKeeb(keebData[0] ? keebData[0].name : "");
+                setKeebId(keebData[0] ? keebData[0].id : "");
+                setSelectedKeeb({
+                    id: keebData[0] ? keebData[0].id : "",
+                    name: keebData[0] ? keebData[0].name : "",
+                });
+            }
         }
     }, [keeb, keebId, setKeeb, setKeebId, keebData]);
 
@@ -45,6 +47,8 @@ export default function MenuKeebSelection({
         const newKeebId: string = e.target.value;
         if (keebData && keebData.length > 0) {
             const newKeeb = keebData.find((keeb) => keeb.id === newKeebId);
+
+            console.log("keeb change here", newKeeb);
             if (newKeeb) {
                 setCookie("keeb", newKeeb.name, {
                     maxAge: 60 * 60 * 24 * 365,
@@ -60,7 +64,8 @@ export default function MenuKeebSelection({
             }
         }
     };
-
+    console.log("wtttttffff ", keebData);
+    console.log(keebId);
     return (
         <>
             {keebData && keebData.length > 0 && (

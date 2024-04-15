@@ -62,6 +62,8 @@ export default function AdminEachDisplayRank({
         setIsModalOpen(false);
     };
 
+    console.log(session)
+
     return (
         <div className="relative w-60 rounded-xl border-2 border-black p-5">
             <h1 className="font-titillium text-3xl">{rank.name}</h1>

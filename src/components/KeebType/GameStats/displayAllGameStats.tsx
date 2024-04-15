@@ -48,7 +48,7 @@ export default function DisplayAllGameStats({
         }
     };
 
-    console.log(gameData);
+    console.log('um', gameData);
 
 
     

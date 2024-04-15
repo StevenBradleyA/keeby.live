@@ -583,95 +583,361 @@ export default function UserProfile() {
                     {toggle === "KEEBSHOP" && (
                         <div className="mt-10 flex  w-full justify-evenly border-2 border-[#616161] p-5">
                             <button
-                                className={`border-2 ${
+                                className={`profile-favorites-button flex items-center gap-1 border-2 ${
                                     keebShopCategory === "FAVORITES"
                                         ? "border-green-500"
                                         : "border-[#616161]"
-                                } rounded-lg bg-darkGray  px-6 py-2 text-green-500 hover:border-green-500 `}
+                                } rounded-md py-2 pl-6  `}
                                 onClick={() => setKeebShopCategory("FAVORITES")}
                             >
-                                Favorites
+                                <span className="profile-favorites-button-text">
+                                    Favorites
+                                </span>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="profile-favorites-button-heart w-4"
+                                    viewBox="0 0 24 24"
+                                    fill="currentColor"
+                                >
+                                    <path
+                                        fillRule="evenodd"
+                                        clipRule="evenodd"
+                                        d="M12 6.00019C10.2006 3.90317 7.19377 3.2551 4.93923 5.17534C2.68468 7.09558 2.36727 10.3061 4.13778 12.5772C5.60984 14.4654 10.0648 18.4479 11.5249 19.7369C11.6882 19.8811 11.7699 19.9532 11.8652 19.9815C11.9483 20.0062 12.0393 20.0062 12.1225 19.9815C12.2178 19.9532 12.2994 19.8811 12.4628 19.7369C13.9229 18.4479 18.3778 14.4654 19.8499 12.5772C21.6204 10.3061 21.3417 7.07538 19.0484 5.17534C16.7551 3.2753 13.7994 3.90317 12 6.00019Z"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    />
+                                </svg>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="currentColor"
+                                    className="profile-favorites-button-circle w-2"
+                                    viewBox="0 0 32 32"
+                                >
+                                    <circle cx="16" cy="16" r="16" />
+                                </svg>
                             </button>
                             <button
-                                className={`border-2 ${
+                                className={`profile-select-button flex items-center gap-1   border-2 ${
                                     keebShopCategory === "LISTINGS"
                                         ? "border-green-500"
                                         : "border-[#616161]"
-                                } rounded-lg bg-darkGray  px-6 py-2 text-green-500 hover:border-green-500 `}
+                                } rounded-md   py-2 pl-6 text-green-500  `}
                                 onClick={() => setKeebShopCategory("LISTINGS")}
                             >
-                                My Listings
+                                <span className="profile-select-button-text">
+                                    My Listings
+                                </span>
+
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="profile-select-button-arrow w-5"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                >
+                                    <path
+                                        d="M15.0001 10.5001V15.0001M15.0001 15.0001H10.5001M15.0001 15.0001L9.00024 9M7.20024 20H16.8002C17.9203 20 18.4804 20 18.9082 19.782C19.2845 19.5903 19.5905 19.2843 19.7823 18.908C20.0002 18.4802 20.0002 17.9201 20.0002 16.8V7.2C20.0002 6.0799 20.0002 5.51984 19.7823 5.09202C19.5905 4.71569 19.2845 4.40973 18.9082 4.21799C18.4804 4 17.9203 4 16.8002 4H7.20024C6.08014 4 5.52009 4 5.09226 4.21799C4.71594 4.40973 4.40998 4.71569 4.21823 5.09202C4.00024 5.51984 4.00024 6.07989 4.00024 7.2V16.8C4.00024 17.9201 4.00024 18.4802 4.21823 18.908C4.40998 19.2843 4.71594 19.5903 5.09226 19.782C5.52009 20 6.08014 20 7.20024 20Z"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    />
+                                </svg>
+
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="profile-select-button-square w-2"
+                                    viewBox="0 0 24 24"
+                                    fill="currentColor"
+                                >
+                                    <rect
+                                        x="4"
+                                        y="4"
+                                        width="16"
+                                        height="16"
+                                        rx="2"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    />
+                                </svg>
                             </button>
                             <button
-                                className={`border-2 ${
+                                className={`profile-select-button flex items-center gap-1   border-2 ${
                                     keebShopCategory === "OFFERS"
                                         ? "border-green-500"
                                         : "border-[#616161]"
-                                } rounded-lg bg-darkGray  px-6 py-2 text-green-500 hover:border-green-500 `}
+                                } rounded-md   py-2 pl-6 text-green-500  `}
                                 onClick={() => setKeebShopCategory("OFFERS")}
                             >
-                                Offers
+                                <span className="profile-select-button-text">
+                                    Offers
+                                </span>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="profile-select-button-arrow w-5"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                >
+                                    <path
+                                        d="M15.0001 10.5001V15.0001M15.0001 15.0001H10.5001M15.0001 15.0001L9.00024 9M7.20024 20H16.8002C17.9203 20 18.4804 20 18.9082 19.782C19.2845 19.5903 19.5905 19.2843 19.7823 18.908C20.0002 18.4802 20.0002 17.9201 20.0002 16.8V7.2C20.0002 6.0799 20.0002 5.51984 19.7823 5.09202C19.5905 4.71569 19.2845 4.40973 18.9082 4.21799C18.4804 4 17.9203 4 16.8002 4H7.20024C6.08014 4 5.52009 4 5.09226 4.21799C4.71594 4.40973 4.40998 4.71569 4.21823 5.09202C4.00024 5.51984 4.00024 6.07989 4.00024 7.2V16.8C4.00024 17.9201 4.00024 18.4802 4.21823 18.908C4.40998 19.2843 4.71594 19.5903 5.09226 19.782C5.52009 20 6.08014 20 7.20024 20Z"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    />
+                                </svg>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="profile-select-button-square w-2"
+                                    viewBox="0 0 24 24"
+                                    fill="currentColor"
+                                >
+                                    <rect
+                                        x="4"
+                                        y="4"
+                                        width="16"
+                                        height="16"
+                                        rx="2"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    />
+                                </svg>
                             </button>
                             <button
-                                className={`border-2 ${
+                                className={`profile-select-button flex items-center gap-1   border-2 ${
                                     keebShopCategory === "REVIEWS"
                                         ? "border-green-500"
                                         : "border-[#616161]"
-                                } rounded-lg bg-darkGray  px-6 py-2 text-green-500 hover:border-green-500 `}
+                                } rounded-md   py-2 pl-6 text-green-500  `}
                                 onClick={() => setKeebShopCategory("REVIEWS")}
                             >
-                                Reviews
+                                <span className="profile-select-button-text">
+                                    Reviews
+                                </span>
+
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="profile-select-button-arrow w-5"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                >
+                                    <path
+                                        d="M15.0001 10.5001V15.0001M15.0001 15.0001H10.5001M15.0001 15.0001L9.00024 9M7.20024 20H16.8002C17.9203 20 18.4804 20 18.9082 19.782C19.2845 19.5903 19.5905 19.2843 19.7823 18.908C20.0002 18.4802 20.0002 17.9201 20.0002 16.8V7.2C20.0002 6.0799 20.0002 5.51984 19.7823 5.09202C19.5905 4.71569 19.2845 4.40973 18.9082 4.21799C18.4804 4 17.9203 4 16.8002 4H7.20024C6.08014 4 5.52009 4 5.09226 4.21799C4.71594 4.40973 4.40998 4.71569 4.21823 5.09202C4.00024 5.51984 4.00024 6.07989 4.00024 7.2V16.8C4.00024 17.9201 4.00024 18.4802 4.21823 18.908C4.40998 19.2843 4.71594 19.5903 5.09226 19.782C5.52009 20 6.08014 20 7.20024 20Z"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    />
+                                </svg>
+
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="profile-select-button-square w-2"
+                                    viewBox="0 0 24 24"
+                                    fill="currentColor"
+                                >
+                                    <rect
+                                        x="4"
+                                        y="4"
+                                        width="16"
+                                        height="16"
+                                        rx="2"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    />
+                                </svg>
                             </button>
                         </div>
                     )}
                     {toggle === "KEEBSHARE" && (
                         <div className="mt-10 flex  w-full justify-evenly border-2 border-[#616161] p-5">
                             <button
-                                className={`border-2 ${
+                                className={`profile-favorites-button flex items-center gap-1 border-2 ${
                                     keebShareCategory === "FAVORITES"
                                         ? "border-green-500"
                                         : "border-[#616161]"
-                                } rounded-lg bg-darkGray  px-6 py-2 text-green-500 hover:border-green-500 `}
+                                } rounded-md py-2 pl-6  `}
                                 onClick={() =>
                                     setKeebShareCategory("FAVORITES")
                                 }
                             >
-                                Favorites
+                                <span className="profile-favorites-button-text">
+                                    Favorites
+                                </span>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="profile-favorites-button-heart w-4"
+                                    viewBox="0 0 24 24"
+                                    fill="currentColor"
+                                >
+                                    <path
+                                        fillRule="evenodd"
+                                        clipRule="evenodd"
+                                        d="M12 6.00019C10.2006 3.90317 7.19377 3.2551 4.93923 5.17534C2.68468 7.09558 2.36727 10.3061 4.13778 12.5772C5.60984 14.4654 10.0648 18.4479 11.5249 19.7369C11.6882 19.8811 11.7699 19.9532 11.8652 19.9815C11.9483 20.0062 12.0393 20.0062 12.1225 19.9815C12.2178 19.9532 12.2994 19.8811 12.4628 19.7369C13.9229 18.4479 18.3778 14.4654 19.8499 12.5772C21.6204 10.3061 21.3417 7.07538 19.0484 5.17534C16.7551 3.2753 13.7994 3.90317 12 6.00019Z"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    />
+                                </svg>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="currentColor"
+                                    className="profile-favorites-button-circle w-2"
+                                    viewBox="0 0 32 32"
+                                >
+                                    <circle cx="16" cy="16" r="16" />
+                                </svg>
                             </button>
                             <button
-                                className={`border-2 ${
+                                className={`profile-select-button flex items-center gap-1   border-2 ${
                                     keebShareCategory === "POSTS"
                                         ? "border-green-500"
                                         : "border-[#616161]"
-                                } rounded-lg bg-darkGray  px-6 py-2 text-green-500 hover:border-green-500 `}
+                                } rounded-md   py-2 pl-6 text-green-500  `}
                                 onClick={() => setKeebShareCategory("POSTS")}
                             >
-                                My Posts
+                                <span className="profile-select-button-text">
+                                    My Posts
+                                </span>
+
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="profile-select-button-arrow w-5"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                >
+                                    <path
+                                        d="M15.0001 10.5001V15.0001M15.0001 15.0001H10.5001M15.0001 15.0001L9.00024 9M7.20024 20H16.8002C17.9203 20 18.4804 20 18.9082 19.782C19.2845 19.5903 19.5905 19.2843 19.7823 18.908C20.0002 18.4802 20.0002 17.9201 20.0002 16.8V7.2C20.0002 6.0799 20.0002 5.51984 19.7823 5.09202C19.5905 4.71569 19.2845 4.40973 18.9082 4.21799C18.4804 4 17.9203 4 16.8002 4H7.20024C6.08014 4 5.52009 4 5.09226 4.21799C4.71594 4.40973 4.40998 4.71569 4.21823 5.09202C4.00024 5.51984 4.00024 6.07989 4.00024 7.2V16.8C4.00024 17.9201 4.00024 18.4802 4.21823 18.908C4.40998 19.2843 4.71594 19.5903 5.09226 19.782C5.52009 20 6.08014 20 7.20024 20Z"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    />
+                                </svg>
+
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="profile-select-button-square w-2"
+                                    viewBox="0 0 24 24"
+                                    fill="currentColor"
+                                >
+                                    <rect
+                                        x="4"
+                                        y="4"
+                                        width="16"
+                                        height="16"
+                                        rx="2"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    />
+                                </svg>
                             </button>
                         </div>
                     )}
                     {toggle === "KEEBTYPE" && (
                         <div className="mt-10 flex  w-full justify-evenly border-2 border-[#616161] p-5">
                             <button
-                                className={`border-2 ${
+                                className={`profile-select-button flex items-center gap-1   border-2 ${
                                     keebTypeCategory === "STATS"
                                         ? "border-green-500"
                                         : "border-[#616161]"
-                                } rounded-lg bg-darkGray  px-6 py-2 text-green-500 hover:border-green-500 `}
+                                } rounded-md   py-2 pl-6 text-green-500  `}
                                 onClick={() => setKeebTypeCategory("STATS")}
                             >
-                                Stats
+                                <span className="profile-select-button-text">
+                                    Stats
+                                </span>
+
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="profile-select-button-arrow w-5"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                >
+                                    <path
+                                        d="M15.0001 10.5001V15.0001M15.0001 15.0001H10.5001M15.0001 15.0001L9.00024 9M7.20024 20H16.8002C17.9203 20 18.4804 20 18.9082 19.782C19.2845 19.5903 19.5905 19.2843 19.7823 18.908C20.0002 18.4802 20.0002 17.9201 20.0002 16.8V7.2C20.0002 6.0799 20.0002 5.51984 19.7823 5.09202C19.5905 4.71569 19.2845 4.40973 18.9082 4.21799C18.4804 4 17.9203 4 16.8002 4H7.20024C6.08014 4 5.52009 4 5.09226 4.21799C4.71594 4.40973 4.40998 4.71569 4.21823 5.09202C4.00024 5.51984 4.00024 6.07989 4.00024 7.2V16.8C4.00024 17.9201 4.00024 18.4802 4.21823 18.908C4.40998 19.2843 4.71594 19.5903 5.09226 19.782C5.52009 20 6.08014 20 7.20024 20Z"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    />
+                                </svg>
+
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="profile-select-button-square w-2"
+                                    viewBox="0 0 24 24"
+                                    fill="currentColor"
+                                >
+                                    <rect
+                                        x="4"
+                                        y="4"
+                                        width="16"
+                                        height="16"
+                                        rx="2"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    />
+                                </svg>
                             </button>
 
                             <button
-                                className={`border-2 ${
+                                className={`profile-select-button flex items-center gap-1   border-2 ${
                                     keebTypeCategory === "KEEBS"
                                         ? "border-green-500"
                                         : "border-[#616161]"
-                                } rounded-lg bg-darkGray  px-6 py-2 text-green-500 hover:border-green-500 `}
+                                } rounded-md   py-2 pl-6 text-green-500  `}
                                 onClick={() => setKeebTypeCategory("KEEBS")}
                             >
-                                My Keebs
+                                <span className="profile-select-button-text">
+                                    My Keebs
+                                </span>
+
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="profile-select-button-arrow w-5"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                >
+                                    <path
+                                        d="M15.0001 10.5001V15.0001M15.0001 15.0001H10.5001M15.0001 15.0001L9.00024 9M7.20024 20H16.8002C17.9203 20 18.4804 20 18.9082 19.782C19.2845 19.5903 19.5905 19.2843 19.7823 18.908C20.0002 18.4802 20.0002 17.9201 20.0002 16.8V7.2C20.0002 6.0799 20.0002 5.51984 19.7823 5.09202C19.5905 4.71569 19.2845 4.40973 18.9082 4.21799C18.4804 4 17.9203 4 16.8002 4H7.20024C6.08014 4 5.52009 4 5.09226 4.21799C4.71594 4.40973 4.40998 4.71569 4.21823 5.09202C4.00024 5.51984 4.00024 6.07989 4.00024 7.2V16.8C4.00024 17.9201 4.00024 18.4802 4.21823 18.908C4.40998 19.2843 4.71594 19.5903 5.09226 19.782C5.52009 20 6.08014 20 7.20024 20Z"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    />
+                                </svg>
+
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="profile-select-button-square w-2"
+                                    viewBox="0 0 24 24"
+                                    fill="currentColor"
+                                >
+                                    <rect
+                                        x="4"
+                                        y="4"
+                                        width="16"
+                                        height="16"
+                                        rx="2"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    />
+                                </svg>
                             </button>
                         </div>
                     )}

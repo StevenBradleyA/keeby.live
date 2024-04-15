@@ -228,8 +228,8 @@ model Rank {
     image    String
     name     String @unique
     standing Float
-    minWpm   Int
-    maxWpm   Int
+    minWpm   Float
+    maxWpm   Float
     users    User[]
 }
 

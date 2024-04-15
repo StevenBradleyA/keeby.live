@@ -138,6 +138,7 @@ export default function SpeedMode({
                 accuracy: accuracy,
                 mode: mode,
             };
+            console.log('data check', data)
             createGame(data);
         }
 

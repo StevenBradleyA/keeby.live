@@ -49,6 +49,11 @@ export default function KeebType() {
         }
     }, [cookies]);
 
+
+    console.log('keeb check', keebId)
+
+    // ohhh its grabbing my old cookies
+
     return (
         <>
             <div className=" relative flex h-[80vh] w-full gap-2 laptop:p-2 desktop:gap-10 desktop:p-10">
