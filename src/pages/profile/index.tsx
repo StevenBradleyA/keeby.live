@@ -319,7 +319,7 @@ export default function UserProfile() {
                                 </Canvas>
                             </div>
                             <div className="flex items-center justify-between">
-                                <h1 className=" font-titillium text-9xl">
+                                <h1 className=" font-titillium laptop:text-9xl tablet:text-7xl">
                                     PROFILE
                                 </h1>
                                 <Image
@@ -332,7 +332,7 @@ export default function UserProfile() {
                                     width={800}
                                     height={800}
                                     priority={true}
-                                    className=" mt-2 h-24 w-24 object-cover"
+                                    className=" mt-2 tablet:h-16 tablet:w-16 laptop:h-24 laptop:w-24 object-cover"
                                 />
                             </div>
                             <div className="mt-10 flex w-full items-center gap-2 overflow-hidden text-2xl">

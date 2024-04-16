@@ -2,6 +2,18 @@ import { useState } from "react";
 import type { ChangeEvent } from "react";
 import { api } from "~/utils/api";
 import type { Keeb } from "@prisma/client";
+import {
+    LineChart,
+    Line,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    Legend,
+    ResponsiveContainer,
+} from "recharts";
+import AccuracyVisualizer from "./accuracyVisualizer";
+import WpmVisualizer from "./wpmVisualizer";
 
 interface DisplayAllGameStatsProps {
     keebData: Keeb[];
@@ -48,14 +60,80 @@ export default function DisplayAllGameStats({
         }
     };
 
-    console.log('um', gameData);
-
-
-    
+    console.log("um", gameData);
 
     return (
-        <div className="mt-5 w-full ">
-            <div className="flex ">
+        <div className="mt-10 w-full ">
+            {gameData && gameData.userWithGameResultsAndRank && (
+                <div className="flex h-[45vh] w-full gap-5 ">
+                    <div className="flex h-[90%] w-1/4 flex-col ">
+                        <h3>average wpm </h3>
+                        <p>{gameData?.averageWpm}</p>
+                        <div className="h-1/2 w-full">
+                            <WpmVisualizer averageWpm={gameData.averageWpm} />
+                        </div>
+                        <h3>average accuracy </h3>
+                        <p>{gameData.averageAccuracy}</p>
+                        <div className="h-1/2 w-full px-5">
+                            <AccuracyVisualizer
+                                averageAccuracy={parseFloat(
+                                    gameData.averageAccuracy.toFixed(2)
+                                )}
+                            />
+                        </div>
+                    </div>
+                    <div className="w-3/4">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <LineChart
+                                data={gameData.userWithGameResultsAndRank.games}
+                                // margin={{
+                                //     top: 5,
+                                //     right: 30,
+                                //     left: 20,
+                                //     bottom: 5,
+                                // }}
+                            >
+                                <CartesianGrid strokeDasharray="1 5" />
+                                <XAxis tick={false} />
+                                <YAxis
+                                    yAxisId="left"
+                                    label={{
+                                        value: "WPM",
+                                        angle: -90,
+                                        position: "insideLeft",
+                                    }}
+                                />
+                                <YAxis
+                                    yAxisId="right"
+                                    orientation="right"
+                                    label={{
+                                        value: "Accuracy (%)",
+                                        angle: 90,
+                                        position: "insideRight",
+                                    }}
+                                />
+                                <Tooltip />
+                                <Legend />
+                                <Line
+                                    yAxisId="left"
+                                    type="monotone"
+                                    dataKey="wpm"
+                                    stroke="#8884d8"
+                                    activeDot={{ r: 8 }}
+                                />
+                                <Line
+                                    yAxisId="right"
+                                    type="monotone"
+                                    dataKey="accuracy"
+                                    stroke="#82ca9d"
+                                />
+                            </LineChart>
+                        </ResponsiveContainer>
+                    </div>
+                </div>
+            )}
+
+            <div className="flex mt-96 ">
                 {!isTotalData && (
                     <>
                         <div className="flex flex-col">
