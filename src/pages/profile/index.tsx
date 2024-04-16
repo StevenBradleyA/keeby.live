@@ -1,6 +1,6 @@
 import { Canvas } from "@react-three/fiber";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import RotatingSphere from "~/components/Profile/ThreeScenes/RotatingSphere";
@@ -40,6 +40,7 @@ export default function UserProfile() {
     const [toggle, setToggle] = useState<string>("KEEBSHOP");
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [isHackType, setIsHackType] = useState<boolean>(false);
+    const scrollRef = useRef<HTMLDivElement | null>(null);
 
     const openModal = () => {
         setIsOpen(true);
@@ -319,7 +320,7 @@ export default function UserProfile() {
                                 </Canvas>
                             </div>
                             <div className="flex items-center justify-between">
-                                <h1 className=" font-titillium laptop:text-9xl tablet:text-7xl">
+                                <h1 className=" font-titillium tablet:text-7xl laptop:text-9xl">
                                     PROFILE
                                 </h1>
                                 <Image
@@ -332,7 +333,7 @@ export default function UserProfile() {
                                     width={800}
                                     height={800}
                                     priority={true}
-                                    className=" mt-2 tablet:h-16 tablet:w-16 laptop:h-24 laptop:w-24 object-cover"
+                                    className=" mt-2 object-cover tablet:h-16 tablet:w-16 laptop:h-24 laptop:w-24"
                                 />
                             </div>
                             <div className="mt-10 flex w-full items-center gap-2 overflow-hidden text-2xl">
@@ -558,8 +559,10 @@ export default function UserProfile() {
                                 </div>
                             </div>
 
-                            <h1 className="font-titillium text-6xl">
-                                {" "}
+                            <h1
+                                className="font-titillium text-6xl"
+                                ref={scrollRef}
+                            >
                                 {toggle}
                             </h1>
                             <div className=" flex w-full items-center gap-5 text-2xl">
@@ -588,7 +591,14 @@ export default function UserProfile() {
                                         ? "border-green-500"
                                         : "border-[#616161]"
                                 } rounded-md py-2 pl-6  `}
-                                onClick={() => setKeebShopCategory("FAVORITES")}
+                                onClick={() => {
+                                    setKeebShopCategory("FAVORITES");
+                                    scrollRef.current?.scrollIntoView({
+                                        behavior: "instant",
+                                        block: "start",
+                                        inline: "nearest",
+                                    });
+                                }}
                             >
                                 <span className="profile-favorites-button-text">
                                     Favorites
@@ -624,7 +634,14 @@ export default function UserProfile() {
                                         ? "border-green-500"
                                         : "border-[#616161]"
                                 } rounded-md   py-2 pl-6 text-green-500  `}
-                                onClick={() => setKeebShopCategory("LISTINGS")}
+                                onClick={() => {
+                                    setKeebShopCategory("LISTINGS");
+                                    scrollRef.current?.scrollIntoView({
+                                        behavior: "instant",
+                                        block: "start",
+                                        inline: "nearest",
+                                    });
+                                }}
                             >
                                 <span className="profile-select-button-text">
                                     My Listings
@@ -670,7 +687,14 @@ export default function UserProfile() {
                                         ? "border-green-500"
                                         : "border-[#616161]"
                                 } rounded-md   py-2 pl-6 text-green-500  `}
-                                onClick={() => setKeebShopCategory("OFFERS")}
+                                onClick={() => {
+                                    setKeebShopCategory("OFFERS");
+                                    scrollRef.current?.scrollIntoView({
+                                        behavior: "instant",
+                                        block: "start",
+                                        inline: "nearest",
+                                    });
+                                }}
                             >
                                 <span className="profile-select-button-text">
                                     Offers
@@ -714,7 +738,14 @@ export default function UserProfile() {
                                         ? "border-green-500"
                                         : "border-[#616161]"
                                 } rounded-md   py-2 pl-6 text-green-500  `}
-                                onClick={() => setKeebShopCategory("REVIEWS")}
+                                onClick={() => {
+                                    setKeebShopCategory("REVIEWS");
+                                    scrollRef.current?.scrollIntoView({
+                                        behavior: "instant",
+                                        block: "start",
+                                        inline: "nearest",
+                                    });
+                                }}
                             >
                                 <span className="profile-select-button-text">
                                     Reviews
@@ -764,9 +795,14 @@ export default function UserProfile() {
                                         ? "border-green-500"
                                         : "border-[#616161]"
                                 } rounded-md py-2 pl-6  `}
-                                onClick={() =>
-                                    setKeebShareCategory("FAVORITES")
-                                }
+                                onClick={() => {
+                                    setKeebShareCategory("FAVORITES");
+                                    scrollRef.current?.scrollIntoView({
+                                        behavior: "instant",
+                                        block: "start",
+                                        inline: "nearest",
+                                    });
+                                }}
                             >
                                 <span className="profile-favorites-button-text">
                                     Favorites
@@ -802,7 +838,14 @@ export default function UserProfile() {
                                         ? "border-green-500"
                                         : "border-[#616161]"
                                 } rounded-md   py-2 pl-6 text-green-500  `}
-                                onClick={() => setKeebShareCategory("POSTS")}
+                                onClick={() => {
+                                    setKeebShareCategory("POSTS");
+                                    scrollRef.current?.scrollIntoView({
+                                        behavior: "instant",
+                                        block: "start",
+                                        inline: "nearest",
+                                    });
+                                }}
                             >
                                 <span className="profile-select-button-text">
                                     My Posts
@@ -852,7 +895,14 @@ export default function UserProfile() {
                                         ? "border-green-500"
                                         : "border-[#616161]"
                                 } rounded-md   py-2 pl-6 text-green-500  `}
-                                onClick={() => setKeebTypeCategory("STATS")}
+                                onClick={() => {
+                                    setKeebTypeCategory("STATS");
+                                    scrollRef.current?.scrollIntoView({
+                                        behavior: "instant",
+                                        block: "start",
+                                        inline: "nearest",
+                                    });
+                                }}
                             >
                                 <span className="profile-select-button-text">
                                     Stats
@@ -899,7 +949,14 @@ export default function UserProfile() {
                                         ? "border-green-500"
                                         : "border-[#616161]"
                                 } rounded-md   py-2 pl-6 text-green-500  `}
-                                onClick={() => setKeebTypeCategory("KEEBS")}
+                                onClick={() => {
+                                    setKeebTypeCategory("KEEBS");
+                                    scrollRef.current?.scrollIntoView({
+                                        behavior: "instant",
+                                        block: "start",
+                                        inline: "nearest",
+                                    });
+                                }}
                             >
                                 <span className="profile-select-button-text">
                                     My Keebs
