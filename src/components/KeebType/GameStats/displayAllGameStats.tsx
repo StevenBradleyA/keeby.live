@@ -64,76 +64,101 @@ export default function DisplayAllGameStats({
 
     return (
         <div className="mt-10 w-full ">
-            {gameData && gameData.userWithGameResultsAndRank && (
-                <div className="flex h-[45vh] w-full gap-5 ">
-                    <div className="flex h-[90%] w-1/4 flex-col ">
-                        <h3>average wpm </h3>
-                        <p>{gameData?.averageWpm}</p>
-                        <div className="h-1/2 w-full">
-                            <WpmVisualizer averageWpm={gameData.averageWpm} />
-                        </div>
-                        <h3>average accuracy </h3>
-                        <p>{gameData.averageAccuracy}</p>
-                        <div className="h-1/2 w-full px-5">
-                            <AccuracyVisualizer
-                                averageAccuracy={parseFloat(
-                                    gameData.averageAccuracy.toFixed(2)
-                                )}
+            {gameData &&
+                gameData.userWithGameResultsAndRank &&
+                gameData.userWithGameResultsAndRank.rank && (
+                    <div className="flex h-[45vh] w-full gap-5 ">
+                        <div className="flex h-[100%] w-1/4 flex-col ">
+                            <div className=" flex items-center gap-2">
+                                <h3 className="text-darkGray">Total Average</h3>
+                                <p className="rounded-md bg-black/20 px-4 py-1">
+                                    {`${parseFloat(
+                                        gameData.averageWpm.toFixed(2)
+                                    )} WPM`}
+                                </p>
+                            </div>
+                            <WpmVisualizer
+                                averageWpm={gameData.averageWpm}
+                                rank={
+                                    gameData.userWithGameResultsAndRank.rank
+                                        .maxWpm
+                                }
                             />
+                            <div className=" mt-5 flex items-center gap-2">
+                                <h3 className="text-darkGray">
+                                    Total Accuracy
+                                </h3>
+                                <p className="rounded-md bg-black/20 px-4 py-1 text-[#22B5C5]">
+                                    {`${parseFloat(
+                                        gameData.averageAccuracy.toFixed(2)
+                                    )}%`}
+                                </p>
+                            </div>
+                            <div className="h-1/2 w-full px-5">
+                                <AccuracyVisualizer
+                                    averageAccuracy={parseFloat(
+                                        gameData.averageAccuracy.toFixed(2)
+                                    )}
+                                />
+                            </div>
+                        </div>
+                        <div className="w-3/4">
+                            <ResponsiveContainer width="100%" height="100%">
+                                <LineChart
+                                    data={
+                                        gameData.userWithGameResultsAndRank
+                                            .games
+                                    }
+                                >
+                                    <CartesianGrid strokeDasharray="1 5" />
+                                    <XAxis tick={false} />
+                                    <YAxis
+                                        yAxisId="left"
+                                        label={{
+                                            value: "WPM",
+                                            angle: -90,
+                                            position: "insideLeft",
+                                        }}
+                                    />
+                                    <YAxis
+                                        yAxisId="right"
+                                        orientation="right"
+                                        label={{
+                                            value: "Accuracy (%)",
+                                            angle: 90,
+                                            position: "insideRight",
+                                        }}
+                                    />
+                                    <Tooltip
+                                        contentStyle={{
+                                            backgroundColor:
+                                                "rgba(0, 0, 0, 0.3)",
+                                            borderRadius: "8px",
+                                            border: "1px solid rgba(0, 0, 0, 0.1)",
+                                            color: "#22C55E",
+                                        }}
+                                    />
+                                    <Legend />
+                                    <Line
+                                        yAxisId="left"
+                                        type="monotone"
+                                        dataKey="wpm"
+                                        stroke="#22C55E"
+                                        activeDot={{ r: 8 }}
+                                    />
+                                    <Line
+                                        yAxisId="right"
+                                        type="monotone"
+                                        dataKey="accuracy"
+                                        stroke="#22B5C5"
+                                    />
+                                </LineChart>
+                            </ResponsiveContainer>
                         </div>
                     </div>
-                    <div className="w-3/4">
-                        <ResponsiveContainer width="100%" height="100%">
-                            <LineChart
-                                data={gameData.userWithGameResultsAndRank.games}
-                                // margin={{
-                                //     top: 5,
-                                //     right: 30,
-                                //     left: 20,
-                                //     bottom: 5,
-                                // }}
-                            >
-                                <CartesianGrid strokeDasharray="1 5" />
-                                <XAxis tick={false} />
-                                <YAxis
-                                    yAxisId="left"
-                                    label={{
-                                        value: "WPM",
-                                        angle: -90,
-                                        position: "insideLeft",
-                                    }}
-                                />
-                                <YAxis
-                                    yAxisId="right"
-                                    orientation="right"
-                                    label={{
-                                        value: "Accuracy (%)",
-                                        angle: 90,
-                                        position: "insideRight",
-                                    }}
-                                />
-                                <Tooltip />
-                                <Legend />
-                                <Line
-                                    yAxisId="left"
-                                    type="monotone"
-                                    dataKey="wpm"
-                                    stroke="#8884d8"
-                                    activeDot={{ r: 8 }}
-                                />
-                                <Line
-                                    yAxisId="right"
-                                    type="monotone"
-                                    dataKey="accuracy"
-                                    stroke="#82ca9d"
-                                />
-                            </LineChart>
-                        </ResponsiveContainer>
-                    </div>
-                </div>
-            )}
+                )}
 
-            <div className="flex mt-96 ">
+            <div className="mt-10 flex bg-black/20 rounded-md p-5 ">
                 {!isTotalData && (
                     <>
                         <div className="flex flex-col">
