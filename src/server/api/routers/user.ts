@@ -160,6 +160,7 @@ export const userRouter = createTRPCRouter({
             const totalGamesPlayed = allGameResults.length;
             let averageWpm = 0;
             let averageAccuracy = 0;
+            let rankedWpm = 0;
 
             if (totalGamesPlayed > 0) {
                 averageWpm =
@@ -172,7 +173,29 @@ export const userRouter = createTRPCRouter({
                     ) / totalGamesPlayed;
             }
 
-            return { userWithGameResultsAndRank, averageWpm, averageAccuracy };
+            if (totalGamesPlayed > 10) {
+                const topGames = await ctx.prisma.game.findMany({
+                    where: {
+                        userId: userId,
+                        mode: "Speed", //todo change later for other ranked modes
+                    },
+                    orderBy: {
+                        wpm: "desc",
+                    },
+                    take: 10,
+                });
+
+                rankedWpm =
+                    topGames.reduce((acc, game) => acc + game.wpm, 0) /
+                    topGames.length;
+            }
+
+            return {
+                userWithGameResultsAndRank,
+                averageWpm,
+                averageAccuracy,
+                rankedWpm,
+            };
         }),
 
     getUserPublic: publicProcedure.input(z.string()).query(({ input, ctx }) => {
