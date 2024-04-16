@@ -16,6 +16,7 @@ import AccuracyVisualizer from "./accuracyVisualizer";
 import WpmVisualizer from "./wpmVisualizer";
 import LoadingSpinner from "~/components/Loading";
 import Image from "next/image";
+import Link from "next/link";
 
 interface DisplayAllGameStatsProps {
     keebData: Keeb[];
@@ -82,10 +83,11 @@ export default function DisplayAllGameStats({
                     />
                     <div className=" mt-5 flex items-center gap-2">
                         <h3 className="text-darkGray">Average Accuracy</h3>
-                        <p className="rounded-md bg-black/10 px-4 py-1 text-xl text-[#22B5C5]">
+                        <p className="rounded-md bg-black/10 px-4 py-1 text-xl text-[#22B5C5] ">
                             {`${parseFloat(
                                 gameData.averageAccuracy.toFixed(2)
-                            )}%`}
+                            )}`}
+                            %
                         </p>
                     </div>
                     <div className="h-1/2 w-full px-5">
@@ -148,7 +150,7 @@ export default function DisplayAllGameStats({
             </div>
 
             <div className=" flex w-full items-center gap-10 ">
-                <div className="flex w-1/2 items-center justify-between rounded-md bg-black/10 p-5 ">
+                <div className="flex w-1/2 items-center justify-between rounded-md bg-black/10 p-6 ">
                     <div className="flex flex-col items-center">
                         <h3 className="text-darkGray">Rank (WPM)</h3>
                         <p className="text-5xl">
@@ -169,14 +171,13 @@ export default function DisplayAllGameStats({
                         </p>
                     </div>
                 </div>
-                <div className="flex w-1/2 justify-between rounded-md bg-black/10 p-5">
+                <div className="flex w-1/2 items-end  justify-between gap-5 rounded-md bg-black/10 p-8">
                     {!isTotalData && (
                         <>
-                            <div className="flex flex-col">
+                            <div className="flex flex-col items-center">
                                 <label className="text-darkGray">Keeb</label>
                                 <select
-                                    className={`
-                    rounded-md bg-white/30 py-1 `}
+                                    className="profile-select-button flex items-center gap-1 rounded-md border-2  border-[#616161] bg-dark   py-2 text-green-500"
                                     value={selectedKeeb.id}
                                     onChange={handleKeebChange}
                                 >
@@ -187,10 +188,10 @@ export default function DisplayAllGameStats({
                                     ))}
                                 </select>
                             </div>
-                            <div className="flex flex-col">
+                            <div className="flex flex-col items-center">
                                 <label className="text-darkGray">Mode</label>
                                 <select
-                                    className=" w-full rounded-md  bg-white/30 py-1  shadow-lg "
+                                    className="profile-select-button flex items-center gap-1 rounded-md border-2  border-[#616161] bg-dark   py-2 text-green-500"
                                     value={mode}
                                     onChange={(e) => setMode(e.target.value)}
                                 >
@@ -204,20 +205,25 @@ export default function DisplayAllGameStats({
                         </>
                     )}
                     {isTotalData && (
-                        <button onClick={() => setIsTotalData(false)}>
+                        <button
+                            onClick={() => setIsTotalData(false)}
+                            className="profile-select-button flex items-center gap-1 rounded-md border-2  border-[#616161] bg-dark  px-6 py-2 text-green-500"
+                        >
                             Specific
                         </button>
                     )}
-                    <button
-                        className={`bg-green-300 px-6 py-2`}
-                        onClick={() => setIsTotalData(true)}
-                    >
-                        Total
-                    </button>
+                    <div>
+                        <button
+                            className="profile-select-button flex items-center gap-1 rounded-md border-2  border-[#616161] bg-dark  px-6 py-2 text-green-500"
+                            onClick={() => setIsTotalData(true)}
+                        >
+                            All Games
+                        </button>
+                    </div>
                 </div>
             </div>
             <div className=" mt-5 flex w-full gap-10 ">
-                <div className="flex w-1/2 items-center justify-between rounded-md bg-black/10 p-5 ">
+                <div className="flex w-1/2 items-center justify-between rounded-md bg-black/10 p-8 ">
                     <div className="flex flex-col items-center">
                         <h3 className="text-darkGray">Rank Min (WPM)</h3>
                         <p className="text-5xl">
@@ -237,17 +243,55 @@ export default function DisplayAllGameStats({
                         </p>
                     </div>
                 </div>
-                <div className="flex w-1/2 items-center justify-between rounded-md bg-black/10 p-5">
+                <div className="flex w-1/2 items-center justify-between rounded-md bg-black/10 p-8">
                     <div className="flex flex-col items-center">
                         <h3 className="text-darkGray">Total Games</h3>
                         <p className="text-5xl">
                             {gameData.userWithGameResultsAndRank.games.length}
                         </p>
                     </div>
-                    <div className="flex flex-col">
-                        <button>How are stats calculated? </button>
-                        <button>How do I improve at typing?</button>
-                    </div>
+                    <Link
+                        href={`/keebdex/typing-stats`}
+                        aria-label="typing tips"
+                        className="profile-select-button flex items-center gap-2 rounded-md border-2  border-[#616161] bg-dark py-2 pl-6 pr-4 text-green-500"
+                    >
+                        Stats Explained
+                        <svg
+                            className="profile-select-button-link w-4"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="3"
+                                d="M3.515 12h16.97m0 0L13.01 4.525M20.485 12l-7.475 7.476"
+                            ></path>
+                        </svg>
+                    </Link>
+                    <Link
+                        href={`/keebdex/typing-tips`}
+                        aria-label="typing tips"
+                        className="profile-select-button flex items-center gap-2 rounded-md border-2  border-[#616161] bg-dark  py-2 pl-6 pr-4 text-green-500"
+                    >
+                        Typing Tips
+                        <svg
+                            className="profile-select-button-link w-4"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="3"
+                                d="M3.515 12h16.97m0 0L13.01 4.525M20.485 12l-7.475 7.476"
+                            ></path>
+                        </svg>
+                    </Link>
                 </div>
             </div>
         </div>

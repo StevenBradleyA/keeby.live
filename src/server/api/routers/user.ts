@@ -172,8 +172,21 @@ export const userRouter = createTRPCRouter({
                         0
                     ) / totalGamesPlayed;
             }
+            // todo going to have to make a separate non keeb dependant query to get this rank
+            const allRankedGames = await ctx.prisma.user.findUnique({
+                where: { id: userId },
+                select: {
+                    games: {
+                        select: {
+                            id: true,
+                            wpm: true,
+                            accuracy: true,
+                        },
+                    },
+                },
+            });
 
-            if (totalGamesPlayed > 10) {
+            if (allRankedGames && allRankedGames.games.length > 10) {
                 const topGames = await ctx.prisma.game.findMany({
                     where: {
                         userId: userId,
