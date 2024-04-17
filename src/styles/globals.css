@@ -1129,6 +1129,52 @@ input[type="checkbox"]:hover {
     transform: rotate(-45deg);
 }
 
+.profile-manage-button {
+    overflow: hidden;
+}
+.profile-manage-button:hover {
+    border-color: #22c55e;
+}
+
+.profile-manage-button-text {
+    transition: transform 0.4s cubic-bezier(0.35, 0, 0, 1),
+        opacity 0.4s cubic-bezier(0.35, 0, 0, 1);
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.profile-manage-button-circle {
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 0.4s cubic-bezier(0.35, 0, 0, 1);
+}
+
+.profile-manage-button-arrow {
+    transition: opacity 0.4s cubic-bezier(0.35, 0, 0, 1),
+        transform 0.4s cubic-bezier(0.35, 0, 0, 1);
+    opacity: 0;
+    transform: scale(0) translateX(0);
+    visibility: hidden;
+}
+
+.profile-manage-button:hover .profile-manage-button-circle {
+    opacity: 0;
+    transform: scale(0.9);
+    visibility: hidden;
+    transition-delay: 0s, 0s;
+}
+
+.profile-manage-button:hover .profile-manage-button-arrow {
+    opacity: 1;
+    transform: scale(1) translateX(15px);
+    visibility: visible;
+    color: #22c55e;
+}
+.profile-manage-button:hover .profile-manage-button-text {
+    transform: translateX(15px);
+    color: #22c55e;
+}
+
 /* Scanlines && Flicker  */
 
 @keyframes blink {

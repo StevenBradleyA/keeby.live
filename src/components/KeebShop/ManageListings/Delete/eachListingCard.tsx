@@ -94,7 +94,7 @@ export default function EachManageListingCard({
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="relative bottom-1 w-8 text-green-500"
+                    className="text-white-500 relative bottom-1 w-8 text-green-500 hover:text-white"
                     viewBox="0 0 24 24"
                     fill="currentColor"
                 >

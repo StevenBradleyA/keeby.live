@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { getCookie, setCookie } from "cookies-next";
+import { motion } from "framer-motion";
 
 export default function VerifySeller() {
     const { data: sessionData, update } = useSession();
@@ -140,18 +141,20 @@ export default function VerifySeller() {
                                 {`I wanted to create a fun and safe place to buy and sell keyboards, which is how keeby started!  To sell a mechanical keyboard on keeby you have
                                 to register your paypal account.`}
                             </p>
-                            <button
+                            <motion.button
                                 className="relative mt-10 w-56  rounded-md bg-[#0070BA]"
                                 onClick={handleTesting}
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
                             >
                                 <Image
                                     alt="paypal button"
                                     src="https://www.paypalobjects.com/devdoc/log-in-with-paypal-button.png"
-                                    width={800}
-                                    height={800}
+                                    width={1200}
+                                    height={1200}
                                     className="h-full w-full"
                                 />
-                            </button>
+                            </motion.button>
                         </div>
                         <div className=" w-1/3">
                             <div className="flex w-full flex-col gap-5 rounded-xl bg-keebyGray p-10">

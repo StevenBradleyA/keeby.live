@@ -232,18 +232,72 @@ export default function UpdatePost({ post, closeModal }: UpdatePostProps) {
     return (
         <div className=" font-poppins text-darkGray">
             {toggle === "MENU" && (
-                <div className="flex  flex-col gap-2 p-5">
+                <div className="flex flex-col items-start gap-2 p-5">
+                    <div className="flex gap-2">
+                        <h1 className="mb-2 text-xl">Manage Post</h1>
+                        <Image
+                            alt="keebo"
+                            src={keebo}
+                            className="h-6 w-6 object-contain"
+                        />
+                    </div>
                     <button
-                        className="hover:text-green-500 "
+                        className="text-md profile-manage-button flex items-center gap-2 rounded-md  border-2 py-2 pr-4 text-white "
                         onClick={() => setToggle("UPDATE")}
                     >
-                        Edit
+                        <svg
+                            className="profile-manage-button-arrow w-4"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke="currentColor"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="3"
+                                d="M3.515 12h16.97m0 0L13.01 4.525M20.485 12l-7.475 7.476"
+                            ></path>
+                        </svg>
+                        <span className="profile-manage-button-text">Edit</span>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor"
+                            className="profile-manage-button-circle w-2"
+                            viewBox="0 0 32 32"
+                        >
+                            <circle cx="16" cy="16" r="16" />
+                        </svg>
                     </button>
                     <button
+                        className="text-md profile-manage-button flex items-center gap-2 rounded-md  border-2 py-2 pr-4 text-white "
                         onClick={() => setToggle("DELETE")}
-                        className="hover:text-green-500 "
                     >
-                        Delete
+                        <svg
+                            className="profile-manage-button-arrow w-4"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke="currentColor"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="3"
+                                d="M3.515 12h16.97m0 0L13.01 4.525M20.485 12l-7.475 7.476"
+                            ></path>
+                        </svg>
+                        <span className="profile-manage-button-text">
+                            Delete
+                        </span>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor"
+                            className="profile-manage-button-circle w-2"
+                            viewBox="0 0 32 32"
+                        >
+                            <circle cx="16" cy="16" r="16" />
+                        </svg>
                     </button>
                 </div>
             )}{" "}
