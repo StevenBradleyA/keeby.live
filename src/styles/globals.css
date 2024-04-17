@@ -1175,6 +1175,20 @@ input[type="checkbox"]:hover {
     color: #22c55e;
 }
 
+.profile-ascii {
+    animation: wave 6s infinite ease-in-out;
+}
+
+@keyframes wave {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
 /* Scanlines && Flicker  */
 
 @keyframes blink {

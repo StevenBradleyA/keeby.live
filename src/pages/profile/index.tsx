@@ -25,6 +25,7 @@ import ModalDialog from "~/components/Modal";
 import UpdateProfile from "~/components/Profile/User/Update/updateProfile";
 import HackermanTypeBinary from "~/components/Profile/Hackerman/hackermanTypeBinary";
 import MatrixRain from "~/components/Profile/Hackerman/matrix";
+import AsciiArt from "~/components/Profile/ThreeScenes/asciiArt";
 
 export default function UserProfile() {
     // mdn digest() -- might be useful for us here
@@ -310,14 +311,18 @@ export default function UserProfile() {
                             </div>
 
                             <div className="h-[400px] border-2 border-[#616161] ">
-                                <Canvas
-                                    className="h-full w-full"
-                                    camera={{ position: [4, 0, 1] }}
-                                >
-                                    <ambientLight intensity={0.5} />
-                                    <pointLight position={[10, 10, 10]} />
-                                    <RotatingSphere />
-                                </Canvas>
+                                {isHackType ? (
+                                    <AsciiArt />
+                                ) : (
+                                    <Canvas
+                                        className="h-full w-full"
+                                        camera={{ position: [4, 0, 1] }}
+                                    >
+                                        <ambientLight intensity={0.5} />
+                                        <pointLight position={[10, 10, 10]} />
+                                        <RotatingSphere />
+                                    </Canvas>
+                                )}
                             </div>
                             <div className="flex items-center justify-between">
                                 <h1 className=" font-titillium tablet:text-7xl laptop:text-9xl">
@@ -504,8 +509,8 @@ export default function UserProfile() {
                                         }`}
                                     >
                                         check your favorite listings, manage
-                                        your listings, leave reviews, with this
-                                        keeb shop tab
+                                        your listings, accept/decline offers,
+                                        and leave reviews with the keeb shop tab
                                     </h2>
                                 </div>
                                 <div className="flex items-center justify-center gap-10 text-xs ">
@@ -529,8 +534,8 @@ export default function UserProfile() {
                                         }`}
                                     >
                                         check your favorite posts, see your
-                                        internet points, and manage your posts,
-                                        with this keeb share tab
+                                        internet points, and manage your posts
+                                        with the keeb share tab
                                     </h2>
                                 </div>
                                 <div className="flex items-center justify-center gap-10 text-xs">
@@ -553,8 +558,8 @@ export default function UserProfile() {
                                                 : "text-green-500"
                                         }`}
                                     >
-                                        check your typing stats, manage your
-                                        typing keebs, with this keeb type tab
+                                        check your typing stats, and manage your
+                                        typing keeyboards with the keeb type tab
                                     </h2>
                                 </div>
                             </div>

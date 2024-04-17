@@ -525,12 +525,7 @@ import { useEffect, useRef } from "react";
 export default function MatrixRain() {
     return (
         <>
-            <video
-                className=" h-full w-full scale-125 object-cover"
-                autoPlay
-                loop
-                muted
-            >
+            <video className=" h-full w-full object-cover" autoPlay loop muted>
                 <source
                     src="https://s3.us-west-2.amazonaws.com/keeby.live/matrix-fade-green.mp4"
                     type="video/mp4"
