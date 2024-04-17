@@ -16,7 +16,8 @@ export default function RotatingSphere() {
         <mesh ref={sphereRef}>
             <sphereGeometry args={[2, 12, 12]} />
             <meshStandardMaterial
-                color={0x92ff38}
+                color={0x98fb98}
+                // color={0x39FF14}
                 wireframe
                 wireframeLinewidth={2}
             />

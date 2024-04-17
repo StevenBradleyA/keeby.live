@@ -157,7 +157,7 @@ export default function EachPostCardPreview({
                                         >
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
-                                                className="w-full hover:text-white"
+                                                className="w-full transition-colors duration-400 ease-custom-cubic hover:text-white "
                                                 viewBox="0 0 512 512"
                                                 fill="currentColor"
                                             >
@@ -218,7 +218,7 @@ export default function EachPostCardPreview({
                                     <button onClick={openSignInModal}>
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
-                                            className="w-6 hover:text-white"
+                                            className="w-6 transition-colors duration-400 ease-custom-cubic hover:text-white "
                                             viewBox="0 0 24 24"
                                             fill="none"
                                         >
@@ -324,7 +324,7 @@ export default function EachPostCardPreview({
                                         >
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
-                                                className="w-full hover:text-white"
+                                                className="w-full transition-colors duration-400 ease-custom-cubic hover:text-white "
                                                 viewBox="0 0 512 512"
                                                 fill="currentColor"
                                             >
@@ -385,7 +385,7 @@ export default function EachPostCardPreview({
                                     <button onClick={openSignInModal}>
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
-                                            className="w-6 hover:text-white"
+                                            className="w-6 transition-colors duration-400 ease-custom-cubic hover:text-white "
                                             viewBox="0 0 24 24"
                                             fill="none"
                                         >
@@ -488,7 +488,7 @@ export default function EachPostCardPreview({
                                         >
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
-                                                className="w-full hover:text-white"
+                                                className="w-full transition-colors duration-400 ease-custom-cubic hover:text-white "
                                                 viewBox="0 0 512 512"
                                                 fill="currentColor"
                                             >
@@ -549,7 +549,7 @@ export default function EachPostCardPreview({
                                     <button onClick={openSignInModal}>
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
-                                            className="w-6 hover:text-white"
+                                            className="w-6 transition-colors duration-400 ease-custom-cubic hover:text-white "
                                             viewBox="0 0 24 24"
                                             fill="none"
                                         >
@@ -651,7 +651,7 @@ export default function EachPostCardPreview({
                                         >
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
-                                                className="w-full hover:text-white"
+                                                className="w-full transition-colors duration-400 ease-custom-cubic hover:text-white "
                                                 viewBox="0 0 512 512"
                                                 fill="currentColor"
                                             >
@@ -712,7 +712,7 @@ export default function EachPostCardPreview({
                                     <button onClick={openSignInModal}>
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
-                                            className="w-6 hover:text-white"
+                                            className="w-6 transition-colors duration-400 ease-custom-cubic hover:text-white "
                                             viewBox="0 0 24 24"
                                             fill="none"
                                         >

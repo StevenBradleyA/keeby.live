@@ -73,7 +73,7 @@ export default function ManageEachPostCard({ post }: EachManagePostCardProps) {
                                     </button>
                                 </>
                             )}
-                            <h1 className="  absolute top-0 flex p-2 w-full flex-col justify-center break-words bg-white bg-opacity-20 pl-3 text-lg text-green-500">
+                            <h1 className="  absolute top-0 flex w-full flex-col justify-center break-words bg-white bg-opacity-20 p-2 pl-3 text-lg text-green-500">
                                 {post.title}
                             </h1>
                             <h1 className="absolute bottom-2 left-2 z-10 rounded-3xl bg-white bg-opacity-20 px-4 py-2 text-green-500">
@@ -394,7 +394,7 @@ export default function ManageEachPostCard({ post }: EachManagePostCardProps) {
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="relative bottom-1 w-8 text-green-500 hover:text-white"
+                    className="relative bottom-1 w-8 text-green-500 transition-colors duration-400 ease-custom-cubic hover:text-white "
                     viewBox="0 0 24 24"
                     fill="currentColor"
                 >

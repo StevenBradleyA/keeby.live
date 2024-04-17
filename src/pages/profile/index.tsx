@@ -108,7 +108,7 @@ export default function UserProfile() {
                 <div className="flex w-full flex-col px-10 font-retro text-green-500 desktop:w-3/4 desktop:px-0 ">
                     {isRetro && <div className="retro-scanlines"></div>}
 
-                    <div className="flex gap-20">
+                    <div className="flex tablet:gap-10 desktop:gap-20">
                         <div className="flex w-1/2 flex-col">
                             <h1 className="font-titillium text-3xl ">
                                 {sessionData.user.username}
@@ -140,7 +140,7 @@ export default function UserProfile() {
                             <div className="mt-2 flex justify-between">
                                 <h1>PROFILE DATA</h1>
                                 <button
-                                    className="flex flex-col leading-none hover:text-white"
+                                    className="flex flex-col leading-none transition-colors duration-400 ease-custom-cubic hover:text-white "
                                     onClick={openModal}
                                 >
                                     <p className="text-xs">
@@ -190,7 +190,7 @@ export default function UserProfile() {
                                 <Link
                                     href={`profile/public/${sessionData.user.username}`}
                                     aria-label="public profile"
-                                    className="hover:text-white"
+                                    className="transition-colors duration-400 ease-custom-cubic hover:text-white "
                                 >
                                     VIEW PUBLIC PROFILE
                                 </Link>
@@ -212,7 +212,7 @@ export default function UserProfile() {
                                         xmlns="http://www.w3.org/2000/svg"
                                         height="30px"
                                         width="30px"
-                                        className="text-darkGray hover:text-white"
+                                        className="text-darkGray transition-colors duration-400 ease-custom-cubic hover:text-white "
                                         viewBox="0 0 512 512"
                                         fill="currentColor"
                                     >

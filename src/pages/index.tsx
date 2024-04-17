@@ -202,7 +202,7 @@ export default function Home() {
                         <div className="mb-5 flex gap-5 ">
                             <button
                                 onClick={handleSearchClick}
-                                className={`hover:text-white ${
+                                className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                     !isSpecify
                                         ? "border-b border-white text-white"
                                         : "border-b border-white border-opacity-0"
@@ -213,7 +213,7 @@ export default function Home() {
                             <div className="relative flex">
                                 <button
                                     onClick={handleSpecifyClick}
-                                    className={` hover:text-white ${
+                                    className={` transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                         isSpecify
                                             ? "border-b border-white text-white"
                                             : "border-b border-white border-opacity-0"
@@ -250,7 +250,7 @@ export default function Home() {
                                                 Switch Type:
                                             </h1>
                                             <button
-                                                className=" absolute -top-1 right-0 h-7 w-7"
+                                                className=" absolute -top-1 right-0 h-7 w-7 text-darkGray hover:text-green-500 transition-colors duration-400 ease-custom-cubic"
                                                 onClick={handleResetSpecify}
                                             >
                                                 <ResetArrowSvg />
@@ -262,7 +262,7 @@ export default function Home() {
                                                     "tactile"
                                                 )
                                             }
-                                            className={` hover:text-white ${
+                                            className={` transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                                 switchType === "tactile"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -274,7 +274,7 @@ export default function Home() {
                                             onClick={() =>
                                                 handleSwitchTypeSelect("linear")
                                             }
-                                            className={`hover:text-white ${
+                                            className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                                 switchType === "linear"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -286,7 +286,7 @@ export default function Home() {
                                             onClick={() =>
                                                 handleSwitchTypeSelect("clicky")
                                             }
-                                            className={`hover:text-white ${
+                                            className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                                 switchType === "clicky"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -298,7 +298,7 @@ export default function Home() {
                                             onClick={() =>
                                                 handleSwitchTypeSelect("other")
                                             }
-                                            className={`hover:text-white ${
+                                            className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                                 switchType === "other"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -316,7 +316,7 @@ export default function Home() {
                                             onClick={() =>
                                                 handleSoundTypeSelect("thock")
                                             }
-                                            className={`hover:text-white ${
+                                            className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                                 soundType === "thock"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -328,7 +328,7 @@ export default function Home() {
                                             onClick={() =>
                                                 handleSoundTypeSelect("clack")
                                             }
-                                            className={`hover:text-white ${
+                                            className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                                 soundType === "clack"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -340,7 +340,7 @@ export default function Home() {
                                             onClick={() =>
                                                 handleSoundTypeSelect("click")
                                             }
-                                            className={`hover:text-white ${
+                                            className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                                 soundType === "click"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -352,7 +352,7 @@ export default function Home() {
                                             onClick={() =>
                                                 handleSoundTypeSelect("silent")
                                             }
-                                            className={`hover:text-white ${
+                                            className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                                 soundType === "silent"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -452,7 +452,7 @@ export default function Home() {
                                             onClick={() =>
                                                 handleLayoutTypeSelect("100%")
                                             }
-                                            className={`hover:text-white ${
+                                            className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                                 layoutType === "100%"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -464,7 +464,7 @@ export default function Home() {
                                             onClick={() =>
                                                 handleLayoutTypeSelect("75%")
                                             }
-                                            className={`hover:text-white ${
+                                            className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                                 layoutType === "75%"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -476,7 +476,7 @@ export default function Home() {
                                             onClick={() =>
                                                 handleLayoutTypeSelect("65%")
                                             }
-                                            className={`hover:text-white ${
+                                            className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                                 layoutType === "65%"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -488,7 +488,7 @@ export default function Home() {
                                             onClick={() =>
                                                 handleLayoutTypeSelect("60%")
                                             }
-                                            className={`hover:text-white ${
+                                            className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                                 layoutType === "60%"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -500,7 +500,7 @@ export default function Home() {
                                             onClick={() =>
                                                 handleLayoutTypeSelect("40%")
                                             }
-                                            className={`hover:text-white ${
+                                            className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                                 layoutType === "40%"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -521,7 +521,7 @@ export default function Home() {
                                                         "assembled"
                                                     )
                                                 }
-                                                className={`hover:text-white ${
+                                                className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                                     assemblyType === "assembled"
                                                         ? "border-b border-white text-white"
                                                         : "border-b border-white border-opacity-0"
@@ -535,7 +535,7 @@ export default function Home() {
                                                         "unassembled"
                                                     )
                                                 }
-                                                className={`hover:text-white ${
+                                                className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                                     assemblyType ===
                                                     "unassembled"
                                                         ? "border-b border-white text-white"
@@ -556,7 +556,7 @@ export default function Home() {
                                                         "hotswap"
                                                     )
                                                 }
-                                                className={`hover:text-white ${
+                                                className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                                     hotSwapType === "hotswap"
                                                         ? "border-b border-white text-white"
                                                         : "border-b border-white border-opacity-0"
@@ -570,7 +570,7 @@ export default function Home() {
                                                         "soldered"
                                                     )
                                                 }
-                                                className={`hover:text-white ${
+                                                className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                                     hotSwapType === "soldered"
                                                         ? "border-b border-white text-white"
                                                         : "border-b border-white border-opacity-0"
@@ -589,11 +589,11 @@ export default function Home() {
                                         onChange={(e) =>
                                             setSearchInput(e.target.value)
                                         }
-                                        className={` search-input-hack absolute h-10 w-full rounded-md ${
+                                        className={` px-3 search-input-hack absolute h-10 w-full rounded-md ${
                                             isSearchFocus
                                                 ? "search-input-placeholder bg-blackAlternative"
                                                 : "bg-darkGray"
-                                        } p-1 text-green-500 outline-none `}
+                                        } py-1 text-green-500 outline-none `}
                                         placeholder="Search"
                                         onFocus={() => setIsSearchFocus(true)}
                                         onBlur={() => setIsSearchFocus(false)}
@@ -625,7 +625,7 @@ export default function Home() {
                         <div className=" very-sticky flex w-full justify-between bg-dark">
                             <div className="mb-5 flex gap-5 text-white/40">
                                 <button
-                                    className={`hover:text-white ${
+                                    className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                         filter === "Hot"
                                             ? "border-b border-white text-white"
                                             : "border-b border-white border-opacity-0"
@@ -635,7 +635,7 @@ export default function Home() {
                                     Hot
                                 </button>
                                 <button
-                                    className={`hover:text-white ${
+                                    className={`transition-colors  duration-400 ease-custom-cubic hover:text-white ${
                                         filter === "New"
                                             ? "border-b border-white text-white"
                                             : "border-b border-white border-opacity-0"
@@ -646,7 +646,7 @@ export default function Home() {
                                 </button>
                             </div>
                             <div className="flex items-center gap-16 ">
-                                <div className="relative">
+                                <div className="shop-price-filter-button relative">
                                     <select
                                         className=" custom-select  flex h-5 w-8 items-center rounded-lg bg-keebyGray px-2 "
                                         value={priceOrder}
@@ -667,7 +667,7 @@ export default function Home() {
                                             priceOrder === ""
                                                 ? "text-darkGray"
                                                 : "text-green-500"
-                                        } `}
+                                        } shop-price-filter-arrow `}
                                     >
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
@@ -693,7 +693,7 @@ export default function Home() {
                                         alt="create listing"
                                         width={200}
                                         height={200}
-                                        className="shop-create-listing w-12  transition duration-150 ease-in-out "
+                                        className="shop-create-listing w-12  "
                                     />
                                 </button>
                             </div>

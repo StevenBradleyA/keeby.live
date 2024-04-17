@@ -96,7 +96,7 @@ export default function SellerListingCard({
                     isOpen={isOfferModalOpen}
                     onClose={closeOfferModal}
                 >
-                    <CreateOffer closeModal={closeOfferModal} />
+                    <CreateOffer closeModal={closeOfferModal} listing={listing} />
                 </ModalDialog>
 
                 <div className="flex h-1/2 w-full items-center justify-between ">

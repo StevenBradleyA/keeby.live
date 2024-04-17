@@ -46,6 +46,15 @@ export default {
                 desktop: "1920px",
                 ultrawide: "2560px",
             },
+            transitionProperty: {
+                colors: "color",
+            },
+            transitionDuration: {
+                "400": "400ms",
+            },
+            transitionTimingFunction: {
+                "custom-cubic": "cubic-bezier(0.35, 0, 0, 1)",
+            },
         },
     },
     plugins: [],

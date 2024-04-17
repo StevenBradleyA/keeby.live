@@ -92,7 +92,7 @@ export default function EachCommentCard({
                         alt="profile"
                         height={600}
                         width={600}
-                        className="h-full w-full object-cover rounded-md"
+                        className="h-full w-full rounded-md object-cover"
                         priority
                     />
                 </div>
@@ -117,7 +117,7 @@ export default function EachCommentCard({
                                         xmlns="http://www.w3.org/2000/svg"
                                         width="18"
                                         height="18"
-                                        className="text-darkGray hover:text-white"
+                                        className="text-darkGray transition-colors duration-400 ease-custom-cubic hover:text-white "
                                         fill="currentColor"
                                     >
                                         <circle cx="9" cy="4.5" r="1.5" />
@@ -172,7 +172,7 @@ export default function EachCommentCard({
                                         xmlns="http://www.w3.org/2000/svg"
                                         height="16"
                                         width="16"
-                                        className="text-darkGray hover:text-white"
+                                        className="text-darkGray transition-colors duration-400 ease-custom-cubic hover:text-white "
                                         viewBox="0 0 512 512"
                                         fill="currentColor"
                                     >

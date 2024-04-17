@@ -39,7 +39,7 @@ export default function PostPreviewCreateLike({
         <button onClick={handleLikePost}>
             <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="w-full hover:text-white"
+                className="w-full transition-colors duration-400 ease-custom-cubic hover:text-white "
                 viewBox="0 0 512 512"
                 fill="currentColor"
             >

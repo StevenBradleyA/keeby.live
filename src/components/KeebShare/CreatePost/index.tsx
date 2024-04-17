@@ -272,20 +272,19 @@ export default function CreatePostModal({ closeModal }: CreatePostModalProps) {
                                         version="1.1"
                                         id="Layer_1"
                                         viewBox="0 0 461.001 461.001"
+                                        className="youtube-transition"
+                                        fill="currentColor"
                                     >
                                         <g>
-                                            <path
-                                                fill="#F61C0D"
-                                                d="M365.257,67.393H95.744C42.866,67.393,0,110.259,0,163.137v134.728   c0,52.878,42.866,95.744,95.744,95.744h269.513c52.878,0,95.744-42.866,95.744-95.744V163.137   C461.001,110.259,418.135,67.393,365.257,67.393z M300.506,237.056l-126.06,60.123c-3.359,1.602-7.239-0.847-7.239-4.568V168.607   c0-3.774,3.982-6.22,7.348-4.514l126.06,63.881C304.363,229.873,304.298,235.248,300.506,237.056z"
-                                            />
+                                            <path d="M365.257,67.393H95.744C42.866,67.393,0,110.259,0,163.137v134.728   c0,52.878,42.866,95.744,95.744,95.744h269.513c52.878,0,95.744-42.866,95.744-95.744V163.137   C461.001,110.259,418.135,67.393,365.257,67.393z M300.506,237.056l-126.06,60.123c-3.359,1.602-7.239-0.847-7.239-4.568V168.607   c0-3.774,3.982-6.22,7.348-4.514l126.06,63.881C304.363,229.873,304.298,235.248,300.506,237.056z" />
                                         </g>
                                     </svg>
                                 </button>
 
-                                <button className="relative w-8 ">
+                                <button className="relative w-8 keeb-share-image-button ">
                                     <input
                                         id="imageUploadInput"
-                                        className="absolute left-0 top-0 w-8 cursor-pointer opacity-0 "
+                                        className="absolute left-0 top-0 w-8 opacity-0  "
                                         type="file"
                                         multiple
                                         accept="image/png, image/jpg, image/jpeg"
@@ -301,22 +300,16 @@ export default function CreatePostModal({ closeModal }: CreatePostModalProps) {
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         viewBox="0 0 24 24"
-                                        fill="none"
+                                        className=" keeb-share-image-transition "
+                                        fill="currentColor"
                                     >
                                         <path
                                             fillRule="evenodd"
                                             clipRule="evenodd"
                                             d="M23 4C23 2.34315 21.6569 1 20 1H4C2.34315 1 1 2.34315 1 4V20C1 21.6569 2.34315 23 4 23H20C21.6569 23 23 21.6569 23 20V4ZM21 4C21 3.44772 20.5523 3 20 3H4C3.44772 3 3 3.44772 3 4V20C3 20.5523 3.44772 21 4 21H20C20.5523 21 21 20.5523 21 20V4Z"
-                                            fill="#0F0F0F"
                                         />
-                                        <path
-                                            d="M4.80665 17.5211L9.1221 9.60947C9.50112 8.91461 10.4989 8.91461 10.8779 9.60947L14.0465 15.4186L15.1318 13.5194C15.5157 12.8476 16.4843 12.8476 16.8682 13.5194L19.1451 17.5039C19.526 18.1705 19.0446 19 18.2768 19H5.68454C4.92548 19 4.44317 18.1875 4.80665 17.5211Z"
-                                            fill="#0F0F0F"
-                                        />
-                                        <path
-                                            d="M18 8C18 9.10457 17.1046 10 16 10C14.8954 10 14 9.10457 14 8C14 6.89543 14.8954 6 16 6C17.1046 6 18 6.89543 18 8Z"
-                                            fill="#0F0F0F"
-                                        />
+                                        <path d="M4.80665 17.5211L9.1221 9.60947C9.50112 8.91461 10.4989 8.91461 10.8779 9.60947L14.0465 15.4186L15.1318 13.5194C15.5157 12.8476 16.4843 12.8476 16.8682 13.5194L19.1451 17.5039C19.526 18.1705 19.0446 19 18.2768 19H5.68454C4.92548 19 4.44317 18.1875 4.80665 17.5211Z" />
+                                        <path d="M18 8C18 9.10457 17.1046 10 16 10C14.8954 10 14 9.10457 14 8C14 6.89543 14.8954 6 16 6C17.1046 6 18 6.89543 18 8Z" />
                                     </svg>
                                 </button>
                             </div>
@@ -376,7 +369,7 @@ export default function CreatePostModal({ closeModal }: CreatePostModalProps) {
                                 {errors.imageExcess}
                             </p>
                         )}
-                         {enableErrorDisplay && errors.imageLarge && (
+                        {enableErrorDisplay && errors.imageLarge && (
                             <p className="text-sm text-red-400">
                                 {errors.imageLarge}
                             </p>

@@ -229,39 +229,7 @@ $blue: #2033c1; */
 .keebdex-hover-effect:hover::before {
     transform: translateX(-5%);
 }
-/* .profile-select-button:hover .profile-select-button-square {
-    animation: scaleUpDown 1s cubic-bezier(0.35, 0, 0, 1) forwards;
-    transition-delay: 0s, 0s;
-} */
-/* @keyframes scaleUpDown {
-    0%,
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-    50% {
-        transform: scale(2);
-        opacity: 1;
-    }
-    100% {
-        opacity: 0;
-    }
-} */
 
-/* .keebdex-button {
-    overflow: hidden;
-    transition: background-color 0.4s cubic-bezier(0.35, 0, 0, 1);
-}
-
-.keebdex-button:hover {
-    background-image: url("../../public/Gifs/matrix.gif");
-    background-repeat: no-repeat;
-    background-position: right center;
-    background-size: 40%;
-    width: 100%;
-    height: 100%;
-    transition-delay: 2s;
-} */
 
 .keebdex-button {
     overflow: hidden;
@@ -317,116 +285,6 @@ $blue: #2033c1; */
     transition-delay: 0s, 0s;
 }
 
-/*     
-    .profile-favorites-button-text {
-        transition: transform 0.4s cubic-bezier(0.35, 0, 0, 1),
-            opacity 0.4s cubic-bezier(0.35, 0, 0, 1);
-        opacity: 1;
-    }
-    
-    .profile-favorites-button-circle {
-        opacity: 1;
-        transform: scale(1);
-        position: relative;
-        right: 15px;
-        transition: opacity 0.4s cubic-bezier(0.35, 0, 0, 1);
-    }
-    @keyframes scaleUpDown {
-        0%,
-        100% {
-            transform: scale(1);
-            opacity: 1;
-        }
-        50% {
-            transform: scale(2);
-            opacity: 1;
-        }
-        100% {
-            opacity: 0;
-        }
-    }
-    
-    .profile-favorites-button-heart {
-        position: relative;
-        transition: opacity 0.4s cubic-bezier(0.35, 0, 0, 1),
-            transform 0.4s cubic-bezier(0.35, 0, 0, 1);
-        opacity: 0;
-        transform: scale(1);
-        visibility: hidden;
-        left: 1px;
-    }
-    
-    .profile-favorites-button:hover .profile-favorites-button-circle {
-        animation: profileButton 1s cubic-bezier(0.35, 0, 0, 1) forwards;
-        transition-delay: 0s, 0s;
-    }
-    
-    .profile-favorites-button:hover .profile-favorites-button-heart {
-        opacity: 1;
-        transform: scale(1);
-        visibility: visible;
-        transition-delay: 0.45s, 0.45s;
-    }
-    
-    .profile-select-button {
-        overflow: hidden;
-        transition: background-color 0.4s cubic-bezier(0.35, 0, 0, 1);
-    }
-    .profile-select-button:hover {
-        background-color: #2f2f2f;
-    }
-    
-    .profile-select-button-text {
-        transition: transform 0.4s cubic-bezier(0.35, 0, 0, 1),
-            opacity 0.4s cubic-bezier(0.35, 0, 0, 1);
-        opacity: 1;
-    }
-    
-    .profile-select-button-square {
-        opacity: 1;
-        transform: scale(1);
-        position: relative;
-        right: 15px;
-        transition: opacity 0.4s cubic-bezier(0.35, 0, 0, 1);
-    }
-    @keyframes profileButton {
-        0%,
-        100% {
-            transform: scale(1);
-            opacity: 1;
-        }
-        50% {
-            transform: scale(1.8);
-            opacity: 1;
-        }
-        100% {
-            opacity: 0;
-        }
-    }
-    
-    .profile-select-button-arrow {
-        position: relative;
-        transition: opacity 0.4s cubic-bezier(0.35, 0, 0, 1),
-            transform 0.4s cubic-bezier(0.35, 0, 0, 1);
-        opacity: 0;
-        transform: scale(1);
-        visibility: hidden;
-        left: 3px;
-    }
-    
-    .profile-select-button:hover .profile-select-button-square {
-        animation: scaleUpDown 1s cubic-bezier(0.35, 0, 0, 1) forwards;
-        transition-delay: 0s, 0s;
-    }
-    
-    .profile-select-button:hover .profile-select-button-arrow {
-        opacity: 1;
-        transform: scale(1);
-        visibility: visible;
-        transition-delay: 0.45s, 0.45s;
-    }
-    
-     */
 
 /* --------------     Title Script     --------------  */
 
@@ -458,6 +316,7 @@ $blue: #2033c1; */
 
 .keebshop-listing-preview-container {
 }
+
 .keebshop-listing-preview {
     visibility: visible;
     transition: visibility 0s linear 0.5s, opacity 0.5s ease-in-out 0s;
@@ -505,10 +364,23 @@ $blue: #2033c1; */
 .shop-create-listing {
     filter: invert(39%) sepia(0%) saturate(0%) hue-rotate(351deg)
         brightness(96%) contrast(99%);
+    transition: filter 0.4s cubic-bezier(0.35, 0, 0, 1);
 }
 .shop-create-listing:hover {
     filter: invert(48%) sepia(5%) saturate(3277%) hue-rotate(72deg)
         brightness(116%) contrast(126%);
+}
+
+.shop-price-filter-button {
+    /* yo */
+}
+
+.shop-price-filter-arrow {
+    transition: color 0.4s cubic-bezier(0.35, 0, 0, 1);
+}
+
+.shop-price-filter-button:hover .shop-price-filter-arrow {
+    color: white;
 }
 
 /*  ----    Listings Hover effect    ---- */
@@ -597,7 +469,9 @@ $blue: #2033c1; */
 
 /*  ----    End Listings Hover effect    ---- */
 
-/* ----    Retro Shadows    ---- */
+
+
+/* ----    Retro Shadows not in use    ---- */
 
 .striped-shadow {
     position: relative;
@@ -693,6 +567,9 @@ $blue: #2033c1; */
     text-shadow: none;
 }
 
+
+
+
 /* heres antoher title variation */
 
 /* #retro-title {
@@ -744,43 +621,6 @@ $blue: #2033c1; */
     color: transparent;
 }
 
-/* ------    sound test title   ------  */
-
-.sound-test-title {
-    letter-spacing: 10px;
-    /* font-size: 30px; */
-    /* font-size: 1.5rem; */
-    color: #ffffff;
-    /* animation: red-flash 1s ease-in infinite alternate; */
-    animation: neon-glow 1.5s ease-out infinite alternate;
-    margin-top: 20px;
-    margin-bottom: 40px;
-}
-
-/* @keyframes red-flash {
-        from {
-          color: rgb(255, 255, 255);
-        }
-        to {
-          color: rgb(221, 0, 0);
-        }
-      } */
-
-@keyframes neon-glow {
-    from {
-        text-shadow: 0 0 0.07em #ff0000, 0 0 0.14em #ff0000, 0 0 0.21em #ff0000,
-            0 0 0.28em #ff0000, 0 0 0.49em #ff0000, 0 0 0.56em #ff0000,
-            0 0 0.7em #ff0000, 0 0 1.05em #ff0000;
-        color: rgb(227, 116, 116);
-    }
-    to {
-        text-shadow: 0 0 0.035em transparent, 0 0 0.07em transparent,
-            0 0 0.105em transparent, 0 0 0.14em transparent,
-            0 0 0.245em transparent, 0 0 0.28em transparent,
-            0 0 0.35em transparent, 0 0 0.525em transparent;
-        color: rgb(255, 255, 255);
-    }
-}
 
 /* ------    create-listing   ------  */
 input[type="checkbox"] {
@@ -809,29 +649,8 @@ input[type="checkbox"]:checked::before {
 
 input[type="checkbox"]:hover {
     background-color: rgba(#000, 0.5);
-    /* opacity: 50; */
 }
 
-/* @keyframes checkGlitchAnimation {
-    0% {
-        transform: scale(0);
-    }
-    40% {
-        transform: scale(1.6, 0.5);
-    }
-    50% {
-        transform: scale(0.5, 1.5);
-    }
-    60% {
-        transform: scale(1.3, 0.6);
-    }
-    70% {
-        transform: scale(0.8, 1.2);
-    }
-    100% {
-        transform: scale(1, 1);
-    }
-} */
 @keyframes checkGlitchAnimation {
     0% {
         transform: translate(0, 0) scale(0);
@@ -852,6 +671,56 @@ input[type="checkbox"]:hover {
         transform: translate(0, 0) scale(1, 1);
     }
 }
+
+
+/*  keeb shop offer buttons  */
+
+
+
+.keeb-shop-offer-button {
+    overflow: hidden;
+}
+
+.keeb-shop-offer-button-text {
+    transition: transform 0.4s cubic-bezier(0.35, 0, 0, 1),
+        opacity 0.4s cubic-bezier(0.35, 0, 0, 1);
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.keeb-shop-offer-button-circle {
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 0.4s cubic-bezier(0.35, 0, 0, 1);
+}
+
+.keeb-shop-offer-button-arrow {
+    transition: opacity 0.4s cubic-bezier(0.35, 0, 0, 1),
+        transform 0.4s cubic-bezier(0.35, 0, 0, 1);
+    opacity: 0;
+    transform: scale(0) translateX(0);
+    visibility: hidden;
+}
+
+.keeb-shop-offer-button:hover .keeb-shop-offer-button-circle {
+    opacity: 0;
+    transform: scale(0.9);
+    visibility: hidden;
+    transition-delay: 0s, 0s;
+}
+
+.keeb-shop-offer-button:hover .keeb-shop-offer-button-arrow {
+    opacity: 1;
+    transform: scale(1) translateX(20px);
+    visibility: visible;
+}
+.keeb-shop-offer-button:hover .keeb-shop-offer-button-text {
+    transform: translateX(20px);
+}
+
+
+
+
 
 /* ------    comments   ------  */
 
@@ -957,6 +826,27 @@ input[type="checkbox"]:hover {
 
 .post-preview-container:hover .post-preview-tag {
     visibility: hidden;
+}
+
+.youtube-transition {
+    color: #f61c0d;
+    transition: color 0.4s cubic-bezier(0.35, 0, 0, 1);
+}
+.youtube-transition:hover {
+    color: #616161;
+}
+
+.keeb-share-image-button {
+}
+
+.keeb-share-image-transition {
+    color: black;
+    transition: color 0.4s cubic-bezier(0.35, 0, 0, 1);
+}
+
+.keeb-share-image-button:hover .keeb-share-image-transition {
+    color: #616161;
+    cursor: pointer;
 }
 
 /* --------------         END KEEB SHARE          --------------  */
