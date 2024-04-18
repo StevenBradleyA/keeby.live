@@ -90,7 +90,7 @@ export default function SellerListingCard({
                     </div>
                 </div>
                 <ModalDialog isOpen={isBuyModalOpen} onClose={closeBuyModal}>
-                    <CreateTransaction closeModal={closeBuyModal} />
+                    <CreateTransaction closeModal={closeBuyModal} listing={listing} />
                 </ModalDialog>
                 <ModalDialog
                     isOpen={isOfferModalOpen}

@@ -145,7 +145,7 @@ model Listing {
     assemblyType String
     pcbType      String
 
-    sold      Boolean  @default(false)
+    status    String   @default("ACTIVE")
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
@@ -181,14 +181,15 @@ model ListingOffer {
 }
 
 model ListingTransaction {
-    id        String   @id @default(cuid())
-    price     Int
-    name      String
-    status    String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    userId    String
-    listingId String
+    id             String   @id @default(cuid())
+    price          Int
+    name           String
+    status         String
+    trackingNumber String?
+    createdAt      DateTime @default(now())
+    updatedAt      DateTime @updatedAt
+    userId         String
+    listingId      String
 
     user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
     listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
