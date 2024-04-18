@@ -39,8 +39,6 @@ export default function CreateTransaction({
 }: CreateTransactionProps) {
     // todo PAYPAL INTEGRATION BEFORE BUYING
 
-    // errors
-
     // so when creating an offer we need to check if there is an existing one already to the seller from the sender
     // going to show up on both sender and receiver profile
     // going to have to setup notifications as well old boi

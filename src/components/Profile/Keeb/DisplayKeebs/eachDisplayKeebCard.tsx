@@ -25,14 +25,13 @@ export default function EachDisplayKeebCard({
     };
 
     return (
-        <div className="flex h-[25vh] w-96 flex-col justify-between ">
+        <div className=" flex w-96 flex-col justify-between font-poppins tablet:h-[30vh] desktop:h-[25vh] ">
             <div className="relative z-10 h-full overflow-hidden rounded-2xl bg-keebyGray p-10 ">
                 <div className=" display-keeb-card-overlay absolute bottom-0 left-0 right-0 top-32 -z-10 h-full w-full bg-black/40"></div>
                 <div className="z-20 flex justify-center text-2xl">
                     {keeb.name}
                 </div>
                 <div className="mt-5 ">
-                    {" "}
                     <span className="z-20 text-darkGray">Switches:</span>{" "}
                     {keeb.switches}
                 </div>
