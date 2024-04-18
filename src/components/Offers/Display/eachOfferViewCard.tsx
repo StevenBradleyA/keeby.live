@@ -20,7 +20,6 @@ interface Listing {
 export default function EachOfferViewCard({ offer }: EachOfferViewCardProps) {
     const now = new Date();
 
-    
     // todo PAY NOW BB
 
     // shows up depending on the offer's status ....

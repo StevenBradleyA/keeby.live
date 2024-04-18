@@ -146,6 +146,8 @@ model Listing {
     pcbType      String
 
     status    String   @default("ACTIVE")
+    // ACTIVE, SOLD
+
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
@@ -169,7 +171,7 @@ model ListingOffer {
     // this will be as cents
 
     status    String
-    // PENDING, ACCEPTED, REJECTED, WITHDRAWN
+    // PENDING, ACCEPTED
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 

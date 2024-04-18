@@ -112,6 +112,57 @@ export const offerRouter = createTRPCRouter({
             }
         }),
 
+    update: protectedProcedure
+        .input(
+            z.object({
+                id: z.string(),
+                listingId: z.string(),
+                buyerId: z.string(),
+                sellerId: z.string(),
+            })
+        )
+        .mutation(async ({ input, ctx }) => {
+            const { id, listingId, buyerId, sellerId } = input;
+
+            if (ctx.session.user.id !== sellerId) {
+                throw new Error(
+                    "You do not have the necessary permissions to perform this action."
+                );
+            }
+
+            //  keep the listing around but we are going to mark it as sold...
+            // transaction only occurs when buyer pays
+            const buyer = await ctx.prisma.user.findUnique({
+                where: {
+                    id: buyerId,
+                },
+            });
+
+            if (buyer && buyer.email) {
+                //todo send buyer email here
+
+                await ctx.prisma.listing.update({
+                    where: {
+                        id: listingId,
+                    },
+                    data: {
+                        status: "SOLD",
+                    },
+                });
+                await ctx.prisma.listingOffer.update({
+                    where: {
+                        id: id,
+                    },
+                    data: {
+                        status: "ACCEPTED",
+                    },
+                });
+
+                return "Successfully Updated";
+            }
+            throw new Error("Buyer does not exist or has no valid email.");
+        }),
+
     delete: protectedProcedure
         .input(
             z.object({

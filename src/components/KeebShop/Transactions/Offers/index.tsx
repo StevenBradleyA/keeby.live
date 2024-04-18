@@ -39,16 +39,10 @@ export default function CreateOffer({ closeModal, listing }: CreateOfferProps) {
 
     // todo counter offers?????? or nah... ????? im not a big fan of that they can just change the price.
 
-
     // todo CANNOT SEND OFFERS TO YOURSELF OBV
-  
 
-
-
-    
     // todo make sure that the seller knows before accepting an offer they have 10 days to ship out the keeb and supply the tracking number otherwise. The buyer won't be charged.
     // make it clear they have to supply a tracking number to get payed.
-
 
     const { data: sessionData } = useSession();
 
@@ -86,8 +80,7 @@ export default function CreateOffer({ closeModal, listing }: CreateOfferProps) {
                 });
                 setOfferAlreadyExists(true);
             }
-            // todo void all get offers
-            // void ctx.post.getAllNewPreviewPosts.invalidate();
+            void ctx.offer.getAllByUserId.invalidate();
         },
     });
 
@@ -99,7 +92,7 @@ export default function CreateOffer({ closeModal, listing }: CreateOfferProps) {
         if (!Object.values(errors).length && !isSubmitting && sessionData) {
             try {
                 const data = {
-                    price,
+                    price: Math.round(price * 100),
                     listingId: listing.id,
                     buyerId: sessionData.user.id,
                     buyerUsername: sessionData.user.username,
