@@ -12,7 +12,7 @@ interface EachOfferCardProps {
 
 interface ListingOfferWithBuyer extends ListingOffer {
     buyer: {
-        username: string;
+        username: string | null;
     };
 }
 
@@ -36,6 +36,12 @@ export default function EachOfferCard({ listing }: EachOfferCardProps) {
     const closeModal = () => {
         setIsModalOpen(false);
     };
+
+
+
+
+
+
 
     return (
         <>

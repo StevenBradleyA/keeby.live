@@ -1,5 +1,6 @@
 import { api } from "~/utils/api";
 import EachOfferCard from "./eachOfferCard";
+import EachOfferViewCard from "./eachOfferViewCard";
 
 export default function DisplayOffers({ userId }: { userId: string }) {
     const { data: allOffers } = api.offer.getAllByUserId.useQuery(userId);
@@ -21,9 +22,9 @@ export default function DisplayOffers({ userId }: { userId: string }) {
                 Offers Sent ( {allOffers ? allOffers.offersSent.length : 0} )
             </h2>
 
-            {allOffers?.offersSent.map((listing) => (
-                <div key={listing.id}>
-                    {/* <EachOfferCard listing={listing}/> */}
+            {allOffers?.offersSent.map((offer) => (
+                <div key={offer.id}>
+                    <EachOfferViewCard offer={offer}/>
                 </div>
             ))}
         </div>

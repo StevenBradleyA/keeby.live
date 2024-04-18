@@ -1,4 +1,6 @@
 import type { Listing, ListingOffer } from "@prisma/client";
+import toast from "react-hot-toast";
+import { api } from "~/utils/api";
 
 interface AcceptDeclineOfferProps {
     closeModal: () => void;
@@ -11,7 +13,7 @@ interface AcceptDeclineOfferProps {
 
 interface ListingOfferWithBuyer extends ListingOffer {
     buyer: {
-        username: string;
+        username: string | null;
     };
 }
 
@@ -21,7 +23,43 @@ export default function AcceptDeclineOffer({
     offer,
     modalToggle,
 }: AcceptDeclineOfferProps) {
-    // delete... make sure to email sender of offer
+    const ctx = api.useContext();
+
+    const { mutate: deleteOffer } = api.offer.delete.useMutation({
+        onSuccess: () => {
+            void ctx.offer.getAllByUserId.invalidate();
+            toast.success("Offer Declined!", {
+                style: {
+                    borderRadius: "10px",
+                    background: "#333",
+                    color: "#fff",
+                },
+            });
+            closeModal();
+        },
+    });
+
+    const handleDelete = (e: React.FormEvent) => {
+        e.preventDefault();
+        const data = {
+            id: offer.id,
+            buyerId: offer.buyerId,
+            sellerId: listing.sellerId,
+        };
+
+        deleteOffer(data);
+    };
+
+    const handleAccept = (e: React.FormEvent) => {
+        e.preventDefault();
+        const data = {
+            id: offer.id,
+            buyerId: offer.buyerId,
+            sellerId: listing.sellerId,
+        };
+
+        // deleteOffer(data);
+    };
 
     return (
         <>
@@ -35,7 +73,10 @@ export default function AcceptDeclineOffer({
                     </h1>
 
                     <div className="flex justify-center gap-10 ">
-                        <button className=" text-md keeb-shop-offer-button mt-5 flex items-center gap-2 rounded-md bg-darkGray py-2 pr-4 text-black ">
+                        <button
+                            className=" text-md keeb-shop-offer-button mt-5 flex items-center gap-2 rounded-md bg-darkGray py-2 pr-4 text-black "
+                            onClick={handleDelete}
+                        >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="currentColor"
