@@ -34,16 +34,22 @@ interface ErrorsObj {
 }
 
 export default function CreateOffer({ closeModal, listing }: CreateOfferProps) {
-    // todo PAYPAL INTEGRATION BEFORE SENDING OFFER
-    // login -- won't get charged until accepted
-    // errors
+    // todo CHANGE LISTINGS WHERE YOU CAN ONLY SEE LISTINGS THAT ARE "ACTIVE"
+    // todo change buttons to only show up when listing is active other wise put sale pending or sold.
 
-    // so when creating an offer we need to check if there is an existing one already to the seller from the sender
-    // going to show up on both sender and receiver profile
-    // going to have to setup notifications as well old boi
-    //  we will do paypal integration last
+    // todo counter offers?????? or nah... ????? im not a big fan of that they can just change the price.
+
+
+    // todo CANNOT SEND OFFERS TO YOURSELF OBV
+  
+
+
+
+    
     // todo make sure that the seller knows before accepting an offer they have 10 days to ship out the keeb and supply the tracking number otherwise. The buyer won't be charged.
     // make it clear they have to supply a tracking number to get payed.
+
+
     const { data: sessionData } = useSession();
 
     const [price, setPrice] = useState<number>(0);
@@ -258,7 +264,10 @@ export default function CreateOffer({ closeModal, listing }: CreateOfferProps) {
                 )}
             </button>
 
-            <div className="mt-10 text-darkGray">
+            <div className=" mt-10 text-darkGray">
+                * Purchases on Keeby require a PayPal account.
+            </div>
+            <div className=" text-darkGray">
                 * All Offers are final. Please read{" "}
                 <Link
                     href={`/keebdex/rules`}

@@ -26,6 +26,7 @@ import UpdateProfile from "~/components/Profile/User/Update/updateProfile";
 import HackermanTypeBinary from "~/components/Profile/Hackerman/hackermanTypeBinary";
 import MatrixRain from "~/components/Profile/Hackerman/matrix";
 import AsciiArt from "~/components/Profile/ThreeScenes/asciiArt";
+import DisplayOffers from "~/components/Offers/Display/displayOffers";
 
 export default function UserProfile() {
     // mdn digest() -- might be useful for us here
@@ -1014,6 +1015,13 @@ export default function UserProfile() {
                                 userId={sessionData.user.id}
                             />
                         )}
+                      {toggle === "KEEBSHOP" &&
+                        keebShopCategory === "OFFERS" && (
+                            <DisplayOffers
+                                userId={sessionData.user.id}
+
+                            />
+                        )}
 
                     {toggle === "KEEBSHARE" &&
                         keebShareCategory === "POSTS" && (
@@ -1028,10 +1036,6 @@ export default function UserProfile() {
                         )}
 
                     {toggle === "KEEBTYPE" && keebTypeCategory === "STATS" && (
-                        // display all wpm for each game mode
-                        // be able to switch keebs and game modes to track progress...
-                        // user re chart to display all games with a trend line
-                        // total games played rank info etc
                         <DisplayAllGameStatsCheck
                             userId={sessionData.user.id}
                         />

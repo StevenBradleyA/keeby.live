@@ -92,6 +92,45 @@ type ExtendedPost = Post & {
 // we would want to notify a user ... can email seller if offer declined
 
 export const offerRouter = createTRPCRouter({
+    getAllByUserId: publicProcedure
+        .input(z.string())
+        .query(async ({ input: userId, ctx }) => {
+            const offersSent = await ctx.prisma.listingOffer.findMany({
+                where: {
+                    buyerId: userId,
+                },
+            });
+
+            const offersReceived = await ctx.prisma.listing.findMany({
+                where: {
+                    sellerId: userId,
+                    listingOffer: {
+                        some: {},
+                    },
+                },
+                include: {
+                    listingOffer: {
+                        select: {
+                            id: true,
+                            price: true,
+                            status: true,
+                            createdAt: true,
+                            updatedAt: true,
+                            listingId: true,
+                            buyerId: true,
+                            buyer: {
+                                select: {
+                                    username: true,
+                                },
+                            },
+                        },
+                    },
+                },
+            });
+
+            return { offersSent, offersReceived };
+        }),
+
     create: protectedProcedure
         .input(
             z.object({

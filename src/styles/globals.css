@@ -230,7 +230,6 @@ $blue: #2033c1; */
     transform: translateX(-5%);
 }
 
-
 .keebdex-button {
     overflow: hidden;
     position: relative; /* Needed for absolute positioning of pseudo-elements */
@@ -284,7 +283,6 @@ $blue: #2033c1; */
     animation: arrowShrinkCircle 1s cubic-bezier(0.35, 0, 0, 1) forwards;
     transition-delay: 0s, 0s;
 }
-
 
 /* --------------     Title Script     --------------  */
 
@@ -469,8 +467,6 @@ $blue: #2033c1; */
 
 /*  ----    End Listings Hover effect    ---- */
 
-
-
 /* ----    Retro Shadows not in use    ---- */
 
 .striped-shadow {
@@ -567,9 +563,6 @@ $blue: #2033c1; */
     text-shadow: none;
 }
 
-
-
-
 /* heres antoher title variation */
 
 /* #retro-title {
@@ -621,7 +614,6 @@ $blue: #2033c1; */
     color: transparent;
 }
 
-
 /* ------    create-listing   ------  */
 input[type="checkbox"] {
     appearance: none;
@@ -672,10 +664,7 @@ input[type="checkbox"]:hover {
     }
 }
 
-
 /*  keeb shop offer buttons  */
-
-
 
 .keeb-shop-offer-button {
     overflow: hidden;
@@ -717,10 +706,6 @@ input[type="checkbox"]:hover {
 .keeb-shop-offer-button:hover .keeb-shop-offer-button-text {
     transform: translateX(20px);
 }
-
-
-
-
 
 /* ------    comments   ------  */
 
