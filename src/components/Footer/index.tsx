@@ -50,7 +50,7 @@ export default function MainFooter() {
                                 version="1.1"
                                 id="Layer_1"
                                 viewBox="0 0 461.001 461.001"
-                                className="w-5 cursor-pointer hover:text-green-500"
+                                className="w-5 cursor-pointer transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                             >
                                 <g>
                                     <path
@@ -76,7 +76,7 @@ export default function MainFooter() {
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
-                                className="w-4 hover:text-green-500"
+                                className="w-4 transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                                 viewBox="0 0 24 24"
                                 fill="none"
                             >
@@ -115,7 +115,7 @@ export default function MainFooter() {
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="currentColor"
-                                className=" w-4 hover:text-green-500"
+                                className=" w-4 transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                                 viewBox="0 0 552.77 552.77"
                             >
                                 <g>
@@ -135,28 +135,28 @@ export default function MainFooter() {
                         <Link
                             href="/"
                             aria-label="privacy"
-                            className="hover:text-green-500"
+                            className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                         >
                             Keeb Shop
                         </Link>
                         <Link
                             href="/keebshare"
                             aria-label="privacy"
-                            className="hover:text-green-500"
+                            className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                         >
                             Keeb Share
                         </Link>
                         <Link
                             href="/keebtype"
                             aria-label="privacy"
-                            className="hover:text-green-500"
+                            className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                         >
                             Keeb Type
                         </Link>
                         <Link
                             href="/profile"
                             aria-label="privacy"
-                            className="hover:text-green-500"
+                            className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                         >
                             Profile
                         </Link>
@@ -166,7 +166,7 @@ export default function MainFooter() {
                         <Link
                             href="/privacy-policy"
                             aria-label="privacy"
-                            className="hover:text-green-500"
+                            className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                         >
                             What do we sell?
                         </Link>
@@ -176,21 +176,21 @@ export default function MainFooter() {
                         <Link
                             href="/privacy-policy"
                             aria-label="privacy"
-                            className="hover:text-green-500"
+                            className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                         >
                             Rules
                         </Link>
                         <Link
                             href="/privacy-policy"
                             aria-label="privacy"
-                            className="hover:text-green-500"
+                            className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                         >
                             Return Policy
                         </Link>
                         <Link
                             href="/privacy-policy"
                             aria-label="privacy"
-                            className="hover:text-green-500"
+                            className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                         >
                             Contact Us
                         </Link>
@@ -200,21 +200,21 @@ export default function MainFooter() {
                         <Link
                             href="/privacy-policy"
                             aria-label="privacy"
-                            className="hover:text-green-500"
+                            className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                         >
                             About
                         </Link>
                         <Link
                             href="/privacy-policy"
                             aria-label="privacy"
-                            className="hover:text-green-500"
+                            className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                         >
                             Support Keeby
                         </Link>
                         <Link
                             href="/privacy-policy"
                             aria-label="privacy"
-                            className="hover:text-green-500"
+                            className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                         >
                             Contact Us
                         </Link>
@@ -224,7 +224,26 @@ export default function MainFooter() {
 
             <div className="mt-5 flex justify-between border-t-2 border-[#616161] py-5">
                 <div className="flex items-center gap-2">
-                    <div>{`Built for enthusiasts | powered by Hacktime`}</div>
+                    <div>
+                        Built for enthusiasts |{" "}
+                        <a
+                            href="https://www.hacktime.dev"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            role="button"
+                            aria-label="Follow on LinkedIn"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                window.open(
+                                    "https://www.hacktime.dev",
+                                    "_blank"
+                                );
+                            }}
+                            className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
+                        >
+                            powered by Hacktime
+                        </a>
+                    </div>
                     <Image
                         alt="hacktime logo"
                         src={hacktime}
@@ -237,21 +256,21 @@ export default function MainFooter() {
                     <Link
                         href="/terms-of-service"
                         aria-label="privacy"
-                        className="hover:text-green-500"
+                        className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                     >
                         Terms
                     </Link>
                     <Link
                         href="/privacy-policy"
                         aria-label="privacy"
-                        className="hover:text-green-500"
+                        className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                     >
                         Privacy
                     </Link>
                     <Link
                         href="/cookie-policy"
                         aria-label="privacy"
-                        className="hover:text-green-500"
+                        className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                     >
                         Cookie
                     </Link>

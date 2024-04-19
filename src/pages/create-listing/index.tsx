@@ -30,7 +30,7 @@ export default function CreateListingAgreement() {
 
     return (
         <>
-            <div className="matrix-full-screen fixed bottom-0 left-0 right-0 top-0 h-full w-full opacity-80  ">
+            <div className="matrix-full-screen fixed bottom-0 left-0 right-0 top-0 h-full w-full  ">
                 <video
                     className="absolute bottom-0 left-0 right-0 top-0 -z-10 h-full w-full object-cover  object-center"
                     autoPlay
@@ -52,18 +52,18 @@ export default function CreateListingAgreement() {
                         <div className="z-10 flex justify-center text-5xl">
                             <TitleScripts page={"createListing"} />
                         </div>
-                        <div className="z-10 mt-10 flex w-1/2 flex-col gap-10 rounded-2xl bg-keebyGray bg-opacity-80 p-10">
-                            <div className="flex items-end gap-10 text-2xl text-green-500">
+                        <div className="z-10 mt-20 flex w-1/2 flex-col gap-10 rounded-xl bg-dark bg-opacity-90 p-10 relative">
                                 <Image
                                     alt="keebo"
                                     src={keebo}
-                                    className="h-16 w-16"
+                                    className="h-16 w-16 absolute top-5 left-5"
                                 />
-                                <h1>
-                                    Please read and accept our guidelines along
-                                    with scam prevention tips before listing
+                                <div className="flex justify-center w-full text-green-500">
+                                <h1 className="flex justify-center w-3/4 text-xl">
+                                    *Before you list, please read our rules and scam prevention tips!
                                 </h1>
-                            </div>
+
+                                </div>
 
                             <div className=" flex  w-full justify-evenly  gap-10">
                                 <div className="flex items-center gap-5 ">

@@ -289,7 +289,7 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                     className=" h-40 w-40 rounded-md border-4 border-[#2f2f2f] object-cover"
                 />
 
-                <div className="flex h-24 w-full flex-col justify-center rounded-r-xl border-b-2 border-t-2 border-[#2f2f2f] bg-keebyGray bg-opacity-80 px-5">
+                <div className="flex h-24 w-full flex-col justify-center rounded-r-xl border-b-2 border-t-2 border-[#2f2f2f] bg-dark bg-opacity-90 px-5">
                     <div className="flex justify-between ">
                         <div>
                             <div className="flex justify-between text-3xl">
@@ -308,7 +308,7 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                     </div>
                 </div>
             </div>
-            <div className="mb-32 mt-5 flex w-2/3 flex-col items-center rounded-xl bg-keebyGray bg-opacity-80 px-10 py-5  ">
+            <div className="mb-32 mt-5 flex w-2/3 flex-col items-center rounded-xl bg-dark bg-opacity-90 px-10 py-5  ">
                 <form className="w-full text-white">
                     <div className="flex justify-between gap-10">
                         <div className="flex w-1/3 flex-col gap-5">

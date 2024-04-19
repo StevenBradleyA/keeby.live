@@ -6,7 +6,7 @@ import type { Images, Listing } from "@prisma/client";
 import { useState } from "react";
 import ModalDialog from "~/components/Modal";
 import CreateTransaction from "../../Transactions/Purchase";
-import CreateOffer from "../../Transactions/Offers";
+import CreateOffer from "../../../Offers/Create";
 
 interface DisplayListingPageProps {
     listing: ListingWithImagesAndCount;

@@ -207,7 +207,7 @@ export default function CreatePostModal({ closeModal }: CreatePostModalProps) {
                     </div>
                 </div>
             ) : (
-                <div className="h-[600px] overflow-auto p-2 ">
+                <div className="h-[550px] overflow-auto p-2 ">
                     <div className="flex items-center">
                         <Image
                             alt="keeb"

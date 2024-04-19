@@ -1006,15 +1006,15 @@ export default function UserProfile() {
                     )}
 
                     {toggle === "KEEBSHOP" &&
-                        keebShopCategory === "LISTINGS" && (
-                            <ManageListings userId={sessionData.user.id} />
-                        )}
-                    {toggle === "KEEBSHOP" &&
                         keebShopCategory === "FAVORITES" && (
                             <DisplayFavoriteListings
-                                userId={sessionData.user.id}
+                            userId={sessionData.user.id}
                             />
                         )}
+                        {toggle === "KEEBSHOP" &&
+                            keebShopCategory === "LISTINGS" && (
+                                <ManageListings userId={sessionData.user.id} />
+                            )}
                       {toggle === "KEEBSHOP" &&
                         keebShopCategory === "OFFERS" && (
                             <DisplayOffers
@@ -1023,17 +1023,17 @@ export default function UserProfile() {
                             />
                         )}
 
-                    {toggle === "KEEBSHARE" &&
-                        keebShareCategory === "POSTS" && (
-                            <ManagePosts userId={sessionData.user.id} />
-                        )}
 
                     {toggle === "KEEBSHARE" &&
                         keebShareCategory === "FAVORITES" && (
                             <DisplayFavoritePosts
-                                userId={sessionData.user.id}
+                            userId={sessionData.user.id}
                             />
                         )}
+                        {toggle === "KEEBSHARE" &&
+                            keebShareCategory === "POSTS" && (
+                                <ManagePosts userId={sessionData.user.id} />
+                            )}
 
                     {toggle === "KEEBTYPE" && keebTypeCategory === "STATS" && (
                         <DisplayAllGameStatsCheck

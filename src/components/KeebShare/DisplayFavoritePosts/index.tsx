@@ -13,14 +13,17 @@ export default function DisplayFavoritePosts({
     });
 
     return (
-        <div className="flex w-full flex-wrap gap-10">
-            {favoritePosts &&
-                favoritePosts.length > 0 &&
-                favoritePosts.map((post) => (
-                    <div key={post.id} className="mt-10 w-96">
-                        <EachFavoritePostCard post={post} />
-                    </div>
-                ))}
+        <div className="mt-5 w-full font-poppins">
+            <h1>Favorites ( {favoritePosts ? favoritePosts.length : 0} )</h1>
+            <div className="mt-5 flex w-full flex-wrap gap-10 ">
+                {favoritePosts &&
+                    favoritePosts.length > 0 &&
+                    favoritePosts.map((post) => (
+                        <div key={post.id} className=" w-96">
+                            <EachFavoritePostCard post={post} />
+                        </div>
+                    ))}
+            </div>
         </div>
     );
 }

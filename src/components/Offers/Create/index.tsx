@@ -31,6 +31,7 @@ interface ErrorsObj {
     priceExcess?: string;
     priceSmall?: string;
     existingOffer?: string;
+    listingOwner?: string;
 }
 
 export default function CreateOffer({ closeModal, listing }: CreateOfferProps) {
@@ -146,6 +147,10 @@ export default function CreateOffer({ closeModal, listing }: CreateOfferProps) {
         if (price > listing.price / 100) {
             errorsObj.priceExcess = "Please provide a price below the asking.";
         }
+        if (listing.sellerId === sessionData?.user.id) {
+            errorsObj.listingOwner =
+                "Offers cannot be made on your own listings.";
+        }
 
         if (offerAlreadyExists === true) {
             errorsObj.existingOffer =
@@ -202,6 +207,11 @@ export default function CreateOffer({ closeModal, listing }: CreateOfferProps) {
             {enableErrorDisplay && errors.priceExcess && (
                 <p className="mt-1 text-sm text-red-400">
                     {errors.priceExcess}
+                </p>
+            )}
+            {enableErrorDisplay && errors.listingOwner && (
+                <p className="mt-1 text-sm text-red-400">
+                    {errors.listingOwner}
                 </p>
             )}
             {enableErrorDisplay && errors.priceSmall && (
