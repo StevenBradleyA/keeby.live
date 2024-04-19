@@ -597,14 +597,7 @@ export default function UserProfile() {
                                         ? "border-green-500"
                                         : "border-[#616161]"
                                 } rounded-md py-2 pl-6  `}
-                                onClick={() => {
-                                    setKeebShopCategory("FAVORITES");
-                                    scrollRef.current?.scrollIntoView({
-                                        behavior: "instant",
-                                        block: "start",
-                                        inline: "nearest",
-                                    });
-                                }}
+                                onClick={() => setKeebShopCategory("FAVORITES")}
                             >
                                 <span className="profile-favorites-button-text">
                                     Favorites
@@ -640,14 +633,7 @@ export default function UserProfile() {
                                         ? "border-green-500"
                                         : "border-[#616161]"
                                 } rounded-md   py-2 pl-6 text-green-500  `}
-                                onClick={() => {
-                                    setKeebShopCategory("LISTINGS");
-                                    scrollRef.current?.scrollIntoView({
-                                        behavior: "instant",
-                                        block: "start",
-                                        inline: "nearest",
-                                    });
-                                }}
+                                onClick={() => setKeebShopCategory("LISTINGS")}
                             >
                                 <span className="profile-select-button-text">
                                     My Listings
@@ -693,14 +679,7 @@ export default function UserProfile() {
                                         ? "border-green-500"
                                         : "border-[#616161]"
                                 } rounded-md   py-2 pl-6 text-green-500  `}
-                                onClick={() => {
-                                    setKeebShopCategory("OFFERS");
-                                    scrollRef.current?.scrollIntoView({
-                                        behavior: "instant",
-                                        block: "start",
-                                        inline: "nearest",
-                                    });
-                                }}
+                                onClick={() => setKeebShopCategory("OFFERS")}
                             >
                                 <span className="profile-select-button-text">
                                     Offers
@@ -744,14 +723,7 @@ export default function UserProfile() {
                                         ? "border-green-500"
                                         : "border-[#616161]"
                                 } rounded-md   py-2 pl-6 text-green-500  `}
-                                onClick={() => {
-                                    setKeebShopCategory("REVIEWS");
-                                    scrollRef.current?.scrollIntoView({
-                                        behavior: "instant",
-                                        block: "start",
-                                        inline: "nearest",
-                                    });
-                                }}
+                                onClick={() => setKeebShopCategory("REVIEWS")}
                             >
                                 <span className="profile-select-button-text">
                                     Reviews
@@ -801,14 +773,9 @@ export default function UserProfile() {
                                         ? "border-green-500"
                                         : "border-[#616161]"
                                 } rounded-md py-2 pl-6  `}
-                                onClick={() => {
-                                    setKeebShareCategory("FAVORITES");
-                                    scrollRef.current?.scrollIntoView({
-                                        behavior: "instant",
-                                        block: "start",
-                                        inline: "nearest",
-                                    });
-                                }}
+                                onClick={() =>
+                                    setKeebShareCategory("FAVORITES")
+                                }
                             >
                                 <span className="profile-favorites-button-text">
                                     Favorites
@@ -844,14 +811,7 @@ export default function UserProfile() {
                                         ? "border-green-500"
                                         : "border-[#616161]"
                                 } rounded-md   py-2 pl-6 text-green-500  `}
-                                onClick={() => {
-                                    setKeebShareCategory("POSTS");
-                                    scrollRef.current?.scrollIntoView({
-                                        behavior: "instant",
-                                        block: "start",
-                                        inline: "nearest",
-                                    });
-                                }}
+                                onClick={() => setKeebShareCategory("POSTS")}
                             >
                                 <span className="profile-select-button-text">
                                     My Posts
@@ -901,14 +861,7 @@ export default function UserProfile() {
                                         ? "border-green-500"
                                         : "border-[#616161]"
                                 } rounded-md   py-2 pl-6 text-green-500  `}
-                                onClick={() => {
-                                    setKeebTypeCategory("STATS");
-                                    scrollRef.current?.scrollIntoView({
-                                        behavior: "instant",
-                                        block: "start",
-                                        inline: "nearest",
-                                    });
-                                }}
+                                onClick={() => setKeebTypeCategory("STATS")}
                             >
                                 <span className="profile-select-button-text">
                                     Stats
@@ -955,14 +908,7 @@ export default function UserProfile() {
                                         ? "border-green-500"
                                         : "border-[#616161]"
                                 } rounded-md   py-2 pl-6 text-green-500  `}
-                                onClick={() => {
-                                    setKeebTypeCategory("KEEBS");
-                                    scrollRef.current?.scrollIntoView({
-                                        behavior: "instant",
-                                        block: "start",
-                                        inline: "nearest",
-                                    });
-                                }}
+                                onClick={() => setKeebTypeCategory("KEEBS")}
                             >
                                 <span className="profile-select-button-text">
                                     My Keebs
@@ -1008,32 +954,27 @@ export default function UserProfile() {
                     {toggle === "KEEBSHOP" &&
                         keebShopCategory === "FAVORITES" && (
                             <DisplayFavoriteListings
-                            userId={sessionData.user.id}
-                            />
-                        )}
-                        {toggle === "KEEBSHOP" &&
-                            keebShopCategory === "LISTINGS" && (
-                                <ManageListings userId={sessionData.user.id} />
-                            )}
-                      {toggle === "KEEBSHOP" &&
-                        keebShopCategory === "OFFERS" && (
-                            <DisplayOffers
                                 userId={sessionData.user.id}
-
                             />
                         )}
-
+                    {toggle === "KEEBSHOP" &&
+                        keebShopCategory === "LISTINGS" && (
+                            <ManageListings userId={sessionData.user.id} />
+                        )}
+                    {toggle === "KEEBSHOP" && keebShopCategory === "OFFERS" && (
+                        <DisplayOffers userId={sessionData.user.id} />
+                    )}
 
                     {toggle === "KEEBSHARE" &&
                         keebShareCategory === "FAVORITES" && (
                             <DisplayFavoritePosts
-                            userId={sessionData.user.id}
+                                userId={sessionData.user.id}
                             />
                         )}
-                        {toggle === "KEEBSHARE" &&
-                            keebShareCategory === "POSTS" && (
-                                <ManagePosts userId={sessionData.user.id} />
-                            )}
+                    {toggle === "KEEBSHARE" &&
+                        keebShareCategory === "POSTS" && (
+                            <ManagePosts userId={sessionData.user.id} />
+                        )}
 
                     {toggle === "KEEBTYPE" && keebTypeCategory === "STATS" && (
                         <DisplayAllGameStatsCheck

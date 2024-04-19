@@ -133,7 +133,7 @@ export default function DisplayListingPreviews({
 
     if (isLoading) {
         return (
-            <div className="mt-44">
+            <div className="mt-20 ml-5">
                 <LoadingSpinner size="40px" />
             </div>
         );

@@ -19,7 +19,7 @@ type CreateData = {
     assemblyType: string;
     price: number;
     sellerId: string;
-    sold: boolean;
+    status: string;
     soundTest?: string;
 };
 type UpdateData = {
@@ -456,7 +456,7 @@ export const listingRouter = createTRPCRouter({
                     assemblyType,
                     price,
                     sellerId,
-                    sold: false,
+                    status: "ACTIVE",
                 };
                 if (soundTest) {
                     createData.soundTest = soundTest;

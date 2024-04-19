@@ -147,7 +147,7 @@ export default function DisplayPopularListingPreviews({
 
     if (isLoading) {
         return (
-            <div className="mt-44">
+            <div className="ml-5 mt-20">
                 <LoadingSpinner size="40px" />
             </div>
         );
