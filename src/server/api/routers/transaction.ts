@@ -4,22 +4,55 @@ import {
     publicProcedure,
     protectedProcedure,
 } from "~/server/api/trpc";
-import { createOrder, captureOrder } from "../utils";
-import CreateTransaction from "~/components/KeebShop/Transactions/Purchase";
+
 // npm install @paypal/checkout-server-sdk
+// todo uninstall this only using react rn
 
 export const transactionRouter = createTRPCRouter({
     getAllByUserId: publicProcedure
         .input(z.string())
         .query(async ({ input: userId, ctx }) => {
-            const offersSent = await ctx.prisma.listingOffer.findMany({
+            // pending need to have shipping info ---
+            // front end we finna do doe
+            const pending = await ctx.prisma.listingTransaction.findMany({
+                where: {
+                    listing: {
+                        sellerId: userId,
+                        status: "PENDING",
+                    },
+                },
+                include: {
+                    buyer: {
+                        select: {
+                            username: true,
+                        },
+                    },
+                },
+            });
+
+            const sold = await ctx.prisma.listingTransaction.findMany({
+                where: {
+                    listing: {
+                        sellerId: userId,
+                        status: "SOLD",
+                    },
+                },
+                include: {
+                    buyer: {
+                        select: {
+                            username: true,
+                        },
+                    },
+                },
+            });
+
+            const purchased = await ctx.prisma.listingTransaction.findMany({
                 where: {
                     buyerId: userId,
                 },
                 include: {
                     listing: {
                         select: {
-                            title: true,
                             seller: {
                                 select: {
                                     username: true,
@@ -30,35 +63,11 @@ export const transactionRouter = createTRPCRouter({
                 },
             });
 
-            const offersReceived = await ctx.prisma.listing.findMany({
-                where: {
-                    sellerId: userId,
-                    listingOffer: {
-                        some: {},
-                    },
-                },
-                include: {
-                    listingOffer: {
-                        select: {
-                            id: true,
-                            price: true,
-                            status: true,
-                            createdAt: true,
-                            updatedAt: true,
-                            listingId: true,
-                            buyerId: true,
-                            buyer: {
-                                select: {
-                                    username: true,
-                                },
-                            },
-                        },
-                    },
-                },
-            });
-
-            return { offersSent, offersReceived };
+            return { pending, sold, purchased };
         }),
+
+    // create payout where we send money to seller...
+    // wait if im taking money and sending it don't disputes come to me? lmao look into this pls
 
     create: protectedProcedure
         .input(
@@ -94,24 +103,18 @@ export const transactionRouter = createTRPCRouter({
                 },
             });
 
-            if (listingCheck?.status === "SOLD") {
+            if (
+                listingCheck?.status === "SOLD" ||
+                listingCheck?.status === "PENDING"
+            ) {
                 return { isAvailable: false };
             }
-
-            await ctx.prisma.listing.update({
-                where: {
-                    id: listingId,
-                },
-                data: {
-                    status: "PENDING",
-                },
-            });
 
             const createTransaction =
                 await ctx.prisma.listingTransaction.create({
                     data: {
                         name: name,
-                        status: "ACCEPTED",
+                        status: "PAYED",
                         price: parseFloat(price) * 100,
                         listingId: listingId,
                         buyerId: buyerId,
@@ -130,8 +133,16 @@ export const transactionRouter = createTRPCRouter({
                         id: buyerId,
                     },
                 });
-
                 // todo send email confirmations here...
+
+                await ctx.prisma.listing.update({
+                    where: {
+                        id: listingId,
+                    },
+                    data: {
+                        status: "PENDING",
+                    },
+                });
 
                 isAvailable = true;
 

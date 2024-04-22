@@ -48,6 +48,7 @@ export default function CreateTransaction({
     //  we will do paypal integration last
     // todo make sure that the seller knows before accepting an offer they have 10 days to ship out the keeb and supply the tracking number otherwise. The buyer won't be charged.
     // make it clear they have to supply a tracking number to get payed.
+    
     // TODO SELLERS GET PAYED AFTER SHIPPING...
 
     const { data: sessionData } = useSession();
@@ -57,7 +58,7 @@ export default function CreateTransaction({
         useState<boolean>(false);
     const [isShowPaypal, setIsShowPaypal] = useState<boolean>(false);
     const [paymentSuccess, setPaymentSuccess] = useState<boolean>(false);
-    const [orderId, setOrderId] = useState<boolean>(false);
+    const [orderId, setOrderId] = useState<string>("");
 
     const [errors, setErrors] = useState<ErrorsObj>({});
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -71,7 +72,7 @@ export default function CreateTransaction({
     const { mutate } = api.transaction.create.useMutation({
         onSuccess: (data) => {
             if (data?.isAvailable === false) {
-                toast.error("Purchase Failed", {
+                toast.error("Purchase Failed, try again later", {
                     style: {
                         borderRadius: "10px",
                         background: "#333",
@@ -80,7 +81,7 @@ export default function CreateTransaction({
                 });
                 setOfferAlreadyExists(true);
             }
-            if (data?.isAvailable === true) {
+            if (data?.isAvailable === true && data.createTransaction) {
                 toast.success("Keyboard Purchased!", {
                     style: {
                         borderRadius: "10px",
@@ -89,6 +90,7 @@ export default function CreateTransaction({
                     },
                 });
                 setPaymentSuccess(true);
+                setOrderId(data.createTransaction.paypalOrderId as string);
             }
             // todo void all get listings
             // void ctx.post.getAllNewPreviewPosts.invalidate();
@@ -97,7 +99,8 @@ export default function CreateTransaction({
 
     return paymentSuccess ? (
         <div className="flex flex-col items-center text-white">
-            <h1 className="text-xl text-purple">Congratulations!</h1>
+            <h1 className="text-3xl text-purple">Congratulations!</h1>
+            <h2 className="text-darkGray">Purchase Order: #{orderId} </h2>
             {sessionData && (
                 <p>
                     A confirmation email has been sent to{" "}
@@ -108,7 +111,7 @@ export default function CreateTransaction({
                 You can check the transactions tab under KeebShop at the bottom
                 of the profile page to check your order number and status!
             </p>
-            <p className="text-darkGray mt-5">
+            <p className="mt-5 text-darkGray">
                 *If the seller does not provide tracking numbers within ten days
                 you will be refunded.
             </p>
@@ -138,7 +141,10 @@ export default function CreateTransaction({
                     //     e.preventDefault();
                     //     void submit(e);
                     // }}
-                    onClick={() => setIsShowPaypal(true)}
+                    onClick={() => {
+                        if (sessionData?.user.id !== listing.sellerId)
+                            setIsShowPaypal(true);
+                    }}
                     disabled={hasSubmitted || isSubmitting}
                 >
                     {/* {isSubmitting ? (
@@ -179,7 +185,7 @@ export default function CreateTransaction({
                     </>
                 </button>
             ) : (
-                <div className="h-[500px] w-[500px] overflow-auto p-20 ">
+                <div className="h-[500px] w-[600px] overflow-auto p-20 ">
                     <PayPalButtons
                         style={{ layout: "vertical" }}
                         createOrder={(data, actions) => {
