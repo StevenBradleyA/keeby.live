@@ -208,25 +208,35 @@ export default function DisplayListingPage({
                         </h2>
                         <div className="h-full overflow-auto pb-5 desktop:mt-2 desktop:pb-0 ">
                             <h3 className=" text-darkGray">{listing.title}</h3>
-                            <h3 className="flex gap-2">
-                                <span className="text-darkGray">{`Keycaps `}</span>
-                                {listing.keycaps}
+                            <h3 className="flex w-full gap-2 ">
+                                <span className=" text-darkGray">{`Keycaps `}</span>
+                                <span className="break-all">
+                                    {listing.keycaps}
+                                </span>
                             </h3>
                             <h3 className="flex gap-2">
                                 <span className="text-darkGray">{`Switches `}</span>
-                                {listing.switches}
+                                <span className="break-all">
+                                    {listing.switches}
+                                </span>
                             </h3>
                             <h3 className="flex gap-2">
                                 <span className="text-darkGray">{`Switch type `}</span>
-                                {listing.switchType}
+                                <span className="break-all">
+                                    {listing.switchType}
+                                </span>
                             </h3>
                             <h3 className="flex gap-2">
                                 <span className="text-darkGray">{`Sound type `}</span>
-                                {listing.soundType}
+                                <span className="break-all">
+                                    {listing.soundType}
+                                </span>
                             </h3>
                             <h3 className="flex gap-2">
                                 <span className="text-darkGray">{`PCB `}</span>
-                                {listing.pcbType}
+                                <span className="break-all">
+                                    {listing.pcbType}
+                                </span>
                             </h3>
                         </div>
                     </div>

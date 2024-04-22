@@ -56,6 +56,9 @@ export default function CreateTransaction({
     const [offerAlreadyExists, setOfferAlreadyExists] =
         useState<boolean>(false);
     const [isShowPaypal, setIsShowPaypal] = useState<boolean>(false);
+    const [paymentSuccess, setPaymentSuccess] = useState<boolean>(false);
+    const [orderId, setOrderId] = useState<boolean>(false);
+
     const [errors, setErrors] = useState<ErrorsObj>({});
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
@@ -67,32 +70,50 @@ export default function CreateTransaction({
     // create
     const { mutate } = api.transaction.create.useMutation({
         onSuccess: (data) => {
-            // if (data?.pendingOffer === false) {
-            //     toast.success("Offer Submitted, Good Luck!", {
-            //         style: {
-            //             borderRadius: "10px",
-            //             background: "#333",
-            //             color: "#fff",
-            //         },
-            //     });
-            //     closeModal();
-            // }
-            // if (data?.pendingOffer === true) {
-            //     toast.error("Offer Denied", {
-            //         style: {
-            //             borderRadius: "10px",
-            //             background: "#333",
-            //             color: "#fff",
-            //         },
-            //     });
-            //     setOfferAlreadyExists(true);
-            // }
-            // todo void all get offers
+            if (data?.isAvailable === false) {
+                toast.error("Purchase Failed", {
+                    style: {
+                        borderRadius: "10px",
+                        background: "#333",
+                        color: "#fff",
+                    },
+                });
+                setOfferAlreadyExists(true);
+            }
+            if (data?.isAvailable === true) {
+                toast.success("Keyboard Purchased!", {
+                    style: {
+                        borderRadius: "10px",
+                        background: "#333",
+                        color: "#fff",
+                    },
+                });
+                setPaymentSuccess(true);
+            }
+            // todo void all get listings
             // void ctx.post.getAllNewPreviewPosts.invalidate();
         },
     });
 
-    return (
+    return paymentSuccess ? (
+        <div className="flex flex-col items-center text-white">
+            <h1 className="text-xl text-purple">Congratulations!</h1>
+            {sessionData && (
+                <p>
+                    A confirmation email has been sent to{" "}
+                    {sessionData.user.email}
+                </p>
+            )}
+            <p className="mt-5">
+                You can check the transactions tab under KeebShop at the bottom
+                of the profile page to check your order number and status!
+            </p>
+            <p className="text-darkGray mt-5">
+                *If the seller does not provide tracking numbers within ten days
+                you will be refunded.
+            </p>
+        </div>
+    ) : (
         <div className="flex flex-col items-center text-white">
             {isShowPaypal === false && (
                 <>
@@ -158,7 +179,7 @@ export default function CreateTransaction({
                     </>
                 </button>
             ) : (
-                <div className="px-20">
+                <div className="h-[500px] w-[500px] overflow-auto p-20 ">
                     <PayPalButtons
                         style={{ layout: "vertical" }}
                         createOrder={(data, actions) => {
@@ -190,7 +211,7 @@ export default function CreateTransaction({
                                 ) {
                                     const transactionData = {
                                         name: listing.title,
-                                        userId: sessionData.user.id,
+                                        buyerId: sessionData.user.id,
                                         paypalOrderId: data.orderID,
                                         transactionId: details.id,
                                         listingId: listing.id,

@@ -47,7 +47,7 @@ export default function SellerListingCard({
     };
 
     return (
-        <div className="flex h-full w-full gap-5 desktop:p-5 p-2">
+        <div className="flex h-full w-full gap-5 p-2 desktop:p-5">
             {listing.seller && listing.seller.username && (
                 <div className="h-full w-1/6">
                     <Link
@@ -75,28 +75,47 @@ export default function SellerListingCard({
                     }`}</h3>
 
                     <div className="flex gap-5">
-                        <button
-                            className="rounded-md border-2 border-[#616161] bg-darkGray px-4 py-1 desktop:py-2  text-green-500 hover:border-green-500 hover:bg-keebyGray"
-                            onClick={openBuyModal}
-                        >
-                            Buy Now
-                        </button>
-                        <button
-                            className="rounded-md border-2 border-[#616161] bg-darkGray px-4 py-1 desktop:py-2 text-green-500 hover:border-green-500 hover:bg-keebyGray"
-                            onClick={openOfferModal}
-                        >
-                            Make Offer
-                        </button>
+                        {listing.status === "ACTIVE" ? (
+                            <>
+                                <button
+                                    className="rounded-md border-2 border-[#616161] bg-darkGray px-4 py-1 text-green-500  hover:border-green-500 hover:bg-keebyGray desktop:py-2"
+                                    onClick={openBuyModal}
+                                >
+                                    Buy Now
+                                </button>
+                                <button
+                                    className="rounded-md border-2 border-[#616161] bg-darkGray px-4 py-1 text-green-500 hover:border-green-500 hover:bg-keebyGray desktop:py-2"
+                                    onClick={openOfferModal}
+                                >
+                                    Make Offer
+                                </button>
+                            </>
+                        ) : (
+                            <div className="rounded-md border-2 border-[#616161] bg-darkGray px-4 py-1 text-green-500 hover:border-green-500 hover:bg-keebyGray desktop:py-2">
+                                {listing.status === "PENDING"
+                                    ? "Listing Pending Sale"
+                                    : ""}
+                                {listing.status === "SOLD"
+                                    ? "Listing SOLD"
+                                    : ""}
+                            </div>
+                        )}
                     </div>
                 </div>
                 <ModalDialog isOpen={isBuyModalOpen} onClose={closeBuyModal}>
-                    <CreateTransaction closeModal={closeBuyModal} listing={listing} />
+                    <CreateTransaction
+                        closeModal={closeBuyModal}
+                        listing={listing}
+                    />
                 </ModalDialog>
                 <ModalDialog
                     isOpen={isOfferModalOpen}
                     onClose={closeOfferModal}
                 >
-                    <CreateOffer closeModal={closeOfferModal} listing={listing} />
+                    <CreateOffer
+                        closeModal={closeOfferModal}
+                        listing={listing}
+                    />
                 </ModalDialog>
 
                 <div className="flex h-1/2 w-full items-center justify-between ">
@@ -117,9 +136,7 @@ export default function SellerListingCard({
                         <StarRating rating={listing.seller.avgRating} />
                     ) : (
                         <div className="flex flex-col">
-                            <h3 className="text-darkGray">
-                                Unreviewed seller
-                            </h3>
+                            <h3 className="text-darkGray">Unreviewed seller</h3>
                             <StarRating rating={0} />
                         </div>
                     )}

@@ -5,6 +5,7 @@ import {
     protectedProcedure,
 } from "~/server/api/trpc";
 import { createOrder, captureOrder } from "../utils";
+import CreateTransaction from "~/components/KeebShop/Transactions/Purchase";
 // npm install @paypal/checkout-server-sdk
 
 export const transactionRouter = createTRPCRouter({
@@ -63,7 +64,7 @@ export const transactionRouter = createTRPCRouter({
         .input(
             z.object({
                 name: z.string(),
-                userId: z.string(),
+                buyerId: z.string(),
                 paypalOrderId: z.string(),
                 transactionId: z.string(),
                 listingId: z.string(),
@@ -78,13 +79,15 @@ export const transactionRouter = createTRPCRouter({
                 paypalOrderId,
                 price,
                 listingId,
-                userId,
+                buyerId,
                 sellerId,
             } = input;
-            // price in dollars here...
-            if (ctx.session.user.id !== userId) {
-                throw new Error("Invalid userId");
+            if (ctx.session.user.id !== buyerId) {
+                throw new Error("Invalid buyerId");
             }
+
+            let isAvailable = false;
+
             const listingCheck = await ctx.prisma.listing.findUnique({
                 where: {
                     id: listingId,
@@ -104,81 +107,38 @@ export const transactionRouter = createTRPCRouter({
                 },
             });
 
-            const createTransaction = ctx.prisma.listingTransaction.create({
-                data: {
-                    name: name,
-                    status: "ACCEPTED",
-                    price: parseFloat(price) * 100,
-                    listingId: listingId,
-                    userId: userId,
-                    transactionId: transactionId,
-                    paypalOrderId: paypalOrderId,
-                },
-            });
+            const createTransaction =
+                await ctx.prisma.listingTransaction.create({
+                    data: {
+                        name: name,
+                        status: "ACCEPTED",
+                        price: parseFloat(price) * 100,
+                        listingId: listingId,
+                        buyerId: buyerId,
+                        transactionId: transactionId,
+                        paypalOrderId: paypalOrderId,
+                    },
+                });
+            if (createTransaction) {
+                const seller = ctx.prisma.user.findUnique({
+                    where: {
+                        id: sellerId,
+                    },
+                });
+                const buyer = ctx.prisma.user.findUnique({
+                    where: {
+                        id: buyerId,
+                    },
+                });
 
-            const seller = ctx.prisma.user.findUnique({
-                where: {
-                    id: sellerId,
-                },
-            });
-            const buyer = ctx.prisma.user.findUnique({
-                where: {
-                    id: userId,
-                },
-            });
+                // todo send email confirmations here...
 
-            // todo resend email both buyer and seller
+                isAvailable = true;
 
-            // initiate paypal
-            // if payed -- transfer money to me take 5% -- transfer money to seller
+                return { isAvailable, createTransaction };
+            }
 
-            // if no tracking number within ten days reinburse buyer.
-
-            //  create the transaction...
-
-            // update the listing status... PENDING
-
-            // or sold idk yet
-
-            // email the buyer and seller... once complete
-
-            //
-
-            // const listingCheck = await ctx.prisma.listing.findUnique({
-            //     where: {
-            //         id: listingId,
-            //     },
-            // });
-            // if (listingCheck?.status === "SOLD") {
-            //     return { pendingOffer: true };
-            // }
-
-            // const offerCheck = await ctx.prisma.listingOffer.findMany({
-            //     where: {
-            //         listingId: listingId,
-            //         buyerId: buyerId,
-            //     },
-            // });
-            // if (offerCheck && offerCheck.length > 0) {
-            //     return { pendingOffer: true };
-            // } else {
-            //     const createOffer = await ctx.prisma.listingOffer.create({
-            //         data: {
-            //             price: price,
-            //             status: "PENDING",
-            //             listingId: listingId,
-            //             buyerId: buyerId,
-            //         },
-            //     });
-            //     if (createOffer) {
-            //         //todo send email to seller -- get unique --if seller exists email
-            //         // can add buyer username here for email plus price
-            //         // not sure paypal's limit here probably a time limit we can hold out a charge for or something... maybe not idk...
-
-            //         // wait this is dumb asf lets just do it like Ebay... right wouldn't it make sense to pay when offer accepted... they have 5 days to pay or bye ...
-            //         return { pendingOffer: false };
-            //     }
-            // }
+            return { isAvailable };
         }),
 
     update: protectedProcedure
