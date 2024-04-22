@@ -145,8 +145,8 @@ model Listing {
     assemblyType String
     pcbType      String
 
-    status    String   @default("ACTIVE")
-    // ACTIVE, SOLD
+    status String @default("ACTIVE")
+    // ACTIVE, SOLD, PENDING
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -187,13 +187,16 @@ model ListingTransaction {
     price          Int
     name           String
     status         String
+    // PAYED PENDING SHIPPED SUCCESS PAYED REFUNDED AWAITINGTRACKING
     trackingNumber String?
+    paypalOrderId  String
+    transactionId  String
     createdAt      DateTime @default(now())
     updatedAt      DateTime @updatedAt
-    userId         String
+    buyerId        String
     listingId      String
 
-    user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    buyer   User    @relation(fields: [buyerId], references: [id], onDelete: Cascade)
     listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
 }
 

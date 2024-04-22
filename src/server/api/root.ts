@@ -11,6 +11,7 @@ import { favoriteRouter } from "./routers/favorite";
 import { tagRouter } from "./routers/tag";
 import { rankRouter } from "./routers/rank";
 import { offerRouter } from "./routers/offer";
+import { transactionRouter } from "./routers/transaction";
 
 /**
  * This is the primary router for your server.
@@ -24,12 +25,13 @@ export const appRouter = createTRPCRouter({
     keeb: keebRouter,
     like: likeRouter,
     listing: listingRouter,
+    offer: offerRouter,
     post: postRouter,
     rank: rankRouter,
     review: reviewRouter,
     tag: tagRouter,
+    transaction: transactionRouter,
     user: userRouter,
-    offer: offerRouter,
 });
 
 // export type definition of API
