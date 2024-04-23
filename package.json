@@ -39,6 +39,7 @@
     "react-use-precision-timer": "^3.5.5",
     "react-youtube": "^10.1.0",
     "recharts": "^2.12.3",
+    "sales-tax": "^2.14.0",
     "superjson": "1.12.2",
     "three": "^0.158.0",
     "trpc": "^0.11.3",
