@@ -48,6 +48,8 @@ export default {
             },
             transitionProperty: {
                 colors: "color",
+                background: "background-color",
+                colorBackground: "color, background-color",
             },
             transitionDuration: {
                 "400": "400ms",
