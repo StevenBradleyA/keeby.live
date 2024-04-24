@@ -5,7 +5,7 @@ import StarRating from "~/components/Reviews/Star/starRating";
 import type { Images, Listing } from "@prisma/client";
 import { useState } from "react";
 import ModalDialog from "~/components/Modal";
-import CreateTransaction from "../../Transactions/Purchase";
+import CreateTransaction from "../../../Transactions/Create";
 import CreateOffer from "../../../Offers/Create";
 import SignInModal from "~/components/Comments/Modal/signInModal";
 import { useSession } from "next-auth/react";

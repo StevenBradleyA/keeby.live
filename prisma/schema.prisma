@@ -163,7 +163,6 @@ model Listing {
     listingOffer       ListingOffer[]
     images             Images[]
     comments           Comment[]
-    Message            Message[]
 }
 
 model ListingOffer {
@@ -184,41 +183,41 @@ model ListingOffer {
 }
 
 model ListingTransaction {
-    id              String   @id @default(cuid())
-    price           Int
-    name            String
-    status          String
-    // PAYED PENDING SHIPPED SUCCESS PAYED  REFUNDED
-    trackingCarrier String?
-    trackingNumber  String?
-    paypalOrderId   String
-    transactionId   String
-    createdAt       DateTime @default(now())
-    updatedAt       DateTime @updatedAt
-    buyerId         String
-    listingId       String
+    id          String @id @default(cuid())
+    payed       Int
+    agreedPrice Int
 
-    buyer   User    @relation(fields: [buyerId], references: [id], onDelete: Cascade)
-    listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+    status        String
+    // PAYED REFUNDED
+    paypalOrderId String
+    transactionId String
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @updatedAt
+    buyerId       String
+    listingId     String
+
+    buyer   User      @relation(fields: [buyerId], references: [id], onDelete: Cascade)
+    listing Listing   @relation(fields: [listingId], references: [id], onDelete: Cascade)
+    Message Message[]
 }
 
 model Message {
-    id         String @id @default(cuid())
-    text       String
-    senderId   String
-    receiverId String
-    listingId  String
+    id                   String @id @default(cuid())
+    text                 String
+    senderId             String
+    receiverId           String
+    listingTransactionId String
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    sender   User    @relation("Sender", fields: [senderId], references: [id])
-    receiver User    @relation("Receiver", fields: [receiverId], references: [id])
-    listing  Listing @relation(fields: [listingId], references: [id])
+    sender             User               @relation("Sender", fields: [senderId], references: [id])
+    receiver           User               @relation("Receiver", fields: [receiverId], references: [id])
+    listingTransaction ListingTransaction @relation(fields: [listingTransactionId], references: [id])
 
     @@index([senderId], name: "idxMessageSenderId")
     @@index([receiverId], name: "idxMessageReceiverId")
-    @@index([listingId], name: "idxMessageListingId")
+    @@index([listingTransactionId], name: "idxMessageListingId")
 }
 
 model Post {
@@ -302,6 +301,7 @@ model User {
     profile        String?
     rankId         String?
     username       String?   @unique
+    selectedTag    String?
     paypalEmail    String?
 
     isVerified   Boolean @default(false)
@@ -309,26 +309,41 @@ model User {
     hasProfile   Boolean @default(false)
     isNewsletter Boolean @default(false)
 
-    accounts         Account[]
-    sessions         Session[]
-    favorites        Favorites[]
-    posts            Post[]
-    comments         Comment[]
-    images           Images[]
-    games            Game[]
-    keebs            Keeb[]
-    commentLike      CommentLike[]
-    review           Review[]             @relation("UserRelation")
-    reviewsReceived  Review[]             @relation("SellerRelation")
-    postLike         PostLike[]
-    tags             Tag[]                @relation("UserTags")
-    transactions     ListingTransaction[]
-    rank             Rank?                @relation(fields: [rankId], references: [id])
-    sellerListings   Listing[]            @relation("Seller")
-    buyerListings    Listing[]            @relation("Buyer")
-    listingOffer     ListingOffer[]
-    sentMessages     Message[]            @relation("Sender")
-    receivedMessages Message[]            @relation("Receiver")
+    accounts                Account[]
+    sessions                Session[]
+    favorites               Favorites[]
+    posts                   Post[]
+    comments                Comment[]
+    images                  Images[]
+    games                   Game[]
+    keebs                   Keeb[]
+    commentLike             CommentLike[]
+    review                  Review[]                  @relation("UserRelation")
+    reviewsReceived         Review[]                  @relation("SellerRelation")
+    postLike                PostLike[]
+    tags                    Tag[]                     @relation("UserTags")
+    transactions            ListingTransaction[]
+    rank                    Rank?                     @relation(fields: [rankId], references: [id])
+    sellerListings          Listing[]                 @relation("Seller")
+    buyerListings           Listing[]                 @relation("Buyer")
+    listingOffer            ListingOffer[]
+    sentMessages            Message[]                 @relation("Sender")
+    receivedMessages        Message[]                 @relation("Receiver")
+    verificationTransaction VerificationTransaction[]
+}
+
+model VerificationTransaction {
+    id    String @id @default(cuid())
+    price Int
+
+    status        String
+    paypalOrderId String
+    transactionId String
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @updatedAt
+    userId        String
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {

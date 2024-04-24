@@ -27,7 +27,9 @@ interface ErrorsObj {
     priceExcess?: string;
     priceNotWhole?: string;
     keycaps?: string;
+    keycapsExcess?: string;
     switches?: string;
+    switchesExcess?: string;
     switchType?: string;
     soundTest?: string;
     soundType?: string;
@@ -57,7 +59,7 @@ interface ListingData {
     images: Image[];
 }
 
-export default function CreateListing({ setShowCreate }: CreateListingProps) {
+export default function CreateListing() {
     //todo admin ability to delete other listings
 
     const { data: session } = useSession();
@@ -123,8 +125,14 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
         if (!keycaps.length) {
             errorsObj.keycaps = "Please provide the keycaps on your keeb";
         }
+        if (keycaps.length > 30) {
+            errorsObj.keycapsExcess = "Keycaps cannot exceed 30 characters";
+        }
         if (!switches.length) {
             errorsObj.switches = "Please provide the switches on your keeb";
+        }
+        if (switches.length > 30) {
+            errorsObj.switchesExcess = "Switches cannot exceed 30 characters";
         }
         if (!switchType.length) {
             errorsObj.switchType = "Please select the switch type of your keeb";
@@ -299,12 +307,6 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                                 {session.user.username}
                             </h3>
                         </div>
-                        <button
-                            onClick={() => setShowCreate(false)}
-                            className="text-green-500"
-                        >
-                            <BackArrow />
-                        </button>
                     </div>
                 </div>
             </div>
@@ -393,7 +395,7 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                                     htmlFor="priceInput"
                                     className="text-darkGray"
                                 >
-                                    Price (whole number)
+                                    Price (account for shipping costs)
                                 </label>
                                 <input
                                     id="priceInput"
@@ -476,6 +478,12 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                                             {errors.keycaps}
                                         </p>
                                     )}
+                                    {enableErrorDisplay &&
+                                        errors.keycapsExcess && (
+                                            <p className="text-sm text-red-400">
+                                                {errors.keycapsExcess}
+                                            </p>
+                                        )}
                                 </div>
                                 <div className="flex w-5/12 flex-col gap-1 ">
                                     <label
@@ -498,6 +506,12 @@ export default function CreateListing({ setShowCreate }: CreateListingProps) {
                                             {errors.switches}
                                         </p>
                                     )}
+                                    {enableErrorDisplay &&
+                                        errors.switchesExcess && (
+                                            <p className="text-sm text-red-400">
+                                                {errors.switchesExcess}
+                                            </p>
+                                        )}
                                 </div>
                                 <div className="flex w-2/12 flex-col gap-1 text-black ">
                                     <label

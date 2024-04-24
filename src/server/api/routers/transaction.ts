@@ -8,35 +8,10 @@ import {
 // npm install @paypal/checkout-server-sdk
 // todo uninstall this only using react rn
 
-
-
 export const transactionRouter = createTRPCRouter({
     getAllByUserId: publicProcedure
         .input(z.string())
         .query(async ({ input: userId, ctx }) => {
-            // pending need to have shipping info ---
-            // front end we finna do doe
-
-            // PENDING 
-            // 
-
-            
-            // const pending = await ctx.prisma.listingTransaction.findMany({
-            //     where: {
-            //         listing: {
-            //             sellerId: userId,
-            //             status: "PENDING",
-            //         },
-            //     },
-            //     include: {
-            //         buyer: {
-            //             select: {
-            //                 username: true,
-            //             },
-            //         },
-            //     },
-            // });
-
             const sold = await ctx.prisma.listingTransaction.findMany({
                 where: {
                     listing: {
@@ -70,11 +45,45 @@ export const transactionRouter = createTRPCRouter({
                 },
             });
 
-            return { pending, sold, purchased };
+            return { sold, purchased };
         }),
 
-    // create payout where we send money to seller...
-    // wait if im taking money and sending it don't disputes come to me? lmao look into this pls
+    createVerificationTransaction: protectedProcedure
+        .input(
+            z.object({
+                userId: z.string(),
+                paypalOrderId: z.string(),
+                transactionId: z.string(),
+                price: z.string(),
+                email: z.string(),
+            })
+        )
+        .mutation(async ({ input, ctx }) => {
+            const { transactionId, paypalOrderId, price, userId, email } =
+                input;
+
+            if (ctx.session.user.id !== userId) {
+                throw new Error("Invalid credentials");
+            }
+
+            await ctx.prisma.verificationTransaction.create({
+                data: {
+                    status: "PAYED",
+                    price: parseFloat(price) * 100,
+                    userId,
+                    transactionId: transactionId,
+                    paypalOrderId: paypalOrderId,
+                },
+            });
+
+            return await ctx.prisma.user.update({
+                where: { id: userId },
+                data: {
+                    isVerified: true,
+                    paypalEmail: email,
+                },
+            });
+        }),
 
     create: protectedProcedure
         .input(
@@ -135,19 +144,21 @@ export const transactionRouter = createTRPCRouter({
                         id: sellerId,
                     },
                 });
-                const buyer =await ctx.prisma.user.findUnique({
+                const buyer = await ctx.prisma.user.findUnique({
                     where: {
                         id: buyerId,
                     },
                 });
 
                 if (seller && buyer) {
-                     await ctx.prisma.message.create({
+                    await ctx.prisma.message.create({
                         data: {
                             listingId: listingId,
                             senderId: buyerId,
                             receiverId: sellerId,
-                            text: `Hey ${seller.username ? seller.username : ""}, I'm ready to purchase your keyboard for the agreed price of ${price} via paypal!`,
+                            text: `Hey ${
+                                seller.username ? seller.username : ""
+                            }, I'm ready to purchase your keyboard for the agreed price of ${price} via paypal!`,
                         },
                     });
                 }
