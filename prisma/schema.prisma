@@ -163,6 +163,7 @@ model Listing {
     listingOffer       ListingOffer[]
     images             Images[]
     comments           Comment[]
+    Message            Message[]
 }
 
 model ListingOffer {
@@ -199,6 +200,25 @@ model ListingTransaction {
 
     buyer   User    @relation(fields: [buyerId], references: [id], onDelete: Cascade)
     listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+}
+
+model Message {
+    id         String @id @default(cuid())
+    text       String
+    senderId   String
+    receiverId String
+    listingId  String
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    sender   User    @relation("Sender", fields: [senderId], references: [id])
+    receiver User    @relation("Receiver", fields: [receiverId], references: [id])
+    listing  Listing @relation(fields: [listingId], references: [id])
+
+    @@index([senderId], name: "idxMessageSenderId")
+    @@index([receiverId], name: "idxMessageReceiverId")
+    @@index([listingId], name: "idxMessageListingId")
 }
 
 model Post {
@@ -285,30 +305,33 @@ model User {
     selectedTag    String?
     refreshToken   String?
     paypalId       String?
+    paypalEmail    String?
 
     isVerified   Boolean @default(false)
     isAdmin      Boolean @default(false)
     hasProfile   Boolean @default(false)
     isNewsletter Boolean @default(false)
 
-    accounts        Account[]
-    sessions        Session[]
-    favorites       Favorites[]
-    posts           Post[]
-    comments        Comment[]
-    images          Images[]
-    games           Game[]
-    keebs           Keeb[]
-    commentLike     CommentLike[]
-    review          Review[]             @relation("UserRelation")
-    reviewsReceived Review[]             @relation("SellerRelation")
-    postLike        PostLike[]
-    tags            Tag[]                @relation("UserTags")
-    transactions    ListingTransaction[]
-    rank            Rank?                @relation(fields: [rankId], references: [id])
-    sellerListings  Listing[]            @relation("Seller")
-    buyerListings   Listing[]            @relation("Buyer")
-    listingOffer    ListingOffer[]
+    accounts         Account[]
+    sessions         Session[]
+    favorites        Favorites[]
+    posts            Post[]
+    comments         Comment[]
+    images           Images[]
+    games            Game[]
+    keebs            Keeb[]
+    commentLike      CommentLike[]
+    review           Review[]             @relation("UserRelation")
+    reviewsReceived  Review[]             @relation("SellerRelation")
+    postLike         PostLike[]
+    tags             Tag[]                @relation("UserTags")
+    transactions     ListingTransaction[]
+    rank             Rank?                @relation(fields: [rankId], references: [id])
+    sellerListings   Listing[]            @relation("Seller")
+    buyerListings    Listing[]            @relation("Buyer")
+    listingOffer     ListingOffer[]
+    sentMessages     Message[]            @relation("Sender")
+    receivedMessages Message[]            @relation("Receiver")
 }
 
 model VerificationToken {

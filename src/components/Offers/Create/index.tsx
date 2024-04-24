@@ -154,7 +154,7 @@ export default function CreateOffer({ closeModal, listing }: CreateOfferProps) {
 
         if (offerAlreadyExists === true) {
             errorsObj.existingOffer =
-                "Your previous offer is still under review. Please wait for a decision before making a new offer.";
+                "Your previous offer is still under review by the seller. ";
         }
 
         setErrors(errorsObj);
@@ -163,10 +163,7 @@ export default function CreateOffer({ closeModal, listing }: CreateOfferProps) {
     return (
         <div className="flex flex-col items-center text-white">
             <h1 className="flex justify-center text-xl">Make an Offer</h1>
-            <div className="flex w-full justify-between">
-                <h2 className="text-darkGray">{listing.title}</h2>
-                <h2 className="text-purple">${listing.price / 100}</h2>
-            </div>
+
             <p className="mt-10 flex justify-center text-5xl text-green-500">
                 ${price}
             </p>
@@ -267,10 +264,7 @@ export default function CreateOffer({ closeModal, listing }: CreateOfferProps) {
                 )}
             </button>
 
-            <div className=" mt-10 text-darkGray">
-                * Purchases on Keeby require a PayPal account.
-            </div>
-            <div className=" text-darkGray">
+            <div className=" mt-5 text-darkGray">
                 * All Offers are final. Please read{" "}
                 <Link
                     href={`/keebdex/rules`}

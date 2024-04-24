@@ -1,4 +1,5 @@
 import { signIn } from "next-auth/react";
+import keebo from "@public/Profile/keebo.png";
 
 interface SignInModalProps {
     closeModal: () => void;

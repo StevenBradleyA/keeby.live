@@ -123,17 +123,30 @@ export const transactionRouter = createTRPCRouter({
                     },
                 });
             if (createTransaction) {
-                const seller = ctx.prisma.user.findUnique({
+                const seller = await ctx.prisma.user.findUnique({
                     where: {
                         id: sellerId,
                     },
                 });
-                const buyer = ctx.prisma.user.findUnique({
+                const buyer =await ctx.prisma.user.findUnique({
                     where: {
                         id: buyerId,
                     },
                 });
+
+                if (seller && buyer) {
+                     await ctx.prisma.message.create({
+                        data: {
+                            listingId: listingId,
+                            senderId: buyerId,
+                            receiverId: sellerId,
+                            text: `Hey ${seller.username ? seller.username : ""}, I'm ready to purchase your keyboard for the agreed price of ${price} via paypal!`,
+                        },
+                    });
+                }
                 // todo send email confirmations here...
+
+                // ALSOOOO Need to create new message between buyer and seller ...
 
                 await ctx.prisma.listing.update({
                     where: {

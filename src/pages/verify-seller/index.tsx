@@ -128,18 +128,24 @@ export default function VerifySeller() {
         }
     };
 
+    // todo show paypal if un verified
+    // todo if verified show ability to edit paypal email... or ability to see it??? idk this kinda defeats the purpose of verification...
+    // todo add a create listing button when verified...
+
+    // you cannot change the email so in the input create a second input to make sure the emails match...
+
     return (
         <>
             {sessionData && sessionData.user && (
-                <div className="mb-40 h-[60vh] text-white/30 laptop:w-3/4  desktop:w-1/2">
-                    <div className="flex h-full w-full gap-10">
-                        <div className="h-full w-2/3">
-                            <h1 className="text-5xl text-green-500 ">
+                <div className="mb-40 h-[60vh] text-white/30 laptop:w-3/4  desktop:w-2/3">
+                    <div className="flex h-full w-full gap-20">
+                        <div className="h-full w-3/4">
+                            <h1 className="text-5xl text-green-500 px-10">
                                 Sell Your Keeb
                             </h1>
-                            <p className="mt-2">
-                                {`I wanted to create a fun and safe place to buy and sell keyboards, which is how keeby started!  To sell a mechanical keyboard on keeby you have
-                                to register your paypal account.`}
+                            <p className="mt-5 bg-keebyGray rounded-xl p-10 text-white">
+                                {`I wanted to create a fun and safe place to buy and sell keyboards, which is how keeby started! To sell your board on keeby you have
+                                to register your paypal account. This will be a one time only $0.02 charge to verify your account. Finally, you will provide the email associated with your paypal account. This will only be shown to the verified buyer who has payed keeby's fee to purchase your board at the agreed upon price. `}
                             </p>
                             <motion.button
                                 className="relative mt-10 w-56  rounded-md bg-[#0070BA]"
@@ -156,7 +162,7 @@ export default function VerifySeller() {
                                 />
                             </motion.button>
                         </div>
-                        <div className=" w-1/3">
+                        <div className=" w-1/4">
                             <div className="flex w-full flex-col gap-5 rounded-xl bg-keebyGray p-10">
                                 <Image
                                     alt="profile"
@@ -188,8 +194,9 @@ export default function VerifySeller() {
                             </div>
 
                             <div className="mt-10 w-full rounded-xl bg-keebyGray p-10">
-                                <button>How does selling work?</button>
+                                <button>How does keeby work?</button>
                                 <button>Are there Fees?</button>
+                                <button>Scam Prevention</button>
                             </div>
                         </div>
                     </div>

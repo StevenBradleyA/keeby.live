@@ -160,34 +160,49 @@ export default function CreateTransaction({
     // }, [firstName, lastName, address, city, state, country, zipCode]);
 
     return paymentSuccess ? (
-        <div className="flex w-[800px] gap-10 text-white">
-            <div className="w-1/2 ">
-                <h1 className="text-3xl text-purple">
+        <div className="flex w-[1000px] gap-10 text-white">
+            <div className="w-1/2 p-5">
+                <h1 className="text-2xl text-green-500">
                     Thank you for your Order!
                 </h1>
-                {sessionData && (
-                    <p>
-                        A confirmation email has been sent to{" "}
-                        {sessionData.user.email}
-                    </p>
-                )}
-                <h2>Checkout Address</h2>
-                <div className="flex w-full gap-5">
-                    <h3>Name</h3>
-                    <p>name here</p>
-                </div>
-                <div className="flex w-full gap-5">
-                    <h3>Address</h3>
-                    <p>name here</p>
-                </div>
-                <div className="flex w-full gap-5">
-                    <h3>Phone</h3>
-                    <p>name here</p>
-                </div>
-                <div className="flex w-full gap-5">
-                    <h3>Email</h3>
-                    <p>name here</p>
-                </div>
+
+                <p className="mt-5">
+                    You now have access to a private message with the seller!
+                    The seller has been notified of your purchase.
+                </p>
+
+                <button
+                    className=" text-md keeb-share-preview-button mt-10 flex items-center gap-2 rounded-md bg-green-500 py-2 pr-4 text-black "
+                    style={{
+                        boxShadow: "0 0 20px #22C55E",
+                    }}
+                >
+                    <svg
+                        className="keeb-share-preview-button-arrow w-4"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="3"
+                            d="M3.515 12h16.97m0 0L13.01 4.525M20.485 12l-7.475 7.476"
+                        ></path>
+                    </svg>
+                    <span className="keeb-share-preview-button-text">
+                        {`Messages `}
+                    </span>
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        className="keeb-share-preview-button-circle w-2"
+                        viewBox="0 0 32 32"
+                    >
+                        <circle cx="16" cy="16" r="16" />
+                    </svg>
+                </button>
             </div>
             <div className="w-1/2 rounded-md bg-darkGray p-5 ">
                 <h2>Order Summary</h2>
@@ -201,15 +216,15 @@ export default function CreateTransaction({
                         <p>{listing.title}</p>
                     </div>
                 </div>
+                <div className="mt-1 h-[2px] w-full bg-white/30"></div>
 
-                <p className="mt-5">
-                    You can check the transactions tab under KeebShop at the
-                    bottom of the profile page to check your order number and
-                    status!
-                </p>
-                <p className="mt-5 text-darkGray">
-                    *If the seller does not provide tracking numbers within ten
-                    days you will be refunded.
+                <div className="mt-2 flex justify-between">
+                    <h3 className="text-white/30">Total Payed </h3>
+                    <div>${((listing.price / 100) * 0.05).toFixed(2)}</div>
+                </div>
+                <p className="mt-10 text-xs">
+                    You can check your transactions at the bottom of the profile
+                    page.
                 </p>
             </div>
         </div>
@@ -228,7 +243,13 @@ export default function CreateTransaction({
                             <div className="mt-3 h-[2px] w-full rounded-md bg-darkGray"></div>
                             <button
                                 className="flex flex-col items-center gap-1 text-white/40 transition-colors  duration-400 ease-custom-cubic hover:text-white"
-                                onClick={() => setPurchaseStage("PAYPAL")}
+                                onClick={() => {
+                                    if (
+                                        sessionData?.user.id !==
+                                        listing.sellerId
+                                    )
+                                        setPurchaseStage("PAYPAL");
+                                }}
                             >
                                 <div className="flex h-7 w-7 items-center justify-center rounded-full bg-darkGray p-2  transition-background  duration-400 ease-custom-cubic hover:bg-green-500   ">
                                     2
@@ -339,81 +360,92 @@ export default function CreateTransaction({
                 </div>
             )}
 
-            {purchaseStage === "PAYPAL" && (
-                <div className="h-[500px] w-[1000px] overflow-auto px-40 ">
-                    <div className="mb-20 flex justify-center">
-                        <div className="flex w-1/2  gap-2 text-xs ">
-                            <button
-                                className="flex flex-col items-center gap-1 text-white/40 transition-colors  duration-400 ease-custom-cubic hover:text-white"
-                                onClick={() => setPurchaseStage("")}
-                            >
-                                <div className="flex h-7 w-7 items-center justify-center rounded-full bg-darkGray p-2  transition-background  duration-400 ease-custom-cubic hover:bg-green-500 ">
-                                    1
-                                </div>
-                                <h1>Checkout</h1>
-                            </button>
-                            <div className="mt-3 h-[2px] w-full rounded-md bg-darkGray"></div>
-                            <button className="flex flex-col items-center gap-1">
-                                <div className="flex h-7 w-7 items-center justify-center rounded-full bg-green-500 p-2 ">
-                                    2
-                                </div>
-                                <div className="">Payment</div>
-                            </button>
+            {purchaseStage === "PAYPAL" &&
+                sessionData?.user.id !== listing.sellerId && (
+                    <div className="h-[500px] w-[1000px] overflow-auto px-40 ">
+                        <div className="mb-20 flex justify-center">
+                            <div className="flex w-1/2  gap-2 text-xs ">
+                                <button
+                                    className="flex flex-col items-center gap-1 text-white/40 transition-colors  duration-400 ease-custom-cubic hover:text-white"
+                                    onClick={() => setPurchaseStage("")}
+                                >
+                                    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-darkGray p-2  transition-background  duration-400 ease-custom-cubic hover:bg-green-500 ">
+                                        1
+                                    </div>
+                                    <h1>Checkout</h1>
+                                </button>
+                                <div className="mt-3 h-[2px] w-full rounded-md bg-darkGray"></div>
+                                <button className="flex flex-col items-center gap-1">
+                                    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-green-500 p-2 ">
+                                        2
+                                    </div>
+                                    <div className="">Payment</div>
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    <PayPalButtons
-                        createOrder={(data, actions) => {
-                            return actions.order.create({
-                                intent: "CAPTURE",
-                                purchase_units: [
-                                    {
-                                        amount: {
-                                            value: (
-                                                (listing.price / 100) *
-                                                0.05
-                                            ).toFixed(2),
-                                            currency_code: "USD",
+                        <PayPalButtons
+                            createOrder={(data, actions) => {
+                                return actions.order.create({
+                                    intent: "CAPTURE",
+                                    purchase_units: [
+                                        {
+                                            amount: {
+                                                value: (
+                                                    (listing.price / 100) *
+                                                    0.05
+                                                ).toFixed(2),
+                                                currency_code: "USD",
+                                            },
                                         },
-                                    },
-                                ],
-                            });
-                        }}
-                        onApprove={async (data, actions) => {
-                            if (actions && actions.order) {
-                                const details = await actions.order.capture();
-
-                                console.log(
-                                    "HELLOOOOOOO",
-                                    details.payment_source?.paypal
-                                        ?.email_address
-                                );
-                                // todo need buyer shipping details... so we can send to shipper...
-                                if (
-                                    details &&
-                                    details.purchase_units &&
-                                    details.purchase_units[0] &&
-                                    details.purchase_units[0].amount &&
-                                    sessionData &&
-                                    sessionData.user.id &&
-                                    details.id
-                                ) {
-                                    const transactionData = {
-                                        name: listing.title,
-                                        buyerId: sessionData.user.id,
-                                        paypalOrderId: data.orderID,
-                                        transactionId: details.id,
-                                        listingId: listing.id,
-                                        price: details.purchase_units[0].amount
-                                            .value,
-                                        sellerId: listing.sellerId,
-                                    };
-                                    mutate(transactionData);
+                                    ],
+                                });
+                            }}
+                            onApprove={async (data, actions) => {
+                                if (actions && actions.order) {
+                                    const details =
+                                        await actions.order.capture();
+                                    console.log("DETAILS BB", details);
+                                    console.log(
+                                        "depreciated",
+                                        details.payer?.email_address
+                                    );
+                                    console.log(
+                                        "uh card test",
+                                        details.payment_source?.card?.attributes
+                                            ?.vault?.customer?.email_address
+                                    );
+                                    console.log(
+                                        "HELLOOOOOOO",
+                                        details.payment_source?.paypal
+                                            ?.email_address
+                                    );
+                                    // todo need buyer shipping details... so we can send to shipper...
+                                    if (
+                                        details &&
+                                        details.purchase_units &&
+                                        details.purchase_units[0] &&
+                                        details.purchase_units[0].amount &&
+                                        sessionData &&
+                                        sessionData.user.id &&
+                                        details.id
+                                    ) {
+                                        const transactionData = {
+                                            name: listing.title,
+                                            buyerId: sessionData.user.id,
+                                            paypalOrderId: data.orderID,
+                                            transactionId: details.id,
+                                            listingId: listing.id,
+                                            price: details.purchase_units[0]
+                                                .amount.value,
+                                            sellerId: listing.sellerId,
+                                        };
+                                        mutate(transactionData);
+                                    }
                                 }
-                            }
-                        }}
-                    />
-                </div>
-            )}
+                            }}
+                        />
+                    </div>
+                )}
         </div>
     );
 }
