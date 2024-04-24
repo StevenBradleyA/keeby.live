@@ -302,9 +302,6 @@ model User {
     profile        String?
     rankId         String?
     username       String?   @unique
-    selectedTag    String?
-    refreshToken   String?
-    paypalId       String?
     paypalEmail    String?
 
     isVerified   Boolean @default(false)

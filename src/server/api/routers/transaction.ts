@@ -8,27 +8,34 @@ import {
 // npm install @paypal/checkout-server-sdk
 // todo uninstall this only using react rn
 
+
+
 export const transactionRouter = createTRPCRouter({
     getAllByUserId: publicProcedure
         .input(z.string())
         .query(async ({ input: userId, ctx }) => {
             // pending need to have shipping info ---
             // front end we finna do doe
-            const pending = await ctx.prisma.listingTransaction.findMany({
-                where: {
-                    listing: {
-                        sellerId: userId,
-                        status: "PENDING",
-                    },
-                },
-                include: {
-                    buyer: {
-                        select: {
-                            username: true,
-                        },
-                    },
-                },
-            });
+
+            // PENDING 
+            // 
+
+            
+            // const pending = await ctx.prisma.listingTransaction.findMany({
+            //     where: {
+            //         listing: {
+            //             sellerId: userId,
+            //             status: "PENDING",
+            //         },
+            //     },
+            //     include: {
+            //         buyer: {
+            //             select: {
+            //                 username: true,
+            //             },
+            //         },
+            //     },
+            // });
 
             const sold = await ctx.prisma.listingTransaction.findMany({
                 where: {

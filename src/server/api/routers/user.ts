@@ -520,44 +520,44 @@ export const userRouter = createTRPCRouter({
             }
         }),
 
-    getPayPalAccessToken: publicProcedure
-        .input(
-            z.object({
-                authorizationCode: z.string(),
-            })
-        )
-        .mutation(async ({ input }) => {
-            const { authorizationCode } = input;
-            const clientId = env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
-            const clientSecret = env.PAYPAL_SECRET;
-            const basicAuth = Buffer.from(
-                `${clientId}:${clientSecret}`
-            ).toString("base64");
+    // getPayPalAccessToken: publicProcedure
+    //     .input(
+    //         z.object({
+    //             authorizationCode: z.string(),
+    //         })
+    //     )
+    //     .mutation(async ({ input }) => {
+    //         const { authorizationCode } = input;
+    //         const clientId = env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
+    //         const clientSecret = env.PAYPAL_SECRET;
+    //         const basicAuth = Buffer.from(
+    //             `${clientId}:${clientSecret}`
+    //         ).toString("base64");
 
-            try {
-                const tokenResponse = await fetch(
-                    "https://api-m.sandbox.paypal.com/v1/oauth2/token",
-                    {
-                        method: "POST",
-                        headers: {
-                            Authorization: `Basic ${basicAuth}`,
-                            "Content-Type": "application/x-www-form-urlencoded",
-                        },
-                        body: new URLSearchParams({
-                            grant_type: "authorization_code",
-                            code: authorizationCode,
-                        }),
-                    }
-                );
+    //         try {
+    //             const tokenResponse = await fetch(
+    //                 "https://api-m.sandbox.paypal.com/v1/oauth2/token",
+    //                 {
+    //                     method: "POST",
+    //                     headers: {
+    //                         Authorization: `Basic ${basicAuth}`,
+    //                         "Content-Type": "application/x-www-form-urlencoded",
+    //                     },
+    //                     body: new URLSearchParams({
+    //                         grant_type: "authorization_code",
+    //                         code: authorizationCode,
+    //                     }),
+    //                 }
+    //             );
 
-                const tokenData = (await tokenResponse.json()) as TokenData;
+    //             const tokenData = (await tokenResponse.json()) as TokenData;
 
-                return tokenData;
-            } catch (error) {
-                console.error("Failed to exchange authorization code:", error);
-                throw new Error("Failed to exchange authorization code.");
-            }
-        }),
+    //             return tokenData;
+    //         } catch (error) {
+    //             console.error("Failed to exchange authorization code:", error);
+    //             throw new Error("Failed to exchange authorization code.");
+    //         }
+    //     }),
 
     verifyUser: protectedProcedure
         .input(

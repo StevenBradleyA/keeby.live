@@ -6,9 +6,19 @@ import { env } from "~/env.mjs";
 import { api } from "~/utils/api";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getCookie, setCookie } from "cookies-next";
 import { motion } from "framer-motion";
+
+
+
+interface ErrorsObj {
+    email?: string;
+    emailConfirmation?: string;
+    emailMatch?: string;
+}
+
+
 
 export default function VerifySeller() {
     const { data: sessionData, update } = useSession();
@@ -33,6 +43,15 @@ export default function VerifySeller() {
             });
         }
     };
+
+
+      // shipping
+      const [email, setEmail] = useState<string>("");
+      const [emailConfirmation, setEmailConfirmation] = useState<string>("");
+  
+      const [errors, setErrors] = useState<ErrorsObj>({});
+      const [enableErrorDisplay, setEnableErrorDisplay] =
+          useState<boolean>(false);
 
     const { mutate: getPayPalAccessToken } =
         api.user.getPayPalAccessToken.useMutation({
@@ -133,6 +152,53 @@ export default function VerifySeller() {
     // todo add a create listing button when verified...
 
     // you cannot change the email so in the input create a second input to make sure the emails match...
+
+    useEffect(() => {
+        const errorsObj: ErrorsObj = {};
+
+        if (!email.length) {
+            errorsObj.email = "Please provide your paypal associated email";
+        }
+        if (!emailConfirmation.length) {
+            errorsObj.emailConfirmation = "Please confirm email";
+        }
+        if (email !== emailConfirmation) {
+            errorsObj.emailMatch = "Email and confirmation do not match";
+        }
+
+        setErrors(errorsObj);
+    }, [email, emailConfirmation]);
+
+//     <form>
+//     <input
+//         id="email"
+//         value={email}
+//         onChange={(e) => setEmail(e.target.value)}
+//         className="h-10 w-full rounded-md bg-darkGray p-1"
+//         placeholder="Email"
+//     />
+//     {enableErrorDisplay && errors.email && (
+//         <p className="text-sm text-red-400">
+//             {errors.email}
+//         </p>
+//     )}
+//     <input
+//         id="email"
+//         value={emailConfirmation}
+//         onChange={(e) =>
+//             setEmailConfirmation(e.target.value)
+//         }
+//         className="mt-3 h-10 w-full rounded-md bg-darkGray p-1"
+//         placeholder="Email confirmation"
+//     />
+//     {enableErrorDisplay && errors.emailConfirmation && (
+//         <p className="text-sm text-red-400">
+//             {errors.emailConfirmation}
+//         </p>
+//     )}
+// </form>
+
+
 
     return (
         <>

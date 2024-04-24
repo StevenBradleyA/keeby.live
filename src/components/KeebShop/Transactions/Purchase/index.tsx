@@ -28,16 +28,6 @@ interface ListingWithImagesAndCount extends Listing {
     };
 }
 
-interface ErrorsObj {
-    firstName?: string;
-    lastName?: string;
-    address?: string;
-    city?: string;
-    state?: string;
-    zipCode?: string;
-    country?: string;
-}
-
 export default function CreateTransaction({
     closeModal,
     listing,
@@ -72,19 +62,6 @@ export default function CreateTransaction({
     // then going to need to file that
 
     const { data: sessionData } = useSession();
-
-    // shipping
-    const [firstName, setFirstName] = useState<string>("");
-    const [lastName, setLastName] = useState<string>("");
-    const [address, setAddress] = useState<string>("");
-    const [secondaryAddress, setSecondaryAddress] = useState<string>("");
-    const [city, setCity] = useState<string>("");
-    const [state, setState] = useState<string>("");
-    const [country, setCountry] = useState<string>("United States");
-    const [zipCode, setZipCode] = useState<string>("");
-    const [errors, setErrors] = useState<ErrorsObj>({});
-    const [enableErrorDisplay, setEnableErrorDisplay] =
-        useState<boolean>(false);
 
     // todo tax calculation
     const [subTotal, setSubTotal] = useState<number>(0);
@@ -131,33 +108,7 @@ export default function CreateTransaction({
         },
     });
 
-    // useEffect(() => {
-    //     const errorsObj: ErrorsObj = {};
-
-    //     if (!firstName.length) {
-    //         errorsObj.firstName = "Please provide your first name";
-    //     }
-    //     if (!lastName.length) {
-    //         errorsObj.lastName = "Please provide your last name";
-    //     }
-    //     if (!address.length) {
-    //         errorsObj.address = "Please provide your address";
-    //     }
-    //     if (!city.length) {
-    //         errorsObj.city = "Please provide your city";
-    //     }
-    //     if (!state.length) {
-    //         errorsObj.state = "Please select your state";
-    //     }
-    //     if (!country.length) {
-    //         errorsObj.country = "Please select your country";
-    //     }
-    //     if (!zipCode.length) {
-    //         errorsObj.zipCode = "Please provide your zip code";
-    //     }
-
-    //     setErrors(errorsObj);
-    // }, [firstName, lastName, address, city, state, country, zipCode]);
+    // todo need to colelct email.................
 
     return paymentSuccess ? (
         <div className="flex w-[1000px] gap-10 text-white">
@@ -170,39 +121,44 @@ export default function CreateTransaction({
                     You now have access to a private message with the seller!
                     The seller has been notified of your purchase.
                 </p>
-
-                <button
-                    className=" text-md keeb-share-preview-button mt-10 flex items-center gap-2 rounded-md bg-green-500 py-2 pr-4 text-black "
-                    style={{
-                        boxShadow: "0 0 20px #22C55E",
-                    }}
+                <Link
+                    href={`/profile/messages`}
+                    aria-label="messages"
+                    className="mt-10"
                 >
-                    <svg
-                        className="keeb-share-preview-button-arrow w-4"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
+                    <button
+                        className=" text-md keeb-share-preview-button flex items-center gap-2 rounded-md bg-green-500 py-2 pr-4 text-black "
+                        style={{
+                            boxShadow: "0 0 20px #22C55E",
+                        }}
                     >
-                        <path
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="3"
-                            d="M3.515 12h16.97m0 0L13.01 4.525M20.485 12l-7.475 7.476"
-                        ></path>
-                    </svg>
-                    <span className="keeb-share-preview-button-text">
-                        {`Messages `}
-                    </span>
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="currentColor"
-                        className="keeb-share-preview-button-circle w-2"
-                        viewBox="0 0 32 32"
-                    >
-                        <circle cx="16" cy="16" r="16" />
-                    </svg>
-                </button>
+                        <svg
+                            className="keeb-share-preview-button-arrow w-4"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke="currentColor"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="3"
+                                d="M3.515 12h16.97m0 0L13.01 4.525M20.485 12l-7.475 7.476"
+                            ></path>
+                        </svg>
+                        <span className="keeb-share-preview-button-text">
+                            {`Messages `}
+                        </span>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor"
+                            className="keeb-share-preview-button-circle w-2"
+                            viewBox="0 0 32 32"
+                        >
+                            <circle cx="16" cy="16" r="16" />
+                        </svg>
+                    </button>
+                </Link>
             </div>
             <div className="w-1/2 rounded-md bg-darkGray p-5 ">
                 <h2>Order Summary</h2>
@@ -223,7 +179,7 @@ export default function CreateTransaction({
                     <div>${((listing.price / 100) * 0.05).toFixed(2)}</div>
                 </div>
                 <p className="mt-10 text-xs">
-                    You can check your transactions at the bottom of the profile
+                    You can view your transactions at the bottom of the profile
                     page.
                 </p>
             </div>
@@ -359,7 +315,6 @@ export default function CreateTransaction({
                     </div>
                 </div>
             )}
-
             {purchaseStage === "PAYPAL" &&
                 sessionData?.user.id !== listing.sellerId && (
                     <div className="h-[500px] w-[1000px] overflow-auto px-40 ">
@@ -404,22 +359,19 @@ export default function CreateTransaction({
                                 if (actions && actions.order) {
                                     const details =
                                         await actions.order.capture();
+                                    console.log("DATA BB", data);
+
                                     console.log("DETAILS BB", details);
+                                    console.log(
+                                        "STATUS TESTING BB",
+                                        details.status
+                                    );
+
                                     console.log(
                                         "depreciated",
                                         details.payer?.email_address
                                     );
-                                    console.log(
-                                        "uh card test",
-                                        details.payment_source?.card?.attributes
-                                            ?.vault?.customer?.email_address
-                                    );
-                                    console.log(
-                                        "HELLOOOOOOO",
-                                        details.payment_source?.paypal
-                                            ?.email_address
-                                    );
-                                    // todo need buyer shipping details... so we can send to shipper...
+
                                     if (
                                         details &&
                                         details.purchase_units &&

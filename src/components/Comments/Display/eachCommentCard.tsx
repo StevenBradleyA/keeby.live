@@ -188,7 +188,7 @@ export default function EachCommentCard({
                             isOpen={isSignInModalOpen}
                             onClose={closeSignInModal}
                         >
-                            <SignInModal closeModal={closeSignInModal} />
+                            <SignInModal />
                         </ModalDialog>
                         {session && session.user ? (
                             <button

@@ -256,7 +256,7 @@ export default function EachPostCardPreview({
                 </div>
             )}
             <ModalDialog isOpen={isSignInModalOpen} onClose={closeSignInModal}>
-                <SignInModal closeModal={closeSignInModal} />
+                <SignInModal />
             </ModalDialog>
 
             {post.images.length === 0 && post.link && (

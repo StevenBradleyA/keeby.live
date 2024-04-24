@@ -134,7 +134,7 @@ export default function CreateReplyComment({
                         alt="profile"
                         height={600}
                         width={600}
-                        className="h-7 w-7 object-cover rounded-md"
+                        className="h-7 w-7 rounded-md object-cover"
                     />
 
                     <textarea
@@ -167,7 +167,7 @@ export default function CreateReplyComment({
                     isOpen={isSignInModalOpen}
                     onClose={closeSignInModal}
                 >
-                    <SignInModal closeModal={closeSignInModal} />
+                    <SignInModal />
                 </ModalDialog>
             </form>
         </div>

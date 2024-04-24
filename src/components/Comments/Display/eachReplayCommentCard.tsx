@@ -203,7 +203,7 @@ export default function EachReplyCommentCard({
                         isOpen={isSignInModalOpen}
                         onClose={closeSignInModal}
                     >
-                        <SignInModal closeModal={closeSignInModal} />
+                        <SignInModal />
                     </ModalDialog>
 
                     {session && session.user ? (

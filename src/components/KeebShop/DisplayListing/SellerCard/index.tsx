@@ -7,6 +7,8 @@ import { useState } from "react";
 import ModalDialog from "~/components/Modal";
 import CreateTransaction from "../../Transactions/Purchase";
 import CreateOffer from "../../../Offers/Create";
+import SignInModal from "~/components/Comments/Modal/signInModal";
+import { useSession } from "next-auth/react";
 
 interface DisplayListingPageProps {
     listing: ListingWithImagesAndCount;
@@ -29,8 +31,10 @@ interface ListingWithImagesAndCount extends Listing {
 export default function SellerListingCard({
     listing,
 }: DisplayListingPageProps) {
+    const { data: sessionData } = useSession();
     const [isBuyModalOpen, setIsBuyModalOpen] = useState<boolean>(false);
     const [isOfferModalOpen, setIsOfferModalOpen] = useState<boolean>(false);
+    const [isSignInModalOpen, setIsSignInModalOpen] = useState<boolean>(false);
 
     const openBuyModal = () => {
         setIsBuyModalOpen(true);
@@ -44,6 +48,12 @@ export default function SellerListingCard({
 
     const closeOfferModal = () => {
         setIsOfferModalOpen(false);
+    };
+    const openSignInModal = () => {
+        setIsSignInModalOpen(true);
+    };
+    const closeSignInModal = () => {
+        setIsSignInModalOpen(false);
     };
 
     return (
@@ -79,13 +89,25 @@ export default function SellerListingCard({
                             <>
                                 <button
                                     className="rounded-md border-2 border-[#616161] bg-darkGray px-4 py-1 text-green-500  hover:border-green-500 hover:bg-keebyGray desktop:py-2"
-                                    onClick={openBuyModal}
+                                    onClick={() => {
+                                        if (sessionData === null)
+                                            openSignInModal();
+                                        else {
+                                            openBuyModal();
+                                        }
+                                    }}
                                 >
                                     Buy Now
                                 </button>
                                 <button
                                     className="rounded-md border-2 border-[#616161] bg-darkGray px-4 py-1 text-green-500 hover:border-green-500 hover:bg-keebyGray desktop:py-2"
-                                    onClick={openOfferModal}
+                                    onClick={() => {
+                                        if (sessionData === null)
+                                            openSignInModal();
+                                        else {
+                                            openOfferModal();
+                                        }
+                                    }}
                                 >
                                     Make Offer
                                 </button>
@@ -116,6 +138,13 @@ export default function SellerListingCard({
                         closeModal={closeOfferModal}
                         listing={listing}
                     />
+                </ModalDialog>
+
+                <ModalDialog
+                    isOpen={isSignInModalOpen}
+                    onClose={closeSignInModal}
+                >
+                    <SignInModal />
                 </ModalDialog>
 
                 <div className="flex h-1/2 w-full items-center justify-between ">
