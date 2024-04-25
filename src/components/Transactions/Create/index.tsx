@@ -107,8 +107,6 @@ export default function CreateTransaction({
         },
     });
 
-    // todo need to colelct email.................
-
     return paymentSuccess ? (
         <div className="flex w-[1000px] gap-10 text-white">
             <div className="w-1/2 p-5">

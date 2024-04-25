@@ -29,15 +29,33 @@ export default function AcceptDeclineOffer({
     const [rulesAgreed, setRulesAgreed] = useState<boolean>(false);
 
     const { mutate: deleteOffer } = api.offer.delete.useMutation({
-        onSuccess: () => {
+        onSuccess: (data) => {
             void ctx.offer.getAllByUserId.invalidate();
-            toast.success("Offer Declined!", {
-                style: {
-                    borderRadius: "10px",
-                    background: "#333",
-                    color: "#fff",
-                },
-            });
+            if (data === "Successfully Deleted") {
+                toast.success("Offer Declined!", {
+                    style: {
+                        borderRadius: "10px",
+                        background: "#333",
+                        color: "#fff",
+                    },
+                });
+            }
+            if (data === "Deleted and Active") {
+                toast.success("Offer Declined!", {
+                    style: {
+                        borderRadius: "10px",
+                        background: "#333",
+                        color: "#fff",
+                    },
+                });
+                toast.success("Listing Reactivated!", {
+                    style: {
+                        borderRadius: "10px",
+                        background: "#333",
+                        color: "#fff",
+                    },
+                });
+            }
             closeModal();
         },
     });
@@ -62,6 +80,8 @@ export default function AcceptDeclineOffer({
             id: offer.id,
             buyerId: offer.buyerId,
             sellerId: listing.sellerId,
+            listingStatus: listing.status,
+            listingId: listing.id,
         };
 
         deleteOffer(data);
@@ -82,20 +102,22 @@ export default function AcceptDeclineOffer({
         <>
             {modalToggle === "ACCEPT" && (
                 <div className="flex flex-col items-center">
-                    <h1 className="text-2xl">
+                    <h1 className="text-3xl">
                         Accept Offer of{" "}
                         <span className="text-green-500">
                             ${(offer.price / 100).toFixed(2)}
-                        </span>{" "}
-                        for {listing.title}?
+                        </span>
+                        ?
                     </h1>
+                    <h2 className="text-darkGray">{listing.title}</h2>
                     <div className="mt-10 flex w-[600px] items-center justify-between text-white">
                         <p className="w-3/4">
-                            * By accepting this offer, you agree to ship to the
-                            buyer within 10 days of buyer payment AND provide
-                            tracking numbers. You will be notified via email
-                            when the buyer has payed along with mailing address
-                            and instructions.
+                            {` * By accepting this offer, you agree to sell your
+                            keyboard to the buyer for $
+                            ${(offer.price / 100).toFixed(2)} via PayPal.
+                            Seller's pay for shipping. When the Buyer is verified and Pay's
+                            Keeby's fee you will be notified via email and put
+                            in a private message with the buyer.`}
                         </p>
                         <div className="flex w-1/4 justify-center">
                             <input
@@ -172,7 +194,7 @@ export default function AcceptDeclineOffer({
                     )}
 
                     <p className="mt-10">
-                        * all disputes are handled by paypal. Please refer to{" "}
+                        * Disputes are handled by PayPal. Please refer to{" "}
                         <Link
                             href={`/keebdex/scam-prevention`}
                             aria-label="scam prevention"

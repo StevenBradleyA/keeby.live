@@ -134,6 +134,28 @@ export default function TitleScripts({ page }: TitleScriptsProps) {
                 }, delay[i])
             );
         }
+
+
+        if (page === "offer") {
+            const phrases = [
+                "Awaiting Buyer Verification",
+                "Taking longer than a group buy",
+                "Keeby will notify you when he verifies",
+                "Waiting on Buyer",
+            ];
+            const delay = [0, 4000, 8000, 12000, 16000];
+
+            phrases.forEach((phrase, i) =>
+                setTimeout(() => {
+                    setTitle(phrase);
+                }, delay[i])
+            );
+        }
+
+
+
+
+
     }, [page]);
 
     return (

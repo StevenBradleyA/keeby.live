@@ -130,8 +130,6 @@ export const offerRouter = createTRPCRouter({
                 );
             }
 
-            //  keep the listing around but we are going to mark it as sold...
-            // transaction only occurs when buyer pays
             const buyer = await ctx.prisma.user.findUnique({
                 where: {
                     id: buyerId,
@@ -146,7 +144,7 @@ export const offerRouter = createTRPCRouter({
                         id: listingId,
                     },
                     data: {
-                        status: "SOLD",
+                        status: "PENDING",
                     },
                 });
                 await ctx.prisma.listingOffer.update({
@@ -169,10 +167,12 @@ export const offerRouter = createTRPCRouter({
                 id: z.string(),
                 sellerId: z.string(),
                 buyerId: z.string(),
+                listingId: z.string(),
+                listingStatus: z.string(),
             })
         )
         .mutation(async ({ input, ctx }) => {
-            const { id, sellerId, buyerId } = input;
+            const { id, sellerId, buyerId, listingStatus, listingId } = input;
 
             if (ctx.session.user.id !== sellerId && !ctx.session.user.isAdmin) {
                 throw new Error(
@@ -191,6 +191,20 @@ export const offerRouter = createTRPCRouter({
                 await ctx.prisma.listingOffer.delete({
                     where: { id: id },
                 });
+
+                if (listingStatus === "PENDING") {
+                    await ctx.prisma.listing.update({
+                        where: {
+                            id: listingId,
+                        },
+                        data: {
+                            status: "ACTIVE",
+                        },
+                    });
+
+                    return "Deleted and Active"
+                }
+
                 return "Successfully Deleted";
             }
             throw new Error("Buyer does not exist or has no valid email.");

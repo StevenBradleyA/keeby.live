@@ -54,7 +54,9 @@ interface ListingData {
     sellerId: string;
     title: string;
     keycaps: string;
+    keycapsExcess?: string;
     switches: string;
+    switchesExcess?: string;
     switchType: string;
     soundType: string;
     layoutType: string;
@@ -162,8 +164,14 @@ export default function UpdateListing({
         if (!keycaps.length) {
             errorsObj.keycaps = "Please provide the keycaps on your keeb";
         }
+        if (keycaps.length > 30) {
+            errorsObj.keycapsExcess = "Keycaps cannot exceed 30 characters";
+        }
         if (!switches.length) {
             errorsObj.switches = "Please provide the switches on your keeb";
+        }
+        if (switches.length > 30) {
+            errorsObj.switchesExcess = "Switches cannot exceed 30 characters";
         }
         if (!switchType.length) {
             errorsObj.switchType = "Please select the switch type of your keeb";
@@ -405,7 +413,7 @@ export default function UpdateListing({
                 <div className=" text-darkGray">
                     <h1 className="text-center">
                         Are you sure you want to{" "}
-                        <span className="text-red-500"> delete</span> {" "}
+                        <span className="text-red-500"> delete</span>{" "}
                         {listing.title}?
                     </h1>
 
@@ -690,6 +698,12 @@ export default function UpdateListing({
                                                         {errors.keycaps}
                                                     </p>
                                                 )}
+                                            {enableErrorDisplay &&
+                                                errors.keycapsExcess && (
+                                                    <p className="text-sm text-red-400">
+                                                        {errors.keycapsExcess}
+                                                    </p>
+                                                )}
                                         </div>
                                         <div className="flex w-5/12 flex-col gap-1 ">
                                             <label
@@ -711,6 +725,12 @@ export default function UpdateListing({
                                                 errors.switches && (
                                                     <p className="text-sm text-red-400">
                                                         {errors.switches}
+                                                    </p>
+                                                )}
+                                            {enableErrorDisplay &&
+                                                errors.switchesExcess && (
+                                                    <p className="text-sm text-red-400">
+                                                        {errors.switchesExcess}
                                                     </p>
                                                 )}
                                         </div>
