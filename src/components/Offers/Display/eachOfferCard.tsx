@@ -47,7 +47,15 @@ export default function EachOfferCard({ listing }: EachOfferCardProps) {
                 >
                     <h1 className="flex h-1/6 justify-between ">
                         <div>{listing.title}</div>
-                        <p className="text-darkGray">{offer.status}</p>
+                        <p
+                            className={`${
+                                offer.status === "ACCEPTED"
+                                    ? "text-green-500"
+                                    : "text-darkGray"
+                            }`}
+                        >
+                            {offer.status}
+                        </p>
                     </h1>
                     <div className="h-4/6 w-full ">
                         {offer.status === "PENDING" && (
@@ -98,7 +106,10 @@ export default function EachOfferCard({ listing }: EachOfferCardProps) {
                                     </button>
                                     <button
                                         className=" text-md keeb-shop-offer-button mt-5 flex items-center gap-2 rounded-md bg-green-500 py-2 pr-4 text-black "
-                                        onClick={openAcceptModal}
+                                        onClick={() => {
+                                            if (listing.status !== "SOLD")
+                                                openAcceptModal();
+                                        }}
                                     >
                                         {" "}
                                         <svg
@@ -132,12 +143,11 @@ export default function EachOfferCard({ listing }: EachOfferCardProps) {
                         )}
                         {offer.status === "ACCEPTED" && canCancel === false && (
                             <div className="mt-5 flex flex-col">
-                                <div className="flex justify-center rounded-md bg-darkGray p-3 text-green-500">
-                                    Total price of $
-                                    {(offer.price / 100).toFixed(2)} Accepted
+                                <div className="flex justify-center  text-4xl text-green-500">
+                                    ${(offer.price / 100).toFixed(2)}
                                 </div>
-                                <div className="mt-5 flex justify-center text-lg ">
-                                    <TitleScripts page={"offer"} />
+                                <div className="mt-5 flex justify-center text-green-500 ">
+                                    <TitleScripts page={"offerSeller"} />
                                 </div>
                             </div>
                         )}

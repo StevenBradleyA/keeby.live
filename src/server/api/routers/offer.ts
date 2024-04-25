@@ -12,11 +12,19 @@ export const offerRouter = createTRPCRouter({
             const offersSent = await ctx.prisma.listingOffer.findMany({
                 where: {
                     buyerId: userId,
+                    listing: {
+                        status: {
+                            not: "SOLD",
+                        },
+                    },
                 },
                 include: {
                     listing: {
                         select: {
+                            id: true,
                             title: true,
+                            sellerId: true,
+                            status: true, 
                             seller: {
                                 select: {
                                     username: true,
@@ -32,6 +40,9 @@ export const offerRouter = createTRPCRouter({
                     sellerId: userId,
                     listingOffer: {
                         some: {},
+                    },
+                    status: {
+                        not: "SOLD",
                     },
                 },
                 include: {
@@ -73,7 +84,9 @@ export const offerRouter = createTRPCRouter({
             if (ctx.session.user.id !== buyerId) {
                 throw new Error("Invalid userId");
             }
-            //todo also prevent against buyerid matching seller id
+            if (sellerId === buyerId) {
+                throw new Error("Cannot send offer to your own listing");
+            }
 
             const listingCheck = await ctx.prisma.listing.findUnique({
                 where: {
@@ -103,10 +116,6 @@ export const offerRouter = createTRPCRouter({
                 });
                 if (createOffer) {
                     //todo send email to seller -- get unique --if seller exists email
-                    // can add buyer username here for email plus price
-                    // not sure paypal's limit here probably a time limit we can hold out a charge for or something... maybe not idk...
-
-                    // wait this is dumb asf lets just do it like Ebay... right wouldn't it make sense to pay when offer accepted... they have 5 days to pay or bye ...
                     return { pendingOffer: false };
                 }
             }
@@ -202,7 +211,7 @@ export const offerRouter = createTRPCRouter({
                         },
                     });
 
-                    return "Deleted and Active"
+                    return "Deleted and Active";
                 }
 
                 return "Successfully Deleted";

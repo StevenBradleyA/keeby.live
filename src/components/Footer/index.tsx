@@ -162,13 +162,34 @@ export default function MainFooter() {
                         </Link>
                     </div>
                     <div className="flex flex-col gap-1">
-                        <h2 className="text-green-500">Product</h2>
+                        <h2 className="text-green-500">Sellers & Buyers</h2>
                         <Link
                             href="/privacy-policy"
                             aria-label="privacy"
                             className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                         >
-                            What do we sell?
+                            How Keeby works
+                        </Link>
+                        <Link
+                            href="/privacy-policy"
+                            aria-label="privacy"
+                            className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
+                        >
+                            Messages
+                        </Link>
+                        <Link
+                            href="/privacy-policy"
+                            aria-label="privacy"
+                            className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
+                        >
+                            Keeby Rules
+                        </Link>
+                        <Link
+                            href="/privacy-policy"
+                            aria-label="privacy"
+                            className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
+                        >
+                            Scam Prevention
                         </Link>
                     </div>
                     <div className="flex flex-col gap-1">
@@ -178,21 +199,21 @@ export default function MainFooter() {
                             aria-label="privacy"
                             className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                         >
-                            Rules
+                            FAQ
                         </Link>
                         <Link
                             href="/privacy-policy"
                             aria-label="privacy"
                             className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                         >
-                            Return Policy
+                            Keeb Dex
                         </Link>
                         <Link
                             href="/privacy-policy"
                             aria-label="privacy"
                             className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                         >
-                            Contact Us
+                            Disputes
                         </Link>
                     </div>
                     <div className="flex flex-col gap-1">

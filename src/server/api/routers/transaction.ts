@@ -88,21 +88,21 @@ export const transactionRouter = createTRPCRouter({
     create: protectedProcedure
         .input(
             z.object({
-                name: z.string(),
                 buyerId: z.string(),
                 paypalOrderId: z.string(),
                 transactionId: z.string(),
                 listingId: z.string(),
-                price: z.string(),
+                payed: z.string(),
+                agreedPrice: z.number(),
                 sellerId: z.string(),
             })
         )
         .mutation(async ({ input, ctx }) => {
             const {
-                name,
                 transactionId,
                 paypalOrderId,
-                price,
+                agreedPrice,
+                payed,
                 listingId,
                 buyerId,
                 sellerId,
@@ -119,19 +119,16 @@ export const transactionRouter = createTRPCRouter({
                 },
             });
 
-            if (
-                listingCheck?.status === "SOLD" ||
-                listingCheck?.status === "PENDING"
-            ) {
+            if (listingCheck?.status === "SOLD") {
                 return { isAvailable: false };
             }
 
             const createTransaction =
                 await ctx.prisma.listingTransaction.create({
                     data: {
-                        name: name,
                         status: "PAYED",
-                        price: parseFloat(price) * 100,
+                        payed: parseFloat(payed) * 100,
+                        agreedPrice: agreedPrice,
                         listingId: listingId,
                         buyerId: buyerId,
                         transactionId: transactionId,
@@ -153,25 +150,29 @@ export const transactionRouter = createTRPCRouter({
                 if (seller && buyer) {
                     await ctx.prisma.message.create({
                         data: {
-                            listingId: listingId,
+                            listingTransactionId: createTransaction.id,
                             senderId: buyerId,
                             receiverId: sellerId,
                             text: `Hey ${
                                 seller.username ? seller.username : ""
-                            }, I'm ready to purchase your keyboard for the agreed price of ${price} via paypal!`,
+                            }, I'm ready to purchase your keyboard for the agreed price of ${agreedPrice} via paypal!`,
                         },
                     });
                 }
                 // todo send email confirmations here...
-
-                // ALSOOOO Need to create new message between buyer and seller ...
 
                 await ctx.prisma.listing.update({
                     where: {
                         id: listingId,
                     },
                     data: {
-                        status: "PENDING",
+                        status: "SOLD",
+                    },
+                });
+
+                await ctx.prisma.listingOffer.deleteMany({
+                    where: {
+                        id: listingId,
                     },
                 });
 

@@ -8,12 +8,7 @@ import { useRouter } from "next/router";
 import Custom404 from "~/pages/404";
 import defaultProfile from "@public/Profile/profile-default.png";
 import TitleScripts from "~/components/TitleScripts";
-import BackArrow from "~/components/Svgs/menuArrow";
 import LoadingSpinner from "~/components/Loading";
-
-interface CreateListingProps {
-    setShowCreate: (showCreate: boolean) => void;
-}
 
 interface ErrorsObj {
     image?: string;
@@ -300,7 +295,7 @@ export default function CreateListing() {
                 <div className="flex h-24 w-full flex-col justify-center rounded-r-xl border-b-2 border-t-2 border-[#2f2f2f] bg-dark bg-opacity-90 px-5">
                     <div className="flex justify-between ">
                         <div>
-                            <div className="flex justify-between text-3xl">
+                            <div className="flex justify-between text-3xl text-green-500">
                                 <TitleScripts page={"createListing"} />
                             </div>
                             <h3 className="text-darkGray">

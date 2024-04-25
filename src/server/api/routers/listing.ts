@@ -235,6 +235,7 @@ export const listingRouter = createTRPCRouter({
 
             const whereFilters: Prisma.ListingWhereInput = {
                 AND: [
+                    { status: "ACTIVE" },
                     switchType ? { switchType } : {},
                     soundType ? { soundType } : {},
                     assemblyType ? { assemblyType } : {},
@@ -330,6 +331,7 @@ export const listingRouter = createTRPCRouter({
 
             const whereFilters: Prisma.ListingWhereInput = {
                 AND: [
+                    { status: "ACTIVE" },
                     switchType ? { switchType } : {},
                     soundType ? { soundType } : {},
                     assemblyType ? { assemblyType } : {},

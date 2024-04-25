@@ -2,7 +2,8 @@ import type { ListingOffer } from "@prisma/client";
 import { formatDistance } from "date-fns";
 import { useState } from "react";
 import ModalDialog from "~/components/Modal";
-import AcceptDeclineOffer from "../AcceptDeclineModal/acceptDeclineOffer";
+import TitleScripts from "~/components/TitleScripts";
+import CreateTransaction from "~/components/Transactions/Create";
 
 interface EachOfferViewCardProps {
     offer: ListingOffer & {
@@ -11,7 +12,10 @@ interface EachOfferViewCardProps {
 }
 
 interface Listing {
+    id: string;
     title: string;
+    status: string;
+    sellerId: string;
     seller: {
         username: string | null;
     };
@@ -21,8 +25,6 @@ export default function EachOfferViewCard({ offer }: EachOfferViewCardProps) {
     const now = new Date();
 
     // todo PAY NOW BB
-
-    // shows up depending on the offer's status ....
 
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -59,11 +61,22 @@ export default function EachOfferViewCard({ offer }: EachOfferViewCardProps) {
                     >
                         ${offer.price / 100}
                     </p>
+                    {offer.status === "PENDING" && (
+                        <div>
+                            <div className="mt-5 flex justify-center text-purple ">
+                                <TitleScripts page={"offerBuyer"} />
+                            </div>
+                        </div>
+                    )}
+
                     {offer.status === "ACCEPTED" && (
                         <div className="mt-5 flex justify-center">
                             <button
                                 className=" text-md keeb-shop-offer-button mt-5 flex items-center gap-2 rounded-md bg-green-500 py-2 pr-4 text-black "
-                                onClick={openPayModal}
+                                onClick={() => {
+                                    if (offer.listing.status !== "SOLD")
+                                        openPayModal();
+                                }}
                             >
                                 {" "}
                                 <svg
@@ -96,11 +109,18 @@ export default function EachOfferViewCard({ offer }: EachOfferViewCardProps) {
                     )}
                 </div>
                 <ModalDialog isOpen={isModalOpen} onClose={closeModal}>
-                    <div>pay now </div>
+                    <CreateTransaction
+                        closeModal={closeModal}
+                        listingId={offer.listing.id}
+                        sellerId={offer.listing.sellerId}
+                        price={offer.price}
+                        title={offer.listing.title}
+                        // is it an offer or buy now becuase when its an offer we need to update the offers as well
+                    />
                 </ModalDialog>
                 <div className="flex h-1/6 w-full items-end  justify-between">
                     <p>
-                        {formatDistance(new Date(offer.createdAt), now, {
+                        {formatDistance(new Date(offer.updatedAt), now, {
                             addSuffix: true,
                         })}
                     </p>

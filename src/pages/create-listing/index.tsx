@@ -1,23 +1,15 @@
-import { motion } from "framer-motion";
-import { useState } from "react";
 import { useSession } from "next-auth/react";
-import TitleScripts from "~/components/TitleScripts";
 import Custom404 from "../404";
 import CreateListing from "~/components/KeebShop/CreateListing/Create";
-import Image from "next/image";
-import keebo from "@public/Profile/keebo.png";
 
 export default function CreateListingAgreement() {
     const { data: session } = useSession();
 
     const accessDenied = !session || !session.user.isVerified;
 
-
     if (accessDenied) {
         return <Custom404 />;
     }
-
-    // TODO Setup modals for rules, scam prevention -- create keeby rules pool themed and we will link them
 
     return (
         <>
@@ -36,7 +28,7 @@ export default function CreateListingAgreement() {
                 </video>
             </div>
             <div className="z-10 flex w-full flex-col items-center justify-center">
-                <CreateListing  />
+                <CreateListing />
             </div>
         </>
     );

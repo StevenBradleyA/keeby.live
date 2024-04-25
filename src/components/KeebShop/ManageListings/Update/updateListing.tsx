@@ -3,15 +3,11 @@ import type { Images, Listing } from "@prisma/client";
 import Image from "next/image";
 import keebo from "@public/Profile/keebo.png";
 import { useEffect, useState } from "react";
-import Link from "next/link";
-import ModalDialog from "~/components/Modal";
 import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
-import { motion } from "framer-motion";
 import { uploadFileToS3 } from "~/utils/aws";
 import defaultProfile from "@public/Profile/profile-default.png";
 import TitleScripts from "~/components/TitleScripts";
-import BackArrow from "~/components/Svgs/menuArrow";
 import LoadingSpinner from "~/components/Loading";
 
 interface UpdateListingProps {
@@ -37,7 +33,9 @@ interface ErrorsObj {
     priceExcess?: string;
     priceNotWhole?: string;
     keycaps?: string;
+    keycapsExcess?: string;
     switches?: string;
+    switchesExcess?: string;
     switchType?: string;
     soundTest?: string;
     soundType?: string;
@@ -54,9 +52,7 @@ interface ListingData {
     sellerId: string;
     title: string;
     keycaps: string;
-    keycapsExcess?: string;
     switches: string;
-    switchesExcess?: string;
     switchType: string;
     soundType: string;
     layoutType: string;
@@ -506,7 +502,7 @@ export default function UpdateListing({
 
                         <div className="matrix-contents flex h-24 w-full flex-col justify-center rounded-r-xl border-b-2 border-t-2 border-[#2f2f2f] bg-black bg-opacity-30 px-5">
                             <div>
-                                <div className="flex justify-between text-3xl">
+                                <div className="flex justify-between text-3xl text-green-500">
                                     <TitleScripts page={"createListing"} />
                                 </div>
                                 <h3 className="text-darkGray">

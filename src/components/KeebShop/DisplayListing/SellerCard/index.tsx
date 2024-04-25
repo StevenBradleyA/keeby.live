@@ -118,7 +118,7 @@ export default function SellerListingCard({
                                     ? "Listing Pending Sale"
                                     : ""}
                                 {listing.status === "SOLD"
-                                    ? "Listing SOLD"
+                                    ? "This Keeb is Sold"
                                     : ""}
                             </div>
                         )}
@@ -127,7 +127,10 @@ export default function SellerListingCard({
                 <ModalDialog isOpen={isBuyModalOpen} onClose={closeBuyModal}>
                     <CreateTransaction
                         closeModal={closeBuyModal}
-                        listing={listing}
+                        listingId={listing.id}
+                        sellerId={listing.sellerId}
+                        price={listing.price}
+                        title={listing.title}
                     />
                 </ModalDialog>
                 <ModalDialog

@@ -135,12 +135,11 @@ export default function TitleScripts({ page }: TitleScriptsProps) {
             );
         }
 
-
-        if (page === "offer") {
+        if (page === "offerSeller") {
             const phrases = [
                 "Awaiting Buyer Verification",
                 "Taking longer than a group buy",
-                "Keeby will notify you when he verifies",
+                "Keeby will notify you when they verify",
                 "Waiting on Buyer",
             ];
             const delay = [0, 4000, 8000, 12000, 16000];
@@ -151,20 +150,22 @@ export default function TitleScripts({ page }: TitleScriptsProps) {
                 }, delay[i])
             );
         }
+        if (page === "offerBuyer") {
+            const phrases = [
+                "Awaiting Seller Response",
+                "Taking longer than a group buy",
+                "Keeby will notify you if they accept",
+                "Waiting on Seller",
+            ];
+            const delay = [0, 4000, 8000, 12000, 16000];
 
-
-
-
-
+            phrases.forEach((phrase, i) =>
+                setTimeout(() => {
+                    setTitle(phrase);
+                }, delay[i])
+            );
+        }
     }, [page]);
 
-    return (
-        <h1
-            className={`moving-title text-green-500  ${
-                title === "Authorization Required" ? "text-red-600" : ""
-            }`}
-        >
-            {title}
-        </h1>
-    );
+    return <h1 className="moving-title">{title}</h1>;
 }
