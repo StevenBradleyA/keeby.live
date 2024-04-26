@@ -20,6 +20,11 @@ export const transactionRouter = createTRPCRouter({
                     },
                 },
                 include: {
+                    listing: {
+                        select: {
+                            title: true,
+                        },
+                    },
                     buyer: {
                         select: {
                             username: true,
@@ -35,6 +40,7 @@ export const transactionRouter = createTRPCRouter({
                 include: {
                     listing: {
                         select: {
+                            title: true,
                             seller: {
                                 select: {
                                     username: true,

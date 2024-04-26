@@ -10,26 +10,11 @@ import { PayPalButtons } from "@paypal/react-paypal-js";
 
 interface CreateTransactionProps {
     closeModal: () => void;
-    // listing: ListingWithImagesAndCount;
     listingId: string;
     price: number;
     title: string;
     sellerId: string;
 }
-
-// interface ListingWithImagesAndCount extends Listing {
-//     images: Images[];
-//     _count: {
-//         comments: number;
-//     };
-//     seller: {
-//         id: string;
-//         username: string | null;
-//         selectedTag: string | null;
-//         profile: string | null;
-//         avgRating?: number | null;
-//     };
-// }
 
 export default function CreateTransaction({
     closeModal,
@@ -69,10 +54,10 @@ export default function CreateTransaction({
                 setPaymentSuccess(true);
                 setOrderId(data.createTransaction.paypalOrderId);
             }
-            void ctx.listing.getOne.invalidate()
-            void ctx.listing.getAllWithFilters.invalidate()
-            void ctx.listing.getAllSortedByPopularityWithFilters.invalidate()
-            void ctx.offer.getAllByUserId.invalidate()
+            void ctx.listing.getOne.invalidate();
+            void ctx.listing.getAllWithFilters.invalidate();
+            void ctx.listing.getAllSortedByPopularityWithFilters.invalidate();
+            void ctx.offer.getAllByUserId.invalidate();
         },
     });
 

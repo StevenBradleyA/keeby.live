@@ -107,7 +107,6 @@ export default function VerifySeller() {
                                                 <span className="keeb-shop-offer-button-text">
                                                     {`Sell Your Keeb `}
                                                 </span>
-                                                {/* className="keeb-shop-offer-button-circle w-2" */}
 
                                                 <svg
                                                     xmlns="http://www.w3.org/2000/svg"

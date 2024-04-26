@@ -6,7 +6,7 @@ import MainFooter from "~/components/Footer";
 export default function KeebDex() {
     return (
         <>
-            <div className="text-4xl">
+            <div className="text-4xl text-green-500">
                 <TitleScripts page={"keebdex"} />
             </div>
 
@@ -16,7 +16,49 @@ export default function KeebDex() {
                     href={`/keebdex/rules`}
                     aria-label="typing tips"
                 >
-                    <span style={{ zIndex: "10" }}>KEEBY Rules</span>
+                    <span style={{ zIndex: "10" }}>How Keeby Works</span>
+                    <svg
+                        className="keebdex-button-arrow w-6 rounded-full bg-none p-1"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="3"
+                            d="M3.515 12h16.97m0 0L13.01 4.525M20.485 12l-7.475 7.476"
+                        ></path>
+                    </svg>
+                </Link>
+                <Link
+                    className=" keebdex-button flex justify-center gap-2 rounded-md bg-black px-6 py-4"
+                    href={`/keebdex/rules`}
+                    aria-label="typing tips"
+                >
+                    <span style={{ zIndex: "10" }}>FAQ</span>
+                    <svg
+                        className="keebdex-button-arrow w-6 rounded-full bg-none p-1"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="3"
+                            d="M3.515 12h16.97m0 0L13.01 4.525M20.485 12l-7.475 7.476"
+                        ></path>
+                    </svg>
+                </Link>
+                <Link
+                    className=" keebdex-button flex justify-center gap-2 rounded-md bg-black px-6 py-4"
+                    href={`/keebdex/rules`}
+                    aria-label="typing tips"
+                >
+                    <span style={{ zIndex: "10" }}>Keeby Rules</span>
                     <svg
                         className="keebdex-button-arrow w-6 rounded-full bg-none p-1"
                         xmlns="http://www.w3.org/2000/svg"
@@ -55,48 +97,8 @@ export default function KeebDex() {
                         ></path>
                     </svg>
                 </Link>
-                <Link
-                    className=" keebdex-button flex justify-center gap-2 rounded-md bg-black px-6 py-4"
-                    href={`/keebdex/share-guidelines`}
-                    aria-label="typing tips"
-                >
-                    <span style={{ zIndex: "10" }}>Keeb Share Guidlines</span>
-                    <svg
-                        className="keebdex-button-arrow w-6 rounded-full bg-none p-1"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            stroke="currentColor"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="3"
-                            d="M3.515 12h16.97m0 0L13.01 4.525M20.485 12l-7.475 7.476"
-                        ></path>
-                    </svg>
-                </Link>
-                <Link
-                    className=" keebdex-button flex justify-center gap-2 rounded-md bg-black px-6 py-4"
-                    href={`/keebdex/about`}
-                    aria-label="typing tips"
-                >
-                    <span style={{ zIndex: "10" }}>What Is KEEBY?</span>
-                    <svg
-                        className="keebdex-button-arrow w-6 rounded-full bg-none p-1"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            stroke="currentColor"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="3"
-                            d="M3.515 12h16.97m0 0L13.01 4.525M20.485 12l-7.475 7.476"
-                        ></path>
-                    </svg>
-                </Link>
+          
+             
                 <Link
                     className=" keebdex-button flex justify-center gap-2 rounded-md bg-black px-6 py-4"
                     href={`/keebdex/typing-tips`}
@@ -147,6 +149,27 @@ export default function KeebDex() {
                     aria-label="typing tips"
                 >
                     <span style={{ zIndex: "10" }}>Can I Support Keeby?</span>
+                    <svg
+                        className="keebdex-button-arrow w-6 rounded-full bg-none p-1"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="3"
+                            d="M3.515 12h16.97m0 0L13.01 4.525M20.485 12l-7.475 7.476"
+                        ></path>
+                    </svg>
+                </Link>
+                <Link
+                    className=" keebdex-button flex justify-center gap-2 rounded-md bg-black px-6 py-4"
+                    href={`/keebdex/about`}
+                    aria-label="typing tips"
+                >
+                    <span style={{ zIndex: "10" }}>About</span>
                     <svg
                         className="keebdex-button-arrow w-6 rounded-full bg-none p-1"
                         xmlns="http://www.w3.org/2000/svg"
