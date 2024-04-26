@@ -31,7 +31,7 @@ export const messageRouter = createTRPCRouter({
                     },
                 },
                 orderBy: {
-                    updatedAt: "desc",
+                    createdAt: "desc",
                 },
                 distinct: ["listingTransactionId"],
             });
@@ -63,9 +63,35 @@ export const messageRouter = createTRPCRouter({
                     },
                 },
                 orderBy: {
-                    updatedAt: "desc",
+                    createdAt: "desc",
                 },
                 distinct: ["listingTransactionId"],
+            });
+        }),
+
+    create: protectedProcedure
+        .input(
+            z.object({
+                text: z.string(),
+                senderId: z.string(),
+                receiverId: z.string(),
+                listingTransactionId: z.string(),
+            })
+        )
+        .mutation(async ({ input, ctx }) => {
+            const { text, senderId, receiverId, listingTransactionId } = input;
+
+            if (ctx.session.user.id !== input.senderId) {
+                throw new Error("Invalid credentials");
+            }
+
+            return await ctx.prisma.message.create({
+                data: {
+                    text: text,
+                    senderId: senderId,
+                    receiverId: receiverId,
+                    listingTransactionId: listingTransactionId,
+                },
             });
         }),
 });
