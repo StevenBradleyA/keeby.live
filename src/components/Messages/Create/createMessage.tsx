@@ -89,32 +89,34 @@ export default function CreateMessage({
     }, [text]);
 
     return (
-        <form className="mb-5 flex flex-col justify-between">
-            <textarea
-                className="comment-input-box w-full rounded-lg border-none bg-pogGray p-2 text-white outline-none"
-                value={text}
-                placeholder="Write a comment..."
-                onChange={(e) => setText(e.target.value)}
-                onFocus={() => setCreateSelected(true)}
-                onKeyDown={handleRowIncrease}
-                rows={row}
-            />
+        <form className=" flex flex-col justify-between">
             {createSelected && (
-                <div className="flex justify-end gap-5 text-sm mt-1">
+                <div className="z-10 mt-1 flex justify-end gap-5 text-sm">
                     <button
                         className="rounded-md border-2 border-green-500 border-opacity-0 px-2 py-1  text-darkGray hover:border-opacity-100 "
                         onClick={cancelComment}
+
                     >
                         Cancel
                     </button>
                     <button
                         className="rounded-md border-2 border-green-500 border-opacity-0 px-2 py-1  text-darkGray hover:border-opacity-100 "
                         onClick={handleSubmitClick}
+
                     >
                         Send
                     </button>
                 </div>
             )}
+            <textarea
+                className="comment-input-box w-full rounded-lg border-none bg-pogGray p-2 text-white outline-none"
+                value={text}
+                placeholder="Send a message..."
+                onChange={(e) => setText(e.target.value)}
+                onFocus={() => setCreateSelected(true)}
+                onKeyDown={handleRowIncrease}
+                rows={row}
+            />
         </form>
     );
 }

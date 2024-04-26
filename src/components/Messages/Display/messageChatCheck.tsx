@@ -19,7 +19,14 @@ export default function MessageChatCheck({
                 <LoadingSpinner size="20px" />
             </div>
         );
-    // todo add menu with seller paypal and agreed price above map
+
+
+// todo message time stamps 
+
+// todo notificationss for unread messages... 
+
+
+
     return messages ? (
         <div className="h-full w-full">
             <div className="h-[90%] text-darkGray overflow-y-auto">
@@ -58,7 +65,7 @@ export default function MessageChatCheck({
                 </div>
             </div>
             {messages[0] && (
-                <div className=" h-[10%] ">
+                <div className=" h-[10%] flex flex-col justify-end  ">
                     <CreateMessage
                         listingTransactionId={activeTransactionId}
                         senderId={userId}

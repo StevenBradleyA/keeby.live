@@ -90,9 +90,6 @@ $blue: #2033c1; */
 
 /* --------------                            --------------  */
 
-
-
-
 /* --------------         ADMIN          --------------  */
 
 .admin-search::placeholder {
@@ -1203,8 +1200,14 @@ input[type="checkbox"]:hover {
 }
 
 /* --------------         END PROFILE         --------------  */
+/* --------------         END PROFILE         --------------  */
+/* --------------         END PROFILE         --------------  */
+/* --------------         END PROFILE         --------------  */
 
-/* --------------     Public Profile    --------------  */
+/* --------------     PUBLIC PROFILE    --------------  */
+/* --------------     PUBLIC PROFILE    --------------  */
+/* --------------     PUBLIC PROFILE    --------------  */
+/* --------------     PUBLIC PROFILE    --------------  */
 
 .public-profile-background {
     z-index: 4;
@@ -1220,6 +1223,72 @@ input[type="checkbox"]:hover {
 .matrix-contents {
     z-index: 10;
 }
+
+/* --------------     MESSAGES    --------------  */
+/* --------------     MESSAGES    --------------  */
+/* --------------     MESSAGES    --------------  */
+/* --------------     MESSAGES    --------------  */
+
+.message-bubble {
+    position: relative;
+    border-radius: 25px;
+
+    &:before {
+        width: 20px;
+    }
+
+    &:after {
+        width: 26px;
+        background-color: #222;
+    }
+
+    &:before,
+    &:after {
+        position: absolute;
+        bottom: 0;
+        height: 25px;
+        content: "";
+    }
+}
+
+.sent-message {
+    align-self: flex-end;
+    color: white;
+    background: #007aff;
+
+    &:before {
+        right: -7px;
+        background-color: #007aff;
+        border-bottom-left-radius: 16px 14px;
+    }
+
+    &:after {
+        right: -26px;
+        border-bottom-left-radius: 10px;
+    }
+}
+
+.received-message {
+    background: #2f2f2f;
+
+    &:before {
+        left: -7px;
+        background-color: #2f2f2f;
+        border-bottom-right-radius: 16px 14px;
+    }
+
+    &:after {
+        left: -26px;
+        border-bottom-right-radius: 10px;
+    }
+}
+
+/* Shared styles for all messages */
+
+/* --------------     END MESSAGES    --------------  */
+/* --------------     END MESSAGES    --------------  */
+/* --------------     END MESSAGES    --------------  */
+/* --------------     END MESSAGES    --------------  */
 
 /* --------------     404    --------------  */
 

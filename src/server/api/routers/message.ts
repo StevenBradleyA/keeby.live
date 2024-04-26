@@ -63,9 +63,8 @@ export const messageRouter = createTRPCRouter({
                     },
                 },
                 orderBy: {
-                    createdAt: "desc",
+                    createdAt: "asc",
                 },
-                distinct: ["listingTransactionId"],
             });
         }),
 
