@@ -71,13 +71,13 @@ export default function DisplayMessages({ userId }: { userId: string }) {
                         </div>
                     )}
 
-                    {/* {typeof activeTransactionId === "string" &&
+                    {typeof activeTransactionId === "string" &&
                         activeTransactionId.length > 0 && (
                             <MessageChatCheck
                                 activeTransactionId={activeTransactionId}
                                 userId={userId}
                             />
-                        )} */}
+                        )}
                 </div>
             </div>
         </>

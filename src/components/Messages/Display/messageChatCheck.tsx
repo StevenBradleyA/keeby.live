@@ -2,7 +2,8 @@ import LoadingSpinner from "~/components/Loading";
 import { api } from "~/utils/api";
 import CreateMessage from "../Create/createMessage";
 import EachMessageCard from "./eachMessageCard";
-
+import { useEffect, useRef } from "react";
+import type { RefObject } from "react";
 export default function MessageChatCheck({
     activeTransactionId,
     userId,
@@ -10,8 +11,22 @@ export default function MessageChatCheck({
     userId: string;
     activeTransactionId: string;
 }) {
-    const { data: messages, isLoading } =
-        api.message.getAllByTransactionId.useQuery(activeTransactionId);
+    const messageScrollRef = useRef<HTMLDivElement | null>(null);
+
+    const {
+        data: messages,
+        isLoading,
+        isFetching,
+    } = api.message.getAllByTransactionId.useQuery(activeTransactionId);
+
+    useEffect(() => {
+        if (!isFetching) {
+            if (messageScrollRef && messageScrollRef.current) {
+                messageScrollRef.current.scrollTop =
+                    messageScrollRef.current.scrollHeight;
+            }
+        }
+    }, [isFetching]);
 
     if (isLoading)
         return (
@@ -24,11 +39,22 @@ export default function MessageChatCheck({
 
     // todo notificationss for unread messages...
 
+    // Please include your:
+    // Name
+    // Address
+    // Phone #
+    // And full order in the payment notes,
+
+    // again have to determine if buyer or seller right...
+
     return messages ? (
         <div className="h-full w-full">
-            <div className="h-[90%] overflow-y-auto text-darkGray">
+            <div
+                className="h-[90%] overflow-y-auto text-darkGray"
+                ref={messageScrollRef}
+            >
                 <div className="flex justify-center">
-                    <h1>{`Welcome to Keeby's Private Messager`}</h1>
+                    <h1 className="text-white">{`Welcome to Keeby's Private Messager`}</h1>
                 </div>
                 <h2>{messages[0]?.listingTransaction.listing.title}</h2>
                 <div>
@@ -47,7 +73,7 @@ export default function MessageChatCheck({
 
                 <div>
                     <div>
-                        Seller Paypal Email: {messages[0]?.sender.paypalEmail}
+                        Seller Paypal Email: {messages[0]?.seller.paypalEmail}
                     </div>
                 </div>
                 <div className="mt-5 flex w-full flex-col text-white">
@@ -65,8 +91,16 @@ export default function MessageChatCheck({
                 <div className=" flex h-[10%] flex-col justify-end  ">
                     <CreateMessage
                         listingTransactionId={activeTransactionId}
-                        senderId={userId}
-                        receiverId={messages[0]?.receiverId}
+                        buyerId={
+                            messages[0].buyerId === userId
+                                ? userId
+                                : messages[0].sellerId
+                        }
+                        sellerId={
+                            messages[0].sellerId === userId
+                                ? userId
+                                : messages[0].buyerId
+                        }
                     />
                 </div>
             )}

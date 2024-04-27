@@ -134,23 +134,23 @@ export const messageRouter = createTRPCRouter({
         .input(
             z.object({
                 text: z.string(),
-                senderId: z.string(),
-                receiverId: z.string(),
+                buyerId: z.string(),
+                sellerId: z.string(),
                 listingTransactionId: z.string(),
             })
         )
         .mutation(async ({ input, ctx }) => {
-            const { text, senderId, receiverId, listingTransactionId } = input;
+            const { text, buyerId, sellerId, listingTransactionId } = input;
 
-            if (ctx.session.user.id !== input.senderId) {
+            if (ctx.session.user.id !== (buyerId || sellerId)) {
                 throw new Error("Invalid credentials");
             }
 
             return await ctx.prisma.message.create({
                 data: {
                     text: text,
-                    senderId: senderId,
-                    receiverId: receiverId,
+                    buyerId: buyerId,
+                    sellerId: sellerId,
                     listingTransactionId: listingTransactionId,
                 },
             });

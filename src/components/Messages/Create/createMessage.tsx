@@ -1,15 +1,13 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import type { RefObject } from "react";
 import { api } from "~/utils/api";
 import React from "react";
-import ModalDialog from "~/components/Modal";
-import SignInModal from "~/components/Comments/Modal/signInModal";
-// import SignInModal from "../Modal/signInModal";
 
 interface CreateMessageProps {
     listingTransactionId: string;
-    senderId: string;
-    receiverId: string;
+    sellerId: string;
+    buyerId: string;
 }
 
 interface ErrorsObj {
@@ -18,8 +16,8 @@ interface ErrorsObj {
 
 export default function CreateMessage({
     listingTransactionId,
-    senderId,
-    receiverId,
+    sellerId,
+    buyerId,
 }: CreateMessageProps) {
     const [text, setText] = useState<string>("");
     const [row, setRow] = useState<number>(1);
@@ -36,31 +34,25 @@ export default function CreateMessage({
         },
     });
 
-
-    
-
     const handleRowIncrease = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-
         const textarea = e.target as HTMLTextAreaElement;
         const { value, selectionStart, selectionEnd } = textarea;
 
-
         if (e.key === "Enter" && !e.shiftKey) {
             setRow((prevRow) => prevRow + 1);
-        }
-       else if (e.key === "Backspace") {
-        // Check if the cursor is at the start of a line (new line or start of text)
-        const beforeCursor = value.substring(0, selectionStart);
-        const afterCursor = value.substring(selectionEnd);
-        
-        // Determine if the cursor is on an empty line
-        const isCursorAtLineStart = beforeCursor.endsWith('\n') || beforeCursor === "";
-        const isCursorAtLineEnd = afterCursor.startsWith('\n') || afterCursor === "";
+        } else if (e.key === "Backspace") {
+            const beforeCursor = value.substring(0, selectionStart);
+            const afterCursor = value.substring(selectionEnd);
 
-        if (isCursorAtLineStart && isCursorAtLineEnd) {
-            setRow(prevRow => prevRow > 1 ? prevRow - 1 : 1); // Prevent row count from being less than 1
+            const isCursorAtLineStart =
+                beforeCursor.endsWith("\n") || beforeCursor === "";
+            const isCursorAtLineEnd =
+                afterCursor.startsWith("\n") || afterCursor === "";
+
+            if (isCursorAtLineStart && isCursorAtLineEnd) {
+                setRow((prevRow) => (prevRow > 1 ? prevRow - 1 : 1));
+            }
         }
-    }
     };
 
     const cancelComment = (e: React.FormEvent) => {
@@ -87,8 +79,8 @@ export default function CreateMessage({
         ) {
             const data = {
                 text,
-                senderId: senderId,
-                receiverId: receiverId,
+                sellerId: sellerId,
+                buyerId: buyerId,
                 listingTransactionId: listingTransactionId,
             };
 
@@ -116,14 +108,12 @@ export default function CreateMessage({
                     <button
                         className="rounded-md border-2 border-green-500 border-opacity-0 px-2 py-1  text-darkGray hover:border-opacity-100 "
                         onClick={cancelComment}
-
                     >
                         Cancel
                     </button>
                     <button
                         className="rounded-md border-2 border-green-500 border-opacity-0 px-2 py-1  text-darkGray hover:border-opacity-100 "
                         onClick={handleSubmitClick}
-
                     >
                         Send
                     </button>
