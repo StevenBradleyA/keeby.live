@@ -157,11 +157,13 @@ export const transactionRouter = createTRPCRouter({
                     await ctx.prisma.message.create({
                         data: {
                             listingTransactionId: createTransaction.id,
-                            senderId: buyerId,
-                            receiverId: sellerId,
+                            buyerId: buyerId,
+                            sellerId: sellerId,
                             text: `Hey ${
                                 seller.username ? seller.username : ""
-                            }, I'm ready to purchase your keyboard for the agreed price of ${agreedPrice} via paypal!`,
+                            }, I'm ready to purchase your keyboard for the agreed price of ${(
+                                agreedPrice / 100
+                            ).toFixed(2)} via paypal!`,
                         },
                     });
                 }

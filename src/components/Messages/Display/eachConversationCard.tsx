@@ -13,10 +13,15 @@ import {
 interface EachConversationCardProps {
     message: MessageCard;
     setActiveTransactionId: (activeTransactionId: string) => void;
+    userId: string;
 }
 
 interface MessageCard extends Message {
-    sender: {
+    seller: {
+        username: string | null;
+        profile: string | null;
+    };
+    buyer: {
         username: string | null;
         profile: string | null;
     };
@@ -25,12 +30,19 @@ interface MessageCard extends Message {
     };
 }
 
-
 export default function EachConversationCard({
+    userId,
     message,
     setActiveTransactionId,
 }: EachConversationCardProps) {
-    const { data: sessionData } = useSession();
+    const isBuyer = message.buyerId === userId;
+    const otherParty = isBuyer ? message.seller : message.buyer;
+    const otherPartyProfile = otherParty.profile
+        ? otherParty.profile
+        : defaultProfile;
+    const otherPartyUsername = otherParty.username
+        ? otherParty.username
+        : "Unknown User";
 
     const formatDate = (date: Date) => {
         if (isToday(date)) {
@@ -55,11 +67,7 @@ export default function EachConversationCard({
             onClick={() => setActiveTransactionId(message.listingTransactionId)}
         >
             <Image
-                src={
-                    sessionData?.user.profile
-                        ? sessionData.user.profile
-                        : defaultProfile
-                }
+                src={otherPartyProfile}
                 alt="profile"
                 height={600}
                 width={600}
@@ -69,7 +77,7 @@ export default function EachConversationCard({
             <div className="flex w-full flex-col items-start">
                 <div className="flex w-full justify-between  ">
                     <div className="flex w-full justify-start text-white">
-                        {message.sender.username}
+                        {otherPartyUsername}
                     </div>
                     <div className=" flex-shrink-0 text-darkGray">
                         {formatDate(message.createdAt)}

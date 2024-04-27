@@ -9,12 +9,74 @@ export const messageRouter = createTRPCRouter({
     getAllByUserId: publicProcedure
         .input(z.string())
         .query(async ({ ctx, input: userId }) => {
+            // const buyer = await ctx.prisma.message.findMany({
+            //     where: {
+            //         buyerId: userId,
+            //     },
+            //     include: {
+            //         seller: {
+            //             select: {
+            //                 username: true,
+            //                 profile: true,
+            //             },
+            //         },
+            //         listingTransaction: {
+            //             select: {
+            //                 listing: {
+            //                     select: {
+            //                         title: true,
+            //                     },
+            //                 },
+            //             },
+            //         },
+            //     },
+            //     orderBy: {
+            //         createdAt: "desc",
+            //     },
+            //     distinct: ["listingTransactionId"],
+            // });
+
+            // const seller = await ctx.prisma.message.findMany({
+            //     where: {
+            //         sellerId: userId,
+            //     },
+            //     include: {
+            //         buyer: {
+            //             select: {
+            //                 username: true,
+            //                 profile: true,
+            //             },
+            //         },
+            //         listingTransaction: {
+            //             select: {
+            //                 listing: {
+            //                     select: {
+            //                         title: true,
+            //                     },
+            //                 },
+            //             },
+            //         },
+            //     },
+            //     orderBy: {
+            //         createdAt: "desc",
+            //     },
+            //     distinct: ["listingTransactionId"],
+            // });
+
+            // return {buyer, seller}
+
             return await ctx.prisma.message.findMany({
                 where: {
-                    receiverId: userId,
+                    OR: [{ buyerId: userId }, { sellerId: userId }],
                 },
                 include: {
-                    sender: {
+                    buyer: {
+                        select: {
+                            username: true,
+                            profile: true,
+                        },
+                    },
+                    seller: {
                         select: {
                             username: true,
                             profile: true,
@@ -45,7 +107,7 @@ export const messageRouter = createTRPCRouter({
                     listingTransactionId: transactionId,
                 },
                 include: {
-                    sender: {
+                    seller: {
                         select: {
                             username: true,
                             paypalEmail: true,

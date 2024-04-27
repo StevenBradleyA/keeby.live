@@ -36,10 +36,31 @@ export default function CreateMessage({
         },
     });
 
+
+    
+
     const handleRowIncrease = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+
+        const textarea = e.target as HTMLTextAreaElement;
+        const { value, selectionStart, selectionEnd } = textarea;
+
+
         if (e.key === "Enter" && !e.shiftKey) {
             setRow((prevRow) => prevRow + 1);
         }
+       else if (e.key === "Backspace") {
+        // Check if the cursor is at the start of a line (new line or start of text)
+        const beforeCursor = value.substring(0, selectionStart);
+        const afterCursor = value.substring(selectionEnd);
+        
+        // Determine if the cursor is on an empty line
+        const isCursorAtLineStart = beforeCursor.endsWith('\n') || beforeCursor === "";
+        const isCursorAtLineEnd = afterCursor.startsWith('\n') || afterCursor === "";
+
+        if (isCursorAtLineStart && isCursorAtLineEnd) {
+            setRow(prevRow => prevRow > 1 ? prevRow - 1 : 1); // Prevent row count from being less than 1
+        }
+    }
     };
 
     const cancelComment = (e: React.FormEvent) => {

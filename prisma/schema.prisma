@@ -204,19 +204,19 @@ model ListingTransaction {
 model Message {
     id                   String @id @default(cuid())
     text                 String
-    senderId             String
-    receiverId           String
+    buyerId              String
+    sellerId             String
     listingTransactionId String
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    sender             User               @relation("Sender", fields: [senderId], references: [id])
-    receiver           User               @relation("Receiver", fields: [receiverId], references: [id])
+    buyer              User               @relation("Buyer", fields: [buyerId], references: [id])
+    seller             User               @relation("Seller", fields: [sellerId], references: [id])
     listingTransaction ListingTransaction @relation(fields: [listingTransactionId], references: [id])
 
-    @@index([senderId], name: "idxMessageSenderId")
-    @@index([receiverId], name: "idxMessageReceiverId")
+    @@index([buyerId], name: "idxMessageBuyerId")
+    @@index([sellerId], name: "idxMessageSenderId")
     @@index([listingTransactionId], name: "idxMessageListingId")
 }
 
@@ -327,8 +327,8 @@ model User {
     sellerListings          Listing[]                 @relation("Seller")
     buyerListings           Listing[]                 @relation("Buyer")
     listingOffer            ListingOffer[]
-    sentMessages            Message[]                 @relation("Sender")
-    receivedMessages        Message[]                 @relation("Receiver")
+    sellerMessages          Message[]                 @relation("Buyer")
+    buyerMessages           Message[]                 @relation("Seller")
     verificationTransaction VerificationTransaction[]
 }
 

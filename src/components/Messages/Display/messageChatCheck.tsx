@@ -20,16 +20,13 @@ export default function MessageChatCheck({
             </div>
         );
 
+    // todo message time stamps
 
-// todo message time stamps 
-
-// todo notificationss for unread messages... 
-
-
+    // todo notificationss for unread messages...
 
     return messages ? (
         <div className="h-full w-full">
-            <div className="h-[90%] text-darkGray overflow-y-auto">
+            <div className="h-[90%] overflow-y-auto text-darkGray">
                 <div className="flex justify-center">
                     <h1>{`Welcome to Keeby's Private Messager`}</h1>
                 </div>
@@ -53,9 +50,9 @@ export default function MessageChatCheck({
                         Seller Paypal Email: {messages[0]?.sender.paypalEmail}
                     </div>
                 </div>
-                <div className="flex w-full flex-col text-white ">
+                <div className="mt-5 flex w-full flex-col text-white">
                     {messages.map((message) => (
-                        <div key={message.id} className="mt-5 w-full">
+                        <div key={message.id} className=" mb-2 w-full">
                             <EachMessageCard
                                 message={message}
                                 userId={userId}
@@ -65,7 +62,7 @@ export default function MessageChatCheck({
                 </div>
             </div>
             {messages[0] && (
-                <div className=" h-[10%] flex flex-col justify-end  ">
+                <div className=" flex h-[10%] flex-col justify-end  ">
                     <CreateMessage
                         listingTransactionId={activeTransactionId}
                         senderId={userId}

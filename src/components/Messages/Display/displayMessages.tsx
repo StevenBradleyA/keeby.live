@@ -4,7 +4,6 @@ import EachConversationCard from "./eachConversationCard";
 import keebo from "@public/Profile/keebo.png";
 import Image from "next/image";
 import MessageChatCheck from "./messageChatCheck";
-import CreateMessage from "../Create/createMessage";
 
 export default function DisplayMessages({ userId }: { userId: string }) {
     const { data: messages, isLoading } =
@@ -14,6 +13,10 @@ export default function DisplayMessages({ userId }: { userId: string }) {
 
     // these are all the messages
     // filter all the messages by listing transaction Id
+
+    // i need to check what i am
+
+    // am i a buyer or am i a seller? how do I know I check the userId... to see if it matches on or the other
 
     const [activeTransactionId, setActiveTransactionId] = useState<
         string | null
@@ -32,6 +35,8 @@ export default function DisplayMessages({ userId }: { userId: string }) {
 
     console.log("hello there", activeTransactionId);
 
+    console.log("messages", messages);
+
     return (
         <>
             <div className="flex h-[80vh] w-full gap-2 tablet:px-4 desktop:px-16 ">
@@ -43,6 +48,7 @@ export default function DisplayMessages({ userId }: { userId: string }) {
                                 className="w-full text-green-500"
                             >
                                 <EachConversationCard
+                                    userId={userId}
                                     message={message}
                                     setActiveTransactionId={
                                         setActiveTransactionId
@@ -65,13 +71,13 @@ export default function DisplayMessages({ userId }: { userId: string }) {
                         </div>
                     )}
 
-                    {typeof activeTransactionId === "string" &&
+                    {/* {typeof activeTransactionId === "string" &&
                         activeTransactionId.length > 0 && (
                             <MessageChatCheck
                                 activeTransactionId={activeTransactionId}
                                 userId={userId}
                             />
-                        )}
+                        )} */}
                 </div>
             </div>
         </>

@@ -27,10 +27,9 @@ export default function EachMessageCard({
     return (
         <div className="w-full overflow-x-hidden">
             {myMessage ? (
-                <div className=" flex justify-end rounded-md ">
+                <div className=" flex justify-end rounded-md pr-3 ">
                     <div
-                        // className="rounded-md bg-[#007AFF] p-2"
-                        className="message-bubble sent-message mr-5 rounded-md px-4 py-2"
+                        className="rounded-md bg-green-500  px-4 py-2  whitespace-pre-wrap"
                         style={{ maxWidth: "66.666%" }}
                     >
                         {message.text}
@@ -38,12 +37,10 @@ export default function EachMessageCard({
                 </div>
             ) : (
                 <div
-                    // className=" flex justify-start rounded-md "
-                    className="ml-5 flex justify-start rounded-md "
-                    // style={{ maxWidth: "66.666%" }}
+                    className=" flex justify-start rounded-md "
                 >
                     <div
-                        className="message-bubble received-message rounded-md bg-keebyGray p-2 px-4 py-2"
+                        className="rounded-md bg-keebyGray px-4 py-2"
                         style={{ maxWidth: "66.666%" }}
                     >
                         {message.text}
