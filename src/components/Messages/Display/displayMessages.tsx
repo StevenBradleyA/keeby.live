@@ -9,21 +9,6 @@ export default function DisplayMessages({ userId }: { userId: string }) {
     const { data: messages, isLoading } =
         api.message.getAllByUserId.useQuery(userId);
 
-    console.log(messages);
-
-
-
-
-
-
-    
-    // these are all the messages
-    // filter all the messages by listing transaction Id
-
-    // i need to check what i am
-
-    // am i a buyer or am i a seller? how do I know I check the userId... to see if it matches on or the other
-
     const [activeTransactionId, setActiveTransactionId] = useState<
         string | null
     >(null);
@@ -39,10 +24,6 @@ export default function DisplayMessages({ userId }: { userId: string }) {
         }
     }, [isLoading]);
 
-    console.log("hello there", activeTransactionId);
-
-    console.log("messages", messages);
-
     return (
         <>
             <div className="flex h-[80vh] w-full gap-2 tablet:px-4 desktop:px-16 ">
@@ -56,7 +37,6 @@ export default function DisplayMessages({ userId }: { userId: string }) {
                                 <EachConversationCard
                                     userId={userId}
                                     message={message}
-                                    activeTransactionId={activeTransactionId}
                                     setActiveTransactionId={
                                         setActiveTransactionId
                                     }
@@ -66,9 +46,9 @@ export default function DisplayMessages({ userId }: { userId: string }) {
                 </div>
                 <div className="h-full w-3/4 ">
                     {activeTransactionId === null && (
-                        <div className=" mt-5 flex items-end gap-2 text-darkGray">
+                        <div className=" mx-10 mt-10 flex items-end gap-2 text-darkGray">
                             <h1>
-                                {`Woah, all sold out. There are currently no listings for sale `}
+                                {`You have no messages. Buyers and sellers will be automatically connected here once a purchase is made.`}
                             </h1>
                             <Image
                                 src={keebo}

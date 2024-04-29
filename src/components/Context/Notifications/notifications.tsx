@@ -1,13 +1,10 @@
-// import { createContext, useEffect, useState } from "react";
-// import { api } from "~/utils/api";
+import { createContext, useEffect, useState } from "react";
+import { api } from "~/utils/api";
 
-// interface OffersProviderProps {
-//     userId: string;
-//     children: React.ReactNode;
-// }
-
-
-
+interface OffersProviderProps {
+    userId: string;
+    children: React.ReactNode;
+}
 
 // interface OffersContextType {
 //     offers: Offer[];
@@ -15,46 +12,47 @@
 //     refreshOffers: () => void;
 // }
 
-// const OffersContext = createContext<OffersContextType | undefined>(undefined);
+const OffersContext = createContext<OffersContextType | undefined>(undefined);
 
-// export const useOffers = (): OffersContextType => {
-//     const context = useContext(OffersContext);
-//     if (!context) {
-//         throw new Error("useOffers must be used within an OffersProvider");
-//     }
-//     return context;
-// };
+export const useOffers = (): OffersContextType => {
+    const context = useContext(OffersContext);
 
+    if (!context) {
+        throw new Error(
+            "useOffers must be used within an NotificationProvider"
+        );
+    }
+    return context;
+};
 
+// todo message notifications, offers,
 
+const NotificationProvider: React.FC<OffersProviderProps> = ({
+    userId,
+    children,
+}) => {
+    const [offers, setOffers] = useState<Offer[]>([]);
 
+    // useEffect(() => {
+    //     async function fetchOffers() {
+    //         const {data: allOffers } = await api.offer.getAllByUserId(userId); // Adjust this line according to your actual API.
+    //         // setOffers(response.data.offers);
+    //     }
+    //     fetchOffers();
+    // }, [userId]);
 
-// const OffersProvider: React.FC<OffersProviderProps> = ({
-//     userId,
-//     children,
-// }) => {
-//     const [offers, setOffers] = useState<Offer[]>([]);
+    const refreshOffers = async () => {
+        const response = await api.offer.getAllByUserId(userId);
+        setOffers(response.data.offers);
+    };
 
-//     useEffect(() => {
-//         async function fetchOffers() {
-//             const {data: allOffers } = await api.offer.getAllByUserId(userId); // Adjust this line according to your actual API.
-//             // setOffers(response.data.offers);
-//         }
-//         fetchOffers();
-//     }, [userId]);
+    const value = { offers, setOffers, refreshOffers };
 
-//     const refreshOffers = async () => {
-//         const response = await api.offer.getAllByUserId(userId);
-//         setOffers(response.data.offers);
-//     };
+    return (
+        <OffersContext.Provider value={value}>
+            {children}
+        </OffersContext.Provider>
+    );
+};
 
-//     const value = { offers, setOffers, refreshOffers };
-
-//     return (
-//         <OffersContext.Provider value={value}>
-//             {children}
-//         </OffersContext.Provider>
-//     );
-// };
-
-// export default OffersProvider;
+export default NotificationProvider;

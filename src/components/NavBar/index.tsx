@@ -9,6 +9,7 @@ import menuBurgerGif from "../../../public/Gifs/menu-glitch.gif";
 import homeButton from "../../../public/Nav/home.png";
 import homeButtonBlack from "../../../public/Nav/home-black.png";
 import defaultProfile from "@public/Profile/profile-default.png";
+import keebo from "@public/Profile/keebo.png";
 import { useRouter } from "next/router";
 import { getCookies } from "cookies-next";
 import { themeStyles } from "../KeebType/Theme/themeStyles";
@@ -232,7 +233,7 @@ export default function NavBar() {
                                     onClick={handleClose}
                                 >
                                     <motion.button
-                                        className="flex w-32 justify-center rounded-md bg-white/10 px-4 py-1 hover:bg-black/50 hover:text-green-500"
+                                        className="flex w-32 justify-center rounded-md bg-white/10 px-4 py-1 transition-colorBackground duration-200 ease-custom-cubic hover:bg-black/50 hover:text-green-500"
                                         whileHover={{ scale: 1.1 }}
                                         whileTap={{ scale: 0.95 }}
                                     >
@@ -245,33 +246,93 @@ export default function NavBar() {
                                     onClick={handleClose}
                                 >
                                     <motion.button
-                                        className="flex w-32 justify-center rounded-md bg-white/10 px-4 py-1 hover:bg-black/50 hover:text-green-500"
+                                        className="flex w-32 justify-center rounded-md bg-white/10 px-4 py-1 transition-colorBackground duration-200 ease-custom-cubic hover:bg-black/50 hover:text-green-500"
                                         whileHover={{ scale: 1.1 }}
                                         whileTap={{ scale: 0.95 }}
                                     >
                                         KEEB SHARE
                                     </motion.button>
                                 </Link>
-                                <Link
-                                    href="/keebdex"
-                                    aria-label="keebdex"
-                                    onClick={handleClose}
-                                >
+
+                                <div className="flex w-32 justify-between">
+                                    <Link
+                                        href="/keebdex"
+                                        aria-label="keebdex"
+                                        onClick={handleClose}
+                                    >
+                                        <motion.button
+                                            className="rounded-md bg-white/10 p-1  transition-colorBackground duration-200 ease-custom-cubic hover:bg-black/50 hover:text-green-500"
+                                            whileHover={{ scale: 1.15 }}
+                                            whileTap={{ scale: 0.95 }}
+                                        >
+                                            <Image
+                                                src={keebo}
+                                                alt="keebo"
+                                                className="h-6 w-6 "
+                                            />
+                                        </motion.button>
+                                    </Link>
+                                    <Link
+                                        href="/profile/messages"
+                                        aria-label="messages"
+                                        onClick={() => {
+                                            if (sessionData === null) {
+                                                void signIn();
+                                            } else handleClose();
+                                        }}
+                                    >
+                                        <motion.button
+                                            className="rounded-md bg-white/10 p-1 transition-colorBackground duration-200 ease-custom-cubic hover:bg-black/50 hover:text-green-500"
+                                            whileHover={{ scale: 1.15 }}
+                                            whileTap={{ scale: 0.95 }}
+                                        >
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                className="h-6 w-6 "
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                            >
+                                                <path
+                                                    d="M7 9H17M7 13H12M21 20L17.6757 18.3378C17.4237 18.2118 17.2977 18.1488 17.1656 18.1044C17.0484 18.065 16.9277 18.0365 16.8052 18.0193C16.6672 18 16.5263 18 16.2446 18H6.2C5.07989 18 4.51984 18 4.09202 17.782C3.71569 17.5903 3.40973 17.2843 3.21799 16.908C3 16.4802 3 15.9201 3 14.8V7.2C3 6.07989 3 5.51984 3.21799 5.09202C3.40973 4.71569 3.71569 4.40973 4.09202 4.21799C4.51984 4 5.0799 4 6.2 4H17.8C18.9201 4 19.4802 4 19.908 4.21799C20.2843 4.40973 20.5903 4.71569 20.782 5.09202C21 5.51984 21 6.0799 21 7.2V20Z"
+                                                    stroke="currentColor"
+                                                    stroke-width="2"
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                />
+                                            </svg>
+                                        </motion.button>
+                                    </Link>
                                     <motion.button
-                                        className="flex w-32 justify-center rounded-md bg-white/10 px-4 py-1 hover:bg-black/50 hover:text-green-500"
-                                        whileHover={{ scale: 1.1 }}
+                                        className="relative rounded-md bg-white/10 p-1 transition-colorBackground duration-200 ease-custom-cubic hover:bg-black/50 hover:text-green-500"
+                                        whileHover={{ scale: 1.15 }}
                                         whileTap={{ scale: 0.95 }}
                                     >
-                                        KEEBDEX
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            className="h-6 w-6 "
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                        >
+                                            <path
+                                                d="M9.0003 21H15.0003M18.0003 8.6C18.0003 7.11479 17.3682 5.69041 16.2429 4.6402C15.1177 3.59 13.5916 3 12.0003 3C10.409 3 8.88288 3.59 7.75766 4.6402C6.63245 5.69041 6.0003 7.11479 6.0003 8.6C6.0003 11.2862 5.32411 13.1835 4.52776 14.4866C3.75646 15.7486 3.37082 16.3797 3.38515 16.5436C3.40126 16.7277 3.4376 16.7925 3.58633 16.9023C3.71872 17 4.34793 17 5.60636 17H18.3943C19.6527 17 20.2819 17 20.4143 16.9023C20.563 16.7925 20.5994 16.7277 20.6155 16.5436C20.6298 16.3797 20.2441 15.7486 19.4729 14.4866C18.6765 13.1835 18.0003 11.2862 18.0003 8.6Z"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                            />
+                                        </svg>
+                                        <div className="absolute -right-0 -top-0 text-[10px]">
+                                            10
+                                        </div>
                                     </motion.button>
-                                </Link>
+                                </div>
                             </div>
                             <div className="flex flex-col gap-2">
                                 {sessionData === null ? (
                                     <motion.button
                                         className="flex justify-start"
                                         whileHover={{
-                                            scale: 1.1,
+                                            scale: 1.05,
                                         }}
                                         whileTap={{ scale: 0.95 }}
                                         onClick={() => void signIn()}
@@ -293,7 +354,7 @@ export default function NavBar() {
                                         <motion.button
                                             className="flex justify-start"
                                             whileHover={{
-                                                scale: 1.1,
+                                                scale: 1.05,
                                             }}
                                             whileTap={{ scale: 0.95 }}
                                         >

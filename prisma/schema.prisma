@@ -220,6 +220,19 @@ model Message {
     @@index([listingTransactionId], name: "idxMessageListingId")
 }
 
+model Notification {
+    id        String   @id @default(cuid())
+    text      String
+    status    String
+    // READ, UNREAD
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    userId String
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
 model Post {
     id        String   @id @default(cuid())
     title     String
@@ -330,6 +343,7 @@ model User {
     sellerMessages          Message[]                 @relation("Buyer")
     buyerMessages           Message[]                 @relation("Seller")
     verificationTransaction VerificationTransaction[]
+    notifications           Notification[]
 }
 
 model VerificationTransaction {
