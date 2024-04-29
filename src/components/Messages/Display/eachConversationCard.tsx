@@ -63,7 +63,7 @@ export default function EachConversationCard({
 
     return (
         <button
-            className="mb-2 flex w-full gap-2 rounded-md bg-white/5 p-2 text-xs   transition-background duration-400 ease-custom-cubic hover:bg-white/10    "
+            className="mb-2 flex w-full gap-2 rounded-md bg-white/5 p-2 text-xs   transition-background duration-400 ease-custom-cubic hover:bg-white/10 "
             onClick={() => setActiveTransactionId(message.listingTransactionId)}
         >
             <Image

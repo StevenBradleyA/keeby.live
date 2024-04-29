@@ -50,6 +50,7 @@ export default function DisplayMessages({ userId }: { userId: string }) {
                                 <EachConversationCard
                                     userId={userId}
                                     message={message}
+                                    activeTransactionId={activeTransactionId}
                                     setActiveTransactionId={
                                         setActiveTransactionId
                                     }
