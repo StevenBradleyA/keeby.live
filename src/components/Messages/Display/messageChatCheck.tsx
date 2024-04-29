@@ -3,7 +3,7 @@ import { api } from "~/utils/api";
 import CreateMessage from "../Create/createMessage";
 import EachMessageCard from "./eachMessageCard";
 import { useEffect, useRef } from "react";
-import type { RefObject } from "react";
+
 export default function MessageChatCheck({
     activeTransactionId,
     userId,
@@ -28,13 +28,6 @@ export default function MessageChatCheck({
         }
     }, [isFetching]);
 
-    if (isLoading)
-        return (
-            <div className="p-5">
-                <LoadingSpinner size="20px" />
-            </div>
-        );
-
     // todo message time stamps
 
     // todo notificationss for unread messages...
@@ -46,7 +39,12 @@ export default function MessageChatCheck({
     // And full order in the payment notes,
 
     // again have to determine if buyer or seller right...
-
+    if (isLoading)
+        return (
+            <div className="p-5">
+                <LoadingSpinner size="20px" />
+            </div>
+        );
     return messages ? (
         <div className="h-full w-full">
             <div

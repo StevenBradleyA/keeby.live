@@ -103,48 +103,31 @@ export default function CreateMessage({
 
     return (
         <form className=" flex flex-col justify-between">
-            {/* {createSelected && (
-                <div className="z-10 mt-1 flex justify-end gap-5 text-sm">
-                    <button
-                        className="rounded-md border-2 border-green-500 border-opacity-0 px-2 py-1  text-darkGray hover:border-opacity-100 "
-                        onClick={cancelComment}
-                    >
-                        Cancel
-                    </button>
-                    <button
-                        className="rounded-md border-2 border-green-500 border-opacity-0 px-2 py-1  text-darkGray hover:border-opacity-100 "
-                        onClick={handleSubmitClick}
-                    >
-                        Send
-                    </button>
-                </div>
-            )} */}
             <div className="relative">
                 <textarea
                     className="comment-input-box w-full rounded-lg border-none bg-pogGray py-2 pl-2 pr-10 text-white outline-none"
                     value={text}
                     placeholder="Send a message..."
                     onChange={(e) => setText(e.target.value)}
-                    // onFocus={() => setCreateSelected(true)}
                     onKeyDown={handleRowIncrease}
                     rows={row}
                 />
                 <button
-                    className="absolute right-1 top-1 z-10 rounded-full bg-green-500 p-[2px]"
+                    className="send-message-button absolute right-1 top-1 z-10 rounded-full bg-green-500 p-[2px]"
                     onClick={handleSubmitClick}
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="h-6 w-6 text-white"
+                        className="send-message-button-arrow h-6 w-6 text-white"
                         viewBox="0 0 24 24"
                         fill="none"
                     >
                         <path
                             d="M6 12H18M18 12L13 7M18 12L13 17"
                             stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
                         />
                     </svg>
                 </button>

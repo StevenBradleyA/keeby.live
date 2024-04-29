@@ -52,7 +52,7 @@ export default function EachMessageCard({
 
     return (
         <div className="w-full overflow-x-hidden">
-            <div className="my-2 text-center text-xs text-darkGray">
+            <div className="my-2 text-center text-xs text-darkGray opacity-50">
                 {formatDate(message.createdAt)}
             </div>
             {myMessage ? (

@@ -11,6 +11,12 @@ export default function DisplayMessages({ userId }: { userId: string }) {
 
     console.log(messages);
 
+
+
+
+
+
+    
     // these are all the messages
     // filter all the messages by listing transaction Id
 

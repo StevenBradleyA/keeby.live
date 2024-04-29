@@ -311,6 +311,9 @@ $blue: #2033c1; */
 }
 
 /* --------------         KEEB SHOP          --------------  */
+/* --------------         KEEB SHOP          --------------  */
+/* --------------         KEEB SHOP          --------------  */
+/* --------------         KEEB SHOP          --------------  */
 
 .keebshop-listing-preview-container {
 }
@@ -466,12 +469,15 @@ $blue: #2033c1; */
 }
 
 /*  ----    End Listings Hover effect    ---- */
+/*  ----    End Listings Hover effect    ---- */
 
 /* ----    Retro Shadows not in use    ---- */
+/* ----    Retro Shadows not in use    ---- */
 
+/* 
 .striped-shadow {
     position: relative;
-    background: white; /* Ensure background is explicitly set */
+    background: white; 
 }
 
 .striped-shadow:after {
@@ -489,10 +495,10 @@ $blue: #2033c1; */
         transparent 4px
     );
     box-shadow: 0 0 30px rgba(255, 20, 147, 0.7),
-        /* Inner pink glow */ 0 0 20px rgba(255, 20, 147, 0.7),
-        /* Middle pink glow */ 0 0 5px rgba(255, 20, 147, 0.7); /* Outer pink glow */
+   0 0 20px rgba(255, 20, 147, 0.7),
+ 0 0 5px rgba(255, 20, 147, 0.7); 
     z-index: -1;
-}
+} */
 
 /* --------------                            --------------  */
 
@@ -707,7 +713,15 @@ input[type="checkbox"]:hover {
     transform: translateX(20px);
 }
 
-/* ------    comments   ------  */
+/* --------------        END KEEB SHOP       --------------  */
+/* --------------        END KEEB SHOP       --------------  */
+/* --------------        END KEEB SHOP       --------------  */
+/* --------------        END KEEB SHOP       --------------  */
+
+/* ------    COMMENTS   ------  */
+/* ------    COMMENTS   ------  */
+/* ------    COMMENTS   ------  */
+/* ------    COMMENTS   ------  */
 
 .comment-input-box {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -735,7 +749,14 @@ input[type="checkbox"]:hover {
     border-bottom: 1px solid rgb(34 197 94);
     outline: none;
 }
+/* ------   END COMMENTS   ------  */
+/* ------   END COMMENTS   ------  */
+/* ------   END COMMENTS   ------  */
+/* ------   END COMMENTS   ------  */
 
+/* --------------         KEEB SHARE          --------------  */
+/* --------------         KEEB SHARE          --------------  */
+/* --------------         KEEB SHARE          --------------  */
 /* --------------         KEEB SHARE          --------------  */
 
 .keeb-share-preview-button {
@@ -835,7 +856,13 @@ input[type="checkbox"]:hover {
 }
 
 /* --------------         END KEEB SHARE          --------------  */
+/* --------------         END KEEB SHARE          --------------  */
+/* --------------         END KEEB SHARE          --------------  */
+/* --------------         END KEEB SHARE          --------------  */
 
+/* --------------         PROFILE          --------------  */
+/* --------------         PROFILE          --------------  */
+/* --------------         PROFILE          --------------  */
 /* --------------         PROFILE          --------------  */
 
 @import url(https://fonts.googleapis.com/css?family=VT323);
@@ -1228,6 +1255,29 @@ input[type="checkbox"]:hover {
 /* --------------     MESSAGES    --------------  */
 /* --------------     MESSAGES    --------------  */
 /* --------------     MESSAGES    --------------  */
+
+.send-message-button {
+    overflow: hidden;
+    transition: background-color 0.4s cubic-bezier(0.35, 0, 0, 1);
+}
+
+.send-message-button-arrow {
+    transition: transform 0.4s cubic-bezier(0.35, 0, 0, 1);
+    transform: rotate(0);
+}
+.send-message-button:hover {
+    background-color: black;
+}
+.send-message-button:focus {
+    background-color: black;
+}
+
+.send-message-button:hover .send-message-button-arrow {
+    transform: rotate(-45deg);
+}
+.send-message-button:focus .send-message-button-arrow {
+    transform: rotate(-45deg);
+}
 
 /* .message-bubble {
     position: relative;
