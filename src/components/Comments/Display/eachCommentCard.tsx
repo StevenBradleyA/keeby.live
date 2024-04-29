@@ -139,7 +139,7 @@ export default function EachCommentCard({
                     </div>
 
                     <div>
-                        <div className="text-md whitespace-pre-wrap text-white">
+                        <div className="text-md whitespace-pre-wrap break-words text-white">
                             {isTooLong && !isExpanded
                                 ? lines.slice(0, maxLines).join("\n")
                                 : comment.text}
@@ -197,14 +197,14 @@ export default function EachCommentCard({
                                         !showTopLevelCommentReply
                                     )
                                 }
-                                className="text-xs text-darkGray hover:text-green-500"
+                                className="text-xs text-darkGray transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                             >
                                 Reply
                             </button>
                         ) : (
                             <button
                                 onClick={openSignInModal}
-                                className="text-xs text-darkGray hover:text-green-500"
+                                className="text-xs text-darkGray transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                             >
                                 Reply
                             </button>

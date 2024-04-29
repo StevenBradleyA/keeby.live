@@ -34,8 +34,23 @@ export default function CreateComment({ typeId, type }: CreateCommentProps) {
     });
 
     const handleRowIncrease = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        const textarea = e.target as HTMLTextAreaElement;
+        const { value, selectionStart, selectionEnd } = textarea;
+
         if (e.key === "Enter" && !e.shiftKey) {
-            setRow((prevRow) => prevRow + 1); // Increase the row count
+            setRow((prevRow) => prevRow + 1);
+        } else if (e.key === "Backspace") {
+            const beforeCursor = value.substring(0, selectionStart);
+            const afterCursor = value.substring(selectionEnd);
+
+            const isCursorAtLineStart =
+                beforeCursor.endsWith("\n") || beforeCursor === "";
+            const isCursorAtLineEnd =
+                afterCursor.startsWith("\n") || afterCursor === "";
+
+            if (isCursorAtLineStart && isCursorAtLineEnd) {
+                setRow((prevRow) => (prevRow > 1 ? prevRow - 1 : 1));
+            }
         }
     };
 

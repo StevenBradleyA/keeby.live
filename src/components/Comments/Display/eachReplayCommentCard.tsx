@@ -136,7 +136,7 @@ export default function EachReplyCommentCard({
 
                 {reply.referencedUser ? (
                     <div>
-                        <div className="flex whitespace-pre-wrap text-white">
+                        <div className="flex whitespace-pre-wrap break-words  text-white">
                             <span>
                                 <span className="text-green-500">{`@${reply.referencedUser} `}</span>
                                 {isTooLong && !isExpanded
@@ -155,7 +155,7 @@ export default function EachReplyCommentCard({
                     </div>
                 ) : (
                     <div>
-                        <div className="whitespace-pre-wrap text-white ">
+                        <div className="whitespace-pre-wrap break-words text-white ">
                             {isTooLong && !isExpanded
                                 ? lines.slice(0, maxLines).join("\n")
                                 : reply.text}
@@ -209,14 +209,14 @@ export default function EachReplyCommentCard({
                     {session && session.user ? (
                         <button
                             onClick={() => setShowNestedReply(!showNestedReply)}
-                            className="text-xs text-darkGray hover:text-green-500"
+                            className="text-xs text-darkGray transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                         >
                             Reply
                         </button>
                     ) : (
                         <button
                             onClick={openSignInModal}
-                            className="text-xs text-darkGray hover:text-green-500"
+                            className="text-xs text-darkGray transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                         >
                             Reply
                         </button>
