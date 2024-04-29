@@ -189,6 +189,26 @@ export const commentRouter = createTRPCRouter({
                             listingId: typeId,
                         },
                     });
+                    const listingCheck = await ctx.prisma.listing.findUnique({
+                        where: {
+                            id: typeId,
+                        },
+                        select: {
+                            title: true,
+                            sellerId: true,
+                        },
+                    });
+                    if (listingCheck) {
+                        await ctx.prisma.notification.create({
+                            data: {
+                                userId: listingCheck.sellerId,
+                                text: `New Comment on ${listingCheck.title}!`,
+                                status: "UNREAD",
+                                type: "LISTINGCOMMENT",
+                                typeId: `${typeId}`,
+                            },
+                        });
+                    }
                     return newComment;
                 }
                 if (type === "post") {
@@ -199,6 +219,28 @@ export const commentRouter = createTRPCRouter({
                             postId: typeId,
                         },
                     });
+
+                    const postCheck = await ctx.prisma.post.findUnique({
+                        where: {
+                            id: typeId,
+                        },
+                        select: {
+                            title: true,
+                            userId: true,
+                        },
+                    });
+                    if (postCheck) {
+                        await ctx.prisma.notification.create({
+                            data: {
+                                userId: postCheck.userId,
+                                text: `New Comment on ${postCheck.title}!`,
+                                status: "UNREAD",
+                                type: "POSTCOMMENT",
+                                typeId: `${typeId}`,
+                            },
+                        });
+                    }
+
                     return newComment;
                 }
             }
@@ -234,7 +276,26 @@ export const commentRouter = createTRPCRouter({
                         referencedUser: referencedUser || null,
                     },
                 });
-
+                const listingCheck = await ctx.prisma.listing.findUnique({
+                    where: {
+                        id: typeId,
+                    },
+                    select: {
+                        title: true,
+                        sellerId: true,
+                    },
+                });
+                if (listingCheck) {
+                    await ctx.prisma.notification.create({
+                        data: {
+                            userId: listingCheck.sellerId,
+                            text: `New Comment on ${listingCheck.title}!`,
+                            status: "UNREAD",
+                            type: "LISTINGCOMMENT",
+                            typeId: `${typeId}`,
+                        },
+                    });
+                }
                 return newComment;
             }
 
@@ -248,7 +309,26 @@ export const commentRouter = createTRPCRouter({
                         referencedUser: referencedUser || null,
                     },
                 });
-
+                const postCheck = await ctx.prisma.post.findUnique({
+                    where: {
+                        id: typeId,
+                    },
+                    select: {
+                        title: true,
+                        userId: true,
+                    },
+                });
+                if (postCheck) {
+                    await ctx.prisma.notification.create({
+                        data: {
+                            userId: postCheck.userId,
+                            text: `New Comment on ${postCheck.title}!`,
+                            type: "POSTCOMMENT",
+                            typeId: `${typeId}`,
+                            status: "UNREAD",
+                        },
+                    });
+                }
                 return newComment;
             }
         }),

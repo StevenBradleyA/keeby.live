@@ -157,12 +157,64 @@ export default function NavBar() {
             <div className="flex items-center gap-14 text-darkGray desktop:gap-32">
                 {router.asPath === "/keebshare" ? (
                     <Link href="/" aria-label="shop">
-                        <h1>KEEB SHOP</h1>
+                        <button className=" keeb-share-preview-button flex items-center gap-2 pr-2  ">
+                            <svg
+                                className="keeb-share-preview-button-arrow w-4"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke="currentColor"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="3"
+                                    d="M3.515 12h16.97m0 0L13.01 4.525M20.485 12l-7.475 7.476"
+                                ></path>
+                            </svg>
+                            <span className="keeb-share-preview-button-text">
+                                KEEB SHOP
+                            </span>
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="currentColor"
+                                className="keeb-share-preview-button-circle w-[6px]"
+                                viewBox="0 0 32 32"
+                            >
+                                <circle cx="16" cy="16" r="16" />
+                            </svg>
+                        </button>
                     </Link>
                 ) : router.asPath.startsWith("/keebshare/") ||
                   router.asPath === "/" ? (
                     <Link href="/keebshare" aria-label="share">
-                        <h1>KEEB SHARE</h1>
+                        <button className=" keeb-share-preview-button flex items-center gap-2   ">
+                            <svg
+                                className="keeb-share-preview-button-arrow w-4"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke="currentColor"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="3"
+                                    d="M3.515 12h16.97m0 0L13.01 4.525M20.485 12l-7.475 7.476"
+                                ></path>
+                            </svg>
+                            <span className="keeb-share-preview-button-text">
+                                KEEB SHARE
+                            </span>
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="currentColor"
+                                className="keeb-share-preview-button-circle w-[6px]"
+                                viewBox="0 0 32 32"
+                            >
+                                <circle cx="16" cy="16" r="16" />
+                            </svg>
+                        </button>
                     </Link>
                 ) : router.asPath === "/keebtype" ? (
                     <Link
@@ -170,11 +222,63 @@ export default function NavBar() {
                         aria-label="type"
                         className={`${styles.textColor}`}
                     >
-                        <h1>KEEB SHOP</h1>
+                        <button className=" keeb-share-preview-button flex items-center gap-2 pr-2  ">
+                            <svg
+                                className="keeb-share-preview-button-arrow w-4"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke="currentColor"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="3"
+                                    d="M3.515 12h16.97m0 0L13.01 4.525M20.485 12l-7.475 7.476"
+                                ></path>
+                            </svg>
+                            <span className="keeb-share-preview-button-text">
+                                KEEB SHOP
+                            </span>
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="currentColor"
+                                className="keeb-share-preview-button-circle w-[6px]"
+                                viewBox="0 0 32 32"
+                            >
+                                <circle cx="16" cy="16" r="16" />
+                            </svg>
+                        </button>
                     </Link>
                 ) : (
                     <Link href="/" aria-label="shop">
-                        <h1>KEEB SHOP</h1>
+                        <button className=" keeb-share-preview-button flex items-center gap-2 pr-2  ">
+                            <svg
+                                className="keeb-share-preview-button-arrow w-4"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke="currentColor"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="3"
+                                    d="M3.515 12h16.97m0 0L13.01 4.525M20.485 12l-7.475 7.476"
+                                ></path>
+                            </svg>
+                            <span className="keeb-share-preview-button-text">
+                                KEEB SHOP
+                            </span>
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="currentColor"
+                                className="keeb-share-preview-button-circle w-[6px]"
+                                viewBox="0 0 32 32"
+                            >
+                                <circle cx="16" cy="16" r="16" />
+                            </svg>
+                        </button>
                     </Link>
                 )}
 

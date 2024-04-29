@@ -24,7 +24,7 @@ export const offerRouter = createTRPCRouter({
                             id: true,
                             title: true,
                             sellerId: true,
-                            status: true, 
+                            status: true,
                             seller: {
                                 select: {
                                     username: true,
@@ -114,7 +114,16 @@ export const offerRouter = createTRPCRouter({
                         buyerId: buyerId,
                     },
                 });
-                if (createOffer) {
+                if (createOffer && listingCheck) {
+                    await ctx.prisma.notification.create({
+                        data: {
+                            userId: listingCheck.sellerId,
+                            text: `Offer Received for ${listingCheck.title}!`,
+                            type: "OFFER",
+                            status: "UNREAD",
+                        },
+                    });
+
                     //todo send email to seller -- get unique --if seller exists email
                     return { pendingOffer: false };
                 }

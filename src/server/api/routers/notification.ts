@@ -16,7 +16,7 @@ export const notificationRouter = createTRPCRouter({
             });
         }),
 
-    update: publicProcedure
+    update: protectedProcedure
         .input(
             z.object({
                 id: z.string(),
@@ -37,6 +37,27 @@ export const notificationRouter = createTRPCRouter({
                 },
                 data: {
                     status: status,
+                },
+            });
+        }),
+
+    delete: protectedProcedure
+        .input(
+            z.object({
+                id: z.string(),
+                userId: z.string(),
+            })
+        )
+        .mutation(async ({ input, ctx }) => {
+            const { id, userId } = input;
+
+            if (ctx.session.user.id !== userId) {
+                throw new Error("Invalid credentials");
+            }
+
+            return await ctx.prisma.notification.delete({
+                where: {
+                    id: id,
                 },
             });
         }),

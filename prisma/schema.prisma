@@ -223,6 +223,8 @@ model Message {
 model Notification {
     id        String   @id @default(cuid())
     text      String
+    type      String
+    typeId    String?
     status    String
     // READ, UNREAD
     createdAt DateTime @default(now())
