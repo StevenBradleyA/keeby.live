@@ -5,7 +5,6 @@ export default function DisplayNotifications({ userId }: { userId: string }) {
     const { data: notifications } =
         api.notification.getAllByUserId.useQuery(userId);
 
-    console.log(notifications);
 
     return (
         <div className="w-full">

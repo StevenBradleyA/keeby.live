@@ -26,23 +26,18 @@ export default function NavBar() {
     const [isMenuGif, setIsMenuGif] = useState<boolean>(false);
     const [isClosingMenu, setIsClosingMenu] = useState<boolean>(false);
 
+    // todo secondary ref menu for notis to fix clicking problems
+    // todo link href based on type
+
     const menuRef = useRef<HTMLDivElement | null>(null);
+    const notificationRef = useRef<HTMLDivElement | null>(null);
+
     const menuButtonRef = useRef<HTMLButtonElement | null>(null);
     const router = useRouter();
 
     const { data: sessionData } = useSession();
     const { theme } = useTheme();
     const styles = themeStyles[theme as ThemeName] || themeStyles["KEEBY"];
-
-    // console.log(sessionData);
-    // todo figure out potential userID hash for the session so we never actually give userId
-    // todo if !session profile takes you to sign in otherwise display user profile if they have one else display keebo. Profile pictures are optional.
-    // todo maybe want a different nav for typing game to keep things clean
-
-    // KEEB Shop should switch with create a listing if on keebshop
-    // same with on keeb share
-
-    // want different home buttons for each page because poggers
 
     // const router = useRouter();
 
@@ -83,9 +78,10 @@ export default function NavBar() {
     // console.log(isClosingMenu);
 
     const handleClose = useCallback(() => {
-        setIsNotificationOpen(false);
         setIsMenuOpen(false);
+        setIsNotificationOpen(false);
     }, []);
+
 
     const toggleMenu = useCallback(() => {
         setIsMenuOpen((prevIsMenuOpen) => !prevIsMenuOpen);
@@ -97,6 +93,8 @@ export default function NavBar() {
                 isMenuOpen &&
                 menuRef.current &&
                 !menuRef.current.contains(e.target as Node) &&
+                notificationRef.current &&
+                !notificationRef.current.contains(e.target as Node) &&
                 menuButtonRef.current &&
                 !menuButtonRef.current.contains(e.target as Node)
             ) {
@@ -516,6 +514,7 @@ export default function NavBar() {
                             </motion.div>
                             {isNotificationOpen === true && (
                                 <motion.div
+                                    ref={notificationRef}
                                     initial={{ opacity: 0, y: -20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: -20 }}

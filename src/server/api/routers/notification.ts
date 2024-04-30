@@ -25,6 +25,16 @@ export const notificationRouter = createTRPCRouter({
                 },
             });
         }),
+    getOfferNotificationsByUserId: publicProcedure
+        .input(z.string())
+        .query(async ({ ctx, input: userId }) => {
+            return await ctx.prisma.notification.findFirst({
+                where: {
+                    userId: userId,
+                    type: "OFFER",
+                },
+            });
+        }),
 
     update: protectedProcedure
         .input(

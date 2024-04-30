@@ -30,6 +30,7 @@ import DisplayOffers from "~/components/Offers/Display/displayOffers";
 import DisplayTransactions from "~/components/Transactions/Display";
 import keebo from "@public/Profile/keebo.png";
 import LoadingSpinner from "~/components/Loading";
+import DisplayProfileNotifications from "~/components/Notifications/Display/displayProfileNotifications";
 
 export default function UserProfile() {
     // mdn digest() -- might be useful for us here
@@ -46,6 +47,7 @@ export default function UserProfile() {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [isHackType, setIsHackType] = useState<boolean>(false);
     const scrollRef = useRef<HTMLDivElement | null>(null);
+    const eyeScrollRef = useRef<HTMLDivElement | null>(null);
 
     const openModal = () => {
         setIsOpen(true);
@@ -212,9 +214,12 @@ export default function UserProfile() {
                             >
                                 <circle cx="50" cy="50" r="40" />
                             </svg>
-                            <Link
-                                href={`profile/public/${sessionData.user.username}`}
-                                aria-label="public profile"
+                            <button
+                                onClick={() => {
+                                    eyeScrollRef.current?.scrollIntoView({
+                                        behavior: "instant",
+                                    });
+                                }}
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -227,7 +232,7 @@ export default function UserProfile() {
                                     <path d="m34,256l26.2,26.2c108,108 283.7,108 391.7,0l26.1-26.2-26.2-26.2c-108-108-283.7-108-391.7,0l-26.1,26.2zm222,126.2c-75.8,0-151.6-28.9-209.3-86.6l-32.9-32.9c-3.7-3.7-3.7-9.7 0-13.5l32.9-32.9c115.4-115.4 303.2-115.4 418.6,0l32.9,32.9c3.7,3.7 3.7,9.7 0,13.5l-32.9,32.9c-57.7,57.7-133.5,86.6-209.3,86.6z" />
                                     <path d="m256,183.5c-40,0-72.5,32.5-72.5,72.5s32.5,72.5 72.5,72.5c40,0 72.5-32.5 72.5-72.5s-32.5-72.5-72.5-72.5zm0,164c-50.5,0-91.5-41.1-91.5-91.5 0-50.5 41.1-91.5 91.5-91.5s91.5,41.1 91.5,91.5c0,50.5-41,91.5-91.5,91.5z" />
                                 </svg>
-                            </Link>
+                            </button>
                         </div>
 
                         <div className="h-80  overflow-hidden border-2 border-[#616161] ">
@@ -239,7 +244,14 @@ export default function UserProfile() {
                         </div>
                     </div>
                     <div className="flex w-1/2 flex-col">
-                        <div className="flex w-full justify-end">
+                        <div className="flex w-full items-end justify-between">
+                            <DisplayProfileNotifications
+                                userId={sessionData.user.id}
+                                setToggle={setToggle}
+                                setKeebShopCategory={setKeebShopCategory}
+                                scrollRef={scrollRef}
+                            />
+
                             <button
                                 className="profile-retro-button flex items-center gap-2"
                                 onClick={handleRetroMode}
@@ -361,7 +373,10 @@ export default function UserProfile() {
                             <div>POP</div>
                         </div>
 
-                        <div className="mt-6 flex w-full items-center gap-5">
+                        <div
+                            className="mt-6 flex w-full items-center gap-5"
+                            ref={eyeScrollRef}
+                        >
                             <svg
                                 className="w-8"
                                 viewBox="0 0 100 100"
@@ -430,9 +445,9 @@ export default function UserProfile() {
                                         <div className="h-0 w-full border-[1px] border-green-500"></div>
 
                                         <Link
-                                            href="//verify-seller"
-                                            aria-label="/verify-seller"
-                                            className="flex-shrink-0"
+                                            href="/verify-seller"
+                                            aria-label="Seller Verification"
+                                            className="flex-shrink-0 transition-colors duration-400 ease-custom-cubic hover:text-white"
                                         >
                                             VERIFIED SELLER
                                         </Link>
@@ -452,7 +467,7 @@ export default function UserProfile() {
                                         <Link
                                             href="//verify-seller"
                                             aria-label="/verify-seller"
-                                            className=" flex-shrink-0 text-darkGray"
+                                            className=" flex-shrink-0 text-darkGray transition-colors duration-400 ease-custom-cubic hover:text-white"
                                         >
                                             UNVERIFIED SELLER
                                         </Link>
