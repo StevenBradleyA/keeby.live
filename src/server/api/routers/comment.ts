@@ -40,10 +40,18 @@ export const commentRouter = createTRPCRouter({
                         },
                     },
                 },
+                orderBy: { createdAt: "desc" },
                 take: limit + 1,
                 skip: cursor ? 1 : 0,
                 cursor: cursor ? { id: cursor } : undefined,
             });
+            const popularComments = comments.sort(
+                (a, b) =>
+                    b._count.commentLike +
+                    b._count.replies -
+                    (a._count.commentLike + a._count.replies)
+            );
+
             if (userId) {
                 const userLikes = await ctx.prisma.commentLike.findMany({
                     where: {
@@ -55,7 +63,7 @@ export const commentRouter = createTRPCRouter({
                     cursor: cursor ? { id: cursor } : undefined,
                 });
 
-                const commentsWithLikes = comments.map((comment) => ({
+                const commentsWithLikes = popularComments.map((comment) => ({
                     ...comment,
                     isLiked: userLikes.some(
                         (like) => like.commentId === comment.id
@@ -74,13 +82,13 @@ export const commentRouter = createTRPCRouter({
             }
 
             let nextCursor: typeof cursor | undefined = undefined;
-            if (comments.length > limit) {
-                const nextItem = comments.pop();
+            if (popularComments.length > limit) {
+                const nextItem = popularComments.pop();
                 if (nextItem !== undefined) {
                     nextCursor = nextItem.id;
                 }
             }
-            return { comments, nextCursor };
+            return { comments: popularComments, nextCursor };
         }),
     getAllReplysByTypeId: publicProcedure
         .input(
