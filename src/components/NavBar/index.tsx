@@ -15,9 +15,14 @@ import { getCookies } from "cookies-next";
 import { themeStyles } from "../KeebType/Theme/themeStyles";
 import type { ThemeName } from "../KeebType/Theme/themeStyles";
 import { useTheme } from "../Context/Theme";
+import DisplayNotifications from "../Notifications/Display/displayNotifications";
+import DisplayNotificationCount from "../Notifications/Display/displayCount";
 
 export default function NavBar() {
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+    const [isNotificationOpen, setIsNotificationOpen] =
+        useState<boolean>(false);
+
     const [isMenuGif, setIsMenuGif] = useState<boolean>(false);
     const [isClosingMenu, setIsClosingMenu] = useState<boolean>(false);
 
@@ -78,6 +83,7 @@ export default function NavBar() {
     // console.log(isClosingMenu);
 
     const handleClose = useCallback(() => {
+        setIsNotificationOpen(false);
         setIsMenuOpen(false);
     }, []);
 
@@ -302,201 +308,261 @@ export default function NavBar() {
                 </motion.button>
                 <AnimatePresence>
                     {isMenuOpen && (
-                        <motion.div
-                            animate={{
-                                scale: [0, 1],
-                                y: [-150, 0],
-                                x: [90, 0],
-                            }}
-                            exit={{ scale: 0, y: -170, x: 60 }}
-                            transition={{
-                                delay: 0.5,
-                                duration: 0.5,
-                                type: "easeIn",
-                            }}
-                            ref={menuRef}
-                            className="dropdown-menu-gif absolute right-5 top-40 flex w-80 justify-between rounded-lg px-5 py-5 text-white"
-                        >
-                            <div className="flex flex-col justify-between">
-                                <Link
-                                    href="/"
-                                    aria-label="projects"
-                                    onClick={handleClose}
-                                >
-                                    <motion.button
-                                        className="flex w-32 justify-center rounded-md bg-white/10 px-4 py-1 hover:bg-black/50 hover:text-green-500"
-                                        whileHover={{ scale: 1.1 }}
-                                        whileTap={{ scale: 0.95 }}
-                                    >
-                                        KEEB SHOP
-                                    </motion.button>
-                                </Link>
-                                <Link
-                                    href="/keebtype"
-                                    aria-label="contact"
-                                    onClick={handleClose}
-                                >
-                                    <motion.button
-                                        className="flex w-32 justify-center rounded-md bg-white/10 px-4 py-1 transition-colorBackground duration-200 ease-custom-cubic hover:bg-black/50 hover:text-green-500"
-                                        whileHover={{ scale: 1.1 }}
-                                        whileTap={{ scale: 0.95 }}
-                                    >
-                                        KEEB TYPE
-                                    </motion.button>
-                                </Link>
-                                <Link
-                                    href="/keebshare"
-                                    aria-label="keeb share"
-                                    onClick={handleClose}
-                                >
-                                    <motion.button
-                                        className="flex w-32 justify-center rounded-md bg-white/10 px-4 py-1 transition-colorBackground duration-200 ease-custom-cubic hover:bg-black/50 hover:text-green-500"
-                                        whileHover={{ scale: 1.1 }}
-                                        whileTap={{ scale: 0.95 }}
-                                    >
-                                        KEEB SHARE
-                                    </motion.button>
-                                </Link>
-
-                                <div className="flex w-32 justify-between">
+                        <>
+                            <motion.div
+                                animate={{
+                                    scale: [0, 1],
+                                    y: [-150, 0],
+                                    x: [90, 0],
+                                }}
+                                exit={{ scale: 0, y: -170, x: 60 }}
+                                transition={{
+                                    delay: 0.5,
+                                    duration: 0.5,
+                                    type: "easeIn",
+                                }}
+                                ref={menuRef}
+                                className="dropdown-menu-gif absolute right-5 top-40 flex w-80 justify-between rounded-lg px-5 py-5 text-white"
+                            >
+                                <div className="flex flex-col justify-between">
                                     <Link
-                                        href="/keebdex"
-                                        aria-label="keebdex"
+                                        href="/"
+                                        aria-label="projects"
                                         onClick={handleClose}
                                     >
                                         <motion.button
-                                            className="rounded-md bg-white/10 p-1  transition-colorBackground duration-200 ease-custom-cubic hover:bg-black/50 hover:text-green-500"
-                                            whileHover={{ scale: 1.15 }}
+                                            className="flex w-32 justify-center rounded-md bg-white/10 px-4 py-1 hover:bg-black/50 hover:text-green-500"
+                                            whileHover={{ scale: 1.1 }}
                                             whileTap={{ scale: 0.95 }}
                                         >
-                                            <Image
-                                                src={keebo}
-                                                alt="keebo"
-                                                className="h-6 w-6 "
-                                            />
+                                            KEEB SHOP
                                         </motion.button>
                                     </Link>
                                     <Link
-                                        href="/profile/messages"
-                                        aria-label="messages"
-                                        onClick={() => {
-                                            if (sessionData === null) {
-                                                void signIn();
-                                            } else handleClose();
-                                        }}
+                                        href="/keebtype"
+                                        aria-label="contact"
+                                        onClick={handleClose}
                                     >
                                         <motion.button
-                                            className="rounded-md bg-white/10 p-1 transition-colorBackground duration-200 ease-custom-cubic hover:bg-black/50 hover:text-green-500"
+                                            className="flex w-32 justify-center rounded-md bg-white/10 px-4 py-1 transition-colorBackground duration-200 ease-custom-cubic hover:bg-black/50 hover:text-green-500"
+                                            whileHover={{ scale: 1.1 }}
+                                            whileTap={{ scale: 0.95 }}
+                                        >
+                                            KEEB TYPE
+                                        </motion.button>
+                                    </Link>
+                                    <Link
+                                        href="/keebshare"
+                                        aria-label="keeb share"
+                                        onClick={handleClose}
+                                    >
+                                        <motion.button
+                                            className="flex w-32 justify-center rounded-md bg-white/10 px-4 py-1 transition-colorBackground duration-200 ease-custom-cubic hover:bg-black/50 hover:text-green-500"
+                                            whileHover={{ scale: 1.1 }}
+                                            whileTap={{ scale: 0.95 }}
+                                        >
+                                            KEEB SHARE
+                                        </motion.button>
+                                    </Link>
+
+                                    <div className="flex w-32 justify-between">
+                                        <Link
+                                            href="/keebdex"
+                                            aria-label="keebdex"
+                                            onClick={handleClose}
+                                        >
+                                            <motion.button
+                                                className="rounded-md bg-white/10 p-1  transition-colorBackground duration-200 ease-custom-cubic hover:bg-black/50 hover:text-green-500"
+                                                whileHover={{ scale: 1.15 }}
+                                                whileTap={{ scale: 0.95 }}
+                                            >
+                                                <Image
+                                                    src={keebo}
+                                                    alt="keebo"
+                                                    className="h-6 w-6 "
+                                                />
+                                            </motion.button>
+                                        </Link>
+                                        <Link
+                                            href="/profile/messages"
+                                            aria-label="messages"
+                                            onClick={() => {
+                                                if (sessionData === null) {
+                                                    void signIn();
+                                                } else handleClose();
+                                            }}
+                                        >
+                                            <motion.button
+                                                className="rounded-md bg-white/10 p-1 transition-colorBackground duration-200 ease-custom-cubic hover:bg-black/50 hover:text-green-500"
+                                                whileHover={{ scale: 1.15 }}
+                                                whileTap={{ scale: 0.95 }}
+                                            >
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    className="h-6 w-6 "
+                                                    viewBox="0 0 24 24"
+                                                    fill="none"
+                                                >
+                                                    <path
+                                                        d="M7 9H17M7 13H12M21 20L17.6757 18.3378C17.4237 18.2118 17.2977 18.1488 17.1656 18.1044C17.0484 18.065 16.9277 18.0365 16.8052 18.0193C16.6672 18 16.5263 18 16.2446 18H6.2C5.07989 18 4.51984 18 4.09202 17.782C3.71569 17.5903 3.40973 17.2843 3.21799 16.908C3 16.4802 3 15.9201 3 14.8V7.2C3 6.07989 3 5.51984 3.21799 5.09202C3.40973 4.71569 3.71569 4.40973 4.09202 4.21799C4.51984 4 5.0799 4 6.2 4H17.8C18.9201 4 19.4802 4 19.908 4.21799C20.2843 4.40973 20.5903 4.71569 20.782 5.09202C21 5.51984 21 6.0799 21 7.2V20Z"
+                                                        stroke="currentColor"
+                                                        stroke-width="2"
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                    />
+                                                </svg>
+                                            </motion.button>
+                                        </Link>
+                                        <motion.button
+                                            className="relative rounded-md bg-white/10 p-1 transition-colorBackground duration-200 ease-custom-cubic hover:bg-black/50 hover:text-green-500"
                                             whileHover={{ scale: 1.15 }}
                                             whileTap={{ scale: 0.95 }}
+                                            onClick={() => {
+                                                if (sessionData === null) {
+                                                    void signIn();
+                                                } else
+                                                    setIsNotificationOpen(
+                                                        !isNotificationOpen
+                                                    );
+                                            }}
                                         >
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
-                                                className="h-6 w-6 "
+                                                className="h-6 w-6  "
                                                 viewBox="0 0 24 24"
                                                 fill="none"
                                             >
                                                 <path
-                                                    d="M7 9H17M7 13H12M21 20L17.6757 18.3378C17.4237 18.2118 17.2977 18.1488 17.1656 18.1044C17.0484 18.065 16.9277 18.0365 16.8052 18.0193C16.6672 18 16.5263 18 16.2446 18H6.2C5.07989 18 4.51984 18 4.09202 17.782C3.71569 17.5903 3.40973 17.2843 3.21799 16.908C3 16.4802 3 15.9201 3 14.8V7.2C3 6.07989 3 5.51984 3.21799 5.09202C3.40973 4.71569 3.71569 4.40973 4.09202 4.21799C4.51984 4 5.0799 4 6.2 4H17.8C18.9201 4 19.4802 4 19.908 4.21799C20.2843 4.40973 20.5903 4.71569 20.782 5.09202C21 5.51984 21 6.0799 21 7.2V20Z"
+                                                    d="M9.0003 21H15.0003M18.0003 8.6C18.0003 7.11479 17.3682 5.69041 16.2429 4.6402C15.1177 3.59 13.5916 3 12.0003 3C10.409 3 8.88288 3.59 7.75766 4.6402C6.63245 5.69041 6.0003 7.11479 6.0003 8.6C6.0003 11.2862 5.32411 13.1835 4.52776 14.4866C3.75646 15.7486 3.37082 16.3797 3.38515 16.5436C3.40126 16.7277 3.4376 16.7925 3.58633 16.9023C3.71872 17 4.34793 17 5.60636 17H18.3943C19.6527 17 20.2819 17 20.4143 16.9023C20.563 16.7925 20.5994 16.7277 20.6155 16.5436C20.6298 16.3797 20.2441 15.7486 19.4729 14.4866C18.6765 13.1835 18.0003 11.2862 18.0003 8.6Z"
                                                     stroke="currentColor"
                                                     stroke-width="2"
                                                     stroke-linecap="round"
                                                     stroke-linejoin="round"
                                                 />
                                             </svg>
+                                            {sessionData && (
+                                                <DisplayNotificationCount
+                                                    userId={sessionData.user.id}
+                                                />
+                                            )}
                                         </motion.button>
-                                    </Link>
-                                    <motion.button
-                                        className="relative rounded-md bg-white/10 p-1 transition-colorBackground duration-200 ease-custom-cubic hover:bg-black/50 hover:text-green-500"
-                                        whileHover={{ scale: 1.15 }}
-                                        whileTap={{ scale: 0.95 }}
-                                    >
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            className="h-6 w-6 "
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                        >
-                                            <path
-                                                d="M9.0003 21H15.0003M18.0003 8.6C18.0003 7.11479 17.3682 5.69041 16.2429 4.6402C15.1177 3.59 13.5916 3 12.0003 3C10.409 3 8.88288 3.59 7.75766 4.6402C6.63245 5.69041 6.0003 7.11479 6.0003 8.6C6.0003 11.2862 5.32411 13.1835 4.52776 14.4866C3.75646 15.7486 3.37082 16.3797 3.38515 16.5436C3.40126 16.7277 3.4376 16.7925 3.58633 16.9023C3.71872 17 4.34793 17 5.60636 17H18.3943C19.6527 17 20.2819 17 20.4143 16.9023C20.563 16.7925 20.5994 16.7277 20.6155 16.5436C20.6298 16.3797 20.2441 15.7486 19.4729 14.4866C18.6765 13.1835 18.0003 11.2862 18.0003 8.6Z"
-                                                stroke="currentColor"
-                                                stroke-width="2"
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                            />
-                                        </svg>
-                                        <div className="absolute -right-0 -top-0 text-[10px]">
-                                            10
-                                        </div>
-                                    </motion.button>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="flex flex-col gap-2">
-                                {sessionData === null ? (
-                                    <motion.button
-                                        className="flex justify-start"
-                                        whileHover={{
-                                            scale: 1.05,
-                                        }}
-                                        whileTap={{ scale: 0.95 }}
-                                        onClick={() => void signIn()}
-                                    >
-                                        <Image
-                                            alt="profile"
-                                            src={defaultProfile}
-                                            width={400}
-                                            height={400}
-                                            className="h-28 w-28 rounded-md object-cover"
-                                        />
-                                    </motion.button>
-                                ) : (
-                                    <Link
-                                        href="/play/profile"
-                                        aria-label="projects"
-                                        onClick={handleClose}
-                                    >
+                                <div className="flex flex-col gap-2">
+                                    {sessionData === null ? (
                                         <motion.button
                                             className="flex justify-start"
                                             whileHover={{
                                                 scale: 1.05,
                                             }}
                                             whileTap={{ scale: 0.95 }}
+                                            onClick={() => void signIn()}
                                         >
                                             <Image
                                                 alt="profile"
-                                                src={
-                                                    sessionData.user.profile
-                                                        ? sessionData.user
-                                                              .profile
-                                                        : defaultProfile
-                                                }
+                                                src={defaultProfile}
                                                 width={400}
                                                 height={400}
                                                 className="h-28 w-28 rounded-md object-cover"
                                             />
                                         </motion.button>
-                                    </Link>
-                                )}
+                                    ) : (
+                                        <Link
+                                            href="/play/profile"
+                                            aria-label="projects"
+                                            onClick={handleClose}
+                                        >
+                                            <motion.button
+                                                className="flex justify-start"
+                                                whileHover={{
+                                                    scale: 1.05,
+                                                }}
+                                                whileTap={{ scale: 0.95 }}
+                                            >
+                                                <Image
+                                                    alt="profile"
+                                                    src={
+                                                        sessionData.user.profile
+                                                            ? sessionData.user
+                                                                  .profile
+                                                            : defaultProfile
+                                                    }
+                                                    width={400}
+                                                    height={400}
+                                                    className="h-28 w-28 rounded-md object-cover"
+                                                />
+                                            </motion.button>
+                                        </Link>
+                                    )}
 
-                                <motion.button
-                                    aria-label={
-                                        sessionData ? "Sign out" : "Sign in"
-                                    }
-                                    className=" w-28 rounded-md bg-white/10 px-4 py-1 hover:bg-black/50 hover:text-green-500 "
-                                    onClick={
-                                        sessionData
-                                            ? () => void signOut()
-                                            : () => void signIn()
-                                    }
-                                    whileHover={{
-                                        scale: 1.1,
+                                    <motion.button
+                                        aria-label={
+                                            sessionData ? "Sign out" : "Sign in"
+                                        }
+                                        className=" w-28 rounded-md bg-white/10 px-4 py-1 hover:bg-black/50 hover:text-green-500 "
+                                        onClick={
+                                            sessionData
+                                                ? () => void signOut()
+                                                : () => void signIn()
+                                        }
+                                        whileHover={{
+                                            scale: 1.1,
+                                        }}
+                                        whileTap={{ scale: 0.95 }}
+                                    >
+                                        {sessionData ? "Sign out" : "Sign in"}
+                                    </motion.button>
+                                </div>
+                            </motion.div>
+                            {isNotificationOpen === true && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: -20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -20 }}
+                                    transition={{
+                                        opacity: {
+                                            duration: 0.3,
+                                            ease: "easeInOut",
+                                        },
+                                        y: { duration: 0.3, ease: "easeInOut" },
                                     }}
-                                    whileTap={{ scale: 0.95 }}
+                                    className=" absolute right-5 top-96 flex h-96 w-80 justify-between overflow-y-auto rounded-lg bg-black/50 p-2 "
                                 >
-                                    {sessionData ? "Sign out" : "Sign in"}
-                                </motion.button>
-                            </div>
-                        </motion.div>
+                                    {sessionData ? (
+                                        <DisplayNotifications
+                                            userId={sessionData.user.id}
+                                        />
+                                    ) : (
+                                        <button
+                                            className="relative mb-2 flex w-full gap-2 rounded-md bg-white/5 p-2   text-xs text-darkGray transition-background duration-400 ease-custom-cubic hover:bg-white/10 "
+                                            // onClick={() => setActiveTransactionId(message.listingTransactionId)}
+                                        >
+                                            <div className="flex w-full flex-col items-start">
+                                                <div className="flex w-full justify-between  ">
+                                                    <div className="flex w-full justify-start ">
+                                                        Notification
+                                                    </div>
+                                                    <div className=" flex-shrink-0 text-darkGray">
+                                                        01010 10010
+                                                    </div>
+                                                </div>
+                                                <h1 className="mt-2 text-green-500 ">
+                                                    No Notifications Yet
+                                                </h1>
+                                            </div>
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="#000000"
+                                                className="absolute -bottom-2 right-0 h-5 w-5 rounded-full bg-white/20 p-1 hover:bg-green-500"
+                                                viewBox="0 0 32 32"
+                                            >
+                                                <path d="M18.8,16l5.5-5.5c0.8-0.8,0.8-2,0-2.8l0,0C24,7.3,23.5,7,23,7c-0.5,0-1,0.2-1.4,0.6L16,13.2l-5.5-5.5  c-0.8-0.8-2.1-0.8-2.8,0C7.3,8,7,8.5,7,9.1s0.2,1,0.6,1.4l5.5,5.5l-5.5,5.5C7.3,21.9,7,22.4,7,23c0,0.5,0.2,1,0.6,1.4  C8,24.8,8.5,25,9,25c0.5,0,1-0.2,1.4-0.6l5.5-5.5l5.5,5.5c0.8,0.8,2.1,0.8,2.8,0c0.8-0.8,0.8-2.1,0-2.8L18.8,16z" />
+                                            </svg>
+                                        </button>
+                                    )}
+                                </motion.div>
+                            )}
+                        </>
                     )}
                 </AnimatePresence>
             </div>

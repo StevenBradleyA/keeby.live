@@ -6,6 +6,16 @@ import {
 } from "~/server/api/trpc";
 
 export const notificationRouter = createTRPCRouter({
+    getCountByUserId: publicProcedure
+        .input(z.string())
+        .query(async ({ ctx, input: userId }) => {
+            return await ctx.prisma.notification.count({
+                where: {
+                    userId: userId,
+                },
+            });
+        }),
+
     getAllByUserId: publicProcedure
         .input(z.string())
         .query(async ({ ctx, input: userId }) => {
