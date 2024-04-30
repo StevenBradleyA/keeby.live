@@ -11,7 +11,6 @@ import homeButtonBlack from "../../../public/Nav/home-black.png";
 import defaultProfile from "@public/Profile/profile-default.png";
 import keebo from "@public/Profile/keebo.png";
 import { useRouter } from "next/router";
-import { getCookies } from "cookies-next";
 import { themeStyles } from "../KeebType/Theme/themeStyles";
 import type { ThemeName } from "../KeebType/Theme/themeStyles";
 import { useTheme } from "../Context/Theme";
@@ -25,9 +24,6 @@ export default function NavBar() {
 
     const [isMenuGif, setIsMenuGif] = useState<boolean>(false);
     const [isClosingMenu, setIsClosingMenu] = useState<boolean>(false);
-
-    // todo secondary ref menu for notis to fix clicking problems
-    // todo link href based on type
 
     const menuRef = useRef<HTMLDivElement | null>(null);
     const notificationRef = useRef<HTMLDivElement | null>(null);
@@ -81,7 +77,6 @@ export default function NavBar() {
         setIsMenuOpen(false);
         setIsNotificationOpen(false);
     }, []);
-
 
     const toggleMenu = useCallback(() => {
         setIsMenuOpen((prevIsMenuOpen) => !prevIsMenuOpen);

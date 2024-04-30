@@ -1,6 +1,4 @@
 import type { Notification } from "@prisma/client";
-import Image from "next/image";
-import keebo from "@public/Profile/keebo.png";
 import { api } from "~/utils/api";
 import {
     format,
@@ -67,6 +65,7 @@ export default function EachNotificationCard({
             });
             void ctx.notification.getAllByUserId.invalidate();
             void ctx.notification.getCountByUserId.invalidate();
+            void ctx.notification.getOfferNotificationsByUserId.invalidate();
         },
     });
 
