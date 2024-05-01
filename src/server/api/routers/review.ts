@@ -19,58 +19,93 @@ export const reviewRouter = createTRPCRouter({
         return ctx.prisma.review.findMany({ where: { userId: input } });
     }),
 
-    hasReviewed: publicProcedure
-        .input(z.object({ listingId: z.string(), userId: z.string().optional() }))
-        .query(({ input: { listingId, userId }, ctx }) => {
-            if (!userId) return null;
-            return ctx.prisma.review.findFirst({ where: { listingId, userId } });
+    getAllEligibleByUserId: publicProcedure
+        .input(z.string())
+        .query(({ input: userId, ctx }) => {
+            return ctx.prisma.listing.findMany({
+                where: {
+                    buyerId: userId,
+                },
+                select: {
+                    id: true, 
+                    title: true,
+                    seller: {
+                        select: {
+                            id: true,
+                            username: true,
+                        },
+                    },
+                },
+            });
         }),
 
-    // create: protectedProcedure
-    //     .input(
-    //         z.object({
-    //             text: z.string(),
-    //             starRating: z.number(),
-    //             userId: z.string(),
-    //             listingId: z.string(),
-    //         })
-    //     )
-    //     .mutation(async ({ input, ctx }) => {
-        
-    //         if (ctx.session.user.id === input.userId) {
-    //             const newReview = await ctx.prisma.review.create({
-    //                 data: input,
-    //             });
 
-    //             return newReview;
-    //         }
+    hasReviewed: publicProcedure
+        .input(
+            z.object({ listingId: z.string(), userId: z.string().optional() })
+        )
+        .query(({ input: { listingId, userId }, ctx }) => {
+            if (!userId) return null;
+            return ctx.prisma.review.findFirst({
+                where: { listingId, userId },
+            });
+        }),
 
-    //         throw new Error("Invalid userId");
-    //     }),
+    create: protectedProcedure
+        .input(
+            z.object({
+                text: z.string(),
+                starRating: z.number(),
+                userId: z.string(),
+                sellerId: z.string(),
+                listingId: z.string(),
+            })
+        )
+        .mutation(async ({ input, ctx }) => {
+            const { text, starRating, userId, sellerId, listingId } = input;
+
+            if (ctx.session.user.id !== userId) {
+                throw new Error("Invalid userId");
+            }
+
+            return await ctx.prisma.review.create({
+                data: {
+                    text: text,
+                    starRating: starRating,
+                    sellerId: sellerId,
+                    listingId: listingId,
+                    userId: userId,
+                },
+            });
+        }),
 
     update: protectedProcedure
         .input(
             z.object({
                 id: z.string(),
+                text: z.string(),
+                starRating: z.number(),
                 userId: z.string(),
+                sellerId: z.string(),
                 listingId: z.string(),
-                text: z.string().optional(),
-                starRating: z.number().optional(),
             })
         )
         .mutation(async ({ input, ctx }) => {
-            if (ctx.session.user.id === input.userId) {
-                const updatedReview = await ctx.prisma.review.update({
-                    where: {
-                        id: input.id,
-                    },
-                    data: input,
-                });
+            const { id, text, starRating, userId, sellerId, listingId } = input;
 
-                return updatedReview;
+            if (ctx.session.user.id !== userId) {
+                throw new Error("Invalid userId");
             }
 
-            throw new Error("Invalid userId");
+            return await ctx.prisma.review.update({
+                where: {
+                    id: id,
+                },
+                data: {
+                    text: text,
+                    starRating: starRating,
+                },
+            });
         }),
 
     delete: protectedProcedure

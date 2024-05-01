@@ -113,9 +113,9 @@ export default function AcceptDeclineOffer({
                     <div className="mt-10 flex w-[600px] items-center justify-between text-white">
                         <p className="w-3/4">
                             {` * By accepting this offer, you agree to sell your
-                            keyboard to the buyer for $
-                            ${(offer.price / 100).toFixed(2)} via PayPal.
-                            Seller's pay for shipping. When the Buyer is verified and Pay's
+                            keyboard to the buyer for 
+                            $${(offer.price / 100).toFixed(2)} via PayPal.
+                            Seller's pay for shipping. When the Buyer is verified and pay's
                             Keeby's fee you will be notified via email and put
                             in a private message with the buyer.`}
                         </p>

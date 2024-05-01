@@ -175,6 +175,7 @@ export const transactionRouter = createTRPCRouter({
                     },
                     data: {
                         status: "SOLD",
+                        buyerId: buyerId,
                     },
                 });
 

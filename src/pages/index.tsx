@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import ModalDialog from "~/components/Modal";
-import CreateListingModal from "~/components/KeebShop/CreateListing/CreateModal";
+import CreateListingModal from "~/components/Listings/CreateListing/CreateModal";
 import plus from "@public/Vectors/plus-plus.png";
 import Image from "next/image";
-import DisplayListingPreviews from "~/components/KeebShop/DisplayListing/DisplayListingsPreview";
-import DisplayPopularListingPreviews from "~/components/KeebShop/DisplayListing/DisplayListingsPreview/displayPopularListingPreviews";
+import DisplayListingPreviews from "~/components/Listings/DisplayListing/DisplayListingsPreview";
+import DisplayPopularListingPreviews from "~/components/Listings/DisplayListing/DisplayListingsPreview/displayPopularListingPreviews";
 import ResetArrowSvg from "~/components/Svgs/reset";
 import NotificationSvg from "~/components/Svgs/notification";
 import { getCookies } from "cookies-next";
@@ -250,7 +250,7 @@ export default function Home() {
                                                 Switch Type:
                                             </h1>
                                             <button
-                                                className=" absolute -top-1 right-0 h-7 w-7 text-darkGray hover:text-green-500 transition-colors duration-400 ease-custom-cubic"
+                                                className=" absolute -top-1 right-0 h-7 w-7 text-darkGray transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                                                 onClick={handleResetSpecify}
                                             >
                                                 <ResetArrowSvg />
@@ -589,7 +589,7 @@ export default function Home() {
                                         onChange={(e) =>
                                             setSearchInput(e.target.value)
                                         }
-                                        className={` px-3 search-input-hack absolute h-10 w-full rounded-md ${
+                                        className={` search-input-hack absolute h-10 w-full rounded-md px-3 ${
                                             isSearchFocus
                                                 ? "search-input-placeholder bg-blackAlternative"
                                                 : "bg-darkGray"

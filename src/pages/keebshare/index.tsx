@@ -6,9 +6,9 @@ import ResetArrowSvg from "~/components/Svgs/reset";
 import NotificationSvg from "~/components/Svgs/notification";
 import { getCookies } from "cookies-next";
 import { setCookie } from "cookies-next";
-import CreatePostModal from "~/components/KeebShare/CreatePost";
-import DisplayNewPostPreviews from "~/components/KeebShare/DisplayPosts/DisplayPostPreviews/displayNewPostPreviews";
-import DisplayPopularPostPreviews from "~/components/KeebShare/DisplayPosts/DisplayPostPreviews/displayPopularPostPreviews";
+import CreatePostModal from "~/components/Posts/CreatePost";
+import DisplayNewPostPreviews from "~/components/Posts/DisplayPosts/DisplayPostPreviews/displayNewPostPreviews";
+import DisplayPopularPostPreviews from "~/components/Posts/DisplayPosts/DisplayPostPreviews/displayPopularPostPreviews";
 import MainFooter from "~/components/Footer";
 import { debounce } from "lodash";
 
@@ -199,7 +199,7 @@ export default function KeebShare() {
                                         onChange={(e) =>
                                             setSearchInput(e.target.value)
                                         }
-                                        className={`px-3 search-input-hack absolute h-10 w-full rounded-md ${
+                                        className={`search-input-hack absolute h-10 w-full rounded-md px-3 ${
                                             isSearchFocus
                                                 ? "search-input-placeholder bg-blackAlternative"
                                                 : "bg-darkGray"

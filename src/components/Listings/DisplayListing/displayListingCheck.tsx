@@ -1,5 +1,5 @@
 import MainFooter from "~/components/Footer";
-import DisplayListingPage from "~/components/KeebShop/DisplayListing";
+import DisplayListingPage from "~/components/Listings/DisplayListing";
 import LoadingSpinner from "~/components/Loading";
 import { api } from "~/utils/api";
 
@@ -25,7 +25,7 @@ export default function DisplayListingCheck({
 
     return (
         <>
-            <div className="w-full desktop:px-16 text-black mb-96">
+            <div className="mb-96 w-full text-black desktop:px-16">
                 {listing && <DisplayListingPage listing={listing} />}
             </div>
             <MainFooter />

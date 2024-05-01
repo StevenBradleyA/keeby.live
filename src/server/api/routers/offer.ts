@@ -173,6 +173,20 @@ export const offerRouter = createTRPCRouter({
                         status: "ACCEPTED",
                     },
                 });
+                const listingCheck = await ctx.prisma.listing.findUnique({
+                    where: { id: listingId },
+                });
+
+                if (listingCheck) {
+                    await ctx.prisma.notification.create({
+                        data: {
+                            userId: buyerId,
+                            text: `Your offer was accepted for ${listingCheck.title}!`,
+                            type: "OFFER",
+                            status: "UNREAD",
+                        },
+                    });
+                }
 
                 return "Successfully Updated";
             }

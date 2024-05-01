@@ -1,6 +1,6 @@
 import { useSession } from "next-auth/react";
 import Custom404 from "../404";
-import CreateListing from "~/components/KeebShop/CreateListing/Create";
+import CreateListing from "~/components/Listings/CreateListing/Create";
 
 export default function CreateListingAgreement() {
     const { data: session } = useSession();

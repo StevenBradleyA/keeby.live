@@ -14,10 +14,10 @@ import computerShop from "@public/Profile/computer-shop.png";
 import computerType from "@public/Profile/computer-type.png";
 import hacktime from "@public/Vectors/hacktime.png";
 import MainFooter from "~/components/Footer";
-import ManageListings from "~/components/KeebShop/ManageListings";
-import ManagePosts from "~/components/KeebShare/ManagePosts";
-import DisplayFavoriteListings from "~/components/KeebShop/DisplayFavoriteListings";
-import DisplayFavoritePosts from "~/components/KeebShare/DisplayFavoritePosts";
+import ManageListings from "~/components/Listings/ManageListings";
+import ManagePosts from "~/components/Posts/ManagePosts";
+import DisplayFavoriteListings from "~/components/Listings/DisplayFavoriteListings";
+import DisplayFavoritePosts from "~/components/Posts/DisplayFavoritePosts";
 import DisplayProfileKeebs from "~/components/Profile/Keeb/DisplayKeebs";
 import DisplayAllGameStatsCheck from "~/components/KeebType/GameStats/displayAllGameStatsCheck";
 import UpdateUserTag from "~/components/Profile/User/Update/Tag";
@@ -31,6 +31,7 @@ import DisplayTransactions from "~/components/Transactions/Display";
 import keebo from "@public/Profile/keebo.png";
 import LoadingSpinner from "~/components/Loading";
 import DisplayProfileNotifications from "~/components/Notifications/Display/displayProfileNotifications";
+import DisplayProfileReviews from "~/components/Reviews/Display/displayProfileReviews";
 
 export default function UserProfile() {
     // mdn digest() -- might be useful for us here
@@ -1009,6 +1010,9 @@ export default function UserProfile() {
                 )}
                 {toggle === "KEEBSHOP" && keebShopCategory === "OFFERS" && (
                     <DisplayOffers userId={sessionData.user.id} />
+                )}
+                 {toggle === "KEEBSHOP" && keebShopCategory === "REVIEWS" && (
+                    <DisplayProfileReviews userId={sessionData.user.id} />
                 )}
                 {toggle === "KEEBSHOP" &&
                     keebShopCategory === "TRANSACTIONS" && (

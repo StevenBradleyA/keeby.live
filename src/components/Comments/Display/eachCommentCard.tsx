@@ -5,7 +5,7 @@ import CreateReplyComment from "../Create/CreateReplyComment";
 import ModifyCommentModal from "../Modal";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
-import ToggleCommentLike from "~/components/KeebShop/Likes/CommentLikes/ToggleLike";
+import ToggleCommentLike from "~/components/Listings/Likes/CommentLikes/ToggleLike";
 import DisplayReplyComments from "./displayReplyComments";
 import ModalDialog from "~/components/Modal";
 import UpdateComment from "../Update";
