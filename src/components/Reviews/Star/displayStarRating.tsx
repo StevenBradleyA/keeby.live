@@ -1,18 +1,17 @@
-import StarDisplay from ".";
+import EachStarDisplay from "./eachStar";
 
 interface StarRatingProps {
     rating: number;
 }
 
-export default function StarRating({ rating }: StarRatingProps) {
-    const coloredStarColor = "#ffd700";
-    const defaultStarColor = "#616161";
+export default function DisplayStarRating({ rating }: StarRatingProps) {
+    const coloredStarColor = "text-green-500";
+    const defaultStarColor = "text-darkGray";
 
     return (
         <div className="flex gap-1">
             {Array.from({ length: 5 }, (_, i) => (
-
-                <StarDisplay
+                <EachStarDisplay
                     key={i}
                     color={i < rating ? coloredStarColor : defaultStarColor}
                 />

@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import defaultProfile from "@public/Profile/profile-default.png";
-import StarRating from "~/components/Reviews/Star/starRating";
 import type { Images, Listing } from "@prisma/client";
 import { useState } from "react";
 import ModalDialog from "~/components/Modal";
@@ -9,6 +8,7 @@ import CreateTransaction from "../../../Transactions/Create";
 import CreateOffer from "../../../Offers/Create";
 import SignInModal from "~/components/Comments/Modal/signInModal";
 import { useSession } from "next-auth/react";
+import DisplayStarRating from "~/components/Reviews/Star/displayStarRating";
 
 interface DisplayListingPageProps {
     listing: ListingWithImagesAndCount;
@@ -165,11 +165,11 @@ export default function SellerListingCard({
                     )}
 
                     {listing.seller.avgRating ? (
-                        <StarRating rating={listing.seller.avgRating} />
+                        <DisplayStarRating rating={listing.seller.avgRating} />
                     ) : (
                         <div className="flex flex-col">
                             <h3 className="text-darkGray">Unreviewed seller</h3>
-                            <StarRating rating={0} />
+                            <DisplayStarRating rating={0} />
                         </div>
                     )}
                 </div>

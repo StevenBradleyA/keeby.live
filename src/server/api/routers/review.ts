@@ -25,20 +25,28 @@ export const reviewRouter = createTRPCRouter({
             return ctx.prisma.listing.findMany({
                 where: {
                     buyerId: userId,
+                    status: "SOLD",
+                    reviews: {
+                        none: {
+                            userId: userId,
+                        },
+                    },
                 },
                 select: {
-                    id: true, 
+                    id: true,
                     title: true,
+
+                    updatedAt: true,
                     seller: {
                         select: {
                             id: true,
                             username: true,
+                            profile: true,
                         },
                     },
                 },
             });
         }),
-
 
     hasReviewed: publicProcedure
         .input(

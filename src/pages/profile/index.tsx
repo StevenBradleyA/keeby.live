@@ -466,7 +466,7 @@ export default function UserProfile() {
                                         <div className="h-0 w-full border-[1px] border-green-500"></div>
 
                                         <Link
-                                            href="//verify-seller"
+                                            href="/verify-seller"
                                             aria-label="/verify-seller"
                                             className=" flex-shrink-0 text-darkGray transition-colors duration-400 ease-custom-cubic hover:text-white"
                                         >
@@ -1011,7 +1011,7 @@ export default function UserProfile() {
                 {toggle === "KEEBSHOP" && keebShopCategory === "OFFERS" && (
                     <DisplayOffers userId={sessionData.user.id} />
                 )}
-                 {toggle === "KEEBSHOP" && keebShopCategory === "REVIEWS" && (
+                {toggle === "KEEBSHOP" && keebShopCategory === "REVIEWS" && (
                     <DisplayProfileReviews userId={sessionData.user.id} />
                 )}
                 {toggle === "KEEBSHOP" &&

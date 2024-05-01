@@ -40,7 +40,7 @@ export default function DisplayProfileReviews({ userId }: { userId: string }) {
                 </button>
             </div>
             <ModalDialog isOpen={isModalOpen} onClose={closeModal}>
-                <CreateReview userId={userId} />
+                <CreateReview userId={userId} closeModal={closeModal} />
             </ModalDialog>
             {/* <div className="flex gap-10">
                 {allOffers?.offersReceived.map((listing) => (
