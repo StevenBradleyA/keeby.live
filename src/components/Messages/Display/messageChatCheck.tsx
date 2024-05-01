@@ -28,17 +28,12 @@ export default function MessageChatCheck({
         }
     }, [isFetching]);
 
-    // todo message time stamps
-
-    // todo notificationss for unread messages...
-
     // Please include your:
     // Name
     // Address
     // Phone #
     // And full order in the payment notes,
 
-    // again have to determine if buyer or seller right...
     if (isLoading)
         return (
             <div className="p-5">
@@ -89,16 +84,8 @@ export default function MessageChatCheck({
                 <div className=" flex h-[10%] flex-col justify-end  ">
                     <CreateMessage
                         listingTransactionId={activeTransactionId}
-                        buyerId={
-                            messages[0].buyerId === userId
-                                ? userId
-                                : messages[0].sellerId
-                        }
-                        sellerId={
-                            messages[0].sellerId === userId
-                                ? userId
-                                : messages[0].buyerId
-                        }
+                        buyerId={messages[0].buyerId}
+                        sellerId={messages[0].sellerId}
                     />
                 </div>
             )}

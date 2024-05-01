@@ -1,6 +1,5 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-// import { useRouter } from "next/router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
@@ -35,44 +34,6 @@ export default function NavBar() {
     const { theme } = useTheme();
     const styles = themeStyles[theme as ThemeName] || themeStyles["KEEBY"];
 
-    // const router = useRouter();
-
-    // const [isHome, setIsHome] = useState(false);
-    // const [isAboutUs, setIsAboutUs] = useState(false);
-    // const [isProjects, setIsProjects] = useState(false);
-    // const [isContactUs, setIsContactUs] = useState(false);
-    // const [isSteven, setIsSteven] = useState(false);
-    // const [isZaviar, setIsZaviar] = useState(false);
-
-    // useEffect(() => {
-    //   setIsHome(router.pathname === "/");
-    //   setIsAboutUs(router.pathname === "/about-us");
-    //   setIsProjects(router.pathname === "/projects");
-    //   setIsContactUs(router.pathname === "/contact");
-    //   setIsSteven(router.pathname === "/steven");
-    //   setIsZaviar(router.pathname === "/zaviar");
-
-    //   const handleRouteChange = (url: string) => {
-    //     setIsHome(url === "/");
-    //     setIsAboutUs(url === "/about-us");
-    //     setIsProjects(url === "/projects");
-    //     setIsContactUs(url === "/contact");
-    //     setIsSteven(url === "/steven");
-    //     setIsZaviar(url === "/zaviar");
-    //   };
-
-    //   router.events.on("routeChangeComplete", handleRouteChange);
-
-    //   return () => {
-    //     router.events.off("routeChangeComplete", handleRouteChange);
-    //   };
-    // }, [router.pathname]);
-
-    // const toggleMenu = () => {
-    //     setIsMenuOpen(!isMenuOpen);
-    // };
-    // console.log(isClosingMenu);
-
     const handleClose = useCallback(() => {
         setIsMenuOpen(false);
         setIsNotificationOpen(false);
@@ -88,8 +49,9 @@ export default function NavBar() {
                 isMenuOpen &&
                 menuRef.current &&
                 !menuRef.current.contains(e.target as Node) &&
-                notificationRef.current &&
-                !notificationRef.current.contains(e.target as Node) &&
+                (notificationRef.current === null ||
+                    (notificationRef.current &&
+                        !notificationRef.current.contains(e.target as Node))) &&
                 menuButtonRef.current &&
                 !menuButtonRef.current.contains(e.target as Node)
             ) {
@@ -98,6 +60,7 @@ export default function NavBar() {
         },
         [isMenuOpen, handleClose]
     );
+    console.log("helloooo", notificationRef);
 
     useEffect(() => {
         window.addEventListener("mousedown", handleOutsideClick);

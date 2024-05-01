@@ -48,6 +48,7 @@ export default function ListingPageFavorite({
             const data = {
                 userId: userId,
                 id: favoriteId.id,
+                listingId: listingId,
             };
 
             return unfavorite(data);

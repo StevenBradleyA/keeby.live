@@ -89,13 +89,24 @@ export const messageRouter = createTRPCRouter({
             if (ctx.session.user.id !== (buyerId || sellerId)) {
                 throw new Error("Invalid credentials");
             }
+            const isBuyer = ctx.session.user.id === buyerId;
+            const recipientId = isBuyer === true ? sellerId : buyerId;
 
-            return await ctx.prisma.message.create({
+            await ctx.prisma.message.create({
                 data: {
                     text: text,
                     buyerId: buyerId,
                     sellerId: sellerId,
                     listingTransactionId: listingTransactionId,
+                },
+            });
+
+            await ctx.prisma.notification.create({
+                data: {
+                    userId: recipientId,
+                    text: `You received a new message!`,
+                    type: "MESSAGE",
+                    status: "UNREAD",
                 },
             });
         }),

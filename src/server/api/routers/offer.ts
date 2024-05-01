@@ -211,6 +211,10 @@ export const offerRouter = createTRPCRouter({
                     "You do not have the necessary permissions to perform this action."
                 );
             }
+            const listingCheck = await ctx.prisma.listing.findUnique({
+                where: { id: listingId },
+            });
+
             const buyer = await ctx.prisma.user.findUnique({
                 where: {
                     id: buyerId,
@@ -224,13 +228,35 @@ export const offerRouter = createTRPCRouter({
                     where: { id: id },
                 });
 
-                if (listingStatus === "PENDING") {
+                if (listingStatus === "ACTIVE" && listingCheck) {
+                    await ctx.prisma.notification.create({
+                        data: {
+                            userId: buyerId,
+                            text: `Seller Rejected your offer for ${listingCheck.title}. Try a higher price!`,
+                            type: "OFFERREJECT",
+                            typeId: listingId,
+                            status: "UNREAD",
+                        },
+                    });
+                }
+
+                if (listingStatus === "PENDING" && listingCheck) {
                     await ctx.prisma.listing.update({
                         where: {
                             id: listingId,
                         },
                         data: {
                             status: "ACTIVE",
+                        },
+                    });
+
+                    await ctx.prisma.notification.create({
+                        data: {
+                            userId: buyerId,
+                            text: `You waited too long to pay. Seller has revoked your accepted offer.`,
+                            type: "OFFERREJECT",
+                            typeId: listingId,
+                            status: "UNREAD",
                         },
                     });
 

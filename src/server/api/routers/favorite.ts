@@ -169,14 +169,33 @@ export const favoriteRouter = createTRPCRouter({
                 listingId: z.string(),
             })
         )
-        .mutation(({ ctx, input }) => {
-            if (ctx.session.user.id === input.userId) {
-                return ctx.prisma.favorites.create({
+        .mutation(async ({ ctx, input }) => {
+            const { userId, listingId } = input;
+
+            if (ctx.session.user.id === userId) {
+                await ctx.prisma.favorites.create({
                     data: {
-                        userId: input.userId,
-                        listingId: input.listingId,
+                        userId: userId,
+                        listingId: listingId,
                     },
                 });
+                const listingCheck = await ctx.prisma.listing.findUnique({
+                    where: {
+                        id: listingId,
+                    },
+                });
+                if (listingCheck) {
+                    await ctx.prisma.user.update({
+                        where: {
+                            id: listingCheck.sellerId,
+                        },
+                        data: {
+                            internetPoints: {
+                                increment: 1,
+                            },
+                        },
+                    });
+                }
             }
 
             throw new Error("You must be logged in to perform this action.");
@@ -188,14 +207,34 @@ export const favoriteRouter = createTRPCRouter({
                 postId: z.string(),
             })
         )
-        .mutation(({ ctx, input }) => {
-            if (ctx.session.user.id === input.userId) {
-                return ctx.prisma.favorites.create({
+        .mutation(async ({ ctx, input }) => {
+            const { userId, postId } = input;
+
+            if (ctx.session.user.id === userId) {
+                await ctx.prisma.favorites.create({
                     data: {
-                        userId: input.userId,
-                        postId: input.postId,
+                        userId: userId,
+                        postId: postId,
                     },
                 });
+
+                const postCheck = await ctx.prisma.post.findUnique({
+                    where: {
+                        id: postId,
+                    },
+                });
+                if (postCheck) {
+                    await ctx.prisma.user.update({
+                        where: {
+                            id: postCheck.userId,
+                        },
+                        data: {
+                            internetPoints: {
+                                increment: 1,
+                            },
+                        },
+                    });
+                }
             }
 
             throw new Error("You must be logged in to perform this action.");
@@ -205,15 +244,35 @@ export const favoriteRouter = createTRPCRouter({
             z.object({
                 id: z.string(),
                 userId: z.string(),
+                listingId: z.string(),
             })
         )
-        .mutation(({ ctx, input }) => {
-            if (ctx.session.user.id === input.userId) {
-                return ctx.prisma.favorites.delete({
+        .mutation(async ({ ctx, input }) => {
+            const { id, userId, listingId } = input;
+
+            if (ctx.session.user.id === userId) {
+                await ctx.prisma.favorites.delete({
                     where: {
-                        id: input.id,
+                        id: id,
                     },
                 });
+                const listingCheck = await ctx.prisma.listing.findUnique({
+                    where: {
+                        id: listingId,
+                    },
+                });
+                if (listingCheck) {
+                    await ctx.prisma.user.update({
+                        where: {
+                            id: listingCheck.sellerId,
+                        },
+                        data: {
+                            internetPoints: {
+                                decrement: 1,
+                            },
+                        },
+                    });
+                }
             }
             throw new Error("You must be logged in to perform this action.");
         }),
@@ -222,15 +281,35 @@ export const favoriteRouter = createTRPCRouter({
             z.object({
                 id: z.string(),
                 userId: z.string(),
+                postId: z.string(),
             })
         )
-        .mutation(({ ctx, input }) => {
-            if (ctx.session.user.id === input.userId) {
-                return ctx.prisma.favorites.delete({
+        .mutation(async ({ ctx, input }) => {
+            const { id, userId, postId } = input;
+
+            if (ctx.session.user.id === userId) {
+                await ctx.prisma.favorites.delete({
                     where: {
-                        id: input.id,
+                        id: id,
                     },
                 });
+                const postCheck = await ctx.prisma.post.findUnique({
+                    where: {
+                        id: postId,
+                    },
+                });
+                if (postCheck) {
+                    await ctx.prisma.user.update({
+                        where: {
+                            id: postCheck.userId,
+                        },
+                        data: {
+                            internetPoints: {
+                                decrement: 1,
+                            },
+                        },
+                    });
+                }
             }
             throw new Error("You must be logged in to perform this action.");
         }),

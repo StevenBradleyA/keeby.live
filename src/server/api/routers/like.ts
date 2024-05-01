@@ -89,13 +89,13 @@ export const likeRouter = createTRPCRouter({
                 },
             });
             await ctx.prisma.user.update({
+                where: {
+                    id: ownerId,
+                },
                 data: {
                     internetPoints: {
                         increment: 1,
                     },
-                },
-                where: {
-                    id: ownerId,
                 },
             });
 
@@ -121,13 +121,13 @@ export const likeRouter = createTRPCRouter({
                 });
 
                 await ctx.prisma.user.update({
+                    where: {
+                        id: ownerId,
+                    },
                     data: {
                         internetPoints: {
                             decrement: 1,
                         },
-                    },
-                    where: {
-                        id: ownerId,
                     },
                 });
 

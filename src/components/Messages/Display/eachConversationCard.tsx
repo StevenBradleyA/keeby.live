@@ -36,7 +36,13 @@ export default function EachConversationCard({
     setActiveTransactionId,
 }: EachConversationCardProps) {
     const isBuyer = message.buyerId === userId;
-    const otherParty = isBuyer ? message.seller : message.buyer;
+    const otherParty = isBuyer === true ? message.seller : message.buyer;
+    console.log(message)
+    console.log(userId)
+    console.log('isbuyer', isBuyer)
+    console.log('isOtherParty', otherParty)
+
+
     const otherPartyProfile = otherParty.profile
         ? otherParty.profile
         : defaultProfile;

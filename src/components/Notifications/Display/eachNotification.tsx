@@ -36,6 +36,12 @@ export default function EachNotificationCard({
     ) {
         notificationLink = `/profile/messages`;
     }
+    if (
+        typeof notification.typeId === "string" &&
+        notification.type === "OFFERREJECT"
+    ) {
+        notificationLink = `/keebshop/${notification.typeId}`;
+    }
 
     const formatDate = (date: Date) => {
         if (isToday(date)) {

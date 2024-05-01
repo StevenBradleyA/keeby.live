@@ -1,5 +1,5 @@
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { RefObject } from "react";
 import { api } from "~/utils/api";
 import React from "react";
@@ -21,6 +21,7 @@ export default function CreateMessage({
 }: CreateMessageProps) {
     const [text, setText] = useState<string>("");
     const [row, setRow] = useState<number>(1);
+    const buttonRef = useRef<HTMLButtonElement | null>(null);
 
     const [errors, setErrors] = useState<ErrorsObj>({});
     const [createSelected, setCreateSelected] = useState<boolean>(false);
@@ -55,13 +56,6 @@ export default function CreateMessage({
         }
     };
 
-    // const cancelComment = (e: React.FormEvent) => {
-    //     e.preventDefault();
-    //     setText("");
-    //     setCreateSelected(false);
-    //     setRow(1);
-    // };
-
     const handleSubmitClick = (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -87,7 +81,10 @@ export default function CreateMessage({
             setText("");
             setCreateSelected(false);
             setRow(1);
-            return mutate(data);
+            mutate(data);
+            if (buttonRef.current) {
+                buttonRef.current.blur();
+            }
         }
     };
 
@@ -115,6 +112,7 @@ export default function CreateMessage({
                 <button
                     className="send-message-button absolute right-1 top-1 z-10 rounded-full bg-green-500 p-[2px]"
                     onClick={handleSubmitClick}
+                    ref={buttonRef}
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
