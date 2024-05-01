@@ -15,9 +15,11 @@ export const reviewRouter = createTRPCRouter({
         });
     }),
 
-    getByUserId: publicProcedure.input(z.string()).query(({ input, ctx }) => {
-        return ctx.prisma.review.findMany({ where: { userId: input } });
-    }),
+    getAllByUserId: publicProcedure
+        .input(z.string())
+        .query(({ input: userId, ctx }) => {
+            return ctx.prisma.review.findMany({ where: { userId: userId } });
+        }),
 
     getAllEligibleByUserId: publicProcedure
         .input(z.string())
@@ -48,17 +50,6 @@ export const reviewRouter = createTRPCRouter({
             });
         }),
 
-    hasReviewed: publicProcedure
-        .input(
-            z.object({ listingId: z.string(), userId: z.string().optional() })
-        )
-        .query(({ input: { listingId, userId }, ctx }) => {
-            if (!userId) return null;
-            return ctx.prisma.review.findFirst({
-                where: { listingId, userId },
-            });
-        }),
-
     create: protectedProcedure
         .input(
             z.object({
@@ -76,7 +67,7 @@ export const reviewRouter = createTRPCRouter({
                 throw new Error("Invalid userId");
             }
 
-            return await ctx.prisma.review.create({
+            await ctx.prisma.review.create({
                 data: {
                     text: text,
                     starRating: starRating,
@@ -85,6 +76,18 @@ export const reviewRouter = createTRPCRouter({
                     userId: userId,
                 },
             });
+            await ctx.prisma.notification.create({
+                data: {
+                    userId: sellerId,
+                    text: `You received a seller review!`,
+                    type: "REVIEW",
+                    status: "UNREAD",
+                },
+            });
+            // todo create new tags maybe
+            // review 5 stars - seller pro
+            // review below - wet pancakes
+            // then notify  about new tags new tag ... unlocked!
         }),
 
     update: protectedProcedure

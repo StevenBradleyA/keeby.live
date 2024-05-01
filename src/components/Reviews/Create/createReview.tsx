@@ -191,7 +191,7 @@ export default function CreateReview({
                     width={400}
                     height={400}
                 />
-                <h1 className="w-full border-y-2 border-r-2 border-[#616161] p-2 text-xl text-green-500">
+                <h1 className="w-full border-y-2 border-[#616161] p-2 text-xl text-green-500">
                     Review {sellerUsername}
                 </h1>
             </div>

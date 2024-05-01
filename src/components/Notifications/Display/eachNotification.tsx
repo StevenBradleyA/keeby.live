@@ -57,6 +57,7 @@ export default function EachNotificationCard({
     const { mutate: deleteNotification } = api.notification.delete.useMutation({
         onSuccess: () => {
             toast.success("Notification Deleted!", {
+                icon: "🫡",
                 style: {
                     borderRadius: "10px",
                     background: "#333",

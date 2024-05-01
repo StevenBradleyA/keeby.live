@@ -6,9 +6,7 @@ export default function EachStarDisplay({ color }: StarDisplayProps) {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
-            // height="16"
-            // width="18"
-            className={`${color} h-5 w-5`}
+            className={`${color} h-4 w-4 `}
             viewBox="0 0 576 512"
             fill="currentColor"
         >

@@ -9,7 +9,7 @@ export default function DisplayStarRating({ rating }: StarRatingProps) {
     const defaultStarColor = "text-darkGray";
 
     return (
-        <div className="flex gap-1">
+        <div className="flex gap-[2px]">
             {Array.from({ length: 5 }, (_, i) => (
                 <EachStarDisplay
                     key={i}

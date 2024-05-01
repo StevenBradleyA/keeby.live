@@ -10,7 +10,6 @@ interface DisplayListingCheckProps {
 export default function DisplayListingCheck({
     listingId,
 }: DisplayListingCheckProps) {
-    // todo add seller info here make custom ts
 
     const { data: listing, isLoading } = api.listing.getOne.useQuery({
         id: listingId,
