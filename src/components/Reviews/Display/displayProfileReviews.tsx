@@ -4,9 +4,12 @@ import Image from "next/image";
 import { useState } from "react";
 import ModalDialog from "~/components/Modal";
 import CreateReview from "../Create/createReview";
+import EachReceivedReviewCard from "./eachReceivedReviewCard";
+import EachSentReviewCard from "./eachSentReviewCard";
 
 export default function DisplayProfileReviews({ userId }: { userId: string }) {
-    const { data: allOffers } = api.offer.getAllByUserId.useQuery(userId);
+    const { data: allReviews } =
+        api.review.getAllReceivedAndSentByUserId.useQuery(userId);
 
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -23,7 +26,7 @@ export default function DisplayProfileReviews({ userId }: { userId: string }) {
             <div className="flex w-full items-center justify-between">
                 <h2 className="mb-2">
                     Reviews Received ({" "}
-                    {allOffers ? allOffers.offersReceived.length : 0} )
+                    {allReviews ? allReviews.receivedReviews.length : 0} )
                 </h2>
                 <button onClick={openModal}>
                     <Image
@@ -31,30 +34,29 @@ export default function DisplayProfileReviews({ userId }: { userId: string }) {
                         alt="create keeb"
                         width={200}
                         height={200}
-                        className="shop-create-listing w-12  transition duration-150 ease-in-out "
+                        className="shop-create-listing w-12 transition duration-150 ease-in-out "
                     />
                 </button>
             </div>
             <ModalDialog isOpen={isModalOpen} onClose={closeModal}>
                 <CreateReview userId={userId} closeModal={closeModal} />
             </ModalDialog>
-            {/* <div className="flex gap-10">
-                {allOffers?.offersReceived.map((listing) => (
-                    <div key={listing.id}>
-                        <EachOfferCard listing={listing} />
+            {allReviews &&
+                allReviews.receivedReviews.map((review) => (
+                    <div key={review.id}>
+                        <EachReceivedReviewCard review={review} />
                     </div>
                 ))}
-            </div> */}
             <h2 className="mb-2 mt-5">
-                Reviews Sent ( {allOffers ? allOffers.offersSent.length : 0} )
+                Reviews Sent ( {allReviews ? allReviews.sentReviews.length : 0}{" "}
+                )
             </h2>
-            {/* <div className="flex gap-10">
-                {allOffers?.offersSent.map((offer) => (
-                    <div key={offer.id}>
-                        <EachOfferViewCard offer={offer} />
+            {allReviews &&
+                allReviews.sentReviews.map((review) => (
+                    <div key={review.id}>
+                        <EachSentReviewCard review={review} />
                     </div>
                 ))}
-            </div> */}
         </div>
     );
 }

@@ -126,15 +126,13 @@ export const reviewRouter = createTRPCRouter({
         .input(
             z.object({
                 id: z.string(),
+                userId: z.string(),
                 text: z.string(),
                 starRating: z.number(),
-                userId: z.string(),
-                sellerId: z.string(),
-                listingId: z.string(),
             })
         )
         .mutation(async ({ input, ctx }) => {
-            const { id, text, starRating, userId, sellerId, listingId } = input;
+            const { id, text, starRating, userId } = input;
 
             if (ctx.session.user.id !== userId) {
                 throw new Error("Invalid userId");
@@ -154,12 +152,13 @@ export const reviewRouter = createTRPCRouter({
     delete: protectedProcedure
         .input(z.object({ id: z.string(), userId: z.string() }))
         .mutation(async ({ input, ctx }) => {
-            if (ctx.session.user.id === input.userId) {
-                await ctx.prisma.review.delete({ where: { id: input.id } });
-
-                return "Successfully deleted";
+            const { id, userId } = input;
+            if (ctx.session.user.id !== userId) {
+                throw new Error("Invalid userId");
             }
 
-            throw new Error("Invalid userId");
+            await ctx.prisma.review.delete({ where: { id: id } });
+
+            return "Successfully deleted";
         }),
 });

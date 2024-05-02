@@ -1018,7 +1018,6 @@ export default function UserProfile() {
                     keebShopCategory === "TRANSACTIONS" && (
                         <DisplayTransactions userId={sessionData.user.id} />
                     )}
-
                 {toggle === "KEEBSHARE" &&
                     keebShareCategory === "FAVORITES" && (
                         <DisplayFavoritePosts userId={sessionData.user.id} />
