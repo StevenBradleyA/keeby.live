@@ -3,13 +3,22 @@ import { api } from "~/utils/api";
 import CreateMessage from "../Create/createMessage";
 import EachMessageCard from "./eachMessageCard";
 import { useEffect, useRef } from "react";
+import Link from "next/link";
 
 export default function MessageChatCheck({
     activeTransactionId,
+    recipientId,
     userId,
+    sellerEmail,
+    listingTitle,
+    agreedPrice,
 }: {
     userId: string;
     activeTransactionId: string;
+    recipientId: string;
+    sellerEmail: string;
+    listingTitle: string;
+    agreedPrice: number;
 }) {
     const messageScrollRef = useRef<HTMLDivElement | null>(null);
 
@@ -28,12 +37,6 @@ export default function MessageChatCheck({
         }
     }, [isFetching]);
 
-    // Please include your:
-    // Name
-    // Address
-    // Phone #
-    // And full order in the payment notes,
-
     if (isLoading)
         return (
             <div className="p-5">
@@ -47,28 +50,42 @@ export default function MessageChatCheck({
                 ref={messageScrollRef}
             >
                 <div className="flex justify-center">
-                    <h1 className="text-white">{`Welcome to Keeby's Private Messager`}</h1>
-                </div>
-                <h2>{messages[0]?.listingTransaction.listing.title}</h2>
-                <div>
-                    Agreed Price:{" "}
-                    {messages[0]?.listingTransaction.agreedPrice
-                        ? `$${(
-                              messages[0].listingTransaction.agreedPrice / 100
-                          ).toFixed(2)}`
-                        : "$ 0"}
+                    <h1 className="text-green-500">{`Welcome to Keeby's Private Messager`}</h1>
                 </div>
                 <h2>
-                    Quick Reminder: Only use PayPal for transactions as they
-                    have a strong dispute system for preventing scams. Confirm
-                    details with seller before sending any money.
+                    {listingTitle} - Agreed Total Price:{" "}
+                    <span className="text-green-500">
+                        {agreedPrice
+                            ? `$${(agreedPrice / 100).toFixed(2)}`
+                            : "$ 0"}{" "}
+                    </span>
+                </h2>
+                <div>
+                    Seller Paypal Email:{" "}
+                    <span className="text-green-500">{sellerEmail}</span>
+                </div>
+                <div></div>
+                <h2>
+                    Quick Reminder:{" "}
+                    <span className="text-green-500">
+                        Only use PayPal for transactions as they have a strong
+                        dispute system for preventing scams. Confirm details
+                        with seller before sending any money. When sending the
+                        seller money via PayPal please include your full name,
+                        address, phone number, and the keyboard you are buying
+                        in the payment notes. Please read{" "}
+                        <Link
+                            aria-label="scam prevention"
+                            href={`/keebdex/scam-prevention`}
+                            className="transition-colors duration-300 ease-custom-cubic hover:text-white"
+                        >
+                            Scam Prevention
+                        </Link>{" "}
+                        for more details!
+                    </span>
                 </h2>
 
-                <div>
-                    <div>
-                        Seller Paypal Email: {messages[0]?.seller.paypalEmail}
-                    </div>
-                </div>
+                <div></div>
                 <div className="mt-5 flex w-full flex-col text-white">
                     {messages.map((message) => (
                         <div key={message.id} className=" mb-2 w-full">
@@ -80,12 +97,12 @@ export default function MessageChatCheck({
                     ))}
                 </div>
             </div>
-            {messages[0] && (
+            {activeTransactionId.length > 0 && (
                 <div className=" flex h-[10%] flex-col justify-end  ">
                     <CreateMessage
-                        listingTransactionId={activeTransactionId}
-                        buyerId={messages[0].buyerId}
-                        sellerId={messages[0].sellerId}
+                        activeTransactionId={activeTransactionId}
+                        recipientId={recipientId}
+                        userId={userId}
                     />
                 </div>
             )}

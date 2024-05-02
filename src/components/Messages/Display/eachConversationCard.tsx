@@ -13,15 +13,16 @@ import {
 interface EachConversationCardProps {
     message: MessageCard;
     setActiveTransactionId: (activeTransactionId: string) => void;
+    setRecipientId: (recipientId: string) => void;
     userId: string;
 }
 
 interface MessageCard extends Message {
-    seller: {
+    user: {
         username: string | null;
         profile: string | null;
     };
-    buyer: {
+    recipient: {
         username: string | null;
         profile: string | null;
     };
@@ -31,17 +32,13 @@ interface MessageCard extends Message {
 }
 
 export default function EachConversationCard({
-    userId,
     message,
     setActiveTransactionId,
+    setRecipientId,
+    userId,
 }: EachConversationCardProps) {
-    const isBuyer = message.buyerId === userId;
-    const otherParty = isBuyer === true ? message.seller : message.buyer;
-    console.log(message)
-    console.log(userId)
-    console.log('isbuyer', isBuyer)
-    console.log('isOtherParty', otherParty)
-
+    const isSender = message.userId === userId;
+    const otherParty = isSender === true ? message.recipient : message.user;
 
     const otherPartyProfile = otherParty.profile
         ? otherParty.profile
@@ -70,7 +67,10 @@ export default function EachConversationCard({
     return (
         <button
             className="mb-2 flex w-full gap-2 rounded-md bg-white/5 p-2 text-xs   transition-background duration-400 ease-custom-cubic hover:bg-white/10 "
-            onClick={() => setActiveTransactionId(message.listingTransactionId)}
+            onClick={() => {
+                setActiveTransactionId(message.listingTransactionId);
+                setRecipientId(message.recipientId);
+            }}
         >
             <Image
                 src={otherPartyProfile}

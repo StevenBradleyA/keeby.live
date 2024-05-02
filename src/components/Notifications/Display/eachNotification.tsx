@@ -20,6 +20,7 @@ export default function EachNotificationCard({
     const ctx = api.useContext();
 
     let notificationLink = "/profile";
+
     if (
         typeof notification.typeId === "string" &&
         notification.type === "LISTINGCOMMENT"
@@ -31,7 +32,6 @@ export default function EachNotificationCard({
     ) {
         notificationLink = `/keebshare/${notification.typeId}`;
     } else if (
-        typeof notification.typeId === "string" &&
         notification.type === "MESSAGE"
     ) {
         notificationLink = `/profile/messages`;

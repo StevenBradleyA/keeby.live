@@ -206,20 +206,20 @@ model ListingTransaction {
 model Message {
     id                   String @id @default(cuid())
     text                 String
-    buyerId              String
-    sellerId             String
+    userId               String
+    recipientId          String
     listingTransactionId String
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    buyer              User               @relation("Buyer", fields: [buyerId], references: [id])
-    seller             User               @relation("Seller", fields: [sellerId], references: [id])
+    user               User               @relation("messageOwner", fields: [userId], references: [id])
+    recipient          User               @relation("messageRecipient", fields: [recipientId], references: [id])
     listingTransaction ListingTransaction @relation(fields: [listingTransactionId], references: [id])
 
-    @@index([buyerId], name: "idxMessageBuyerId")
-    @@index([sellerId], name: "idxMessageSenderId")
-    @@index([listingTransactionId], name: "idxMessageListingId")
+    @@index([userId], name: "idxMessageSenderId")
+    @@index([recipientId], name: "idxMessageRecipientId")
+    @@index([listingTransactionId], name: "idxMessageTransactionId")
 }
 
 model Notification {
@@ -344,8 +344,8 @@ model User {
     sellerListings          Listing[]                 @relation("Seller")
     buyerListings           Listing[]                 @relation("Buyer")
     listingOffer            ListingOffer[]
-    sellerMessages          Message[]                 @relation("Buyer")
-    buyerMessages           Message[]                 @relation("Seller")
+    sentMessages            Message[]                 @relation("messageOwner")
+    receivedMessages        Message[]                 @relation("messageRecipient")
     verificationTransaction VerificationTransaction[]
     notifications           Notification[]
 }

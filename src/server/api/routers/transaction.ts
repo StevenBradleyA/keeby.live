@@ -166,22 +166,26 @@ export const transactionRouter = createTRPCRouter({
                     await ctx.prisma.message.create({
                         data: {
                             listingTransactionId: createTransaction.id,
-                            buyerId: buyerId,
-                            sellerId: sellerId,
+                            userId: buyerId,
+                            recipientId: sellerId,
                             text: `Hey ${
                                 seller.username ? seller.username : ""
-                            }, I'm ready to purchase your keyboard for the agreed price of ${(
+                            }, I'm ready to purchase your keyboard for the agreed price of $${(
                                 agreedPrice / 100
                             ).toFixed(2)} via paypal!`,
                         },
                     });
+
+                    await ctx.prisma.notification.create({
+                        data: {
+                            userId: sellerId,
+                            text: `You received a new message!`,
+                            type: "MESSAGE",
+                            status: "UNREAD",
+                        },
+                    });
+                    // todo RESEND send email confirmations here...
                 }
-
-
-
-
-                
-                // todo send email confirmations here...
 
                 await ctx.prisma.listing.update({
                     where: {
@@ -207,36 +211,36 @@ export const transactionRouter = createTRPCRouter({
             return { isAvailable };
         }),
 
-    delete: protectedProcedure
-        .input(
-            z.object({
-                id: z.string(),
-                sellerId: z.string(),
-                buyerId: z.string(),
-            })
-        )
-        .mutation(async ({ input, ctx }) => {
-            const { id, sellerId, buyerId } = input;
+    // delete: protectedProcedure
+    //     .input(
+    //         z.object({
+    //             id: z.string(),
+    //             sellerId: z.string(),
+    //             buyerId: z.string(),
+    //         })
+    //     )
+    //     .mutation(async ({ input, ctx }) => {
+    //         const { id, sellerId, buyerId } = input;
 
-            if (ctx.session.user.id !== sellerId && !ctx.session.user.isAdmin) {
-                throw new Error(
-                    "You do not have the necessary permissions to perform this action."
-                );
-            }
-            const buyer = await ctx.prisma.user.findUnique({
-                where: {
-                    id: buyerId,
-                },
-            });
+    //         if (ctx.session.user.id !== sellerId && !ctx.session.user.isAdmin) {
+    //             throw new Error(
+    //                 "You do not have the necessary permissions to perform this action."
+    //             );
+    //         }
+    //         const buyer = await ctx.prisma.user.findUnique({
+    //             where: {
+    //                 id: buyerId,
+    //             },
+    //         });
 
-            if (buyer && buyer.email) {
-                //todo send buyer email here
+    //         if (buyer && buyer.email) {
+    //             //todo send buyer email here
 
-                await ctx.prisma.listingOffer.delete({
-                    where: { id: id },
-                });
-                return "Successfully Deleted";
-            }
-            throw new Error("Buyer does not exist or has no valid email.");
-        }),
+    //             await ctx.prisma.listingOffer.delete({
+    //                 where: { id: id },
+    //             });
+    //             return "Successfully Deleted";
+    //         }
+    //         throw new Error("Buyer does not exist or has no valid email.");
+    //     }),
 });

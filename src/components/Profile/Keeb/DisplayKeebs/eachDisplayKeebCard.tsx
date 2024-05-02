@@ -25,8 +25,8 @@ export default function EachDisplayKeebCard({
     };
 
     return (
-        <div className=" flex w-96 flex-col justify-between font-poppins tablet:h-[25vh] desktop:h-[20vh] text-sm ">
-            <div className="relative z-10 h-full overflow-hidden rounded-2xl bg-black/30 hover:bg-black/20 p-5 ">
+        <div className=" flex w-96 flex-col justify-between font-poppins text-sm tablet:h-[25vh] desktop:h-[20vh] ">
+            <div className="relative z-10 h-full overflow-hidden rounded-2xl bg-black/30 p-5 hover:bg-black/20 ">
                 {/* <div className=" display-keeb-card-overlay absolute bottom-0 left-0 right-0 top-32 -z-10 h-full w-full bg-black/40"></div> */}
                 <h1 className="z-20 flex justify-center text-xl">
                     {keeb.name}
@@ -42,7 +42,7 @@ export default function EachDisplayKeebCard({
             </div>
 
             <button
-                className="flex w-full items-start  justify-end pr-3 text-sm "
+                className="flex w-full items-start justify-end text-sm "
                 onClick={openModal}
             >
                 <svg

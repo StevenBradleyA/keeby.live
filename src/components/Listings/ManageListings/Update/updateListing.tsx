@@ -336,7 +336,7 @@ export default function UpdateListing({
         <div className=" font-poppins text-darkGray">
             {toggle === "MENU" && (
                 <div className="flex flex-col items-start gap-2 p-5">
-                    <div className="flex gap-2 justify-center">
+                    <div className="flex justify-center gap-2">
                         <h1 className="mb-2 text-xl">Manage Listing</h1>
                         <Image
                             alt="keebo"
@@ -345,7 +345,8 @@ export default function UpdateListing({
                         />
                     </div>
 
-                    {listing.status === "SOLD" || listing.status === "PENDING"  ? (
+                    {listing.status === "SOLD" ||
+                    listing.status === "PENDING" ? (
                         <div className="flex w-full flex-col items-center text-sm">
                             <h2 className="text-base text-green-500 ">
                                 Access Denied
@@ -440,7 +441,7 @@ export default function UpdateListing({
                             >
                                 <g
                                     stroke="none"
-                                    stroke-width="1"
+                                    strokeWidth="1"
                                     fill="none"
                                     fill-rule="evenodd"
                                 >

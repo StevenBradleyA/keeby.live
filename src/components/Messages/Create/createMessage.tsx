@@ -5,9 +5,9 @@ import { api } from "~/utils/api";
 import React from "react";
 
 interface CreateMessageProps {
-    listingTransactionId: string;
-    sellerId: string;
-    buyerId: string;
+    activeTransactionId: string;
+    recipientId: string;
+    userId: string;
 }
 
 interface ErrorsObj {
@@ -15,16 +15,15 @@ interface ErrorsObj {
 }
 
 export default function CreateMessage({
-    listingTransactionId,
-    sellerId,
-    buyerId,
+    activeTransactionId,
+    recipientId,
+    userId,
 }: CreateMessageProps) {
     const [text, setText] = useState<string>("");
     const [row, setRow] = useState<number>(1);
     const buttonRef = useRef<HTMLButtonElement | null>(null);
 
     const [errors, setErrors] = useState<ErrorsObj>({});
-    const [createSelected, setCreateSelected] = useState<boolean>(false);
     const { data: session } = useSession();
 
     const ctx = api.useContext();
@@ -73,13 +72,12 @@ export default function CreateMessage({
         ) {
             const data = {
                 text,
-                sellerId: sellerId,
-                buyerId: buyerId,
-                listingTransactionId: listingTransactionId,
+                userId: userId,
+                recipientId: recipientId,
+                listingTransactionId: activeTransactionId,
             };
 
             setText("");
-            setCreateSelected(false);
             setRow(1);
             mutate(data);
             if (buttonRef.current) {

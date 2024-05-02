@@ -11,23 +11,25 @@ export const messageRouter = createTRPCRouter({
         .query(async ({ ctx, input: userId }) => {
             return await ctx.prisma.message.findMany({
                 where: {
-                    OR: [{ buyerId: userId }, { sellerId: userId }],
+                    OR: [{ userId: userId }, { recipientId: userId }],
                 },
                 include: {
-                    buyer: {
+                    user: {
                         select: {
                             username: true,
                             profile: true,
                         },
                     },
-                    seller: {
+                    recipient: {
                         select: {
                             username: true,
                             profile: true,
+                            paypalEmail: true,
                         },
                     },
                     listingTransaction: {
                         select: {
+                            agreedPrice: true,
                             listing: {
                                 select: {
                                     title: true,
@@ -50,24 +52,7 @@ export const messageRouter = createTRPCRouter({
                 where: {
                     listingTransactionId: transactionId,
                 },
-                include: {
-                    seller: {
-                        select: {
-                            username: true,
-                            paypalEmail: true,
-                        },
-                    },
-                    listingTransaction: {
-                        select: {
-                            agreedPrice: true,
-                            listing: {
-                                select: {
-                                    title: true,
-                                },
-                            },
-                        },
-                    },
-                },
+
                 orderBy: {
                     createdAt: "asc",
                 },
@@ -78,25 +63,23 @@ export const messageRouter = createTRPCRouter({
         .input(
             z.object({
                 text: z.string(),
-                buyerId: z.string(),
-                sellerId: z.string(),
+                recipientId: z.string(),
+                userId: z.string(),
                 listingTransactionId: z.string(),
             })
         )
         .mutation(async ({ input, ctx }) => {
-            const { text, buyerId, sellerId, listingTransactionId } = input;
+            const { text, userId, recipientId, listingTransactionId } = input;
 
-            if (ctx.session.user.id !== (buyerId || sellerId)) {
+            if (ctx.session.user.id !== userId) {
                 throw new Error("Invalid credentials");
             }
-            const isBuyer = ctx.session.user.id === buyerId;
-            const recipientId = isBuyer === true ? sellerId : buyerId;
 
             await ctx.prisma.message.create({
                 data: {
                     text: text,
-                    buyerId: buyerId,
-                    sellerId: sellerId,
+                    userId: userId,
+                    recipientId: recipientId,
                     listingTransactionId: listingTransactionId,
                 },
             });

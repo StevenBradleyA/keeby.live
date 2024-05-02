@@ -68,15 +68,11 @@ export default function CreateTransaction({
                     Thank you for your Order!
                 </h1>
 
-                <p className="mt-5">
+                <p className="my-5">
                     You now have access to a private message with the seller!
                     The seller has been notified of your purchase.
                 </p>
-                <Link
-                    href={`/profile/messages`}
-                    aria-label="messages"
-                    className="mt-10"
-                >
+                <Link href={`/profile/messages`} aria-label="messages">
                     <button
                         className=" text-md keeb-share-preview-button flex items-center gap-2 rounded-md bg-green-500 py-2 pr-4 text-black "
                         style={{

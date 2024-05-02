@@ -218,7 +218,7 @@ export default function ManageKeeb({
                             >
                                 <g
                                     stroke="none"
-                                    stroke-width="1"
+                                    strokeWidth="1"
                                     fill="none"
                                     fill-rule="evenodd"
                                 >

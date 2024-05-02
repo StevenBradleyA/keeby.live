@@ -12,6 +12,10 @@ export default function DisplayMessages({ userId }: { userId: string }) {
     const [activeTransactionId, setActiveTransactionId] = useState<
         string | null
     >(null);
+    const [recipientId, setRecipientId] = useState<string>("");
+    const [sellerEmail, setSellerEmail] = useState<string>("");
+    const [listingTitle, setListingTitle] = useState<string>("");
+    const [agreedPrice, setAgreedPrice] = useState<number>(0);
 
     useEffect(() => {
         if (
@@ -21,8 +25,19 @@ export default function DisplayMessages({ userId }: { userId: string }) {
             activeTransactionId === null
         ) {
             setActiveTransactionId(messages[0].listingTransactionId);
+            setRecipientId(messages[0].recipientId);
+            setSellerEmail(
+                messages[0].recipient.paypalEmail
+                    ? messages[0].recipient.paypalEmail
+                    : ""
+            );
+            setAgreedPrice(messages[0].listingTransaction.agreedPrice);
+            setListingTitle(messages[0].listingTransaction.listing.title);
         }
     }, [isLoading]);
+
+    console.log("ME", userId);
+    console.log("YOU", recipientId);
 
     return (
         <>
@@ -40,6 +55,7 @@ export default function DisplayMessages({ userId }: { userId: string }) {
                                     setActiveTransactionId={
                                         setActiveTransactionId
                                     }
+                                    setRecipientId={setRecipientId}
                                 />
                             </div>
                         ))}
@@ -59,10 +75,17 @@ export default function DisplayMessages({ userId }: { userId: string }) {
                     )}
 
                     {typeof activeTransactionId === "string" &&
-                        activeTransactionId.length > 0 && (
+                        activeTransactionId.length > 0 &&
+                        recipientId.length > 0 &&
+                        listingTitle.length > 0 &&
+                        agreedPrice > 0 && (
                             <MessageChatCheck
                                 activeTransactionId={activeTransactionId}
+                                recipientId={recipientId}
+                                sellerEmail={sellerEmail}
                                 userId={userId}
+                                listingTitle={listingTitle}
+                                agreedPrice={agreedPrice}
                             />
                         )}
                 </div>
