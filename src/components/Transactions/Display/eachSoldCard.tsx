@@ -24,8 +24,8 @@ export default function EachSoldTransactionCard({
 
     return (
         <>
-            <div className="flex w-96 flex-col items-stretch overflow-hidden rounded-2xl bg-darkGray p-3 font-poppins text-green-500 tablet:h-[30vh] desktop:h-[25vh] ">
-                <div className="h-3/4 w-full">
+            <div className="flex w-96 flex-col items-stretch overflow-hidden rounded-2xl bg-black/30 hover:bg-black/20 transition-background duration-300 ease-custom-cubic p-3 font-poppins text-sm text-green-500  ">
+                <div className=" w-full">
                     <h2>Order Summary</h2>
                     <div className="flex w-full justify-between">
                         <div className="mt-2 flex flex-col text-xs">
@@ -44,14 +44,17 @@ export default function EachSoldTransactionCard({
                         <div>${(transaction.agreedPrice / 100).toFixed(2)}</div>
                     </div>
                     <div className="mt-1 flex justify-between">
-                        <h3 className="text-white/30">Ready to arrange sale via messages </h3>
+                        <h3 className="text-white/30">
+                            Buyer Verified
+                        </h3>
+                        <div>Confirmed</div>
                     </div>
                 </div>
-                <div className="flex h-1/4 items-center justify-center">
+                <div className="flex items-center justify-center tablet:my-5 desktop:my-3">
                     <Link
                         href="/profile/messages"
                         aria-label="messages"
-                        className=" text-md keeb-shop-offer-button z-10 flex cursor-pointer items-center gap-2 rounded-md bg-green-500 py-3 pl-1 pr-5 text-black "
+                        className=" keeb-shop-offer-button z-10 flex cursor-pointer items-center gap-2 rounded-md bg-green-500 py-3 pl-1 pr-5 text-black "
                         style={{
                             boxShadow: "0 0 20px #22C55E",
                         }}

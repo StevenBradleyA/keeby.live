@@ -146,7 +146,7 @@ export default function DisplayListingPage({
                                 {listing.images.map((e, i) => {
                                     return (
                                         <button
-                                            className="h-1/4 w-full"
+                                            className="h-1/4 w-full listing-page-image"
                                             key={i}
                                         >
                                             <Image
@@ -157,7 +157,7 @@ export default function DisplayListingPage({
                                                 onClick={() =>
                                                     setDisplayImage(e)
                                                 }
-                                                className="h-full w-full rounded-xl object-cover"
+                                                className="h-full w-full rounded-xl object-cover "
                                                 priority
                                             />
                                         </button>

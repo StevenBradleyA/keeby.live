@@ -171,34 +171,35 @@ export const favoriteRouter = createTRPCRouter({
         )
         .mutation(async ({ ctx, input }) => {
             const { userId, listingId } = input;
-
-            if (ctx.session.user.id === userId) {
-                await ctx.prisma.favorites.create({
-                    data: {
-                        userId: userId,
-                        listingId: listingId,
-                    },
-                });
-                const listingCheck = await ctx.prisma.listing.findUnique({
-                    where: {
-                        id: listingId,
-                    },
-                });
-                if (listingCheck) {
-                    await ctx.prisma.user.update({
-                        where: {
-                            id: listingCheck.sellerId,
-                        },
-                        data: {
-                            internetPoints: {
-                                increment: 1,
-                            },
-                        },
-                    });
-                }
+            if (ctx.session.user.id !== userId) {
+                throw new Error(
+                    "You must be logged in to perform this action."
+                );
             }
 
-            throw new Error("You must be logged in to perform this action.");
+            await ctx.prisma.favorites.create({
+                data: {
+                    userId: userId,
+                    listingId: listingId,
+                },
+            });
+            const listingCheck = await ctx.prisma.listing.findUnique({
+                where: {
+                    id: listingId,
+                },
+            });
+            if (listingCheck) {
+                await ctx.prisma.user.update({
+                    where: {
+                        id: listingCheck.sellerId,
+                    },
+                    data: {
+                        internetPoints: {
+                            increment: 1,
+                        },
+                    },
+                });
+            }
         }),
     createPostFavorite: protectedProcedure
         .input(
@@ -209,35 +210,35 @@ export const favoriteRouter = createTRPCRouter({
         )
         .mutation(async ({ ctx, input }) => {
             const { userId, postId } = input;
-
-            if (ctx.session.user.id === userId) {
-                await ctx.prisma.favorites.create({
-                    data: {
-                        userId: userId,
-                        postId: postId,
-                    },
-                });
-
-                const postCheck = await ctx.prisma.post.findUnique({
-                    where: {
-                        id: postId,
-                    },
-                });
-                if (postCheck) {
-                    await ctx.prisma.user.update({
-                        where: {
-                            id: postCheck.userId,
-                        },
-                        data: {
-                            internetPoints: {
-                                increment: 1,
-                            },
-                        },
-                    });
-                }
+            if (ctx.session.user.id !== userId) {
+                throw new Error(
+                    "You must be logged in to perform this action."
+                );
             }
+            await ctx.prisma.favorites.create({
+                data: {
+                    userId: userId,
+                    postId: postId,
+                },
+            });
 
-            throw new Error("You must be logged in to perform this action.");
+            const postCheck = await ctx.prisma.post.findUnique({
+                where: {
+                    id: postId,
+                },
+            });
+            if (postCheck) {
+                await ctx.prisma.user.update({
+                    where: {
+                        id: postCheck.userId,
+                    },
+                    data: {
+                        internetPoints: {
+                            increment: 1,
+                        },
+                    },
+                });
+            }
         }),
     deleteListingFavorite: protectedProcedure
         .input(
@@ -250,31 +251,34 @@ export const favoriteRouter = createTRPCRouter({
         .mutation(async ({ ctx, input }) => {
             const { id, userId, listingId } = input;
 
-            if (ctx.session.user.id === userId) {
-                await ctx.prisma.favorites.delete({
-                    where: {
-                        id: id,
-                    },
-                });
-                const listingCheck = await ctx.prisma.listing.findUnique({
-                    where: {
-                        id: listingId,
-                    },
-                });
-                if (listingCheck) {
-                    await ctx.prisma.user.update({
-                        where: {
-                            id: listingCheck.sellerId,
-                        },
-                        data: {
-                            internetPoints: {
-                                decrement: 1,
-                            },
-                        },
-                    });
-                }
+            if (ctx.session.user.id !== userId) {
+                throw new Error(
+                    "You must be logged in to perform this action."
+                );
             }
-            throw new Error("You must be logged in to perform this action.");
+            await ctx.prisma.favorites.delete({
+                where: {
+                    id: id,
+                },
+            });
+
+            const listingCheck = await ctx.prisma.listing.findUnique({
+                where: {
+                    id: listingId,
+                },
+            });
+            if (listingCheck) {
+                await ctx.prisma.user.update({
+                    where: {
+                        id: listingCheck.sellerId,
+                    },
+                    data: {
+                        internetPoints: {
+                            decrement: 1,
+                        },
+                    },
+                });
+            }
         }),
     deletePostFavorite: protectedProcedure
         .input(
@@ -287,30 +291,32 @@ export const favoriteRouter = createTRPCRouter({
         .mutation(async ({ ctx, input }) => {
             const { id, userId, postId } = input;
 
-            if (ctx.session.user.id === userId) {
-                await ctx.prisma.favorites.delete({
-                    where: {
-                        id: id,
-                    },
-                });
-                const postCheck = await ctx.prisma.post.findUnique({
-                    where: {
-                        id: postId,
-                    },
-                });
-                if (postCheck) {
-                    await ctx.prisma.user.update({
-                        where: {
-                            id: postCheck.userId,
-                        },
-                        data: {
-                            internetPoints: {
-                                decrement: 1,
-                            },
-                        },
-                    });
-                }
+            if (ctx.session.user.id !== userId) {
+                throw new Error(
+                    "You must be logged in to perform this action."
+                );
             }
-            throw new Error("You must be logged in to perform this action.");
+            await ctx.prisma.favorites.delete({
+                where: {
+                    id: id,
+                },
+            });
+            const postCheck = await ctx.prisma.post.findUnique({
+                where: {
+                    id: postId,
+                },
+            });
+            if (postCheck) {
+                await ctx.prisma.user.update({
+                    where: {
+                        id: postCheck.userId,
+                    },
+                    data: {
+                        internetPoints: {
+                            decrement: 1,
+                        },
+                    },
+                });
+            }
         }),
 });

@@ -60,7 +60,6 @@ export default function NavBar() {
         },
         [isMenuOpen, handleClose]
     );
-    console.log("helloooo", notificationRef);
 
     useEffect(() => {
         window.addEventListener("mousedown", handleOutsideClick);

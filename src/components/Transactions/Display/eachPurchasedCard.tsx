@@ -26,8 +26,8 @@ export default function EachPurchasedTransactionCard({
 
     return (
         <>
-            <div className="flex w-96 flex-col items-stretch overflow-hidden rounded-2xl bg-darkGray p-3 font-poppins text-green-500 tablet:h-[30vh] desktop:h-[25vh] ">
-                <div className="h-3/4 w-full">
+            <div className="flex w-96 flex-col items-stretch overflow-hidden rounded-2xl bg-black/30 hover:bg-black/20 transition-background duration-300 ease-custom-cubic p-3 font-poppins text-sm text-green-500  ">
+                <div className=" w-full">
                     <h2>Order Summary</h2>
                     <div className="flex w-full justify-between">
                         <div className="mt-2 flex flex-col text-xs">
@@ -50,11 +50,11 @@ export default function EachPurchasedTransactionCard({
                         <div>${(transaction.agreedPrice / 100).toFixed(2)}</div>
                     </div>
                 </div>
-                <div className="flex h-1/4 items-center justify-center">
+                <div className="flex items-start justify-center tablet:my-5 desktop:my-3">
                     <Link
                         href="/profile/messages"
                         aria-label="messages"
-                        className=" text-md keeb-shop-offer-button z-10 flex cursor-pointer items-center gap-2 rounded-md bg-green-500 py-3 pl-1 pr-5 text-black "
+                        className=" keeb-shop-offer-button z-10 flex cursor-pointer items-center gap-2 rounded-md bg-green-500 py-3 pl-1 pr-5  text-black "
                         style={{
                             boxShadow: "0 0 20px #22C55E",
                         }}
@@ -90,15 +90,6 @@ export default function EachPurchasedTransactionCard({
                     </Link>
                 </div>
             </div>
-
-            {/* <div className="flex h-1/6 w-full items-end  justify-between">
-                    <p>
-                        {formatDistance(new Date(transaction.createdAt), now, {
-                            addSuffix: true,
-                        })}
-                    </p>
-                    <p>sold by {transaction.listing.seller.username}</p>
-                </div> */}
         </>
     );
 }

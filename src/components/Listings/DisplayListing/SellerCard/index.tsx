@@ -57,28 +57,22 @@ export default function SellerListingCard({
         setIsSignInModalOpen(false);
     };
 
-
     // todo MAKE STARS ACTUALLY REFLECTIVE TO ONE DECIMAL POINT ------- rounding is lame
     return (
         <div className="flex h-full w-full gap-5 p-2 desktop:p-5">
             {listing.seller && listing.seller.username && (
                 <div className="h-full w-1/6">
-                    <Link
-                        href={`/profile/public/${listing.seller.username}`}
-                        aria-label="seller profile"
-                    >
-                        <Image
-                            src={
-                                listing.seller.profile
-                                    ? listing.seller.profile
-                                    : defaultProfile
-                            }
-                            alt="profile"
-                            width={400}
-                            height={400}
-                            className="h-full w-full rounded-xl object-cover "
-                        />
-                    </Link>
+                    <Image
+                        src={
+                            listing.seller.profile
+                                ? listing.seller.profile
+                                : defaultProfile
+                        }
+                        alt="profile"
+                        width={400}
+                        height={400}
+                        className="h-full w-full rounded-xl object-cover "
+                    />
                 </div>
             )}
             <div className="flex h-full w-5/6 flex-col ">
@@ -160,7 +154,7 @@ export default function SellerListingCard({
                             <Link
                                 href={`/profile/public/${listing.seller.username}`}
                                 aria-label="seller profile"
-                                className="text-darkGray hover:text-green-500 hover:underline"
+                                className="text-darkGray transition-colors duration-300 ease-custom-cubic hover:text-green-500"
                             >
                                 {listing.seller.username}
                             </Link>

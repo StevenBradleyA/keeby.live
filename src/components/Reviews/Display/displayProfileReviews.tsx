@@ -8,10 +8,6 @@ import CreateReview from "../Create/createReview";
 export default function DisplayProfileReviews({ userId }: { userId: string }) {
     const { data: allOffers } = api.offer.getAllByUserId.useQuery(userId);
 
-    console.log(allOffers);
-
-    // todo review qualifications. You have to have purchased a keyboard... alright so a review should be transaction based???
-
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     const openModal = () => {

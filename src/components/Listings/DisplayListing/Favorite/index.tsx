@@ -44,13 +44,13 @@ export default function ListingPageFavorite({
 
     const handleUnfavoriteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        if (favoriteId && userId) {
+        if (favoriteId && userId && listingId) {
             const data = {
+                listingId: listingId,
                 userId: userId,
                 id: favoriteId.id,
-                listingId: listingId,
             };
-
+            console.log('hey steven', data)
             return unfavorite(data);
         }
     };

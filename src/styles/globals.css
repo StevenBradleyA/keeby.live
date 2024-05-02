@@ -713,6 +713,16 @@ input[type="checkbox"]:hover {
     transform: translateX(20px);
 }
 
+.listing-page-image {
+    transition: filter 0.4s cubic-bezier(0.35, 0, 0, 1);
+    /* transition: opacity 0.4s cubic-bezier(0.35, 0, 0, 1); */
+}
+
+.listing-page-image:hover {
+    filter: brightness(110%);
+    /* opacity: 0.8; */
+}
+
 /* --------------        END KEEB SHOP       --------------  */
 /* --------------        END KEEB SHOP       --------------  */
 /* --------------        END KEEB SHOP       --------------  */

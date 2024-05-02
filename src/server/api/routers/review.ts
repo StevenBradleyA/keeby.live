@@ -6,21 +6,6 @@ import {
 } from "~/server/api/trpc";
 
 export const reviewRouter = createTRPCRouter({
-    getByPostId: publicProcedure.input(z.string()).query(({ input, ctx }) => {
-        return ctx.prisma.review.findMany({
-            where: { listingId: input },
-            include: {
-                user: { select: { name: true } },
-            },
-        });
-    }),
-
-    getAllByUserId: publicProcedure
-        .input(z.string())
-        .query(({ input: userId, ctx }) => {
-            return ctx.prisma.review.findMany({ where: { userId: userId } });
-        }),
-
     getAllEligibleByUserId: publicProcedure
         .input(z.string())
         .query(({ input: userId, ctx }) => {
@@ -45,6 +30,53 @@ export const reviewRouter = createTRPCRouter({
                             username: true,
                             profile: true,
                         },
+                    },
+                },
+            });
+        }),
+
+    getAllReceivedByUserId: publicProcedure
+        .input(z.string())
+        .query(({ input: userId, ctx }) => {
+            return ctx.prisma.review.findMany({
+                where: { sellerId: userId },
+                include: {
+                    user: {
+                        select: { username: true, profile: true },
+                    },
+                },
+            });
+        }),
+    getAllReceivedAndSentByUserId: publicProcedure
+        .input(z.string())
+        .query(async ({ input: userId, ctx }) => {
+            const receivedReviews = await ctx.prisma.review.findMany({
+                where: { sellerId: userId },
+                include: {
+                    user: {
+                        select: { username: true, profile: true },
+                    },
+                },
+            });
+            const sentReviews = await ctx.prisma.review.findMany({
+                where: { userId: userId },
+                include: {
+                    seller: {
+                        select: { username: true, profile: true },
+                    },
+                },
+            });
+
+            return { receivedReviews, sentReviews };
+        }),
+    getAllSentByUserId: publicProcedure
+        .input(z.string())
+        .query(({ input: userId, ctx }) => {
+            return ctx.prisma.review.findMany({
+                where: { userId: userId },
+                include: {
+                    seller: {
+                        select: { username: true, profile: true },
                     },
                 },
             });

@@ -598,7 +598,7 @@ export default function UserProfile() {
                 </div>
 
                 {toggle === "KEEBSHOP" && (
-                    <div className="mt-10 flex  w-full justify-evenly border-2 border-[#616161] p-5">
+                    <div className="mt-10 flex  w-full justify-evenly border-2 border-[#616161] p-5 ">
                         <button
                             className={`profile-favorites-button flex items-center gap-1 border-2 ${
                                 keebShopCategory === "FAVORITES"
