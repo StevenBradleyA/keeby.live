@@ -118,6 +118,11 @@ export const gameRouter = createTRPCRouter({
             return { gameResults, allGameResults, averageWpm, averageAccuracy };
         }),
 
+
+
+        // todo add fun tags like hitting sub 1 wpm or something speedy speed boi or speed demon
+        // todo 300 wpm no accuracy or something -- 
+
     create: protectedProcedure
         .input(
             z.object({
@@ -268,6 +273,15 @@ export const gameRouter = createTRPCRouter({
                                                     id: existingRankTag.id,
                                                 },
                                             },
+                                        },
+                                    });
+
+                                    await ctx.prisma.notification.create({
+                                        data: {
+                                            userId: userId,
+                                            text: `New tag unlocked!`,
+                                            type: "TAG",
+                                            status: "UNREAD",
                                         },
                                     });
                                 }

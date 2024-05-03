@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.5",
-    "@paypal/checkout-server-sdk": "^1.0.3",
     "@paypal/react-paypal-js": "^8.2.0",
     "@prisma/client": "^4.14.0",
     "@react-three/fiber": "^8.15.9",

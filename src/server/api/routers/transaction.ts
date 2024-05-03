@@ -6,7 +6,7 @@ import {
 } from "~/server/api/trpc";
 
 // npm install @paypal/checkout-server-sdk
-// todo uninstall this only using react rn
+// currently uninstalled may 2nd need test
 
 export const transactionRouter = createTRPCRouter({
     getAllByUserId: publicProcedure
@@ -185,6 +185,8 @@ export const transactionRouter = createTRPCRouter({
                         },
                     });
                     // todo RESEND send email confirmations here...
+
+
                 }
 
                 await ctx.prisma.listing.update({
@@ -210,37 +212,4 @@ export const transactionRouter = createTRPCRouter({
 
             return { isAvailable };
         }),
-
-    // delete: protectedProcedure
-    //     .input(
-    //         z.object({
-    //             id: z.string(),
-    //             sellerId: z.string(),
-    //             buyerId: z.string(),
-    //         })
-    //     )
-    //     .mutation(async ({ input, ctx }) => {
-    //         const { id, sellerId, buyerId } = input;
-
-    //         if (ctx.session.user.id !== sellerId && !ctx.session.user.isAdmin) {
-    //             throw new Error(
-    //                 "You do not have the necessary permissions to perform this action."
-    //             );
-    //         }
-    //         const buyer = await ctx.prisma.user.findUnique({
-    //             where: {
-    //                 id: buyerId,
-    //             },
-    //         });
-
-    //         if (buyer && buyer.email) {
-    //             //todo send buyer email here
-
-    //             await ctx.prisma.listingOffer.delete({
-    //                 where: { id: id },
-    //             });
-    //             return "Successfully Deleted";
-    //         }
-    //         throw new Error("Buyer does not exist or has no valid email.");
-    //     }),
 });

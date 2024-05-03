@@ -26,14 +26,14 @@ export default function EachNotificationCard({
         notification.type === "LISTINGCOMMENT"
     ) {
         notificationLink = `/keebshop/${notification.typeId}`;
+    } else if (notification.type === "LISTINGCREATE") {
+        notificationLink = `/create-listing`;
     } else if (
         typeof notification.typeId === "string" &&
         notification.type === "POSTCOMMENT"
     ) {
         notificationLink = `/keebshare/${notification.typeId}`;
-    } else if (
-        notification.type === "MESSAGE"
-    ) {
+    } else if (notification.type === "MESSAGE") {
         notificationLink = `/profile/messages`;
     }
     if (

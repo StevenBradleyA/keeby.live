@@ -70,7 +70,7 @@ export default function VerifySeller() {
                 <div className="mb-40  text-white laptop:w-3/4  desktop:w-2/3">
                     <div className="flex h-full w-full gap-20">
                         <div className="h-full w-3/4">
-                            <h1 className="px-10 text-5xl text-green-500">
+                            <h1 className="px-10 text-6xl text-green-500">
                                 Sell Your Keeb
                             </h1>
                             <p className="mt-5 rounded-xl bg-keebyGray p-10 text-white">

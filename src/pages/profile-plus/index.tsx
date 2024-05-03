@@ -35,9 +35,6 @@ interface UserData {
 }
 
 export default function ProfilePlus() {
-    // todo fix error where not redirected to profile instead it just says complete
-    // todo only allow png or jpg
-    // todo style ++ double check weird error handling for username check
 
     const { data: session, update } = useSession();
     const hasProfile = session?.user.hasProfile;
@@ -61,7 +58,7 @@ export default function ProfilePlus() {
     const { data: usernameCheck } = api.user.usernameCheck.useQuery(
         debouncedUsername,
         {
-            enabled: !!debouncedUsername, // Only run query if debouncedUsername is not empty
+            enabled: !!debouncedUsername, 
         }
     );
 
@@ -122,7 +119,7 @@ export default function ProfilePlus() {
     useEffect(() => {
         const handler = setTimeout(() => {
             setDebouncedUsername(username);
-        }, 500); // 500ms delay
+        }, 500); 
 
         return () => {
             clearTimeout(handler);

@@ -327,6 +327,30 @@ export default function CreateTransaction({
                                     }
                                 }
                             }}
+                            onCancel={() => {
+                                toast.error(
+                                    "Purchase Canceled, try again later",
+                                    {
+                                        style: {
+                                            borderRadius: "10px",
+                                            background: "#333",
+                                            color: "#fff",
+                                        },
+                                    }
+                                );
+                            }}
+                            onError={() => {
+                                toast.error(
+                                    "Purchase Failed, try again later",
+                                    {
+                                        style: {
+                                            borderRadius: "10px",
+                                            background: "#333",
+                                            color: "#fff",
+                                        },
+                                    }
+                                );
+                            }}
                         />
                     </div>
                 )}

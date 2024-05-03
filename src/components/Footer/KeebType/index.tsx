@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import ModalDialog from "../../Modal";
-import SupportMe from "../support";
+import SupportMe from "../supportModal";
 
 export default function KeebTypeFooter() {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
