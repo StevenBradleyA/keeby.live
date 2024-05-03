@@ -9,7 +9,7 @@ import { setCookie } from "cookies-next";
 import CreatePostModal from "~/components/Posts/CreatePost";
 import DisplayNewPostPreviews from "~/components/Posts/DisplayPosts/DisplayPostPreviews/displayNewPostPreviews";
 import DisplayPopularPostPreviews from "~/components/Posts/DisplayPosts/DisplayPostPreviews/displayPopularPostPreviews";
-import MainFooter from "~/components/Footer";
+import MainFooter from "~/components/Footer/mainFooter";
 import { debounce } from "lodash";
 
 export default function KeebShare() {

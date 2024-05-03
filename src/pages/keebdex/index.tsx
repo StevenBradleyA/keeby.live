@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import TitleScripts from "~/components/TitleScripts";
 import Link from "next/link";
-import MainFooter from "~/components/Footer";
+import MainFooter from "~/components/Footer/mainFooter";
 
 export default function KeebDex() {
     return (

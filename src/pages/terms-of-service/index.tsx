@@ -1,5 +1,5 @@
 import Link from "next/link";
-import MainFooter from "~/components/Footer";
+import MainFooter from "~/components/Footer/mainFooter";
 
 export default function TermsOfService() {
     // the goal of keeby is to create a safe space to buy and sell mechanical keyboards and enjoy the hobby.

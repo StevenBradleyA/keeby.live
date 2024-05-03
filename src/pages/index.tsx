@@ -10,7 +10,7 @@ import NotificationSvg from "~/components/Svgs/notification";
 import { getCookies } from "cookies-next";
 import { setCookie } from "cookies-next";
 import { debounce } from "lodash";
-import MainFooter from "~/components/Footer";
+import MainFooter from "~/components/Footer/mainFooter";
 
 export default function Home() {
     // todo Cookies? do we want to save filters? not sure yet maybe just save hot/ new with cookies

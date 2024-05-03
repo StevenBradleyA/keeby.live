@@ -1,4 +1,4 @@
-import HomepageFooter from "~/components/Footer/KeebType";
+import HomepageFooter from "~/components/Footer/minimalFooter";
 import LeftMenu from "~/components/KeebType/LeftMenu";
 import RightMenu from "~/components/KeebType/RightMenu";
 import SpeedMode from "~/components/KeebType/SpeedMode";

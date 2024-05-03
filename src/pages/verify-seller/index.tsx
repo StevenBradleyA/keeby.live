@@ -1,5 +1,5 @@
 import { useSession } from "next-auth/react";
-import MainFooter from "~/components/Footer";
+import MainFooter from "~/components/Footer/mainFooter";
 import defaultProfile from "@public/Profile/profile-default.png";
 import Image from "next/image";
 import { api } from "~/utils/api";

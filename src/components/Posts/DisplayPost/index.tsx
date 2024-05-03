@@ -12,7 +12,7 @@ import PostPreviewDeleteFavorite from "../DisplayPosts/DisplayPostPreviews/Favor
 import ModalDialog from "~/components/Modal";
 import SignInModal from "~/components/Comments/Modal/signInModal";
 import DisplayYouTubePostPreview from "../DisplayPosts/DisplayPostPreviews/displayYouTubePreview";
-import MainFooter from "~/components/Footer";
+import MainFooter from "~/components/Footer/mainFooter";
 import { formatDistance } from "date-fns";
 import Link from "next/link";
 import UserPostPreviews from "./userPostPreviews";

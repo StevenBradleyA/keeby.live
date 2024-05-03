@@ -13,7 +13,7 @@ import computerShare from "@public/Profile/computer-share.png";
 import computerShop from "@public/Profile/computer-shop.png";
 import computerType from "@public/Profile/computer-type.png";
 import hacktime from "@public/Vectors/hacktime.png";
-import MainFooter from "~/components/Footer";
+import MainFooter from "~/components/Footer/mainFooter";
 import ManageListings from "~/components/Listings/ManageListings";
 import ManagePosts from "~/components/Posts/ManagePosts";
 import DisplayFavoriteListings from "~/components/Listings/DisplayFavoriteListings";

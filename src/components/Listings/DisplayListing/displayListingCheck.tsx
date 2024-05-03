@@ -1,4 +1,4 @@
-import MainFooter from "~/components/Footer";
+import MainFooter from "~/components/Footer/mainFooter";
 import DisplayListingPage from "~/components/Listings/DisplayListing";
 import LoadingSpinner from "~/components/Loading";
 import { api } from "~/utils/api";
@@ -10,7 +10,6 @@ interface DisplayListingCheckProps {
 export default function DisplayListingCheck({
     listingId,
 }: DisplayListingCheckProps) {
-
     const { data: listing, isLoading } = api.listing.getOne.useQuery({
         id: listingId,
     });
