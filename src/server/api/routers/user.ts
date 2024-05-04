@@ -211,32 +211,56 @@ export const userRouter = createTRPCRouter({
             };
         }),
 
-    getUserPublic: publicProcedure.input(z.string()).query(({ input, ctx }) => {
-        const userInfo = ctx.prisma.user.findUnique({
-            where: { username: input },
-            select: {
-                id: true,
-                username: true,
-                profile: true,
-                selectedTag: true,
-                reviewsReceived: {
-                    select: {
-                        id: true,
-                        text: true,
-                        starRating: true,
-                        userId: true,
-                        user: {
-                            select: {
-                                username: true,
+    getUserPublic: publicProcedure
+        .input(z.string())
+        .query(async ({ input, ctx }) => {
+            const userInfo = await ctx.prisma.user.findUnique({
+                where: { username: input },
+                select: {
+                    id: true,
+                    username: true,
+                    profile: true,
+                    selectedTag: true,
+                    reviewsReceived: {
+                        select: {
+                            id: true,
+                            text: true,
+                            starRating: true,
+                            userId: true,
+                            updatedAt: true,
+                            user: {
+                                select: {
+                                    username: true,
+                                    profile: true,
+                                },
                             },
                         },
                     },
+                    rank: {
+                        select: {
+                            image: true,
+                            name: true,
+                        },
+                    },
+                    _count: {
+                        select: {
+                            games: true,
+                            comments: true,
+                            posts: true,
+                            sellerListings: true,
+                        },
+                    },
                 },
-            },
-        });
+            });
+            if (userInfo) {
+                const averageStarRating = await ctx.prisma.review.aggregate({
+                    where: { sellerId: userInfo.id },
+                    _avg: { starRating: true },
+                });
 
-        return userInfo;
-    }),
+                return { userInfo, averageStarRating };
+            }
+        }),
 
     getUserTags: publicProcedure
         .input(z.string())

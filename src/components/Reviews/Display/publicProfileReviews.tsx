@@ -11,17 +11,22 @@ import {
 } from "date-fns";
 import DisplayStarRating from "../Star/displayStarRating";
 
-interface EachReceivedReviewCardProps {
+interface EachPublicProfileReviewProps {
     review: EachReview;
 }
 
-interface EachReview extends Review {
+interface EachReview {
+    id: string;
+    text: string;
+    starRating: number;
+    userId: string;
+    updatedAt: Date;
     user: { username: string | null; profile: string | null };
 }
 
-export default function EachReceivedReviewCard({
+export default function EachPublicProfileReview({
     review,
-}: EachReceivedReviewCardProps) {
+}: EachPublicProfileReviewProps) {
     const formatDate = (date: Date) => {
         const messageDate = new Date(date);
 
@@ -39,7 +44,7 @@ export default function EachReceivedReviewCard({
     };
 
     return (
-        <div className="flex w-96 flex-col rounded-xl bg-black/30 p-3  text-sm transition-background duration-300 ease-custom-cubic hover:bg-black/20 ">
+        <div className="flex w-96 flex-col rounded-xl bg-black/30 p-2  text-xs transition-background duration-300 ease-custom-cubic hover:bg-black/20 ">
             <div className="flex w-full items-center gap-2 ">
                 <Image
                     alt="profile"
@@ -65,7 +70,7 @@ export default function EachReceivedReviewCard({
                     rating={parseFloat(review.starRating.toFixed(0))}
                 />
             </div>
-            <div className="mt-2 h-16 overflow-y-auto break-words">
+            <div className="mt-2 h-10 overflow-y-auto break-words">
                 {" "}
                 {review.text}
             </div>
