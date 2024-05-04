@@ -221,6 +221,7 @@ export const userRouter = createTRPCRouter({
                     username: true,
                     profile: true,
                     selectedTag: true,
+                    internetPoints: true, 
                     reviewsReceived: {
                         select: {
                             id: true,

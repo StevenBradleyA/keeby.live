@@ -178,6 +178,9 @@ $blue: #2033c1; */
 }
 
 /* --------------     Sign In      --------------  */
+/* --------------     Sign In      --------------  */
+/* --------------     Sign In      --------------  */
+/* --------------     Sign In      --------------  */
 
 .button-hover-effect {
     position: relative;
@@ -190,25 +193,26 @@ $blue: #2033c1; */
     top: 0;
     width: 100%;
     height: 100%;
-    background-image: url("../../public/Gifs/matrix.gif"); /* Add your desired image path */
+    background-image: url("../../public/Gifs/matrix.gif");
     background-size: 200%;
     background-repeat: no-repeat;
     background-position: right center;
     transform: translateX(100%);
     transition: transform 0.3s ease;
-    /* opacity: 0.7; */
 }
 
 .button-hover-effect:hover::before {
     transform: translateX(-18%);
 }
 
-/* --------------          KEEBDEX          --------------  */
+/* --------------        KEEBDEX        --------------  */
+/* --------------        KEEBDEX        --------------  */
+/* --------------        KEEBDEX        --------------  */
+/* --------------        KEEBDEX        --------------  */
 
 .keebdex-hover-effect {
     position: relative;
     overflow: hidden;
-    /* background-color: black; */
 }
 
 .keebdex-hover-effect::before {
@@ -217,13 +221,12 @@ $blue: #2033c1; */
     top: 0;
     width: 100%;
     height: 100%;
-    background-image: url("../../public/Gifs/matrix.gif"); /* Add your desired image path */
+    background-image: url("../../public/Gifs/matrix.gif");
     background-size: 200%;
     background-repeat: no-repeat;
     background-position: right center;
     transform: translateX(100%);
     transition: transform 0.3s ease;
-    /* opacity: 0.7; */
 }
 
 .keebdex-hover-effect:hover::before {
@@ -232,11 +235,11 @@ $blue: #2033c1; */
 
 .keebdex-button {
     overflow: hidden;
-    position: relative; /* Needed for absolute positioning of pseudo-elements */
+    position: relative;
     width: 100%;
     height: 100%;
     transition: background-color 0.4s cubic-bezier(0.35, 0, 0, 1);
-    background-color: #000; /* Example background color */
+    background-color: #000;
 }
 
 .keebdex-button::before {
@@ -250,13 +253,13 @@ $blue: #2033c1; */
     background-repeat: no-repeat;
     background-position: right center;
     background-size: 100%;
-    opacity: 0; /* Start fully transparent */
-    transition: opacity 1.2s cubic-bezier(0.35, 0, 0, 1); /* Delay the fade-in effect */
+    opacity: 0;
+    transition: opacity 1.2s cubic-bezier(0.35, 0, 0, 1);
     z-index: 0;
 }
 
 .keebdex-button:hover::before {
-    opacity: 1; /* Fade in the background image */
+    opacity: 1;
 }
 
 @keyframes arrowShrinkCircle {
@@ -284,6 +287,9 @@ $blue: #2033c1; */
     transition-delay: 0s, 0s;
 }
 
+/* --------------     Title Script     --------------  */
+/* --------------     Title Script     --------------  */
+/* --------------     Title Script     --------------  */
 /* --------------     Title Script     --------------  */
 
 .moving-title {
@@ -326,15 +332,14 @@ $blue: #2033c1; */
 
 .keebshop-listing-preview-container:hover .keebshop-listing-preview {
     visibility: hidden;
-    /* transition: visibility 0s, opacity 0.2s ease-in-out; */
     opacity: 0;
 }
 
 .very-sticky {
-    position: -webkit-sticky; /* for Safari */
+    position: -webkit-sticky;
     position: sticky;
     top: 140px;
-    align-self: flex-start; /* <-- this is the fix */
+    align-self: flex-start;
     z-index: 5;
 }
 
@@ -373,7 +378,6 @@ $blue: #2033c1; */
 }
 
 .shop-price-filter-button {
-    /* yo */
 }
 
 .shop-price-filter-arrow {
@@ -392,7 +396,7 @@ $blue: #2033c1; */
 .listing-preview-hover-effect img {
     transition: opacity 0.55s ease;
 }
-/* Styles for the top and bottom border segments */
+
 .listing-preview-hover-effect:before,
 .listing-preview-hover-effect:after,
 .listing-preview-hover-effect div:before,
@@ -411,18 +415,17 @@ $blue: #2033c1; */
     height: 2px;
     width: 0;
 }
-/* Positions the top border segment */
+
 .listing-preview-hover-effect:before {
     top: 25px;
     transform: translateX(-100%);
 }
-/* Positions the bottom border segment */
 
 .listing-preview-hover-effect:after {
     bottom: 25px;
     transform: translateX(100%);
 }
-/* Styles for the left and right border segments */
+
 .listing-preview-hover-effect div:before,
 .listing-preview-hover-effect div:after {
     top: 25px;
@@ -430,42 +433,40 @@ $blue: #2033c1; */
     width: 2px;
     height: 0;
 }
-/* Positions the left border segment */
+
 .listing-preview-hover-effect div:before {
     left: 25px;
     transform: translateY(-100%);
 }
-/* Positions the right border segment */
+
 .listing-preview-hover-effect div:after {
     right: 25px;
     transform: translateY(100%);
 }
-/* Hover effect: Expands the horizontal border segments */
+
 .listing-preview-hover-effect:hover:before,
 .listing-preview-hover-effect:hover:after {
     width: calc(100% - 50px);
     transform: translateX(0);
 }
-/* Hover effect: Expands the vertical border segments */
+
 .listing-preview-hover-effect:hover div:before,
 .listing-preview-hover-effect:hover div:after {
     height: calc(100% - 50px);
     transform: translateY(0);
 }
-/* Hover effect: Reduces the opacity of the image */
 .listing-preview-hover-effect:hover img {
     opacity: 0.55;
 }
 
 .show-listing-hover-content {
-    opacity: 1; /* Fully visible */
-    transition: opacity 0.55s ease; /* Transition for opacity */
+    opacity: 1;
+    transition: opacity 0.55s ease;
 }
 
-/* Class for the hidden state */
 .hide-listing-hover-content {
-    opacity: 0; /* Fully transparent */
-    transition: opacity 0.55s ease; /* Transition for opacity */
+    opacity: 0;
+    transition: opacity 0.55s ease;
 }
 
 /*  ----    End Listings Hover effect    ---- */
@@ -1184,8 +1185,7 @@ input[type="checkbox"]:hover {
     z-index: 25;
 }
 /* scanlines are just made from varying linear-gradient values */
-/* need a content property for before/after  */
-/* need pointer events so I can still click my modals! */
+
 .retro-scanlines:before {
     background: linear-gradient(#101010 50%, rgba(16, 16, 16, 0.2) 50%),
         linear-gradient(
@@ -1260,7 +1260,6 @@ input[type="checkbox"]:hover {
 .matrix-contents {
     z-index: 10;
 }
-
 
 /* --------------     MESSAGES    --------------  */
 /* --------------     MESSAGES    --------------  */
@@ -1354,11 +1353,14 @@ input[type="checkbox"]:hover {
 /* --------------     404    --------------  */
 
 .lost-index {
-    z-index: 10; /* Higher z-index to ensure it's above the video */
+    z-index: 10;
 }
 
 /* --------------     Loading    --------------  */
 
+/* --------------     Cool Effects not in use currently    --------------  */
+/* --------------     Cool Effects not in use currently    --------------  */
+/* --------------     Cool Effects not in use currently    --------------  */
 /* --------------     Cool Effects not in use currently    --------------  */
 
 /* really cool border draw effect */
