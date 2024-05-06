@@ -1282,77 +1282,51 @@ input[type="checkbox"]:hover {
 /* --------------     END MESSAGES    --------------  */
 
 /* --------------     404    --------------  */
+/* --------------     404    --------------  */
+/* --------------     404    --------------  */
+/* --------------     404    --------------  */
 
 .lost-index {
     z-index: 10;
 }
+/* --------------     END 404    --------------  */
+/* --------------     END 404    --------------  */
+/* --------------     END 404    --------------  */
+/* --------------     END 404    --------------  */
 
-/* --------------     Loading    --------------  */
+/* --------------     SCAM PREVENTION    --------------  */
+/* --------------     SCAM PREVENTION    --------------  */
+/* --------------     SCAM PREVENTION    --------------  */
+/* --------------     SCAM PREVENTION    --------------  */
 
-/* --------------     Cool Effects not in use currently    --------------  */
-/* --------------     Cool Effects not in use currently    --------------  */
-/* --------------     Cool Effects not in use currently    --------------  */
-/* --------------     Cool Effects not in use currently    --------------  */
 
-/* really cool border draw effect */
-/* 
-.image-hover-effect {
-    position: relative;
-    width: 384px; 
-    height: 288px; 
-    overflow: hidden;
-  }
-  
-  .image-hover-effect:before,
-  .image-hover-effect:after,
-  .image-hover-effect div:before,
-  .image-hover-effect div:after {
-    content: '';
-    position: absolute;
-    background-color: #fff;
-    transition: transform 0.5s ease;
-  }
-  
-
-  .image-hover-effect:before,
-  .image-hover-effect:after {
-    height: 2px;
-    width: 100%;
-    top: 0;
+.keebdex-grid-background {
+    position: fixed;
     left: 0;
-    transform: scaleX(0);
-  }
-  
-  .image-hover-effect:after {
-    top: auto;
-    bottom: 0;
-  }
-  
-
-  .image-hover-effect div:before,
-  .image-hover-effect div:after {
-    width: 2px;
-    height: 100%;
-    top: 0;
-    left: 0;
-    transform: scaleY(0);
-  }
-  
-  .image-hover-effect div:after {
-    left: auto;
     right: 0;
-  }
-  
-  .image-hover-effect:hover:before,
-  .image-hover-effect:hover:after {
-    transform: scaleX(1);
-  }
-  
-  .image-hover-effect:hover div:before,
-  .image-hover-effect:hover div:after {
-    transform: scaleY(1);
-  } 
-  */
-/* endddd of cool border draw */
+    top: 0;
+    min-height: 100%;
+    background-color: #FADADD; /* Light pink background */
+    background-image:
+        linear-gradient(0deg, transparent 95%, rgba(0, 0, 0, 0.3) 95%),  /* Horizontal lines */
+        linear-gradient(90deg, transparent 95%, rgba(0, 0, 0, 0.3) 95%); 
+    background-size: 50px 50px; /* Controls the grid size */
+    z-index: 1; /* Ensures the background is behind other content */
+}
 
-/* cool center box effect maybe use */
+
+
+
+
+
+
+
+
+
+
+
+
+/* --------------     END SCAM PREVENTION    --------------  */
+/* --------------     END SCAM PREVENTION    --------------  */
+/* --------------     END SCAM PREVENTION    --------------  */
+/* --------------     END SCAM PREVENTION    --------------  */

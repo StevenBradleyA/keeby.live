@@ -44,8 +44,8 @@ export default function EachPublicProfileReview({
     };
 
     return (
-        <div className="flex w-96 flex-col rounded-xl bg-black/30 p-2  text-xs transition-background duration-300 ease-custom-cubic hover:bg-black/20 ">
-            <div className="flex w-full items-center gap-2 ">
+        <div className="flex w-full flex-col rounded-xl bg-black/30 p-2 text-xs transition-background duration-300 ease-custom-cubic hover:bg-black/20 ">
+            <div className="flex w-full items-center gap-3 ">
                 <Image
                     alt="profile"
                     src={
@@ -53,13 +53,13 @@ export default function EachPublicProfileReview({
                             ? review.user.profile
                             : defaultProfile
                     }
-                    className="h-12 w-12 rounded-md border-2 border-[#616161] object-cover"
+                    className="h-12 w-12 rounded-md object-cover"
                     width={300}
                     height={300}
                 />
-                <div className="flex flex-col">
+                <div className="flex flex-col text-green-500">
                     <h2>{review.user.username}</h2>
-                    <p className="text-xs text-darkGray">
+                    <p className=" text-darkGray">
                         {formatDate(review.updatedAt)}
                     </p>
                 </div>

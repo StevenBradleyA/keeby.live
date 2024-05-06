@@ -13,7 +13,7 @@ export default function KeebDex() {
             <div className="z-30 mt-10 flex flex-col gap-5  rounded-3xl bg-keebyGray px-20 py-10 text-green-500 ">
                 <Link
                     className=" keebdex-button flex justify-center gap-2 rounded-2xl bg-black px-6 py-4"
-                    href={`/keebdex/rules`}
+                    href={`/keebdex/how-keeby-works`}
                     aria-label="typing tips"
                 >
                     <span style={{ zIndex: "10" }}>How Keeby Works</span>

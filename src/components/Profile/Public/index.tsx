@@ -68,7 +68,7 @@ export default function PublicProfileUserInfo({
                     <div className="z-10 flex h-[60vh]  w-full justify-center gap-10 ">
                         <div className="flex h-full w-3/12 flex-col overflow-y-auto rounded-2xl bg-black/30 p-2 text-xs">
                             <div className="flex w-full flex-col items-center">
-                                <div className="mt-2 -mb-3 rounded-md bg-black/30 px-6 py-2 text-green-500">
+                                <div className="-mb-3 mt-2 rounded-md bg-black/30 px-6 py-2 text-green-500">
                                     {userData.userInfo.rank
                                         ? userData.userInfo.rank.name
                                         : "Unranked"}
@@ -289,11 +289,11 @@ export default function PublicProfileUserInfo({
                                     )
                                 ) : (
                                     <div className="flex w-full flex-col rounded-xl bg-black/30 p-2  text-xs transition-background duration-300 ease-custom-cubic hover:bg-black/20 ">
-                                        <div className="mt-3 flex w-full items-center items-center gap-3 ">
+                                        <div className=" flex w-full items-center gap-3 ">
                                             <Image
                                                 alt="profile"
                                                 src={defaultProfile}
-                                                className="h-12 w-12 rounded-md border-2 border-[#616161] object-cover"
+                                                className="h-12 w-12 rounded-md  object-cover"
                                                 width={300}
                                                 height={300}
                                             />

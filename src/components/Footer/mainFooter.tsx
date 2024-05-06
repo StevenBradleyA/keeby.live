@@ -164,28 +164,28 @@ export default function MainFooter() {
                     <div className="flex flex-col gap-1">
                         <h2 className="text-green-500">Sellers & Buyers</h2>
                         <Link
-                            href="/privacy-policy"
+                            href="/keebdex/how-keeby-works"
                             aria-label="privacy"
                             className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                         >
                             How Keeby works
                         </Link>
                         <Link
-                            href="/privacy-policy"
+                            href="/profile/messages"
                             aria-label="privacy"
                             className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                         >
                             Messages
                         </Link>
                         <Link
-                            href="/privacy-policy"
+                            href="/keebdex/rules"
                             aria-label="privacy"
                             className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                         >
                             Keeby Rules
                         </Link>
                         <Link
-                            href="/privacy-policy"
+                            href="/keebdex/scam-prevention"
                             aria-label="privacy"
                             className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                         >

@@ -26,7 +26,6 @@ export default function EachSentReviewCard({
     review,
 }: EachSentReviewCardProps) {
     const formatDate = (date: Date) => {
-        const now = new Date();
         const messageDate = new Date(date);
 
         if (isToday(messageDate)) {
@@ -53,7 +52,7 @@ export default function EachSentReviewCard({
     return (
         <div className="w-96  ">
             <div className="flex w-full flex-col rounded-xl bg-black/30 p-3  text-sm transition-background duration-300 ease-custom-cubic hover:bg-black/20 ">
-                <div className="flex w-full items-center gap-2 ">
+                <div className="flex w-full items-center gap-3 ">
                     <Image
                         alt="profile"
                         src={
@@ -61,7 +60,7 @@ export default function EachSentReviewCard({
                                 ? review.seller.profile
                                 : defaultProfile
                         }
-                        className="h-12 w-12 rounded-md border-2 border-[#616161] object-cover"
+                        className="h-12 w-12 rounded-md object-cover"
                         width={300}
                         height={300}
                     />
@@ -78,8 +77,7 @@ export default function EachSentReviewCard({
                         rating={parseFloat(review.starRating.toFixed(0))}
                     />
                 </div>
-                <div className="mt-2 h-16 overflow-y-auto break-words">
-                    {" "}
+                <div className="mt-2 h-16 overflow-y-auto break-words text-darkGray">
                     {review.text}
                 </div>
             </div>
