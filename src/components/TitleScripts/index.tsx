@@ -10,7 +10,6 @@ export default function TitleScripts({ page }: TitleScriptsProps) {
     // 01101000 01100001 01100011 01101011 -- hack
     // "Quantum Computing in 3, 2, 1...",
     // "C:\\> Hello, World!",
-    // "Syntax Error: 8-bit Love Not Found",
     // "Calculating Quantum Nostalgia",
     // "Insert Coin to Continue",
     // "Defragmenting Memories",
@@ -92,7 +91,6 @@ export default function TitleScripts({ page }: TitleScriptsProps) {
                 "Authorization Required",
                 "Access Granted",
                 "Prove Your Identity - Then Announce, Im In",
-
             ];
             const delay = [0, 2000, 4000, 6000, 8000, 10000];
 
@@ -126,6 +124,22 @@ export default function TitleScripts({ page }: TitleScriptsProps) {
                 "deleting hard drive",
                 "jk",
                 "Profile",
+            ];
+            const delay = [0, 2000, 4000, 6000, 8000];
+
+            phrases.forEach((phrase, i) =>
+                setTimeout(() => {
+                    setTitle(phrase);
+                }, delay[i])
+            );
+        }
+        if (page === "publicProfile") {
+            const phrases = [
+                "C:\\> Initiating profile sequence",
+                "checking systems",
+                "deleting hard drive",
+                "jk",
+                "Public Profile",
             ];
             const delay = [0, 2000, 4000, 6000, 8000];
 
