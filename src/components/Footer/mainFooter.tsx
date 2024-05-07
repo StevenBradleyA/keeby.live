@@ -28,7 +28,7 @@ export default function MainFooter() {
 
                     <p className="mt-3 flex w-96 flex-wrap">
                         Keeby is the one place for everything mechanical
-                        keyboards.
+                        keyboard.
                     </p>
                     <div className="mt-3 flex items-center gap-3">
                         <a
@@ -195,21 +195,21 @@ export default function MainFooter() {
                     <div className="flex flex-col gap-1">
                         <h2 className="text-green-500">Help</h2>
                         <Link
-                            href="/privacy-policy"
+                            href="/keebdex/frequently-asked-questions"
                             aria-label="privacy"
                             className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                         >
                             FAQ
                         </Link>
                         <Link
-                            href="/privacy-policy"
+                            href="/keebdex"
                             aria-label="privacy"
                             className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                         >
                             Keeb Dex
                         </Link>
                         <Link
-                            href="/privacy-policy"
+                            href="/keebdex/scam-prevention"
                             aria-label="privacy"
                             className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                         >
@@ -219,7 +219,7 @@ export default function MainFooter() {
                     <div className="flex flex-col gap-1">
                         <h2 className="text-green-500">Company</h2>
                         <Link
-                            href="/privacy-policy"
+                            href="/keebdex/about"
                             aria-label="privacy"
                             className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                         >

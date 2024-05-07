@@ -1,6 +1,13 @@
 import MainFooter from "~/components/Footer/mainFooter";
+import { motion } from "framer-motion";
+import { useState } from "react";
 
 export default function PreventingScams() {
+    const script = ["WOW!", "AMAZING!", "POGGERS!"];
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const handleClick = () => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % script.length);
+    };
     return (
         <>
             <div className="h-full w-full ">
@@ -11,12 +18,19 @@ export default function PreventingScams() {
 
                 <div
                     style={{ zIndex: 2 }}
-                    className="relative flex w-full px-40 gap-96  "
+                    className="relative flex w-full gap-96 px-40  "
                 >
-                    <div className="relative flex w-1/3 flex-shrink-0 mt-20 ">
-                        <div className="h-96 w-full overflow-hidden rounded-2xl bg-[#F7F7EA]">
-                            <div className="flex h-8 w-full items-center justify-between bg-fuchsia-300 p-2 ">
-                                <div className="h-2 w-2/3 rounded-2xl bg-yellow-300"></div>
+                    <div className="relative mt-20 flex w-1/3 flex-shrink-0 ">
+                        <div
+                            className="h-96 w-full overflow-hidden rounded-2xl border-2 border-black bg-[#F7F7EA] "
+                            style={{
+                                boxShadow:
+                                    "3px 3px 0px black, 6px 6px 0px black",
+                            }}
+                        >
+                            <div className="flex h-8 w-full items-center justify-between border-b-2 border-black bg-fuchsia-300 p-2 ">
+                                <div className="h-3 w-2/3 rounded-2xl border-[1px] border-black bg-yellow-300 "></div>
+
                                 <div className="flex items-center gap-1 text-xl text-black ">
                                     -{" "}
                                     <svg
@@ -48,9 +62,15 @@ export default function PreventingScams() {
                                 </div>
                             </div>
                         </div>
-                        <div className="absolute left-10 top-16 h-96 w-full overflow-hidden rounded-2xl bg-[#F7F7EA]">
-                            <div className="flex h-8 w-full items-center justify-between bg-fuchsia-300 p-2 ">
-                                <div className="h-2 w-2/3 rounded-2xl bg-yellow-300"></div>
+                        <div
+                            className="absolute left-10 top-16 flex h-96 w-full flex-col items-center  rounded-2xl border-2 border-black bg-[#F7F7EA] "
+                            style={{
+                                boxShadow:
+                                    "3px 3px 0px black, 6px 6px 0px black",
+                            }}
+                        >
+                            <div className="flex h-8 w-full items-center justify-between rounded-t-xl border-b-2 border-black bg-fuchsia-300 p-2">
+                                <div className="h-3 w-2/3 rounded-2xl border-[1px] border-black bg-yellow-300 "></div>
                                 <div className="flex items-center gap-1 text-xl text-black ">
                                     -{" "}
                                     <svg
@@ -81,9 +101,28 @@ export default function PreventingScams() {
                                     </svg>
                                 </div>
                             </div>
-                            <h1 className="mt-10 h-full w-full text-center font-titillium text-6xl text-yellow-300">
-                                SCAM PREVENTION
+                            <h1
+                                className="mt-20 flex px-8 text-center font-titillium text-6xl text-[#FFE033] "
+                                style={{
+                                    WebkitTextStrokeWidth: "1px",
+                                    WebkitTextStrokeColor: "black",
+                                }}
+                            >
+                                HOW TO PREVENT SCAMS
                             </h1>
+                            <h2 className="relative mt-10 text-2xl text-darkGray ">
+                                {`10/10 Wouldn't get scammed again!`}
+                                <button
+                                    className="scam-prevention-button absolute -bottom-28 left-1/2 flex h-20 -translate-x-1/2  items-center rounded-2xl bg-fuchsia-500 px-12 font-titillium text-3xl text-black"
+                                    style={{
+                                        boxShadow:
+                                            "3px 3px 0px black, 6px 6px 0px black",
+                                    }}
+                                    onClick={handleClick}
+                                >
+                                    {script[currentIndex]}
+                                </button>
+                            </h2>
                         </div>
                     </div>
                     <div className="h-96 w-full overflow-hidden rounded-2xl bg-violet-400">
@@ -114,7 +153,7 @@ export default function PreventingScams() {
                     </div> */}
                 </div>
             </div>
-            <div className="mt-32 w-full">
+            <div className="mt-96 w-full" style={{ zIndex: 2 }}>
                 <MainFooter />
             </div>
         </>

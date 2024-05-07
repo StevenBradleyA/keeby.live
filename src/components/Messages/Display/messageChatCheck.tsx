@@ -43,6 +43,12 @@ export default function MessageChatCheck({
                 <LoadingSpinner size="20px" />
             </div>
         );
+
+// console.log('USERID', userId)
+// console.log("RECIPIENT AKA OTHER", recipientId)
+
+
+
     return messages ? (
         <div className="h-full w-full">
             <div
@@ -50,11 +56,11 @@ export default function MessageChatCheck({
                 ref={messageScrollRef}
             >
                 <div className="flex justify-center">
-                    <h1 className="text-green-500">{`Welcome to Keeby's Private Messager`}</h1>
+                    <h1 className="text-[#0ad5c1]">{`Welcome to Keeby's Private Messager`}</h1>
                 </div>
                 <h2>
                     {listingTitle} - Agreed Total Price:{" "}
-                    <span className="text-green-500">
+                    <span className="text-[#0ad5c1]">
                         {agreedPrice
                             ? `$${(agreedPrice / 100).toFixed(2)}`
                             : "$ 0"}{" "}
@@ -62,12 +68,12 @@ export default function MessageChatCheck({
                 </h2>
                 <div>
                     Seller Paypal Email:{" "}
-                    <span className="text-green-500">{sellerEmail}</span>
+                    <span className="text-[#0ad5c1]">{sellerEmail}</span>
                 </div>
                 <div></div>
                 <h2>
                     Quick Reminder:{" "}
-                    <span className="text-green-500">
+                    <span className="text-[#0ad5c1]">
                         Only use PayPal for transactions as they have a strong
                         dispute system for preventing scams. Confirm details
                         with seller before sending any money. When sending the
@@ -86,7 +92,7 @@ export default function MessageChatCheck({
                 </h2>
 
                 <div></div>
-                <div className="mt-5 flex w-full flex-col text-white">
+                <div className="mt-5 flex w-full flex-col text-white ">
                     {messages.map((message) => (
                         <div key={message.id} className=" mb-2 w-full">
                             <EachMessageCard

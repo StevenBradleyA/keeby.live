@@ -39,6 +39,13 @@ export default function DisplayMessages({ userId }: { userId: string }) {
     console.log("ME", userId);
     console.log("YOU", recipientId);
 
+    // what's weird is this works for me but not for other chrome tab
+    // todo debug this again again again again again again again again again again again
+
+    // problem again is it is working for one person but not the other 
+
+    //  we have to determine who they are based on thier id when we create but the recipientId is fuked 
+
     return (
         <>
             <div className="flex h-[80vh] w-full gap-2 tablet:px-4 desktop:px-16 ">

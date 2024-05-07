@@ -8,6 +8,7 @@ import { themeStyles } from "~/components/KeebType/Theme/themeStyles";
 import type { ThemeName } from "~/components/KeebType/Theme/themeStyles";
 import { useTheme } from "~/components/Context/Theme";
 import ScholarMode from "~/components/KeebType/ScholarMode";
+import FreeplayMode from "~/components/KeebType/FreeplayMode";
 
 export default function KeebType() {
     // todo quote mode full on typing sentences -- ranked as well
@@ -94,6 +95,7 @@ export default function KeebType() {
                         scholarType={scholarType}
                     />
                 )}
+                {mode === "Freeplay" && <FreeplayMode theme={theme} />}
                 {mode === "Gitgud" && <div>uh gitgud</div>}
 
                 <div

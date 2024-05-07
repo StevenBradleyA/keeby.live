@@ -64,6 +64,15 @@ export default function EachConversationCard({
         }
     };
 
+
+    console.log('meme',userId)
+    console.log('meme',message.userId)
+
+    console.log('youyou',message.recipientId)
+
+    // something is broken here idk why but we have matching user and recipt
+
+
     return (
         <button
             className="mb-2 flex w-full gap-2 rounded-md bg-white/5 p-2 text-xs   transition-background duration-400 ease-custom-cubic hover:bg-white/10 "

@@ -39,7 +39,7 @@ export const messageRouter = createTRPCRouter({
                     },
                 },
                 orderBy: {
-                    createdAt: "desc",
+                    createdAt: "asc",
                 },
                 distinct: ["listingTransactionId"],
             });
@@ -51,6 +51,11 @@ export const messageRouter = createTRPCRouter({
             return await ctx.prisma.message.findMany({
                 where: {
                     listingTransactionId: transactionId,
+                },
+                include: {
+                    user: {
+                        select: { profile: true },
+                    },
                 },
 
                 orderBy: {
@@ -73,6 +78,9 @@ export const messageRouter = createTRPCRouter({
 
             if (ctx.session.user.id !== userId) {
                 throw new Error("Invalid credentials");
+            }
+            if (recipientId === userId) {
+                throw new Error("Cannot send message to yourself");
             }
 
             await ctx.prisma.message.create({
