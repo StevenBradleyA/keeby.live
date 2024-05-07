@@ -3,8 +3,21 @@ import hacktime from "@public/Vectors/hacktime.png";
 import keebo from "@public/Profile/keebo.png";
 import title from "@public/Nav/home.png";
 import Link from "next/link";
+import { useState } from "react";
+import ModalDialog from "../Modal";
+import SupportMe from "./supportModal";
 
 export default function MainFooter() {
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
     return (
         <div className=" w-full bg-keebyGray px-20 pt-10 text-darkGray">
             <div className="flex w-full justify-between">
@@ -225,13 +238,16 @@ export default function MainFooter() {
                         >
                             About
                         </Link>
-                        <Link
-                            href="/privacy-policy"
-                            aria-label="privacy"
+                        <button
+                            onClick={openModal}
                             className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                         >
                             Support Keeby
-                        </Link>
+                        </button>
+
+                        <ModalDialog isOpen={isModalOpen} onClose={closeModal}>
+                            <SupportMe />
+                        </ModalDialog>
                         <Link
                             href="/privacy-policy"
                             aria-label="privacy"
@@ -244,34 +260,30 @@ export default function MainFooter() {
             </div>
 
             <div className="mt-5 flex justify-between border-t-2 border-[#616161] py-5">
-                <div className="flex items-center gap-2">
-                    <div>
-                        Built for enthusiasts |{" "}
-                        <a
-                            href="https://www.hacktime.dev"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            role="button"
-                            aria-label="Follow on LinkedIn"
-                            onClick={(e) => {
-                                e.preventDefault();
-                                window.open(
-                                    "https://www.hacktime.dev",
-                                    "_blank"
-                                );
-                            }}
-                            className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
-                        >
-                            powered by Hacktime
-                        </a>
-                    </div>
-                    <Image
-                        alt="hacktime logo"
-                        src={hacktime}
-                        width={200}
-                        height={200}
-                        className="png-green h-6 w-6 object-contain"
-                    />
+                <div className="flex  items-center gap-2">
+                    <div>Built for enthusiasts |</div>
+
+                    <a
+                        href="https://www.hacktime.dev"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        role="button"
+                        aria-label="Follow on LinkedIn"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            window.open("https://www.hacktime.dev", "_blank");
+                        }}
+                        className="powered-by flex gap-2  transition-colors duration-400 ease-custom-cubic hover:text-green-500"
+                    >
+                        powered by Hacktime
+                        <Image
+                            alt="hacktime logo"
+                            src={hacktime}
+                            width={200}
+                            height={200}
+                            className="png-green powered-by-logo h-6 w-6 object-contain"
+                        />
+                    </a>
                 </div>
                 <div className="flex gap-5">
                     <Link

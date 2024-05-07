@@ -44,11 +44,6 @@ export default function MessageChatCheck({
             </div>
         );
 
-// console.log('USERID', userId)
-// console.log("RECIPIENT AKA OTHER", recipientId)
-
-
-
     return messages ? (
         <div className="h-full w-full">
             <div
@@ -56,11 +51,11 @@ export default function MessageChatCheck({
                 ref={messageScrollRef}
             >
                 <div className="flex justify-center">
-                    <h1 className="text-[#0ad5c1]">{`Welcome to Keeby's Private Messager`}</h1>
+                    <h1 className="text-[#0ad5c1] text-xl mb-2">{`Keeby's Private Messenger`}</h1>
                 </div>
                 <h2>
                     {listingTitle} - Agreed Total Price:{" "}
-                    <span className="text-[#0ad5c1]">
+                    <span className="text-[#0ec879]">
                         {agreedPrice
                             ? `$${(agreedPrice / 100).toFixed(2)}`
                             : "$ 0"}{" "}
@@ -68,12 +63,12 @@ export default function MessageChatCheck({
                 </h2>
                 <div>
                     Seller Paypal Email:{" "}
-                    <span className="text-[#0ad5c1]">{sellerEmail}</span>
+                    <span className="text-[#0ec879]">{sellerEmail}</span>
                 </div>
                 <div></div>
                 <h2>
                     Quick Reminder:{" "}
-                    <span className="text-[#0ad5c1]">
+                    <span className="text-[#0ec879]">
                         Only use PayPal for transactions as they have a strong
                         dispute system for preventing scams. Confirm details
                         with seller before sending any money. When sending the

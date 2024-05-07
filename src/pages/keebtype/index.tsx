@@ -52,7 +52,6 @@ export default function KeebType() {
 
     console.log("keeb check", keebId);
 
-    // ohhh its grabbing my old cookies
 
     return (
         <>

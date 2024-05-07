@@ -25,7 +25,12 @@ export default function DisplayMessages({ userId }: { userId: string }) {
             activeTransactionId === null
         ) {
             setActiveTransactionId(messages[0].listingTransactionId);
-            setRecipientId(messages[0].recipientId);
+
+            setRecipientId(
+                messages[0].userId === userId
+                    ? messages[0].recipientId
+                    : messages[0].userId
+            );
             setSellerEmail(
                 messages[0].recipient.paypalEmail
                     ? messages[0].recipient.paypalEmail
@@ -35,16 +40,6 @@ export default function DisplayMessages({ userId }: { userId: string }) {
             setListingTitle(messages[0].listingTransaction.listing.title);
         }
     }, [isLoading]);
-
-    console.log("ME", userId);
-    console.log("YOU", recipientId);
-
-    // what's weird is this works for me but not for other chrome tab
-    // todo debug this again again again again again again again again again again again
-
-    // problem again is it is working for one person but not the other 
-
-    //  we have to determine who they are based on thier id when we create but the recipientId is fuked 
 
     return (
         <>

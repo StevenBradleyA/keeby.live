@@ -48,10 +48,9 @@ export default function EachMessageCard({
             {message.userId === userId ? (
                 <div className=" flex  justify-end rounded-md pr-3 ">
                     <div
-                        className="whitespace-pre-wrap break-words  rounded-md px-4  py-2 text-[#0ad5c1] "
+                        className="whitespace-pre-wrap break-words  rounded-md px-4  py-2 text-[#0ad5c1] bg-messenger "
                         style={{
                             maxWidth: "66.666%",
-                            backgroundColor: "rgba(25, 147, 147, 0.2)",
                         }}
                     >
                         {message.text}
@@ -121,10 +120,9 @@ export default function EachMessageCard({
                         <polygon points="3,8 11,0 11,16" />
                     </svg>
                     <div
-                        className="whitespace-pre-wrap break-words rounded-md bg-keebyGray px-4 py-2 text-[#0ec879]"
+                        className="whitespace-pre-wrap break-words rounded-md bg-keebyGray px-4 py-2 text-[#0ec879] bg-messenger"
                         style={{
                             maxWidth: "66.666%",
-                            backgroundColor: "rgba(25, 147, 147, 0.2)",
                         }}
                     >
                         {message.text}

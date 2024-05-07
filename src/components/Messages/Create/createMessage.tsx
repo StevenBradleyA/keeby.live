@@ -108,7 +108,7 @@ export default function CreateMessage({
                     rows={row}
                 />
                 <button
-                    className="send-message-button absolute right-1 top-1 z-10 rounded-full bg-green-500 p-[2px]"
+                    className="send-message-button bg-messenger absolute right-1 top-1 z-10 rounded-full p-[2px]"
                     onClick={handleSubmitClick}
                     ref={buttonRef}
                 >

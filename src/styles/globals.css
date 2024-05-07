@@ -1220,8 +1220,6 @@ input[type="checkbox"]:hover {
     transform: rotate(-45deg);
 }
 
-
-
 /* Shared styles for all messages */
 
 /* --------------     END MESSAGES    --------------  */
@@ -1314,4 +1312,19 @@ input[type="checkbox"]:hover {
 
 .key--down {
     transform: translateY(2px); /* Small visual feedback on key press */
+}
+
+/* foota */
+.powered-by {
+  
+    }
+    .powered-by-logo {
+        transition: transform 0.4s cubic-bezier(0.35, 0, 0, 1);
+        transform: rotate(0);
+}
+
+.powered-by:hover .powered-by-logo {
+    filter: invert(48%) sepia(5%) saturate(3277%) hue-rotate(72deg)
+        brightness(116%) contrast(126%);
+    transform: rotate(180deg);
 }
