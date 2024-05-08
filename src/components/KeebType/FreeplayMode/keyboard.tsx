@@ -1,18 +1,23 @@
 import React, { useState, useEffect } from "react";
+import type { MutableRefObject } from "react";
+import { themeStyles } from "../Theme/themeStyles";
+import type { ThemeName } from "../Theme/themeStyles";
 
 interface FreePlayKeyboardProps {
     setTypedText: (typedText: string | ((prevText: string) => string)) => void;
+    focusRef: MutableRefObject<HTMLTextAreaElement | null>;
+    theme: string;
 }
 
 export default function FreeplayKeyboard({
     setTypedText,
+    focusRef,
+    theme,
 }: FreePlayKeyboardProps) {
-    // const [pressedKeys, setPressedKeys] = useState({});
-
     // todo integrate themestyle into this bad boiiiiii
 
-    // fix width calculations they suck currently lmao
-    
+    // theme
+    const styles = themeStyles[theme as ThemeName] || themeStyles["KEEBY"];
 
     const keycapWidth = "w-[40px]";
     const keycapHeight = "h-[40px]";
@@ -21,69 +26,74 @@ export default function FreeplayKeyboard({
     const caps = "w-[75px] h-[40px]";
     const shift = "w-[95px] h-[40px]";
     const rShift = "w-[110px] h-[40px]";
-    const alt = "w-[50px] h-[40px]"
-    const space = "w-[260px] h-[40px]"
-
-
-    const letter = "text-[#999]";
-    const caseTop = "border-t-[#666]";
-    const caseBottom = "border-b-[#888]";
-    const caseSide = "border-x-[#777]";
-    // caps
-    const keycapBackground = "bg-[#e9e8e6]";
-    const keycapTop = "#ece8e4";
-    const keycapSide = "#dedad6";
-    const keycapBottom = "#c9c4c4";
-    // capss
-    const specialBackground = "bg-[#7f8384]";
-    const specialSide = "#696c6f";
-    const specialTop = "#848789";
-    const specialBottom = "#676a6d";
+    const alt = "w-[50px] h-[40px]";
+    const space = "w-[260px] h-[40px]";
 
     const [activeKey, setActiveKey] = useState("");
 
     useEffect(() => {
-        // Function to handle keydown events
         const handleKeyDown = (event: KeyboardEvent) => {
             const { key } = event;
-            const {code} = event
-            if(code === 'ShiftRight'){
-                setActiveKey("ShiftRight")
+            const { code } = event;
+            console.log(key);
+            if (
+                code === "ShiftRight" ||
+                code === "ShiftLeft" ||
+                code === "ControlLeft" ||
+                code === "ControlRight" ||
+                code === "MetaRight" ||
+                code === "MetaLeft" ||
+                code === "AltRight" ||
+                code === "AltLeft" ||
+                code === "Space"
+            ) {
+                setActiveKey(code);
             }
-            if(code === "ShiftLeft"){
-                setActiveKey("ShiftLeft")
-            }
-          
-            if (key.length === 1) {
-                setTypedText((prevText) => prevText + key);
-            }
-            if (key !== "Shift") {
+            if (
+                key !== "Shift" &&
+                key !== "Control" &&
+                key !== "Meta" &&
+                key !== "Alt" &&
+                key !== " "
+            ) {
                 setActiveKey(key);
+            }
+            if (key === "Backspace") {
+                if (
+                    focusRef.current &&
+                    document.activeElement !== focusRef.current
+                ) {
+                    focusRef.current.focus();
+                }
+            } else if (key.length === 1) {
+                if (
+                    focusRef.current &&
+                    document.activeElement !== focusRef.current
+                ) {
+                    focusRef.current.focus();
+                }
             }
         };
         const handleKeyUp = () => {
             setActiveKey("");
         };
 
-        // Add event listener
         window.addEventListener("keydown", handleKeyDown);
         window.addEventListener("keyup", handleKeyUp);
 
-        // Cleanup function to remove event listener
         return () => {
             window.removeEventListener("keydown", handleKeyDown);
             window.removeEventListener("keyup", handleKeyUp);
         };
     }, [setActiveKey, setTypedText]);
 
-
     return (
         <>
             <div
-                className={`keyboard-container flex h-96 w-full flex-col items-center justify-center ${letter} text-black text-opacity-80`}
+                className={`keyboard-container flex h-96 w-full flex-col items-center justify-center ${styles.keebTextColor}  text-opacity-80`}
             >
                 <div
-                    className={`flex flex-col  rounded-[4px] border-[13px] ${caseSide} ${caseBottom} ${caseTop} p-[6px] `}
+                    className={`flex flex-col  rounded-[4px] border-[13px] ${styles.keebCaseTop} ${styles.keebCaseSide} ${styles.keebCaseBottom} p-[6px] `}
                     style={{
                         boxShadow:
                             "inset 0 1rem 1rem rgba(0, 0, 0, 0.5),0 2rem 3rem -0.5rem rgba(0, 0, 0, 0.55)",
@@ -97,15 +107,15 @@ export default function FreeplayKeyboard({
                                 activeKey === "`" || activeKey === "~"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground} align  relative box-border flex flex-col `}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground} align  relative box-border flex flex-col `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             <div>~</div>
@@ -118,15 +128,15 @@ export default function FreeplayKeyboard({
                                 activeKey === "1" || activeKey === "!"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground} flex flex-col `}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground} flex flex-col `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             {" "}
@@ -140,15 +150,15 @@ export default function FreeplayKeyboard({
                                 activeKey === "2" || activeKey === "@"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground} flex flex-col `}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground} flex flex-col `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             {" "}
@@ -162,15 +172,15 @@ export default function FreeplayKeyboard({
                                 activeKey === "3" || activeKey === "#"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground} flex flex-col `}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground} flex flex-col `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             {" "}
@@ -184,15 +194,15 @@ export default function FreeplayKeyboard({
                                 activeKey === "4" || activeKey === "$"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground} flex flex-col `}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground} flex flex-col `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             {" "}
@@ -206,15 +216,15 @@ export default function FreeplayKeyboard({
                                 activeKey === "5" || activeKey === "%"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground} flex flex-col `}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground} flex flex-col `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             {" "}
@@ -228,15 +238,15 @@ export default function FreeplayKeyboard({
                                 activeKey === "6" || activeKey === "^"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground} flex flex-col `}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground} flex flex-col `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             {" "}
@@ -250,15 +260,15 @@ export default function FreeplayKeyboard({
                                 activeKey === "7" || activeKey === "&"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground} flex flex-col `}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground} flex flex-col `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             {" "}
@@ -272,15 +282,15 @@ export default function FreeplayKeyboard({
                                 activeKey === "8" || activeKey === "*"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground} flex flex-col `}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground} flex flex-col `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             <div>*</div>
@@ -293,15 +303,15 @@ export default function FreeplayKeyboard({
                                 activeKey === "9" || activeKey === "("
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground} flex flex-col `}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground} flex flex-col `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             <div>{`(`}</div>
@@ -314,15 +324,15 @@ export default function FreeplayKeyboard({
                                 activeKey === "0" || activeKey === ")"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground} flex flex-col `}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground} flex flex-col `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             <div>{`)`}</div>
@@ -335,15 +345,15 @@ export default function FreeplayKeyboard({
                                 activeKey === "-" || activeKey === "_"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground} flex flex-col `}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground} flex flex-col `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             <div>_</div>
@@ -356,15 +366,15 @@ export default function FreeplayKeyboard({
                                 activeKey === "=" || activeKey === "+"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground} flex flex-col `}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground} flex flex-col `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             <div>+</div>
@@ -374,15 +384,15 @@ export default function FreeplayKeyboard({
                             data-key="backspace"
                             className={`key ${
                                 activeKey === "Backspace" ? "pressed" : ""
-                            } ${backspace} ${specialBackground} flex items-center gap-1 p-1 text-[10px]`}
+                            } ${backspace} ${styles.keebSpecialBackground} flex items-center gap-1 p-1 text-[10px]`}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${specialBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: specialSide,
-                                borderTopColor: specialTop,
-                                borderBottomColor: specialBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebSpecialBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebSpecialSide,
+                                borderTopColor: styles.keebSpecialTop,
+                                borderBottomColor: styles.keebSpecialBottom,
                             }}
                         >
                             <div>
@@ -411,15 +421,15 @@ export default function FreeplayKeyboard({
                             data-key="tab"
                             className={`key ${
                                 activeKey === "Tab" ? "pressed" : ""
-                            } ${tab} ${specialBackground} flex flex-col items-start pl-1 text-[10px] `}
+                            } ${tab} ${styles.keebSpecialBackground} flex flex-col items-start pl-1 text-[10px] `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${specialBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: specialSide,
-                                borderTopColor: specialTop,
-                                borderBottomColor: specialBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebSpecialBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebSpecialSide,
+                                borderTopColor: styles.keebSpecialTop,
+                                borderBottomColor: styles.keebSpecialBottom,
                             }}
                         >
                             <svg
@@ -460,15 +470,15 @@ export default function FreeplayKeyboard({
                                 activeKey === "q" || activeKey === "Q"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground}  `}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground}  `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             Q
@@ -479,15 +489,15 @@ export default function FreeplayKeyboard({
                                 activeKey === "w" || activeKey === "W"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground}  `}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground}  `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             W
@@ -498,15 +508,15 @@ export default function FreeplayKeyboard({
                                 activeKey === "e" || activeKey === "E"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground}  `}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground}  `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             E
@@ -517,15 +527,15 @@ export default function FreeplayKeyboard({
                                 activeKey === "r" || activeKey === "R"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground}  `}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground}  `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             R
@@ -536,15 +546,15 @@ export default function FreeplayKeyboard({
                                 activeKey === "t" || activeKey === "T"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground}  `}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground}  `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             T
@@ -555,15 +565,15 @@ export default function FreeplayKeyboard({
                                 activeKey === "y" || activeKey === "Y"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground}  `}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground}  `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             Y
@@ -574,15 +584,15 @@ export default function FreeplayKeyboard({
                                 activeKey === "u" || activeKey === "U"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground}  `}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground}  `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             U
@@ -593,15 +603,15 @@ export default function FreeplayKeyboard({
                                 activeKey === "i" || activeKey === "I"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground}  `}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground}  `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             I
@@ -612,15 +622,15 @@ export default function FreeplayKeyboard({
                                 activeKey === "o" || activeKey === "O"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground}  `}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground}  `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             O
@@ -631,15 +641,15 @@ export default function FreeplayKeyboard({
                                 activeKey === "p" || activeKey === "P"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground}  `}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground}  `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             P
@@ -651,15 +661,15 @@ export default function FreeplayKeyboard({
                                 activeKey === "[" || activeKey === "{"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground} flex flex-col text-[10px]`}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground} flex flex-col text-[10px]`}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             <div>{`{`}</div>
@@ -672,15 +682,15 @@ export default function FreeplayKeyboard({
                                 activeKey === "]" || activeKey === "}"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground} flex flex-col text-[10px]`}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground} flex flex-col text-[10px]`}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             <div>{`}`}</div>
@@ -691,18 +701,18 @@ export default function FreeplayKeyboard({
                             data-alt="|"
                             id="backslash"
                             className={`key ${
-                                activeKey === "\" || activeKey === "|"
+                                activeKey === "\\" || activeKey === "|"
                                     ? "pressed"
                                     : ""
-                            } ${tab}  ${keycapBackground} flex flex-col text-[10px]`}
+                            } ${tab}  ${styles.keebKeycapBackground} flex flex-col text-[10px]`}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             <div>{`|`}</div>
@@ -713,16 +723,16 @@ export default function FreeplayKeyboard({
                         <div
                             data-key="caps"
                             className={`key ${
-                                activeKey === "Backspace" ? "pressed" : ""
-                            } ${caps} ${specialBackground} flex items-center gap-1 p-1 text-[10px]`}
+                                activeKey === "CapsLock" ? "pressed" : ""
+                            } ${caps} ${styles.keebSpecialBackground} flex items-center gap-1 p-1 text-[10px]`}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${specialBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: specialSide,
-                                borderTopColor: specialTop,
-                                borderBottomColor: specialBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebSpecialBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebSpecialSide,
+                                borderTopColor: styles.keebSpecialTop,
+                                borderBottomColor: styles.keebSpecialBottom,
                             }}
                         >
                             Caps Lock
@@ -733,15 +743,15 @@ export default function FreeplayKeyboard({
                                 activeKey === "a" || activeKey === "A"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground}  `}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground}  `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             A
@@ -752,15 +762,15 @@ export default function FreeplayKeyboard({
                                 activeKey === "s" || activeKey === "S"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground}  `}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground}  `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             S
@@ -771,15 +781,15 @@ export default function FreeplayKeyboard({
                                 activeKey === "d" || activeKey === "D"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground}  `}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground}  `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             D
@@ -790,15 +800,15 @@ export default function FreeplayKeyboard({
                                 activeKey === "f" || activeKey === "F"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground}  `}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground}  `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             F
@@ -809,15 +819,15 @@ export default function FreeplayKeyboard({
                                 activeKey === "g" || activeKey === "G"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground}  `}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground}  `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             G
@@ -828,15 +838,15 @@ export default function FreeplayKeyboard({
                                 activeKey === "h" || activeKey === "H"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground}  `}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground}  `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             H
@@ -847,15 +857,15 @@ export default function FreeplayKeyboard({
                                 activeKey === "j" || activeKey === "J"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground}  `}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground}  `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             J
@@ -866,15 +876,15 @@ export default function FreeplayKeyboard({
                                 activeKey === "k" || activeKey === "K"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground}  `}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground}  `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             K
@@ -885,15 +895,15 @@ export default function FreeplayKeyboard({
                                 activeKey === "l" || activeKey === "L"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground}  `}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground}  `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             L
@@ -905,15 +915,15 @@ export default function FreeplayKeyboard({
                                 activeKey === ";" || activeKey === ":"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground} flex flex-col text-[10px]`}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground} flex flex-col text-[10px]`}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             <div>{`:`}</div>
@@ -927,15 +937,15 @@ export default function FreeplayKeyboard({
                                 activeKey === "'" || activeKey === '"'
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground} flex flex-col text-[10px]`}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground} flex flex-col text-[10px]`}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             <div>{`"`}</div>
@@ -945,15 +955,15 @@ export default function FreeplayKeyboard({
                             data-key="enter"
                             className={`key ${
                                 activeKey === "Enter" ? "pressed" : ""
-                            } ${backspace}  ${specialBackground} flex items-center gap-1 p-1 text-[10px]`}
+                            } ${backspace}  ${styles.keebSpecialBackground} flex items-center gap-1 p-1 text-[10px]`}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${specialBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: specialSide,
-                                borderTopColor: specialTop,
-                                borderBottomColor: specialBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebSpecialBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebSpecialSide,
+                                borderTopColor: styles.keebSpecialTop,
+                                borderBottomColor: styles.keebSpecialBottom,
                             }}
                         >
                             <div>
@@ -982,15 +992,15 @@ export default function FreeplayKeyboard({
                             data-key="lshift"
                             className={`key ${
                                 activeKey === "ShiftLeft" ? "pressed" : ""
-                            } ${shift} ${specialBackground} flex items-center gap-1 p-1 text-[10px]`}
+                            } ${shift} ${styles.keebSpecialBackground} flex items-center gap-1 p-1 text-[10px]`}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${specialBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: specialSide,
-                                borderTopColor: specialTop,
-                                borderBottomColor: specialBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebSpecialBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebSpecialSide,
+                                borderTopColor: styles.keebSpecialTop,
+                                borderBottomColor: styles.keebSpecialBottom,
                             }}
                         >
                             Shift
@@ -1001,15 +1011,15 @@ export default function FreeplayKeyboard({
                                 activeKey === "z" || activeKey === "Z"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground}  `}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground}  `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             Z
@@ -1020,15 +1030,15 @@ export default function FreeplayKeyboard({
                                 activeKey === "x" || activeKey === "X"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground}  `}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground}  `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             X
@@ -1039,15 +1049,15 @@ export default function FreeplayKeyboard({
                                 activeKey === "c" || activeKey === "C"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground}  `}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground}  `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             C
@@ -1058,15 +1068,15 @@ export default function FreeplayKeyboard({
                                 activeKey === "v" || activeKey === "V"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground}  `}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground}  `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             V
@@ -1077,15 +1087,15 @@ export default function FreeplayKeyboard({
                                 activeKey === "b" || activeKey === "B"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground}  `}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground}  `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             B
@@ -1096,15 +1106,15 @@ export default function FreeplayKeyboard({
                                 activeKey === "n" || activeKey === "N"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground}  `}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground}  `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             N
@@ -1115,205 +1125,231 @@ export default function FreeplayKeyboard({
                                 activeKey === "m" || activeKey === "M"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground}  `}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground}  `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             M
                         </div>
-                        <div data-key="," data-alt="<"    className={`key ${
+                        <div
+                            data-key=","
+                            data-alt="<"
+                            className={`key ${
                                 activeKey === "," || activeKey === "<"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground} flex flex-col text-[10px]`}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground} flex flex-col text-[10px]`}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             <div>{`<`}</div>
                             <div>{`,`}</div>
                         </div>
-                        <div data-key="." data-alt=">"    className={`key ${
+                        <div
+                            data-key="."
+                            data-alt=">"
+                            className={`key ${
                                 activeKey === "." || activeKey === ">"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground} flex flex-col text-[10px]`}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground} flex flex-col text-[10px]`}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             <div>{`>`}</div>
                             <div>{`.`}</div>
                         </div>
-                        <div data-key="/" data-alt="?"    className={`key ${
+                        <div
+                            data-key="/"
+                            data-alt="?"
+                            className={`key ${
                                 activeKey === "/" || activeKey === "?"
                                     ? "pressed"
                                     : ""
-                            } ${keycapHeight} ${keycapWidth} ${keycapBackground} flex flex-col text-[10px]`}
+                            } ${keycapHeight} ${keycapWidth} ${styles.keebKeycapBackground} flex flex-col text-[10px]`}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
                         >
                             <div>{`?`}</div>
                             <div>{`/`}</div>
                         </div>
-                        <div data-key="rshift"    className={`key ${
+                        <div
+                            data-key="rshift"
+                            className={`key ${
                                 activeKey === "ShiftRight" ? "pressed" : ""
-                            } ${rShift} ${specialBackground} flex items-center gap-1 p-1 text-[10px]`}
+                            } ${rShift} ${styles.keebSpecialBackground} flex items-center gap-1 p-1 text-[10px]`}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${specialBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: specialSide,
-                                borderTopColor: specialTop,
-                                borderBottomColor: specialBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebSpecialBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebSpecialSide,
+                                borderTopColor: styles.keebSpecialTop,
+                                borderBottomColor: styles.keebSpecialBottom,
                             }}
                         >
                             Shift
                         </div>
                     </div>
                     <div className="row mt-[2px] flex gap-[1px]">
-                        <div data-key="lctrl"   className={`key ${
-                                activeKey === "ShiftRight" ? "pressed" : ""
-                            } ${alt} ${specialBackground} flex items-center gap-1 p-1 text-[10px]`}
+                        <div
+                            data-key="lctrl"
+                            className={`key ${
+                                activeKey === "ControlLeft" ? "pressed" : ""
+                            } ${alt} ${styles.keebSpecialBackground} flex items-center gap-1 p-1 text-[10px]`}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${specialBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: specialSide,
-                                borderTopColor: specialTop,
-                                borderBottomColor: specialBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebSpecialBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebSpecialSide,
+                                borderTopColor: styles.keebSpecialTop,
+                                borderBottomColor: styles.keebSpecialBottom,
                             }}
                         >
                             ctrl
                         </div>
-                        <div data-key="lwin"   className={`key ${
-                                activeKey === "ShiftRight" ? "pressed" : ""
-                            } ${alt} ${specialBackground} flex items-center gap-1 p-1 text-[10px]`}
+                        <div
+                            data-key="lwin"
+                            className={`key ${
+                                activeKey === "MetaLeft" ? "pressed" : ""
+                            } ${alt} ${styles.keebSpecialBackground} flex items-center gap-1 p-1 text-[10px]`}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${specialBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: specialSide,
-                                borderTopColor: specialTop,
-                                borderBottomColor: specialBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebSpecialBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebSpecialSide,
+                                borderTopColor: styles.keebSpecialTop,
+                                borderBottomColor: styles.keebSpecialBottom,
                             }}
                         >
                             wind
                         </div>
-                        <div data-key="lalt"   className={`key ${
-                                activeKey === "ShiftRight" ? "pressed" : ""
-                            } ${alt} ${specialBackground} flex items-center gap-1 p-1 text-[10px]`}
+                        <div
+                            data-key="lalt"
+                            className={`key ${
+                                activeKey === "AltLeft" ? "pressed" : ""
+                            } ${alt} ${styles.keebSpecialBackground} flex items-center gap-1 p-1 text-[10px]`}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${specialBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: specialSide,
-                                borderTopColor: specialTop,
-                                borderBottomColor: specialBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebSpecialBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebSpecialSide,
+                                borderTopColor: styles.keebSpecialTop,
+                                borderBottomColor: styles.keebSpecialBottom,
                             }}
                         >
                             alt
                         </div>
-                        <div data-key="space"   className={`key ${
-                                activeKey === "ShiftRight" ? "pressed" : ""
-                            } ${space} ${keycapBackground} flex items-center gap-1 p-1 text-[10px]`}
+                        <div
+                            data-key="space"
+                            className={`key ${
+                                activeKey === "Space" ? "pressed" : ""
+                            } ${space} ${styles.keebKeycapBackground} flex items-center gap-1 p-1 text-[10px]`}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${keycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: keycapSide,
-                                borderTopColor: keycapTop,
-                                borderBottomColor: keycapBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebKeycapBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebKeycapSide,
+                                borderTopColor: styles.keebKeycapTop,
+                                borderBottomColor: styles.keebKeycapBottom,
                             }}
-                        >
-                        </div>
-                        <div data-key="ralt" className={`key ${
-                                activeKey === "ShiftRight" ? "pressed" : ""
-                            } ${alt} ${specialBackground} flex items-center gap-1 p-1 text-[10px]`}
+                        ></div>
+                        <div
+                            data-key="ralt"
+                            className={`key ${
+                                activeKey === "AltRight" ? "pressed" : ""
+                            } ${alt} ${styles.keebSpecialBackground} flex items-center gap-1 p-1 text-[10px]`}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${specialBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: specialSide,
-                                borderTopColor: specialTop,
-                                borderBottomColor: specialBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebSpecialBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebSpecialSide,
+                                borderTopColor: styles.keebSpecialTop,
+                                borderBottomColor: styles.keebSpecialBottom,
                             }}
                         >
                             alt
                         </div>
-                        <div data-key="rwin" className={`key ${
-                                activeKey === "ShiftRight" ? "pressed" : ""
-                            } ${alt} ${specialBackground} flex items-center gap-1 p-1 text-[10px]`}
+                        <div
+                            data-key="rwin"
+                            className={`key ${
+                                activeKey === "MetaRight" ? "pressed" : ""
+                            } ${alt} ${styles.keebSpecialBackground} flex items-center gap-1 p-1 text-[10px]`}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${specialBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: specialSide,
-                                borderTopColor: specialTop,
-                                borderBottomColor: specialBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebSpecialBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebSpecialSide,
+                                borderTopColor: styles.keebSpecialTop,
+                                borderBottomColor: styles.keebSpecialBottom,
                             }}
                         >
                             win
                         </div>
-                        <div data-key="rctx" className={`key ${
-                                activeKey === "ShiftRight" ? "pressed" : ""
-                            } ${alt} ${specialBackground} flex items-center gap-1 p-1 text-[10px]`}
+                        <div
+                            data-key="rctx"
+                            className={`key ${
+                                activeKey === "ContextMenu" ? "pressed" : ""
+                            } ${alt} ${styles.keebSpecialBackground} flex items-center gap-1 p-1 text-[10px]`}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${specialBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: specialSide,
-                                borderTopColor: specialTop,
-                                borderBottomColor: specialBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebSpecialBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebSpecialSide,
+                                borderTopColor: styles.keebSpecialTop,
+                                borderBottomColor: styles.keebSpecialBottom,
                             }}
                         >
                             ctx
                         </div>
-                        <div data-key="rctrl" className={`key ${
-                                activeKey === "ShiftRight" ? "pressed" : ""
-                            } ${alt} ${specialBackground} flex items-center gap-1 p-1 text-[10px]`}
+                        <div
+                            data-key="rctrl"
+                            className={`key ${
+                                activeKey === "ControlRight" ? "pressed" : ""
+                            } ${alt} ${styles.keebSpecialBackground} flex items-center gap-1 p-1 text-[10px]`}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
                                 borderBottom: "6px solid transparent",
-                                boxShadow: `0 -0.125em 0 -0.063em ${specialBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
-                                borderColor: specialSide,
-                                borderTopColor: specialTop,
-                                borderBottomColor: specialBottom,
+                                boxShadow: `0 -0.125em 0 -0.063em ${styles.keebSpecialBottom}, 0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5)`,
+                                borderColor: styles.keebSpecialSide,
+                                borderTopColor: styles.keebSpecialTop,
+                                borderBottomColor: styles.keebSpecialBottom,
                             }}
                         >
                             ctrl

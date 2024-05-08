@@ -23,6 +23,18 @@ interface ThemeStyle {
     graphBackground: string;
     graphBorder: string;
     graphHighlight: string;
+    keebTextColor: string;
+    keebCaseTop: string;
+    keebCaseBottom: string;
+    keebCaseSide: string;
+    keebKeycapBackground: string;
+    keebKeycapTop: string;
+    keebKeycapSide: string;
+    keebKeycapBottom: string;
+    keebSpecialBackground: string;
+    keebSpecialSide: string;
+    keebSpecialTop: string;
+    keebSpecialBottom: string;
 }
 
 export const themeStyles: Record<ThemeName, ThemeStyle> = {
@@ -42,6 +54,18 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
         graphBackground: "rgba(134, 239, 172, 0.3)",
         graphBorder: "rgba(134, 239, 172, 0.5)",
         graphHighlight: "rgba(134, 239, 172)",
+        keebTextColor: "text-black",
+        keebCaseTop: "border-t-[#668866]",
+        keebCaseBottom: "border-b-[#88aa88]",
+        keebCaseSide: "border-x-[#778877]",
+        keebKeycapBackground: "bg-[#e8f0e6]",
+        keebKeycapTop: "#e8f4e4",
+        keebKeycapSide: "#dae8d6",
+        keebKeycapBottom: "#c4e4c4",
+        keebSpecialBackground: "bg-[#738474]",
+        keebSpecialSide: "#697a6f",
+        keebSpecialTop: "#748478",
+        keebSpecialBottom: "#66756d",
     },
     KEEBYRED: {
         title: "",
@@ -59,6 +83,18 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
         graphBackground: "rgba(134, 239, 172, 0.3)",
         graphBorder: "rgba(134, 239, 172, 0.5)",
         graphHighlight: "rgba(134, 239, 172)",
+        keebTextColor: "text-black",
+        keebCaseTop: "border-t-[#666]",
+        keebCaseBottom: "border-b-[#888]",
+        keebCaseSide: "border-x-[#777]",
+        keebKeycapBackground: "bg-[#e9e8e6]",
+        keebKeycapTop: "#ece8e4",
+        keebKeycapSide: "#dedad6",
+        keebKeycapBottom: "#c9c4c4",
+        keebSpecialBackground: "bg-[#7f8384]",
+        keebSpecialSide: "#696c6f",
+        keebSpecialTop: "#848789",
+        keebSpecialBottom: "#676a6d",
     },
     // matrix
     // --bg-color: #000000;
@@ -87,6 +123,18 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
         graphBackground: "rgba(21, 255, 0, 0.3)",
         graphBorder: "rgba(21, 255, 0, 0.5)",
         graphHighlight: "rgba(21, 255, 0, 1)",
+        keebTextColor: "text-[#0F0]",  // Bright neon green
+        keebCaseTop: "border-t-[#1A1A1A]",
+        keebCaseBottom: "border-b-[#333333]",
+        keebCaseSide: "border-x-[#1A1A1A]",
+        keebKeycapBackground: "bg-[#121212]",  // Almost black for the keycap background
+        keebKeycapTop: "#1A1A1A",
+        keebKeycapSide: "#333333",
+        keebKeycapBottom: "#1A1A1A",
+        keebSpecialBackground: "bg-[#003300]",  // Dark green for special keys
+        keebSpecialSide: "#004d00",
+        keebSpecialTop: "#006400",
+        keebSpecialBottom: "#004d00",
     },
     PIGGY: {
         title: "png-white",
@@ -104,6 +152,18 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
         graphBackground: "rgba(0, 0, 0, 0.1)",
         graphBorder: "rgba(255, 225, 225)",
         graphHighlight: "rgba(255, 225, 225)",
+        keebTextColor: "text-black",
+        keebCaseTop: "border-t-[#666]",
+        keebCaseBottom: "border-b-[#888]",
+        keebCaseSide: "border-x-[#777]",
+        keebKeycapBackground: "bg-[#e9e8e6]",
+        keebKeycapTop: "#ece8e4",
+        keebKeycapSide: "#dedad6",
+        keebKeycapBottom: "#c9c4c4",
+        keebSpecialBackground: "bg-[#7f8384]",
+        keebSpecialSide: "#696c6f",
+        keebSpecialTop: "#848789",
+        keebSpecialBottom: "#676a6d",
     },
     PRIMEAGEN: {
         title: "png-primeagen",
@@ -121,6 +181,18 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
         graphBackground: "rgba(224, 222, 244, 0.3)",
         graphBorder: "rgba(224, 222, 244, 0.5)",
         graphHighlight: "rgba(156, 207, 216)",
+        keebTextColor: "text-black",
+        keebCaseTop: "border-t-[#666]",
+        keebCaseBottom: "border-b-[#888]",
+        keebCaseSide: "border-x-[#777]",
+        keebKeycapBackground: "bg-[#e9e8e6]",
+        keebKeycapTop: "#ece8e4",
+        keebKeycapSide: "#dedad6",
+        keebKeycapBottom: "#c9c4c4",
+        keebSpecialBackground: "bg-[#7f8384]",
+        keebSpecialSide: "#696c6f",
+        keebSpecialTop: "#848789",
+        keebSpecialBottom: "#676a6d",
     },
     HIPYO: {
         title: "png-hipyo",
@@ -138,6 +210,18 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
         graphBackground: "rgba(189, 168, 212, 0.3)",
         graphBorder: "rgba(173, 158, 202, 0.5)",
         graphHighlight: "rgba(209, 196, 233)",
+        keebTextColor: "text-black",
+        keebCaseTop: "border-t-[#666]",
+        keebCaseBottom: "border-b-[#888]",
+        keebCaseSide: "border-x-[#777]",
+        keebKeycapBackground: "bg-[#e9e8e6]",
+        keebKeycapTop: "#ece8e4",
+        keebKeycapSide: "#dedad6",
+        keebKeycapBottom: "#c9c4c4",
+        keebSpecialBackground: "bg-[#7f8384]",
+        keebSpecialSide: "#696c6f",
+        keebSpecialTop: "#848789",
+        keebSpecialBottom: "#676a6d",
     },
     BANANA: {
         title: "png-white",
@@ -155,6 +239,18 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
         graphBackground: "rgba(255, 250, 205, 0.3)",
         graphBorder: "rgba(255, 235, 59, 0.5)",
         graphHighlight: "rgba(246, 232, 177)",
+        keebTextColor: "text-black",
+        keebCaseTop: "border-t-[#666]",
+        keebCaseBottom: "border-b-[#888]",
+        keebCaseSide: "border-x-[#777]",
+        keebKeycapBackground: "bg-[#e9e8e6]",
+        keebKeycapTop: "#ece8e4",
+        keebKeycapSide: "#dedad6",
+        keebKeycapBottom: "#c9c4c4",
+        keebSpecialBackground: "bg-[#7f8384]",
+        keebSpecialSide: "#696c6f",
+        keebSpecialTop: "#848789",
+        keebSpecialBottom: "#676a6d",
     },
 };
 // night runner
@@ -207,3 +303,36 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
 // --error-extra-color: #d22a2a;
 // --colorful-error-color: #ff5f5f;
 // --colorful-error-extra-color: #d22a2a;
+
+// gray with green highlights keeb data
+// keebTextColor: "text-black",  // High readability
+// keebCaseTop: "border-t-[#BBBBBB]",  // Subtle border top
+// keebCaseBottom: "border-b-[#BBBBBB]",  // Subtle border bottom
+// keebCaseSide: "border-x-[#BBBBBB]",  // Subtle border sides
+// keebKeycapBackground: "bg-[#E0E0E0]",  // Neutral keycap background
+// keebKeycapTop: "#F0F0F0",  // Lighter top for lighting effect
+// keebKeycapSide: "#BBBBBB",  // Darker sides for depth
+// keebKeycapBottom: "#C0C0C0",  // Shadowed bottom
+// keebSpecialBackground: "bg-[#86EFAC]",  // Green for special keys
+// keebSpecialSide: "#86EFAC",  // Same green for special key sides
+// keebSpecialTop: "#86EFAC",  // Green top for special keys
+// keebSpecialBottom: "#86EFAC",  // Consistent green for coherence
+
+
+
+
+
+// OG
+
+// keebTextColor: "text-black",
+// keebCaseTop: "border-t-[#666]",
+// keebCaseBottom: "border-b-[#888]",
+// keebCaseSide: "border-x-[#777]",
+// keebKeycapBackground: "bg-[#e9e8e6]",
+// keebKeycapTop: "#ece8e4",
+// keebKeycapSide: "#dedad6",
+// keebKeycapBottom: "#c9c4c4",
+// keebSpecialBackground: "bg-[#7f8384]",
+// keebSpecialSide: "#696c6f",
+// keebSpecialTop: "#848789",
+// keebSpecialBottom: "#676a6d",

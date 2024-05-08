@@ -1546,66 +1546,14 @@ input[type="checkbox"]:hover {
 
 /* Keyboard.css */
 
-/* .keyboard-container {
-    display: flex;
-    flex-direction: column;
-
-    justify-content: center;
-    align-items: center;
-    background-color: #111;
-
-    color: #999;
-    font-family: system-ui, sans-serif;
-} */
-
-.keyboard {
-    /* display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-size: 0;
-    border-radius: 4px;
-    border: 13px solid #777;
-    border-top-color: #666;
-    border-bottom-color: #888; */
-    /* box-shadow: inset 0 1rem 1rem rgba(0, 0, 0, 0.5),
-        0 2rem 3rem -0.5rem rgba(0, 0, 0, 0.55); */
-    /* padding: 0.25rem; */
-}
-
-/* .row {
-    height: 40px;
-    display: flex;
-    justify-content: space-between;
-    padding-top: 1px;
-    margin-bottom: 2px;
-} */
-/* width: 618.6px; 40px * 15.43 */
-
 .key {
     border-radius: 3px;
     box-sizing: border-box;
     /* color: rgba(0, 0, 0, 0.75); */
-    /* display: inline-block; */
     font-family: system-ui, sans-serif;
-    /* font-size: 1rem; */
-    /* font-weight: 400; */
-    /* line-height: 1.125; */
-    /* padding: 0.33em 0.66em; */
     position: relative;
     text-align: center;
     vertical-align: middle;
-    /* width: 40px; */
-    /* height: 40px; */
-    /* border: 3px solid transparent;
-    border-top: 2px solid transparent;
-    border-bottom: 6px solid transparent;
-    background-color: #e9e8e6;
-    border-color: #dedad6;
-    border-top-color: #ece8e4;
-    border-bottom-color: #c9c4c4;
-    box-shadow: 0 -0.125em 0 -0.063em #c9c4c4,
-        0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5); */
     transition: transform 50ms;
     outline: 0;
 }
@@ -1615,291 +1563,45 @@ input[type="checkbox"]:hover {
     transform: scale(0.96, 0.96) translate(0, 3px);
 }
 
+/* freeplay monitor  */
 
-
-/* kbd::before {
-    content: "";
-    position: absolute;
-    top: 0px;
-    left: -1px;
-    bottom: -1px;
-    right: -1px;
-    border-radius: 4px;
-    border-left: 1px solid transparent;
-    border-right: 1px solid transparent;
-    border-bottom: 1px solid transparent;
-    border-left-color: #d2ccca;
-    border-right-color: #d2ccca;
-    border-bottom-color: #bdb6b6;
-    box-shadow: 0 4px 4px -3px rgba(0, 0, 0, 0.15);
-    background-image: linear-gradient(
-        to right,
-        #e9e8e6,
-        #e0dddb 5%,
-        transparent 40%,
-        transparent 60%,
-        #e0dddb 95%,
-        #e9e8e6
-    );
+.monitor-tilt {
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+    transform: perspective(500px) rotateX(-10deg);
+    transition: transform 0.3s ease-in-out;
+    box-shadow: 0 0 5px rgba(169, 223, 253, 0.8), 
+            0 0 10px rgba(169, 223, 253, 0.7),
+            0 0 15px rgba(169, 223, 253, 0.6), 
+            0 0 20px rgba(169, 223, 253, 0.5),
+            0 0 40px rgba(169, 223, 253, 0.4), 
+            0 0 60px rgba(169, 223, 253, 0.3);
+    animation: screen 1s ease-in alternate infinite;
+}
+/* .monitor-tilt {
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+    transform: perspective(500px) rotateX(-10deg);
+    transition: transform 0.3s ease-in-out;
+    box-shadow: 0 0 5px rgba(169, 223, 253, 0.8), 
+            0 0 10px rgba(169, 223, 253, 0.7),
+            0 0 15px rgba(169, 223, 253, 0.6), 
+            0 0 20px rgba(169, 223, 253, 0.5),
+            0 0 40px rgba(169, 223, 253, 0.4), 
+            0 0 60px rgba(169, 223, 253, 0.3);
+    animation: screen 1s ease-in alternate infinite;
 } */
 
-kbd[data-key]::after,
-kbd[data-alt]::after {
-    position: absolute;
-    z-index: 1;
-    /* content: attr(data-key); */
-    text-transform: capitalize;
-    font-size: 1rem; /* Adjusted to fit default kbd */
-    line-height: 1.125; /* Match kbd's line-height */
-    top: 0;
-    left: 0;
-    right: 0;
-    text-align: center;
-}
-
-kbd[data-alt]::after {
-    white-space: pre;
-    /* content: attr(data-alt) "\A"attr(data-key); */
-    line-height: 0.95rem;
-    font-size: 0.7em;
-}
-
-
-
-/* Custom widths for larger keys */
-kbd[data-key="tab"],
-kbd[data-key="\\"] {
-    width: 60px; /* 40px * 1.5 */
-}
-
-kbd[data-key="caps"] {
-    width: 70px; /* 40px * 1.75 */
-}
-
-
-kbd[data-key="lshift"],
-kbd[data-key="rshift"],
-kbd[data-key="enter"] {
-    width: 90px; /* 40px * 2.25 for shift and enter, 2 for backspace */
-}
-
-kbd[data-key="rshift"] {
-    width: 110px; /* 40px * 2.75 */
-}
-
-/* Smaller modifier keys */
-kbd[data-key="lctrl"],
-kbd[data-key="rctrl"],
-kbd[data-key="lalt"],
-kbd[data-key="ralt"],
-kbd[data-key="lwin"],
-kbd[data-key="rwin"],
-kbd[data-key="rctx"] {
-    width: 50px; /* 40px * 1.25 */
-    background-color: #7f8384; /* Modifier keys color */
-    border-color: #696c6f;
-    border-top-color: #848789;
-    border-bottom-color: #676a6d;
-}
-
-/* Space bar width */
-kbd[data-key="space"] {
-    width: 250px; /* 40px * 6.25 */
-}
-
-/* Key labels for modifier keys */
-kbd[data-key="lshift"]::after,
-kbd[data-key="rshift"]::after {
-    content: "Shift";
-}
-
-kbd[data-key="lctrl"]::after,
-kbd[data-key="rctrl"]::after {
-    content: "Ctrl";
-}
-
-kbd[data-key="lwin"]::after,
-kbd[data-key="rwin"]::after {
-    content: "✶"; /* Approximation for Unicode \2756 */
-}
-
-kbd[data-key="lalt"]::after,
-kbd[data-key="ralt"]::after {
-    content: "Alt";
-}
-
-kbd[data-key="rctx"]::after {
-    content: "☰"; /* Unicode \2630 for menu icon */
-}
-
-kbd[data-key="space"]::after {
-    content: none;
-}
-
-/* $u1: 40px;
-  
-  .row {
-    height: $u1;
-    display: flex;
-    justify-content: space-between;
-    width: $u1 * 15.43;
-    padding-top: 1px;
-    margin-bottom: 2px;
-  }
-  
-  @mixin keycap($base: #e9e8e6) {
-    $light: lighten($base, 2%); //#ece8e4
-    $mid: darken($base, 16%); // #dedad6
-    $dark: darken($base, 28%); // #c9c4c4
-    background-color: $base;
-    border-color: $mid;
-    border-top-color: $light;
-    border-bottom-color: $dark;
-    box-shadow:
-          0 -0.125em 0 -0.063em $dark,
-          0 0.125em 0 -0.063em rgba(0,0,0,0.5);
-    
-    &::before {
-      border-left-color: darken($base, 23%);
-      border-right-color: darken($base, 23%);
-      border-bottom-color: darken($base, 35%);
-      box-shadow: 0 4px 4px -3px rgba(0,0,0,0.15);
-      background-image:
-              linear-gradient(
-                to right,
-                $base,
-                desaturate(darken($base, 12%), 20%) 5%,
-                transparent 40%,
-                transparent 60%,
-                desaturate(darken($base, 12%), 20%) 95%,
-                $base
-              );
+@keyframes screen {
+    0%,
+    90%,
+    96% {
+        background-color: #a9dffd;
     }
-  }
-  
-  kbd {
-    border-radius: 3px;
-    box-sizing: border-box;
-    color: rgba(0,0,0,0.75);
-    display: inline-block;
-    font-family: system-ui, sans-serif;
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.125;
-    padding: 0.33em 0.66em;
-    position: relative;
-    text-align: center;  
-    vertical-align: middle;
-    width: $u1; height: $u1;
-    
-    border: 3px solid transparent;
-    border-top: 2px solid transparent;
-    border-bottom: 6px solid transparent;
-    
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0px; left: -1px;
-      bottom: -1px; right: -1px;
-      border-radius: 4px;
-      border-left: 1px solid transparent;
-      border-right: 1px solid transparent;
-      border-bottom: 1px solid transparent;
+    93%,
+    100% {
+        background-color: rgba(143, 210, 248, 0.8);
     }
-    
-    @include keycap();
-    
-    transition: transform 100ms;
-    outline: 0;
-    &:active, &.pressed {
-      transform: 
-        scale(0.96,0.96)
-        translate(0, 3px);
-    }
-    
-    &[data-key]::after {
-      position: relative;
-      z-index: 1;
-      content: attr(data-key);
-      text-transform: capitalize;
-    }
-    
-    &[data-alt]::after {
-      white-space: pre;
-      content: attr(data-alt) '\A' attr(data-key);
-      line-height: 0.95rem;
-      font-size: 0.7em;
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      text-align: center;
-    }
-    
-    &[data-key=tab], 
-    &[data-key=enter],
-    &[data-key=caps],
-    &[data-key=backspace],
-    &[data-key=lshift],
-    &[data-key=rshift],
-    &[data-key=lctrl],
-    &[data-key=rctrl],
-    &[data-key=lalt],
-    &[data-key=ralt],
-    &[data-key=lwin],
-    &[data-key=rwin],
-    &[data-key=rctx] {    
-      &:after {
-        font-size: 0.725em; 
-        top: 0;
-        left: 0; right: 0;
-        line-height: $u1 * 0.78;
-        position: absolute;
-      }
-      @include keycap(#7f8384);
-    }
-    
-    &[data-key=lshift], &[data-key=rshift] {
-      &::after { content: 'Shift'; }
-    }
-    
-    &[data-key=lctrl], &[data-key=rctrl] {
-      &::after { content: 'Ctrl'; }
-    }  
-    
-    &[data-key=lwin], &[data-key=rwin] {
-      &::after { content: '\2756'; font-size: 1rem;  }
-    }    
-    
-    &[data-key=lalt], &[data-key=ralt] {
-      &::after { content: 'Alt'; }
-    }      
-    
-    &[data-key=space]::after { content: none; }
-    &[data-key=rctx]::after { content: '\2630'; }
-    
-    &[data-key=lalt], &[data-key=ralt] {
-      &::after { content: 'Alt'; }
-    }      
-    
-    &[data-key="tab"],
-    &[data-key="\\\\"] {
-      width: $u1 * 1.5;
-    }
-    
-    &[data-key=caps] { width: $u1 * 1.75; }
-    &[data-key=backspace] { width: $u1 * 2; }
-    &[data-key=enter] { width: $u1 * 2.25; }  
-    &[data-key=lshift] { width: $u1 * 2.25; }
-    &[data-key=rshift] { width: $u1 * 2.75; }
-    
-    &[data-key=lctrl],
-    &[data-key=rctrl],
-    &[data-key=lalt],
-    &[data-key=ralt],
-    &[data-key=lwin],
-    &[data-key=rwin],
-    &[data-key=rctx] { width: $u1 * 1.25; }
-    
-    &[data-key=space] { width: $u1 * 6.25; }
-  } */
+}
