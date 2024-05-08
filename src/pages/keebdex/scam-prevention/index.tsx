@@ -1,7 +1,8 @@
 import MainFooter from "~/components/Footer/mainFooter";
 import { motion } from "framer-motion";
 import { useState } from "react";
-
+import Image from "next/image";
+import keebo from "@public/Profile/keebo.png";
 export default function PreventingScams() {
     const script = [
         "WOW!",
@@ -47,7 +48,7 @@ export default function PreventingScams() {
 
                 <div
                     style={{ zIndex: 4 }}
-                    className="relative mt-10 flex w-full gap-96 px-40  "
+                    className="relative mt-10 flex w-full tablet:gap-48 tablet:px-10 desktop:gap-80 desktop:px-40 "
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -58,7 +59,6 @@ export default function PreventingScams() {
                     >
                         <circle cx="16" cy="16" r="16" strokeWidth=".2px" />
                     </svg>
-
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         version="1.1"
@@ -108,94 +108,122 @@ export default function PreventingScams() {
                             </g>
                         </svg>
                     </div>
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="absolute -top-24 right-[15%] z-20 h-32 w-32 text-vibrantPurple"
+                        viewBox="0 0 48 48"
+                        stroke="black"
+                    >
+                        <defs></defs>
+                        <path
+                            d="M41.6783,13.0436H24.77c-1.9628-.1072-5.9311-4.2372-8.1881-4.2372H6.6806V8.8046A2.1762,2.1762,0,0,0,4.5,10.9763v7.3063h39V14.8652A1.8217,1.8217,0,0,0,41.6783,13.0436Z"
+                            fill="white"
+                            strokeWidth=".5px"
+                        />
+                        <path
+                            d="M43.5,18.2826H4.5V37.0165a2.1762,2.1762,0,0,0,2.1735,2.1789H41.3194A2.1762,2.1762,0,0,0,43.5,37.0237V18.2826Z"
+                            fill="currentColor"
+                            strokeWidth=".5px"
+                        />
+                    </svg>
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="absolute -top-10 right-[12%] z-20 h-32 w-32 text-yellow-300"
+                        viewBox="0 0 48 48"
+                        stroke="black"
+                    >
+                        <defs></defs>
+                        <path
+                            d="M41.6783,13.0436H24.77c-1.9628-.1072-5.9311-4.2372-8.1881-4.2372H6.6806V8.8046A2.1762,2.1762,0,0,0,4.5,10.9763v7.3063h39V14.8652A1.8217,1.8217,0,0,0,41.6783,13.0436Z"
+                            fill="white"
+                            strokeWidth=".5px"
+                        />
+                        <path
+                            d="M43.5,18.2826H4.5V37.0165a2.1762,2.1762,0,0,0,2.1735,2.1789H41.3194A2.1762,2.1762,0,0,0,43.5,37.0237V18.2826Z"
+                            fill="currentColor"
+                            strokeWidth=".5px"
+                        />
+                    </svg>
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="absolute right-[8%] top-4 z-20 h-32 w-32 text-hotPink"
+                        viewBox="0 0 48 48"
+                        stroke="black"
+                    >
+                        <defs></defs>
+                        <path
+                            d="M41.6783,13.0436H24.77c-1.9628-.1072-5.9311-4.2372-8.1881-4.2372H6.6806V8.8046A2.1762,2.1762,0,0,0,4.5,10.9763v7.3063h39V14.8652A1.8217,1.8217,0,0,0,41.6783,13.0436Z"
+                            fill="white"
+                            strokeWidth=".5px"
+                        />
+                        <path
+                            d="M43.5,18.2826H4.5V37.0165a2.1762,2.1762,0,0,0,2.1735,2.1789H41.3194A2.1762,2.1762,0,0,0,43.5,37.0237V18.2826Z"
+                            fill="currentColor"
+                            strokeWidth=".5px"
+                        />
+                    </svg>
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="absolute right-[4%] top-20 z-20 h-32 w-32 text-vibrantGreen"
+                        viewBox="0 0 48 48"
+                        stroke="black"
+                    >
+                        <defs></defs>
+                        <path
+                            d="M41.6783,13.0436H24.77c-1.9628-.1072-5.9311-4.2372-8.1881-4.2372H6.6806V8.8046A2.1762,2.1762,0,0,0,4.5,10.9763v7.3063h39V14.8652A1.8217,1.8217,0,0,0,41.6783,13.0436Z"
+                            fill="white"
+                            strokeWidth=".5px"
+                        />
+                        <path
+                            d="M43.5,18.2826H4.5V37.0165a2.1762,2.1762,0,0,0,2.1735,2.1789H41.3194A2.1762,2.1762,0,0,0,43.5,37.0237V18.2826Z"
+                            fill="currentColor"
+                            strokeWidth=".5px"
+                        />
+                    </svg>
 
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="absolute -top-24 right-[15%] h-32 w-32 text-vibrantPurple"
-                        viewBox="0 0 48 48"
-                        stroke="black"
-                    >
-                        <defs></defs>
-                        <path
-                            d="M41.6783,13.0436H24.77c-1.9628-.1072-5.9311-4.2372-8.1881-4.2372H6.6806V8.8046A2.1762,2.1762,0,0,0,4.5,10.9763v7.3063h39V14.8652A1.8217,1.8217,0,0,0,41.6783,13.0436Z"
-                            fill="white"
-                            strokeWidth=".5px"
-                        />
-                        <path
-                            d="M43.5,18.2826H4.5V37.0165a2.1762,2.1762,0,0,0,2.1735,2.1789H41.3194A2.1762,2.1762,0,0,0,43.5,37.0237V18.2826Z"
-                            fill="currentColor"
-                            strokeWidth=".5px"
-                        />
-                    </svg>
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="absolute -top-10 right-[12%] z-10 h-32 w-32 text-yellow-300"
-                        viewBox="0 0 48 48"
-                        stroke="black"
-                    >
-                        <defs></defs>
-                        <path
-                            d="M41.6783,13.0436H24.77c-1.9628-.1072-5.9311-4.2372-8.1881-4.2372H6.6806V8.8046A2.1762,2.1762,0,0,0,4.5,10.9763v7.3063h39V14.8652A1.8217,1.8217,0,0,0,41.6783,13.0436Z"
-                            fill="white"
-                            strokeWidth=".5px"
-                        />
-                        <path
-                            d="M43.5,18.2826H4.5V37.0165a2.1762,2.1762,0,0,0,2.1735,2.1789H41.3194A2.1762,2.1762,0,0,0,43.5,37.0237V18.2826Z"
-                            fill="currentColor"
-                            strokeWidth=".5px"
-                        />
-                    </svg>
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="absolute right-[8%] top-4 z-10 h-32 w-32 text-hotPink"
-                        viewBox="0 0 48 48"
-                        stroke="black"
-                    >
-                        <defs></defs>
-                        <path
-                            d="M41.6783,13.0436H24.77c-1.9628-.1072-5.9311-4.2372-8.1881-4.2372H6.6806V8.8046A2.1762,2.1762,0,0,0,4.5,10.9763v7.3063h39V14.8652A1.8217,1.8217,0,0,0,41.6783,13.0436Z"
-                            fill="white"
-                            strokeWidth=".5px"
-                        />
-                        <path
-                            d="M43.5,18.2826H4.5V37.0165a2.1762,2.1762,0,0,0,2.1735,2.1789H41.3194A2.1762,2.1762,0,0,0,43.5,37.0237V18.2826Z"
-                            fill="currentColor"
-                            strokeWidth=".5px"
-                        />
-                    </svg>
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="absolute right-[4%] top-20 z-10 h-32 w-32 text-vibrantGreen"
-                        viewBox="0 0 48 48"
-                        stroke="black"
-                    >
-                        <defs></defs>
-                        <path
-                            d="M41.6783,13.0436H24.77c-1.9628-.1072-5.9311-4.2372-8.1881-4.2372H6.6806V8.8046A2.1762,2.1762,0,0,0,4.5,10.9763v7.3063h39V14.8652A1.8217,1.8217,0,0,0,41.6783,13.0436Z"
-                            fill="white"
-                            strokeWidth=".5px"
-                        />
-                        <path
-                            d="M43.5,18.2826H4.5V37.0165a2.1762,2.1762,0,0,0,2.1735,2.1789H41.3194A2.1762,2.1762,0,0,0,43.5,37.0237V18.2826Z"
-                            fill="currentColor"
-                            strokeWidth=".5px"
-                        />
-                    </svg>
-
-                    {/* <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="absolute left-[40%] top-[600px] h-80 w-80 text-vibrantPurple"
+                        className="absolute left-[35%] top-[300px] z-20 h-16 w-16 text-vibrantGreen"
                         viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
+                        fill="currentColor"
                     >
                         <path
-                            d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
+                            d="M12 3L13.4302 8.31181C13.6047 8.96 13.692 9.28409 13.8642 9.54905C14.0166 9.78349 14.2165 9.98336 14.451 10.1358C14.7159 10.308 15.04 10.3953 15.6882 10.5698L21 12L15.6882 13.4302C15.04 13.6047 14.7159 13.692 14.451 13.8642C14.2165 14.0166 14.0166 14.2165 13.8642 14.451C13.692 14.7159 13.6047 15.04 13.4302 15.6882L12 21L10.5698 15.6882C10.3953 15.04 10.308 14.7159 10.1358 14.451C9.98336 14.2165 9.78349 14.0166 9.54905 13.8642C9.28409 13.692 8.96 13.6047 8.31181 13.4302L3 12L8.31181 10.5698C8.96 10.3953 9.28409 10.308 9.54905 10.1358C9.78349 9.98336 9.98336 9.78349 10.1358 9.54905C10.308 9.28409 10.3953 8.96 10.5698 8.31181L12 3Z"
+                            stroke="#000000"
+                            stroke-width=".3px"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
                         />
-                    </svg> */}
+                    </svg>
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="absolute left-[55%] top-[500px] z-20 h-24 w-24 text-hotPink"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                    >
+                        <path
+                            d="M12 3L13.4302 8.31181C13.6047 8.96 13.692 9.28409 13.8642 9.54905C14.0166 9.78349 14.2165 9.98336 14.451 10.1358C14.7159 10.308 15.04 10.3953 15.6882 10.5698L21 12L15.6882 13.4302C15.04 13.6047 14.7159 13.692 14.451 13.8642C14.2165 14.0166 14.0166 14.2165 13.8642 14.451C13.692 14.7159 13.6047 15.04 13.4302 15.6882L12 21L10.5698 15.6882C10.3953 15.04 10.308 14.7159 10.1358 14.451C9.98336 14.2165 9.78349 14.0166 9.54905 13.8642C9.28409 13.692 8.96 13.6047 8.31181 13.4302L3 12L8.31181 10.5698C8.96 10.3953 9.28409 10.308 9.54905 10.1358C9.78349 9.98336 9.98336 9.78349 10.1358 9.54905C10.308 9.28409 10.3953 8.96 10.5698 8.31181L12 3Z"
+                            stroke="#000000"
+                            stroke-width=".3px"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        />
+                    </svg>
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="absolute right-10 top-[200px] z-20 h-16 w-16 text-vibrantGreen"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                    >
+                        <path
+                            d="M12 3L13.4302 8.31181C13.6047 8.96 13.692 9.28409 13.8642 9.54905C14.0166 9.78349 14.2165 9.98336 14.451 10.1358C14.7159 10.308 15.04 10.3953 15.6882 10.5698L21 12L15.6882 13.4302C15.04 13.6047 14.7159 13.692 14.451 13.8642C14.2165 14.0166 14.0166 14.2165 13.8642 14.451C13.692 14.7159 13.6047 15.04 13.4302 15.6882L12 21L10.5698 15.6882C10.3953 15.04 10.308 14.7159 10.1358 14.451C9.98336 14.2165 9.78349 14.0166 9.54905 13.8642C9.28409 13.692 8.96 13.6047 8.31181 13.4302L3 12L8.31181 10.5698C8.96 10.3953 9.28409 10.308 9.54905 10.1358C9.78349 9.98336 9.98336 9.78349 10.1358 9.54905C10.308 9.28409 10.3953 8.96 10.5698 8.31181L12 3Z"
+                            stroke="#000000"
+                            stroke-width=".3px"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        />
+                    </svg>
+
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="absolute left-[40%] top-[600px] h-80 w-80 text-vibrantPurple"
@@ -209,7 +237,6 @@ export default function PreventingScams() {
                             d="M0 16q0 3.264 1.28 6.208t3.392 5.12 5.12 3.424 6.208 1.248 6.208-1.248 5.12-3.424 3.392-5.12 1.28-6.208-1.28-6.208-3.392-5.12-5.088-3.392-6.24-1.28q-3.264 0-6.208 1.28t-5.12 3.392-3.392 5.12-1.28 6.208zM4 16q0-3.264 1.6-6.016t4.384-4.352 6.016-1.632 6.016 1.632 4.384 4.352 1.6 6.016-1.6 6.048-4.384 4.352-6.016 1.6-6.016-1.6-4.384-4.352-1.6-6.048z"
                         />
                     </svg>
-
                     <div className="relative mt-20 flex w-1/3 flex-shrink-0 font-bungee">
                         <div
                             className={`scam-prevention-shadow h-96 w-full overflow-hidden rounded-2xl border-2 border-black bg-[#F7F7EA] ${
@@ -304,7 +331,7 @@ export default function PreventingScams() {
                                 </div>
                             </div>
                             <h1
-                                className="mt-10 flex  px-5 text-center text-6xl text-[#FFE033] "
+                                className="mt-10 flex  px-5 text-center text-6xl text-[#FFE033]  "
                                 style={{
                                     WebkitTextStrokeWidth: "2px",
                                     WebkitTextStrokeColor: "black",
@@ -342,10 +369,87 @@ export default function PreventingScams() {
                             />
                         </svg>
                     </div>
-                    <div className="scam-prevention-shadow h-96 w-full overflow-hidden rounded-2xl border-2 border-black bg-vibrantPurple">
+                    <div className="scam-prevention-shadow h-[500px] w-full overflow-hidden rounded-2xl border-2 border-black bg-vibrantPurple">
                         <div className="flex h-8 w-full items-center justify-between border-b-2 border-black bg-vibrantGreen p-2  "></div>
-                    </div>
+                        <div className=" p-5 ">
+                            <h2
+                                className="font-bungeeShade text-4xl text-vibrantGreen "
+                                style={{
+                                    WebkitTextStrokeWidth: "2px",
+                                    WebkitTextStrokeColor: "black",
+                                }}
+                            >
+                                PAYPAL ONLY
+                            </h2>
+                            <ul className="mt-1 list-disc px-5">
+                                <li>Only send/receive money via PayPal</li>
+                                <li>
+                                    PayPal has great dispute resolution support
+                                    to protect you
+                                </li>
+                                <li>
+                                    Consider seller reviews before buying
+                                    (inexperience = more risk)
+                                </li>
+                                <li>
+                                    Confirm details with seller before buying
+                                </li>
+                                <li>
+                                    Include your full name, address, phone
+                                    number, and the keyboard you are buying in
+                                    the payment notes when sending money to the
+                                    seller.
+                                </li>
+                            </ul>
+                            <h2
+                                className="mt-2 font-bungeeShade text-4xl text-vibrantGreen "
+                                style={{
+                                    WebkitTextStrokeWidth: "2px",
+                                    WebkitTextStrokeColor: "black",
+                                }}
+                            >
+                                DISPUTES
+                            </h2>
+                            <ul className="mt-1 list-disc px-5">
+                                <li>
+                                    Sellers should take pictures of the product
+                                    before shipping and when packing the
+                                    keyboard.
+                                </li>
+                                <li>{`Buyer's should record unboxing.`}</li>
+                                <li>
+                                    Disputes are between buyers and sellers via
+                                    PayPal, not Keeby.
+                                </li>
 
+                                <li>
+                                    Scams by either buyers or sellers will not
+                                    be tolerated here.
+                                </li>
+                                <li>
+                                    Legal actions may be taken against
+                                    individuals involved in scamming activities.
+                                </li>
+                            </ul>
+
+                            <p className="mt-3 flex items-end gap-1 px-5">
+                                Leaving accurate seller reviews helps the Keeby
+                                community{" "}
+                                <Image
+                                    alt="keeby mascot "
+                                    src={keebo}
+                                    className="h-8 w-8"
+                                />
+                            </p>
+                        </div>
+                    </div>
+                    {/* Quick Reminder: Only use PayPal for transactions as they
+                    have a strong dispute system for preventing scams. Confirm
+                    details with seller before sending any money. When sending
+                    the seller money via PayPal please include your full name,
+                    address, phone number, and the keyboard you are buying in
+                    the payment notes. Please read Scam Prevention for more
+                    details! */}
                     {/* <div>all disputes are handled via paypal</div>
                     <div>
                         keeby does not handle disputes, we only refund buyer if
