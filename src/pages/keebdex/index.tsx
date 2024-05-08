@@ -2,8 +2,24 @@ import { motion } from "framer-motion";
 import TitleScripts from "~/components/TitleScripts";
 import Link from "next/link";
 import MainFooter from "~/components/Footer/mainFooter";
+import { useState } from "react";
+import ModalDialog from "~/components/Modal";
+import SupportMe from "~/components/Footer/supportModal";
 
 export default function KeebDex() {
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
+    // 
+
+
     return (
         <>
             <div className="text-4xl text-green-500">
@@ -34,7 +50,7 @@ export default function KeebDex() {
                 </Link>
                 <Link
                     className=" keebdex-button flex justify-center gap-2 rounded-2xl bg-black px-6 py-4"
-                    href={`/keebdex/rules`}
+                    href={`/keebdex/frequently-asked-questions`}
                     aria-label="typing tips"
                 >
                     <span style={{ zIndex: "10" }}>FAQ</span>
@@ -53,27 +69,7 @@ export default function KeebDex() {
                         ></path>
                     </svg>
                 </Link>
-                <Link
-                    className=" keebdex-button flex justify-center gap-2 rounded-2xl bg-black px-6 py-4"
-                    href={`/keebdex/rules`}
-                    aria-label="typing tips"
-                >
-                    <span style={{ zIndex: "10" }}>Keeby Rules</span>
-                    <svg
-                        className="keebdex-button-arrow w-6 rounded-full bg-none p-1"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="3"
-                            d="M3.515 12h16.97m0 0L13.01 4.525M20.485 12l-7.475 7.476"
-                        ></path>
-                    </svg>
-                </Link>
+
                 <Link
                     className=" keebdex-button flex justify-center gap-2 rounded-2xl bg-black px-6 py-4"
                     href={`/keebdex/scam-prevention`}
@@ -142,10 +138,9 @@ export default function KeebDex() {
                         ></path>
                     </svg>
                 </Link>
-                <Link
+                <button
                     className=" keebdex-button flex justify-center gap-2 rounded-2xl bg-black px-6 py-4"
-                    href={`/keebdex/typing-tips`}
-                    aria-label="typing tips"
+                    onClick={openModal}
                 >
                     <span style={{ zIndex: "10" }}>Can I Support Keeby?</span>
                     <svg
@@ -162,7 +157,10 @@ export default function KeebDex() {
                             d="M3.515 12h16.97m0 0L13.01 4.525M20.485 12l-7.475 7.476"
                         ></path>
                     </svg>
-                </Link>
+                </button>
+                <ModalDialog isOpen={isModalOpen} onClose={closeModal}>
+                    <SupportMe />
+                </ModalDialog>
                 <Link
                     className=" keebdex-button flex justify-center gap-2 rounded-2xl bg-black px-6 py-4"
                     href={`/keebdex/about`}
