@@ -109,6 +109,107 @@ export default function PreventingScams() {
                         </svg>
                     </div>
 
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="absolute -top-24 right-[15%] h-32 w-32 text-vibrantPurple"
+                        viewBox="0 0 48 48"
+                        stroke="black"
+                    >
+                        <defs></defs>
+                        <path
+                            d="M41.6783,13.0436H24.77c-1.9628-.1072-5.9311-4.2372-8.1881-4.2372H6.6806V8.8046A2.1762,2.1762,0,0,0,4.5,10.9763v7.3063h39V14.8652A1.8217,1.8217,0,0,0,41.6783,13.0436Z"
+                            fill="white"
+                            strokeWidth=".5px"
+                        />
+                        <path
+                            d="M43.5,18.2826H4.5V37.0165a2.1762,2.1762,0,0,0,2.1735,2.1789H41.3194A2.1762,2.1762,0,0,0,43.5,37.0237V18.2826Z"
+                            fill="currentColor"
+                            strokeWidth=".5px"
+                        />
+                    </svg>
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="absolute -top-10 right-[12%] z-10 h-32 w-32 text-yellow-300"
+                        viewBox="0 0 48 48"
+                        stroke="black"
+                    >
+                        <defs></defs>
+                        <path
+                            d="M41.6783,13.0436H24.77c-1.9628-.1072-5.9311-4.2372-8.1881-4.2372H6.6806V8.8046A2.1762,2.1762,0,0,0,4.5,10.9763v7.3063h39V14.8652A1.8217,1.8217,0,0,0,41.6783,13.0436Z"
+                            fill="white"
+                            strokeWidth=".5px"
+                        />
+                        <path
+                            d="M43.5,18.2826H4.5V37.0165a2.1762,2.1762,0,0,0,2.1735,2.1789H41.3194A2.1762,2.1762,0,0,0,43.5,37.0237V18.2826Z"
+                            fill="currentColor"
+                            strokeWidth=".5px"
+                        />
+                    </svg>
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="absolute right-[8%] top-4 z-10 h-32 w-32 text-hotPink"
+                        viewBox="0 0 48 48"
+                        stroke="black"
+                    >
+                        <defs></defs>
+                        <path
+                            d="M41.6783,13.0436H24.77c-1.9628-.1072-5.9311-4.2372-8.1881-4.2372H6.6806V8.8046A2.1762,2.1762,0,0,0,4.5,10.9763v7.3063h39V14.8652A1.8217,1.8217,0,0,0,41.6783,13.0436Z"
+                            fill="white"
+                            strokeWidth=".5px"
+                        />
+                        <path
+                            d="M43.5,18.2826H4.5V37.0165a2.1762,2.1762,0,0,0,2.1735,2.1789H41.3194A2.1762,2.1762,0,0,0,43.5,37.0237V18.2826Z"
+                            fill="currentColor"
+                            strokeWidth=".5px"
+                        />
+                    </svg>
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="absolute right-[4%] top-20 z-10 h-32 w-32 text-vibrantGreen"
+                        viewBox="0 0 48 48"
+                        stroke="black"
+                    >
+                        <defs></defs>
+                        <path
+                            d="M41.6783,13.0436H24.77c-1.9628-.1072-5.9311-4.2372-8.1881-4.2372H6.6806V8.8046A2.1762,2.1762,0,0,0,4.5,10.9763v7.3063h39V14.8652A1.8217,1.8217,0,0,0,41.6783,13.0436Z"
+                            fill="white"
+                            strokeWidth=".5px"
+                        />
+                        <path
+                            d="M43.5,18.2826H4.5V37.0165a2.1762,2.1762,0,0,0,2.1735,2.1789H41.3194A2.1762,2.1762,0,0,0,43.5,37.0237V18.2826Z"
+                            fill="currentColor"
+                            strokeWidth=".5px"
+                        />
+                    </svg>
+
+                    {/* <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="absolute left-[40%] top-[600px] h-80 w-80 text-vibrantPurple"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                    >
+                        <path
+                            d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                    </svg> */}
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="absolute left-[40%] top-[600px] h-80 w-80 text-vibrantPurple"
+                        fill="currentColor"
+                        stroke="black"
+                        viewBox="-1 -1 36 36"
+                        version="1.1"
+                    >
+                        <path
+                            strokeWidth=".3px"
+                            d="M0 16q0 3.264 1.28 6.208t3.392 5.12 5.12 3.424 6.208 1.248 6.208-1.248 5.12-3.424 3.392-5.12 1.28-6.208-1.28-6.208-3.392-5.12-5.088-3.392-6.24-1.28q-3.264 0-6.208 1.28t-5.12 3.392-3.392 5.12-1.28 6.208zM4 16q0-3.264 1.6-6.016t4.384-4.352 6.016-1.632 6.016 1.632 4.384 4.352 1.6 6.016-1.6 6.048-4.384 4.352-6.016 1.6-6.016-1.6-4.384-4.352-1.6-6.048z"
+                        />
+                    </svg>
+
                     <div className="relative mt-20 flex w-1/3 flex-shrink-0 font-bungee">
                         <div
                             className={`scam-prevention-shadow h-96 w-full overflow-hidden rounded-2xl border-2 border-black bg-[#F7F7EA] ${
@@ -309,6 +410,10 @@ export default function PreventingScams() {
                     />
                 </svg>
             </div>
+            <div
+                className="mt-40 w-full bg-red-200 "
+                style={{ zIndex: 2 }}
+            ></div>
             <div className="mt-96 w-full" style={{ zIndex: 4 }}>
                 <MainFooter />
             </div>
