@@ -33,6 +33,16 @@
     src: url("/Fonts/Yellowtail-Regular.ttf") format("truetype");
     font-style: normal;
 }
+@font-face {
+    font-family: "Bungee";
+    src: url("/Fonts/Bungee-Regular.ttf") format("truetype");
+    font-style: normal;
+}
+@font-face {
+    font-family: "BungeeShade";
+    src: url("/Fonts/BungeeShade-Regular.ttf") format("truetype");
+    font-style: normal;
+}
 
 /* --------------                            --------------  */
 
@@ -1279,6 +1289,12 @@ input[type="checkbox"]:hover {
     transform: translateX(-50%) scale(0.95); /* Scales down on active/tap */
 }
 
+.scam-prevention-shadow {
+    box-shadow: 3px 3px 0px black, 6px 6px 0px black;
+}
+
+
+
 /* --------------     END SCAM PREVENTION    --------------  */
 /* --------------     END SCAM PREVENTION    --------------  */
 /* --------------     END SCAM PREVENTION    --------------  */
@@ -1288,8 +1304,6 @@ input[type="checkbox"]:hover {
 /* --------------     KEEBY RULES   --------------  */
 /* --------------     KEEBY RULES   --------------  */
 /* --------------     KEEBY RULES   --------------  */
-
-@import url("https://fonts.googleapis.com/css2?family=Alata&family=Bungee&family=Bungee+Shade&display=swap");
 
 .rules-background {
     display: flex;
@@ -1305,65 +1319,7 @@ input[type="checkbox"]:hover {
         ),
         linear-gradient(90deg, rgb(252, 243, 215) 0.15rem, transparent 0.15rem);
     background-size: 0.75em 0.75em;
-    /* overflow: hidden; */
 }
-/* 
-.sign {
-    z-index: 1000;
-    background-color: rgb(252, 243, 215);
-    width: 40%;
-    height: auto;
-    min-width: 40rem;
-    margin: 0 auto;
-    border-radius: 2rem;
-    transform: scale(0.65, 0.65);
-
-    :after {
-        content: "";
-        position: absolute;
-        z-index: -1;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        border-radius: 2rem;
-        box-shadow: 0 0 0 1rem rgb(57, 162, 217), 0 0 0 2rem rgb(252, 243, 215),
-            1rem -0.5rem 0 2rem rgba(rgb(147, 128, 181), 0.15);
-    }
-
-    h1,
-    h2,
-    h3 {
-        text-align: center;
-        color: rgb(57, 162, 217);
-        padding-top: 3rem;
-    }
-    h1 {
-        font-family: "Bungee Shade", cursive;
-        font-size: 4.5rem;
-        line-height: 5rem;
-    }
-    h2 {
-        font-family: "Bungee", cursive;
-        font-size: 2.75rem;
-        line-height: rem;
-        padding: 1rem;
-        background-color: rgb(244, 94, 145);
-        color: rgb(252, 243, 215);
-    }
-    h3 {
-        font-family: "Bungee", cursive;
-        font-size: 2.5rem;
-        line-height: 2.75rem;
-        color: rgb(244, 94, 145);
-        padding: 1rem 0 2rem 0;
-    }
-    ol {
-        margin: 0 auto;
-        padding: 5rem;
-        list-style: none;
-    }
-} */
 
 .palm-tree {
     position: absolute;
@@ -1503,58 +1459,55 @@ input[type="checkbox"]:hover {
     border-right: 8px solid rgb(255, 223, 130);
 }
 
-
-
-
-
-.pool {
-    position: absolute;
-    width: 100vw;
-    height: 100%;
-    top: 55%;
-    left: 0%;
-    background-color: rgb(67, 205, 216);
-    border: 20px solid rgb(252, 243, 215);
+.pool-edge {
     box-shadow: 0.5rem 0 0 0.2rem rgba(147, 128, 181, 0.75);
+    background-color: rgb(252, 243, 215);
 }
 
-.pool:after {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
+.pool {
+    background-color: rgb(67, 205, 216);
     background-image: linear-gradient(
             45deg,
             transparent 0 5rem,
-            rgba(rgb(252, 243, 215), 0.5) 5rem 5.15rem,
+            rgba(252, 243, 215, 0.5) 5rem 5.15rem,
             transparent 5.15rem 6.25rem
         ),
         linear-gradient(
             132deg,
             transparent 0 5rem,
-            rgba(rgb(252, 243, 215), 0.5) 5rem 5.15rem,
+            rgba(252, 243, 215, 0.5) 5rem 5.15rem,
             transparent 5.15rem 6.25rem
         ),
         linear-gradient(
             225deg,
             transparent 0 5rem,
-            rgba(rgb(252, 243, 215), 0.5) 5rem 5.15rem,
+            rgba(252, 243, 215, 0.5) 5rem 5.15rem,
             transparent 5.15rem 6.25rem
         ),
         linear-gradient(
             315deg,
             transparent 0 5rem,
-            rgba(rgb(252, 243, 215), 0.5) 5rem 5.15rem,
+            rgba(252, 243, 215, 0.5) 5rem 5.15rem,
             transparent 5.15rem 6.25rem
         );
     background-size: 4.75rem 4.75rem;
-    box-shadow: inset 5rem 5rem 0 2rem rgba(rgb(57, 162, 217), 0.65);
+    box-shadow: inset 5rem 5rem 0 2rem rgba(57, 162, 217, 0.65);
+}
+
+.pool-sign-edge {
+    background-color: rgb(252, 243, 215);
+    box-shadow: 0.5rem -0.5rem 0 0.3rem rgba(147, 128, 181, 0.45);
+}
+.pool-sign {
+    border-color: rgb(57, 162, 217);
+    color: rgb(57, 162, 217);
+    background-color: rgb(252, 243, 215);
 }
 
 .inner-tube {
     position: absolute;
-    bottom: 1rem;
-    left: 45%;
+    top: 250px;
+    right: 20%;
     height: 100px;
     width: 100px;
     border-radius: 100%;

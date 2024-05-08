@@ -184,36 +184,23 @@ export default function MainFooter() {
                             How Keeby works
                         </Link>
                         <Link
-                            href="/profile/messages"
-                            aria-label="privacy"
-                            className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
-                        >
-                            Messages
-                        </Link>
-                        <Link
-                            href="/keebdex/rules"
-                            aria-label="privacy"
-                            className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
-                        >
-                            Keeby Rules
-                        </Link>
-                        <Link
                             href="/keebdex/scam-prevention"
                             aria-label="privacy"
                             className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                         >
                             Scam Prevention
                         </Link>
-                    </div>
-                    <div className="flex flex-col gap-1">
-                        <h2 className="text-green-500">Help</h2>
                         <Link
-                            href="/keebdex/frequently-asked-questions"
+                            href="/profile/messages"
                             aria-label="privacy"
                             className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                         >
-                            FAQ
+                            Messages
                         </Link>
+                       
+                    </div>
+                    <div className="flex flex-col gap-1">
+                        <h2 className="text-green-500">Help</h2>
                         <Link
                             href="/keebdex"
                             aria-label="privacy"
@@ -222,12 +209,13 @@ export default function MainFooter() {
                             Keeb Dex
                         </Link>
                         <Link
-                            href="/keebdex/scam-prevention"
+                            href="/keebdex/frequently-asked-questions"
                             aria-label="privacy"
                             className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                         >
-                            Disputes
+                            FAQ
                         </Link>
+                      
                     </div>
                     <div className="flex flex-col gap-1">
                         <h2 className="text-green-500">Company</h2>

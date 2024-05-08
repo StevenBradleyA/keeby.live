@@ -20,6 +20,11 @@ export default {
                 testEleven: "#282828",
                 testTwelve: "#3A3B3C",
                 testThirteen: "#404040",
+                hotPink: "rgb(244, 94, 145)",
+                lightYellow: "rgb(252, 243, 215)",
+                poolBlue: "rgb(57, 162, 217)",
+                vibrantPurple: "rgb(175, 110, 255)",
+                vibrantGreen: "rgb(0, 255, 170)",
             },
             fontFamily: {
                 mrDafoe: ["Mr Dafoe", "cursive"],
@@ -28,6 +33,8 @@ export default {
                 montserrat: ["Montserrat", "sans-serif"],
                 poppins: ["Poppins", "sans-serif"],
                 yellowTail: ["Yellowtail", "sans-serif"],
+                bungee: ["Bungee", "sans-serif"],
+                bungeeShade: ["BungeeShade", "sans-serif"],
             },
             textColor: {
                 blackAlternative: "#181818",
@@ -38,6 +45,11 @@ export default {
                 lightGray: "#d3d3d3",
                 purple: "#f008e4",
                 cadetBlue: "#5F9EA0",
+                hotPink: "rgb(244, 94, 145)",
+                lightYellow: "rgb(252, 243, 215)",
+                poolBlue: "rgb(57, 162, 217)",
+                vibrantPurple: "rgb(175, 110, 255)",
+                vibrantGreen: "rgb(0, 255, 170)",
             },
             screens: {
                 mobile: "320px",
