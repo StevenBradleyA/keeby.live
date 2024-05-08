@@ -1582,22 +1582,22 @@ input[type="checkbox"]:hover {
 } */
 /* width: 618.6px; 40px * 15.43 */
 
-kbd {
+.key {
     border-radius: 3px;
     box-sizing: border-box;
-    color: rgba(0, 0, 0, 0.75);
-    display: inline-block;
+    /* color: rgba(0, 0, 0, 0.75); */
+    /* display: inline-block; */
     font-family: system-ui, sans-serif;
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.125;
-    padding: 0.33em 0.66em;
+    /* font-size: 1rem; */
+    /* font-weight: 400; */
+    /* line-height: 1.125; */
+    /* padding: 0.33em 0.66em; */
     position: relative;
     text-align: center;
     vertical-align: middle;
-    width: 40px;
-    height: 40px;
-    border: 3px solid transparent;
+    /* width: 40px; */
+    /* height: 40px; */
+    /* border: 3px solid transparent;
     border-top: 2px solid transparent;
     border-bottom: 6px solid transparent;
     background-color: #e9e8e6;
@@ -1605,12 +1605,19 @@ kbd {
     border-top-color: #ece8e4;
     border-bottom-color: #c9c4c4;
     box-shadow: 0 -0.125em 0 -0.063em #c9c4c4,
-        0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5);
-    transition: transform 100ms;
+        0 0.125em 0 -0.063em rgba(0, 0, 0, 0.5); */
+    transition: transform 50ms;
     outline: 0;
 }
 
-kbd::before {
+.key:active,
+.key.pressed {
+    transform: scale(0.96, 0.96) translate(0, 3px);
+}
+
+
+
+/* kbd::before {
     content: "";
     position: absolute;
     top: 0px;
@@ -1634,13 +1641,13 @@ kbd::before {
         #e0dddb 95%,
         #e9e8e6
     );
-}
+} */
 
 kbd[data-key]::after,
 kbd[data-alt]::after {
     position: absolute;
     z-index: 1;
-    content: attr(data-key);
+    /* content: attr(data-key); */
     text-transform: capitalize;
     font-size: 1rem; /* Adjusted to fit default kbd */
     line-height: 1.125; /* Match kbd's line-height */
@@ -1652,15 +1659,12 @@ kbd[data-alt]::after {
 
 kbd[data-alt]::after {
     white-space: pre;
-    content: attr(data-alt) "\A"attr(data-key);
+    /* content: attr(data-alt) "\A"attr(data-key); */
     line-height: 0.95rem;
     font-size: 0.7em;
 }
 
-kbd:active,
-kbd.pressed {
-    transform: scale(0.96, 0.96) translate(0, 3px);
-}
+
 
 /* Custom widths for larger keys */
 kbd[data-key="tab"],
@@ -1672,7 +1676,7 @@ kbd[data-key="caps"] {
     width: 70px; /* 40px * 1.75 */
 }
 
-kbd[data-key="backspace"],
+
 kbd[data-key="lshift"],
 kbd[data-key="rshift"],
 kbd[data-key="enter"] {
