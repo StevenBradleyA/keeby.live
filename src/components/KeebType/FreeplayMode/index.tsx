@@ -12,10 +12,10 @@ export default function FreeplayMode({ theme }: FreeplayModeProps) {
     // idea make it look like your coding setup with triple monitors
 
     return (
-        <div className="z-10 flex flex-shrink-0 flex-col laptop:w-3/4 desktop:w-2/3">
-            <div className="flex justify-center text-lg">
+        <div className="z-10 flex flex-shrink-0 flex-col gap-2 laptop:w-3/4 desktop:w-2/3">
+            <div className="flex justify-center text-lg ">
                 <textarea
-                    className="monitor-tilt h-40 w-1/2 overflow-y-auto whitespace-pre-wrap break-words rounded-md bg-[#A9DFFD] p-5 "
+                    className="monitor-tilt h-72 w-2/3 overflow-y-auto whitespace-pre-wrap break-words rounded-md bg-[#A9DFFD] p-5 "
                     value={typedText}
                     onChange={(e) => setTypedText(e.target.value)}
                     ref={focusRef}
@@ -29,8 +29,13 @@ export default function FreeplayMode({ theme }: FreeplayModeProps) {
                     }}
                 ></textarea>
             </div>
-
-            <FreeplayKeyboard setTypedText={setTypedText} focusRef={focusRef} theme={theme} />
+            <div className="mousepad flex items-center justify-center rounded-2xl bg-black tablet:p-3 desktop:p-20">
+                <FreeplayKeyboard
+                    setTypedText={setTypedText}
+                    focusRef={focusRef}
+                    theme={theme}
+                />
+            </div>
         </div>
     );
 }

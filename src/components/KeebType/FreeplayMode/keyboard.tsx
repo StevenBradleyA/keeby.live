@@ -90,7 +90,7 @@ export default function FreeplayKeyboard({
     return (
         <>
             <div
-                className={`keyboard-container flex h-96 w-full flex-col items-center justify-center ${styles.keebTextColor}  text-opacity-80`}
+                className={`keyboard-container flex flex-col items-center justify-center ${styles.keebTextColor}  text-opacity-80 relative z-20`}
             >
                 <div
                     className={`flex flex-col  rounded-[4px] border-[13px] ${styles.keebCaseTop} ${styles.keebCaseSide} ${styles.keebCaseBottom} p-[6px] `}
