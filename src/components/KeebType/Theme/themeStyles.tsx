@@ -35,6 +35,8 @@ interface ThemeStyle {
     keebSpecialSide: string;
     keebSpecialTop: string;
     keebSpecialBottom: string;
+    screenBackground: string; 
+    screenGlow: string; 
 }
 
 export const themeStyles: Record<ThemeName, ThemeStyle> = {
@@ -54,6 +56,7 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
         graphBackground: "rgba(134, 239, 172, 0.3)",
         graphBorder: "rgba(134, 239, 172, 0.5)",
         graphHighlight: "rgba(134, 239, 172)",
+        // freeplay
         keebTextColor: "text-black",
         keebCaseTop: "border-t-[#668866]",
         keebCaseBottom: "border-b-[#88aa88]",
@@ -66,6 +69,8 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
         keebSpecialSide: "#697a6f",
         keebSpecialTop: "#748478",
         keebSpecialBottom: "#66756d",
+        screenBackground: 'bg-[#A9DFFD]', 
+        screenGlow: "0 0 5px rgba(169, 223, 253, 0.8), 0 0 10px rgba(169, 223, 253, 0.7), 0 0 15px rgba(169, 223, 253, 0.6), 0 0 20px rgba(169, 223, 253, 0.5), 0 0 40px rgba(169, 223, 253, 0.4), 0 0 60px rgba(169, 223, 253, 0.3)",
     },
     KEEBYRED: {
         title: "",
@@ -95,6 +100,8 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
         keebSpecialSide: "#696c6f",
         keebSpecialTop: "#848789",
         keebSpecialBottom: "#676a6d",
+        screenBackground: 'bg-[#A9DFFD]', 
+        screenGlow: "0 0 5px rgba(169, 223, 253, 0.8), 0 0 10px rgba(169, 223, 253, 0.7), 0 0 15px rgba(169, 223, 253, 0.6), 0 0 20px rgba(169, 223, 253, 0.5), 0 0 40px rgba(169, 223, 253, 0.4), 0 0 60px rgba(169, 223, 253, 0.3)",
     },
     // matrix
     // --bg-color: #000000;
@@ -135,6 +142,8 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
         keebSpecialSide: "#004d00",
         keebSpecialTop: "#006400",
         keebSpecialBottom: "#004d00",
+        screenBackground: 'bg-[#A9DFFD]', 
+        screenGlow: "0 0 5px rgba(169, 223, 253, 0.8), 0 0 10px rgba(169, 223, 253, 0.7), 0 0 15px rgba(169, 223, 253, 0.6), 0 0 20px rgba(169, 223, 253, 0.5), 0 0 40px rgba(169, 223, 253, 0.4), 0 0 60px rgba(169, 223, 253, 0.3)",
     },
     PIGGY: {
         title: "png-white",
@@ -164,6 +173,8 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
         keebSpecialSide: "#FFB6C1",
         keebSpecialTop: "#FFB6C1",
         keebSpecialBottom: "#FFB6C1",
+        screenBackground: 'bg-[#A9DFFD]', 
+        screenGlow: "0 0 5px rgba(169, 223, 253, 0.8), 0 0 10px rgba(169, 223, 253, 0.7), 0 0 15px rgba(169, 223, 253, 0.6), 0 0 20px rgba(169, 223, 253, 0.5), 0 0 40px rgba(169, 223, 253, 0.4), 0 0 60px rgba(169, 223, 253, 0.3)",
     },
     PRIMEAGEN: {
         title: "png-primeagen",
@@ -193,6 +204,8 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
         keebSpecialSide: "#696c6f",
         keebSpecialTop: "#848789",
         keebSpecialBottom: "#676a6d",
+        screenBackground: 'bg-[#A9DFFD]', 
+        screenGlow: "0 0 5px rgba(169, 223, 253, 0.8), 0 0 10px rgba(169, 223, 253, 0.7), 0 0 15px rgba(169, 223, 253, 0.6), 0 0 20px rgba(169, 223, 253, 0.5), 0 0 40px rgba(169, 223, 253, 0.4), 0 0 60px rgba(169, 223, 253, 0.3)",
     },
     HIPYO: {
         title: "png-hipyo",
@@ -222,6 +235,8 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
         keebSpecialSide: "#696c6f",
         keebSpecialTop: "#848789",
         keebSpecialBottom: "#676a6d",
+        screenBackground: 'bg-[#A9DFFD]', 
+        screenGlow: "0 0 5px rgba(169, 223, 253, 0.8), 0 0 10px rgba(169, 223, 253, 0.7), 0 0 15px rgba(169, 223, 253, 0.6), 0 0 20px rgba(169, 223, 253, 0.5), 0 0 40px rgba(169, 223, 253, 0.4), 0 0 60px rgba(169, 223, 253, 0.3)",
     },
     BANANA: {
         title: "png-white",
@@ -251,6 +266,8 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
         keebSpecialSide: "#FFE135",
         keebSpecialTop: "#FFE135",
         keebSpecialBottom: "#FFE135",
+        screenBackground: 'bg-[#A9DFFD]', 
+        screenGlow: "0 0 5px rgba(169, 223, 253, 0.8), 0 0 10px rgba(169, 223, 253, 0.7), 0 0 15px rgba(169, 223, 253, 0.6), 0 0 20px rgba(169, 223, 253, 0.5), 0 0 40px rgba(169, 223, 253, 0.4), 0 0 60px rgba(169, 223, 253, 0.3)",
     },
 };
 // night runner

@@ -1,5 +1,7 @@
 import { useRef, useState } from "react";
 import FreeplayKeyboard from "./keyboard";
+import { themeStyles } from "../Theme/themeStyles";
+import type { ThemeName } from "../Theme/themeStyles";
 
 interface FreeplayModeProps {
     theme: string;
@@ -9,7 +11,7 @@ export default function FreeplayMode({ theme }: FreeplayModeProps) {
     const [typedText, setTypedText] = useState("");
     const focusRef = useRef<HTMLTextAreaElement | null>(null);
 
-    // idea make it look like your coding setup with triple monitors
+    const styles = themeStyles[theme as ThemeName] || themeStyles["KEEBY"];
 
     return (
         <div className="z-10 flex flex-shrink-0 flex-col gap-2 laptop:w-3/4 desktop:w-2/3">
@@ -26,6 +28,7 @@ export default function FreeplayMode({ theme }: FreeplayModeProps) {
                         scrollbarWidth: "none",
                         msOverflowStyle: "none",
                         overflowY: "scroll",
+                        boxShadow: styles.screenGlow,
                     }}
                 ></textarea>
             </div>

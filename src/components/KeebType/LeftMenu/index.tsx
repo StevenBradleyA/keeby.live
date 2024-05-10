@@ -36,8 +36,7 @@ export default function LeftMenu({
     setScholarType,
     setGameOver,
 }: LeftMenuProps) {
-    // todo refactor theme to be session so its accessible in nav to apply title png state variables????
-    // theme needs to have context...
+    // todo refactor theme to be a modal showing the color pallettes so it's easier to see as a user
 
     const { data: session } = useSession();
 
@@ -92,10 +91,10 @@ export default function LeftMenu({
                 onChange={handleModeChange}
             >
                 <option value="Speed">Speed</option>
-                {/* <option value="Gitgud">git gud</option> */}
-                <option value="Freeplay">Freeplay</option>
-                {/* <option value="Hacktime">It&apos;s Hacking Time</option> */}
                 <option value="Scholar">Scholar</option>
+                <option value="Freeplay">Freeplay</option>
+                <option value="Hacktime">It&apos;s Hacking Time</option>
+                {/* <option value="Gitgud">git gud</option> */}
             </select>
 
             {mode === "Speed" && (

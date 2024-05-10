@@ -1554,7 +1554,8 @@ input[type="checkbox"]:hover {
     position: relative;
     text-align: center;
     vertical-align: middle;
-    transition: transform 50ms;
+    transition: transform 1ms;
+    transform: scale(1);
     outline: 0;
 }
 
@@ -1563,18 +1564,36 @@ input[type="checkbox"]:hover {
     transform: scale(0.96, 0.96) translate(0, 3px);
 }
 
+/* @keyframes pressAnimation {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.96) translate(0, 3px);
+    }
+    100% {
+        transform: scale(1) translate(0, 0); 
+    }
+}
+
+.key:active,
+.key.pressed {
+    animation: pressAnimation 100ms ease forwards;
+} */
+
+
+
+
 /* freeplay monitor  */
 
 .monitor-tilt {
     overflow-y: auto;
     white-space: pre-wrap;
     word-break: break-word;
-    transform: perspective(500px) rotateX(-15deg);
+    transform: perspective(500px) rotateX(-8deg);
+    /* transform: perspective(500px) rotateX(-15deg); */
     transition: transform 0.3s ease-in-out;
-    box-shadow: 0 0 5px rgba(169, 223, 253, 0.8),
-        0 0 10px rgba(169, 223, 253, 0.7), 0 0 15px rgba(169, 223, 253, 0.6),
-        0 0 20px rgba(169, 223, 253, 0.5), 0 0 40px rgba(169, 223, 253, 0.4),
-        0 0 60px rgba(169, 223, 253, 0.3);
+   
     animation: screen 2.5s ease-in alternate infinite;
 }
 /* .monitor-tilt {
