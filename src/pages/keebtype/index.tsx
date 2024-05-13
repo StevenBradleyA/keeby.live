@@ -102,7 +102,7 @@ export default function KeebType() {
                 ></div>
 
                 <div className="z-20 mt-40 flex justify-center tablet:w-1/3 ">
-                    <RightMenu theme={theme} />
+                    <RightMenu theme={theme} mode={mode} />
                 </div>
             </div>
             <div className=" absolute bottom-3">

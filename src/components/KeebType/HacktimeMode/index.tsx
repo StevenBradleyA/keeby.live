@@ -55,49 +55,42 @@ $ scp /tmp/encrypted_data.enc secure@192.168.1.110:/data/
 $ sleep 2
 $ echo "Data secured. Executing final clean-up operations..."
 $ sleep 1
-$ echo "Covering tracks to avoid forensic analysis..."
+$ echo "Hiding tracks..."
 $ shred -u /tmp/database.sql /tmp/encrypted_data.enc
 $ sleep 2
 $ echo "All operations completed successfully. Disconnecting..."
 $ sleep 1
     
-$ echo "Hack complete. Exiting with zero trace."`;
+$ echo "Hack complete. Exiting with zero trace."
 
-    // const rainbowTableScript = `
-    // # Start the Rainbow Table Simulation
-    // echo "Starting Rainbow Table Simulation for MD5 hashing..."
+$ echo "Starting Rainbow Table Simulation for MD5 hashing..."
+$ echo "Generating hash-chain pairs with pseudo-random passwords..."
+$ sleep 2
 
-    // # Simulating the generation of hash-chain pairs
-    // echo "Generating hash-chain pairs with pseudo-random passwords..."
-    // sleep 2
+$ for i in {1..10}; do
+   # Generate random password strings
+   password=\$(openssl rand -base64 8 | tr -d '=+/')
+   # Hash the password
+   hash=\$(echo -n \$password | md5sum | awk '{print \$1}')
+   echo "Chain \$i: \$password -> \$hash"
+   sleep 0.5
+$ done
+$ echo "Initial hash-chain pairs generated and stored."
 
-    // for i in {1..10}; do
-    //   # Generate random password strings
-    //   password=\$(openssl rand -base64 8 | tr -d '=+/')
-    //   # Hash the password
-    //   hash=\$(echo -n \$password | md5sum | awk '{print \$1}')
-    //   echo "Chain \$i: \$password -> \$hash"
-    //   sleep 0.5
-    // done
-    // echo "Initial hash-chain pairs generated and stored."
+$ # Simulating the storage of the rainbow table
+$ echo "Storing hash-chain pairs in /usr/local/share/rainbow_tables/md5.rt"
+$ sleep 1
 
-    // # Simulating the storage of the rainbow table
-    // echo "Storing hash-chain pairs in /usr/local/share/rainbow_tables/md5.rt"
-    // sleep 1
+$ # Simulating a lookup in the Rainbow Table
+$ echo "Simulating a password recovery using the Rainbow Table..."
+$ echo "Enter the MD5 hash to recover:"
+$ read hash
+$ echo "Looking up hash: \$hash"
+$ sleep 2
+$ echo "Password recovered: \$(openssl rand -base64 8 | tr -d '=+/')"
+$ sleep 1
 
-    // # Simulating a lookup in the Rainbow Table
-    // echo "Simulating a password recovery using the Rainbow Table..."
-    // echo "Enter the MD5 hash to recover:"
-    // read hash
-    // echo "Looking up hash: \$hash"
-    // sleep 2
-    // echo "Password recovered: \$(openssl rand -base64 8 | tr -d '=+/')"
-    // sleep 1
-
-    // echo "Rainbow Table Simulation completed."
-    // `;
-
-    // console.log(rainbowTableScript);
+$ echo "Rainbow Table Simulation completed."`;
 
     const focusRef = useRef<HTMLTextAreaElement | null>(null);
     const [scriptIndex, setScriptIndex] = useState(0);
