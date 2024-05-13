@@ -9,6 +9,7 @@ import type { ThemeName } from "~/components/KeebType/Theme/themeStyles";
 import { useTheme } from "~/components/Context/Theme";
 import ScholarMode from "~/components/KeebType/ScholarMode";
 import FreeplayMode from "~/components/KeebType/FreeplayMode";
+import HacktimeMode from "~/components/KeebType/HacktimeMode";
 
 export default function KeebType() {
     // todo quote mode full on typing sentences -- ranked as well
@@ -50,13 +51,12 @@ export default function KeebType() {
         }
     }, [cookies]);
 
-    console.log("keeb check", keebId);
-
+    console.log(mode);
 
     return (
         <>
             <div className=" relative flex h-[80vh] w-full gap-2 laptop:p-2 desktop:gap-10 desktop:p-10">
-                <div className=" z-10  mt-40 flex justify-center laptop:w-1/4 desktop:w-1/3">
+                <div className=" z-10  mt-40 flex justify-center tablet:w-1/3 ">
                     <LeftMenu
                         mode={mode}
                         setMode={setMode}
@@ -95,13 +95,13 @@ export default function KeebType() {
                     />
                 )}
                 {mode === "Freeplay" && <FreeplayMode theme={theme} />}
-                {mode === "Gitgud" && <div>uh gitgud</div>}
+                {mode === "Hacktime" && <HacktimeMode />}
 
                 <div
                     className={`fixed bottom-0 left-0 right-0 top-0 z-0 ${styles.baseColor}`}
                 ></div>
 
-                <div className="z-10 mt-40 flex justify-center laptop:w-1/4 desktop:w-1/3">
+                <div className="z-10 mt-40 flex justify-center tablet:w-1/3 ">
                     <RightMenu theme={theme} />
                 </div>
             </div>

@@ -13,8 +13,10 @@ export default function FreeplayMode({ theme }: FreeplayModeProps) {
 
     const styles = themeStyles[theme as ThemeName] || themeStyles["KEEBY"];
 
+
+// todo setup deskmat themes as well 
     return (
-        <div className="z-10 flex flex-shrink-0 flex-col gap-2 laptop:w-3/4 desktop:w-2/3">
+        <div className="z-10 flex flex-shrink-0 flex-col gap-2 tablet:w-2/3 px-5 ">
             <div className="flex justify-center text-lg ">
                 <textarea
                     className="monitor-tilt h-72 w-2/3 overflow-y-auto whitespace-pre-wrap break-words rounded-md bg-[#A9DFFD] p-5 "
@@ -32,7 +34,7 @@ export default function FreeplayMode({ theme }: FreeplayModeProps) {
                     }}
                 ></textarea>
             </div>
-            <div className="mousepad flex items-center justify-center rounded-2xl bg-black tablet:p-3 desktop:p-20">
+            <div className="mousepad flex items-center justify-center rounded-2xl bg-black tablet:py-10 desktop:p-20">
                 <FreeplayKeyboard
                     setTypedText={setTypedText}
                     focusRef={focusRef}

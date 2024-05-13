@@ -30,8 +30,6 @@ export default function FreeplayKeyboard({
 
     const [activeKeys, setActiveKeys] = useState<string[]>([]);
 
-    // todo debug handle up
-
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
             const { code } = event;
@@ -40,14 +38,7 @@ export default function FreeplayKeyboard({
                 return prevKeys.includes(code) ? prevKeys : [...prevKeys, code];
             });
 
-            if (code === "Backspace") {
-                if (
-                    focusRef.current &&
-                    document.activeElement !== focusRef.current
-                ) {
-                    focusRef.current.focus();
-                }
-            } else if (code.length === 1) {
+            if (code.length >= 1) {
                 if (
                     focusRef.current &&
                     document.activeElement !== focusRef.current
@@ -56,6 +47,7 @@ export default function FreeplayKeyboard({
                 }
             }
         };
+
         const handleKeyUp = (event: KeyboardEvent) => {
             const { code } = event;
             setActiveKeys((prevKeys) => prevKeys.filter((k) => k !== code));
@@ -81,6 +73,8 @@ export default function FreeplayKeyboard({
             );
         };
     }, [setTypedText, setActiveKeys, focusRef]);
+
+// todo style keyboard svgs 
 
     return (
         <>
