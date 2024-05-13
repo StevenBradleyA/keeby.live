@@ -56,7 +56,7 @@ export default function KeebType() {
     return (
         <>
             <div className=" relative flex h-[80vh] w-full gap-2 laptop:p-2 desktop:gap-10 desktop:p-10">
-                <div className=" z-10  mt-40 flex justify-center tablet:w-1/3 ">
+                <div className=" z-20  mt-40 flex justify-center tablet:w-1/3 ">
                     <LeftMenu
                         mode={mode}
                         setMode={setMode}
@@ -101,7 +101,7 @@ export default function KeebType() {
                     className={`fixed bottom-0 left-0 right-0 top-0 z-0 ${styles.baseColor}`}
                 ></div>
 
-                <div className="z-10 mt-40 flex justify-center tablet:w-1/3 ">
+                <div className="z-20 mt-40 flex justify-center tablet:w-1/3 ">
                     <RightMenu theme={theme} />
                 </div>
             </div>
