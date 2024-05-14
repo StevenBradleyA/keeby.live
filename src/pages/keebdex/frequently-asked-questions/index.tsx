@@ -12,6 +12,9 @@ export default function FrequentlyAskedQuestions() {
 
     const [openToggle, setOpenToggle] = useState("");
 
+
+    
+
     return (
         <>
             <div className="h-full w-full px-40 ">
