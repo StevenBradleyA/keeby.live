@@ -1,3 +1,5 @@
+import MainFooter from "~/components/Footer/mainFooter";
+
 export default function KeebyAbout() {
     return (
         <>
@@ -8,6 +10,9 @@ export default function KeebyAbout() {
                 boards, a typing game with keyboard integration so you can track
                 stats across different boards. A fun social media to share
                 anything related to mechanical keyboards.{" "}
+            </div>
+            <div className="mt-96 w-full">
+                <MainFooter />
             </div>
         </>
     );

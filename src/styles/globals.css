@@ -304,7 +304,6 @@ rgb(57, 162, 217): #2033c1; */
 /* hacking time game mode  */
 /* scan lines */
 
-
 .hacker-background {
     position: fixed;
     top: 0;
@@ -395,11 +394,6 @@ rgb(57, 162, 217): #2033c1; */
         background-position: 100% 50%;
     }
 } */
-
-
-
-
-
 
 /* --------------     END KEEB TYPE    --------------  */
 /* --------------     END KEEB TYPE    --------------  */
@@ -1783,3 +1777,37 @@ input[type="checkbox"]:hover {
 /* --------------     END KEEBY RULES   --------------  */
 /* --------------     END KEEBY RULES   --------------  */
 /* --------------     END KEEBY RULES   --------------  */
+
+/* --------------     FAQ    --------------  */
+/* --------------     FAQ    --------------  */
+/* --------------     FAQ    --------------  */
+/* --------------     FAQ    --------------  */
+
+/* .griddy {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background-image: repeating-linear-gradient(to right, #000, #000 1px, transparent 1px, transparent 10px),
+                      repeating-linear-gradient(to bottom, #000, #000 1px, transparent 1px, transparent 10px);
+    background-size: 10px 10px;
+    top: 50px; 
+    left: 50px; 
+} */
+.faq-grid {
+    width: 351px;
+    height: 251px;
+    background-image: 
+        repeating-linear-gradient(to right, #000, #000 1px, transparent 1px, transparent 10px),
+        repeating-linear-gradient(to bottom, #000, #000 1px, transparent 1px, transparent 10px);
+    background-size: 10px 10px;
+}
+
+
+
+.faq-chevron{}
+
+
+/* --------------     END FAQ    --------------  */
+/* --------------     END FAQ    --------------  */
+/* --------------     END FAQ    --------------  */
+/* --------------     END FAQ    --------------  */
