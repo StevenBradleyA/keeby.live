@@ -141,7 +141,16 @@ export default function FrequentlyAskedQuestions() {
                                 </svg>
                                 Common Buyer Questions
                             </button>
-                            <button className="flex items-center gap-3  transition-colors duration-300 ease-custom-cubic hover:text-violet-300 ">
+                            <button
+                                className="flex items-center gap-3  transition-colors duration-300 ease-custom-cubic hover:text-violet-300 "
+                                onClick={() => {
+                                    if (commonSellerRef.current) {
+                                        commonSellerRef.current.scrollIntoView({
+                                            behavior: "smooth",
+                                        });
+                                    }
+                                }}
+                            >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     className="h-4 w-4"
@@ -153,7 +162,16 @@ export default function FrequentlyAskedQuestions() {
                                 Common Seller Questions
                             </button>
 
-                            <button className="flex items-center gap-3  transition-colors duration-300 ease-custom-cubic hover:text-violet-300 ">
+                            <button
+                                className="flex items-center gap-3  transition-colors duration-300 ease-custom-cubic hover:text-violet-300 "
+                                onClick={() => {
+                                    if (commonBuyerRef.current) {
+                                        commonBuyerRef.current.scrollIntoView({
+                                            behavior: "smooth",
+                                        });
+                                    }
+                                }}
+                            >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     className="h-4 w-4"
@@ -165,7 +183,16 @@ export default function FrequentlyAskedQuestions() {
                                 General Questions
                             </button>
 
-                            <button className="flex items-center gap-3  transition-colors duration-300 ease-custom-cubic hover:text-violet-300 ">
+                            <button
+                                className="flex items-center gap-3  transition-colors duration-300 ease-custom-cubic hover:text-violet-300 "
+                                onClick={() => {
+                                    if (commonBuyerRef.current) {
+                                        commonBuyerRef.current.scrollIntoView({
+                                            behavior: "smooth",
+                                        });
+                                    }
+                                }}
+                            >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     className="h-4 w-4"
@@ -239,8 +266,9 @@ export default function FrequentlyAskedQuestions() {
                             >
                                 {" "}
                                 <div className="z-20 -mb-4">COMMON</div>
-                                <div className="z-20 -mb-4">BIDDER</div>
+                                <div className="z-20 -mb-4">BUYER</div>
                                 <div className="z-20">QUESTIONS</div>
+                                <div className="faq-grid absolute -left-40 -top-10"></div>
                             </h2>
                         </div>
                         <div className="mt-20 flex w-full flex-col gap-2 text-black">
@@ -259,7 +287,7 @@ export default function FrequentlyAskedQuestions() {
                                         }
                                     }}
                                 >
-                                    Can I bid if im not in the US?
+                                    Can I buy if im not in the US?
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         className={` h-6 w-6 ${
@@ -291,7 +319,134 @@ export default function FrequentlyAskedQuestions() {
                                             exit={{ opacity: 0, scale: 0.95 }}
                                             transition={{ duration: 0.3 }}
                                         >
+                                            {` Yes, however seller's pay for shipping so I would check with the seller in the comments before buying or making an offer.`}
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </div>
+                            <div>
+                                <button
+                                    className={`${
+                                        openToggle === "q2"
+                                            ? "rounded-b-none"
+                                            : "rounded-b-md"
+                                    } flex w-full justify-between rounded-t-md border-2 border-black bg-violet-300 p-3 text-black`}
+                                    onClick={() => {
+                                        if (openToggle === "q2")
+                                            setOpenToggle("");
+                                        else {
+                                            setOpenToggle("q2");
+                                        }
+                                    }}
+                                >
+                                    hey idk ?
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className={` h-6 w-6 ${
+                                            openToggle === "q2"
+                                                ? "rotate-180"
+                                                : ""
+                                        } transform transition-transform duration-400 ease-in-out`}
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                    >
+                                        <path
+                                            d="M6 9L12 15L18 9"
+                                            stroke="#000000"
+                                            stroke-width="2"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                        />
+                                    </svg>
+                                </button>
+                                <AnimatePresence>
+                                    {openToggle === "q2" && (
+                                        <motion.div
+                                            className="w-full rounded-b-md border-x-2 border-b-2 border-black bg-white/40 p-5 "
+                                            initial={{
+                                                opacity: 0,
+                                                scale: 0.95,
+                                            }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            exit={{ opacity: 0, scale: 0.95 }}
+                                            transition={{ duration: 0.3 }}
+                                        >
                                             NO
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        className="mt-20 flex w-full gap-60"
+                        ref={commonSellerRef}
+                    >
+                        <div className="relative z-30 flex flex-col">
+                            <h2
+                                className="relative   mt-40 flex flex-col font-titillium text-8xl text-white"
+                                style={{
+                                    textShadow:
+                                        "6px 6px 0px black, 5px 5px 0px black",
+                                }}
+                            >
+                                {" "}
+                                <div className="z-20 -mb-4">COMMON</div>
+                                <div className="z-20 -mb-4">SELLER</div>
+                                <div className="z-20">QUESTIONS</div>
+                                <div className="faq-grid absolute -left-40 -top-10"></div>
+                            </h2>
+                        </div>
+                        <div className="mt-20 flex w-full flex-col gap-2 text-black">
+                            <div>
+                                <button
+                                    className={`${
+                                        openToggle === "q1"
+                                            ? "rounded-b-none"
+                                            : "rounded-b-md"
+                                    } flex w-full justify-between rounded-t-md border-2 border-black bg-violet-300 p-3 text-black`}
+                                    onClick={() => {
+                                        if (openToggle === "q1")
+                                            setOpenToggle("");
+                                        else {
+                                            setOpenToggle("q1");
+                                        }
+                                    }}
+                                >
+                                    Can I cancel my listing?
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className={` h-6 w-6 ${
+                                            openToggle === "q1"
+                                                ? "rotate-180"
+                                                : ""
+                                        } transform transition-transform duration-400 ease-in-out`}
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                    >
+                                        <path
+                                            d="M6 9L12 15L18 9"
+                                            stroke="#000000"
+                                            stroke-width="2"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                        />
+                                    </svg>
+                                </button>
+                                <AnimatePresence>
+                                    {openToggle === "q1" && (
+                                        <motion.div
+                                            className="w-full rounded-b-md border-x-2 border-b-2 border-black bg-white/40 p-5 "
+                                            initial={{
+                                                opacity: 0,
+                                                scale: 0.95,
+                                            }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            exit={{ opacity: 0, scale: 0.95 }}
+                                            transition={{ duration: 0.3 }}
+                                        >
+                                            {` Yes, however seller's pay for shipping so I would check with the seller in the comments before buying or making an offer.`}
                                         </motion.div>
                                     )}
                                 </AnimatePresence>
