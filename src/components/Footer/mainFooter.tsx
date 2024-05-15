@@ -269,7 +269,7 @@ export default function MainFooter() {
                             src={hacktime}
                             width={200}
                             height={200}
-                            className="png-green powered-by-logo h-6 w-6 object-contain"
+                            className="png-green powered-by-logo h-6 w-6 "
                         />
                     </a>
                 </div>

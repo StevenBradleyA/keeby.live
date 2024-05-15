@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import { uploadFileToS3 } from "~/utils/aws";
 import Image from "next/image";
 import defaultProfile from "@public/Profile/profile-default.png";
+import LoadingSpinner from "~/components/Loading";
 
 export default function AdminCreateRank({
     closeModal,
@@ -20,6 +21,8 @@ export default function AdminCreateRank({
 
     const [maxWpm, setMaxWpm] = useState<number>(0);
     const [imageFiles, setImageFiles] = useState<File[]>([]);
+    const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
     const { mutate: createRank } = api.rank.create.useMutation({
         onSuccess: () => {
@@ -40,8 +43,10 @@ export default function AdminCreateRank({
         if (
             session?.user.isAdmin &&
             rankName.length > 0 &&
-            imageFiles.length > 0
+            imageFiles.length > 0 &&
+            !isSubmitting
         ) {
+            setIsSubmitting(true);
             const imagePromises = imageFiles.map((file) => {
                 return new Promise<string>((resolve, reject) => {
                     const reader = new FileReader();
@@ -80,8 +85,11 @@ export default function AdminCreateRank({
                     link: imageUrl || "",
                 })),
             };
-
+            setHasSubmitted(true);
+            setIsSubmitting(false);
             createRank(data);
+        } else {
+            setIsSubmitting(false);
         }
     };
 
@@ -138,9 +146,7 @@ export default function AdminCreateRank({
                         type="number"
                         min={0}
                         value={standing}
-                        onChange={(e) =>
-                            setStanding(+e.target.value)
-                        }
+                        onChange={(e) => setStanding(+e.target.value)}
                         className="h-10 w-full rounded-md bg-darkGray p-1"
                         placeholder="standing"
                     />
@@ -207,7 +213,16 @@ export default function AdminCreateRank({
                     void handleCreateRank(e);
                 }}
             >
-                Submit
+                {isSubmitting ? (
+                    <div className="flex items-center gap-1">
+                        Uploading
+                        <div className="w-6">
+                            <LoadingSpinner size="16px" />
+                        </div>
+                    </div>
+                ) : (
+                    "Submit Listing"
+                )}
             </button>
         </form>
     );

@@ -17,8 +17,7 @@ export default function KeebDex() {
         setIsModalOpen(false);
     };
 
-    // 
-
+    //
 
     return (
         <>
@@ -158,9 +157,7 @@ export default function KeebDex() {
                         ></path>
                     </svg>
                 </button>
-                <ModalDialog isOpen={isModalOpen} onClose={closeModal}>
-                    <SupportMe />
-                </ModalDialog>
+
                 <Link
                     className=" keebdex-button flex justify-center gap-2 rounded-2xl bg-black px-6 py-4"
                     href={`/keebdex/about`}
@@ -182,6 +179,11 @@ export default function KeebDex() {
                         ></path>
                     </svg>
                 </Link>
+            </div>
+            <div className="text-darkGray">
+                <ModalDialog isOpen={isModalOpen} onClose={closeModal}>
+                    <SupportMe />
+                </ModalDialog>
             </div>
             <div className="mt-56 w-full ">
                 <MainFooter />

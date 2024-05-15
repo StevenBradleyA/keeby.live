@@ -48,7 +48,6 @@ export default function MenuKeebSelection({
         if (keebData && keebData.length > 0) {
             const newKeeb = keebData.find((keeb) => keeb.id === newKeebId);
 
-            console.log("keeb change here", newKeeb);
             if (newKeeb) {
                 setCookie("keeb", newKeeb.name, {
                     maxAge: 60 * 60 * 24 * 365,
@@ -64,8 +63,6 @@ export default function MenuKeebSelection({
             }
         }
     };
-    console.log("wtttttffff ", keebData);
-    console.log(keebId);
     return (
         <>
             {keebData && keebData.length > 0 && (

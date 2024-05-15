@@ -1,4 +1,3 @@
-import HomepageFooter from "~/components/Footer/minimalFooter";
 import LeftMenu from "~/components/KeebType/LeftMenu";
 import RightMenu from "~/components/KeebType/RightMenu";
 import SpeedMode from "~/components/KeebType/SpeedMode";
@@ -10,6 +9,7 @@ import { useTheme } from "~/components/Context/Theme";
 import ScholarMode from "~/components/KeebType/ScholarMode";
 import FreeplayMode from "~/components/KeebType/FreeplayMode";
 import HacktimeMode from "~/components/KeebType/HacktimeMode";
+import KeebTypeFooter from "~/components/Footer/minimalFooter";
 
 export default function KeebType() {
     // todo quote mode full on typing sentences -- ranked as well
@@ -51,12 +51,12 @@ export default function KeebType() {
         }
     }, [cookies]);
 
-    console.log(mode);
+    console.log(keebId);
 
     return (
         <>
             <div className=" relative flex h-[80vh] w-full gap-2 laptop:p-2 desktop:gap-10 desktop:p-10">
-                <div className=" z-20  mt-40 flex justify-center tablet:w-1/3 ">
+                <div className=" z-20  mt-40 flex justify-center  w-[15%]  ">
                     <LeftMenu
                         mode={mode}
                         setMode={setMode}
@@ -75,14 +75,16 @@ export default function KeebType() {
                 </div>
 
                 {mode === "Speed" && (
-                    <SpeedMode
-                        gameLength={gameLength}
-                        setGameOver={setGameOver}
-                        gameOver={gameOver}
-                        mode={mode}
-                        keebId={keebId}
-                        theme={theme}
-                    />
+                    <div className="w-[70%]  ">
+                        <SpeedMode
+                            gameLength={gameLength}
+                            setGameOver={setGameOver}
+                            gameOver={gameOver}
+                            mode={mode}
+                            keebId={keebId}
+                            theme={theme}
+                        />
+                    </div>
                 )}
                 {mode === "Scholar" && (
                     <ScholarMode
@@ -97,16 +99,13 @@ export default function KeebType() {
                 {mode === "Freeplay" && <FreeplayMode theme={theme} />}
                 {mode === "Hacktime" && <HacktimeMode />}
 
-                <div
-                    className={`fixed bottom-0 left-0 right-0 top-0 z-0 ${styles.baseColor}`}
-                ></div>
-
-                <div className="z-20 mt-40 flex justify-center tablet:w-1/3 ">
+                <div className="z-20 mt-40 flex w-[15%] justify-center  ">
                     <RightMenu theme={theme} mode={mode} />
                 </div>
             </div>
+
             <div className=" absolute bottom-3">
-                <HomepageFooter />
+                <KeebTypeFooter />
             </div>
         </>
     );

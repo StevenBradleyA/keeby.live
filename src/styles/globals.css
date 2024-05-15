@@ -1796,20 +1796,79 @@ input[type="checkbox"]:hover {
 .faq-grid {
     width: 351px;
     height: 251px;
-    background-image: 
-        repeating-linear-gradient(to right, #000, #000 1px, transparent 1px, transparent 10px),
-        repeating-linear-gradient(to bottom, #000, #000 1px, transparent 1px, transparent 10px);
+    background-image: repeating-linear-gradient(
+            to right,
+            #000,
+            #000 1px,
+            transparent 1px,
+            transparent 10px
+        ),
+        repeating-linear-gradient(
+            to bottom,
+            #000,
+            #000 1px,
+            transparent 1px,
+            transparent 10px
+        );
     background-size: 10px 10px;
 }
 
-
-
-
-
-.faq-chevron{}
-
-
 /* --------------     END FAQ    --------------  */
 /* --------------     END FAQ    --------------  */
 /* --------------     END FAQ    --------------  */
 /* --------------     END FAQ    --------------  */
+/* --------------     ABOUT    --------------  */
+/* --------------     ABOUT    --------------  */
+/* --------------     ABOUT    --------------  */
+/* --------------     ABOUT    --------------  */
+
+
+/* about */
+
+.about-button {
+    overflow: hidden;
+    transition: background-color 0.4s cubic-bezier(0.35, 0, 0, 1);
+}
+
+.about-button-arrow {
+    transition: transform 0.4s cubic-bezier(0.35, 0, 0, 1);
+    transform: rotate(0);
+}
+
+.about-button:hover .about-button-arrow {
+    transform: rotate(-45deg);
+}
+.about-button-arrow-down {
+    transition: transform 0.4s cubic-bezier(0.35, 0, 0, 1);
+    transform: rotate(0);
+}
+
+.about-button:hover .about-button-arrow-down {
+    transform: rotate(45deg);
+}
+
+.about-button:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+/* --------------     END ABOUT    --------------  */
+/* --------------     END ABOUT    --------------  */
+/* --------------     END ABOUT    --------------  */
+/* --------------     END ABOUT    --------------  */
+
+
+/* --------------     FOOTER    --------------  */
+/* --------------     FOOTER    --------------  */
+/* --------------     FOOTER    --------------  */
+/* --------------     FOOTER    --------------  */
+
+.powered-by-logo {
+    transition: transform 0.4s cubic-bezier(0.35, 0, 0, 1);
+    transform: rotate(0);
+}
+.powered-by:hover .powered-by-logo {
+    transform: rotate(180deg);
+}
+/* --------------     END FOOTER    --------------  */
+/* --------------     END FOOTER    --------------  */
+/* --------------     END FOOTER    --------------  */
+/* --------------     END FOOTER    --------------  */

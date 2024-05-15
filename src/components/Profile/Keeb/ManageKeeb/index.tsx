@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { api } from "~/utils/api";
 import type { Keeb } from "@prisma/client";
-import { deleteCookie, hasCookie } from "cookies-next";
+import { deleteCookie, hasCookie, setCookie } from "cookies-next";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import defaultProfile from "@public/Profile/profile-default.png";
@@ -41,9 +41,32 @@ export default function ManageKeeb({
         useState<boolean>(false);
 
     const { mutate: deleteKeeb } = api.keeb.delete.useMutation({
-        onSuccess: () => {
+        onSuccess: (data) => {
             void ctx.keeb.getAllByUserId.invalidate();
             toast.success("Keed Deleted!", {
+                style: {
+                    borderRadius: "10px",
+                    background: "#333",
+                    color: "#fff",
+                },
+            });
+            if (data.newKeebName && data.newKeebId) {
+                setCookie("keeb", data.newKeebName, {
+                    maxAge: 60 * 60 * 24 * 365,
+                    path: "/",
+                });
+                setCookie("keebId", data.newKeebId, {
+                    maxAge: 60 * 60 * 24 * 365,
+                    path: "/",
+                });
+            }
+            closeModal();
+        },
+    });
+    const { mutate: updateKeeb } = api.keeb.update.useMutation({
+        onSuccess: () => {
+            void ctx.keeb.getAllByUserId.invalidate();
+            toast.success("Keed Updated!", {
                 style: {
                     borderRadius: "10px",
                     background: "#333",
@@ -61,33 +84,10 @@ export default function ManageKeeb({
                 id: keeb.id,
                 userId: keeb.userId,
             };
-            const keebCookie = hasCookie("keeb");
-
-            if (keebCookie) {
-                deleteCookie("keeb", {
-                    path: "/",
-                    //todo domain: ".keeb.live", will need to update when live
-                });
-            }
 
             deleteKeeb(keebData);
         }
     };
-
-    const { mutate: updateKeeb } = api.keeb.update.useMutation({
-        onSuccess: () => {
-            void ctx.keeb.getAllByUserId.invalidate();
-            toast.success("Keed Updated!", {
-                style: {
-                    borderRadius: "10px",
-                    background: "#333",
-                    color: "#fff",
-                },
-            });
-
-            closeModal();
-        },
-    });
 
     useEffect(() => {
         const errorsObj: ErrorsObj = {};

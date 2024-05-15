@@ -12,7 +12,7 @@ export default function RightMenu({
 
     return (
         <div
-            className={`flex flex-col rounded-xl border-2 ${styles.border} border-opacity-50 ${styles.backgroundColor} bg-opacity-30 p-5 ${styles.hit} relative overflow-hidden laptop:h-[65%] laptop:w-full desktop:h-[55%] desktop:w-[85%]`}
+            className={`flex flex-col rounded-xl border-2 ${styles.border} border-opacity-50 ${styles.backgroundColor} bg-opacity-30 p-5 ${styles.hit} relative w-full overflow-hidden laptop:h-[65%] desktop:h-[55%] `}
         >
             {mode === "Hacktime" ? (
                 <div className=" absolute bottom-0 left-0 right-0 top-0 object-cover ">

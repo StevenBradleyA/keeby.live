@@ -5,8 +5,24 @@ import leftKeeb from "@public/About/left.png";
 import rightKeeb from "@public/About/right.png";
 import template from "@public/About/template.png";
 import keebo from "@public/Profile/keebo.png";
+import { useState } from "react";
+import ModalDialog from "~/components/Modal";
+import SupportMe from "~/components/Footer/supportModal";
+import TitleScripts from "~/components/TitleScripts";
 
 export default function KeebyAbout() {
+    // add support modal
+    // external link to hacktime.dev
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
     return (
         <>
             <div className="relative flex h-[80vh] w-full justify-center text-darkGray">
@@ -26,7 +42,50 @@ export default function KeebyAbout() {
                         </div>
 
                         <div className="flex h-full w-full flex-col  ">
-                            <div className="h-1 bg-darkGray"></div>
+                            <div className="relative flex h-1 bg-darkGray">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="absolute -left-4 -top-5 h-10 w-10 text-green-500"
+                                    viewBox="0 0 24 24"
+                                    fill="currentColor"
+                                >
+                                    <path d="M12 3C12 7.97056 16.0294 12 21 12C16.0294 12 12 16.0294 12 21C12 16.0294 7.97056 12 3 12C7.97056 12 12 7.97056 12 3Z" />
+                                </svg>
+
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="absolute -top-3 left-1/4 h-6 w-6 text-green-500"
+                                    viewBox="0 0 24 24"
+                                    fill="currentColor"
+                                >
+                                    <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" />
+                                </svg>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="absolute -top-3 left-[50%] h-6 w-6 text-green-500"
+                                    viewBox="0 0 24 24"
+                                    fill="currentColor"
+                                >
+                                    <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" />
+                                </svg>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="absolute -top-3 left-[45%] h-6 w-6 text-green-500"
+                                    viewBox="0 0 24 24"
+                                    fill="currentColor"
+                                >
+                                    <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" />
+                                </svg>
+
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="absolute -right-4 -top-5 h-10 w-10 text-green-500"
+                                    viewBox="0 0 24 24"
+                                    fill="currentColor"
+                                >
+                                    <path d="M12 3C12 7.97056 16.0294 12 21 12C16.0294 12 12 16.0294 12 21C12 16.0294 7.97056 12 3 12C7.97056 12 12 7.97056 12 3Z" />
+                                </svg>
+                            </div>
                             <p className=" mt-5">
                                 I love mechanical keyboards, so I built Keeby. A
                                 place where you can buy, sell, share and even
@@ -50,7 +109,7 @@ export default function KeebyAbout() {
                                         letterSpacing: "5px",
                                     }}
                                 >
-                                    KEEBY
+                                    HELLO
                                 </h1>
                             </div>
                         </div>
@@ -80,20 +139,60 @@ export default function KeebyAbout() {
                 />
             </div>
 
-            <div className="flex w-[40%] justify-center gap-20 items-center  ">
-                <div className="flex-shrink-0 text-xl flex flex-col gap-2">
-                    <button className="w-full">Support Keeby</button>
-                    <button className="w-full justify-start flex">Hire Me</button>
+            <div className="flex w-[40%] items-center justify-center gap-20  ">
+                <div className="flex flex-shrink-0 flex-col gap-2 text-xl">
+                    <button
+                        className="text-md about-button mt-5 flex items-center gap-2  rounded-md bg-black/30 px-4 py-2 text-green-500 "
+                        onClick={openModal}
+                    >
+                        <span>Support</span>
+                        <svg
+                            className="about-button-arrow w-4"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke="currentColor"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="3"
+                                d="M3.515 12h16.97m0 0L13.01 4.525M20.485 12l-7.475 7.476"
+                            ></path>
+                        </svg>
+                    </button>
+                    <button className="text-md about-button mt-5 flex items-center gap-2  rounded-md bg-black/30 px-4 py-2 text-green-500">
+                        <span>Hire me</span>
+                        <svg
+                            className="about-button-arrow-down w-4"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke="currentColor"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="3"
+                                d="M3.515 12h16.97m0 0L13.01 4.525M20.485 12l-7.475 7.476"
+                            ></path>
+                        </svg>
+                    </button>
                 </div>
                 <p className="rounded-md border-2 border-[#616161]  p-10 text-lg text-green-500">
-                    {` If you are a software engineer and can give me a
+                    {` If you are a software engineer and would like to give me a
                     recommendation for a role or an interview that would mean a
                     lot. I'm a entry level dev currently looking for work so
-                    please reach out :D`}
+                    please reach out. Thanks :D`}
                 </p>
             </div>
+            <div className="text-darkGray">
+                <ModalDialog isOpen={isModalOpen} onClose={closeModal}>
+                    <SupportMe />
+                </ModalDialog>
+            </div>
 
-            <div className="mt-96 w-full">
+            <div className="mt-80 w-full">
                 <MainFooter />
             </div>
         </>
