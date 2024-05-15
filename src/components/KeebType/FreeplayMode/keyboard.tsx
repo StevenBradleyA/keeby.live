@@ -74,12 +74,12 @@ export default function FreeplayKeyboard({
         };
     }, [setTypedText, setActiveKeys, focusRef]);
 
-// todo style keyboard svgs 
+    // todo style keyboard svgs
 
     return (
         <>
             <div
-                className={`keyboard-container flex flex-col items-center justify-center ${styles.keebTextColor}  relative z-20 text-opacity-80`}
+                className={`keyboard-container flex flex-col items-center justify-center ${styles.keebTextColor}  relative z-20 bg-black/40 text-opacity-80`}
             >
                 <div
                     className={`flex flex-col  rounded-[4px] border-[13px] ${styles.keebCaseTop} ${styles.keebCaseSide} ${styles.keebCaseBottom} p-[6px] `}

@@ -69,7 +69,7 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
         keebSpecialTop: "#748478",
         keebSpecialBottom: "#66756d",
         screen: "screen-keeby",
-        mousepad: "mousepad",
+        mousepad: "deskmat-keeby",
     },
     KEEBYRED: {
         title: "",
@@ -87,20 +87,20 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
         graphBackground: "rgba(134, 239, 172, 0.3)",
         graphBorder: "rgba(134, 239, 172, 0.5)",
         graphHighlight: "rgba(134, 239, 172)",
-        keebTextColor: "text-black",
-        keebCaseTop: "border-t-[#666]",
-        keebCaseBottom: "border-b-[#888]",
-        keebCaseSide: "border-x-[#777]",
-        keebKeycapBackground: "bg-[#e9e8e6]",
-        keebKeycapTop: "#ece8e4",
-        keebKeycapSide: "#dedad6",
-        keebKeycapBottom: "#c9c4c4",
-        keebSpecialBackground: "bg-[#7f8384]",
-        keebSpecialSide: "#696c6f",
-        keebSpecialTop: "#848789",
-        keebSpecialBottom: "#676a6d",
-        screen: "screen-keeby",
-        mousepad: "mousepad",
+        keebTextColor: "text-white",
+        keebCaseTop: "border-t-[#C0C0C0]",
+        keebCaseBottom: "border-b-[#A9A9A9]",
+        keebCaseSide: "border-x-[#BEBEBE]",
+        keebKeycapBackground: "bg-[#d32f2f]",
+        keebKeycapTop: "#e53935",
+        keebKeycapSide: "#c62828",
+        keebKeycapBottom: "#b71c1c",
+        keebSpecialBackground: "bg-[#d32f2f]",
+        keebSpecialSide: "#c62828",
+        keebSpecialTop: "#e53935",
+        keebSpecialBottom: "#b71c1c",
+        screen: "screen-red",
+        mousepad: "deskmat-keeby-red",
     },
     // matrix
     // --bg-color: #000000;
@@ -142,7 +142,7 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
         keebSpecialTop: "#006400",
         keebSpecialBottom: "#004d00",
         screen: "screen-hackerman",
-        mousepad: "deskmat-grid",
+        mousepad: "deskmat-sliding-grid",
     },
     PIGGY: {
         title: "png-white",
@@ -334,8 +334,7 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
 // keebSpecialTop: "#86EFAC",  // Green top for special keys
 // keebSpecialBottom: "#86EFAC",  // Consistent green for coherence
 
-// OG
-
+// OG gray board
 // keebTextColor: "text-black",
 // keebCaseTop: "border-t-[#666]",
 // keebCaseBottom: "border-b-[#888]",

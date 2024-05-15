@@ -41,7 +41,7 @@ export default function FreeplayMode({ theme }: FreeplayModeProps) {
                     <Image
                         alt="hacktime logo"
                         src={hacktimeLogo}
-                        className="png-green absolute left-0 top-0 z-50 h-12 w-12"
+                        className="png-light-gray absolute left-0 top-0 z-50 h-12 w-12"
                     />
                 )}
             </div>
