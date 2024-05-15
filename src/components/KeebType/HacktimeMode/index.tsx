@@ -137,7 +137,7 @@ $ echo "Rainbow Table Simulation completed."`;
     // matrix with hacktime logos
 
     return (
-        <div className="relative z-10 flex w-full px-5 text-lg text-green-500">
+        <div className="relative z-10 flex w-full px-5 text-lg text-green-500 h-full">
             <div className="absolute -right-10 bottom-0 flex flex-col gap-2">
                 <Image
                     alt="hacktime logo"

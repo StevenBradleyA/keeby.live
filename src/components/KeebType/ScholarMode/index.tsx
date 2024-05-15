@@ -25,9 +25,6 @@ export default function ScholarMode({
     theme,
     scholarType,
 }: ScholarModeProps) {
-    // todo not sure if we want this to be ranked or unranked.
-    // todo fix create game to be scholar specific
-
     const { data: session } = useSession();
 
     // theme
@@ -262,26 +259,16 @@ export default function ScholarMode({
             activeWordIndex === prompt.length - 1 &&
             userInput.length === currentWord.length
         ) {
-            // Retrieve the active word from the prompt based on the current activeWordIndex.
             const activeWord = prompt[activeWordIndex] ?? "";
-            // Check if the user's input matches the active word, implying the word was typed correctly.
             const isCorrect = activeWord === userInput;
-            // If the word is correctly spelled:
             if (isCorrect) {
-                // Update the word status array to reflect that the current word is correctly spelled.
-                // This is done by creating a copy of the wordStatus array and setting the element
-                // at the activeWordIndex to true (indicating a correctly spelled word).
                 const newWordStatus = [...wordStatus];
                 newWordStatus[activeWordIndex] = true;
                 setWordStatus(newWordStatus);
             }
-
-            // If activeWordIndex matches the length of the prompt
-            // and the last word is spelled correctly, setGameOver to true
             setTotalUserInput(totalUserInput + userInput);
 
             setGameOver(true);
-            // setUserInput(""); not sure if we need to do this at all the game will end soooo
         }
     }, [
         activeWordIndex,
@@ -493,7 +480,7 @@ export default function ScholarMode({
             {gameOver && finishedGameId && session && session.user && (
                 <div className={`flex w-full flex-col ${styles.hit}`}>
                     <div
-                        className={`z-10 w-full rounded-lg border-2 ${styles.border} border-opacity-50 ${styles.backgroundColor} bg-opacity-30 px-5 py-2`}
+                        className={`z-10 flex w-full justify-between rounded-lg border-2 ${styles.border} border-opacity-50 ${styles.backgroundColor} bg-opacity-30 px-5 py-2`}
                     >
                         <button
                             onClick={handleNextGame}
@@ -515,6 +502,7 @@ export default function ScholarMode({
                                 />
                             </svg>
                         </button>
+                        <div className="flex items-center">Non-ranked mode</div>
                     </div>
                     <SpeedModeResults
                         gameId={finishedGameId}
@@ -531,7 +519,7 @@ export default function ScholarMode({
             {gameOver && session === null && (
                 <div className={`flex w-full flex-col ${styles.hit}`}>
                     <div
-                        className={`z-10 w-full rounded-lg border-2 ${styles.border} border-opacity-50 ${styles.backgroundColor} bg-opacity-30 px-5 py-2`}
+                        className={`z-10 flex w-full rounded-lg border-2 ${styles.border} border-opacity-50 ${styles.backgroundColor} justify-between bg-opacity-30 px-5 py-2`}
                     >
                         <button
                             onClick={handleNextGame}
@@ -553,6 +541,9 @@ export default function ScholarMode({
                                 />
                             </svg>
                         </button>
+                        <div className="flex items-center">
+                            Offline mode. Sign in to save your progress
+                        </div>
                     </div>
                     <OfflineGameResults
                         mode={mode}

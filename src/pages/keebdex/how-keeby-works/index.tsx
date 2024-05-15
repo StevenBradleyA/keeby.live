@@ -4,6 +4,18 @@ export default function HowKeebyWorks() {
     // what do I actually want here lmao????
     //
 
+        // calculations
+        // const timeInSeconds = stopwatch.getElapsedRunningTime() / 1000;
+        // const timeInMinutes = timeInSeconds / 60;
+        // const pureWpm = totalTypedCharacters / 5 / timeInMinutes;
+        // const wpm = totalCorrectlyTypedCharacters / 5 / timeInMinutes;
+        // const accuracy =
+        //     (totalCorrectlyTypedCharacters / totalPromptCharacters) * 100;
+
+        // wpm - total number of characters in the correctly typed words (including spaces), divided by 5 and normalised to 60 seconds.
+        // pure wpm - calculated just like wpm, but also includes incorrect words.
+        // accuracy - percentage of correctly pressed keys.
+
     return (
         <>
             <div className="rules-background relative bottom-36 h-full w-full overflow-x-hidden  ">
