@@ -18,6 +18,7 @@ interface ErrorsObj {
     usernameExcess?: string;
     taken?: string;
     keyboard?: string;
+    keyboardExcess?: string;
     switches?: string;
     keycaps?: string;
 }
@@ -35,7 +36,6 @@ interface UserData {
 }
 
 export default function ProfilePlus() {
-
     const { data: session, update } = useSession();
     const hasProfile = session?.user.hasProfile;
     const ctx = api.useContext();
@@ -58,7 +58,7 @@ export default function ProfilePlus() {
     const { data: usernameCheck } = api.user.usernameCheck.useQuery(
         debouncedUsername,
         {
-            enabled: !!debouncedUsername, 
+            enabled: !!debouncedUsername,
         }
     );
 
@@ -102,6 +102,11 @@ export default function ProfilePlus() {
             errorsObj.keycaps = "Please provide your keycaps";
         }
 
+        if (keyboard.length > 30) {
+            errorsObj.keyboardExcess =
+                "Keyboard name cannot exceed 30 characters";
+        }
+
         if (imageFiles.length > 1) {
             errorsObj.imageExcess = "Cannot provide more than 1 photo";
         }
@@ -119,7 +124,7 @@ export default function ProfilePlus() {
     useEffect(() => {
         const handler = setTimeout(() => {
             setDebouncedUsername(username);
-        }, 500); 
+        }, 500);
 
         return () => {
             clearTimeout(handler);
@@ -295,6 +300,11 @@ export default function ProfilePlus() {
                             {enableErrorDisplay && errors.keyboard && (
                                 <p className="text-sm text-red-400">
                                     {errors.keyboard}
+                                </p>
+                            )}
+                            {enableErrorDisplay && errors.keyboardExcess && (
+                                <p className="text-sm text-red-400">
+                                    {errors.keyboardExcess}
                                 </p>
                             )}
 

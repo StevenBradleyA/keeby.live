@@ -19,6 +19,7 @@ interface ErrorsObj {
     keyboard?: string;
     switches?: string;
     keycaps?: string;
+    keyboardExcess?: string;
 }
 
 export default function ManageKeeb({
@@ -95,6 +96,12 @@ export default function ManageKeeb({
         if (!keyboard.length) {
             errorsObj.keyboard = "Please provide your keyboard";
         }
+
+        if (keyboard.length > 30) {
+            errorsObj.keyboardExcess =
+                "Keyboard name cannot exceed 30 characters";
+        }
+
         if (!switches.length) {
             errorsObj.switches = "Please provide your switches";
         }
@@ -320,6 +327,11 @@ export default function ManageKeeb({
                     {enableErrorDisplay && errors.keyboard && (
                         <p className="text-sm text-red-400">
                             {errors.keyboard}
+                        </p>
+                    )}
+                    {enableErrorDisplay && errors.keyboardExcess && (
+                        <p className="text-sm text-red-400">
+                            {errors.keyboardExcess}
                         </p>
                     )}
                     <input

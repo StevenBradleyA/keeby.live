@@ -149,149 +149,174 @@ export default function DisplayAllGameStats({
                 </div>
             </div>
 
-            <div className=" flex w-full items-center gap-10 ">
-                <div className="flex w-1/2 items-center justify-between rounded-md bg-black/10 p-6 ">
-                    <div className="flex flex-col items-center">
-                        <h3 className="text-darkGray">Rank (WPM)</h3>
-                        <p className="text-5xl">
-                            {parseFloat(gameData.rankedWpm.toFixed(2))}
-                        </p>
+            <div className=" flex w-full gap-10  ">
+                <div className="flex w-1/2 flex-col gap-5 ">
+                    <div className="flex w-full flex-shrink-0 items-center justify-between rounded-md bg-black/10 p-6 ">
+                        <div className="flex flex-col items-center">
+                            <h3 className="text-darkGray">Rank (WPM)</h3>
+                            <p className="text-5xl">
+                                {parseFloat(gameData.rankedWpm.toFixed(2))}
+                            </p>
+                        </div>
+                        <Image
+                            alt="rank"
+                            src={gameData.userWithGameResultsAndRank.rank.image}
+                            width={300}
+                            height={300}
+                            className="h-20 w-32 object-contain"
+                        />
+                        <div className="flex flex-col items-center  ">
+                            <h3 className="text-darkGray">Rank</h3>
+                            <p className="text-2xl">
+                                {
+                                    gameData?.userWithGameResultsAndRank?.rank
+                                        ?.name
+                                }
+                            </p>
+                        </div>
                     </div>
-                    <Image
-                        alt="rank"
-                        src={gameData.userWithGameResultsAndRank.rank.image}
-                        width={300}
-                        height={300}
-                        className="h-20 w-32 object-contain"
-                    />
-                    <div className="flex flex-col items-center  ">
-                        <h3 className="text-darkGray">Rank</h3>
-                        <p className="text-2xl">
-                            {gameData?.userWithGameResultsAndRank?.rank?.name}
-                        </p>
+                    <div className="flex w-full flex-shrink-0 items-center justify-between rounded-md bg-black/10 p-8">
+                        <div className="flex flex-col items-center">
+                            <h3 className="text-darkGray">Rank Min (WPM)</h3>
+                            <p className="text-5xl">
+                                {
+                                    gameData.userWithGameResultsAndRank.rank
+                                        .minWpm
+                                }
+                            </p>
+                        </div>
+                        <div className="flex flex-col items-center">
+                            <h3 className="text-darkGray">Rank Max (WPM)</h3>
+                            <p className="text-5xl">
+                                {
+                                    gameData.userWithGameResultsAndRank.rank
+                                        .maxWpm
+                                }
+                            </p>
+                        </div>
+                        <div className="flex flex-col items-center">
+                            <h3 className="text-darkGray">Standing (Top %)</h3>
+                            <p className="text-5xl">
+                                {
+                                    gameData.userWithGameResultsAndRank.rank
+                                        .standing
+                                }
+                            </p>
+                        </div>
                     </div>
                 </div>
-                <div className="flex w-1/2 items-end  justify-between gap-5 rounded-md bg-black/10 p-8">
-                    {!isTotalData && (
-                        <>
-                            <div className="flex flex-col items-center">
-                                <label className="text-darkGray">Keeb</label>
-                                <select
-                                    className="profile-select-button flex items-center gap-1 rounded-md border-2  border-[#616161] bg-dark   py-2 text-green-500"
-                                    value={selectedKeeb.id}
-                                    onChange={handleKeebChange}
-                                >
-                                    {keebData.map((e) => (
-                                        <option key={e.id} value={e.id}>
-                                            {e.name}
+
+                <div className="flex w-1/2 flex-col gap-5 ">
+                    <div className="flex w-full items-end  justify-between gap-5 rounded-md bg-black/10 p-8">
+                        {!isTotalData && (
+                            <>
+                                <div className="flex flex-col items-center">
+                                    <label className="text-darkGray">
+                                        Keeb
+                                    </label>
+                                    <select
+                                        className="profile-select-button flex max-w-[200px] items-center gap-1 rounded-md  border-2 border-[#616161] bg-dark py-2 text-green-500"
+                                        value={selectedKeeb.id}
+                                        onChange={handleKeebChange}
+                                    >
+                                        {keebData.map((e) => (
+                                            <option key={e.id} value={e.id}>
+                                                {e.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className="flex flex-col items-center">
+                                    <label className="text-darkGray">
+                                        Mode
+                                    </label>
+                                    <select
+                                        className="profile-select-button flex max-w-[200px] items-center gap-1 rounded-md  border-2 border-[#616161] bg-dark py-2 text-green-500"
+                                        value={mode}
+                                        onChange={(e) =>
+                                            setMode(e.target.value)
+                                        }
+                                    >
+                                        <option value="Speed">Speed</option>
+                                        <option value="Quote">Quote</option>
+                                        <option value="hacktime">
+                                            It&apos;s Hacking Time
                                         </option>
-                                    ))}
-                                </select>
-                            </div>
-                            <div className="flex flex-col items-center">
-                                <label className="text-darkGray">Mode</label>
-                                <select
-                                    className="profile-select-button flex items-center gap-1 rounded-md border-2  border-[#616161] bg-dark   py-2 text-green-500"
-                                    value={mode}
-                                    onChange={(e) => setMode(e.target.value)}
-                                >
-                                    <option value="Speed">Speed</option>
-                                    <option value="Quote">Quote</option>
-                                    <option value="hacktime">
-                                        It&apos;s Hacking Time
-                                    </option>
-                                </select>
-                            </div>
-                        </>
-                    )}
-                    {isTotalData && (
-                        <button
-                            onClick={() => setIsTotalData(false)}
-                            className="profile-select-button flex items-center gap-1 rounded-md border-2  border-[#616161] bg-dark  px-6 py-2 text-green-500"
+                                    </select>
+                                </div>
+                            </>
+                        )}
+                        {isTotalData && (
+                            <button
+                                onClick={() => setIsTotalData(false)}
+                                className="profile-select-button flex items-center gap-1 rounded-md border-2  border-[#616161] bg-dark  px-6 py-2 text-green-500"
+                            >
+                                Specific
+                            </button>
+                        )}
+                        <div>
+                            <button
+                                className="profile-select-button flex items-center gap-1 rounded-md border-2  border-[#616161] bg-dark  px-6 py-2 text-green-500"
+                                onClick={() => setIsTotalData(true)}
+                            >
+                                All Games
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="flex w-full items-center justify-between rounded-md bg-black/10 p-8 ">
+                        <div className="flex flex-col items-center">
+                            <h3 className="text-darkGray">Total Games</h3>
+                            <p className="text-5xl">
+                                {
+                                    gameData.userWithGameResultsAndRank.games
+                                        .length
+                                }
+                            </p>
+                        </div>
+                        <Link
+                            href={`/keebdex/how-keeby-works`}
+                            aria-label="typing tips"
+                            className="profile-select-button flex items-center gap-2 rounded-md border-2  border-[#616161] bg-dark py-2 pl-6 pr-4 text-green-500"
                         >
-                            Specific
-                        </button>
-                    )}
-                    <div>
-                        <button
-                            className="profile-select-button flex items-center gap-1 rounded-md border-2  border-[#616161] bg-dark  px-6 py-2 text-green-500"
-                            onClick={() => setIsTotalData(true)}
+                            Stats Explained
+                            <svg
+                                className="profile-select-button-link w-4"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke="currentColor"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="3"
+                                    d="M3.515 12h16.97m0 0L13.01 4.525M20.485 12l-7.475 7.476"
+                                ></path>
+                            </svg>
+                        </Link>
+                        <Link
+                            href={`/keebdex/typing-tips`}
+                            aria-label="typing tips"
+                            className="profile-select-button flex items-center gap-2 rounded-md border-2  border-[#616161] bg-dark  py-2 pl-6 pr-4 text-green-500"
                         >
-                            All Games
-                        </button>
+                            Typing Tips
+                            <svg
+                                className="profile-select-button-link w-4"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke="currentColor"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="3"
+                                    d="M3.515 12h16.97m0 0L13.01 4.525M20.485 12l-7.475 7.476"
+                                ></path>
+                            </svg>
+                        </Link>
                     </div>
-                </div>
-            </div>
-            <div className=" mt-5 flex w-full gap-10 ">
-                <div className="flex w-1/2 items-center justify-between rounded-md bg-black/10 p-8 ">
-                    <div className="flex flex-col items-center">
-                        <h3 className="text-darkGray">Rank Min (WPM)</h3>
-                        <p className="text-5xl">
-                            {gameData.userWithGameResultsAndRank.rank.minWpm}
-                        </p>
-                    </div>
-                    <div className="flex flex-col items-center">
-                        <h3 className="text-darkGray">Rank Max (WPM)</h3>
-                        <p className="text-5xl">
-                            {gameData.userWithGameResultsAndRank.rank.maxWpm}
-                        </p>
-                    </div>
-                    <div className="flex flex-col items-center">
-                        <h3 className="text-darkGray">Standing (Top %)</h3>
-                        <p className="text-5xl">
-                            {gameData.userWithGameResultsAndRank.rank.standing}
-                        </p>
-                    </div>
-                </div>
-                <div className="flex w-1/2 items-center justify-between rounded-md bg-black/10 p-8">
-                    <div className="flex flex-col items-center">
-                        <h3 className="text-darkGray">Total Games</h3>
-                        <p className="text-5xl">
-                            {gameData.userWithGameResultsAndRank.games.length}
-                        </p>
-                    </div>
-                    <Link
-                        href={`/keebdex/typing-stats`}
-                        aria-label="typing tips"
-                        className="profile-select-button flex items-center gap-2 rounded-md border-2  border-[#616161] bg-dark py-2 pl-6 pr-4 text-green-500"
-                    >
-                        Stats Explained
-                        <svg
-                            className="profile-select-button-link w-4"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke="currentColor"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="3"
-                                d="M3.515 12h16.97m0 0L13.01 4.525M20.485 12l-7.475 7.476"
-                            ></path>
-                        </svg>
-                    </Link>
-                    <Link
-                        href={`/keebdex/typing-tips`}
-                        aria-label="typing tips"
-                        className="profile-select-button flex items-center gap-2 rounded-md border-2  border-[#616161] bg-dark  py-2 pl-6 pr-4 text-green-500"
-                    >
-                        Typing Tips
-                        <svg
-                            className="profile-select-button-link w-4"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke="currentColor"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="3"
-                                d="M3.515 12h16.97m0 0L13.01 4.525M20.485 12l-7.475 7.476"
-                            ></path>
-                        </svg>
-                    </Link>
                 </div>
             </div>
         </div>
