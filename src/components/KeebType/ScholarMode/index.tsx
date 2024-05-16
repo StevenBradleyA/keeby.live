@@ -322,7 +322,7 @@ export default function ScholarMode({
                         className={`relative flex w-full flex-wrap gap-2 px-10 text-2xl ${
                             styles.textColor
                         } ${
-                            prompt.length === 10
+                            prompt.length <= 10
                                 ? "justify-center"
                                 : "justify-start"
                         }`}

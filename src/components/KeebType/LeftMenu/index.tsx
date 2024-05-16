@@ -138,13 +138,13 @@ export default function LeftMenu({
                 value={theme}
                 onChange={handleThemeChange}
             >
-                <option value="HACKERMAN">hackerman</option>
                 <option value="KEEBY">keeby</option>
                 <option value="KEEBYRED">keeby red</option>
-                <option value="PRIMEAGEN">primeagen</option>
-                <option value="PIGGY">piggy</option>
-                <option value="HIPYO">hipyo</option>
                 <option value="BANANA">banana</option>
+                <option value="HACKERMAN">hackerman</option>
+                <option value="HIPYO">hipyo</option>
+                <option value="PIGGY">piggy</option>
+                <option value="PRIMEAGEN">primeagen</option>
             </select>
             {session && session.user.hasProfile && (
                 <MenuKeebSelection
