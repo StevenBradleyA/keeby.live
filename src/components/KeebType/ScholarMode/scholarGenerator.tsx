@@ -77,7 +77,6 @@ export default function ScholarGenerator({
         "Avarice: extreme greed for wealth or material gain. His decisions were driven by pure avarice.",
         "Aver: state or assert to be the case. He averred that he was present at the scene.",
         "Avow: assert or confess openly. He avowed his commitment to the cause in front of the crowd.",
-        
     ];
 
     const animalFacts: string[] = [
@@ -254,17 +253,15 @@ export default function ScholarGenerator({
         "Enthusiasts sometimes use o-rings under keycaps to dampen the sound of bottoming out keys.",
         "Hot-swappable mechanical keyboards allow users to change switches without soldering, making customization easier.",
         "Wireless mechanical keyboards are available, combining the reliability of mechanical switches with the convenience of wireless connectivity.",
-        "Programmable mechanical keyboards enable users to remap keys and configure multiple layers for shortcuts and macros.",
-        "The cost of mechanical keyboards can vary widely, from affordable models to expensive custom setups exceeding several hundred dollars.",
-        "Mechanical keyboard meetups and conventions allow enthusiasts to share their custom builds, new designs, and innovations in the community.",
-        "The resurgence of mechanical keyboards in popularity has led to the development of new switch types and technologies beyond traditional models.",
     ];
 
     const data = useMemo(() => {
         if (scholarType === "Vocab") {
             return vocabDefinitions;
-        } else if (scholarType === "Animal") {
+        } else if (scholarType === "Animals") {
             return animalFacts;
+        } else if (scholarType === "Keyboards") {
+            return keyboardFacts;
         } else {
             console.error("Invalid scholar type");
             return [];

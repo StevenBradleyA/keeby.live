@@ -286,6 +286,125 @@ rgb(57, 162, 217): #2033c1; */
         background-color: rgba(31, 31, 31, 0.7);
     }
 }
+.screen-purple {
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+    transform: perspective(500px) rotateX(-8deg);
+    transition: transform 0.3s ease-in-out;
+    animation: screenFlickerPurple 2.5s ease-in alternate infinite;
+    background-color: #c4a7e7;
+    resize: none;
+    outline: none;
+    scrollbar-width: none;
+    overflow-y: scroll;
+    box-shadow: 0 0 5px rgba(196, 167, 231, 0.8),
+        0 0 10px rgba(196, 167, 231, 0.7), 0 0 15px rgba(196, 167, 231, 0.6),
+        0 0 20px rgba(196, 167, 231, 0.5), 0 0 40px rgba(196, 167, 231, 0.4),
+        0 0 60px rgba(196, 167, 231, 0.3);
+}
+
+@keyframes screenFlickerPurple {
+    0%,
+    90%,
+    96% {
+        background-color: #c4a7e7;
+    }
+    93%,
+    100% {
+        background-color: rgba(224, 222, 244, 0.8);
+    }
+}
+
+.screen-pink {
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+    transform: perspective(500px) rotateX(-8deg);
+    transition: transform 0.3s ease-in-out;
+    animation: screenFlickerPink 2.5s ease-in alternate infinite;
+    background-color: #ffb6c1;
+    resize: none;
+    outline: none;
+    scrollbar-width: none;
+    overflow-y: scroll;
+    box-shadow: 0 0 5px rgba(255, 182, 193, 0.8),
+        0 0 10px rgba(255, 182, 193, 0.7), 0 0 15px rgba(255, 182, 193, 0.6),
+        0 0 20px rgba(255, 182, 193, 0.5), 0 0 40px rgba(255, 182, 193, 0.4),
+        0 0 60px rgba(255, 182, 193, 0.3);
+}
+
+@keyframes screenFlickerPink {
+    0%,
+    90%,
+    96% {
+        background-color: #ffb6c1;
+    }
+    93%,
+    100% {
+        background-color: rgba(255, 228, 225, 0.8);
+    }
+}
+
+.screen-cream {
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+    transform: perspective(500px) rotateX(-8deg);
+    transition: transform 0.3s ease-in-out;
+    animation: screenFlickerCream 2.5s ease-in alternate infinite;
+    background-color: #fff5e6;
+    resize: none;
+    outline: none;
+    scrollbar-width: none;
+    overflow-y: scroll;
+    box-shadow: 0 0 5px rgba(255, 245, 230, 0.8),
+        0 0 10px rgba(255, 245, 230, 0.7), 0 0 15px rgba(255, 245, 230, 0.6),
+        0 0 20px rgba(255, 245, 230, 0.5), 0 0 40px rgba(255, 245, 230, 0.4),
+        0 0 60px rgba(255, 245, 230, 0.3);
+}
+
+@keyframes screenFlickerCream {
+    0%,
+    90%,
+    96% {
+        background-color: #fff5e6;
+    }
+    93%,
+    100% {
+        background-color: rgba(255, 240, 220, 0.8);
+    }
+}
+
+.screen-light-brown {
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+    transform: perspective(500px) rotateX(-8deg);
+    transition: transform 0.3s ease-in-out;
+    animation: screenFlickerLightBrown 2.5s ease-in alternate infinite;
+    background-color: rgba(222, 184, 135, 0.8);
+    resize: none;
+    outline: none;
+    scrollbar-width: none;
+    overflow-y: scroll;
+    box-shadow: 0 0 5px rgba(222, 184, 135, 0.8),
+        0 0 10px rgba(222, 184, 135, 0.7), 0 0 15px rgba(222, 184, 135, 0.6),
+        0 0 20px rgba(222, 184, 135, 0.5), 0 0 40px rgba(222, 184, 135, 0.4),
+        0 0 60px rgba(222, 184, 135, 0.3);
+}
+
+@keyframes screenFlickerLightBrown {
+    0%,
+    90%,
+    96% {
+        background-color: rgba(222, 184, 135, 0.8);
+    }
+    93%,
+    100% {
+        background-color: #f5deb3;
+    }
+}
 
 .screen-blue {
     overflow-y: auto;
@@ -386,6 +505,326 @@ rgb(57, 162, 217): #2033c1; */
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
 }
+
+
+
+
+/* primeagen */
+.deskmat-primeagen::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(135deg, #3c3546 25%, transparent 25%, transparent 50%, #3c3546 50%, #3c3546 75%, transparent 75%, transparent),
+        linear-gradient(225deg, #3c3546 25%, transparent 25%, transparent 50%, #3c3546 50%, #3c3546 75%, transparent 75%, transparent);
+    background-size: 100px 100px;
+    opacity: 0.15;
+    animation: moveBackground 10s linear infinite;
+}
+
+@keyframes moveBackground {
+    0% { background-position: 0 0, 50px 50px; }
+    100% { background-position: 100px 100px, 0 0; }
+}
+
+.deskmat-primeagen {
+    background-color: #1f1d27;
+    position: relative;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.deskmat-primeagen::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(135deg, rgba(156, 207, 216, 0.2) 25%, transparent 25%, transparent 50%, rgba(156, 207, 216, 0.2) 50%, rgba(156, 207, 216, 0.2) 75%, transparent 75%, transparent),
+        linear-gradient(225deg, rgba(156, 207, 216, 0.2) 25%, transparent 25%, transparent 50%, rgba(156, 207, 216, 0.2) 50%, rgba(156, 207, 216, 0.2) 75%, transparent 75%, transparent);
+    background-size: 100px 100px;
+    opacity: 0.3;
+    animation: glowBackground 5s ease-in-out infinite alternate;
+}
+
+@keyframes glowBackground {
+    0% { opacity: 0.3; }
+    50% { opacity: 0.5; }
+    100% { opacity: 0.3; }
+}
+/* piggy */
+.deskmat-piggy::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(45deg, #ffc1cc 25%, transparent 25%, transparent 50%, #ffc1cc 50%, #ffc1cc 75%, transparent 75%, transparent),
+        linear-gradient(45deg, #ffc1cc 25%, transparent 25%, transparent 50%, #ffc1cc 50%, #ffc1cc 75%, transparent 75%, transparent);
+    background-size: 50px 50px;
+    opacity: 0.2;
+    animation: gridAnimation 8s linear infinite;
+}
+
+@keyframes gridAnimation {
+    0% { background-position: 0 0, 25px 25px; }
+    100% { background-position: 50px 50px, 0 0; }
+}
+
+.deskmat-piggy {
+    background-color: #ffebf0;
+    position: relative;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.deskmat-piggy::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        url('https://example.com/pig-pattern.png'); /* Replace with a light pink pig pattern image URL */
+    background-size: 200px 200px;
+    opacity: 0.3;
+    animation: patternAnimation 20s ease-in-out infinite alternate;
+}
+
+@keyframes patternAnimation {
+    0% { background-position: 0 0; }
+    100% { background-position: 50px 50px; }
+}
+/* 
+.deskmat-dark-purple {
+    background-color: #2b2233;
+    position: relative;
+    overflow: hidden;
+}
+
+.deskmat-dark-purple::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle, #4b0082 10%, transparent 10%), 
+                      radial-gradient(circle, #4b0082 10%, transparent 10%);
+    background-size: 20px 20px;
+    background-position: 0 0, 10px 10px;
+    opacity: 0.3;
+}
+
+.deskmat-dark-purple::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(135deg, rgba(255,255,255,0.1) 25%, transparent 25%),
+                      linear-gradient(225deg, rgba(255,255,255,0.1) 25%, transparent 25%),
+                      linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%),
+                      linear-gradient(315deg, rgba(255,255,255,0.1) 25%, transparent 25%);
+    background-size: 20px 20px;
+    background-position: 0 0, 10px 10px, 10px 10px, 0 0;
+    opacity: 0.2;
+    animation: diagonalStripes 10s linear infinite;
+}
+
+@keyframes diagonalStripes {
+    0% { background-position: 0 0, 10px 10px, 10px 10px, 0 0; }
+    100% { background-position: 20px 20px, 30px 30px, 30px 30px, 20px 20px; }
+} */
+
+.deskmat-light-purple {
+    background-color: #c4a7e7;
+    position: relative;
+    overflow: hidden;
+}
+
+.deskmat-light-purple::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle, #9ccfd8 10%, transparent 10%), 
+                      radial-gradient(circle, #9ccfd8 10%, transparent 10%);
+    background-size: 20px 20px;
+    background-position: 0 0, 10px 10px;
+    opacity: 0.5;
+}
+
+.deskmat-light-purple::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(135deg, rgba(76, 56, 116, 0.3) 25%, transparent 25%),
+                      linear-gradient(225deg, rgba(76, 56, 116, 0.3) 25%, transparent 25%),
+                      linear-gradient(45deg, rgba(76, 56, 116, 0.3) 25%, transparent 25%),
+                      linear-gradient(315deg, rgba(76, 56, 116, 0.3) 25%, transparent 25%);
+    background-size: 20px 20px;
+    background-position: 0 0, 10px 10px, 10px 10px, 0 0;
+    opacity: 0.3;
+    animation: diagonalStripes 10s linear infinite;
+}
+
+@keyframes diagonalStripes {
+    0% { background-position: 0 0, 10px 10px, 10px 10px, 0 0; }
+    100% { background-position: 20px 20px, 30px 30px, 30px 30px, 20px 20px; }
+}
+
+
+.deskmat-diamonds::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(45deg, transparent 75%, #c4a7e7 75%),
+        linear-gradient(135deg, transparent 75%, #c4a7e7 75%),
+        linear-gradient(225deg, transparent 75%, #c4a7e7 75%),
+        linear-gradient(315deg, transparent 75%, #c4a7e7 75%);
+    background-size: 100px 100px;
+    opacity: 0.1;
+    animation: gradientAnimation 15s ease infinite;
+}
+
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.deskmat-diamonds {
+    background-color: #3c3546;
+    position: relative;
+    overflow: hidden;
+}
+
+.deskmat-diamonds::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(45deg, #6a0dad 25%, transparent 25%, transparent 50%, #6a0dad 50%, #6a0dad 75%, transparent 75%, transparent),
+        linear-gradient(45deg, #6a0dad 25%, transparent 25%, transparent 50%, #6a0dad 50%, #6a0dad 75%, transparent 75%, transparent);
+    background-size: 50px 50px;
+    opacity: 0.2;
+}
+
+/* cool design */
+
+.deskmat-keeby-purple::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 25% 25%, #c4a7e7, transparent 40%),
+        radial-gradient(circle at 75% 75%, #c4a7e7, transparent 40%),
+        radial-gradient(circle at 25% 75%, #6a0dad, transparent 40%),
+        radial-gradient(circle at 75% 25%, #6a0dad, transparent 40%);
+    background-size: 200px 200px;
+    opacity: 0.1;
+    animation: gradientAnimation 15s ease infinite;
+}
+
+@keyframes gradientAnimation {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.deskmat-keeby-purple {
+    background-color: #3c3546;
+    position: relative;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.deskmat-keeby-purple::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(60deg, #6a0dad 25%, transparent 25%, transparent 50%, #6a0dad 50%, #6a0dad 75%, transparent 75%, transparent),
+        linear-gradient(60deg, transparent 25%, #c4a7e7 25%, #c4a7e7 50%, transparent 50%, transparent 75%, #c4a7e7 75%, #c4a7e7);
+    background-size: 50px 50px;
+    opacity: 0.3;
+} 
+
+
+.deskmat-banana {
+    background-color: whitesmoke; /* SaddleBrown background */
+    position: relative;
+    overflow: hidden;
+}
+
+.deskmat-banana::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle, #ffeb3b 10%, transparent 10%), 
+                      radial-gradient(circle, #ffeb3b 10%, transparent 10%);
+    background-size: 20px 20px;
+    background-position: 0 0, 10px 10px;
+    opacity: 1;
+}
+
+.deskmat-banana::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="60px" height="60px" viewBox="0 0 1024 1024"><path d="M746.666667 234.666667c21.333333 0 149.333333-21.333333 149.333333 170.666666S618.666667 938.666667 234.666667 938.666667c-42.666667 0-85.333333-21.333333-85.333334-21.333334l-21.333333-64s21.333333-85.333333 149.333333-149.333333 218.944-117.632 273.344-172.010667C593.344 489.344 661.333333 405.333333 661.333333 341.333333c0-41.770667 42.666667-85.333333 42.666667-85.333333" fill="%23FFE082"/><path d="M170.666667 874.666667s149.333333-42.666667 277.333333-106.666667 405.333333-256 320-533.333333c0 0 128-21.333333 128 170.666666S618.666667 938.666667 234.666667 938.666667c-42.666667 0-85.333333-21.333333-85.333334-21.333334l21.333334-42.666666z" fill="%23FFCA28"/><path d="M876.010667 297.344C836.010667 211.562667 746.666667 256 746.666667 85.333333c-64 0-106.666667 42.666667-106.666667 42.666667s64 64 64 128c42.666667 0 77.056-3.349333 80.874667 101.333333 28.842667-122.218667 91.136-59.989333 91.136-59.989333z" fill="%23C0CA33"/><path d="M661.333333 341.333333s-1.344-38.677333 42.666667-85.333333 85.994667-8.661333 85.994667-8.661333l-5.12 109.994666s-18.666667-69.333333-48-71.104C675.008 282.496 661.333333 341.333333 661.333333 341.333333z" fill="%23C0CA33"/><path d="M128 874.666667l21.333333 42.666666h21.333334v-42.666666l-42.666667-21.333334z" fill="%235D4037"/><path d="M746.666667 85.333333c-64 0-106.666667 42.666667-106.666667 42.666667h64l42.666667-42.666667z" fill="%23827717"/></svg>');
+    background-size: 60px 60px;
+    background-position: 0 0;
+    opacity: 0.6;
+    animation: floatBananas 15s linear infinite;
+}
+
+@keyframes floatBananas {
+    0% { background-position: 0 0; }
+    100% { background-position: 250px 250px; }
+}
+
+
+
+
+
+
+
+
 
 
 /* stock */

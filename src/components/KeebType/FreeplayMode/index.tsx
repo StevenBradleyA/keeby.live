@@ -29,7 +29,7 @@ export default function FreeplayMode({ theme }: FreeplayModeProps) {
                 ></textarea>
             </div>
             <div
-                className={`${styles.mousepad} relative flex items-center justify-center rounded-2xl bg-black tablet:py-10 desktop:p-20`}
+                className={`${styles.mousepad} relative flex items-center justify-center rounded-2xl tablet:py-10 desktop:p-20`}
             >
                 <FreeplayKeyboard
                     setTypedText={setTypedText}
@@ -43,6 +43,9 @@ export default function FreeplayMode({ theme }: FreeplayModeProps) {
                         src={hacktimeLogo}
                         className="png-light-gray absolute left-0 top-0 z-50 h-12 w-12"
                     />
+                )}
+                    {theme === "PRIMEAGEN" && (
+                  <div className="absolute bottom-2 left-4 font-yellowTail text-[#c4a7e7] text-3xl">this guy vims</div>
                 )}
             </div>
         </div>

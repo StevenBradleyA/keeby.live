@@ -310,14 +310,9 @@ export default function ScholarMode({
     }, [totalUserInput, gameOver, isRunning, stopwatch]);
 
     return (
-        <div className="z-10 flex flex-shrink-0 flex-col laptop:w-3/4 desktop:w-2/3">
+        <div className="z-10 flex w-full flex-shrink-0 flex-col">
             {gameOver === false && (
                 <div className="mt-72 flex w-full flex-col">
-                    {/* <SentenceGenerator
-                        prompt.length={prompt.length}
-                        setPrompt={setPrompt}
-                        key={trigger}
-                    /> */}
                     <ScholarGenerator
                         setPrompt={setPrompt}
                         key={trigger}

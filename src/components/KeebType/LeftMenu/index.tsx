@@ -122,7 +122,7 @@ export default function LeftMenu({
                         value={scholarType}
                         onChange={handleScholarTypeChange}
                     >
-                        <option value="Animal">animal</option>
+                        <option value="Animals">animal</option>
                         <option value="Vocab">vocab</option>
                         <option value="Keyboards">keyboards</option>
                         {/* <option value="SoftwareEngineering">
