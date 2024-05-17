@@ -370,7 +370,29 @@ export const userRouter = createTRPCRouter({
                 });
             }
         }),
+    updateNewsletter: protectedProcedure
+        .input(
+            z.object({
+                userId: z.string(),
+                isNewsletter: z.boolean(),
+            })
+        )
+        .mutation(async ({ input, ctx }) => {
+            const { userId, isNewsletter } = input;
 
+            const sessionUserId = ctx.session.user.id;
+
+            if (sessionUserId !== userId) {
+                throw new Error("Invalid userId");
+            }
+            await ctx.prisma.user.update({
+                where: { id: userId },
+                data: {
+                    isNewsletter: isNewsletter,
+                },
+            });
+            return { isNewsletter };
+        }),
     updateNewUser: protectedProcedure
         .input(
             z.object({

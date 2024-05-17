@@ -142,6 +142,7 @@ export default function MainFooter() {
                         </a>
                     </div>
                 </div>
+
                 <div className="flex gap-12">
                     <div className="flex flex-col gap-1">
                         <h2 className="text-green-500">Explore</h2>
@@ -225,6 +226,13 @@ export default function MainFooter() {
                             className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                         >
                             About
+                        </Link>
+                        <Link
+                            href="/keebdex/newsletter"
+                            aria-label="privacy"
+                            className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
+                        >
+                            Newsletter
                         </Link>
                         <button
                             onClick={openModal}
