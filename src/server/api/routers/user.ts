@@ -221,7 +221,7 @@ export const userRouter = createTRPCRouter({
                     username: true,
                     profile: true,
                     selectedTag: true,
-                    internetPoints: true, 
+                    internetPoints: true,
                     reviewsReceived: {
                         select: {
                             id: true,
@@ -300,6 +300,7 @@ export const userRouter = createTRPCRouter({
         .input(
             z.object({
                 userId: z.string(),
+                isNewsletter: z.boolean(),
                 username: z.string().optional(),
                 images: z
                     .array(
@@ -312,7 +313,9 @@ export const userRouter = createTRPCRouter({
             })
         )
         .mutation(async ({ input, ctx }) => {
-            const { userId, username, images, selectedTag } = input;
+            const { userId, username, images, selectedTag, isNewsletter } =
+                input;
+
             const sessionUserId = ctx.session.user.id;
 
             if (sessionUserId !== userId) {
@@ -323,6 +326,7 @@ export const userRouter = createTRPCRouter({
                 username?: string;
                 selectedTag?: string;
                 profile?: string;
+                isNewsletter?: boolean;
             } = {};
 
             if (images && images[0]) {
@@ -348,8 +352,16 @@ export const userRouter = createTRPCRouter({
             if (selectedTag) {
                 userData.selectedTag = selectedTag;
             }
+            if (isNewsletter !== undefined) {
+                userData.isNewsletter = isNewsletter;
+            }
 
-            if (username || selectedTag || (images && images[0])) {
+            if (
+                username ||
+                selectedTag ||
+                (images && images[0]) ||
+                isNewsletter !== undefined
+            ) {
                 return await ctx.prisma.user.update({
                     where: { id: userId },
                     data: {

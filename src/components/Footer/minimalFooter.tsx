@@ -23,8 +23,8 @@ export default function KeebTypeFooter() {
     return (
         <div className={`${styles.textColor} flex gap-5 `}>
             <Link
-                href="/keebdex/about"
-                aria-label="About"
+                href="/keebdex/how-keeby-works"
+                aria-label="how keeby works"
                 className={`transition-colors duration-300 ease-custom-cubic ${styles.hoverText} `}
             >
                 About

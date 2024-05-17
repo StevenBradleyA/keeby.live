@@ -204,12 +204,9 @@ rgb(57, 162, 217): #2033c1; */
     outline: none;
     scrollbar-width: none;
     overflow-y: scroll;
-    box-shadow: 
-    0 0 5px rgba(134, 239, 172, 0.5), 
-    0 0 10px rgba(134, 239, 172, 0.4), 
-    0 0 15px rgba(134, 239, 172, 0.3), 
-    0 0 20px rgba(134, 239, 172, 0.2), 
-    0 0 40px rgba(134, 239, 172, 0.1);
+    box-shadow: 0 0 5px rgba(134, 239, 172, 0.5),
+        0 0 10px rgba(134, 239, 172, 0.4), 0 0 15px rgba(134, 239, 172, 0.3),
+        0 0 20px rgba(134, 239, 172, 0.2), 0 0 40px rgba(134, 239, 172, 0.1);
 }
 
 @keyframes screenFlickerKeeby {
@@ -235,10 +232,9 @@ rgb(57, 162, 217): #2033c1; */
     outline: none;
     scrollbar-width: none;
     overflow-y: scroll;
-    box-shadow: 0 0 5px rgba(165, 42, 42, 0.8),
-        0 0 10px rgba(165, 42, 42, 0.7), 0 0 15px rgba(165, 42, 42, 0.6),
-        0 0 20px rgba(165, 42, 42, 0.5), 0 0 40px rgba(165, 42, 42, 0.4),
-        0 0 60px rgba(165, 42, 42, 0.3);
+    box-shadow: 0 0 5px rgba(165, 42, 42, 0.8), 0 0 10px rgba(165, 42, 42, 0.7),
+        0 0 15px rgba(165, 42, 42, 0.6), 0 0 20px rgba(165, 42, 42, 0.5),
+        0 0 40px rgba(165, 42, 42, 0.4), 0 0 60px rgba(165, 42, 42, 0.3);
 }
 
 @keyframes screenFlickerRed {
@@ -253,7 +249,6 @@ rgb(57, 162, 217): #2033c1; */
     }
 }
 
-
 .screen-hackerman {
     overflow-y: auto;
     white-space: pre-wrap;
@@ -266,13 +261,9 @@ rgb(57, 162, 217): #2033c1; */
     outline: none;
     scrollbar-width: none;
     overflow-y: scroll;
-    box-shadow: 
-        0 0 5px rgba(31, 31, 31, 0.8), 
-        0 0 10px rgba(31, 31, 31, 0.7), 
-        0 0 15px rgba(31, 31, 31, 0.6), 
-        0 0 20px rgba(31, 31, 31, 0.5), 
-        0 0 40px rgba(31, 31, 31, 0.4), 
-        0 0 60px rgba(31, 31, 31, 0.3);
+    box-shadow: 0 0 5px rgba(31, 31, 31, 0.8), 0 0 10px rgba(31, 31, 31, 0.7),
+        0 0 15px rgba(31, 31, 31, 0.6), 0 0 20px rgba(31, 31, 31, 0.5),
+        0 0 40px rgba(31, 31, 31, 0.4), 0 0 60px rgba(31, 31, 31, 0.3);
 }
 
 @keyframes screenFlickerHackerman {
@@ -440,7 +431,6 @@ rgb(57, 162, 217): #2033c1; */
 /* end freeplay monitor  */
 /* end freeplay monitor  */
 
-
 /* MOUSEPADSSSS */
 /* MOUSEPADSSSS */
 /* MOUSEPADSSSS */
@@ -463,17 +453,26 @@ rgb(57, 162, 217): #2033c1; */
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: 
-        linear-gradient(0deg, transparent 95%, rgba(134, 239, 172) 95%),
+    background-image: linear-gradient(
+            0deg,
+            transparent 95%,
+            rgba(134, 239, 172) 95%
+        ),
         linear-gradient(90deg, transparent 95%, rgba(134, 239, 172) 95%);
     background-size: 50px 50px;
     opacity: 0.1;
 }
 
 @keyframes gradientAnimation {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 /* keeby-red */
 .deskmat-keeby-red {
@@ -493,21 +492,23 @@ rgb(57, 162, 217): #2033c1; */
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: 
-        linear-gradient(0deg, transparent 95%, #ff4c4c 95%),
+    background-image: linear-gradient(0deg, transparent 95%, #ff4c4c 95%),
         linear-gradient(90deg, transparent 95%, #ff4c4c 95%);
     background-size: 50px 50px;
     opacity: 0.1;
 }
 
 @keyframes gradientAnimation {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
-
-
-
 
 /* primeagen */
 .deskmat-primeagen::before {
@@ -517,17 +518,38 @@ rgb(57, 162, 217): #2033c1; */
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: 
-        linear-gradient(135deg, #3c3546 25%, transparent 25%, transparent 50%, #3c3546 50%, #3c3546 75%, transparent 75%, transparent),
-        linear-gradient(225deg, #3c3546 25%, transparent 25%, transparent 50%, #3c3546 50%, #3c3546 75%, transparent 75%, transparent);
+    background-image: linear-gradient(
+            135deg,
+            #3c3546 25%,
+            transparent 25%,
+            transparent 50%,
+            #3c3546 50%,
+            #3c3546 75%,
+            transparent 75%,
+            transparent
+        ),
+        linear-gradient(
+            225deg,
+            #3c3546 25%,
+            transparent 25%,
+            transparent 50%,
+            #3c3546 50%,
+            #3c3546 75%,
+            transparent 75%,
+            transparent
+        );
     background-size: 100px 100px;
     opacity: 0.15;
     animation: moveBackground 10s linear infinite;
 }
 
 @keyframes moveBackground {
-    0% { background-position: 0 0, 50px 50px; }
-    100% { background-position: 100px 100px, 0 0; }
+    0% {
+        background-position: 0 0, 50px 50px;
+    }
+    100% {
+        background-position: 100px 100px, 0 0;
+    }
 }
 
 .deskmat-primeagen {
@@ -544,18 +566,41 @@ rgb(57, 162, 217): #2033c1; */
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: 
-        linear-gradient(135deg, rgba(156, 207, 216, 0.2) 25%, transparent 25%, transparent 50%, rgba(156, 207, 216, 0.2) 50%, rgba(156, 207, 216, 0.2) 75%, transparent 75%, transparent),
-        linear-gradient(225deg, rgba(156, 207, 216, 0.2) 25%, transparent 25%, transparent 50%, rgba(156, 207, 216, 0.2) 50%, rgba(156, 207, 216, 0.2) 75%, transparent 75%, transparent);
+    background-image: linear-gradient(
+            135deg,
+            rgba(156, 207, 216, 0.2) 25%,
+            transparent 25%,
+            transparent 50%,
+            rgba(156, 207, 216, 0.2) 50%,
+            rgba(156, 207, 216, 0.2) 75%,
+            transparent 75%,
+            transparent
+        ),
+        linear-gradient(
+            225deg,
+            rgba(156, 207, 216, 0.2) 25%,
+            transparent 25%,
+            transparent 50%,
+            rgba(156, 207, 216, 0.2) 50%,
+            rgba(156, 207, 216, 0.2) 75%,
+            transparent 75%,
+            transparent
+        );
     background-size: 100px 100px;
     opacity: 0.3;
     animation: glowBackground 5s ease-in-out infinite alternate;
 }
 
 @keyframes glowBackground {
-    0% { opacity: 0.3; }
-    50% { opacity: 0.5; }
-    100% { opacity: 0.3; }
+    0% {
+        opacity: 0.3;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 0.3;
+    }
 }
 /* piggy */
 .deskmat-piggy::before {
@@ -565,17 +610,38 @@ rgb(57, 162, 217): #2033c1; */
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: 
-        linear-gradient(45deg, #ffc1cc 25%, transparent 25%, transparent 50%, #ffc1cc 50%, #ffc1cc 75%, transparent 75%, transparent),
-        linear-gradient(45deg, #ffc1cc 25%, transparent 25%, transparent 50%, #ffc1cc 50%, #ffc1cc 75%, transparent 75%, transparent);
+    background-image: linear-gradient(
+            45deg,
+            #ffc1cc 25%,
+            transparent 25%,
+            transparent 50%,
+            #ffc1cc 50%,
+            #ffc1cc 75%,
+            transparent 75%,
+            transparent
+        ),
+        linear-gradient(
+            45deg,
+            #ffc1cc 25%,
+            transparent 25%,
+            transparent 50%,
+            #ffc1cc 50%,
+            #ffc1cc 75%,
+            transparent 75%,
+            transparent
+        );
     background-size: 50px 50px;
     opacity: 0.2;
     animation: gridAnimation 8s linear infinite;
 }
 
 @keyframes gridAnimation {
-    0% { background-position: 0 0, 25px 25px; }
-    100% { background-position: 50px 50px, 0 0; }
+    0% {
+        background-position: 0 0, 25px 25px;
+    }
+    100% {
+        background-position: 50px 50px, 0 0;
+    }
 }
 
 .deskmat-piggy {
@@ -592,16 +658,19 @@ rgb(57, 162, 217): #2033c1; */
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: 
-        url('https://example.com/pig-pattern.png'); /* Replace with a light pink pig pattern image URL */
+    background-image: url("https://example.com/pig-pattern.png"); /* Replace with a light pink pig pattern image URL */
     background-size: 200px 200px;
     opacity: 0.3;
     animation: patternAnimation 20s ease-in-out infinite alternate;
 }
 
 @keyframes patternAnimation {
-    0% { background-position: 0 0; }
-    100% { background-position: 50px 50px; }
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 50px 50px;
+    }
 }
 /* 
 .deskmat-dark-purple {
@@ -659,8 +728,8 @@ rgb(57, 162, 217): #2033c1; */
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: radial-gradient(circle, #9ccfd8 10%, transparent 10%), 
-                      radial-gradient(circle, #9ccfd8 10%, transparent 10%);
+    background-image: radial-gradient(circle, #9ccfd8 10%, transparent 10%),
+        radial-gradient(circle, #9ccfd8 10%, transparent 10%);
     background-size: 20px 20px;
     background-position: 0 0, 10px 10px;
     opacity: 0.5;
@@ -673,10 +742,14 @@ rgb(57, 162, 217): #2033c1; */
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: linear-gradient(135deg, rgba(76, 56, 116, 0.3) 25%, transparent 25%),
-                      linear-gradient(225deg, rgba(76, 56, 116, 0.3) 25%, transparent 25%),
-                      linear-gradient(45deg, rgba(76, 56, 116, 0.3) 25%, transparent 25%),
-                      linear-gradient(315deg, rgba(76, 56, 116, 0.3) 25%, transparent 25%);
+    background-image: linear-gradient(
+            135deg,
+            rgba(76, 56, 116, 0.3) 25%,
+            transparent 25%
+        ),
+        linear-gradient(225deg, rgba(76, 56, 116, 0.3) 25%, transparent 25%),
+        linear-gradient(45deg, rgba(76, 56, 116, 0.3) 25%, transparent 25%),
+        linear-gradient(315deg, rgba(76, 56, 116, 0.3) 25%, transparent 25%);
     background-size: 20px 20px;
     background-position: 0 0, 10px 10px, 10px 10px, 0 0;
     opacity: 0.3;
@@ -684,10 +757,13 @@ rgb(57, 162, 217): #2033c1; */
 }
 
 @keyframes diagonalStripes {
-    0% { background-position: 0 0, 10px 10px, 10px 10px, 0 0; }
-    100% { background-position: 20px 20px, 30px 30px, 30px 30px, 20px 20px; }
+    0% {
+        background-position: 0 0, 10px 10px, 10px 10px, 0 0;
+    }
+    100% {
+        background-position: 20px 20px, 30px 30px, 30px 30px, 20px 20px;
+    }
 }
-
 
 .deskmat-diamonds::before {
     content: "";
@@ -696,8 +772,7 @@ rgb(57, 162, 217): #2033c1; */
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: 
-        linear-gradient(45deg, transparent 75%, #c4a7e7 75%),
+    background-image: linear-gradient(45deg, transparent 75%, #c4a7e7 75%),
         linear-gradient(135deg, transparent 75%, #c4a7e7 75%),
         linear-gradient(225deg, transparent 75%, #c4a7e7 75%),
         linear-gradient(315deg, transparent 75%, #c4a7e7 75%);
@@ -707,9 +782,15 @@ rgb(57, 162, 217): #2033c1; */
 }
 
 @keyframes gradientAnimation {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 .deskmat-diamonds {
@@ -725,9 +806,26 @@ rgb(57, 162, 217): #2033c1; */
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: 
-        linear-gradient(45deg, #6a0dad 25%, transparent 25%, transparent 50%, #6a0dad 50%, #6a0dad 75%, transparent 75%, transparent),
-        linear-gradient(45deg, #6a0dad 25%, transparent 25%, transparent 50%, #6a0dad 50%, #6a0dad 75%, transparent 75%, transparent);
+    background-image: linear-gradient(
+            45deg,
+            #6a0dad 25%,
+            transparent 25%,
+            transparent 50%,
+            #6a0dad 50%,
+            #6a0dad 75%,
+            transparent 75%,
+            transparent
+        ),
+        linear-gradient(
+            45deg,
+            #6a0dad 25%,
+            transparent 25%,
+            transparent 50%,
+            #6a0dad 50%,
+            #6a0dad 75%,
+            transparent 75%,
+            transparent
+        );
     background-size: 50px 50px;
     opacity: 0.2;
 }
@@ -741,8 +839,11 @@ rgb(57, 162, 217): #2033c1; */
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: 
-        radial-gradient(circle at 25% 25%, #c4a7e7, transparent 40%),
+    background-image: radial-gradient(
+            circle at 25% 25%,
+            #c4a7e7,
+            transparent 40%
+        ),
         radial-gradient(circle at 75% 75%, #c4a7e7, transparent 40%),
         radial-gradient(circle at 25% 75%, #6a0dad, transparent 40%),
         radial-gradient(circle at 75% 25%, #6a0dad, transparent 40%);
@@ -752,9 +853,15 @@ rgb(57, 162, 217): #2033c1; */
 }
 
 @keyframes gradientAnimation {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
 .deskmat-keeby-purple {
@@ -771,13 +878,29 @@ rgb(57, 162, 217): #2033c1; */
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: 
-        linear-gradient(60deg, #6a0dad 25%, transparent 25%, transparent 50%, #6a0dad 50%, #6a0dad 75%, transparent 75%, transparent),
-        linear-gradient(60deg, transparent 25%, #c4a7e7 25%, #c4a7e7 50%, transparent 50%, transparent 75%, #c4a7e7 75%, #c4a7e7);
+    background-image: linear-gradient(
+            60deg,
+            #6a0dad 25%,
+            transparent 25%,
+            transparent 50%,
+            #6a0dad 50%,
+            #6a0dad 75%,
+            transparent 75%,
+            transparent
+        ),
+        linear-gradient(
+            60deg,
+            transparent 25%,
+            #c4a7e7 25%,
+            #c4a7e7 50%,
+            transparent 50%,
+            transparent 75%,
+            #c4a7e7 75%,
+            #c4a7e7
+        );
     background-size: 50px 50px;
     opacity: 0.3;
-} 
-
+}
 
 .deskmat-banana {
     background-color: whitesmoke; /* SaddleBrown background */
@@ -792,8 +915,8 @@ rgb(57, 162, 217): #2033c1; */
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: radial-gradient(circle, #ffeb3b 10%, transparent 10%), 
-                      radial-gradient(circle, #ffeb3b 10%, transparent 10%);
+    background-image: radial-gradient(circle, #ffeb3b 10%, transparent 10%),
+        radial-gradient(circle, #ffeb3b 10%, transparent 10%);
     background-size: 20px 20px;
     background-position: 0 0, 10px 10px;
     opacity: 1;
@@ -814,18 +937,13 @@ rgb(57, 162, 217): #2033c1; */
 }
 
 @keyframes floatBananas {
-    0% { background-position: 0 0; }
-    100% { background-position: 250px 250px; }
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 250px 250px;
+    }
 }
-
-
-
-
-
-
-
-
-
 
 /* stock */
 .mousepad {
@@ -834,7 +952,6 @@ rgb(57, 162, 217): #2033c1; */
     position: relative;
     overflow: hidden;
 }
-
 
 /* hackerman */
 .deskmat-grid {
@@ -888,46 +1005,48 @@ rgb(57, 162, 217): #2033c1; */
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: 
-        linear-gradient(0deg, transparent 95%, #fff 95%),
+    background-image: linear-gradient(0deg, transparent 95%, #fff 95%),
         linear-gradient(90deg, transparent 95%, #fff 95%);
     background-size: 50px 50px;
     opacity: 0.2;
 }
 
 @keyframes gradientAnimation {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 /* dots */
 .mousepad-dots {
-    background-color: #0f1021; 
+    background-color: #0f1021;
     background-image: radial-gradient(circle, #00ff00 1px, transparent 1px);
     background-size: 20px 20px;
     animation: backgroundScroll 20s linear infinite;
 }
 
-.mousepad-dots::before{
+.mousepad-dots::before {
     content: "";
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-
 }
 @keyframes backgroundScroll {
-    0% { background-position: 0 0; }
-    100% { background-position: 1000px 1000px; }
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 1000px 1000px;
+    }
 }
 /* test */
-
-
-
-
-
-
 
 /* aurora */
 /* .hacker-background {
@@ -2026,6 +2145,30 @@ input[type="checkbox"]:hover {
 
 .display-keeb-card-overlay {
     clip-path: polygon(0 15%, 100% 0%, 100% 100%, 0 100%);
+}
+
+.newsletter-toggle-true {
+    opacity: 1;
+    transform: translateX(0);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.newsletter-toggle-false {
+    opacity: 0;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.slide-in {
+    transform: translateX(0);
+}
+
+.slide-out-left {
+    transform: translateX(-100%);
+}
+
+.slide-out-right {
+    transform: translateX(100%);
 }
 
 /* --------------         END PROFILE         --------------  */
