@@ -245,7 +245,7 @@ export default function MainFooter() {
                             <SupportMe />
                         </ModalDialog>
                         <Link
-                            href="/privacy-policy"
+                            href="/keebdex/contact"
                             aria-label="privacy"
                             className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                         >

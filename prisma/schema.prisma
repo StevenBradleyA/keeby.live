@@ -300,6 +300,17 @@ model Tag {
     users User[] @relation("UserTags")
 }
 
+model Ticket {
+    id        String   @id @default(cuid())
+    userId    String
+    text      String
+    email     String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    user User @relation(fields: [userId], references: [id])
+}
+
 model Session {
     id           String   @id @default(cuid())
     sessionToken String   @unique
@@ -348,6 +359,7 @@ model User {
     receivedMessages        Message[]                 @relation("messageRecipient")
     verificationTransaction VerificationTransaction[]
     notifications           Notification[]
+    tickets                 Ticket[]
 }
 
 model VerificationTransaction {

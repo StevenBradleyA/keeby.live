@@ -14,6 +14,7 @@ import { offerRouter } from "./routers/offer";
 import { transactionRouter } from "./routers/transaction";
 import { messageRouter } from "./routers/message";
 import { notificationRouter } from "./routers/notification";
+import { ticketRouter } from "./routers/ticket";
 
 /**
  * This is the primary router for your server.
@@ -34,6 +35,7 @@ export const appRouter = createTRPCRouter({
     rank: rankRouter,
     review: reviewRouter,
     tag: tagRouter,
+    ticket: ticketRouter,
     transaction: transactionRouter,
     user: userRouter,
 });
