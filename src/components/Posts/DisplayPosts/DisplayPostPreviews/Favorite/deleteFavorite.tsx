@@ -3,11 +3,13 @@ import { api } from "~/utils/api";
 interface PostPreviewDeleteFavoriteProps {
     userId: string;
     favoriteId: string;
+    postId: string;
 }
 
 export default function PostPreviewDeleteFavorite({
     userId,
     favoriteId,
+    postId,
 }: PostPreviewDeleteFavoriteProps) {
     const ctx = api.useContext();
 
@@ -25,6 +27,7 @@ export default function PostPreviewDeleteFavorite({
             const data = {
                 id: favoriteId,
                 userId: userId,
+                postId: postId,
             };
 
             return unfavorite(data);

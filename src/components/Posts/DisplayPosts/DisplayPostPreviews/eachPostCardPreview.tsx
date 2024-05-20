@@ -2,7 +2,7 @@ import type { Images } from "@prisma/client";
 import Link from "next/link";
 import Image from "next/image";
 import keebo from "@public/Profile/keebo.png";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import ChevronRound from "~/components/Svgs/chevron";
 import { useSession } from "next-auth/react";
 import PostPreviewDeleteFavorite from "./Favorite/deleteFavorite";
@@ -41,7 +41,6 @@ interface Count {
 export default function EachPostCardPreview({
     post,
 }: EachPostCardPreviewProps) {
-    // todo Need default images or some styling change so blank posts look better
 
     const { data: session } = useSession();
     const [imageIndex, setImageIndex] = useState<number>(0);
@@ -66,7 +65,6 @@ export default function EachPostCardPreview({
         );
     };
 
-    // todo keebo with a sign that has the tag name or a computer with the tag name idk yet but a placeholder image for no text might be ideal
 
     return (
         <div className="flex h-[35vh] flex-col  rounded-md border-2 border-[#2f2f2f] text-sm tablet:w-full largeLaptop:w-3/4   desktop:w-2/3">
@@ -211,6 +209,7 @@ export default function EachPostCardPreview({
                                             <PostPreviewDeleteFavorite
                                                 userId={session.user.id}
                                                 favoriteId={post.favoriteId}
+                                                postId={post.id}
                                             />
                                         </div>
                                     )}
@@ -378,6 +377,8 @@ export default function EachPostCardPreview({
                                             <PostPreviewDeleteFavorite
                                                 userId={session.user.id}
                                                 favoriteId={post.favoriteId}
+                                                postId={post.id}
+
                                             />
                                         </div>
                                     )}
@@ -542,6 +543,8 @@ export default function EachPostCardPreview({
                                             <PostPreviewDeleteFavorite
                                                 userId={session.user.id}
                                                 favoriteId={post.favoriteId}
+                                                postId={post.id}
+
                                             />
                                         </div>
                                     )}
@@ -705,6 +708,7 @@ export default function EachPostCardPreview({
                                             <PostPreviewDeleteFavorite
                                                 userId={session.user.id}
                                                 favoriteId={post.favoriteId}
+                                                postId={post.id}
                                             />
                                         </div>
                                     )}

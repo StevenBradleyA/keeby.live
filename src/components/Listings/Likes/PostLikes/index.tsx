@@ -45,6 +45,7 @@ export default function PostPreviewLike({
             const data = {
                 userId: userId,
                 id: favoriteId.id,
+                postId: postId,
             };
 
             return unfavorite(data);

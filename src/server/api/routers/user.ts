@@ -604,79 +604,79 @@ export const userRouter = createTRPCRouter({
     //         }
     //     }),
 
-    verifyUser: protectedProcedure
-        .input(
-            z.object({
-                userId: z.string(),
-                access: z.string(),
-                refresh: z.string(),
-            })
-        )
-        .mutation(async ({ input, ctx }) => {
-            const { userId, access, refresh } = input;
+    // verifyUser: protectedProcedure
+    //     .input(
+    //         z.object({
+    //             userId: z.string(),
+    //             access: z.string(),
+    //             refresh: z.string(),
+    //         })
+    //     )
+    //     .mutation(async ({ input, ctx }) => {
+    //         const { userId, access, refresh } = input;
 
-            try {
-                const userInfoResponse = await fetch(
-                    "https://api-m.sandbox.paypal.com/v1/identity/openidconnect/userinfo?schema=openid",
-                    {
-                        method: "GET",
-                        headers: {
-                            Authorization: `Bearer ${access}`,
-                            "Content-Type": "application/x-www-form-urlencoded",
-                        },
-                    }
-                );
+    //         try {
+    //             const userInfoResponse = await fetch(
+    //                 "https://api-m.sandbox.paypal.com/v1/identity/openidconnect/userinfo?schema=openid",
+    //                 {
+    //                     method: "GET",
+    //                     headers: {
+    //                         Authorization: `Bearer ${access}`,
+    //                         "Content-Type": "application/x-www-form-urlencoded",
+    //                     },
+    //                 }
+    //             );
 
-                    const userInfo =
-                        (await userInfoResponse.json()) as UserInfoData;
-                    console.log("\n\n\n hey \n\n\n", userInfo);
+    //                 const userInfo =
+    //                     (await userInfoResponse.json()) as UserInfoData;
+    //                 console.log("\n\n\n hey \n\n\n", userInfo);
 
-                    if (!userInfoResponse.ok) {
-                        throw new Error(
-                            `Failed to fetch user info from PayPal`
-                        );
-                    }
-                    // do i save the refresh token? and the user_id from paypal?
-                    // that way later when i need to send a payout I just get a new access token and send them the amount to the paypal userId?
-                    if (
-                        userInfo &&
-                        tokenData.refresh_token &&
-                        userInfo.user_id
-                    ) {
-                        const updateUser = await ctx.prisma.user.update({
-                            where: { id: userId },
-                            data: {
-                                isVerified: true,
-                                refreshToken: tokenData.refresh_token,
-                                paypalId: userInfo.user_id,
-                            },
-                        });
-                        return { userInfo, updateUser, tokenData };
-                    }
-                    return { userInfo, tokenData };
-                }
+    //                 if (!userInfoResponse.ok) {
+    //                     throw new Error(
+    //                         `Failed to fetch user info from PayPal`
+    //                     );
+    //                 }
+    //                 // do i save the refresh token? and the user_id from paypal?
+    //                 // that way later when i need to send a payout I just get a new access token and send them the amount to the paypal userId?
+    //                 if (
+    //                     userInfo &&
+    //                     tokenData.refresh_token &&
+    //                     userInfo.user_id
+    //                 ) {
+    //                     const updateUser = await ctx.prisma.user.update({
+    //                         where: { id: userId },
+    //                         data: {
+    //                             isVerified: true,
+    //                             refreshToken: tokenData.refresh_token,
+    //                             paypalId: userInfo.user_id,
+    //                         },
+    //                     });
+    //                     return { userInfo, updateUser, tokenData };
+    //                 }
+    //                 return { userInfo, tokenData };
+    //             }
 
-                // return data;
-            } catch (error) {
-                console.error("Failed to get user info");
-                throw new Error("Failed to get user info");
-            }
-        }),
+    //             // return data;
+    //         } catch (error) {
+    //             console.error("Failed to get user info");
+    //             throw new Error("Failed to get user info");
+    //         }
+    //     }),
 
-    verifyTesting: protectedProcedure
-        .input(
-            z.object({
-                userId: z.string(),
-            })
-        )
-        .mutation(async ({ input, ctx }) => {
-            const { userId } = input;
+    // verifyTesting: protectedProcedure
+    //     .input(
+    //         z.object({
+    //             userId: z.string(),
+    //         })
+    //     )
+    //     .mutation(async ({ input, ctx }) => {
+    //         const { userId } = input;
 
-            return await ctx.prisma.user.update({
-                where: { id: userId },
-                data: {
-                    isVerified: true,
-                },
-            });
-        }),
+    //         return await ctx.prisma.user.update({
+    //             where: { id: userId },
+    //             data: {
+    //                 isVerified: true,
+    //             },
+    //         });
+    //     }),
 });

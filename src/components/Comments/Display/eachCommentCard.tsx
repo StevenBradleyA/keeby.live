@@ -39,6 +39,8 @@ interface CommentContents {
     user: CommentUser;
     _count: CommentLike;
     isLiked?: boolean;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 export default function EachCommentCard({

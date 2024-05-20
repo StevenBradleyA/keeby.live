@@ -282,6 +282,7 @@ export default function DisplayPostPage({ post }: DisplayPostPageProps) {
                                                             favoriteId={
                                                                 post.favoriteId
                                                             }
+                                                            postId={post.id}
                                                         />
                                                     </div>
                                                 )}
@@ -312,9 +313,7 @@ export default function DisplayPostPage({ post }: DisplayPostPageProps) {
                                             isOpen={isSignInModalOpen}
                                             onClose={closeSignInModal}
                                         >
-                                            <SignInModal
-                                                closeModal={closeSignInModal}
-                                            />
+                                            <SignInModal />
                                         </ModalDialog>
                                     </div>
                                     {post.images.length > 0 &&

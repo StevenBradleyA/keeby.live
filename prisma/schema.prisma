@@ -3,8 +3,8 @@ generator client {
 }
 
 datasource db {
-    // provider = "postgresql"
-    provider = "sqlite"
+    provider = "postgresql"
+    // provider = "sqlite"
     url      = env("DATABASE_URL")
 }
 
@@ -38,7 +38,6 @@ model Comment {
     createdAt      DateTime @default(now())
     updatedAt      DateTime @updatedAt
 
-    // New explicit relations
     listingId String?
     postId    String?
 
@@ -48,7 +47,6 @@ model Comment {
     replies     Comment[]     @relation("ParentComment")
     commentLike CommentLike[]
 
-    // New explicit relations to Listing and Post
     listing Listing? @relation(fields: [listingId], references: [id], onDelete: Cascade)
     post    Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
 
@@ -170,7 +168,6 @@ model Listing {
 model ListingOffer {
     id    String @id @default(cuid())
     price Int
-    // this will be as cents
 
     status    String
     // PENDING, ACCEPTED

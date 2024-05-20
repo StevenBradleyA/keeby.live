@@ -37,6 +37,8 @@ interface ReplyContents {
     referencedUser: string | null;
     _count: CommentLike;
     isLiked?: boolean;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 export default function EachReplyCommentCard({
