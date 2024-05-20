@@ -138,6 +138,7 @@ export default function SpeedMode({
                 accuracy: accuracy,
                 mode: mode,
             };
+            console.log('data check', data)
             createGame(data);
         }
 
@@ -334,7 +335,7 @@ export default function SpeedMode({
     }, [totalUserInput, gameOver, isRunning, stopwatch]);
 
     return (
-        <div className="z-10 flex flex-shrink-0 flex-col laptop:w-3/4 desktop:w-2/3">
+        <div className="z-10 flex flex-col w-full">
             {gameOver === false && (
                 <div className="mt-72 flex w-full flex-col">
                     <SentenceGenerator

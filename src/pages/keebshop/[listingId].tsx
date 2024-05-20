@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import DisplayListingCheck from "~/components/KeebShop/DisplayListing/displayListingCheck";
+import DisplayListingCheck from "~/components/Listings/DisplayListing/displayListingCheck";
 
 export default function ListingPage() {
     const router = useRouter();

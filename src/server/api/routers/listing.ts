@@ -19,7 +19,7 @@ type CreateData = {
     assemblyType: string;
     price: number;
     sellerId: string;
-    sold: boolean;
+    status: string;
     soundTest?: string;
 };
 type UpdateData = {
@@ -59,6 +59,7 @@ interface ListingPage extends Listing {
         selectedTag: string | null;
         profile: string | null;
         avgRating?: number | null;
+        totalRatings?: number | null;
     };
 }
 
@@ -177,10 +178,16 @@ export const listingRouter = createTRPCRouter({
                 const averageStarRating = await ctx.prisma.review.aggregate({
                     where: { sellerId: listingWithImages.seller.id },
                     _avg: { starRating: true },
+                    _count: {
+                        starRating: true,
+                    },
                 });
 
                 listingWithImages.seller.avgRating =
                     averageStarRating._avg.starRating;
+
+                listingWithImages.seller.totalRatings =
+                    averageStarRating._count.starRating;
 
                 listingWithImages.images.sort((a, b) => {
                     if (
@@ -235,6 +242,7 @@ export const listingRouter = createTRPCRouter({
 
             const whereFilters: Prisma.ListingWhereInput = {
                 AND: [
+                    { status: "ACTIVE" },
                     switchType ? { switchType } : {},
                     soundType ? { soundType } : {},
                     assemblyType ? { assemblyType } : {},
@@ -330,6 +338,7 @@ export const listingRouter = createTRPCRouter({
 
             const whereFilters: Prisma.ListingWhereInput = {
                 AND: [
+                    { status: "ACTIVE" },
                     switchType ? { switchType } : {},
                     soundType ? { soundType } : {},
                     assemblyType ? { assemblyType } : {},
@@ -456,7 +465,7 @@ export const listingRouter = createTRPCRouter({
                     assemblyType,
                     price,
                     sellerId,
-                    sold: false,
+                    status: "ACTIVE",
                 };
                 if (soundTest) {
                     createData.soundTest = soundTest;
@@ -539,6 +548,18 @@ export const listingRouter = createTRPCRouter({
                 ctx.session.user.id === sellerId &&
                 ctx.session.user.isVerified
             ) {
+                const listingCheck = await ctx.prisma.listing.findUnique({
+                    where: { id: id },
+                });
+                if (listingCheck) {
+                    if (
+                        listingCheck.status === "SOLD" ||
+                        listingCheck.status === "PENDING"
+                    ) {
+                        throw new Error("Listing not active");
+                    }
+                }
+
                 const updateData: UpdateData = {
                     title,
                     text,
@@ -654,6 +675,19 @@ export const listingRouter = createTRPCRouter({
         )
         .mutation(async ({ input, ctx }) => {
             const { id, sellerId } = input;
+
+            const listingCheck = await ctx.prisma.listing.findUnique({
+                where: { id: id },
+            });
+            if (listingCheck) {
+                if (
+                    listingCheck.status === "SOLD" ||
+                    listingCheck.status === "PENDING"
+                ) {
+                    throw new Error("Listing not active");
+                }
+            }
+
             if (ctx.session.user.id === sellerId || ctx.session.user.isAdmin) {
                 const images = await ctx.prisma.images.findMany({
                     where: {

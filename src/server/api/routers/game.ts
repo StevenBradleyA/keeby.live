@@ -118,6 +118,11 @@ export const gameRouter = createTRPCRouter({
             return { gameResults, allGameResults, averageWpm, averageAccuracy };
         }),
 
+
+
+        // todo add fun tags like hitting sub 1 wpm or something speedy speed boi or speed demon
+        // todo 300 wpm no accuracy or something -- 
+
     create: protectedProcedure
         .input(
             z.object({
@@ -131,6 +136,19 @@ export const gameRouter = createTRPCRouter({
         )
         .mutation(async ({ input, ctx }) => {
             const { wpm, pureWpm, accuracy, mode, userId, keebId } = input;
+
+            console.log('\n\n\n', wpm, '\n\n\n\n')
+            console.log('\n\n\n', pureWpm, '\n\n\n\n')
+            console.log('\n\n\n', accuracy, '\n\n\n\n')
+            console.log('\n\n\n', mode, '\n\n\n\n')
+            console.log('\n\n\n', userId, '\n\n\n\n')
+            console.log('\n\n\n', keebId, '\n\n\n\n')
+
+// todo fix the fucking keebId again lmaooooooo
+
+// we should probably just do a keebId check 
+
+
             let rankChange = false;
             if (
                 ctx.session.user.hasProfile &&
@@ -148,6 +166,8 @@ export const gameRouter = createTRPCRouter({
                 const newGame = await ctx.prisma.game.create({
                     data: createData,
                 });
+                
+
 
                 const player = await ctx.prisma.user.findUnique({
                     where: { id: userId },
@@ -165,6 +185,9 @@ export const gameRouter = createTRPCRouter({
                         },
                     },
                 });
+                if (!player) {
+                    throw new Error("User ID not found");
+                }
 
                 if (
                     player &&
@@ -191,7 +214,7 @@ export const gameRouter = createTRPCRouter({
                     const topGames = await ctx.prisma.game.findMany({
                         where: {
                             userId: userId,
-                            mode: "Speed", //todo change later for other ranked modes
+                            mode: "Speed", 
                         },
                         orderBy: {
                             wpm: "desc",
@@ -246,13 +269,16 @@ export const gameRouter = createTRPCRouter({
                                                     id: existingRankTag.id,
                                                 },
                                                 select: {
-                                                    id: true
-                                                }
+                                                    id: true,
+                                                },
                                             },
                                         },
                                     });
 
-                                if (doesUserOwnTag && doesUserOwnTag.tags.length === 0) {
+                                if (
+                                    doesUserOwnTag &&
+                                    doesUserOwnTag.tags.length === 0
+                                ) {
                                     // If the user does not already have this tag, associate the tag with the user
                                     await ctx.prisma.user.update({
                                         where: { id: userId },
@@ -262,6 +288,15 @@ export const gameRouter = createTRPCRouter({
                                                     id: existingRankTag.id,
                                                 },
                                             },
+                                        },
+                                    });
+
+                                    await ctx.prisma.notification.create({
+                                        data: {
+                                            userId: userId,
+                                            text: `New tag unlocked!`,
+                                            type: "TAG",
+                                            status: "UNREAD",
                                         },
                                     });
                                 }

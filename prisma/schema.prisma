@@ -3,8 +3,8 @@ generator client {
 }
 
 datasource db {
-    provider = "postgresql"
-    // provider = "sqlite"
+    // provider = "postgresql"
+    provider = "sqlite"
     url      = env("DATABASE_URL")
 }
 
@@ -35,6 +35,8 @@ model Comment {
     userId         String
     parentId       String?
     referencedUser String?
+    createdAt      DateTime @default(now())
+    updatedAt      DateTime @updatedAt
 
     // New explicit relations
     listingId String?
@@ -145,7 +147,9 @@ model Listing {
     assemblyType String
     pcbType      String
 
-    sold      Boolean  @default(false)
+    status String @default("ACTIVE")
+    // ACTIVE, SOLD, PENDING
+
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
@@ -169,7 +173,7 @@ model ListingOffer {
     // this will be as cents
 
     status    String
-    // PENDING, ACCEPTED, REJECTED, WITHDRAWN
+    // PENDING, ACCEPTED
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
@@ -181,17 +185,56 @@ model ListingOffer {
 }
 
 model ListingTransaction {
-    id        String   @id @default(cuid())
-    price     Int
-    name      String
-    status    String
+    id          String @id @default(cuid())
+    payed       Int
+    agreedPrice Int
+
+    status        String
+    // PAYED REFUNDED
+    paypalOrderId String
+    transactionId String
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @updatedAt
+    buyerId       String
+    listingId     String
+
+    buyer   User      @relation(fields: [buyerId], references: [id], onDelete: Cascade)
+    listing Listing   @relation(fields: [listingId], references: [id], onDelete: Cascade)
+    Message Message[]
+}
+
+model Message {
+    id                   String @id @default(cuid())
+    text                 String
+    userId               String
+    recipientId          String
+    listingTransactionId String
+
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    userId    String
-    listingId String
 
-    user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-    listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+    user               User               @relation("messageOwner", fields: [userId], references: [id])
+    recipient          User               @relation("messageRecipient", fields: [recipientId], references: [id])
+    listingTransaction ListingTransaction @relation(fields: [listingTransactionId], references: [id])
+
+    @@index([userId], name: "idxMessageSenderId")
+    @@index([recipientId], name: "idxMessageRecipientId")
+    @@index([listingTransactionId], name: "idxMessageTransactionId")
+}
+
+model Notification {
+    id        String   @id @default(cuid())
+    text      String
+    type      String
+    typeId    String?
+    status    String
+    // READ, UNREAD
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    userId String
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Post {
@@ -228,8 +271,8 @@ model Rank {
     image    String
     name     String @unique
     standing Float
-    minWpm   Int
-    maxWpm   Int
+    minWpm   Float
+    maxWpm   Float
     users    User[]
 }
 
@@ -257,6 +300,17 @@ model Tag {
     users User[] @relation("UserTags")
 }
 
+model Ticket {
+    id        String   @id @default(cuid())
+    userId    String
+    text      String
+    email     String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    user User @relation(fields: [userId], references: [id])
+}
+
 model Session {
     id           String   @id @default(cuid())
     sessionToken String   @unique
@@ -276,32 +330,51 @@ model User {
     rankId         String?
     username       String?   @unique
     selectedTag    String?
-    refreshToken   String?
-    paypalId       String?
+    paypalEmail    String?
 
     isVerified   Boolean @default(false)
     isAdmin      Boolean @default(false)
     hasProfile   Boolean @default(false)
     isNewsletter Boolean @default(false)
+    isBanned     Boolean @default(false)
 
-    accounts        Account[]
-    sessions        Session[]
-    favorites       Favorites[]
-    posts           Post[]
-    comments        Comment[]
-    images          Images[]
-    games           Game[]
-    keebs           Keeb[]
-    commentLike     CommentLike[]
-    review          Review[]             @relation("UserRelation")
-    reviewsReceived Review[]             @relation("SellerRelation")
-    postLike        PostLike[]
-    tags            Tag[]                @relation("UserTags")
-    transactions    ListingTransaction[]
-    rank            Rank?                @relation(fields: [rankId], references: [id])
-    sellerListings  Listing[]            @relation("Seller")
-    buyerListings   Listing[]            @relation("Buyer")
-    listingOffer    ListingOffer[]
+    accounts                Account[]
+    sessions                Session[]
+    favorites               Favorites[]
+    posts                   Post[]
+    comments                Comment[]
+    images                  Images[]
+    games                   Game[]
+    keebs                   Keeb[]
+    commentLike             CommentLike[]
+    review                  Review[]                  @relation("UserRelation")
+    reviewsReceived         Review[]                  @relation("SellerRelation")
+    postLike                PostLike[]
+    tags                    Tag[]                     @relation("UserTags")
+    transactions            ListingTransaction[]
+    rank                    Rank?                     @relation(fields: [rankId], references: [id])
+    sellerListings          Listing[]                 @relation("Seller")
+    buyerListings           Listing[]                 @relation("Buyer")
+    listingOffer            ListingOffer[]
+    sentMessages            Message[]                 @relation("messageOwner")
+    receivedMessages        Message[]                 @relation("messageRecipient")
+    verificationTransaction VerificationTransaction[]
+    notifications           Notification[]
+    tickets                 Ticket[]
+}
+
+model VerificationTransaction {
+    id    String @id @default(cuid())
+    price Int
+
+    status        String
+    paypalOrderId String
+    transactionId String
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @updatedAt
+    userId        String
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {

@@ -7,6 +7,7 @@ import Custom404 from "~/pages/404";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { debounce } from "lodash";
+import MainFooter from "~/components/Footer/mainFooter";
 
 export default function AdminListings() {
     const { data: session } = useSession();
@@ -67,7 +68,7 @@ export default function AdminListings() {
                         id="searchQuery"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className={` admin-search h-10 w-full rounded-md bg-black p-1 text-failure outline-none `}
+                        className={` admin-search h-10 w-full rounded-md bg-black/40 p-1 text-failure outline-none hover:bg-black/50 `}
                         placeholder="Search"
                     />
                 </div>
@@ -83,6 +84,9 @@ export default function AdminListings() {
                             />
                         ))}
                 </div>
+            </div>
+            <div className="mt-96">
+                <MainFooter />
             </div>
         </div>
     );

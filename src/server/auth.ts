@@ -29,6 +29,8 @@ declare module "next-auth" {
             isVerified: boolean;
             hasProfile: boolean;
             isAdmin: boolean;
+            isNewsletter: boolean;
+            isBanned: boolean;
             // ...other properties
             // role: UserRole;
         } & DefaultSession["user"];

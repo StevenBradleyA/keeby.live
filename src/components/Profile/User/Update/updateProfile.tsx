@@ -26,6 +26,7 @@ interface UserData {
     username?: string;
     images?: Image[];
     selectedTag?: string;
+    isNewsletter: boolean;
 }
 export default function UpdateProfile({
     userId,
@@ -44,7 +45,9 @@ export default function UpdateProfile({
 
     const [username, setUsername] = useState(sessionData?.user.username || "");
     const [debouncedUsername, setDebouncedUsername] = useState(username);
-
+    const [isNewsletter, setIsNewsletter] = useState<boolean>(
+        sessionData?.user.isNewsletter || false
+    );
     const [imageFiles, setImageFiles] = useState<File[]>([]);
     const [errors, setErrors] = useState<ErrorsObj>({});
     const [enableErrorDisplay, setEnableErrorDisplay] =
@@ -140,6 +143,7 @@ export default function UpdateProfile({
 
                 const data: UserData = {
                     userId: sessionUserId,
+                    isNewsletter: isNewsletter,
                 };
                 if (sessionData.user.selectedTag !== selectedTag) {
                     data.selectedTag = selectedTag;
@@ -186,7 +190,6 @@ export default function UpdateProfile({
                     }));
                 }
                 mutate(data);
-
                 setImageFiles([]);
                 setHasSubmitted(true);
                 setIsSubmitting(false);
@@ -196,7 +199,6 @@ export default function UpdateProfile({
             }
         }
     };
-
     return (
         sessionData && (
             <form className="  flex h-full w-[600px] flex-col font-poppins text-green-500  ">
@@ -285,23 +287,72 @@ export default function UpdateProfile({
                             </p>
                         )}
                 </div>
-                <label className="mt-5">
-                    Selected Tag
-                    <select
-                        className=" h-10 w-full rounded-md bg-darkGray p-1 "
-                        value={selectedTag}
-                        onChange={(e) => setSelectedTag(e.target.value)}
-                    >
-                        {userTags &&
-                            userTags.tags.length > 0 &&
-                            userTags.tags.map((e) => (
-                                <option key={e.id} value={e.name}>
-                                    {e.name}
-                                </option>
-                            ))}
-                    </select>
-                </label>
+                <div className="mt-5 flex w-full gap-5">
+                    <label className="w-2/3">
+                        Selected Tag
+                        <select
+                            className=" h-10 w-full rounded-md bg-darkGray p-1 "
+                            value={selectedTag}
+                            onChange={(e) => setSelectedTag(e.target.value)}
+                        >
+                            {userTags &&
+                                userTags.tags.length > 0 &&
+                                userTags.tags.map((e) => (
+                                    <option key={e.id} value={e.name}>
+                                        {e.name}
+                                    </option>
+                                ))}
+                        </select>
+                    </label>
+                    <label className="w-1/3">
+                        Newsletter
+                        <button
+                            className={`flex h-10 w-full items-center justify-between overflow-hidden rounded-md bg-darkGray`}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                setIsNewsletter(!isNewsletter);
+                            }}
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className={`h-full w-1/3 rounded-l-md bg-dark p-2 text-green-500 ${
+                                    isNewsletter
+                                        ? "newsletter-toggle-true slide-in"
+                                        : "newsletter-toggle-false slide-out-right"
+                                }`}
+                                viewBox="0 0 32 32"
+                                fill="none"
+                            >
+                                <path
+                                    stroke="currentColor"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M6.5 17l6 6 13-13"
+                                />
+                            </svg>
 
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className={`h-full w-1/3 rounded-r-md bg-dark p-1 text-red-500 ${
+                                    isNewsletter
+                                        ? "newsletter-toggle-false slide-out-left"
+                                        : "newsletter-toggle-true slide-in"
+                                }`}
+                                viewBox="0 0 24 24"
+                                fill="none"
+                            >
+                                <path
+                                    d="M16 8L8 16M12 12L16 16M8 8L10 10"
+                                    stroke="currentColor"
+                                    stroke-width="1.5"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                />
+                            </svg>
+                        </button>
+                    </label>
+                </div>
                 <div>
                     <div className="relative mt-5 flex flex-col gap-1">
                         <label>

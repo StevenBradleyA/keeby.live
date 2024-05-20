@@ -146,6 +146,7 @@ export const userRouter = createTRPCRouter({
             const totalGamesPlayed = allGameResults.length;
             let averageWpm = 0;
             let averageAccuracy = 0;
+            let rankedWpm = 0;
 
             if (totalGamesPlayed > 0) {
                 averageWpm =
@@ -157,36 +158,96 @@ export const userRouter = createTRPCRouter({
                         0
                     ) / totalGamesPlayed;
             }
-
-            return { userWithGameResultsAndRank, averageWpm, averageAccuracy };
-        }),
-
-    getUserPublic: publicProcedure.input(z.string()).query(({ input, ctx }) => {
-        const userInfo = ctx.prisma.user.findUnique({
-            where: { username: input },
-            select: {
-                id: true,
-                username: true,
-                profile: true,
-                selectedTag: true,
-                reviewsReceived: {
-                    select: {
-                        id: true,
-                        text: true,
-                        starRating: true,
-                        userId: true,
-                        user: {
-                            select: {
-                                username: true,
-                            },
+            // todo going to have to make a separate non keeb dependant query to get this rank
+            const allRankedGames = await ctx.prisma.user.findUnique({
+                where: { id: userId },
+                select: {
+                    games: {
+                        select: {
+                            id: true,
+                            wpm: true,
+                            accuracy: true,
                         },
                     },
                 },
-            },
-        });
+            });
 
-        return userInfo;
-    }),
+            if (allRankedGames && allRankedGames.games.length > 10) {
+                const topGames = await ctx.prisma.game.findMany({
+                    where: {
+                        userId: userId,
+                        mode: "Speed", //todo change later for other ranked modes
+                    },
+                    orderBy: {
+                        wpm: "desc",
+                    },
+                    take: 10,
+                });
+
+                rankedWpm =
+                    topGames.reduce((acc, game) => acc + game.wpm, 0) /
+                    topGames.length;
+            }
+
+            return {
+                userWithGameResultsAndRank,
+                averageWpm,
+                averageAccuracy,
+                rankedWpm,
+            };
+        }),
+
+    getUserPublic: publicProcedure
+        .input(z.string())
+        .query(async ({ input, ctx }) => {
+            const userInfo = await ctx.prisma.user.findUnique({
+                where: { username: input },
+                select: {
+                    id: true,
+                    username: true,
+                    profile: true,
+                    selectedTag: true,
+                    internetPoints: true,
+                    reviewsReceived: {
+                        select: {
+                            id: true,
+                            text: true,
+                            starRating: true,
+                            userId: true,
+                            updatedAt: true,
+                            user: {
+                                select: {
+                                    username: true,
+                                    profile: true,
+                                },
+                            },
+                        },
+                    },
+                    rank: {
+                        select: {
+                            image: true,
+                            name: true,
+                        },
+                    },
+                    _count: {
+                        select: {
+                            games: true,
+                            comments: true,
+                            posts: true,
+                            sellerListings: true,
+                        },
+                    },
+                },
+            });
+            if (userInfo) {
+                const averageStarRating = await ctx.prisma.review.aggregate({
+                    where: { sellerId: userInfo.id },
+                    _avg: { starRating: true },
+                });
+
+                return { userInfo, averageStarRating };
+            }
+        }),
 
     getUserTags: publicProcedure
         .input(z.string())
@@ -225,6 +286,7 @@ export const userRouter = createTRPCRouter({
         .input(
             z.object({
                 userId: z.string(),
+                isNewsletter: z.boolean(),
                 username: z.string().optional(),
                 images: z
                     .array(
@@ -237,7 +299,9 @@ export const userRouter = createTRPCRouter({
             })
         )
         .mutation(async ({ input, ctx }) => {
-            const { userId, username, images, selectedTag } = input;
+            const { userId, username, images, selectedTag, isNewsletter } =
+                input;
+
             const sessionUserId = ctx.session.user.id;
 
             if (sessionUserId !== userId) {
@@ -248,6 +312,7 @@ export const userRouter = createTRPCRouter({
                 username?: string;
                 selectedTag?: string;
                 profile?: string;
+                isNewsletter?: boolean;
             } = {};
 
             if (images && images[0]) {
@@ -273,8 +338,16 @@ export const userRouter = createTRPCRouter({
             if (selectedTag) {
                 userData.selectedTag = selectedTag;
             }
+            if (isNewsletter !== undefined) {
+                userData.isNewsletter = isNewsletter;
+            }
 
-            if (username || selectedTag || (images && images[0])) {
+            if (
+                username ||
+                selectedTag ||
+                (images && images[0]) ||
+                isNewsletter !== undefined
+            ) {
                 return await ctx.prisma.user.update({
                     where: { id: userId },
                     data: {
@@ -283,7 +356,29 @@ export const userRouter = createTRPCRouter({
                 });
             }
         }),
+    updateNewsletter: protectedProcedure
+        .input(
+            z.object({
+                userId: z.string(),
+                isNewsletter: z.boolean(),
+            })
+        )
+        .mutation(async ({ input, ctx }) => {
+            const { userId, isNewsletter } = input;
 
+            const sessionUserId = ctx.session.user.id;
+
+            if (sessionUserId !== userId) {
+                throw new Error("Invalid userId");
+            }
+            await ctx.prisma.user.update({
+                where: { id: userId },
+                data: {
+                    isNewsletter: isNewsletter,
+                },
+            });
+            return { isNewsletter };
+        }),
     updateNewUser: protectedProcedure
         .input(
             z.object({
@@ -470,54 +565,67 @@ export const userRouter = createTRPCRouter({
             }
         }),
 
-    getPayPalAccessToken: publicProcedure
+    // getPayPalAccessToken: publicProcedure
+    //     .input(
+    //         z.object({
+    //             authorizationCode: z.string(),
+    //         })
+    //     )
+    //     .mutation(async ({ input }) => {
+    //         const { authorizationCode } = input;
+    //         const clientId = env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
+    //         const clientSecret = env.PAYPAL_SECRET;
+    //         const basicAuth = Buffer.from(
+    //             `${clientId}:${clientSecret}`
+    //         ).toString("base64");
+
+    //         try {
+    //             const tokenResponse = await fetch(
+    //                 "https://api-m.sandbox.paypal.com/v1/oauth2/token",
+    //                 {
+    //                     method: "POST",
+    //                     headers: {
+    //                         Authorization: `Basic ${basicAuth}`,
+    //                         "Content-Type": "application/x-www-form-urlencoded",
+    //                     },
+    //                     body: new URLSearchParams({
+    //                         grant_type: "authorization_code",
+    //                         code: authorizationCode,
+    //                     }),
+    //                 }
+    //             );
+
+    //             const tokenData = (await tokenResponse.json()) as TokenData;
+
+    //             return tokenData;
+    //         } catch (error) {
+    //             console.error("Failed to exchange authorization code:", error);
+    //             throw new Error("Failed to exchange authorization code.");
+    //         }
+    //     }),
+
+    verifyUser: protectedProcedure
         .input(
             z.object({
                 userId: z.string(),
-                authorizationCode: z.string(),
+                access: z.string(),
+                refresh: z.string(),
             })
         )
         .mutation(async ({ input, ctx }) => {
-            const { authorizationCode, userId } = input;
-            const clientId = env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
-            const clientSecret = env.PAYPAL_SECRET;
-            const basicAuth = Buffer.from(
-                `${clientId}:${clientSecret}`
-            ).toString("base64");
+            const { userId, access, refresh } = input;
 
             try {
-                const tokenResponse = await fetch(
-                    "https://api-m.sandbox.paypal.com/v1/oauth2/token",
+                const userInfoResponse = await fetch(
+                    "https://api-m.sandbox.paypal.com/v1/identity/openidconnect/userinfo?schema=openid",
                     {
-                        method: "POST",
+                        method: "GET",
                         headers: {
-                            Authorization: `Basic ${basicAuth}`,
+                            Authorization: `Bearer ${access}`,
                             "Content-Type": "application/x-www-form-urlencoded",
                         },
-                        body: new URLSearchParams({
-                            grant_type: "authorization_code",
-                            code: authorizationCode,
-                        }),
                     }
                 );
-
-                const tokenData = (await tokenResponse.json()) as TokenData;
-                console.log("\n\n\n hey \n\n\n", tokenData);
-
-                if (!tokenResponse.ok) {
-                    throw new Error(`Error from PayPal`);
-                }
-                if (tokenData) {
-                    const userInfoResponse = await fetch(
-                        "https://api-m.sandbox.paypal.com/v1/identity/oauth2/userinfo?schema=openid",
-                        {
-                            method: "GET",
-                            headers: {
-                                Authorization: `Bearer ${tokenData.access_token}`,
-                                "Content-Type": "application/json",
-                            },
-                        }
-                    );
 
                     const userInfo =
                         (await userInfoResponse.json()) as UserInfoData;
@@ -550,94 +658,25 @@ export const userRouter = createTRPCRouter({
 
                 // return data;
             } catch (error) {
-                console.error("Failed to exchange authorization code:", error);
-                throw new Error("Failed to exchange authorization code.");
+                console.error("Failed to get user info");
+                throw new Error("Failed to get user info");
             }
         }),
 
-    // getPayPalUserInfo: publicProcedure
+    verifyTesting: protectedProcedure
+        .input(
+            z.object({
+                userId: z.string(),
+            })
+        )
+        .mutation(async ({ input, ctx }) => {
+            const { userId } = input;
 
-    // verifyUser: protectedProcedure
-    //     .input(
-    //         z.object({
-    //             userId: z.string(),
-    //             authCode: z.string(),
-    //         })
-    //     )
-    //     .mutation(async ({ input, ctx }) => {
-    //         const { userId, authCode } = input;
-
-    // if (ctx.session.user.id !== userId) {
-    //     throw new Error("Invalid userId");
-    // }
-    // https://api-m.sandbox.paypal.com/v1/oauth2/token
-    // const tokenUrl = 'https://api-m.sandbox.paypal.com/v1/oauth2/token';
-    //     const params = new URLSearchParams({
-    //       grant_type: 'authorization_code',
-    //       code: authCode,
-    //       redirect_uri: 'https://www.keeby.live/verify-seller',
-    //     });
-
-    //     const credentials = Buffer.from(`${env.NEXT_PUBLIC_PAYPAL_CLIENT_ID}:${env.PAYPAL_SECRET}`).toString('base64');
-    //     try {
-    //         const response: Response = await fetch(tokenUrl, {
-    //           method: 'POST',
-    //           headers: {
-    //             'Authorization': `Basic ${credentials}`,
-    //             'Content-Type': 'application/x-www-form-urlencoded',
-    //           },
-    //           body: params,
-    //         });
-
-    //         const data = await response.json();
-
-    //         if (!response.ok) {
-    //           throw new Error(`Failed to exchange code for token: ${data.error_description || 'Unknown error'}`);
-    //         }
-
-    // Success - the access token is now ready for further API calls on behalf of the user
-    // return { accessToken: data.access_token };
-
-    // try {
-    //     const accessToken = await exchangeAuthCodeForAccessToken(
-    //         authCode
-    //     );
-    //     const paypalEmail = await retrieveUserInfo(accessToken);
-
-    //     console.log('hey', paypalEmail)
-
-    //     if (paypalEmail) {
-    //         return ctx.prisma.user.update({
-    //             where: { id: userId },
-    //             data: { isVerified: true, paypalEmail: paypalEmail },
-    //         });
-    //     }
-    // } catch (error) {
-    //     console.error("Error verifying user with PayPal:", error);
-    //     throw new Error("Verification failed");
-    // }
-    // }),
-    // verifyUser: protectedProcedure
-    // .input(z.string())
-    // .mutation(async ({ input, ctx }) => {
-    //     if (ctx.session.user.id === input) {
-    //         return ctx.prisma.user.update({
-    //             where: { id: input },
-    //             data: { isVerified: true },
-    //         });
-    //     } else {
-    //         throw new Error("Invalid userId");
-    //     }
-    // }),
-
-    // paypalRedirect: protectedProcedure.query(({ ctx }) => {
-    //     const clientId = env.PAYPAL_CLIENT_ID;
-    //     const returnUrl = encodeURIComponent(
-    //         `http://localhost:3000/verification/success`
-    //     );
-    //     const scope = encodeURIComponent("openid email profile");
-    //     const paypalUrl = `https://www.sandbox.paypal.com/signin/authorize?flowEntry=static&client_id=${clientId}&scope=${scope}&redirect_uri=${returnUrl}`;
-
-    //     return { url: paypalUrl };
-    // }),
+            return await ctx.prisma.user.update({
+                where: { id: userId },
+                data: {
+                    isVerified: true,
+                },
+            });
+        }),
 });

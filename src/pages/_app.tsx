@@ -7,19 +7,30 @@ import "~/styles/globals.css";
 import Layout from "../components/layout";
 import MobileProvider from "~/components/Context/Mobile";
 import ThemeProvider from "~/components/Context/Theme";
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+import { env } from "~/env.mjs";
 
 const MyApp: AppType<{ session: Session | null }> = ({
     Component,
     pageProps: { session, ...pageProps },
 }) => {
+
+    // todo we have to implement cookie context modal that asks for permissions for cookies which... 
+    // todo notifications provider
     return (
         <SessionProvider session={session}>
             <Toaster />
             <MobileProvider>
                 <ThemeProvider>
-                    <Layout>
-                        <Component {...pageProps} />
-                    </Layout>
+                    <PayPalScriptProvider
+                        options={{
+                            clientId: env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
+                        }}
+                    >
+                        <Layout>
+                            <Component {...pageProps} />
+                        </Layout>
+                    </PayPalScriptProvider>
                 </ThemeProvider>
             </MobileProvider>
         </SessionProvider>

@@ -14,7 +14,7 @@ export default function SignIn({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
     return (
         <>
-            <div className="text-3xl">
+            <div className="text-3xl text-green-500">
                 <TitleScripts page={"signin"} />
             </div>
             <div className="z-30 mt-10  rounded-3xl bg-keebyGray px-20 py-10">

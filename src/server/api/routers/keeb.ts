@@ -69,11 +69,35 @@ export const keebRouter = createTRPCRouter({
             })
         )
         .mutation(async ({ input, ctx }) => {
-            if (ctx.session.user.id === input.userId) {
-                await ctx.prisma.keeb.delete({
-                    where: { id: input.id },
+            const { id, userId } = input;
+
+            if (ctx.session.user.id === userId) {
+                // we can't just delete a keeb we have to check to make sure they have more than one keeb
+                // then we have to find a different keeb id and return it
+                const keebs = await ctx.prisma.keeb.findMany({
+                    where: { userId: userId },
                 });
-                return "Successfully deleted";
+
+                if (keebs.length > 1) {
+                    const newKeeb = keebs.find((keeb) => keeb.id !== id);
+
+                    if (!newKeeb) {
+                        throw new Error(
+                            "Unable to find a new keyboard to assign."
+                        );
+                    }
+
+                    await ctx.prisma.keeb.delete({
+                        where: { id: id },
+                    });
+
+                    return {
+                        newKeebId: newKeeb.id,
+                        newKeebName: newKeeb.name,
+                    };
+                } else {
+                    throw new Error("User must have at least one keyboard");
+                }
             }
 
             throw new Error("Invalid userId");

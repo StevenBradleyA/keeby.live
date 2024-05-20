@@ -62,26 +62,29 @@ export default function AdminEachDisplayRank({
         setIsModalOpen(false);
     };
 
+    console.log(session);
+
     return (
-        <div className="relative w-60 rounded-xl border-2 border-black p-5">
-            <h1 className="font-titillium text-3xl">{rank.name}</h1>
-            <p className="text-darkGray">{`min wpm ${rank.minWpm}`}</p>
-            <p className="text-darkGray">{`max wpm ${rank.maxWpm}`}</p>
-            <p className="mb-1 text-darkGray">{`standing top ${rank.standing}%`}</p>
+        <div className="relative w-72">
+            <div className="rounded-xl bg-black/25 p-5 text-sm text-failure shadow-xl hover:bg-black/30">
+                <h1 className="font-titillium text-3xl">{rank.name}</h1>
+                <p className="text-darkGray">{`min wpm ${rank.minWpm}`}</p>
+                <p className="text-darkGray">{`max wpm ${rank.maxWpm}`}</p>
+                <p className="mb-1 text-darkGray">{`standing top ${rank.standing}%`}</p>
 
-            <Image
-                alt="rank"
-                src={rank.image}
-                width={200}
-                height={200}
-                className="h-32 w-full rounded-md object-cover"
-            />
-
+                <Image
+                    alt="rank"
+                    src={rank.image}
+                    width={200}
+                    height={200}
+                    className="h-32 w-full rounded-md object-cover"
+                />
+            </div>
             <div className="absolute -top-8 right-0 flex gap-5">
                 <button onClick={openModal}>
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="w-5"
+                        className="w-5 text-failure hover:text-red-400"
                         viewBox="0 -0.5 21 21"
                         version="1.1"
                     >
@@ -94,7 +97,7 @@ export default function AdminEachDisplayRank({
                         >
                             <g
                                 transform="translate(-419.000000, -359.000000)"
-                                fill="#ff0000"
+                                fill="currentColor"
                             >
                                 <g
                                     id="icons"
@@ -112,8 +115,14 @@ export default function AdminEachDisplayRank({
 
                 {confirmDelete ? (
                     <div className="flex gap-2">
-                        <button onClick={handleDeleteTag}>{`XXXX`}</button>
-                        <button onClick={() => setConfirmDelete(false)}>
+                        <button
+                            onClick={handleDeleteTag}
+                            className="text-failure hover:text-red-400"
+                        >{`XXXX`}</button>
+                        <button
+                            onClick={() => setConfirmDelete(false)}
+                            className="text-failure hover:text-red-400"
+                        >
                             {`Cancel`}
                         </button>
                     </div>
@@ -121,7 +130,7 @@ export default function AdminEachDisplayRank({
                     <button className="" onClick={() => setConfirmDelete(true)}>
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            className="w-6 "
+                            className="w-6 text-failure hover:text-red-400"
                             viewBox="0 0 24 24"
                             fill="none"
                         >

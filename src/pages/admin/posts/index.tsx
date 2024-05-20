@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { debounce } from "lodash";
 import EachAdminPost from "~/components/Admin/Posts";
+import MainFooter from "~/components/Footer/mainFooter";
 
 export default function AdminPosts() {
     const { data: session } = useSession();
@@ -67,7 +68,7 @@ export default function AdminPosts() {
                         id="searchQuery"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className={` admin-search h-10 w-full rounded-md bg-black p-1 text-failure outline-none `}
+                        className={` admin-search h-10 w-full rounded-md bg-black/40 hover:bg-black/50 p-1 text-failure outline-none `}
                         placeholder="Search"
                     />
                 </div>
@@ -80,6 +81,9 @@ export default function AdminPosts() {
                             <EachAdminPost post={post} key={post.id} />
                         ))}
                 </div>
+            </div>
+            <div className="mt-96">
+                <MainFooter />
             </div>
         </div>
     );

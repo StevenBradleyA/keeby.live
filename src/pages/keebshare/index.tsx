@@ -6,10 +6,10 @@ import ResetArrowSvg from "~/components/Svgs/reset";
 import NotificationSvg from "~/components/Svgs/notification";
 import { getCookies } from "cookies-next";
 import { setCookie } from "cookies-next";
-import CreatePostModal from "~/components/KeebShare/CreatePost";
-import DisplayNewPostPreviews from "~/components/KeebShare/DisplayPosts/DisplayPostPreviews/displayNewPostPreviews";
-import DisplayPopularPostPreviews from "~/components/KeebShare/DisplayPosts/DisplayPostPreviews/displayPopularPostPreviews";
-import MainFooter from "~/components/Footer";
+import CreatePostModal from "~/components/Posts/CreatePost";
+import DisplayNewPostPreviews from "~/components/Posts/DisplayPosts/DisplayPostPreviews/displayNewPostPreviews";
+import DisplayPopularPostPreviews from "~/components/Posts/DisplayPosts/DisplayPostPreviews/displayPopularPostPreviews";
+import MainFooter from "~/components/Footer/mainFooter";
 import { debounce } from "lodash";
 
 export default function KeebShare() {
@@ -89,13 +89,13 @@ export default function KeebShare() {
 
     return (
         <>
-            <div className="mt-10 flex w-full flex-col tablet:px-5 desktop:px-16 text-darkGray">
+            <div className="mt-10 flex w-full flex-col text-darkGray tablet:px-5 desktop:px-16">
                 <div className=" flex w-full  gap-10 ">
                     <div className=" very-sticky flex w-1/4 flex-col">
                         <div className="mb-5 flex gap-5 ">
                             <button
                                 onClick={handleSearchClick}
-                                className={`${
+                                className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                     !isSpecify
                                         ? "border-b border-white text-white"
                                         : "border-b border-white border-opacity-0"
@@ -106,7 +106,7 @@ export default function KeebShare() {
                             <div className="relative flex">
                                 <button
                                     onClick={handleSpecifyClick}
-                                    className={`${
+                                    className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                         isSpecify
                                             ? "border-b border-white text-white"
                                             : "border-b border-white border-opacity-0"
@@ -122,7 +122,11 @@ export default function KeebShare() {
                             </div>
                         </div>
 
-                        <div className=" relative tablet:h-[68vh] desktop:h-[72vh] w-full overflow-auto rounded-xl bg-keebyGray p-5 text-darkGray">
+                        <div
+                            className={` relative tablet:h-[68vh] desktop:h-[72vh] ${
+                                isSpecify ? "overflow-auto" : "overflow-hidden"
+                            } w-full rounded-xl bg-keebyGray p-5 text-darkGray`}
+                        >
                             {isSpecify ? (
                                 <div className="flex w-full flex-col items-start gap-5">
                                     <div className="flex w-full flex-col items-start">
@@ -131,7 +135,7 @@ export default function KeebShare() {
                                                 Tag:
                                             </h1>
                                             <button
-                                                className=" absolute -top-1 right-0 h-7 w-7"
+                                                className=" absolute -top-1 right-0 h-7 w-7 text-darkGray transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                                                 onClick={handleResetSpecify}
                                             >
                                                 <ResetArrowSvg />
@@ -141,7 +145,7 @@ export default function KeebShare() {
                                             onClick={() =>
                                                 handleTagSelect("builds")
                                             }
-                                            className={` hover:text-white ${
+                                            className={` transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                                 tag === "builds"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -153,7 +157,7 @@ export default function KeebShare() {
                                             onClick={() =>
                                                 handleTagSelect("memes")
                                             }
-                                            className={`hover:text-white ${
+                                            className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                                 tag === "memes"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -165,7 +169,7 @@ export default function KeebShare() {
                                             onClick={() =>
                                                 handleTagSelect("tutorials")
                                             }
-                                            className={`hover:text-white ${
+                                            className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                                 tag === "tutorials"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -177,7 +181,7 @@ export default function KeebShare() {
                                             onClick={() =>
                                                 handleTagSelect("discussion")
                                             }
-                                            className={`hover:text-white ${
+                                            className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                                 tag === "discussion"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -195,11 +199,11 @@ export default function KeebShare() {
                                         onChange={(e) =>
                                             setSearchInput(e.target.value)
                                         }
-                                        className={` search-input-hack absolute h-10 w-full rounded-md ${
+                                        className={`search-input-hack absolute h-10 w-full rounded-md px-3 ${
                                             isSearchFocus
                                                 ? "search-input-placeholder bg-blackAlternative"
                                                 : "bg-darkGray"
-                                        } p-1 text-green-500 outline-none `}
+                                        } py-1 text-green-500 outline-none `}
                                         placeholder="Search"
                                         onFocus={() => setIsSearchFocus(true)}
                                         onBlur={() => setIsSearchFocus(false)}
@@ -229,9 +233,9 @@ export default function KeebShare() {
 
                     <div className=" flex w-3/4 flex-col">
                         <div className=" very-sticky flex w-full justify-between bg-dark">
-                            <div className="mb-5 flex gap-5 text-white/40">
+                            <div className="mb-5 flex gap-5 text-white/40 ">
                                 <button
-                                    className={`${
+                                    className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                         filter === "Hot"
                                             ? "border-b border-white text-white"
                                             : "border-b border-white border-opacity-0"
@@ -241,7 +245,7 @@ export default function KeebShare() {
                                     Hot
                                 </button>
                                 <button
-                                    className={`${
+                                    className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                         filter === "New"
                                             ? "border-b border-white text-white"
                                             : "border-b border-white border-opacity-0"
@@ -258,7 +262,7 @@ export default function KeebShare() {
                                         alt="create listing"
                                         width={200}
                                         height={200}
-                                        className="shop-create-listing w-12  transition duration-150 ease-in-out "
+                                        className="shop-create-listing w-12 "
                                     />
                                 </button>
                             </div>

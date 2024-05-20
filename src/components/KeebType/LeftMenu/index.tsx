@@ -36,8 +36,7 @@ export default function LeftMenu({
     setScholarType,
     setGameOver,
 }: LeftMenuProps) {
-    // todo refactor theme to be session so its accessible in nav to apply title png state variables????
-    // theme needs to have context...
+    // todo refactor theme to be a modal showing the color pallettes so it's easier to see as a user
 
     const { data: session } = useSession();
 
@@ -83,7 +82,7 @@ export default function LeftMenu({
 
     return (
         <div
-            className={`flex flex-col rounded-xl border-2 ${styles.border} border-opacity-50 ${styles.backgroundColor} bg-opacity-30 p-5 ${styles.hit} laptop:h-[65%] laptop:w-full desktop:h-[55%] desktop:w-[85%] `}
+            className={`flex flex-col rounded-xl border-2 ${styles.border} border-opacity-50 ${styles.backgroundColor} bg-opacity-30 p-5 ${styles.hit} w-full  laptop:h-[65%] desktop:h-[55%] `}
         >
             <label className="">Mode</label>
             <select
@@ -92,10 +91,10 @@ export default function LeftMenu({
                 onChange={handleModeChange}
             >
                 <option value="Speed">Speed</option>
-                {/* <option value="Gitgud">git gud</option> */}
-                <option value="Freeplay">Freeplay</option>
-                {/* <option value="Hacktime">It&apos;s Hacking Time</option> */}
                 <option value="Scholar">Scholar</option>
+                <option value="Freeplay">Freeplay</option>
+                <option value="Hacktime">It&apos;s Hacking Time</option>
+                {/* <option value="Gitgud">git gud</option> */}
             </select>
 
             {mode === "Speed" && (
@@ -123,7 +122,7 @@ export default function LeftMenu({
                         value={scholarType}
                         onChange={handleScholarTypeChange}
                     >
-                        <option value="Animal">animal</option>
+                        <option value="Animals">animal</option>
                         <option value="Vocab">vocab</option>
                         <option value="Keyboards">keyboards</option>
                         {/* <option value="SoftwareEngineering">
@@ -140,9 +139,12 @@ export default function LeftMenu({
                 onChange={handleThemeChange}
             >
                 <option value="KEEBY">keeby</option>
-                <option value="PRIMEAGEN">primeagen</option>
-                <option value="PIGGY">piggy</option>
+                <option value="KEEBYRED">keeby red</option>
+                <option value="BANANA">banana</option>
+                <option value="HACKERMAN">hackerman</option>
                 <option value="HIPYO">hipyo</option>
+                <option value="PIGGY">piggy</option>
+                <option value="PRIMEAGEN">primeagen</option>
             </select>
             {session && session.user.hasProfile && (
                 <MenuKeebSelection
