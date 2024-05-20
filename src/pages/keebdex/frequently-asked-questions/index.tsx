@@ -1,8 +1,8 @@
 import Image from "next/image";
-import keebo from "@public/profile/keebo.png";
 import MainFooter from "~/components/Footer/mainFooter";
 import { useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import keebo from "@public/Profile/keebo.png";
 
 export default function FrequentlyAskedQuestions() {
     const commonBuyerRef = useRef<HTMLDivElement | null>(null);
@@ -11,9 +11,6 @@ export default function FrequentlyAskedQuestions() {
     const typeRef = useRef<HTMLDivElement | null>(null);
 
     const [openToggle, setOpenToggle] = useState("");
-
-
-    
 
     return (
         <>
