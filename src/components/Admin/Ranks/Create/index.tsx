@@ -21,7 +21,6 @@ export default function AdminCreateRank({
 
     const [maxWpm, setMaxWpm] = useState<number>(0);
     const [imageFiles, setImageFiles] = useState<File[]>([]);
-    const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
     const { mutate: createRank } = api.rank.create.useMutation({
@@ -85,7 +84,6 @@ export default function AdminCreateRank({
                     link: imageUrl || "",
                 })),
             };
-            setHasSubmitted(true);
             setIsSubmitting(false);
             createRank(data);
         } else {
@@ -214,14 +212,14 @@ export default function AdminCreateRank({
                 }}
             >
                 {isSubmitting ? (
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-1 justify-center">
                         Uploading
                         <div className="w-6">
                             <LoadingSpinner size="16px" />
                         </div>
                     </div>
                 ) : (
-                    "Submit Listing"
+                    "Create Rank"
                 )}
             </button>
         </form>

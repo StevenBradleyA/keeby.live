@@ -232,7 +232,7 @@ export default function Newsletter() {
                     </svg>
                     <div>My Keebs</div>
                 </div>
-                <div className="absolute right-5 top-[50px] flex flex-col items-center font-retro text-black">
+                <div className="absolute right-10 top-[50px] flex flex-col items-center font-retro text-black">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 1024 1024"
@@ -251,7 +251,7 @@ export default function Newsletter() {
                             fill="#F3E5AB"
                         />
                     </svg>
-                    <div>Elden Ring Mods</div>
+                    <div>New Folder</div>
                 </div>
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -272,7 +272,7 @@ export default function Newsletter() {
                 <div className="mid-grid absolute z-20"></div>
 
                 <div className="absolute left-[25%] top-[300px] z-50 w-[500px]  overflow-hidden rounded-xl border-[1px] border-black font-retro text-black">
-                    <div className="h-10 w-full justify-between flex rounded-t-xl border-b-[1px] border-black bg-[#FBC1CC] px-4 py-2">
+                    <div className="flex h-10 w-full justify-between rounded-t-xl border-b-[1px] border-black bg-[#FBC1CC] px-4 py-2">
                         <div>
                             Status:{" "}
                             {sessionData?.user.isNewsletter
@@ -284,7 +284,7 @@ export default function Newsletter() {
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="currentColor"
-                            className="w-5 h-5 border-[1px] border-black p-[3px] text-black bg-gray-100 "
+                            className="h-5 w-5 border-[1px] border-black bg-gray-100 p-[3px] text-black "
                             viewBox="0 0 16 16"
                         >
                             <path d="M0 14.545L1.455 16 8 9.455 14.545 16 16 14.545 9.455 8 16 1.455 14.545 0 8 6.545 1.455 0 0 1.455 6.545 8z" />

@@ -8,10 +8,14 @@ export default function Admin() {
     const { data: session } = useSession();
     const accessDenied = !session || !session.user.isAdmin;
 
+    // todo transactions
+    // have to save total amount as a marketplace facilitator plus your 5%
+    // total users -- stats to actually calculate rank percentages for users untill then just copy rl.
+
     return !accessDenied ? (
-        <div className="h-full  w-full flex flex-col items-center ">
-            <div className="relative flex justify-center w-full">
-                <div className=" w-1/2 relative flex justify-center overflow-hidden rounded-xl bg-black bg-opacity-50 p-5">
+        <div className="flex  h-full w-full flex-col items-center ">
+            <div className="relative flex w-full justify-center">
+                <div className=" relative flex w-1/2 justify-center overflow-hidden rounded-xl bg-black bg-opacity-50 p-5">
                     <Image
                         src={hackerman}
                         alt="admin-logo"
@@ -29,10 +33,10 @@ export default function Admin() {
                     </div>
                 </div>
             </div>
-            <div className="mt-10 flex desktop:w-[70%] w-full px-20 justify-between">
+            <div className="mt-10 flex w-full justify-between px-20 desktop:w-[70%]">
                 <Link
                     href="/admin/listings"
-                    className="flex flex-col items-center bg-none hover:bg-black/10 p-5 rounded-md transition-background duration-300 ease-custom-cubic"
+                    className="flex flex-col items-center rounded-md bg-none p-5 transition-background duration-300 ease-custom-cubic hover:bg-black/10"
                 >
                     <Image
                         src={errorComputer}
@@ -45,7 +49,7 @@ export default function Admin() {
                 </Link>
                 <Link
                     href="/admin/posts"
-                    className="flex flex-col items-center bg-none hover:bg-black/10 p-5 rounded-md transition-background duration-300 ease-custom-cubic"
+                    className="flex flex-col items-center rounded-md bg-none p-5 transition-background duration-300 ease-custom-cubic hover:bg-black/10"
                 >
                     <Image
                         src={errorComputer}
@@ -58,7 +62,7 @@ export default function Admin() {
                 </Link>
                 <Link
                     href="/admin/ranks"
-                    className="flex flex-col items-center bg-none hover:bg-black/10 p-5 rounded-md transition-background duration-300 ease-custom-cubic"
+                    className="flex flex-col items-center rounded-md bg-none p-5 transition-background duration-300 ease-custom-cubic hover:bg-black/10"
                 >
                     <Image
                         src={errorComputer}
@@ -72,7 +76,7 @@ export default function Admin() {
 
                 <Link
                     href="/admin/tickets"
-                    className="flex flex-col items-center bg-none hover:bg-black/10 p-5 rounded-md transition-background duration-300 ease-custom-cubic"
+                    className="flex flex-col items-center rounded-md bg-none p-5 transition-background duration-300 ease-custom-cubic hover:bg-black/10"
                 >
                     <Image
                         src={errorComputer}
@@ -86,7 +90,7 @@ export default function Admin() {
 
                 <Link
                     href="/admin/transactions"
-                    className="flex flex-col items-center bg-none hover:bg-black/10 p-5 rounded-md transition-background duration-300 ease-custom-cubic"
+                    className="flex flex-col items-center rounded-md bg-none p-5 transition-background duration-300 ease-custom-cubic hover:bg-black/10"
                 >
                     <Image
                         src={errorComputer}
@@ -99,7 +103,7 @@ export default function Admin() {
                 </Link>
                 <Link
                     href="/admin/users"
-                    className="flex flex-col items-center bg-none hover:bg-black/10 p-5 rounded-md transition-background duration-300 ease-custom-cubic"
+                    className="flex flex-col items-center rounded-md bg-none p-5 transition-background duration-300 ease-custom-cubic hover:bg-black/10"
                 >
                     <Image
                         src={errorComputer}

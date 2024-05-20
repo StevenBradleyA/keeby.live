@@ -48,7 +48,7 @@ export default function EachAdminPost({ post }: EachAdminPostProps) {
 
     return (
         <div className=" h-[40vh] w-[30%]">
-            <div className="h-full w-full rounded-xl bg-black">
+            <div className="h-full w-full rounded-xl bg-black/25 hover:bg-black/30">
                 <div className="flex h-1/4 items-center justify-center p-5 text-failure">
                     {post.title}
                 </div>
@@ -77,7 +77,7 @@ export default function EachAdminPost({ post }: EachAdminPostProps) {
                 <div className="relative h-1/4 w-full text-black  ">
                     {!confirmDelete ? (
                         <button
-                            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform rounded-md bg-failure px-4 py-2 "
+                            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform rounded-md bg-failure px-4 py-2 hover:bg-red-500 "
                             onClick={() => setConfirmDelete(true)}
                         >
                             {`C:\\\\> Delete`}
@@ -85,16 +85,16 @@ export default function EachAdminPost({ post }: EachAdminPostProps) {
                     ) : (
                         <div className="absolute left-1/2 top-1/2 flex w-full -translate-x-1/2 -translate-y-1/2 transform justify-center gap-5 ">
                             <button
-                                className=" rounded-md bg-failure px-2 py-2 "
-                                onClick={handlePostDelete}
-                            >
-                                {`C:\\\\> XXXX`}
-                            </button>
-                            <button
-                                className=" rounded-md bg-green-500 px-2 py-2 "
+                                className=" rounded-md bg-green-500 px-2 py-2 hover:bg-green-400 "
                                 onClick={() => setConfirmDelete(false)}
                             >
                                 {`C:\\\\> Abort`}
+                            </button>
+                            <button
+                                className=" rounded-md bg-failure px-2 py-2 hover:bg-red-500 "
+                                onClick={handlePostDelete}
+                            >
+                                {`C:\\\\> XXXX`}
                             </button>
                         </div>
                     )}

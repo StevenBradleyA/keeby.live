@@ -4,7 +4,6 @@ import {
     publicProcedure,
     protectedProcedure,
 } from "~/server/api/trpc";
-import { removeFileFromS3 } from "../utils";
 
 // todo assign tags at certain ranks in keeb type
 

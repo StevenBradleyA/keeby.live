@@ -10,6 +10,7 @@ import AdminCreateRank from "~/components/Admin/Ranks/Create";
 import AdminCreateTag from "~/components/Admin/Tags/Create";
 import AdminEachDisplayTag from "~/components/Admin/Tags/Display/eachDisplayTag";
 import AdminEachDisplayRank from "~/components/Admin/Ranks/Display/eachDisplayRank";
+import MainFooter from "~/components/Footer/mainFooter";
 
 export default function AdminRanks() {
     const { data: session } = useSession();
@@ -68,11 +69,20 @@ export default function AdminRanks() {
             <div className="mt-10 flex justify-center">
                 <div className="flex w-2/3 items-center gap-5 ">
                     <h1 className="font-titillium text-3xl">RANKS</h1>
-                    <button
-                        className="flex h-6 w-12 items-center justify-center rounded-full bg-black text-2xl "
-                        onClick={openModal}
-                    >
-                        {`+`}
+                    <button className="" onClick={openModal}>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-7 w-14 rounded-md bg-black/25 p-[2px] text-failure hover:bg-black/30"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                        >
+                            <path
+                                fill-rule="evenodd"
+                                clip-rule="evenodd"
+                                d="M11 17C11 17.5523 11.4477 18 12 18C12.5523 18 13 17.5523 13 17V13H17C17.5523 13 18 12.5523 18 12C18 11.4477 17.5523 11 17 11H13V7C13 6.44771 12.5523 6 12 6C11.4477 6 11 6.44771 11 7V11H7C6.44772 11 6 11.4477 6 12C6 12.5523 6.44772 13 7 13H11V17Z"
+                                fill="currentColor"
+                            />
+                        </svg>
                     </button>
 
                     <ModalDialog isOpen={isModalOpen} onClose={closeModal}>
@@ -93,11 +103,20 @@ export default function AdminRanks() {
             <div className="mt-10 flex justify-center">
                 <div className="flex w-2/3 items-center gap-5 ">
                     <h1 className="font-titillium text-3xl">TAGS</h1>
-                    <button
-                        className="flex h-6 w-12 items-center justify-center rounded-full bg-black text-2xl "
-                        onClick={openTagModal}
-                    >
-                        {`+`}
+                    <button className="" onClick={openTagModal}>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-7 w-14 rounded-md bg-black/25 p-[2px] text-failure hover:bg-black/30"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                        >
+                            <path
+                                fill-rule="evenodd"
+                                clip-rule="evenodd"
+                                d="M11 17C11 17.5523 11.4477 18 12 18C12.5523 18 13 17.5523 13 17V13H17C17.5523 13 18 12.5523 18 12C18 11.4477 17.5523 11 17 11H13V7C13 6.44771 12.5523 6 12 6C11.4477 6 11 6.44771 11 7V11H7C6.44772 11 6 11.4477 6 12C6 12.5523 6.44772 13 7 13H11V17Z"
+                                fill="currentColor"
+                            />
+                        </svg>
                     </button>
                     <ModalDialog
                         isOpen={isTagModalOpen}
@@ -115,6 +134,10 @@ export default function AdminRanks() {
                             <AdminEachDisplayTag tag={tag} key={tag.id} />
                         ))}
                 </div>
+            </div>
+
+            <div className="mt-96">
+                <MainFooter />
             </div>
         </div>
     );
