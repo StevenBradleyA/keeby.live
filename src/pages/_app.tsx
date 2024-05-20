@@ -15,8 +15,6 @@ const MyApp: AppType<{ session: Session | null }> = ({
     pageProps: { session, ...pageProps },
 }) => {
 
-    // todo we have to implement cookie context modal that asks for permissions for cookies which... 
-    // todo notifications provider
     return (
         <SessionProvider session={session}>
             <Toaster />

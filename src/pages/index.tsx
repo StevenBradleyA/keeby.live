@@ -13,12 +13,6 @@ import { debounce } from "lodash";
 import MainFooter from "~/components/Footer/mainFooter";
 
 export default function Home() {
-    // todo Cookies? do we want to save filters? not sure yet maybe just save hot/ new with cookies
-
-    // todo cookies for hot and new is a must lol
-    // todo throughly test pagination
-    // Conversion to SSR
-
     const cookies = getCookies();
 
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);

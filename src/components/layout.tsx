@@ -48,7 +48,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <>
             <Head>
                 <title>Keeby Live</title>
-                <meta name="description" content="keeby" />
+                <meta
+                    name="description"
+                    content="Keeby is the one place for everything mechanical keyboard. Shop, share, type and explore the world of mechanical keyboards on a site built for enthusiasts!"
+                />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <div className="min-h-screen bg-dark font-poppins text-white mobile:overflow-auto tablet:overflow-visible ">
