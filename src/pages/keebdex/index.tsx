@@ -161,9 +161,30 @@ export default function KeebDex() {
                 <Link
                     className=" keebdex-button flex justify-center gap-2 rounded-2xl bg-black px-6 py-4"
                     href={`/keebdex/about`}
-                    aria-label="typing tips"
+                    aria-label="about keeby"
                 >
                     <span style={{ zIndex: "10" }}>About</span>
+                    <svg
+                        className="keebdex-button-arrow w-6 rounded-full bg-none p-1"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="3"
+                            d="M3.515 12h16.97m0 0L13.01 4.525M20.485 12l-7.475 7.476"
+                        ></path>
+                    </svg>
+                </Link>
+                <Link
+                    className=" keebdex-button flex justify-center gap-2 rounded-2xl bg-black px-6 py-4"
+                    href={`/keebdex/contact`}
+                    aria-label="contact"
+                >
+                    <span style={{ zIndex: "10" }}>Contact</span>
                     <svg
                         className="keebdex-button-arrow w-6 rounded-full bg-none p-1"
                         xmlns="http://www.w3.org/2000/svg"

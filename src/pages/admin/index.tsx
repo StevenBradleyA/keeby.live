@@ -29,10 +29,10 @@ export default function Admin() {
                     </div>
                 </div>
             </div>
-            <div className="mt-20 flex w-3/4 justify-evenly">
+            <div className="mt-10 flex desktop:w-[70%] w-full px-20 justify-between">
                 <Link
                     href="/admin/listings"
-                    className="flex flex-col items-center"
+                    className="flex flex-col items-center bg-none hover:bg-black/10 p-5 rounded-md transition-background duration-300 ease-custom-cubic"
                 >
                     <Image
                         src={errorComputer}
@@ -45,7 +45,7 @@ export default function Admin() {
                 </Link>
                 <Link
                     href="/admin/posts"
-                    className="flex flex-col items-center"
+                    className="flex flex-col items-center bg-none hover:bg-black/10 p-5 rounded-md transition-background duration-300 ease-custom-cubic"
                 >
                     <Image
                         src={errorComputer}
@@ -58,7 +58,7 @@ export default function Admin() {
                 </Link>
                 <Link
                     href="/admin/ranks"
-                    className="flex flex-col items-center"
+                    className="flex flex-col items-center bg-none hover:bg-black/10 p-5 rounded-md transition-background duration-300 ease-custom-cubic"
                 >
                     <Image
                         src={errorComputer}
@@ -69,9 +69,24 @@ export default function Admin() {
                         RANKS
                     </h3>
                 </Link>
+
+                <Link
+                    href="/admin/tickets"
+                    className="flex flex-col items-center bg-none hover:bg-black/10 p-5 rounded-md transition-background duration-300 ease-custom-cubic"
+                >
+                    <Image
+                        src={errorComputer}
+                        alt="admin-logo"
+                        className="png-red w-24 "
+                    />
+                    <h3 className="font-titillium text-xl text-failure">
+                        TICKETS
+                    </h3>
+                </Link>
+
                 <Link
                     href="/admin/transactions"
-                    className="flex flex-col items-center"
+                    className="flex flex-col items-center bg-none hover:bg-black/10 p-5 rounded-md transition-background duration-300 ease-custom-cubic"
                 >
                     <Image
                         src={errorComputer}
@@ -84,7 +99,7 @@ export default function Admin() {
                 </Link>
                 <Link
                     href="/admin/users"
-                    className="flex flex-col items-center"
+                    className="flex flex-col items-center bg-none hover:bg-black/10 p-5 rounded-md transition-background duration-300 ease-custom-cubic"
                 >
                     <Image
                         src={errorComputer}
