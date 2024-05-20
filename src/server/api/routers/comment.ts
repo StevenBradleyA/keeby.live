@@ -40,10 +40,18 @@ export const commentRouter = createTRPCRouter({
                         },
                     },
                 },
+                orderBy: { createdAt: "desc" },
                 take: limit + 1,
                 skip: cursor ? 1 : 0,
                 cursor: cursor ? { id: cursor } : undefined,
             });
+            const popularComments = comments.sort(
+                (a, b) =>
+                    b._count.commentLike +
+                    b._count.replies -
+                    (a._count.commentLike + a._count.replies)
+            );
+
             if (userId) {
                 const userLikes = await ctx.prisma.commentLike.findMany({
                     where: {
@@ -55,7 +63,7 @@ export const commentRouter = createTRPCRouter({
                     cursor: cursor ? { id: cursor } : undefined,
                 });
 
-                const commentsWithLikes = comments.map((comment) => ({
+                const commentsWithLikes = popularComments.map((comment) => ({
                     ...comment,
                     isLiked: userLikes.some(
                         (like) => like.commentId === comment.id
@@ -74,13 +82,13 @@ export const commentRouter = createTRPCRouter({
             }
 
             let nextCursor: typeof cursor | undefined = undefined;
-            if (comments.length > limit) {
-                const nextItem = comments.pop();
+            if (popularComments.length > limit) {
+                const nextItem = popularComments.pop();
                 if (nextItem !== undefined) {
                     nextCursor = nextItem.id;
                 }
             }
-            return { comments, nextCursor };
+            return { comments: popularComments, nextCursor };
         }),
     getAllReplysByTypeId: publicProcedure
         .input(
@@ -189,6 +197,26 @@ export const commentRouter = createTRPCRouter({
                             listingId: typeId,
                         },
                     });
+                    const listingCheck = await ctx.prisma.listing.findUnique({
+                        where: {
+                            id: typeId,
+                        },
+                        select: {
+                            title: true,
+                            sellerId: true,
+                        },
+                    });
+                    if (listingCheck) {
+                        await ctx.prisma.notification.create({
+                            data: {
+                                userId: listingCheck.sellerId,
+                                text: `New Comment on ${listingCheck.title}!`,
+                                status: "UNREAD",
+                                type: "LISTINGCOMMENT",
+                                typeId: `${typeId}`,
+                            },
+                        });
+                    }
                     return newComment;
                 }
                 if (type === "post") {
@@ -199,6 +227,28 @@ export const commentRouter = createTRPCRouter({
                             postId: typeId,
                         },
                     });
+
+                    const postCheck = await ctx.prisma.post.findUnique({
+                        where: {
+                            id: typeId,
+                        },
+                        select: {
+                            title: true,
+                            userId: true,
+                        },
+                    });
+                    if (postCheck) {
+                        await ctx.prisma.notification.create({
+                            data: {
+                                userId: postCheck.userId,
+                                text: `New Comment on ${postCheck.title}!`,
+                                status: "UNREAD",
+                                type: "POSTCOMMENT",
+                                typeId: `${typeId}`,
+                            },
+                        });
+                    }
+
                     return newComment;
                 }
             }
@@ -234,7 +284,26 @@ export const commentRouter = createTRPCRouter({
                         referencedUser: referencedUser || null,
                     },
                 });
-
+                const listingCheck = await ctx.prisma.listing.findUnique({
+                    where: {
+                        id: typeId,
+                    },
+                    select: {
+                        title: true,
+                        sellerId: true,
+                    },
+                });
+                if (listingCheck) {
+                    await ctx.prisma.notification.create({
+                        data: {
+                            userId: listingCheck.sellerId,
+                            text: `New Comment on ${listingCheck.title}!`,
+                            status: "UNREAD",
+                            type: "LISTINGCOMMENT",
+                            typeId: `${typeId}`,
+                        },
+                    });
+                }
                 return newComment;
             }
 
@@ -248,7 +317,26 @@ export const commentRouter = createTRPCRouter({
                         referencedUser: referencedUser || null,
                     },
                 });
-
+                const postCheck = await ctx.prisma.post.findUnique({
+                    where: {
+                        id: typeId,
+                    },
+                    select: {
+                        title: true,
+                        userId: true,
+                    },
+                });
+                if (postCheck) {
+                    await ctx.prisma.notification.create({
+                        data: {
+                            userId: postCheck.userId,
+                            text: `New Comment on ${postCheck.title}!`,
+                            type: "POSTCOMMENT",
+                            typeId: `${typeId}`,
+                            status: "UNREAD",
+                        },
+                    });
+                }
                 return newComment;
             }
         }),
@@ -301,60 +389,4 @@ export const commentRouter = createTRPCRouter({
             throw new Error("Invalid userId");
         }),
 
-    // prisma transaction test. this makes it so that if the operation partially fails it wont go through. Definetly want to implement this for images and lots of stuff if it works
-    // delete: protectedProcedure
-    //     .input(
-    //         z.object({
-    //             id: z.string(),
-    //             userId: z.string(),
-    //             parentId: z.string().optional(),
-    //         })
-    //     )
-    //     .mutation(async ({ input, ctx }) => {
-    //         const { id, parentId, userId } = input;
-
-    //         if (ctx.session.user.id !== userId) {
-    //             throw new Error("Invalid userId");
-    //         }
-
-    //         // Wrap your operations in a transaction
-    //         return ctx.prisma.$transaction(async (prisma) => {
-    //             if (!parentId) {
-    //                 // Top-level comment
-
-    //                 // Get all replies
-    //                 const replies = await prisma.comment.findMany({
-    //                     where: { parentId: id },
-    //                     select: { id: true },
-    //                 });
-
-    //                 const replyIds = replies.map((reply) => reply.id);
-
-    //                 // Delete all likes associated with the replies
-    //                 await prisma.like.deleteMany({
-    //                     where: { type: "COMMENT", typeId: { in: replyIds } },
-    //                 });
-
-    //                 // Delete all likes associated with the top-level comment
-    //                 await prisma.like.deleteMany({
-    //                     where: { type: "COMMENT", typeId: id },
-    //                 });
-
-    //                 // Delete all replies
-    //                 await prisma.comment.deleteMany({
-    //                     where: { parentId: id },
-    //                 });
-
-    //                 // Delete the top-level comment itself
-    //                 return prisma.comment.delete({ where: { id: id } });
-    //             } else {
-    //                 // Not a top-level comment, delete its likes and then the comment itself
-    //                 await prisma.like.deleteMany({
-    //                     where: { type: "COMMENT", typeId: id },
-    //                 });
-
-    //                 return prisma.comment.delete({ where: { id: id } });
-    //             }
-    //         });
-    //     }),
 });

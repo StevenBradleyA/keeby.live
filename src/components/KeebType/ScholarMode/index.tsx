@@ -25,9 +25,6 @@ export default function ScholarMode({
     theme,
     scholarType,
 }: ScholarModeProps) {
-    // todo not sure if we want this to be ranked or unranked.
-    // todo fix create game to be scholar specific
-
     const { data: session } = useSession();
 
     // theme
@@ -35,12 +32,14 @@ export default function ScholarMode({
 
     // typing
     const [prompt, setPrompt] = useState<string[]>([]);
+    console.log("PROMPT CHECK B", prompt);
     const [totalUserInput, setTotalUserInput] = useState<string>("");
     const [userInput, setUserInput] = useState<string>("");
     const [activeWordIndex, setActiveWordIndex] = useState<number>(0);
     const [wordStatus, setWordStatus] = useState<boolean[]>(
         new Array(prompt.length).fill(false)
     );
+    console.log("WORD STATUS CHECH", wordStatus);
     const [extraCharacters, setExtraCharacters] = useState<string[]>(
         new Array(prompt.length).fill("")
     );
@@ -65,9 +64,6 @@ export default function ScholarMode({
         onSuccess: (data) => {
             setFinishedGameId(data.gameId);
             if (data.averageWpm) setRankWpm(data.averageWpm);
-
-
-
         },
     });
 
@@ -172,9 +168,11 @@ export default function ScholarMode({
         setWpmIntervals([]);
     };
 
+    useEffect(() => {
+        setWordStatus(new Array(prompt.length).fill(false));
+    }, [prompt]);
+
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        // here we want to start the game...
-        // going to want different logic depending on if the game is starting vs if the game is resuming
         if (
             !isRunning &&
             ((e.key >= "a" && e.key <= "z") || (e.key >= "0" && e.key <= "9"))
@@ -189,25 +187,15 @@ export default function ScholarMode({
         }
 
         if (e.key === " ") {
-            // Retrieve the active word from the prompt based on the current activeWordIndex.
             const activeWord = prompt[activeWordIndex] ?? "";
-            // Check if the user's input matches the active word, implying the word was typed correctly.
             const isCorrect = activeWord === userInput;
-            // If the word is correctly spelled:
             if (isCorrect) {
-                // Update the word status array to reflect that the current word is correctly spelled.
-                // This is done by creating a copy of the wordStatus array and setting the element
-                // at the activeWordIndex to true (indicating a correctly spelled word).
                 const newWordStatus = [...wordStatus];
                 newWordStatus[activeWordIndex] = true;
                 setWordStatus(newWordStatus);
             }
-
-            // This part handles extra characters that the user has typed beyond the length of the active word.
             const activePrompt = prompt[activeWordIndex];
             if (activePrompt && userInput.length > activePrompt.length) {
-                // Calculate the extra characters by substringing the userInput from the length of the active word.
-                // Update the extraCharacters array for the current word.
                 const newExtraCharacters = [...extraCharacters];
                 newExtraCharacters[activeWordIndex] = `${userInput.substring(
                     activePrompt.length
@@ -215,16 +203,12 @@ export default function ScholarMode({
                 setExtraCharacters(newExtraCharacters);
             }
 
-            // Add userInput to totalUserInput and clear userInput
             setTotalUserInput(totalUserInput + userInput + " ");
             setUserInput("");
-            // Increase activeWordIndex by one
-            // Check if the game is over (i.e., if the activeWordIndex reaches the last word).
             if (activeWordIndex === prompt.length - 1) {
                 setGameOver(true);
             }
             setActiveWordIndex(activeWordIndex + 1);
-            // Prevent the space key from being input into the text field
             e.preventDefault();
         }
 
@@ -275,26 +259,16 @@ export default function ScholarMode({
             activeWordIndex === prompt.length - 1 &&
             userInput.length === currentWord.length
         ) {
-            // Retrieve the active word from the prompt based on the current activeWordIndex.
             const activeWord = prompt[activeWordIndex] ?? "";
-            // Check if the user's input matches the active word, implying the word was typed correctly.
             const isCorrect = activeWord === userInput;
-            // If the word is correctly spelled:
             if (isCorrect) {
-                // Update the word status array to reflect that the current word is correctly spelled.
-                // This is done by creating a copy of the wordStatus array and setting the element
-                // at the activeWordIndex to true (indicating a correctly spelled word).
                 const newWordStatus = [...wordStatus];
                 newWordStatus[activeWordIndex] = true;
                 setWordStatus(newWordStatus);
             }
-
-            // If activeWordIndex matches the length of the prompt
-            // and the last word is spelled correctly, setGameOver to true
             setTotalUserInput(totalUserInput + userInput);
 
             setGameOver(true);
-            // setUserInput(""); not sure if we need to do this at all the game will end soooo
         }
     }, [
         activeWordIndex,
@@ -336,14 +310,9 @@ export default function ScholarMode({
     }, [totalUserInput, gameOver, isRunning, stopwatch]);
 
     return (
-        <div className="z-10 flex flex-shrink-0 flex-col laptop:w-3/4 desktop:w-2/3">
+        <div className="z-10 flex w-full flex-shrink-0 flex-col">
             {gameOver === false && (
                 <div className="mt-72 flex w-full flex-col">
-                    {/* <SentenceGenerator
-                        prompt.length={prompt.length}
-                        setPrompt={setPrompt}
-                        key={trigger}
-                    /> */}
                     <ScholarGenerator
                         setPrompt={setPrompt}
                         key={trigger}
@@ -353,7 +322,7 @@ export default function ScholarMode({
                         className={`relative flex w-full flex-wrap gap-2 px-10 text-2xl ${
                             styles.textColor
                         } ${
-                            prompt.length === 10
+                            prompt.length <= 10
                                 ? "justify-center"
                                 : "justify-start"
                         }`}
@@ -506,7 +475,7 @@ export default function ScholarMode({
             {gameOver && finishedGameId && session && session.user && (
                 <div className={`flex w-full flex-col ${styles.hit}`}>
                     <div
-                        className={`z-10 w-full rounded-lg border-2 ${styles.border} border-opacity-50 ${styles.backgroundColor} bg-opacity-30 px-5 py-2`}
+                        className={`z-10 flex w-full justify-between rounded-lg border-2 ${styles.border} border-opacity-50 ${styles.backgroundColor} bg-opacity-30 px-5 py-2`}
                     >
                         <button
                             onClick={handleNextGame}
@@ -528,6 +497,7 @@ export default function ScholarMode({
                                 />
                             </svg>
                         </button>
+                        <div className="flex items-center">Non-ranked mode</div>
                     </div>
                     <SpeedModeResults
                         gameId={finishedGameId}
@@ -544,7 +514,7 @@ export default function ScholarMode({
             {gameOver && session === null && (
                 <div className={`flex w-full flex-col ${styles.hit}`}>
                     <div
-                        className={`z-10 w-full rounded-lg border-2 ${styles.border} border-opacity-50 ${styles.backgroundColor} bg-opacity-30 px-5 py-2`}
+                        className={`z-10 flex w-full rounded-lg border-2 ${styles.border} border-opacity-50 ${styles.backgroundColor} justify-between bg-opacity-30 px-5 py-2`}
                     >
                         <button
                             onClick={handleNextGame}
@@ -566,6 +536,9 @@ export default function ScholarMode({
                                 />
                             </svg>
                         </button>
+                        <div className="flex items-center">
+                            Offline mode. Sign in to save your progress
+                        </div>
                     </div>
                     <OfflineGameResults
                         mode={mode}

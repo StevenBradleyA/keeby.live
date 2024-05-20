@@ -25,14 +25,12 @@ export default function EachDisplayKeebCard({
     };
 
     return (
-        <div className="flex h-[25vh] w-96 flex-col justify-between ">
-            <div className="relative z-10 h-full overflow-hidden rounded-2xl bg-keebyGray p-10 ">
-                <div className=" display-keeb-card-overlay absolute bottom-0 left-0 right-0 top-32 -z-10 h-full w-full bg-black/40"></div>
-                <div className="z-20 flex justify-center text-2xl">
+        <div className=" flex w-96 flex-col justify-between font-poppins text-sm tablet:h-[25vh] desktop:h-[20vh] ">
+            <div className="relative z-10 h-full overflow-hidden rounded-2xl bg-black/30 p-5 hover:bg-black/20 ">
+                <h1 className="z-20 flex justify-center text-xl">
                     {keeb.name}
-                </div>
-                <div className="mt-5 ">
-                    {" "}
+                </h1>
+                <div className="mt-3 ">
                     <span className="z-20 text-darkGray">Switches:</span>{" "}
                     {keeb.switches}
                 </div>
@@ -43,12 +41,12 @@ export default function EachDisplayKeebCard({
             </div>
 
             <button
-                className="flex w-full items-start  justify-end pr-3 text-sm "
+                className="flex w-full items-start justify-end text-sm "
                 onClick={openModal}
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="relative bottom-1 w-8 text-green-500"
+                    className="relative bottom-1 w-8 text-green-500 transition-colors duration-400 ease-custom-cubic hover:text-white "
                     viewBox="0 0 24 24"
                     fill="currentColor"
                 >

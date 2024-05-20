@@ -28,6 +28,9 @@ export default function CreateKeeb({ closeModal, userId }: CreateKeebProps) {
     const [keycaps, setKeycaps] = useState("");
     const [errors, setErrors] = useState<ErrorsObj>({});
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const [enableErrorDisplay, setEnableErrorDisplay] =
+        useState<boolean>(false);
+
     const ctx = api.useContext();
     const { data: sessionData } = useSession();
 
@@ -64,6 +67,7 @@ export default function CreateKeeb({ closeModal, userId }: CreateKeebProps) {
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
+        setEnableErrorDisplay(true);
 
         if (!Object.values(errors).length) {
             setIsSubmitting(true);
@@ -80,7 +84,7 @@ export default function CreateKeeb({ closeModal, userId }: CreateKeebProps) {
 
     return (
         <>
-            <form className="flex w-96 flex-col gap-5 ">
+            <form className="flex w-96 flex-col  ">
                 <div className="flex items-center">
                     <Image
                         alt="keeb"
@@ -91,7 +95,7 @@ export default function CreateKeeb({ closeModal, userId }: CreateKeebProps) {
                         }
                         width={300}
                         height={300}
-                        className="h-20 w-20 border-2 border-[#616161] object-cover "
+                        className="h-20 w-20 rounded-md border-2 border-[#616161] object-cover "
                     />
                     <div className="relative flex  w-full items-center border-b-2 border-t-2 border-[#616161] p-2 ">
                         <div className="ml-2 flex items-center gap-2">
@@ -113,21 +117,30 @@ export default function CreateKeeb({ closeModal, userId }: CreateKeebProps) {
                 <input
                     value={keyboard}
                     onChange={(e) => setKeyboard(e.target.value)}
-                    className="h-10 w-full rounded-md bg-darkGray p-1 "
+                    className="mt-5 h-10 w-full rounded-md bg-darkGray p-1 "
                     placeholder="Name"
                 ></input>
+                {enableErrorDisplay && errors.keyboard && (
+                    <p className="text-sm text-red-400">{errors.keyboard}</p>
+                )}
                 <input
                     value={switches}
                     onChange={(e) => setSwitches(e.target.value)}
-                    className="h-10 w-full rounded-md bg-darkGray p-1 "
+                    className="mt-5 h-10 w-full rounded-md bg-darkGray p-1 "
                     placeholder="Switches"
                 ></input>
+                {enableErrorDisplay && errors.switches && (
+                    <p className="text-sm text-red-400">{errors.switches}</p>
+                )}
                 <input
                     value={keycaps}
                     onChange={(e) => setKeycaps(e.target.value)}
-                    className="h-10 w-full rounded-md bg-darkGray p-1 "
+                    className="mt-5 h-10 w-full rounded-md bg-darkGray p-1 "
                     placeholder="Keycaps"
                 ></input>
+                {enableErrorDisplay && errors.keycaps && (
+                    <p className="text-sm text-red-400">{errors.keycaps}</p>
+                )}
                 <div className="flex justify-center">
                     <button
                         onClick={(e) => {
@@ -135,7 +148,7 @@ export default function CreateKeeb({ closeModal, userId }: CreateKeebProps) {
                             void submit(e);
                         }}
                         disabled={isSubmitting}
-                        className={`rounded-md border-2 border-green-500 bg-keebyGray px-6 py-1 text-green-500 hover:bg-green-500 hover:text-black
+                        className={`mt-5 rounded-md border-2 border-green-500 bg-keebyGray px-6 py-1 text-green-500 hover:bg-green-500 hover:text-black
                     ${
                         isSubmitting ? "text-green-500" : ""
                     } transition-all duration-300 ease-in-out`}

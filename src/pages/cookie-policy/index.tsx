@@ -1,4 +1,4 @@
-import MainFooter from "~/components/Footer";
+import MainFooter from "~/components/Footer/mainFooter";
 
 export default function CookiePolicy() {
     return (

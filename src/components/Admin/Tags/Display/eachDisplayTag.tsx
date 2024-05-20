@@ -49,16 +49,20 @@ export default function AdminEachDisplayTag({ tag }: AdminEachDisplayTagProps) {
     };
 
     return (
-        <div className="relative rounded-xl border-2 border-black p-3">
-            <h1 className="text-3xl font-titillium">{tag.name}</h1>
+        <div className="relative">
+            <div className="w-96 rounded-xl bg-black/25 p-5 text-sm text-failure shadow-xl hover:bg-black/30  ">
+                <h1 className="font-titillium text-3xl">{tag.name}</h1>
 
-            <p className="w-96 text-darkGray">{tag.description}</p>
+                <p className="h-20 w-full overflow-y-auto text-darkGray">
+                    {tag.description}
+                </p>
+            </div>
 
             <div className="absolute -top-8 right-0 flex gap-5">
                 <button onClick={openModal}>
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="w-5"
+                        className="w-5 text-failure hover:text-red-400"
                         viewBox="0 -0.5 21 21"
                         version="1.1"
                     >
@@ -71,7 +75,7 @@ export default function AdminEachDisplayTag({ tag }: AdminEachDisplayTagProps) {
                         >
                             <g
                                 transform="translate(-419.000000, -359.000000)"
-                                fill="#ff0000"
+                                fill="currentColor"
                             >
                                 <g
                                     id="icons"
@@ -89,16 +93,22 @@ export default function AdminEachDisplayTag({ tag }: AdminEachDisplayTagProps) {
 
                 {confirmDelete ? (
                     <div className="flex gap-2">
-                        <button onClick={handleDeleteTag}>{`XXXX`}</button>
-                        <button onClick={() => setConfirmDelete(false)}>
+                        <button
+                            onClick={handleDeleteTag}
+                            className="text-failure hover:text-red-400"
+                        >{`XXXX`}</button>
+                        <button
+                            onClick={() => setConfirmDelete(false)}
+                            className="text-failure hover:text-red-400"
+                        >
                             {`Cancel`}
                         </button>
                     </div>
                 ) : (
-                    <button className="" onClick={() => setConfirmDelete(true)}>
+                    <button onClick={() => setConfirmDelete(true)}>
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            className="w-6 "
+                            className="w-6 text-failure hover:text-red-400"
                             viewBox="0 0 24 24"
                             fill="none"
                         >

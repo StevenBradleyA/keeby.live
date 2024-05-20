@@ -20,8 +20,12 @@ export default function DisplayKeebs({ userId }: { userId: string }) {
     };
 
     return (
-        <div className="w-full">
-            <div className="mt-5 flex justify-end">
+        <div className="w-full font-poppins">
+            <div className="mt-5 flex justify-between">
+                <h1>
+                    KeebType Keyboard Profiles ({" "}
+                    {keebData ? keebData.length : 0} ){" "}
+                </h1>
                 <button onClick={openModal}>
                     <Image
                         src={plus}

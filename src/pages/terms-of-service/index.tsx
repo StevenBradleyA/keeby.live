@@ -1,5 +1,5 @@
 import Link from "next/link";
-import MainFooter from "~/components/Footer";
+import MainFooter from "~/components/Footer/mainFooter";
 
 export default function TermsOfService() {
     // the goal of keeby is to create a safe space to buy and sell mechanical keyboards and enjoy the hobby.
@@ -260,6 +260,12 @@ IF APPLICABLE LAW DOES NOT ALLOW THE EXCLUSION OF SOME OR ALL OF THE ABOVE IMPLI
                 <div className="mb-2 text-xl ">Third-Party Links </div>
                 <p className="mb-5 rounded-md bg-keebyGray p-5 ">
                     {`Our Website may contain links to third-party websites or services that are not owned or controlled by keeby.live. We have no control over and assume no responsibility for the content, privacy policies, or practices of any third-party websites or services. You further acknowledge and agree that Genevieve Clare Hair shall not be responsible or liable, directly or indirectly, for any damage or loss caused or alleged to be caused by or in connection with the use of or reliance on any such content, goods, or services available on or through any such websites or services.`}
+                </p>
+                <div className="mb-2 text-xl ">
+                    Flashing Lights and Epilepsy Risk
+                </div>
+                <p className="mb-5 rounded-md bg-keebyGray p-5 ">
+                    {`Some parts of our Website may contain flashing lights or effects that could potentially trigger seizures for individuals with photosensitive epilepsy. By using our Website, you acknowledge and accept that keeby.live is not responsible for any health issues that may arise from viewing or interacting with such content. If you have a history of epilepsy or experience any symptoms while using our Website, please discontinue use immediately and consult with a healthcare professional.`}
                 </p>
                 <div className="mb-2 text-xl "> User Responsibilities</div>
                 <p className="mb-5 rounded-md bg-keebyGray p-5 ">

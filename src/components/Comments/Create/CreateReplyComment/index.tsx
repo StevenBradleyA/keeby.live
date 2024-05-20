@@ -57,10 +57,26 @@ export default function CreateReplyComment({
     });
 
     const handleRowIncrease = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        const textarea = e.target as HTMLTextAreaElement;
+        const { value, selectionStart, selectionEnd } = textarea;
+
         if (e.key === "Enter" && !e.shiftKey) {
             setRow((prevRow) => prevRow + 1);
+        } else if (e.key === "Backspace") {
+            const beforeCursor = value.substring(0, selectionStart);
+            const afterCursor = value.substring(selectionEnd);
+
+            const isCursorAtLineStart =
+                beforeCursor.endsWith("\n") || beforeCursor === "";
+            const isCursorAtLineEnd =
+                afterCursor.startsWith("\n") || afterCursor === "";
+
+            if (isCursorAtLineStart && isCursorAtLineEnd) {
+                setRow((prevRow) => (prevRow > 1 ? prevRow - 1 : 1));
+            }
         }
     };
+
     const openSignInModal = () => {
         setIsSignInModalOpen(true);
     };
@@ -134,7 +150,7 @@ export default function CreateReplyComment({
                         alt="profile"
                         height={600}
                         width={600}
-                        className="h-7 w-7 object-cover rounded-md"
+                        className="h-7 w-7 rounded-md object-cover"
                     />
 
                     <textarea
@@ -167,7 +183,7 @@ export default function CreateReplyComment({
                     isOpen={isSignInModalOpen}
                     onClose={closeSignInModal}
                 >
-                    <SignInModal closeModal={closeSignInModal} />
+                    <SignInModal />
                 </ModalDialog>
             </form>
         </div>

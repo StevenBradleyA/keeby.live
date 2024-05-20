@@ -200,3 +200,4 @@ Store
 - sell merch - maybe develop a keyboard - maybe make a marketplace that shows products from other sites and links to them
 
 Add achievements - allow people to select tags - their rank or when they buy a keyboard they get a tag etc.
+<!-- git merge --no-commit --no-ff debug/paypal_log_in -->

@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { debounce } from "lodash";
 import { api } from "~/utils/api";
 import EachAdminUser from "~/components/Admin/User";
+import MainFooter from "~/components/Footer/mainFooter";
 
 export default function AdminUsers() {
     const { data: session } = useSession();
@@ -67,19 +68,22 @@ export default function AdminUsers() {
                         id="searchQuery"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className={` admin-search h-10 w-full rounded-md bg-black p-1 text-failure outline-none `}
+                        className={` admin-search h-10 w-full rounded-md bg-black/40 p-1 text-failure outline-none hover:bg-black/50 `}
                         placeholder="Search"
                     />
                 </div>
             </div>
             <div className="mt-10  flex justify-center">
-                <div className="flex h-10 w-2/3 gap-10">
+                <div className="flex w-2/3 gap-10">
                     {users &&
                         users.length > 0 &&
                         users.map((user) => (
                             <EachAdminUser user={user} key={user.id} />
                         ))}
                 </div>
+            </div>
+            <div className="mt-96">
+                <MainFooter />
             </div>
         </div>
     );

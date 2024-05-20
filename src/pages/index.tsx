@@ -1,24 +1,18 @@
 import { useEffect, useState } from "react";
 import ModalDialog from "~/components/Modal";
-import CreateListingModal from "~/components/KeebShop/CreateListing/CreateModal";
+import CreateListingModal from "~/components/Listings/CreateListing/CreateModal";
 import plus from "@public/Vectors/plus-plus.png";
 import Image from "next/image";
-import DisplayListingPreviews from "~/components/KeebShop/DisplayListing/DisplayListingsPreview";
-import DisplayPopularListingPreviews from "~/components/KeebShop/DisplayListing/DisplayListingsPreview/displayPopularListingPreviews";
+import DisplayListingPreviews from "~/components/Listings/DisplayListing/DisplayListingsPreview";
+import DisplayPopularListingPreviews from "~/components/Listings/DisplayListing/DisplayListingsPreview/displayPopularListingPreviews";
 import ResetArrowSvg from "~/components/Svgs/reset";
 import NotificationSvg from "~/components/Svgs/notification";
 import { getCookies } from "cookies-next";
 import { setCookie } from "cookies-next";
 import { debounce } from "lodash";
-import MainFooter from "~/components/Footer";
+import MainFooter from "~/components/Footer/mainFooter";
 
 export default function Home() {
-    // todo Cookies? do we want to save filters? not sure yet maybe just save hot/ new with cookies
-
-    // todo cookies for hot and new is a must lol
-    // todo throughly test pagination
-    // Conversion to SSR
-
     const cookies = getCookies();
 
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -202,7 +196,7 @@ export default function Home() {
                         <div className="mb-5 flex gap-5 ">
                             <button
                                 onClick={handleSearchClick}
-                                className={`${
+                                className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                     !isSpecify
                                         ? "border-b border-white text-white"
                                         : "border-b border-white border-opacity-0"
@@ -213,7 +207,7 @@ export default function Home() {
                             <div className="relative flex">
                                 <button
                                     onClick={handleSpecifyClick}
-                                    className={`${
+                                    className={` transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                         isSpecify
                                             ? "border-b border-white text-white"
                                             : "border-b border-white border-opacity-0"
@@ -237,7 +231,11 @@ export default function Home() {
                             </div>
                         </div>
 
-                        <div className={` relative w-full ${isSpecify? 'overflow-auto': 'overflow-hidden'} rounded-xl bg-keebyGray p-5 text-darkGray tablet:h-[68vh] desktop:h-[72vh]`}>
+                        <div
+                            className={` relative w-full ${
+                                isSpecify ? "overflow-auto" : "overflow-hidden"
+                            } rounded-xl bg-keebyGray p-5 text-darkGray tablet:h-[68vh] desktop:h-[72vh]`}
+                        >
                             {isSpecify ? (
                                 <div className="flex w-full flex-col items-start gap-5 ">
                                     <div className="flex w-full flex-col items-start">
@@ -246,7 +244,7 @@ export default function Home() {
                                                 Switch Type:
                                             </h1>
                                             <button
-                                                className=" absolute -top-1 right-0 h-7 w-7"
+                                                className=" absolute -top-1 right-0 h-7 w-7 text-darkGray transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                                                 onClick={handleResetSpecify}
                                             >
                                                 <ResetArrowSvg />
@@ -258,7 +256,7 @@ export default function Home() {
                                                     "tactile"
                                                 )
                                             }
-                                            className={` hover:text-white ${
+                                            className={` transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                                 switchType === "tactile"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -270,7 +268,7 @@ export default function Home() {
                                             onClick={() =>
                                                 handleSwitchTypeSelect("linear")
                                             }
-                                            className={`hover:text-white ${
+                                            className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                                 switchType === "linear"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -282,7 +280,7 @@ export default function Home() {
                                             onClick={() =>
                                                 handleSwitchTypeSelect("clicky")
                                             }
-                                            className={`hover:text-white ${
+                                            className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                                 switchType === "clicky"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -294,7 +292,7 @@ export default function Home() {
                                             onClick={() =>
                                                 handleSwitchTypeSelect("other")
                                             }
-                                            className={`hover:text-white ${
+                                            className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                                 switchType === "other"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -312,7 +310,7 @@ export default function Home() {
                                             onClick={() =>
                                                 handleSoundTypeSelect("thock")
                                             }
-                                            className={`hover:text-white ${
+                                            className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                                 soundType === "thock"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -324,7 +322,7 @@ export default function Home() {
                                             onClick={() =>
                                                 handleSoundTypeSelect("clack")
                                             }
-                                            className={`hover:text-white ${
+                                            className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                                 soundType === "clack"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -336,7 +334,7 @@ export default function Home() {
                                             onClick={() =>
                                                 handleSoundTypeSelect("click")
                                             }
-                                            className={`hover:text-white ${
+                                            className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                                 soundType === "click"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -348,7 +346,7 @@ export default function Home() {
                                             onClick={() =>
                                                 handleSoundTypeSelect("silent")
                                             }
-                                            className={`hover:text-white ${
+                                            className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                                 soundType === "silent"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -448,7 +446,7 @@ export default function Home() {
                                             onClick={() =>
                                                 handleLayoutTypeSelect("100%")
                                             }
-                                            className={`hover:text-white ${
+                                            className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                                 layoutType === "100%"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -460,7 +458,7 @@ export default function Home() {
                                             onClick={() =>
                                                 handleLayoutTypeSelect("75%")
                                             }
-                                            className={`hover:text-white ${
+                                            className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                                 layoutType === "75%"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -472,7 +470,7 @@ export default function Home() {
                                             onClick={() =>
                                                 handleLayoutTypeSelect("65%")
                                             }
-                                            className={`hover:text-white ${
+                                            className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                                 layoutType === "65%"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -484,7 +482,7 @@ export default function Home() {
                                             onClick={() =>
                                                 handleLayoutTypeSelect("60%")
                                             }
-                                            className={`hover:text-white ${
+                                            className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                                 layoutType === "60%"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -496,7 +494,7 @@ export default function Home() {
                                             onClick={() =>
                                                 handleLayoutTypeSelect("40%")
                                             }
-                                            className={`hover:text-white ${
+                                            className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                                 layoutType === "40%"
                                                     ? "border-b border-white text-white"
                                                     : "border-b border-white border-opacity-0"
@@ -517,7 +515,7 @@ export default function Home() {
                                                         "assembled"
                                                     )
                                                 }
-                                                className={`hover:text-white ${
+                                                className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                                     assemblyType === "assembled"
                                                         ? "border-b border-white text-white"
                                                         : "border-b border-white border-opacity-0"
@@ -531,7 +529,7 @@ export default function Home() {
                                                         "unassembled"
                                                     )
                                                 }
-                                                className={`hover:text-white ${
+                                                className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                                     assemblyType ===
                                                     "unassembled"
                                                         ? "border-b border-white text-white"
@@ -552,7 +550,7 @@ export default function Home() {
                                                         "hotswap"
                                                     )
                                                 }
-                                                className={`hover:text-white ${
+                                                className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                                     hotSwapType === "hotswap"
                                                         ? "border-b border-white text-white"
                                                         : "border-b border-white border-opacity-0"
@@ -566,7 +564,7 @@ export default function Home() {
                                                         "soldered"
                                                     )
                                                 }
-                                                className={`hover:text-white ${
+                                                className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                                     hotSwapType === "soldered"
                                                         ? "border-b border-white text-white"
                                                         : "border-b border-white border-opacity-0"
@@ -585,11 +583,11 @@ export default function Home() {
                                         onChange={(e) =>
                                             setSearchInput(e.target.value)
                                         }
-                                        className={` search-input-hack absolute h-10 w-full rounded-md ${
+                                        className={` search-input-hack absolute h-10 w-full rounded-md px-3 ${
                                             isSearchFocus
                                                 ? "search-input-placeholder bg-blackAlternative"
                                                 : "bg-darkGray"
-                                        } p-1 text-green-500 outline-none `}
+                                        } py-1 text-green-500 outline-none `}
                                         placeholder="Search"
                                         onFocus={() => setIsSearchFocus(true)}
                                         onBlur={() => setIsSearchFocus(false)}
@@ -621,7 +619,7 @@ export default function Home() {
                         <div className=" very-sticky flex w-full justify-between bg-dark">
                             <div className="mb-5 flex gap-5 text-white/40">
                                 <button
-                                    className={`${
+                                    className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
                                         filter === "Hot"
                                             ? "border-b border-white text-white"
                                             : "border-b border-white border-opacity-0"
@@ -631,7 +629,7 @@ export default function Home() {
                                     Hot
                                 </button>
                                 <button
-                                    className={`${
+                                    className={`transition-colors  duration-400 ease-custom-cubic hover:text-white ${
                                         filter === "New"
                                             ? "border-b border-white text-white"
                                             : "border-b border-white border-opacity-0"
@@ -642,7 +640,7 @@ export default function Home() {
                                 </button>
                             </div>
                             <div className="flex items-center gap-16 ">
-                                <div className="relative">
+                                <div className="shop-price-filter-button relative">
                                     <select
                                         className=" custom-select  flex h-5 w-8 items-center rounded-lg bg-keebyGray px-2 "
                                         value={priceOrder}
@@ -663,7 +661,7 @@ export default function Home() {
                                             priceOrder === ""
                                                 ? "text-darkGray"
                                                 : "text-green-500"
-                                        } `}
+                                        } shop-price-filter-arrow `}
                                     >
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
@@ -689,7 +687,7 @@ export default function Home() {
                                         alt="create listing"
                                         width={200}
                                         height={200}
-                                        className="shop-create-listing w-12  transition duration-150 ease-in-out "
+                                        className="shop-create-listing w-12  "
                                     />
                                 </button>
                             </div>

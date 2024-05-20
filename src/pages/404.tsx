@@ -3,10 +3,18 @@ import { motion } from "framer-motion";
 
 export default function Custom404() {
     return (
-        <div className="font-mono text-gray-400 w-full h-full">
-            <div className="matrix-full-screen fixed bottom-0 left-0 right-0 top-0 object-cover h-full w-full ">
-                <video className="w-full h-full object-cover" autoPlay loop muted>
-                    <source src="https://s3.us-west-2.amazonaws.com/keeby.live/404-video.mp4" type="video/mp4" />
+        <div className="h-full w-full font-mono text-gray-400">
+            <div className="matrix-full-screen fixed bottom-0 left-0 right-0 top-0 h-full w-full object-cover ">
+                <video
+                    className="h-full w-full object-cover"
+                    autoPlay
+                    loop
+                    muted
+                >
+                    <source
+                        src="https://s3.us-west-2.amazonaws.com/keeby.live/404-video.mp4"
+                        type="video/mp4"
+                    />
                     Your browser does not support the video tag.
                 </video>
             </div>

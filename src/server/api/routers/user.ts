@@ -15,26 +15,12 @@ interface TokenData {
     scope: string;
     access_token: string;
     token_type: string;
-    expires_in: number;
+    expires_in: string;
     refresh_token: string;
     nonce: string;
 }
 interface UserInfoData {
-    // user_id?: string;
-    // sub?: string;
-    // name: string;
-    email: string;
-    // verified?: string | boolean;
-    // payer_id?: string;
-    // address?: {
-    //     street_address?: string;
-    //     locality?: string;
-    //     region?: string;
-    //     postal_code?: string;
-    //     country?: string;
-    // };
-    // verified_account?: string | boolean;
-    // email_verified?: boolean;
+    user_id: string;
 }
 
 interface UserWithGamesAndRank {
@@ -160,6 +146,7 @@ export const userRouter = createTRPCRouter({
             const totalGamesPlayed = allGameResults.length;
             let averageWpm = 0;
             let averageAccuracy = 0;
+            let rankedWpm = 0;
 
             if (totalGamesPlayed > 0) {
                 averageWpm =
@@ -171,36 +158,96 @@ export const userRouter = createTRPCRouter({
                         0
                     ) / totalGamesPlayed;
             }
-
-            return { userWithGameResultsAndRank, averageWpm, averageAccuracy };
-        }),
-
-    getUserPublic: publicProcedure.input(z.string()).query(({ input, ctx }) => {
-        const userInfo = ctx.prisma.user.findUnique({
-            where: { username: input },
-            select: {
-                id: true,
-                username: true,
-                profile: true,
-                selectedTag: true,
-                reviewsReceived: {
-                    select: {
-                        id: true,
-                        text: true,
-                        starRating: true,
-                        userId: true,
-                        user: {
-                            select: {
-                                username: true,
-                            },
+            // todo going to have to make a separate non keeb dependant query to get this rank
+            const allRankedGames = await ctx.prisma.user.findUnique({
+                where: { id: userId },
+                select: {
+                    games: {
+                        select: {
+                            id: true,
+                            wpm: true,
+                            accuracy: true,
                         },
                     },
                 },
-            },
-        });
+            });
 
-        return userInfo;
-    }),
+            if (allRankedGames && allRankedGames.games.length > 10) {
+                const topGames = await ctx.prisma.game.findMany({
+                    where: {
+                        userId: userId,
+                        mode: "Speed", //todo change later for other ranked modes
+                    },
+                    orderBy: {
+                        wpm: "desc",
+                    },
+                    take: 10,
+                });
+
+                rankedWpm =
+                    topGames.reduce((acc, game) => acc + game.wpm, 0) /
+                    topGames.length;
+            }
+
+            return {
+                userWithGameResultsAndRank,
+                averageWpm,
+                averageAccuracy,
+                rankedWpm,
+            };
+        }),
+
+    getUserPublic: publicProcedure
+        .input(z.string())
+        .query(async ({ input, ctx }) => {
+            const userInfo = await ctx.prisma.user.findUnique({
+                where: { username: input },
+                select: {
+                    id: true,
+                    username: true,
+                    profile: true,
+                    selectedTag: true,
+                    internetPoints: true,
+                    reviewsReceived: {
+                        select: {
+                            id: true,
+                            text: true,
+                            starRating: true,
+                            userId: true,
+                            updatedAt: true,
+                            user: {
+                                select: {
+                                    username: true,
+                                    profile: true,
+                                },
+                            },
+                        },
+                    },
+                    rank: {
+                        select: {
+                            image: true,
+                            name: true,
+                        },
+                    },
+                    _count: {
+                        select: {
+                            games: true,
+                            comments: true,
+                            posts: true,
+                            sellerListings: true,
+                        },
+                    },
+                },
+            });
+            if (userInfo) {
+                const averageStarRating = await ctx.prisma.review.aggregate({
+                    where: { sellerId: userInfo.id },
+                    _avg: { starRating: true },
+                });
+
+                return { userInfo, averageStarRating };
+            }
+        }),
 
     getUserTags: publicProcedure
         .input(z.string())
@@ -239,6 +286,7 @@ export const userRouter = createTRPCRouter({
         .input(
             z.object({
                 userId: z.string(),
+                isNewsletter: z.boolean(),
                 username: z.string().optional(),
                 images: z
                     .array(
@@ -251,7 +299,9 @@ export const userRouter = createTRPCRouter({
             })
         )
         .mutation(async ({ input, ctx }) => {
-            const { userId, username, images, selectedTag } = input;
+            const { userId, username, images, selectedTag, isNewsletter } =
+                input;
+
             const sessionUserId = ctx.session.user.id;
 
             if (sessionUserId !== userId) {
@@ -262,6 +312,7 @@ export const userRouter = createTRPCRouter({
                 username?: string;
                 selectedTag?: string;
                 profile?: string;
+                isNewsletter?: boolean;
             } = {};
 
             if (images && images[0]) {
@@ -287,8 +338,16 @@ export const userRouter = createTRPCRouter({
             if (selectedTag) {
                 userData.selectedTag = selectedTag;
             }
+            if (isNewsletter !== undefined) {
+                userData.isNewsletter = isNewsletter;
+            }
 
-            if (username || selectedTag || (images && images[0])) {
+            if (
+                username ||
+                selectedTag ||
+                (images && images[0]) ||
+                isNewsletter !== undefined
+            ) {
                 return await ctx.prisma.user.update({
                     where: { id: userId },
                     data: {
@@ -297,7 +356,29 @@ export const userRouter = createTRPCRouter({
                 });
             }
         }),
+    updateNewsletter: protectedProcedure
+        .input(
+            z.object({
+                userId: z.string(),
+                isNewsletter: z.boolean(),
+            })
+        )
+        .mutation(async ({ input, ctx }) => {
+            const { userId, isNewsletter } = input;
 
+            const sessionUserId = ctx.session.user.id;
+
+            if (sessionUserId !== userId) {
+                throw new Error("Invalid userId");
+            }
+            await ctx.prisma.user.update({
+                where: { id: userId },
+                data: {
+                    isNewsletter: isNewsletter,
+                },
+            });
+            return { isNewsletter };
+        }),
     updateNewUser: protectedProcedure
         .input(
             z.object({
@@ -484,83 +565,118 @@ export const userRouter = createTRPCRouter({
             }
         }),
 
-    getPayPalAccessToken: publicProcedure
-        .input(
-            z.object({
-                authorizationCode: z.string(),
-            })
-        )
-        .mutation(async ({ input }) => {
-            const { authorizationCode } = input;
-            const clientId = env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
-            const clientSecret = env.PAYPAL_SECRET;
-            const basicAuth = Buffer.from(
-                `${clientId}:${clientSecret}`
-            ).toString("base64");
+    // getPayPalAccessToken: publicProcedure
+    //     .input(
+    //         z.object({
+    //             authorizationCode: z.string(),
+    //         })
+    //     )
+    //     .mutation(async ({ input }) => {
+    //         const { authorizationCode } = input;
+    //         const clientId = env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
+    //         const clientSecret = env.PAYPAL_SECRET;
+    //         const basicAuth = Buffer.from(
+    //             `${clientId}:${clientSecret}`
+    //         ).toString("base64");
 
-            try {
-                const tokenResponse = await fetch(
-                    "https://api-m.sandbox.paypal.com/v1/oauth2/token",
-                    {
-                        method: "POST",
-                        headers: {
-                            Authorization: `Basic ${basicAuth}`,
-                            "Content-Type": "application/x-www-form-urlencoded",
-                        },
-                        body: new URLSearchParams({
-                            grant_type: "authorization_code",
-                            code: authorizationCode,
-                        }),
-                    }
-                );
+    //         try {
+    //             const tokenResponse = await fetch(
+    //                 "https://api-m.sandbox.paypal.com/v1/oauth2/token",
+    //                 {
+    //                     method: "POST",
+    //                     headers: {
+    //                         Authorization: `Basic ${basicAuth}`,
+    //                         "Content-Type": "application/x-www-form-urlencoded",
+    //                     },
+    //                     body: new URLSearchParams({
+    //                         grant_type: "authorization_code",
+    //                         code: authorizationCode,
+    //                     }),
+    //                 }
+    //             );
 
-                const tokenData = (await tokenResponse.json()) as TokenData;
+    //             const tokenData = (await tokenResponse.json()) as TokenData;
 
-                return tokenData;
-            } catch (error) {
-                console.error("Failed to exchange authorization code:", error);
-                throw new Error("Failed to exchange authorization code.");
-            }
-        }),
+    //             return tokenData;
+    //         } catch (error) {
+    //             console.error("Failed to exchange authorization code:", error);
+    //             throw new Error("Failed to exchange authorization code.");
+    //         }
+    //     }),
 
-    verifyUser: protectedProcedure
-        .input(
-            z.object({
-                userId: z.string(),
-                access: z.string(),
-                refresh: z.string(),
-            })
-        )
-        .mutation(async ({ input, ctx }) => {
-            const { userId, access, refresh } = input;
+    // verifyUser: protectedProcedure
+    //     .input(
+    //         z.object({
+    //             userId: z.string(),
+    //             access: z.string(),
+    //             refresh: z.string(),
+    //         })
+    //     )
+    //     .mutation(async ({ input, ctx }) => {
+    //         const { userId, access, refresh } = input;
 
-            try {
-                const userInfoResponse = await fetch(
-                    "https://api-m.sandbox.paypal.com/v1/identity/openidconnect/userinfo?schema=openid",
-                    {
-                        method: "GET",
-                        headers: {
-                            Authorization: `Bearer ${access}`,
-                            "Content-Type": "application/x-www-form-urlencoded",
-                        },
-                    }
-                );
+    //         try {
+    //             const userInfoResponse = await fetch(
+    //                 "https://api-m.sandbox.paypal.com/v1/identity/openidconnect/userinfo?schema=openid",
+    //                 {
+    //                     method: "GET",
+    //                     headers: {
+    //                         Authorization: `Bearer ${access}`,
+    //                         "Content-Type": "application/x-www-form-urlencoded",
+    //                     },
+    //                 }
+    //             );
 
-                const userInfo =
-                    (await userInfoResponse.json()) as UserInfoData;
-                if (userInfo.email) {
-                    return await ctx.prisma.user.update({
-                        where: { id: userId },
-                        data: {
-                            isVerified: true,
-                            refreshToken: refresh,
-                            paypalId: userInfo.email,
-                        },
-                    });
-                }
-            } catch (error) {
-                console.error("Failed to get user info");
-                throw new Error("Failed to get user info");
-            }
-        }),
+    //                 const userInfo =
+    //                     (await userInfoResponse.json()) as UserInfoData;
+    //                 console.log("\n\n\n hey \n\n\n", userInfo);
+
+    //                 if (!userInfoResponse.ok) {
+    //                     throw new Error(
+    //                         `Failed to fetch user info from PayPal`
+    //                     );
+    //                 }
+    //                 // do i save the refresh token? and the user_id from paypal?
+    //                 // that way later when i need to send a payout I just get a new access token and send them the amount to the paypal userId?
+    //                 if (
+    //                     userInfo &&
+    //                     tokenData.refresh_token &&
+    //                     userInfo.user_id
+    //                 ) {
+    //                     const updateUser = await ctx.prisma.user.update({
+    //                         where: { id: userId },
+    //                         data: {
+    //                             isVerified: true,
+    //                             refreshToken: tokenData.refresh_token,
+    //                             paypalId: userInfo.user_id,
+    //                         },
+    //                     });
+    //                     return { userInfo, updateUser, tokenData };
+    //                 }
+    //                 return { userInfo, tokenData };
+    //             }
+
+    //             // return data;
+    //         } catch (error) {
+    //             console.error("Failed to get user info");
+    //             throw new Error("Failed to get user info");
+    //         }
+    //     }),
+
+    // verifyTesting: protectedProcedure
+    //     .input(
+    //         z.object({
+    //             userId: z.string(),
+    //         })
+    //     )
+    //     .mutation(async ({ input, ctx }) => {
+    //         const { userId } = input;
+
+    //         return await ctx.prisma.user.update({
+    //             where: { id: userId },
+    //             data: {
+    //                 isVerified: true,
+    //             },
+    //         });
+    //     }),
 });
