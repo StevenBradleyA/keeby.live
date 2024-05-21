@@ -325,9 +325,9 @@ export default function UpdateProfile({
                             >
                                 <path
                                     stroke="currentColor"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
                                     d="M6.5 17l6 6 13-13"
                                 />
                             </svg>
@@ -345,9 +345,9 @@ export default function UpdateProfile({
                                 <path
                                     d="M16 8L8 16M12 12L16 16M8 8L10 10"
                                     stroke="currentColor"
-                                    stroke-width="1.5"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
+                                    strokeWidth="1.5"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
                                 />
                             </svg>
                         </button>

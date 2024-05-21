@@ -443,7 +443,7 @@ export default function UpdateListing({
                                     stroke="none"
                                     strokeWidth="1"
                                     fill="none"
-                                    fill-rule="evenodd"
+                                    fillRule="evenodd"
                                 >
                                     <g
                                         transform="translate(-469.000000, -1041.000000)"
