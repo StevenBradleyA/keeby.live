@@ -8,19 +8,20 @@ export const env = createEnv({
      */
     server: {
         DATABASE_URL: z.string().url(),
-        NODE_ENV: z.enum(["development", "test", "production"]),
+        NODE_ENV: z
+            .enum(["development", "test", "production"])
+            .default("development"),
         NEXTAUTH_SECRET:
             process.env.NODE_ENV === "production"
-                ? z.string().min(1)
-                : z.string().min(1).optional(),
+                ? z.string()
+                : z.string().optional(),
         NEXTAUTH_URL: z.preprocess(
             // This makes Vercel deployments not fail if you don't set NEXTAUTH_URL
             // Since NextAuth.js automatically uses the VERCEL_URL if present.
             (str) => process.env.VERCEL_URL ?? str,
             // VERCEL_URL doesn't include `https` so it cant be validated as a URL
-            process.env.VERCEL ? z.string().min(1) : z.string().url()
+            process.env.VERCEL ? z.string() : z.string().url(),
         ),
-        // Add `.min(1) on ID and SECRET if you want to make sure they're not empty
         DISCORD_CLIENT_ID: z.string(),
         DISCORD_CLIENT_SECRET: z.string(),
         REDDIT_CLIENT_ID: z.string(),
@@ -29,12 +30,12 @@ export const env = createEnv({
         GOOGLE_CLIENT_SECRET: z.string(),
         GITHUB_CLIENT_ID: z.string(),
         GITHUB_CLIENT_SECRET: z.string(),
-        NEXT_PUBLIC_BUCKET_NAME: z.string(),
-        NEXT_PUBLIC_AWS_ACCESS_KEY_ID: z.string(),
-        NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY: z.string(),
-        NEXT_PUBLIC_REGION: z.string(),
-        NEXT_PUBLIC_PAYPAL_CLIENT_ID: z.string(),
-        PAYPAL_SECRET: z.string(),
+        BUCKET_NAME: z.string(),
+        AWS_ACCESS_KEY_ID: z.string(),
+        AWS_SECRET_ACCESS_KEY: z.string(),
+        REGION: z.string(),
+        // PAYPAL_CLIENT_ID: z.string(),
+        // PAYPAL_SECRET: z.string(),
         POGWORD: z.string(),
     },
 
@@ -55,6 +56,7 @@ export const env = createEnv({
      * You can't destruct `process.env` as a regular object in the Next.js edge runtimes (e.g.
      * middlewares) or client-side so we need to destruct manually.
      */
+  
     runtimeEnv: {
         DATABASE_URL: process.env.DATABASE_URL,
         NODE_ENV: process.env.NODE_ENV,
@@ -68,15 +70,20 @@ export const env = createEnv({
         GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
         REDDIT_CLIENT_ID: process.env.REDDIT_CLIENT_ID,
         REDDIT_CLIENT_SECRET: process.env.REDDIT_CLIENT_SECRET,
+        AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
+        AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
+        BUCKET_NAME: process.env.BUCKET_NAME,
+        REGION: process.env.REGION,
+        POGWORD: process.env.POGWORD,
+        // PAYPAL_CLIENT_ID: process.env.PAYPAL_CLIENT_ID,
+        // PAYPAL_SECRET: process.env.PAYPAL_SECRET,
+        NEXT_PUBLIC_BUCKET_NAME: process.env.NEXT_PUBLIC_BUCKET_NAME,
         NEXT_PUBLIC_AWS_ACCESS_KEY_ID:
             process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID,
         NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY:
             process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY,
-        NEXT_PUBLIC_BUCKET_NAME: process.env.NEXT_PUBLIC_BUCKET_NAME,
         NEXT_PUBLIC_REGION: process.env.NEXT_PUBLIC_REGION,
-        POGWORD: process.env.POGWORD,
         NEXT_PUBLIC_PAYPAL_CLIENT_ID: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
-        PAYPAL_SECRET: process.env.PAYPAL_SECRET,
     },
     /**
      * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.

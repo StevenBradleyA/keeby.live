@@ -1,3 +1,4 @@
+'use client'
 import { getCookies } from "cookies-next";
 import { createContext, useContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";

@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import { useState } from "react";
 import ModalDialog from "../Modal";
@@ -25,17 +26,30 @@ export default function KeebTypeFooter() {
             <Link
                 href="/keebdex/how-keeby-works"
                 aria-label="how keeby works"
-                className={`transition-colors duration-300 ease-custom-cubic ${styles.hoverText} `}
+                className={`ease-in ${styles.hoverText} `}
             >
                 About
             </Link>
             <button
                 onClick={openModal}
-                className={`transition-colors duration-300 ease-custom-cubic ${styles.hoverText} `}
+                className={`ease-in ${styles.hoverText} `}
             >
                 Support Keeby
             </button>
-
+            <Link
+                href="/keebdex/how-keeby-works"
+                aria-label="how keeby works"
+                className={`ease-in ${styles.hoverText} `}
+            >
+                Keeb Share
+            </Link>
+            <Link
+                href="/keebdex/how-keeby-works"
+                aria-label="how keeby works"
+                className={`ease-in ${styles.hoverText} `}
+            >
+                Keeb Shop
+            </Link>
             <ModalDialog isOpen={isModalOpen} onClose={closeModal}>
                 <SupportMe />
             </ModalDialog>
@@ -43,14 +57,14 @@ export default function KeebTypeFooter() {
             <Link
                 href="/privacy-policy"
                 aria-label="Privacy Policy"
-                className={`transition-colors duration-300 ease-custom-cubic ${styles.hoverText} `}
+                className={`ease-in ${styles.hoverText} `}
             >
                 Privacy
             </Link>
             <Link
                 href="/terms-of-service"
                 aria-label="Terms of Service"
-                className={`transition-colors duration-300 ease-custom-cubic ${styles.hoverText} `}
+                className={`ease-in ${styles.hoverText} `}
             >
                 Terms
             </Link>

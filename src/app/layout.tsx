@@ -51,11 +51,64 @@ import { TRPCReactProvider } from "~/app/trpc/react";
 import MobileProvider from "./_components/Context/Mobile";
 import { Toaster } from "react-hot-toast";
 import ThemeProvider from "./_components/Context/Theme";
+import NavBar from "./_components/NavBar/RetroNavigation";
+// import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+import { env } from "~/env.mjs";
+import Navigation from "./_components/NavBar/navigation";
 
 export const metadata: Metadata = {
     title: "Keeby",
     description: "Keeby is the one place for mechanical keyboard",
     icons: [{ rel: "icon", url: "/favicon.ico" }],
+    authors: [{ name: "Steven", url: "https://steven-anderson.com" }],
+    generator: "Next.js",
+    keywords: [
+        "Keeby",
+        "Keeby Live",
+        "Mechanical Keyboards",
+        "Keyboards for sale",
+        "keeb",
+        "Keeb Type",
+    ],
+    referrer: "origin",
+    appleWebApp: {
+        capable: true,
+        title: "Keeby",
+        statusBarStyle: "black-translucent",
+    },
+    // icons: {
+    //     icon: "/favicon.ico",
+    //      apple: "/apple-touch-icon.png",
+    // },
+    openGraph: {
+        type: "website",
+        url: "https://keeby.live",
+        title: "Steven Anderson",
+        description:
+            "Keeby is the one place for everything mechanical keyboard",
+        siteName: "Keeby",
+        images: [
+            {
+                url: "https://keeby.live/og-image.png",
+                width: 1200,
+                height: 630,
+                alt: "Keeby",
+            },
+        ],
+    },
+    twitter: {
+        card: "summary_large_image",
+        site: "@keeby.live",
+        creator: "@keeby.live",
+        title: "Keeby",
+        description:
+            "Keeby is the one place for everything mechanical keyboard",
+        images: ["https://steven-anderson.com/og-image.png"],
+    },
+    // verification: {
+    //     google: '1234567890',
+    //     yandex: '1234567890',
+    // },
 };
 
 export default function RootLayout({
@@ -63,11 +116,20 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
     return (
         <html lang="en">
-            <body>
+            <body className="font-poppins bg-dark text-white">
                 <TRPCReactProvider>
                     <Toaster />
                     <MobileProvider>
-                        <ThemeProvider>{children}</ThemeProvider>
+                        <ThemeProvider>
+                            {/* <PayPalScriptProvider
+                                options={{
+                                    clientId: env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
+                                }}
+                            > */}
+                            <Navigation />
+                            <main>{children}</main>
+                            {/* </PayPalScriptProvider> */}
+                        </ThemeProvider>
                     </MobileProvider>
                 </TRPCReactProvider>
             </body>
