@@ -1,48 +1,42 @@
-// app/auth/signin/page.tsx
-import { getProviders, signIn } from "next-auth/react";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "~/server/auth";
-import { authSvg } from "~/app/_components/Svgs/auth";
 // import { motion } from "framer-motion";
-import TitleScripts from "~/app/_components/TitleScripts";
-import { redirect } from "next/navigation";
+// import TitleScripts from "~/app/_components/TitleScripts";
 import Footer from "~/app/_components/Footer/footer";
+import Image from "next/image";
+import login from "@public/Images/login.png";
+import LoginForm from "~/app/_components/Login/loginForm";
+import AuthProviders from "~/app/_components/Login/authProviders";
 
-export default async function SignIn() {
-    const session = await getServerSession(authOptions);
+export default function SignIn() {
+    // const session = await getServerSession(authOptions);
 
     // If the user is already logged in, redirect.
-    if (session) {
-        redirect("/");
-    }
-
-    const providers = await getProviders();
+    // if (session) {
+    //     redirect("/");
+    // }
 
     return (
         <>
             {/* <div className="text-3xl text-green-500 mt-32 w-full flex justify-center">
                 <TitleScripts page={"signin"} />
             </div> */}
-            <div className="w-full flex justify-center mt-40">
-                <div className=" rounded-3xl p-20 w-1/2  bg-keebyGray">
-                    {providers &&
-                        Object.values(providers).map((provider) => (
-                            <div key={provider.name}>
-                                <button
-                                    // onClick={() => void signIn(provider.id)}
-                                    className="button-hover-effect mb-5 rounded-2xl bg-black px-6 py-2 text-green-500"
-                                    // whileHover={{ scale: 1.1 }}
-                                    // whileTap={{ scale: 0.95 }}
-                                >
-                                    <div className="flex items-center gap-5">
-                                        <div className="w-10">
-                                            {authSvg(provider.name)}
-                                        </div>
-                                        <div>Sign in with {provider.name}</div>
-                                    </div>
-                                </button>
-                            </div>
-                        ))}
+            <div className="w-full flex justify-center mt-60">
+                <div className=" rounded-2xl w-1/2  bg-keebyGray flex overflow-hidden shadow-2xl relative ">
+                    <div className="w-1/2  h-full p-10 flex flex-col items-center justify-center">
+                        <Image
+                            src={login}
+                            alt="login"
+                            className="w-60 h-60 object-contain"
+                        />
+                    </div>
+                    <div className="w-1/2 p-20 flex flex-col items-center relative">
+                        <LoginForm />
+                        <AuthProviders />
+                    </div>
+
+                    {/* <div className="w-1/3 bg-lightGray h-full p-10 flex flex-col items-center justify-center rounded-l-3xl">
+                       
+                       </div>
+                       <Image src={login} alt="login" className="w-80 h-80 absolute right-40 bottom-10"/> */}
                 </div>
             </div>
 
