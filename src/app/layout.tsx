@@ -51,10 +51,10 @@ import { TRPCReactProvider } from "~/app/trpc/react";
 import MobileProvider from "./_components/Context/Mobile";
 import { Toaster } from "react-hot-toast";
 import ThemeProvider from "./_components/Context/Theme";
-import NavBar from "./_components/NavBar/RetroNavigation";
+import NavBar from "./_components/Navigation/RetroNavigation";
 // import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { env } from "~/env.mjs";
-import Navigation from "./_components/NavBar/navigation";
+import Navigation from "./_components/Navigation/navigation";
 
 export const metadata: Metadata = {
     title: "Keeby",
