@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import TitleScripts from "~/app/_components/TitleScripts";
 import Link from "next/link";
-import MainFooter from "~/app/_components/Footer/mainFooter";
+import Footer from "~/app/_components/Footer/mainFooter";
 import { useState } from "react";
 import ModalDialog from "~/app/_components/Modal";
 import SupportMe from "~/app/_components/Footer/supportModal";
@@ -207,7 +207,7 @@ export default function KeebDex() {
                 </ModalDialog>
             </div>
             <div className="mt-56 w-full ">
-                <MainFooter />
+                <Footer />
             </div>
         </>
     );

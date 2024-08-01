@@ -31,7 +31,7 @@
 //     const router = useRouter();
 
 //     const { data: sessionData } = useSession();
-//     const { theme } = useTheme();
+//     const { theme } = useGlobalState();
 //     const styles = themeStyles[theme as ThemeName] || themeStyles["KEEBY"];
 
 //     const handleClose = useCallback(() => {
@@ -86,7 +86,7 @@
 
 //     return (
 //         <nav
-//             className={`sticky top-0 z-10 flex items-center justify-between 
+//             className={`sticky top-0 z-10 flex items-center justify-between
 //               ${
 //                   router.asPath === "/" || router.asPath === "/keebshare"
 //                       ? "bg-dark"

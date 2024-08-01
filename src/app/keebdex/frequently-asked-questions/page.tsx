@@ -1,5 +1,5 @@
 import Image from "next/image";
-import MainFooter from "~/app/_components/Footer/mainFooter";
+import Footer from "~/app/_components/Footer/mainFooter";
 import { useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import keebo from "@public/Profile/keebo.png";
@@ -508,7 +508,7 @@ export default function FrequentlyAskedQuestions() {
                 </div>
             </div>
             <div className="z-20 mt-96 w-full">
-                <MainFooter />
+                <Footer />
             </div>
         </>
     );

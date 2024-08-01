@@ -18,23 +18,20 @@ export default function KeebType() {
     // listen type -- hear words via ai text to speech then type them
     // race against the clock mode?
 
-    
-    
-    
     const cookies = getCookies();
     const [mode, setMode] = useState<string>("Speed");
-    const { theme, setTheme } = useTheme();
+    const { theme, setTheme } = useGlobalState();
     const [keeb, setKeeb] = useState<string>("");
     const [keebId, setKeebId] = useState<string>("");
     const [gameOver, setGameOver] = useState<boolean>(false);
-    
+
     // mode specific
     const [gameLength, setGameLength] = useState<number>(20);
     const [scholarType, setScholarType] = useState<string>("Vocab");
     // const [letterSelect, setLetterSelect] = useState<string>("Cycle");
     // git gud game mode where all words start with a certain letter and cycles
     const styles = themeStyles[theme as ThemeName] || themeStyles["KEEBY"];
-    
+
     useEffect(() => {
         if (cookies.mode) {
             setMode(cookies.mode);
@@ -114,8 +111,9 @@ export default function KeebType() {
             <div className=" absolute bottom-3 z-20">
                 <KeebTypeFooter />
             </div>
-                <div className={`${styles.baseColor} fixed top-0 bottom-0 left-0 right-0`}></div>
-
+            <div
+                className={`${styles.baseColor} fixed top-0 bottom-0 left-0 right-0`}
+            ></div>
         </>
     );
 }

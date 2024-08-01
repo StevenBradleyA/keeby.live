@@ -1,8 +1,10 @@
-import MainFooter from "~/app/_components/Footer/mainFooter";
+"use client";
+
 import { motion } from "framer-motion";
 import { useState } from "react";
 import Image from "next/image";
 import keebo from "@public/Profile/keebo.png";
+import Footer from "~/app/_components/Footer/footer";
 export default function PreventingScams() {
     const script = [
         "WOW!",
@@ -518,8 +520,8 @@ export default function PreventingScams() {
                 className="mt-40 w-full bg-red-200 "
                 style={{ zIndex: 2 }}
             ></div>
-            <div className="mt-96 w-full" style={{ zIndex: 4 }}>
-                <MainFooter />
+            <div className="mt-[40rem] w-full z-40 relative" style={{ zIndex: 4 }}>
+                <Footer />
             </div>
         </>
     );

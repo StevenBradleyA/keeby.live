@@ -7,7 +7,7 @@ import Custom404 from "~/pages/404";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { debounce } from "lodash";
-import MainFooter from "~/app/_components/Footer/mainFooter";
+import Footer from "~/app/_components/Footer/mainFooter";
 
 export default function AdminListings() {
     const { data: session } = useSession();
@@ -86,7 +86,7 @@ export default function AdminListings() {
                 </div>
             </div>
             <div className="mt-96">
-                <MainFooter />
+                <Footer />
             </div>
         </div>
     );

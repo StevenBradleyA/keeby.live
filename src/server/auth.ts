@@ -155,6 +155,9 @@ export const authOptions: NextAuthOptions = {
             },
         }),
     },
+    pages: {
+        signIn: "/auth/signin",
+    },
     adapter: PrismaAdapter(db) as Adapter,
     providers: [
         DiscordProvider({

@@ -13,7 +13,7 @@ import computerShare from "@public/Profile/computer-share.png";
 import computerShop from "@public/Profile/computer-shop.png";
 import computerType from "@public/Profile/computer-type.png";
 import hacktime from "@public/Vectors/hacktime.png";
-import MainFooter from "~/app/_components/Footer/mainFooter";
+import Footer from "~/app/_components/Footer/mainFooter";
 import ManageListings from "~/app/_components/Listings/ManageListings";
 import ManagePosts from "~/app/_components/Posts/ManagePosts";
 import DisplayFavoriteListings from "~/app/_components/Listings/DisplayFavoriteListings";
@@ -100,7 +100,7 @@ export default function UserProfile() {
         const timeouts = phrases.map((phrase, i) =>
             setTimeout(() => {
                 setTitle(phrase);
-            }, delay[i])
+            }, delay[i]),
         );
 
         return () => {
@@ -1035,7 +1035,7 @@ export default function UserProfile() {
             </div>
 
             <div className="mt-96 w-full">
-                <MainFooter />
+                <Footer />
             </div>
         </>
     ) : (

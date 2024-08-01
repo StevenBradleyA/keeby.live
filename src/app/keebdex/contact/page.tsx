@@ -1,10 +1,10 @@
 import { signIn, useSession } from "next-auth/react";
 
-import MainFooter from "~/app/_components/Footer/mainFooter";
+import Footer from "~/app/_components/Footer/mainFooter";
 import { api } from "~/utils/api";
 import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
-import  keebo  from "@public/Profile/keebo.png";
+import keebo from "@public/Profile/keebo.png";
 import Image from "next/image";
 
 interface ErrorsObj {
@@ -159,24 +159,25 @@ export default function ContactUs() {
                         </>
                     ) : (
                         <>
-                        <div className="flex  flex-col items-center w-full">
+                            <div className="flex  flex-col items-center w-full">
+                                <h2 className="text-2xl">Thank You</h2>
+                                <p>
+                                    We will get back to you as soon as possible!
+                                </p>
 
-                            <h2 className="text-2xl">Thank You</h2>
-                            <p>We will get back to you as soon as possible!</p>
-
-                            <Image
-                                alt="keeby mascot"
-                                src={keebo}
-                                className="h-20 w-20 mt-2"
+                                <Image
+                                    alt="keeby mascot"
+                                    src={keebo}
+                                    className="h-20 w-20 mt-2"
                                 />
-                                </div>
+                            </div>
                         </>
                     )}
                 </div>
             </div>
 
             <div className=" z-10 w-full">
-                <MainFooter />
+                <Footer />
             </div>
         </>
     );

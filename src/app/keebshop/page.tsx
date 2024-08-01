@@ -12,7 +12,7 @@ import NotificationSvg from "~/app/_components/Svgs/notification";
 import { getCookies } from "cookies-next";
 import { setCookie } from "cookies-next";
 import { debounce } from "lodash";
-import MainFooter from "~/app/_components/Footer/mainFooter";
+import Footer from "~/app/_components/Footer/mainFooter";
 
 export default function KeebShopHome() {
     const cookies = getCookies();
@@ -255,7 +255,7 @@ export default function KeebShopHome() {
                                         <button
                                             onClick={() =>
                                                 handleSwitchTypeSelect(
-                                                    "tactile"
+                                                    "tactile",
                                                 )
                                             }
                                             className={` transition-colors duration-400 ease-custom-cubic hover:text-white  ${
@@ -514,7 +514,7 @@ export default function KeebShopHome() {
                                             <button
                                                 onClick={() =>
                                                     handleAssemblyTypeSelect(
-                                                        "assembled"
+                                                        "assembled",
                                                     )
                                                 }
                                                 className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
@@ -528,7 +528,7 @@ export default function KeebShopHome() {
                                             <button
                                                 onClick={() =>
                                                     handleAssemblyTypeSelect(
-                                                        "unassembled"
+                                                        "unassembled",
                                                     )
                                                 }
                                                 className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
@@ -549,7 +549,7 @@ export default function KeebShopHome() {
                                             <button
                                                 onClick={() =>
                                                     handleHotSwapTypeSelect(
-                                                        "hotswap"
+                                                        "hotswap",
                                                     )
                                                 }
                                                 className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
@@ -563,7 +563,7 @@ export default function KeebShopHome() {
                                             <button
                                                 onClick={() =>
                                                     handleHotSwapTypeSelect(
-                                                        "soldered"
+                                                        "soldered",
                                                     )
                                                 }
                                                 className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
@@ -734,7 +734,7 @@ export default function KeebShopHome() {
                 </div>
             </div>
             <div className="mt-96 w-full">
-                <MainFooter />
+                <Footer />
             </div>
         </>
     );

@@ -5,7 +5,7 @@ import Custom404 from "~/pages/404";
 import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 import EachAdminTicket from "~/app/_components/Admin/Tickets/Display/displayAdminTickets";
-import MainFooter from "~/app/_components/Footer/mainFooter";
+import Footer from "~/app/_components/Footer/mainFooter";
 
 export default function AdminTickets() {
     const { data: session } = useSession();
@@ -56,7 +56,7 @@ export default function AdminTickets() {
                 </div>
             </div>
             <div className="mt-96">
-                <MainFooter />
+                <Footer />
             </div>
         </div>
     );

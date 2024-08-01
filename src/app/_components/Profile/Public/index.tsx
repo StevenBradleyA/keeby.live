@@ -8,7 +8,7 @@ import EachReceivedReviewCard from "~/app/_components/Reviews/Display/eachReceiv
 import EachPublicProfileReview from "~/app/_components/Reviews/Display/publicProfileReviews";
 import { RadialBarChart, RadialBar, Legend, PolarAngleAxis } from "recharts";
 import CustomProgressPie from "./customProgressPie";
-import MainFooter from "~/app/_components/Footer/mainFooter";
+import Footer from "~/app/_components/Footer/mainFooter";
 import unranked from "@public/KeebType/unranked.png";
 import TitleScripts from "~/app/_components/TitleScripts";
 import { motion } from "framer-motion";
@@ -243,7 +243,7 @@ export default function PublicProfileUserInfo({
 
                                     <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center text-3xl">
                                         {formatPoints(
-                                            userData.userInfo.internetPoints
+                                            userData.userInfo.internetPoints,
                                         )}
                                     </div>
                                 </div>
@@ -285,7 +285,7 @@ export default function PublicProfileUserInfo({
                                                     review={review}
                                                 />
                                             </div>
-                                        )
+                                        ),
                                     )
                                 ) : (
                                     <div className="flex w-full flex-col rounded-xl bg-black/30 p-2  text-xs transition-background duration-300 ease-custom-cubic hover:bg-black/20 ">
@@ -316,7 +316,7 @@ export default function PublicProfileUserInfo({
                     </div>
                 </div>
                 <div className="z-10 mt-64 w-full">
-                    <MainFooter />
+                    <Footer />
                 </div>
             </>
         )

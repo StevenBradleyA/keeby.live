@@ -1,4 +1,4 @@
-import MainFooter from "~/app/_components/Footer/mainFooter";
+import Footer from "~/app/_components/Footer/mainFooter";
 import DisplayListingPage from "~/app/_components/Listings/DisplayListing";
 import LoadingSpinner from "~/app/_components/Loading";
 import { api } from "~/utils/api";
@@ -26,7 +26,7 @@ export default function DisplayListingCheck({
             <div className="mb-96 w-full text-black desktop:px-16">
                 {listing && <DisplayListingPage listing={listing} />}
             </div>
-            <MainFooter />
+            <Footer />
         </>
     );
 }

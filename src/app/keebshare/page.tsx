@@ -9,7 +9,7 @@ import { setCookie } from "cookies-next";
 import CreatePostModal from "~/app/_components/Posts/CreatePost";
 import DisplayNewPostPreviews from "~/app/_components/Posts/DisplayPosts/DisplayPostPreviews/displayNewPostPreviews";
 import DisplayPopularPostPreviews from "~/app/_components/Posts/DisplayPosts/DisplayPostPreviews/displayPopularPostPreviews";
-import MainFooter from "~/app/_components/Footer/mainFooter";
+import Footer from "~/app/_components/Footer/mainFooter";
 import { debounce } from "lodash";
 
 export default function KeebShare() {
@@ -293,7 +293,7 @@ export default function KeebShare() {
                 </div>
             </div>
             <div className="mt-96 w-full">
-                <MainFooter />
+                <Footer />
             </div>
         </>
     );

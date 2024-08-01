@@ -12,7 +12,7 @@ import PostPreviewDeleteFavorite from "../DisplayPosts/DisplayPostPreviews/Favor
 import ModalDialog from "~/app/_components/Modal";
 import SignInModal from "~/app/_components/Comments/Modal/signInModal";
 import DisplayYouTubePostPreview from "../DisplayPosts/DisplayPostPreviews/displayYouTubePreview";
-import MainFooter from "~/app/_components/Footer/mainFooter";
+import Footer from "~/app/_components/Footer/mainFooter";
 import { formatDistance } from "date-fns";
 import Link from "next/link";
 import UserPostPreviews from "./userPostPreviews";
@@ -91,7 +91,7 @@ export default function DisplayPostPage({ post }: DisplayPostPageProps) {
         },
         {
             getNextPageParam: (lastPage) => lastPage.nextCursor,
-        }
+        },
     );
 
     const openSignInModal = () => {
@@ -109,7 +109,7 @@ export default function DisplayPostPage({ post }: DisplayPostPageProps) {
     const goToPrevImage = () => {
         setImageIndex(
             (prevIndex) =>
-                (prevIndex - 1 + post.images.length) % post.images.length
+                (prevIndex - 1 + post.images.length) % post.images.length,
         );
     };
 
@@ -122,7 +122,7 @@ export default function DisplayPostPage({ post }: DisplayPostPageProps) {
                     void fetchNextPage();
                 }
             },
-            { threshold: 1.0 }
+            { threshold: 1.0 },
         );
 
         const currentFlag = scrollFlagRef.current;
@@ -430,7 +430,7 @@ export default function DisplayPostPage({ post }: DisplayPostPageProps) {
                                                 type="post"
                                                 typeId={post.id}
                                             />
-                                        ))
+                                        )),
                                     )}
                                     <div
                                         ref={scrollFlagRef}
@@ -447,7 +447,7 @@ export default function DisplayPostPage({ post }: DisplayPostPageProps) {
                 </div>
             </div>
             <div className="mt-96 w-full">
-                <MainFooter />
+                <Footer />
             </div>
         </>
     );

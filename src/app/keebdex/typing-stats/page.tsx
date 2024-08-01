@@ -1,4 +1,4 @@
-import MainFooter from "~/app/_components/Footer/mainFooter";
+import Footer from "~/app/_components/Footer/mainFooter";
 
 export default function TypingCalculations() {
     return (
@@ -11,7 +11,7 @@ export default function TypingCalculations() {
             <div>ranked modes </div>
             <div>accuracy</div>
 
-            <MainFooter />
+            <Footer />
         </>
     );
 }

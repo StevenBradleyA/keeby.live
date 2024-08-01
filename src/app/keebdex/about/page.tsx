@@ -1,4 +1,4 @@
-import MainFooter from "~/app/_components/Footer/mainFooter";
+import Footer from "~/app/_components/Footer/mainFooter";
 import Image from "next/image";
 import portrait from "@public/About/portrait.png";
 import leftKeeb from "@public/About/left.png";
@@ -193,7 +193,7 @@ export default function KeebyAbout() {
             </div>
 
             <div className="mt-80 w-full">
-                <MainFooter />
+                <Footer />
             </div>
         </>
     );

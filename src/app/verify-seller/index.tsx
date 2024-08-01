@@ -1,5 +1,5 @@
 import { useSession } from "next-auth/react";
-import MainFooter from "~/app/_components/Footer/mainFooter";
+import Footer from "~/app/_components/Footer/mainFooter";
 import defaultProfile from "@public/Profile/profile-default.png";
 import Image from "next/image";
 import { api } from "~/utils/api";
@@ -221,7 +221,7 @@ export default function VerifySeller() {
                                                 value={emailConfirmation}
                                                 onChange={(e) =>
                                                     setEmailConfirmation(
-                                                        e.target.value
+                                                        e.target.value,
                                                     )
                                                 }
                                                 className=" h-10 w-full rounded-md bg-darkGray p-1 text-white"
@@ -350,23 +350,23 @@ export default function VerifySeller() {
                                             }}
                                             onApprove={async (
                                                 data,
-                                                actions
+                                                actions,
                                             ) => {
                                                 if (actions && actions.order) {
                                                     const details =
                                                         await actions.order.capture();
                                                     console.log(
                                                         "DATA BB",
-                                                        data
+                                                        data,
                                                     );
 
                                                     console.log(
                                                         "DETAILS BB",
-                                                        details
+                                                        details,
                                                     );
                                                     console.log(
                                                         "STATUS TESTING BB",
-                                                        details.status
+                                                        details.status,
                                                     );
 
                                                     if (
@@ -463,7 +463,7 @@ export default function VerifySeller() {
                     </div>
                 </div>
             )}
-            <MainFooter />
+            <Footer />
         </>
     );
 }

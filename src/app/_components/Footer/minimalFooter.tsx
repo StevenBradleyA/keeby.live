@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useState } from "react";
 import ModalDialog from "../Modal";
 import SupportMe from "./supportModal";
-import { useTheme } from "../Context/Theme";
+import { useGlobalState } from "../Context/GlobalState/globalState";
 import { themeStyles } from "../KeebType/Theme/themeStyles";
 import type { ThemeName } from "../KeebType/Theme/themeStyles";
 
@@ -18,7 +18,7 @@ export default function KeebTypeFooter() {
         setIsModalOpen(false);
     };
 
-    const { theme } = useTheme();
+    const { theme } = useGlobalState();
     const styles = themeStyles[theme as ThemeName] || themeStyles["KEEBY"];
 
     return (

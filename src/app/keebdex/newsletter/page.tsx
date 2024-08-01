@@ -1,6 +1,6 @@
 import { signIn, useSession } from "next-auth/react";
 
-import MainFooter from "~/app/_components/Footer/mainFooter";
+import Footer from "~/app/_components/Footer/mainFooter";
 import { api } from "~/utils/api";
 import toast from "react-hot-toast";
 
@@ -40,7 +40,7 @@ export default function Newsletter() {
 
     const handleNewsletterUpdate = (
         e: React.FormEvent,
-        newsletter: boolean
+        newsletter: boolean,
     ) => {
         e.preventDefault();
 
@@ -344,7 +344,7 @@ export default function Newsletter() {
             </div>
 
             <div className=" z-10 w-full">
-                <MainFooter />
+                <Footer />
             </div>
         </>
     );

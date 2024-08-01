@@ -1,5 +1,5 @@
 import Link from "next/link";
-import MainFooter from "~/app/_components/Footer/mainFooter";
+import Footer from "~/app/_components/Footer/mainFooter";
 
 export default function TermsOfService() {
     // the goal of keeby is to create a safe space to buy and sell mechanical keyboards and enjoy the hobby.
@@ -274,7 +274,7 @@ IF APPLICABLE LAW DOES NOT ALLOW THE EXCLUSION OF SOME OR ALL OF THE ABOVE IMPLI
                 <h2 className="mb-5 text-4xl text-green-500 ">Contact Us</h2>
                 <p className="mb-5 rounded-md bg-keebyGray p-5  ">{`Please contact us at hacktimesupport@outlook.com.`}</p>
             </div>
-            <MainFooter />
+            <Footer />
         </>
     );
 }

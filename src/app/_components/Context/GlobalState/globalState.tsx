@@ -1,144 +1,48 @@
-// import type { Session } from "next-auth";
-// import type { AppType } from "next/app";
-// import { SessionProvider } from "next-auth/react";
-// import { api } from "~/utils/api";
-// import { Toaster } from "react-hot-toast";
-// import "~/styles/globals.css";
-// import Layout from "../components/layout";
-// import MobileProvider from "~/app/_components/Context/Mobile";
-// import ThemeProvider from "~/app/_components/Context/Theme";
-// import { PayPalScriptProvider } from "@paypal/react-paypal-js";
-// import { env } from "~/env.mjs";
+"use client";
+import { getCookies } from "cookies-next";
+import { createContext, useContext, useEffect, useState } from "react";
+import type { ReactNode } from "react";
 
-// export const metadata = {
-//     title: "Keeby",
-//     description: "Keeby is the one place for everything mechanical keyboard",
-//     applicationName: "Keeby",
-// };
-
-// const MyApp: AppType<{ session: Session | null }> = ({
-//     Component,
-//     pageProps: { session, ...pageProps },
-// }) => {
-//     return (
-//         <SessionProvider session={session}>
-//             <Toaster />
-//             <MobileProvider>
-//                 <ThemeProvider>
-//                     <PayPalScriptProvider
-//                         options={{
-//                             clientId: env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
-//                         }}
-//                     >
-//                         <Layout>
-//                             <Component {...pageProps} />
-//                         </Layout>
-//                     </PayPalScriptProvider>
-//                 </ThemeProvider>
-//             </MobileProvider>
-//         </SessionProvider>
-//     );
-// };
-
-// export default api.withTRPC(MyApp);
-
-import "~/styles/globals.css";
-import { type Metadata } from "next";
-import { TRPCReactProvider } from "~/app/trpc/react";
-import MobileProvider from "./_components/Context/Mobile";
-import { Toaster } from "react-hot-toast";
-import { env } from "~/env.mjs";
-import Navigation from "./_components/Navigation/navigation";
-import SessionProviderWrapper from "./_components/Context/Session/sessionProviderWrapper";
-import GlobalStateProvider from "./_components/Context/GlobalState/globalState";
-
-export const metadata: Metadata = {
-    title: "Keeby",
-    description: "Keeby is the one place for mechanical keyboard",
-    icons: [{ rel: "icon", url: "/favicon.ico" }],
-    authors: [{ name: "Steven", url: "https://steven-anderson.com" }],
-    generator: "Next.js",
-    keywords: [
-        "Keeby",
-        "Keeby Live",
-        "Mechanical Keyboards",
-        "Keyboards for sale",
-        "keeb",
-        "Keeb Type",
-    ],
-    referrer: "origin",
-    appleWebApp: {
-        capable: true,
-        title: "Keeby",
-        statusBarStyle: "black-translucent",
-    },
-    // icons: {
-    //     icon: "/favicon.ico",
-    //      apple: "/apple-touch-icon.png",
-    // },
-    openGraph: {
-        type: "website",
-        url: "https://keeby.live",
-        title: "Steven Anderson",
-        description:
-            "Keeby is the one place for everything mechanical keyboard",
-        siteName: "Keeby",
-        images: [
-            {
-                url: "https://keeby.live/og-image.png",
-                width: 1200,
-                height: 630,
-                alt: "Keeby",
-            },
-        ],
-    },
-    twitter: {
-        card: "summary_large_image",
-        site: "@keeby.live",
-        creator: "@keeby.live",
-        title: "Keeby",
-        description:
-            "Keeby is the one place for everything mechanical keyboard",
-        images: ["https://steven-anderson.com/og-image.png"],
-    },
-    // verification: {
-    //     google: '1234567890',
-    //     yandex: '1234567890',
-    // },
-};
-
-export default function RootLayout({
-    children,
-}: Readonly<{ children: React.ReactNode }>) {
-    return (
-        <html lang="en">
-            <body className="font-poppins bg-dark text-white">
-                <TRPCReactProvider>
-                        <Toaster />
-                    <SessionProviderWrapper>
-                        <MobileProvider>
-                            <GlobalStateProvider>
-                                <Navigation />
-                                <main>{children}</main>
-                            </GlobalStateProvider>
-                        </MobileProvider>
-                    </SessionProviderWrapper>
-                </TRPCReactProvider>
-            </body>
-        </html>
-    );
+interface StateContextType {
+    theme: string;
+    setTheme: (theme: string) => void;
 }
 
-// import { useSession } from "next-auth/react";
-// import NavBar from "./NavBar";
-// import Head from "next/head";
-// import { useRouter } from "next/router";
-// import { useEffect, useState } from "react";
-// import { getCookie, setCookie } from "cookies-next";
-// import ModalDialog from "./Modal";
-// import Link from "next/link";
+const GlobalStateContext = createContext<StateContextType | undefined>(
+    undefined,
+);
 
-// export default function Layout({ children }: { children: React.ReactNode }) {
+export const useGlobalState = (): StateContextType => {
+    const context = useContext(GlobalStateContext);
+    if (context === undefined) {
+        throw new Error("useTheme must be used within a GlobalStateProvider");
+    }
+    return context;
+};
+
+interface ThemeProviderProps {
+    children: ReactNode;
+}
+
+const GlobalStateProvider: React.FC<ThemeProviderProps> = ({ children }) => {
+    const [theme, setTheme] = useState<string>("KEEBY");
+    const cookies = getCookies();
+
+    useEffect(() => {
+        if (cookies.theme) {
+            setTheme(cookies.theme);
+        }
+    }, [cookies]);
+    const value = { theme, setTheme };
+    return (
+        <GlobalStateContext.Provider value={value}>
+            {children}
+        </GlobalStateContext.Provider>
+    );
+};
+
+export default GlobalStateProvider;
+
 //     const { data: session } = useSession();
 //     const router = useRouter();
 //     const hasProfile = session?.user.hasProfile;
@@ -175,19 +79,7 @@ export default function RootLayout({
 //         setShowCookieBanner(false);
 //     };
 
-//     return (
-//         <>
-//             <Head>
-//                 <title>Keeby Live</title>
-//                 <meta
-//                     name="description"
-//                     content="Keeby is the one place for everything mechanical keyboard. Shop, share, type and explore the world of mechanical keyboards on a site built for enthusiasts!"
-//                 />
-//                 <link rel="icon" href="/favicon.ico" />
-//             </Head>
-//             <div className="min-h-screen bg-dark font-poppins text-white mobile:overflow-auto tablet:overflow-visible ">
-//                 <NavBar />
-//                 {showCookieBanner && (
+// {showCookieBanner && (
 //                     <ModalDialog isOpen={isModalOpen} onClose={closeModal}>
 //                         <div className="flex flex-col items-center text-sm">
 //                             <svg
@@ -245,10 +137,3 @@ export default function RootLayout({
 //                         </div>
 //                     </ModalDialog>
 //                 )}
-//                 <main className="flex flex-col items-center justify-center">
-//                     {children}
-//                 </main>
-//             </div>
-//         </>
-//     );
-// }

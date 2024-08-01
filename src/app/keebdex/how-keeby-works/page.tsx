@@ -1,20 +1,20 @@
-import MainFooter from "~/app/_components/Footer/mainFooter";
+import Footer from "~/app/_components/Footer/mainFooter";
 
 export default function HowKeebyWorks() {
     // what do I actually want here lmao????
     //
 
-        // calculations
-        // const timeInSeconds = stopwatch.getElapsedRunningTime() / 1000;
-        // const timeInMinutes = timeInSeconds / 60;
-        // const pureWpm = totalTypedCharacters / 5 / timeInMinutes;
-        // const wpm = totalCorrectlyTypedCharacters / 5 / timeInMinutes;
-        // const accuracy =
-        //     (totalCorrectlyTypedCharacters / totalPromptCharacters) * 100;
+    // calculations
+    // const timeInSeconds = stopwatch.getElapsedRunningTime() / 1000;
+    // const timeInMinutes = timeInSeconds / 60;
+    // const pureWpm = totalTypedCharacters / 5 / timeInMinutes;
+    // const wpm = totalCorrectlyTypedCharacters / 5 / timeInMinutes;
+    // const accuracy =
+    //     (totalCorrectlyTypedCharacters / totalPromptCharacters) * 100;
 
-        // wpm - total number of characters in the correctly typed words (including spaces), divided by 5 and normalised to 60 seconds.
-        // pure wpm - calculated just like wpm, but also includes incorrect words.
-        // accuracy - percentage of correctly pressed keys.
+    // wpm - total number of characters in the correctly typed words (including spaces), divided by 5 and normalised to 60 seconds.
+    // pure wpm - calculated just like wpm, but also includes incorrect words.
+    // accuracy - percentage of correctly pressed keys.
 
     return (
         <>
@@ -105,7 +105,9 @@ export default function HowKeebyWorks() {
                                 Internet points
                             </h2>
                             <p>
-                                Earn internet points by receiving comment likes, or favorites on listings and posts. Bigger number better person.
+                                Earn internet points by receiving comment likes,
+                                or favorites on listings and posts. Bigger
+                                number better person.
                             </p>
                             <h2 className=" mt-5 text-3xl">KEEBTYPE </h2>
                             <p className="mt-2">
@@ -147,7 +149,7 @@ export default function HowKeebyWorks() {
             </div>
 
             <div className=" w-full ">
-                <MainFooter />
+                <Footer />
             </div>
         </>
     );

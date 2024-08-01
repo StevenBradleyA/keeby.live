@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { debounce } from "lodash";
 import { api } from "~/utils/api";
 import EachAdminUser from "~/app/_components/Admin/User";
-import MainFooter from "~/app/_components/Footer/mainFooter";
+import Footer from "~/app/_components/Footer/mainFooter";
 
 export default function AdminUsers() {
     const { data: session } = useSession();
@@ -83,7 +83,7 @@ export default function AdminUsers() {
                 </div>
             </div>
             <div className="mt-96">
-                <MainFooter />
+                <Footer />
             </div>
         </div>
     );

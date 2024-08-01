@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import hacktime from "@public/Vectors/hacktime.png";
 import keebo from "@public/Profile/keebo.png";
@@ -7,7 +8,7 @@ import { useState } from "react";
 import ModalDialog from "../Modal";
 import SupportMe from "./supportModal";
 
-export default function MainFooter() {
+export default function Footer() {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     const openModal = () => {
@@ -22,7 +23,11 @@ export default function MainFooter() {
         <div className=" w-full bg-keebyGray px-20 pt-10 text-darkGray">
             <div className="flex w-full justify-between">
                 <div className="flex w-96 flex-col">
-                    <div className="flex items-center">
+                    <Link
+                        className="flex items-center hover:opacity-75 "
+                        href={"/"}
+                        aria-label="Go to the homepage"
+                    >
                         <Image
                             alt="hacktime logo"
                             src={title}
@@ -37,7 +42,7 @@ export default function MainFooter() {
                             height={200}
                             className=" h-9 w-9 object-contain"
                         />
-                    </div>
+                    </Link>
 
                     <p className="mt-3 flex w-96 flex-wrap">
                         Keeby is the one place for everything mechanical
@@ -54,7 +59,7 @@ export default function MainFooter() {
                                 e.preventDefault();
                                 window.open(
                                     "https://www.youtube.com/@KeebyLive?sub_confirmation=1",
-                                    "_blank"
+                                    "_blank",
                                 );
                             }}
                         >
@@ -83,7 +88,7 @@ export default function MainFooter() {
                                 e.preventDefault();
                                 window.open(
                                     "https://www.instagram.com/keeby.live/?hl=en",
-                                    "_blank"
+                                    "_blank",
                                 );
                             }}
                         >
@@ -121,7 +126,7 @@ export default function MainFooter() {
                                 e.preventDefault();
                                 window.open(
                                     "https://www.linkedin.com/in/stevenanderson-dev/",
-                                    "_blank"
+                                    "_blank",
                                 );
                             }}
                         >
@@ -198,7 +203,6 @@ export default function MainFooter() {
                         >
                             Messages
                         </Link>
-                       
                     </div>
                     <div className="flex flex-col gap-1">
                         <h2 className="text-green-500">Help</h2>
@@ -216,7 +220,6 @@ export default function MainFooter() {
                         >
                             FAQ
                         </Link>
-                      
                     </div>
                     <div className="flex flex-col gap-1">
                         <h2 className="text-green-500">Company</h2>

@@ -1,4 +1,4 @@
-import MainFooter from "~/app/_components/Footer/mainFooter";
+import Footer from "~/app/_components/Footer/mainFooter";
 
 export default function PrivacyPolicy() {
     // todo add section about advertisements when implementing...
@@ -186,7 +186,7 @@ export default function PrivacyPolicy() {
                 <p className="mb-5 rounded-md bg-keebyGray p-5  ">{`If you have any questions about this Cookie Policy or our use of cookies, please contact us at hacktimesupport@outlook.com.`}</p>
             </div>
 
-            <MainFooter />
+            <Footer />
         </>
     );
 }

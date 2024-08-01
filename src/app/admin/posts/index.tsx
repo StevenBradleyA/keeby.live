@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { debounce } from "lodash";
 import EachAdminPost from "~/app/_components/Admin/Posts";
-import MainFooter from "~/app/_components/Footer/mainFooter";
+import Footer from "~/app/_components/Footer/mainFooter";
 
 export default function AdminPosts() {
     const { data: session } = useSession();
@@ -83,7 +83,7 @@ export default function AdminPosts() {
                 </div>
             </div>
             <div className="mt-96">
-                <MainFooter />
+                <Footer />
             </div>
         </div>
     );
