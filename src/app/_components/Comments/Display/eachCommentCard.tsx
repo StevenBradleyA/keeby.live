@@ -1,5 +1,5 @@
 import Image from "next/image";
-import defaultProfile from "@public/Profile/profile-default.png";
+import defaultProfile from "@public/Images/defaultProfile.png";
 import Link from "next/link";
 import CreateReplyComment from "../Create/CreateReplyComment";
 import ModifyCommentModal from "../Modal";
@@ -196,7 +196,7 @@ export default function EachCommentCard({
                             <button
                                 onClick={() =>
                                     setShowTopLevelCommentReply(
-                                        !showTopLevelCommentReply
+                                        !showTopLevelCommentReply,
                                     )
                                 }
                                 className="text-xs text-darkGray transition-colors duration-400 ease-custom-cubic hover:text-green-500"

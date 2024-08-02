@@ -2,7 +2,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { api } from "~/trpc/react";
-import defaultProfile from "@public/Profile/profile-default.png";
+import defaultProfile from "@public/Images/defaultProfile.png";
 import keebo from "@public/Profile/keebo.png";
 import toast from "react-hot-toast";
 

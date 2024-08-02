@@ -6,7 +6,7 @@ import Image from "next/image";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import Custom404 from "~/pages/404";
-import defaultProfile from "@public/Profile/profile-default.png";
+import defaultProfile from "@public/Images/defaultProfile.png";
 import TitleScripts from "~/app/_components/TitleScripts";
 import LoadingSpinner from "~/app/_components/Loading";
 
@@ -434,7 +434,7 @@ export default function CreateListing() {
                                     className="absolute top-7 h-28 w-72 cursor-pointer opacity-0"
                                     type="file"
                                     multiple
-                                    accept="image/png, image/jpg, image/jpeg"
+                                    accept="image/png, image/jpg, image/jpeg, image/heic, image/heif"
                                     onChange={(e) => {
                                         if (e.target.files)
                                             setImageFiles([

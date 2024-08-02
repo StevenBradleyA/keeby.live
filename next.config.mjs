@@ -46,7 +46,6 @@
 
 // export default config;
 
-
 /**
  * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially useful
  * for Docker builds.
@@ -56,9 +55,16 @@ await import("./src/env.mjs");
 
 /** @type {import("next").NextConfig} */
 const config = {
-  experimental: {
-    appDir: true,
-  },
+    experimental: {
+        appDir: true,
+    },
+    images: {
+        domains: [
+            "s3.us-west-2.amazonaws.com",
+            "lh3.googleusercontent.com",
+            "www.paypalobjects.com",
+        ],
+    },
 };
 
 export default config;

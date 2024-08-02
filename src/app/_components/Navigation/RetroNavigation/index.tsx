@@ -7,7 +7,7 @@
 // import menuBurgerGif from "../../../public/Gifs/menu-glitch.gif";
 // import homeButton from "../../../public/Nav/home.png";
 // import homeButtonBlack from "../../../public/Nav/home-black.png";
-// import defaultProfile from "@public/Profile/profile-default.png";
+// import defaultProfile from "@public/Images/defaultProfile.png";
 // import keebo from "@public/Profile/keebo.png";
 // import { useRouter } from "next/router";
 // import { themeStyles } from "../KeebType/Theme/themeStyles";

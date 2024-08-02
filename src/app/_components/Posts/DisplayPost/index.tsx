@@ -1,7 +1,7 @@
 import Image from "next/image";
 import ChevronRound from "~/app/_components/Svgs/chevron";
 import keebo from "@public/Profile/keebo.png";
-import defaultProfile from "@public/Profile/profile-default.png";
+import defaultProfile from "@public/Images/defaultProfile.png";
 import { useEffect, useRef, useState } from "react";
 import type { Images } from "@prisma/client";
 import { useSession } from "next-auth/react";

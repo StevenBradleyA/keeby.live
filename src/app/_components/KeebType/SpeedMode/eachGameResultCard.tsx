@@ -1,6 +1,6 @@
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import defaultProfile from "@public/Profile/profile-default.png";
+import defaultProfile from "@public/Images/defaultProfile.png";
 import type { Game } from "@prisma/client";
 import {
     Legend,
@@ -170,7 +170,7 @@ export default function EachGameResultCard({
                                     </h2>
                                     <div className={`${styles.pause}`}>
                                         {` ${Math.round(
-                                            statistics.averageAccuracy
+                                            statistics.averageAccuracy,
                                         )}%`}
                                     </div>
                                 </div>

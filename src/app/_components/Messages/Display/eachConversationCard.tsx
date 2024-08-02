@@ -1,7 +1,7 @@
 import type { Message } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import defaultProfile from "@public/Profile/profile-default.png";
+import defaultProfile from "@public/Images/defaultProfile.png";
 import {
     format,
     formatDistanceToNow,
@@ -63,7 +63,6 @@ export default function EachConversationCard({
             return format(date, "M/d/yyyy");
         }
     };
-
 
     return (
         <button

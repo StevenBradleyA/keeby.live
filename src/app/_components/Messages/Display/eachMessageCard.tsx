@@ -7,7 +7,7 @@ import {
     isToday,
     isYesterday,
 } from "date-fns";
-import defaultProfile from "@public/Profile/profile-default.png";
+import defaultProfile from "@public/Images/defaultProfile.png";
 import Image from "next/image";
 
 interface EachMessageCardProps {

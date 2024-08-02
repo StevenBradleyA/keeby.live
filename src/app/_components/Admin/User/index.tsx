@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { api } from "~/trpc/react";
 import toast from "react-hot-toast";
-import defaultProfile from "@public/Profile/profile-default.png";
+import defaultProfile from "@public/Images/defaultProfile.png";
 
 interface EachUser {
     id: string;

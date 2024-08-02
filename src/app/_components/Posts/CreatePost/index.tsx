@@ -3,7 +3,7 @@ import { signIn } from "next-auth/react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import keebo from "@public/Profile/keebo.png";
-import defaultProfile from "@public/Profile/profile-default.png";
+import defaultProfile from "@public/Images/defaultProfile.png";
 import { useEffect, useState } from "react";
 import { api } from "~/trpc/react";
 import LoadingSpinner from "~/app/_components/Loading";
@@ -287,7 +287,7 @@ export default function CreatePostModal({ closeModal }: CreatePostModalProps) {
                                         className="absolute left-0 top-0 w-8 opacity-0  "
                                         type="file"
                                         multiple
-                                        accept="image/png, image/jpg, image/jpeg"
+                                        accept="image/png, image/jpg, image/jpeg, image/heic, image/heif"
                                         onChange={(e) => {
                                             if (e.target.files)
                                                 setImageFiles([

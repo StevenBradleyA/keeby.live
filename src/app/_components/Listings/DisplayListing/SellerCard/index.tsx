@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import defaultProfile from "@public/Profile/profile-default.png";
+import defaultProfile from "@public/Images/defaultProfile.png";
 import type { Images, Listing } from "@prisma/client";
 import { useState } from "react";
 import ModalDialog from "~/app/_components/Modal";
@@ -180,7 +180,7 @@ export default function SellerListingCard({
                             </h3>
                             <DisplayStarRating
                                 rating={parseFloat(
-                                    listing.seller.avgRating.toFixed(0)
+                                    listing.seller.avgRating.toFixed(0),
                                 )}
                             />
                         </div>

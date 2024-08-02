@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import defaultProfile from "@public/Profile/profile-default.png";
+import defaultProfile from "@public/Images/defaultProfile.png";
 import { useSession } from "next-auth/react";
 import CreateReplyComment from "../Create/CreateReplyComment";
 import { useState } from "react";

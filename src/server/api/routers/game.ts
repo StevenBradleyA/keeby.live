@@ -54,12 +54,12 @@ export const gameRouter = createTRPCRouter({
                 userId: z.string(),
                 mode: z.string(),
                 keebId: z.string(),
-            })
+            }),
         )
         .query(async ({ input, ctx }): Promise<GameResultsResponse> => {
             const { id, userId, mode, keebId } = input;
 
-            const gameResults = await ctx.prisma.game.findUnique({
+            const gameResults = await ctx.db.game.findUnique({
                 where: { id: id },
                 include: {
                     keeb: {
@@ -86,7 +86,7 @@ export const gameRouter = createTRPCRouter({
                 },
             });
 
-            const allGameResults = await ctx.prisma.game.findMany({
+            const allGameResults = await ctx.db.game.findMany({
                 where: {
                     userId: userId,
                     mode: mode,
@@ -111,17 +111,15 @@ export const gameRouter = createTRPCRouter({
                 averageAccuracy =
                     allGameResults.reduce(
                         (acc, game) => acc + game.accuracy,
-                        0
+                        0,
                     ) / totalGamesPlayed;
             }
 
             return { gameResults, allGameResults, averageWpm, averageAccuracy };
         }),
 
-
-
-        // todo add fun tags like hitting sub 1 wpm or something speedy speed boi or speed demon
-        // todo 300 wpm no accuracy or something -- 
+    // todo add fun tags like hitting sub 1 wpm or something speedy speed boi or speed demon
+    // todo 300 wpm no accuracy or something --
 
     create: protectedProcedure
         .input(
@@ -132,22 +130,21 @@ export const gameRouter = createTRPCRouter({
                 mode: z.string(),
                 userId: z.string(),
                 keebId: z.string(),
-            })
+            }),
         )
         .mutation(async ({ input, ctx }) => {
             const { wpm, pureWpm, accuracy, mode, userId, keebId } = input;
 
-            console.log('\n\n\n', wpm, '\n\n\n\n')
-            console.log('\n\n\n', pureWpm, '\n\n\n\n')
-            console.log('\n\n\n', accuracy, '\n\n\n\n')
-            console.log('\n\n\n', mode, '\n\n\n\n')
-            console.log('\n\n\n', userId, '\n\n\n\n')
-            console.log('\n\n\n', keebId, '\n\n\n\n')
+            console.log("\n\n\n", wpm, "\n\n\n\n");
+            console.log("\n\n\n", pureWpm, "\n\n\n\n");
+            console.log("\n\n\n", accuracy, "\n\n\n\n");
+            console.log("\n\n\n", mode, "\n\n\n\n");
+            console.log("\n\n\n", userId, "\n\n\n\n");
+            console.log("\n\n\n", keebId, "\n\n\n\n");
 
-// todo fix the fucking keebId again lmaooooooo
+            // todo fix the fucking keebId again lmaooooooo
 
-// we should probably just do a keebId check 
-
+            // we should probably just do a keebId check
 
             let rankChange = false;
             if (
@@ -163,13 +160,11 @@ export const gameRouter = createTRPCRouter({
                     keebId,
                 };
 
-                const newGame = await ctx.prisma.game.create({
+                const newGame = await ctx.db.game.create({
                     data: createData,
                 });
-                
 
-
-                const player = await ctx.prisma.user.findUnique({
+                const player = await ctx.db.user.findUnique({
                     where: { id: userId },
                     select: {
                         rank: {
@@ -193,7 +188,7 @@ export const gameRouter = createTRPCRouter({
                     player &&
                     (player.rank === null || player._count.games < 10)
                 ) {
-                    const unranked = await ctx.prisma.rank.findUnique({
+                    const unranked = await ctx.db.rank.findUnique({
                         where: {
                             name: "Unranked",
                         },
@@ -203,7 +198,7 @@ export const gameRouter = createTRPCRouter({
                     });
 
                     if (unranked) {
-                        await ctx.prisma.user.update({
+                        await ctx.db.user.update({
                             where: { id: userId },
                             data: { rankId: unranked.id },
                         });
@@ -211,10 +206,10 @@ export const gameRouter = createTRPCRouter({
                 }
 
                 if (player && player._count.games >= 10) {
-                    const topGames = await ctx.prisma.game.findMany({
+                    const topGames = await ctx.db.game.findMany({
                         where: {
                             userId: userId,
-                            mode: "Speed", 
+                            mode: "Speed",
                         },
                         orderBy: {
                             wpm: "desc",
@@ -226,7 +221,7 @@ export const gameRouter = createTRPCRouter({
                         topGames.reduce((acc, game) => acc + game.wpm, 0) /
                         topGames.length;
 
-                    const ranks = await ctx.prisma.rank.findMany({
+                    const ranks = await ctx.db.rank.findMany({
                         where: {
                             minWpm: {
                                 lte: averageWpm,
@@ -244,7 +239,7 @@ export const gameRouter = createTRPCRouter({
 
                         if (player.rank && player.rank.id !== userRankId) {
                             // Update user's rank
-                            await ctx.prisma.user.update({
+                            await ctx.db.user.update({
                                 where: { id: userId },
                                 data: { rankId: userRankId },
                             });
@@ -252,16 +247,17 @@ export const gameRouter = createTRPCRouter({
                             rankChange = true;
 
                             // find tag associated with rank
-                            const existingRankTag =
-                                await ctx.prisma.tag.findUnique({
+                            const existingRankTag = await ctx.db.tag.findUnique(
+                                {
                                     where: {
                                         name: userRankName,
                                     },
-                                });
+                                },
+                            );
                             if (existingRankTag) {
                                 // check if user owns tag...
                                 const doesUserOwnTag =
-                                    await ctx.prisma.user.findUnique({
+                                    await ctx.db.user.findUnique({
                                         where: { id: userId },
                                         select: {
                                             tags: {
@@ -280,7 +276,7 @@ export const gameRouter = createTRPCRouter({
                                     doesUserOwnTag.tags.length === 0
                                 ) {
                                     // If the user does not already have this tag, associate the tag with the user
-                                    await ctx.prisma.user.update({
+                                    await ctx.db.user.update({
                                         where: { id: userId },
                                         data: {
                                             tags: {
@@ -291,7 +287,7 @@ export const gameRouter = createTRPCRouter({
                                         },
                                     });
 
-                                    await ctx.prisma.notification.create({
+                                    await ctx.db.notification.create({
                                         data: {
                                             userId: userId,
                                             text: `New tag unlocked!`,

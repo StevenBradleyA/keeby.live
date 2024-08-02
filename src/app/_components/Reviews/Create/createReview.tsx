@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import keebo from "@public/Profile/keebo.png";
-import defaultProfile from "@public/Profile/profile-default.png";
+import defaultProfile from "@public/Images/defaultProfile.png";
 import LoadingSpinner from "~/app/_components/Loading";
 
 interface ErrorsObj {

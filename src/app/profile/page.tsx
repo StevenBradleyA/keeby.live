@@ -1,3 +1,4 @@
+'use client'
 import { Canvas } from "@react-three/fiber";
 import { signIn, useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
@@ -5,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import RotatingSphere from "~/app/_components/Profile/ThreeScenes/RotatingSphere";
 import { getCookies, setCookie } from "cookies-next";
-import defaultProfile from "@public/Profile/profile-default.png";
+import defaultProfile from "@public/Images/defaultProfile.png";
 import keebyLiveTitle from "@public/Profile/keebylive-title.png";
 import gridFunnel from "@public/Profile/profile-idea.png";
 import HackermanConsoleCommands from "~/app/_components/Profile/Hackerman/hackermanConsoleCommands";
@@ -13,7 +14,6 @@ import computerShare from "@public/Profile/computer-share.png";
 import computerShop from "@public/Profile/computer-shop.png";
 import computerType from "@public/Profile/computer-type.png";
 import hacktime from "@public/Vectors/hacktime.png";
-import Footer from "~/app/_components/Footer/mainFooter";
 import ManageListings from "~/app/_components/Listings/ManageListings";
 import ManagePosts from "~/app/_components/Posts/ManagePosts";
 import DisplayFavoriteListings from "~/app/_components/Listings/DisplayFavoriteListings";
@@ -32,6 +32,7 @@ import keebo from "@public/Profile/keebo.png";
 import LoadingSpinner from "~/app/_components/Loading";
 import DisplayProfileNotifications from "~/app/_components/Notifications/Display/displayProfileNotifications";
 import DisplayProfileReviews from "~/app/_components/Reviews/Display/displayProfileReviews";
+import Footer from "../_components/Footer/footer";
 
 export default function UserProfile() {
     // mdn digest() -- might be useful for us here

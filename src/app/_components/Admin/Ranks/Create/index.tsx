@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { uploadFileToS3 } from "~/utils/aws";
 import Image from "next/image";
-import defaultProfile from "@public/Profile/profile-default.png";
+import defaultProfile from "@public/Images/defaultProfile.png";
 import LoadingSpinner from "~/app/_components/Loading";
 
 export default function AdminCreateRank({
@@ -188,7 +188,7 @@ export default function AdminCreateRank({
                         id="profileImageInput"
                         className="absolute left-0 top-0 h-32 w-full cursor-pointer rounded-md opacity-0"
                         type="file"
-                        accept="image/png, image/jpg, image/jpeg"
+                        accept="image/png, image/jpg, image/jpeg, image/heic, image/heif"
                         onChange={(e) => {
                             if (e.target.files && e.target.files.length > 0) {
                                 const file = e.target.files[0];

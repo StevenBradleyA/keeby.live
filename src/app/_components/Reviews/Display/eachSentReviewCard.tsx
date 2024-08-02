@@ -1,6 +1,6 @@
 import type { Review } from "@prisma/client";
 import Image from "next/image";
-import defaultProfile from "@public/Profile/profile-default.png";
+import defaultProfile from "@public/Images/defaultProfile.png";
 import {
     format,
     formatDistanceToNow,

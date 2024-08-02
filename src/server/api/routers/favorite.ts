@@ -31,12 +31,12 @@ export const favoriteRouter = createTRPCRouter({
             z.object({
                 userId: z.string(),
                 listingId: z.string(),
-            })
+            }),
         )
         .query(async ({ ctx, input }) => {
             const { userId, listingId } = input;
 
-            const isFavorited = await ctx.prisma.favorites.findFirst({
+            const isFavorited = await ctx.db.favorites.findFirst({
                 where: {
                     userId: userId,
                     listingId: listingId,
@@ -52,12 +52,12 @@ export const favoriteRouter = createTRPCRouter({
             z.object({
                 userId: z.string(),
                 postId: z.string(),
-            })
+            }),
         )
         .query(async ({ ctx, input }) => {
             const { userId, postId } = input;
 
-            const isFavorited = await ctx.prisma.favorites.findFirst({
+            const isFavorited = await ctx.db.favorites.findFirst({
                 where: {
                     userId: userId,
                     postId: postId,
@@ -73,7 +73,7 @@ export const favoriteRouter = createTRPCRouter({
         .input(
             z.object({
                 userId: z.string(),
-            })
+            }),
         )
         .query(async ({ ctx, input }) => {
             return ctx.prisma.favorites
@@ -102,7 +102,7 @@ export const favoriteRouter = createTRPCRouter({
                         return null;
                     }
                     return favorites.map(
-                        (favorite) => favorite.listing as ExtendedListing
+                        (favorite) => favorite.listing as ExtendedListing,
                     );
                 });
         }),
@@ -110,10 +110,10 @@ export const favoriteRouter = createTRPCRouter({
         .input(
             z.object({
                 userId: z.string(),
-            })
+            }),
         )
         .query(async ({ ctx, input }) => {
-            const posts = await ctx.prisma.favorites
+            const posts = await ctx.db.favorites
                 .findMany({
                     where: {
                         userId: input.userId,
@@ -136,7 +136,7 @@ export const favoriteRouter = createTRPCRouter({
                         return null;
                     }
                     return favorites.map(
-                        (favorite) => favorite.post as ExtendedPost
+                        (favorite) => favorite.post as ExtendedPost,
                     );
                 });
 
@@ -167,29 +167,29 @@ export const favoriteRouter = createTRPCRouter({
             z.object({
                 userId: z.string(),
                 listingId: z.string(),
-            })
+            }),
         )
         .mutation(async ({ ctx, input }) => {
             const { userId, listingId } = input;
             if (ctx.session.user.id !== userId) {
                 throw new Error(
-                    "You must be logged in to perform this action."
+                    "You must be logged in to perform this action.",
                 );
             }
 
-            await ctx.prisma.favorites.create({
+            await ctx.db.favorites.create({
                 data: {
                     userId: userId,
                     listingId: listingId,
                 },
             });
-            const listingCheck = await ctx.prisma.listing.findUnique({
+            const listingCheck = await ctx.db.listing.findUnique({
                 where: {
                     id: listingId,
                 },
             });
             if (listingCheck) {
-                await ctx.prisma.user.update({
+                await ctx.db.user.update({
                     where: {
                         id: listingCheck.sellerId,
                     },
@@ -206,29 +206,29 @@ export const favoriteRouter = createTRPCRouter({
             z.object({
                 userId: z.string(),
                 postId: z.string(),
-            })
+            }),
         )
         .mutation(async ({ ctx, input }) => {
             const { userId, postId } = input;
             if (ctx.session.user.id !== userId) {
                 throw new Error(
-                    "You must be logged in to perform this action."
+                    "You must be logged in to perform this action.",
                 );
             }
-            await ctx.prisma.favorites.create({
+            await ctx.db.favorites.create({
                 data: {
                     userId: userId,
                     postId: postId,
                 },
             });
 
-            const postCheck = await ctx.prisma.post.findUnique({
+            const postCheck = await ctx.db.post.findUnique({
                 where: {
                     id: postId,
                 },
             });
             if (postCheck) {
-                await ctx.prisma.user.update({
+                await ctx.db.user.update({
                     where: {
                         id: postCheck.userId,
                     },
@@ -246,29 +246,29 @@ export const favoriteRouter = createTRPCRouter({
                 id: z.string(),
                 userId: z.string(),
                 listingId: z.string(),
-            })
+            }),
         )
         .mutation(async ({ ctx, input }) => {
             const { id, userId, listingId } = input;
 
             if (ctx.session.user.id !== userId) {
                 throw new Error(
-                    "You must be logged in to perform this action."
+                    "You must be logged in to perform this action.",
                 );
             }
-            await ctx.prisma.favorites.delete({
+            await ctx.db.favorites.delete({
                 where: {
                     id: id,
                 },
             });
 
-            const listingCheck = await ctx.prisma.listing.findUnique({
+            const listingCheck = await ctx.db.listing.findUnique({
                 where: {
                     id: listingId,
                 },
             });
             if (listingCheck) {
-                await ctx.prisma.user.update({
+                await ctx.db.user.update({
                     where: {
                         id: listingCheck.sellerId,
                     },
@@ -286,28 +286,28 @@ export const favoriteRouter = createTRPCRouter({
                 id: z.string(),
                 userId: z.string(),
                 postId: z.string(),
-            })
+            }),
         )
         .mutation(async ({ ctx, input }) => {
             const { id, userId, postId } = input;
 
             if (ctx.session.user.id !== userId) {
                 throw new Error(
-                    "You must be logged in to perform this action."
+                    "You must be logged in to perform this action.",
                 );
             }
-            await ctx.prisma.favorites.delete({
+            await ctx.db.favorites.delete({
                 where: {
                     id: id,
                 },
             });
-            const postCheck = await ctx.prisma.post.findUnique({
+            const postCheck = await ctx.db.post.findUnique({
                 where: {
                     id: postId,
                 },
             });
             if (postCheck) {
-                await ctx.prisma.user.update({
+                await ctx.db.user.update({
                     where: {
                         id: postCheck.userId,
                     },

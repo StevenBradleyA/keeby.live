@@ -2,7 +2,7 @@ import { api } from "~/trpc/react";
 import Image from "next/image";
 import gridBackground from "@public/Profile/profile-plus.png";
 import stockProfile from "@public/Profile/profile-default.png";
-import defaultProfile from "@public/Profile/profile-default.png";
+import defaultProfile from "@public/Images/defaultProfile.png";
 import DisplayStarRating from "~/app/_components/Reviews/Star/displayStarRating";
 import EachReceivedReviewCard from "~/app/_components/Reviews/Display/eachReceivedReviewCard";
 import EachPublicProfileReview from "~/app/_components/Reviews/Display/publicProfileReviews";

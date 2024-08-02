@@ -94,7 +94,7 @@ export const postRouter = createTRPCRouter({
         .input(
             z.object({
                 searchQuery: z.string().optional(),
-            })
+            }),
         )
         .query(({ input, ctx }) => {
             const { searchQuery } = input;
@@ -139,12 +139,12 @@ export const postRouter = createTRPCRouter({
         .input(
             z.object({
                 userId: z.string(),
-            })
+            }),
         )
         .query(async ({ input, ctx }): Promise<ExtendedPost[]> => {
             const { userId } = input;
 
-            const allUserPosts = await ctx.prisma.post.findMany({
+            const allUserPosts = await ctx.db.post.findMany({
                 where: {
                     userId: userId,
                 },
@@ -160,7 +160,7 @@ export const postRouter = createTRPCRouter({
                 const previewIndex =
                     post.images && post.images.length > 0
                         ? post.images.findIndex(
-                              (image) => image.resourceType === "POSTPREVIEW"
+                              (image) => image.resourceType === "POSTPREVIEW",
                           )
                         : -1;
 
@@ -179,7 +179,7 @@ export const postRouter = createTRPCRouter({
                 userId: z.string().optional(),
                 cursor: z.string().nullish(),
                 limit: z.number().min(1).max(100).nullish(),
-            })
+            }),
         )
         .query(async ({ ctx, input }) => {
             const { searchQuery, tag, cursor, userId } = input;
@@ -208,7 +208,7 @@ export const postRouter = createTRPCRouter({
                 ].filter((obj) => Object.keys(obj).length > 0),
             };
 
-            const posts: PostWithCount[] = await ctx.prisma.post.findMany({
+            const posts: PostWithCount[] = await ctx.db.post.findMany({
                 where: whereFilters,
                 include: {
                     _count: {
@@ -254,7 +254,7 @@ export const postRouter = createTRPCRouter({
 
             if (userId) {
                 const likesMap = new Map(
-                    await ctx.prisma.postLike
+                    await ctx.db.postLike
                         .findMany({
                             where: {
                                 userId: userId,
@@ -263,12 +263,12 @@ export const postRouter = createTRPCRouter({
                             select: { postId: true, id: true },
                         })
                         .then((results) =>
-                            results.map((result) => [result.postId, result.id])
-                        )
+                            results.map((result) => [result.postId, result.id]),
+                        ),
                 );
 
                 const favoritesMap = new Map(
-                    await ctx.prisma.favorites
+                    await ctx.db.favorites
                         .findMany({
                             where: {
                                 userId: userId,
@@ -277,8 +277,8 @@ export const postRouter = createTRPCRouter({
                             select: { postId: true, id: true },
                         })
                         .then((results) =>
-                            results.map((result) => [result.postId, result.id])
-                        )
+                            results.map((result) => [result.postId, result.id]),
+                        ),
                 );
 
                 posts.forEach((post) => {
@@ -311,7 +311,7 @@ export const postRouter = createTRPCRouter({
                 userId: z.string().optional(),
                 cursor: z.string().nullish(),
                 limit: z.number().min(1).max(100).nullish(),
-            })
+            }),
         )
         .query(async ({ ctx, input }) => {
             const { searchQuery, tag, cursor, userId } = input;
@@ -340,7 +340,7 @@ export const postRouter = createTRPCRouter({
                 ].filter((obj) => Object.keys(obj).length > 0),
             };
 
-            const posts: PostWithCount[] = await ctx.prisma.post.findMany({
+            const posts: PostWithCount[] = await ctx.db.post.findMany({
                 where: whereFilters,
                 include: {
                     _count: {
@@ -386,7 +386,7 @@ export const postRouter = createTRPCRouter({
 
             if (userId) {
                 const likesMap = new Map(
-                    await ctx.prisma.postLike
+                    await ctx.db.postLike
                         .findMany({
                             where: {
                                 userId: userId,
@@ -395,12 +395,12 @@ export const postRouter = createTRPCRouter({
                             select: { postId: true, id: true },
                         })
                         .then((results) =>
-                            results.map((result) => [result.postId, result.id])
-                        )
+                            results.map((result) => [result.postId, result.id]),
+                        ),
                 );
 
                 const favoritesMap = new Map(
-                    await ctx.prisma.favorites
+                    await ctx.db.favorites
                         .findMany({
                             where: {
                                 userId: userId,
@@ -409,8 +409,8 @@ export const postRouter = createTRPCRouter({
                             select: { postId: true, id: true },
                         })
                         .then((results) =>
-                            results.map((result) => [result.postId, result.id])
-                        )
+                            results.map((result) => [result.postId, result.id]),
+                        ),
                 );
 
                 posts.forEach((post) => {
@@ -448,12 +448,12 @@ export const postRouter = createTRPCRouter({
             z.object({
                 id: z.string(),
                 userId: z.string().optional(),
-            })
+            }),
         )
         .query(async ({ input, ctx }) => {
             const { userId, id } = input;
 
-            const postResult = await ctx.prisma.post.findUnique({
+            const postResult = await ctx.db.post.findUnique({
                 where: {
                     id: id,
                 },
@@ -527,7 +527,7 @@ export const postRouter = createTRPCRouter({
 
             if (userId) {
                 const likesMap = new Map(
-                    await ctx.prisma.postLike
+                    await ctx.db.postLike
                         .findMany({
                             where: {
                                 userId: userId,
@@ -536,12 +536,12 @@ export const postRouter = createTRPCRouter({
                             select: { postId: true, id: true },
                         })
                         .then((results) =>
-                            results.map((result) => [result.postId, result.id])
-                        )
+                            results.map((result) => [result.postId, result.id]),
+                        ),
                 );
 
                 const favoritesMap = new Map(
-                    await ctx.prisma.favorites
+                    await ctx.db.favorites
                         .findMany({
                             where: {
                                 userId: userId,
@@ -550,8 +550,8 @@ export const postRouter = createTRPCRouter({
                             select: { postId: true, id: true },
                         })
                         .then((results) =>
-                            results.map((result) => [result.postId, result.id])
-                        )
+                            results.map((result) => [result.postId, result.id]),
+                        ),
                 );
 
                 post.isLiked = likesMap.has(post.id);
@@ -576,10 +576,10 @@ export const postRouter = createTRPCRouter({
                     .array(
                         z.object({
                             link: z.string(),
-                        })
+                        }),
                     )
                     .optional(),
-            })
+            }),
         )
         .mutation(async ({ input, ctx }) => {
             const { title, tag, link, text, preview, userId, images } = input;
@@ -597,7 +597,7 @@ export const postRouter = createTRPCRouter({
                     createData.text = text;
                 }
 
-                const newPost = await ctx.prisma.post.create({
+                const newPost = await ctx.db.post.create({
                     data: createData,
                 });
 
@@ -615,7 +615,7 @@ export const postRouter = createTRPCRouter({
                                     userId: userId,
                                 },
                             });
-                        })
+                        }),
                     );
 
                     return {
@@ -645,14 +645,14 @@ export const postRouter = createTRPCRouter({
                     .array(
                         z.object({
                             link: z.string(),
-                        })
+                        }),
                     )
                     .optional(),
                 preview: z
                     .object({ source: z.string(), index: z.number() })
                     .optional(),
                 deleteImageIds: z.array(z.string()).optional(),
-            })
+            }),
         )
         .mutation(async ({ input, ctx }) => {
             const {
@@ -681,13 +681,13 @@ export const postRouter = createTRPCRouter({
                     updateData.text = text;
                 }
 
-                const updatePost = await ctx.prisma.post.update({
+                const updatePost = await ctx.db.post.update({
                     where: { id: id },
                     data: updateData,
                 });
 
                 if (images || deleteImageIds || preview) {
-                    await ctx.prisma.images.updateMany({
+                    await ctx.db.images.updateMany({
                         where: {
                             postId: id,
                             resourceType: "POSTPREVIEW",
@@ -698,15 +698,14 @@ export const postRouter = createTRPCRouter({
                     });
 
                     if (preview && preview.source === "prev") {
-                        const allExistingImages =
-                            await ctx.prisma.images.findMany({
-                                where: {
-                                    postId: id,
-                                },
-                            });
+                        const allExistingImages = await ctx.db.images.findMany({
+                            where: {
+                                postId: id,
+                            },
+                        });
                         const imageToUpdate = allExistingImages[preview.index];
                         if (imageToUpdate) {
-                            await ctx.prisma.images.update({
+                            await ctx.db.images.update({
                                 where: {
                                     id: imageToUpdate.id,
                                 },
@@ -733,12 +732,12 @@ export const postRouter = createTRPCRouter({
                                         userId: userId,
                                     },
                                 });
-                            })
+                            }),
                         );
                     }
 
                     if (deleteImageIds && deleteImageIds.length > 0) {
-                        const images = await ctx.prisma.images.findMany({
+                        const images = await ctx.db.images.findMany({
                             where: {
                                 id: { in: deleteImageIds },
                             },
@@ -749,17 +748,17 @@ export const postRouter = createTRPCRouter({
                             } catch (err) {
                                 console.error(
                                     `Failed to remove file from S3: `,
-                                    err
+                                    err,
                                 );
                                 throw new Error(
-                                    `Failed to remove file from S3: `
+                                    `Failed to remove file from S3: `,
                                 );
                             }
                         });
 
                         await Promise.all(removeFilePromises);
 
-                        await ctx.prisma.images.deleteMany({
+                        await ctx.db.images.deleteMany({
                             where: {
                                 id: { in: deleteImageIds },
                             },
@@ -778,12 +777,12 @@ export const postRouter = createTRPCRouter({
             z.object({
                 id: z.string(),
                 userId: z.string(),
-            })
+            }),
         )
         .mutation(async ({ input, ctx }) => {
             const { id, userId } = input;
             if (ctx.session.user.id === userId || ctx.session.user.isAdmin) {
-                const images = await ctx.prisma.images.findMany({
+                const images = await ctx.db.images.findMany({
                     where: {
                         postId: id,
                     },
@@ -792,24 +791,23 @@ export const postRouter = createTRPCRouter({
                 if (images.length > 0) {
                     const imageIds = images.map((image) => image.id);
                     const removeFilePromises = images.map((image) =>
-                        removeFileFromS3(image.link)
+                        removeFileFromS3(image.link),
                     );
                     try {
-                        const results = await Promise.allSettled(
-                            removeFilePromises
-                        );
+                        const results =
+                            await Promise.allSettled(removeFilePromises);
                         const errors = results.filter(
-                            (result) => result.status === "rejected"
+                            (result) => result.status === "rejected",
                         );
 
                         if (errors.length > 0) {
                             console.error(
                                 "Errors occurred while removing files from S3:",
-                                errors
+                                errors,
                             );
                         }
 
-                        await ctx.prisma.images.deleteMany({
+                        await ctx.db.images.deleteMany({
                             where: {
                                 id: { in: imageIds },
                             },
@@ -820,7 +818,7 @@ export const postRouter = createTRPCRouter({
                 }
             }
 
-            await ctx.prisma.post.delete({ where: { id: id } });
+            await ctx.db.post.delete({ where: { id: id } });
 
             return "Successfully deleted";
         }),

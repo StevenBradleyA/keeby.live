@@ -50,7 +50,7 @@ export const reviewRouter = createTRPCRouter({
     getAllReceivedAndSentByUserId: publicProcedure
         .input(z.string())
         .query(async ({ input: userId, ctx }) => {
-            const receivedReviews = await ctx.prisma.review.findMany({
+            const receivedReviews = await ctx.db.review.findMany({
                 where: { sellerId: userId },
                 include: {
                     user: {
@@ -58,7 +58,7 @@ export const reviewRouter = createTRPCRouter({
                     },
                 },
             });
-            const sentReviews = await ctx.prisma.review.findMany({
+            const sentReviews = await ctx.db.review.findMany({
                 where: { userId: userId },
                 include: {
                     seller: {
@@ -90,7 +90,7 @@ export const reviewRouter = createTRPCRouter({
                 userId: z.string(),
                 sellerId: z.string(),
                 listingId: z.string(),
-            })
+            }),
         )
         .mutation(async ({ input, ctx }) => {
             const { text, starRating, userId, sellerId, listingId } = input;
@@ -99,7 +99,7 @@ export const reviewRouter = createTRPCRouter({
                 throw new Error("Invalid userId");
             }
 
-            await ctx.prisma.review.create({
+            await ctx.db.review.create({
                 data: {
                     text: text,
                     starRating: starRating,
@@ -108,7 +108,7 @@ export const reviewRouter = createTRPCRouter({
                     userId: userId,
                 },
             });
-            await ctx.prisma.notification.create({
+            await ctx.db.notification.create({
                 data: {
                     userId: sellerId,
                     text: `You received a seller review!`,
@@ -129,7 +129,7 @@ export const reviewRouter = createTRPCRouter({
                 userId: z.string(),
                 text: z.string(),
                 starRating: z.number(),
-            })
+            }),
         )
         .mutation(async ({ input, ctx }) => {
             const { id, text, starRating, userId } = input;
@@ -138,7 +138,7 @@ export const reviewRouter = createTRPCRouter({
                 throw new Error("Invalid userId");
             }
 
-            return await ctx.prisma.review.update({
+            return await ctx.db.review.update({
                 where: {
                     id: id,
                 },
@@ -157,7 +157,7 @@ export const reviewRouter = createTRPCRouter({
                 throw new Error("Invalid userId");
             }
 
-            await ctx.prisma.review.delete({ where: { id: id } });
+            await ctx.db.review.delete({ where: { id: id } });
 
             return "Successfully deleted";
         }),

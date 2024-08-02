@@ -12,7 +12,7 @@ export const transactionRouter = createTRPCRouter({
     getAllByUserId: publicProcedure
         .input(z.string())
         .query(async ({ input: userId, ctx }) => {
-            const sold = await ctx.prisma.listingTransaction.findMany({
+            const sold = await ctx.db.listingTransaction.findMany({
                 where: {
                     listing: {
                         sellerId: userId,
@@ -33,7 +33,7 @@ export const transactionRouter = createTRPCRouter({
                 },
             });
 
-            const purchased = await ctx.prisma.listingTransaction.findMany({
+            const purchased = await ctx.db.listingTransaction.findMany({
                 where: {
                     buyerId: userId,
                 },
@@ -62,7 +62,7 @@ export const transactionRouter = createTRPCRouter({
                 transactionId: z.string(),
                 price: z.string(),
                 email: z.string(),
-            })
+            }),
         )
         .mutation(async ({ input, ctx }) => {
             const { transactionId, paypalOrderId, price, userId, email } =
@@ -72,7 +72,7 @@ export const transactionRouter = createTRPCRouter({
                 throw new Error("Invalid credentials");
             }
 
-            await ctx.prisma.verificationTransaction.create({
+            await ctx.db.verificationTransaction.create({
                 data: {
                     status: "PAYED",
                     price: parseFloat(price) * 100,
@@ -82,7 +82,7 @@ export const transactionRouter = createTRPCRouter({
                 },
             });
 
-            await ctx.prisma.notification.create({
+            await ctx.db.notification.create({
                 data: {
                     userId: userId,
                     text: `Congrats on verifying, you can now list your keebs for sale!`,
@@ -91,7 +91,7 @@ export const transactionRouter = createTRPCRouter({
                 },
             });
 
-            return await ctx.prisma.user.update({
+            return await ctx.db.user.update({
                 where: { id: userId },
                 data: {
                     isVerified: true,
@@ -110,7 +110,7 @@ export const transactionRouter = createTRPCRouter({
                 payed: z.string(),
                 agreedPrice: z.number(),
                 sellerId: z.string(),
-            })
+            }),
         )
         .mutation(async ({ input, ctx }) => {
             const {
@@ -128,7 +128,7 @@ export const transactionRouter = createTRPCRouter({
 
             let isAvailable = false;
 
-            const listingCheck = await ctx.prisma.listing.findUnique({
+            const listingCheck = await ctx.db.listing.findUnique({
                 where: {
                     id: listingId,
                 },
@@ -138,32 +138,31 @@ export const transactionRouter = createTRPCRouter({
                 return { isAvailable: false };
             }
 
-            const createTransaction =
-                await ctx.prisma.listingTransaction.create({
-                    data: {
-                        status: "PAYED",
-                        payed: parseFloat(payed) * 100,
-                        agreedPrice: agreedPrice,
-                        listingId: listingId,
-                        buyerId: buyerId,
-                        transactionId: transactionId,
-                        paypalOrderId: paypalOrderId,
-                    },
-                });
+            const createTransaction = await ctx.db.listingTransaction.create({
+                data: {
+                    status: "PAYED",
+                    payed: parseFloat(payed) * 100,
+                    agreedPrice: agreedPrice,
+                    listingId: listingId,
+                    buyerId: buyerId,
+                    transactionId: transactionId,
+                    paypalOrderId: paypalOrderId,
+                },
+            });
             if (createTransaction) {
-                const seller = await ctx.prisma.user.findUnique({
+                const seller = await ctx.db.user.findUnique({
                     where: {
                         id: sellerId,
                     },
                 });
-                const buyer = await ctx.prisma.user.findUnique({
+                const buyer = await ctx.db.user.findUnique({
                     where: {
                         id: buyerId,
                     },
                 });
 
                 if (seller && buyer) {
-                    await ctx.prisma.message.create({
+                    await ctx.db.message.create({
                         data: {
                             listingTransactionId: createTransaction.id,
                             userId: buyerId,
@@ -176,7 +175,7 @@ export const transactionRouter = createTRPCRouter({
                         },
                     });
 
-                    await ctx.prisma.notification.create({
+                    await ctx.db.notification.create({
                         data: {
                             userId: sellerId,
                             text: `You received a new message!`,
@@ -185,11 +184,9 @@ export const transactionRouter = createTRPCRouter({
                         },
                     });
                     // todo RESEND send email confirmations here...
-
-
                 }
 
-                await ctx.prisma.listing.update({
+                await ctx.db.listing.update({
                     where: {
                         id: listingId,
                     },
@@ -199,7 +196,7 @@ export const transactionRouter = createTRPCRouter({
                     },
                 });
 
-                await ctx.prisma.listingOffer.deleteMany({
+                await ctx.db.listingOffer.deleteMany({
                     where: {
                         id: listingId,
                     },

@@ -20,12 +20,12 @@ export const rankRouter = createTRPCRouter({
                 image: z.array(
                     z.object({
                         link: z.string(),
-                    })
+                    }),
                 ),
                 minWpm: z.number(),
                 maxWpm: z.number(),
                 standing: z.number(),
-            })
+            }),
         )
         .mutation(({ ctx, input }) => {
             if (ctx.session.user.isAdmin && input.image[0]) {
@@ -55,9 +55,9 @@ export const rankRouter = createTRPCRouter({
                 image: z.array(
                     z.object({
                         link: z.string(),
-                    })
+                    }),
                 ),
-            })
+            }),
         )
         .mutation(async ({ input, ctx }) => {
             const { id, name, minWpm, maxWpm, image, oldImage, standing } =
@@ -66,7 +66,7 @@ export const rankRouter = createTRPCRouter({
             if (ctx.session.user.isAdmin && image[0]) {
                 await removeFileFromS3(oldImage);
 
-                return await ctx.prisma.rank.update({
+                return await ctx.db.rank.update({
                     where: {
                         id: id,
                     },
@@ -88,7 +88,7 @@ export const rankRouter = createTRPCRouter({
             z.object({
                 id: z.string(),
                 image: z.string(),
-            })
+            }),
         )
         .mutation(async ({ input, ctx }) => {
             const { id, image } = input;

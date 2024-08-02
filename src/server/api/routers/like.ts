@@ -5,15 +5,14 @@ import {
     protectedProcedure,
 } from "~/server/api/trpc";
 
-
-// todo decide if we want to remove internet increment if userId matches post id cuz spamming would be a thing 
-// downside is we get spamming or a lot of db calls for abuse, also can promote your listing by just spamming... 
+// todo decide if we want to remove internet increment if userId matches post id cuz spamming would be a thing
+// downside is we get spamming or a lot of db calls for abuse, also can promote your listing by just spamming...
 export const likeRouter = createTRPCRouter({
     getUserCommentLikes: publicProcedure
         .input(
             z.object({
                 userId: z.string(),
-            })
+            }),
         )
         .query(({ input, ctx }) => {
             return ctx.prisma.commentLike.findMany({
@@ -31,15 +30,15 @@ export const likeRouter = createTRPCRouter({
                 userId: z.string(),
                 isLiked: z.boolean(),
                 ownerId: z.string(),
-            })
+            }),
         )
         .mutation(async ({ ctx, input }) => {
             const { commentId, userId, isLiked, ownerId } = input;
             if (isLiked) {
-                await ctx.prisma.commentLike.deleteMany({
+                await ctx.db.commentLike.deleteMany({
                     where: { commentId: commentId, userId: userId },
                 });
-                await ctx.prisma.user.update({
+                await ctx.db.user.update({
                     data: {
                         internetPoints: {
                             decrement: 1,
@@ -50,13 +49,13 @@ export const likeRouter = createTRPCRouter({
                     },
                 });
             } else {
-                await ctx.prisma.commentLike.create({
+                await ctx.db.commentLike.create({
                     data: {
                         userId: userId,
                         commentId: commentId,
                     },
                 });
-                await ctx.prisma.user.update({
+                await ctx.db.user.update({
                     data: {
                         internetPoints: {
                             increment: 1,
@@ -77,18 +76,18 @@ export const likeRouter = createTRPCRouter({
                 postId: z.string(),
                 userId: z.string(),
                 ownerId: z.string(),
-            })
+            }),
         )
         .mutation(async ({ ctx, input }) => {
             const { postId, userId, ownerId } = input;
 
-            await ctx.prisma.postLike.create({
+            await ctx.db.postLike.create({
                 data: {
                     userId: userId,
                     postId: postId,
                 },
             });
-            await ctx.prisma.user.update({
+            await ctx.db.user.update({
                 where: {
                     id: ownerId,
                 },
@@ -108,19 +107,19 @@ export const likeRouter = createTRPCRouter({
                 id: z.string(),
                 userId: z.string(),
                 ownerId: z.string(),
-            })
+            }),
         )
         .mutation(async ({ ctx, input }) => {
             const { id, userId, ownerId } = input;
 
             if (userId === ctx.session?.user.id || ctx.session?.user.isAdmin) {
-                await ctx.prisma.postLike.delete({
+                await ctx.db.postLike.delete({
                     where: {
                         id: id,
                     },
                 });
 
-                await ctx.prisma.user.update({
+                await ctx.db.user.update({
                     where: {
                         id: ownerId,
                     },

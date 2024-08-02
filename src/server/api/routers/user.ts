@@ -7,10 +7,7 @@ import {
 import { env } from "~/env.mjs";
 import { compare } from "bcryptjs";
 import { removeFileFromS3 } from "../utils";
-import fetch from "node-fetch";
-// import type { Response } from "node-fetch";
-// npm i node-fetch
-// npm install --save-dev @types/node-fetch
+
 interface TokenData {
     scope: string;
     access_token: string;
@@ -43,7 +40,7 @@ export const userRouter = createTRPCRouter({
         .input(
             z.object({
                 searchQuery: z.string().optional(),
-            })
+            }),
         )
         .query(({ input, ctx }) => {
             const { searchQuery } = input;
@@ -56,7 +53,7 @@ export const userRouter = createTRPCRouter({
                 };
             }
 
-            return ctx.prisma.user.findMany({
+            return ctx.db.user.findMany({
                 where: {
                     ...whereFilters,
                 },
@@ -72,7 +69,7 @@ export const userRouter = createTRPCRouter({
         }),
 
     getOneUser: publicProcedure.input(z.string()).query(({ input, ctx }) => {
-        return ctx.prisma.user.findUnique({
+        return ctx.db.user.findUnique({
             where: { id: input },
         });
     }),
@@ -80,11 +77,11 @@ export const userRouter = createTRPCRouter({
     getSeller: publicProcedure
         .input(z.string())
         .query(async ({ input, ctx }) => {
-            const seller = await ctx.prisma.user.findUnique({
+            const seller = await ctx.db.user.findUnique({
                 where: { id: input },
                 select: { profile: true, username: true, selectedTag: true },
             });
-            const allSellerStars = await ctx.prisma.review.aggregate({
+            const allSellerStars = await ctx.db.review.aggregate({
                 where: { sellerId: input },
                 _avg: { starRating: true },
             });
@@ -98,7 +95,7 @@ export const userRouter = createTRPCRouter({
                 mode: z.string(),
                 keebId: z.string(),
                 isTotalData: z.boolean(),
-            })
+            }),
         )
         .query(async ({ input, ctx }) => {
             const { userId, mode, keebId, isTotalData } = input;
@@ -113,7 +110,7 @@ export const userRouter = createTRPCRouter({
                   };
 
             const userWithGameResultsAndRank: UserWithGamesAndRank | null =
-                await ctx.prisma.user.findUnique({
+                await ctx.db.user.findUnique({
                     where: { id: userId },
                     select: {
                         rank: {
@@ -155,11 +152,11 @@ export const userRouter = createTRPCRouter({
                 averageAccuracy =
                     allGameResults.reduce(
                         (acc, game) => acc + game.accuracy,
-                        0
+                        0,
                     ) / totalGamesPlayed;
             }
             // todo going to have to make a separate non keeb dependant query to get this rank
-            const allRankedGames = await ctx.prisma.user.findUnique({
+            const allRankedGames = await ctx.db.user.findUnique({
                 where: { id: userId },
                 select: {
                     games: {
@@ -173,7 +170,7 @@ export const userRouter = createTRPCRouter({
             });
 
             if (allRankedGames && allRankedGames.games.length > 10) {
-                const topGames = await ctx.prisma.game.findMany({
+                const topGames = await ctx.db.game.findMany({
                     where: {
                         userId: userId,
                         mode: "Speed", //todo change later for other ranked modes
@@ -200,7 +197,7 @@ export const userRouter = createTRPCRouter({
     getUserPublic: publicProcedure
         .input(z.string())
         .query(async ({ input, ctx }) => {
-            const userInfo = await ctx.prisma.user.findUnique({
+            const userInfo = await ctx.db.user.findUnique({
                 where: { username: input },
                 select: {
                     id: true,
@@ -240,7 +237,7 @@ export const userRouter = createTRPCRouter({
                 },
             });
             if (userInfo) {
-                const averageStarRating = await ctx.prisma.review.aggregate({
+                const averageStarRating = await ctx.db.review.aggregate({
                     where: { sellerId: userInfo.id },
                     _avg: { starRating: true },
                 });
@@ -252,7 +249,7 @@ export const userRouter = createTRPCRouter({
     getUserTags: publicProcedure
         .input(z.string())
         .query(async ({ input, ctx }) => {
-            return await ctx.prisma.user.findUnique({
+            return await ctx.db.user.findUnique({
                 where: { id: input },
                 select: {
                     tags: {
@@ -270,10 +267,9 @@ export const userRouter = createTRPCRouter({
         .query(async ({ input, ctx }) => {
             try {
                 // Check if the username exists in the database
-                const user = await ctx.prisma.user.findFirst({
+                const user = await ctx.db.user.findFirst({
                     where: { username: input },
                 });
-
                 // Return true if the user exists, false otherwise
                 return Boolean(user);
             } catch (error) {
@@ -282,6 +278,7 @@ export const userRouter = createTRPCRouter({
                 throw new Error("Error checking username");
             }
         }),
+
     update: protectedProcedure
         .input(
             z.object({
@@ -292,11 +289,11 @@ export const userRouter = createTRPCRouter({
                     .array(
                         z.object({
                             link: z.string(),
-                        })
+                        }),
                     )
                     .optional(),
                 selectedTag: z.string().optional(),
-            })
+            }),
         )
         .mutation(async ({ input, ctx }) => {
             const { userId, username, images, selectedTag, isNewsletter } =
@@ -316,7 +313,7 @@ export const userRouter = createTRPCRouter({
             } = {};
 
             if (images && images[0]) {
-                const checkUserProfile = await ctx.prisma.user.findUnique({
+                const checkUserProfile = await ctx.db.user.findUnique({
                     where: { id: userId },
                     select: {
                         profile: true,
@@ -348,7 +345,7 @@ export const userRouter = createTRPCRouter({
                 (images && images[0]) ||
                 isNewsletter !== undefined
             ) {
-                return await ctx.prisma.user.update({
+                return await ctx.db.user.update({
                     where: { id: userId },
                     data: {
                         ...userData,
@@ -361,7 +358,7 @@ export const userRouter = createTRPCRouter({
             z.object({
                 userId: z.string(),
                 isNewsletter: z.boolean(),
-            })
+            }),
         )
         .mutation(async ({ input, ctx }) => {
             const { userId, isNewsletter } = input;
@@ -371,7 +368,7 @@ export const userRouter = createTRPCRouter({
             if (sessionUserId !== userId) {
                 throw new Error("Invalid userId");
             }
-            await ctx.prisma.user.update({
+            await ctx.db.user.update({
                 where: { id: userId },
                 data: {
                     isNewsletter: isNewsletter,
@@ -388,13 +385,13 @@ export const userRouter = createTRPCRouter({
                     .array(
                         z.object({
                             link: z.string(),
-                        })
+                        }),
                     )
                     .optional(),
                 name: z.string(),
                 switches: z.string(),
                 keycaps: z.string(),
-            })
+            }),
         )
         .mutation(async ({ input, ctx }) => {
             const { userId, username, images, name, switches, keycaps } = input;
@@ -412,7 +409,7 @@ export const userRouter = createTRPCRouter({
                 ...(images && images[0] ? { profile: images[0].link } : {}),
             };
 
-            const result = await ctx.prisma.$transaction(async (prisma) => {
+            const result = await ctx.db.$transaction(async (prisma) => {
                 const createKeeb = await prisma.keeb.create({
                     data: { name, switches, keycaps, userId },
                 });
@@ -448,7 +445,7 @@ export const userRouter = createTRPCRouter({
             z.object({
                 userId: z.string(),
                 selectedTag: z.string(),
-            })
+            }),
         )
         .mutation(async ({ input, ctx }) => {
             const { userId, selectedTag } = input;
@@ -459,7 +456,7 @@ export const userRouter = createTRPCRouter({
                 throw new Error("Invalid userId");
             }
 
-            return await ctx.prisma.user.update({
+            return await ctx.db.user.update({
                 where: { id: userId },
                 data: {
                     selectedTag: selectedTag,
@@ -475,7 +472,7 @@ export const userRouter = createTRPCRouter({
                 throw new Error("Not Signed In");
             }
             if (correct) {
-                const updatedUser = await ctx.prisma.user.update({
+                const updatedUser = await ctx.db.user.update({
                     where: { id: ctx.session.user.id },
                     data: {
                         isAdmin: true,
@@ -491,7 +488,7 @@ export const userRouter = createTRPCRouter({
         .input(z.string())
         .mutation(async ({ input, ctx }) => {
             if (ctx.session.user.isAdmin) {
-                const checkUserProfile = await ctx.prisma.user.findUnique({
+                const checkUserProfile = await ctx.db.user.findUnique({
                     where: { id: input },
                     select: {
                         profile: true,
@@ -519,12 +516,12 @@ export const userRouter = createTRPCRouter({
             z.object({
                 id: z.string(),
                 profile: z.string().optional(),
-            })
+            }),
         )
         .mutation(async ({ input, ctx }) => {
             const { id, profile } = input;
             if (ctx.session.user.isAdmin) {
-                const images = await ctx.prisma.images.findMany({
+                const images = await ctx.db.images.findMany({
                     where: {
                         userId: id,
                     },
@@ -532,7 +529,7 @@ export const userRouter = createTRPCRouter({
 
                 if (images.length > 0) {
                     const removeFilePromises = images.map((image) =>
-                        removeFileFromS3(image.link)
+                        removeFileFromS3(image.link),
                     );
                     if (profile) {
                         await removeFileFromS3(profile);
@@ -540,17 +537,16 @@ export const userRouter = createTRPCRouter({
 
                     try {
                         // here we are waiting for all promises and capturing those that are rejected
-                        const results = await Promise.allSettled(
-                            removeFilePromises
-                        );
+                        const results =
+                            await Promise.allSettled(removeFilePromises);
                         const errors = results.filter(
-                            (result) => result.status === "rejected"
+                            (result) => result.status === "rejected",
                         );
 
                         if (errors.length > 0) {
                             console.error(
                                 "Errors occurred while removing files from S3:",
-                                errors
+                                errors,
                             );
                         }
                     } catch (err) {
@@ -643,7 +639,7 @@ export const userRouter = createTRPCRouter({
     //                     tokenData.refresh_token &&
     //                     userInfo.user_id
     //                 ) {
-    //                     const updateUser = await ctx.prisma.user.update({
+    //                     const updateUser = await ctx.db.user.update({
     //                         where: { id: userId },
     //                         data: {
     //                             isVerified: true,
@@ -672,7 +668,7 @@ export const userRouter = createTRPCRouter({
     //     .mutation(async ({ input, ctx }) => {
     //         const { userId } = input;
 
-    //         return await ctx.prisma.user.update({
+    //         return await ctx.db.user.update({
     //             where: { id: userId },
     //             data: {
     //                 isVerified: true,

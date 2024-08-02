@@ -4,7 +4,7 @@ import type { Keeb } from "@prisma/client";
 import { deleteCookie, hasCookie, setCookie } from "cookies-next";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import defaultProfile from "@public/Profile/profile-default.png";
+import defaultProfile from "@public/Images/defaultProfile.png";
 import keebo from "@public/Profile/keebo.png";
 import toast from "react-hot-toast";
 

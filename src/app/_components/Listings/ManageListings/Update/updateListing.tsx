@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
 import { uploadFileToS3 } from "~/utils/aws";
-import defaultProfile from "@public/Profile/profile-default.png";
+import defaultProfile from "@public/Images/defaultProfile.png";
 import TitleScripts from "~/app/_components/TitleScripts";
 import LoadingSpinner from "~/app/_components/Loading";
 
@@ -667,7 +667,7 @@ export default function UpdateListing({
                                             className="absolute top-7 h-28 w-72 cursor-pointer opacity-0"
                                             type="file"
                                             multiple
-                                            accept="image/png, image/jpg, image/jpeg"
+                                            accept="image/png, image/jpg, image/jpeg, image/heic, image/heif"
                                             onChange={(e) => {
                                                 e.preventDefault();
                                                 if (e.target.files)

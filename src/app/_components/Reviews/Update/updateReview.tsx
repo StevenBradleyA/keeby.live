@@ -1,6 +1,6 @@
 import Image from "next/image";
 import keebo from "@public/Profile/keebo.png";
-import defaultProfile from "@public/Profile/profile-default.png";
+import defaultProfile from "@public/Images/defaultProfile.png";
 import LoadingSpinner from "~/app/_components/Loading";
 import { useState, useEffect } from "react";
 import { api } from "~/trpc/react";

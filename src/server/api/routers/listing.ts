@@ -76,7 +76,7 @@ export const listingRouter = createTRPCRouter({
         .input(
             z.object({
                 searchQuery: z.string().optional(),
-            })
+            }),
         )
         .query(({ input, ctx }) => {
             const { searchQuery } = input;
@@ -121,12 +121,12 @@ export const listingRouter = createTRPCRouter({
         .input(
             z.object({
                 userId: z.string(),
-            })
+            }),
         )
         .query(async ({ input, ctx }): Promise<ExtendedListing[]> => {
             const { userId } = input;
 
-            const allUserListings = await ctx.prisma.listing.findMany({
+            const allUserListings = await ctx.db.listing.findMany({
                 where: {
                     sellerId: userId,
                 },
@@ -141,7 +141,7 @@ export const listingRouter = createTRPCRouter({
             return allUserListings.map((listing) => ({
                 ...listing,
                 previewIndex: listing.images.findIndex(
-                    (image) => image.resourceType === "LISTINGPREVIEW"
+                    (image) => image.resourceType === "LISTINGPREVIEW",
                 ),
             }));
         }),
@@ -150,11 +150,11 @@ export const listingRouter = createTRPCRouter({
         .input(
             z.object({
                 id: z.string(),
-            })
+            }),
         )
         .query(async ({ input, ctx }) => {
             const listingWithImages: ListingPage | null =
-                await ctx.prisma.listing.findUnique({
+                await ctx.db.listing.findUnique({
                     where: {
                         id: input.id,
                     },
@@ -175,7 +175,7 @@ export const listingRouter = createTRPCRouter({
                 });
 
             if (listingWithImages) {
-                const averageStarRating = await ctx.prisma.review.aggregate({
+                const averageStarRating = await ctx.db.review.aggregate({
                     where: { sellerId: listingWithImages.seller.id },
                     _avg: { starRating: true },
                     _count: {
@@ -222,7 +222,7 @@ export const listingRouter = createTRPCRouter({
                 soundType: z.string().optional(),
                 cursor: z.string().nullish(),
                 limit: z.number().min(1).max(100).nullish(),
-            })
+            }),
         )
         .query(async ({ ctx, input }) => {
             const {
@@ -269,27 +269,26 @@ export const listingRouter = createTRPCRouter({
                 ].filter((obj) => Object.keys(obj).length > 0),
             };
 
-            const listings: PreviewListing[] =
-                await ctx.prisma.listing.findMany({
-                    where: whereFilters,
-                    include: {
-                        _count: {
-                            select: { comments: true },
-                        },
-                        images: {
-                            where: { resourceType: "LISTINGPREVIEW" },
-                            select: { id: true, link: true },
-                        },
+            const listings: PreviewListing[] = await ctx.db.listing.findMany({
+                where: whereFilters,
+                include: {
+                    _count: {
+                        select: { comments: true },
                     },
-                    take: limit + 1,
-                    skip: cursor ? 1 : 0,
-                    cursor: cursor ? { id: cursor } : undefined,
-                    orderBy: priceOrder
-                        ? priceOrder === "asc"
-                            ? [{ price: "asc" }, { createdAt: "desc" }]
-                            : [{ price: "desc" }, { createdAt: "desc" }]
-                        : [{ createdAt: "desc" }],
-                });
+                    images: {
+                        where: { resourceType: "LISTINGPREVIEW" },
+                        select: { id: true, link: true },
+                    },
+                },
+                take: limit + 1,
+                skip: cursor ? 1 : 0,
+                cursor: cursor ? { id: cursor } : undefined,
+                orderBy: priceOrder
+                    ? priceOrder === "asc"
+                        ? [{ price: "asc" }, { createdAt: "desc" }]
+                        : [{ price: "desc" }, { createdAt: "desc" }]
+                    : [{ createdAt: "desc" }],
+            });
 
             let nextCursor: typeof cursor | undefined = undefined;
             if (listings.length > limit) {
@@ -319,7 +318,7 @@ export const listingRouter = createTRPCRouter({
                 soundType: z.string().optional(),
                 cursor: z.string().nullish(),
                 limit: z.number().min(1).max(100).nullish(),
-            })
+            }),
         )
         .query(async ({ ctx, input }) => {
             const {
@@ -365,36 +364,35 @@ export const listingRouter = createTRPCRouter({
                 ].filter((obj) => Object.keys(obj).length > 0),
             };
 
-            const listings: PreviewListing[] =
-                await ctx.prisma.listing.findMany({
-                    where: whereFilters,
-                    include: {
-                        _count: {
-                            select: { comments: true },
-                        },
-                        images: {
-                            where: { resourceType: "LISTINGPREVIEW" },
-                            select: { id: true, link: true },
-                        },
+            const listings: PreviewListing[] = await ctx.db.listing.findMany({
+                where: whereFilters,
+                include: {
+                    _count: {
+                        select: { comments: true },
                     },
-                    take: limit + 1,
-                    skip: cursor ? 1 : 0,
-                    cursor: cursor ? { id: cursor } : undefined,
-                });
+                    images: {
+                        where: { resourceType: "LISTINGPREVIEW" },
+                        select: { id: true, link: true },
+                    },
+                },
+                take: limit + 1,
+                skip: cursor ? 1 : 0,
+                cursor: cursor ? { id: cursor } : undefined,
+            });
 
             // sort by popularity (comment count)
             let popularListings = listings.sort(
-                (a, b) => b._count.comments - a._count.comments
+                (a, b) => b._count.comments - a._count.comments,
             );
 
             // if priceOrder then sort based on that
             if (priceOrder === "asc") {
                 popularListings = popularListings.sort(
-                    (a, b) => a.price - b.price
+                    (a, b) => a.price - b.price,
                 );
             } else if (priceOrder === "desc") {
                 popularListings = popularListings.sort(
-                    (a, b) => b.price - a.price
+                    (a, b) => b.price - a.price,
                 );
             }
 
@@ -428,9 +426,9 @@ export const listingRouter = createTRPCRouter({
                 images: z.array(
                     z.object({
                         link: z.string(),
-                    })
+                    }),
                 ),
-            })
+            }),
         )
         .mutation(async ({ input, ctx }) => {
             const {
@@ -471,7 +469,7 @@ export const listingRouter = createTRPCRouter({
                     createData.soundTest = soundTest;
                 }
 
-                const newListing = await ctx.prisma.listing.create({
+                const newListing = await ctx.db.listing.create({
                     data: createData,
                 });
 
@@ -488,7 +486,7 @@ export const listingRouter = createTRPCRouter({
                                 userId: newListing.sellerId,
                             },
                         });
-                    })
+                    }),
                 );
 
                 return {
@@ -521,9 +519,9 @@ export const listingRouter = createTRPCRouter({
                 images: z.array(
                     z.object({
                         link: z.string(),
-                    })
+                    }),
                 ),
-            })
+            }),
         )
         .mutation(async ({ input, ctx }) => {
             const {
@@ -548,7 +546,7 @@ export const listingRouter = createTRPCRouter({
                 ctx.session.user.id === sellerId &&
                 ctx.session.user.isVerified
             ) {
-                const listingCheck = await ctx.prisma.listing.findUnique({
+                const listingCheck = await ctx.db.listing.findUnique({
                     where: { id: id },
                 });
                 if (listingCheck) {
@@ -576,12 +574,12 @@ export const listingRouter = createTRPCRouter({
                     updateData.soundTest = soundTest;
                 }
 
-                const updatedListing = await ctx.prisma.listing.update({
+                const updatedListing = await ctx.db.listing.update({
                     where: { id: id },
                     data: updateData,
                 });
 
-                await ctx.prisma.images.updateMany({
+                await ctx.db.images.updateMany({
                     where: {
                         listingId: id,
                         resourceType: "LISTINGPREVIEW",
@@ -592,7 +590,7 @@ export const listingRouter = createTRPCRouter({
                 });
 
                 if (preview.source === "prev") {
-                    const allExistingImages = await ctx.prisma.images.findMany({
+                    const allExistingImages = await ctx.db.images.findMany({
                         where: {
                             listingId: id,
                         },
@@ -600,7 +598,7 @@ export const listingRouter = createTRPCRouter({
 
                     const imageToUpdate = allExistingImages[preview.index];
                     if (imageToUpdate) {
-                        await ctx.prisma.images.update({
+                        await ctx.db.images.update({
                             where: {
                                 id: imageToUpdate.id,
                             },
@@ -627,12 +625,12 @@ export const listingRouter = createTRPCRouter({
                                     userId: sellerId,
                                 },
                             });
-                        })
+                        }),
                     );
                 }
 
                 if (deleteImageIds && deleteImageIds.length > 0) {
-                    const images = await ctx.prisma.images.findMany({
+                    const images = await ctx.db.images.findMany({
                         where: {
                             id: { in: deleteImageIds },
                         },
@@ -643,7 +641,7 @@ export const listingRouter = createTRPCRouter({
                         } catch (err) {
                             console.error(
                                 `Failed to remove file from S3: `,
-                                err
+                                err,
                             );
                             throw new Error(`Failed to remove file from S3: `);
                         }
@@ -651,7 +649,7 @@ export const listingRouter = createTRPCRouter({
 
                     await Promise.all(removeFilePromises);
 
-                    await ctx.prisma.images.deleteMany({
+                    await ctx.db.images.deleteMany({
                         where: {
                             id: { in: deleteImageIds },
                         },
@@ -671,12 +669,12 @@ export const listingRouter = createTRPCRouter({
             z.object({
                 id: z.string(),
                 sellerId: z.string(),
-            })
+            }),
         )
         .mutation(async ({ input, ctx }) => {
             const { id, sellerId } = input;
 
-            const listingCheck = await ctx.prisma.listing.findUnique({
+            const listingCheck = await ctx.db.listing.findUnique({
                 where: { id: id },
             });
             if (listingCheck) {
@@ -689,7 +687,7 @@ export const listingRouter = createTRPCRouter({
             }
 
             if (ctx.session.user.id === sellerId || ctx.session.user.isAdmin) {
-                const images = await ctx.prisma.images.findMany({
+                const images = await ctx.db.images.findMany({
                     where: {
                         listingId: id,
                     },
@@ -698,25 +696,24 @@ export const listingRouter = createTRPCRouter({
                 if (images.length > 0) {
                     const imageIds = images.map((image) => image.id);
                     const removeFilePromises = images.map((image) =>
-                        removeFileFromS3(image.link)
+                        removeFileFromS3(image.link),
                     );
                     try {
                         // here we are waiting for all promises and capturing those that are rejected
-                        const results = await Promise.allSettled(
-                            removeFilePromises
-                        );
+                        const results =
+                            await Promise.allSettled(removeFilePromises);
                         const errors = results.filter(
-                            (result) => result.status === "rejected"
+                            (result) => result.status === "rejected",
                         );
 
                         if (errors.length > 0) {
                             console.error(
                                 "Errors occurred while removing files from S3:",
-                                errors
+                                errors,
                             );
                         }
 
-                        await ctx.prisma.images.deleteMany({
+                        await ctx.db.images.deleteMany({
                             where: {
                                 id: { in: imageIds },
                             },
@@ -727,7 +724,7 @@ export const listingRouter = createTRPCRouter({
                 }
             }
 
-            await ctx.prisma.listing.delete({ where: { id: id } });
+            await ctx.db.listing.delete({ where: { id: id } });
 
             return "Successfully deleted";
         }),

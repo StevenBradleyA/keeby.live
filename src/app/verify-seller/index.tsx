@@ -1,6 +1,6 @@
 import { useSession } from "next-auth/react";
 import Footer from "~/app/_components/Footer/mainFooter";
-import defaultProfile from "@public/Profile/profile-default.png";
+import defaultProfile from "@public/Images/defaultProfile.png";
 import Image from "next/image";
 import { api } from "~/trpc/react";
 import toast from "react-hot-toast";

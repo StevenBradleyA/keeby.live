@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
 import LoadingSpinner from "~/app/_components/Loading";
 import Image from "next/image";
-import defaultProfile from "@public/Profile/profile-default.png";
+import defaultProfile from "@public/Images/defaultProfile.png";
 import keebo from "@public/Profile/keebo.png";
 import { uploadFileToS3 } from "~/utils/aws";
 
@@ -462,7 +462,7 @@ export default function UpdatePost({ post, closeModal }: UpdatePostProps) {
                                             className="absolute left-0 top-0 w-8 cursor-pointer opacity-0 "
                                             type="file"
                                             multiple
-                                            accept="image/png, image/jpg, image/jpeg"
+                                            accept="image/png, image/jpg, image/jpeg, image/heic, image/heif"
                                             onChange={(e) => {
                                                 e.preventDefault();
                                                 if (e.target.files)

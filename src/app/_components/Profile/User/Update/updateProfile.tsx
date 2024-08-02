@@ -3,7 +3,7 @@ import { api } from "~/trpc/react";
 import { useEffect, useState } from "react";
 import { uploadFileToS3 } from "~/utils/aws";
 import Image from "next/image";
-import defaultProfile from "@public/Profile/profile-default.png";
+import defaultProfile from "@public/Images/defaultProfile.png";
 import keebo from "@public/Profile/keebo.png";
 import toast from "react-hot-toast";
 import LoadingSpinner from "~/app/_components/Loading";
@@ -364,7 +364,7 @@ export default function UpdateProfile({
                                 id="profileImageInput"
                                 className="absolute left-0 top-7 h-32 w-full cursor-pointer rounded-md opacity-0"
                                 type="file"
-                                accept="image/png, image/jpg, image/jpeg"
+                                accept="image/png, image/jpg, image/jpeg, image/heic, image/heif"
                                 onChange={(e) => {
                                     if (
                                         e.target.files &&
