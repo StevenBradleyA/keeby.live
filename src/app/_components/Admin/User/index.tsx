@@ -81,8 +81,8 @@ export default function EachAdminUser({ user }: EachAdminUserProps) {
 
             <div className="flex h-1/4 flex-col items-center justify-center p-5 text-lg text-failure">
                 <h1>{user.username}</h1>
-                <h1 className="text-sm text-darkGray">{user.email}</h1>
-                <h1 className="text-sm text-darkGray">{user.selectedTag}</h1>
+                <h1 className="text-sm text-mediumGray">{user.email}</h1>
+                <h1 className="text-sm text-mediumGray">{user.selectedTag}</h1>
             </div>
 
             <div className="relative flex h-1/2 w-full justify-center">

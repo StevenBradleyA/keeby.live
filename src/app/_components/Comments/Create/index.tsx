@@ -127,13 +127,13 @@ export default function CreateComment({ typeId, type }: CreateCommentProps) {
             {createSelected && (
                 <div className="flex justify-end gap-5 text-sm">
                     <button
-                        className="rounded-md border-2 border-green-500 border-opacity-0 px-2 py-1  text-darkGray hover:border-opacity-100 "
+                        className="rounded-md border-2 border-green-500 border-opacity-0 px-2 py-1  text-mediumGray hover:border-opacity-100 "
                         onClick={cancelComment}
                     >
                         Cancel
                     </button>
                     <button
-                        className="rounded-md border-2 border-green-500 border-opacity-0 px-2 py-1  text-darkGray hover:border-opacity-100 "
+                        className="rounded-md border-2 border-green-500 border-opacity-0 px-2 py-1  text-mediumGray hover:border-opacity-100 "
                         onClick={handleSubmitClick}
                     >
                         Submit Comment

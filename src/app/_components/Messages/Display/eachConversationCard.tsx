@@ -85,7 +85,7 @@ export default function EachConversationCard({
                     <div className="flex w-full justify-start text-white">
                         {otherPartyUsername}
                     </div>
-                    <div className=" flex-shrink-0 text-darkGray">
+                    <div className=" flex-shrink-0 text-mediumGray">
                         {formatDate(message.createdAt)}
                     </div>
                 </div>

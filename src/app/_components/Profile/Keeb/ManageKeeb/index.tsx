@@ -131,7 +131,7 @@ export default function ManageKeeb({
     };
 
     return (
-        <div className=" font-poppins text-darkGray">
+        <div className=" font-poppins text-mediumGray">
             {toggle === "MENU" && (
                 <div className="flex  flex-col items-start gap-2 p-5">
                     <div className="flex gap-2">
@@ -205,7 +205,7 @@ export default function ManageKeeb({
                 </div>
             )}
             {toggle === "DELETE" && (
-                <div className="text-darkGray">
+                <div className="text-mediumGray">
                     <h1 className="text-center">
                         Are you sure you want to{" "}
                         <span className="text-red-500"> delete</span>{" "}
@@ -213,7 +213,7 @@ export default function ManageKeeb({
                     </h1>
                     <div className="flex justify-center gap-10 ">
                         <button
-                            className=" text-md keeb-shop-offer-button mt-5 flex items-center gap-2 rounded-md bg-darkGray py-2 pr-4 text-black "
+                            className=" text-md keeb-shop-offer-button mt-5 flex items-center gap-2 rounded-md bg-mediumGray py-2 pr-4 text-black "
                             onClick={handleDelete}
                         >
                             <svg
@@ -299,9 +299,9 @@ export default function ManageKeeb({
                             }
                             width={300}
                             height={300}
-                            className="h-20 w-20 rounded-md border-2 border-[#616161] object-cover "
+                            className="h-20 w-20 rounded-md border-2 border-mediumGray object-cover "
                         />
-                        <div className="relative flex  w-full items-center border-b-2 border-t-2 border-[#616161] p-2 ">
+                        <div className="relative flex  w-full items-center border-b-2 border-t-2 border-mediumGray p-2 ">
                             <div className="ml-2 flex items-center gap-2">
                                 <h1 className="text-2xl text-green-500">
                                     Edit Keeb
@@ -312,7 +312,7 @@ export default function ManageKeeb({
                                     className="h-6 w-6"
                                 />
                             </div>
-                            <h3 className="absolute -top-5 right-0 text-xs text-darkGray">
+                            <h3 className="absolute -top-5 right-0 text-xs text-mediumGray">
                                 {sessionData?.user.username}
                             </h3>
                         </div>
@@ -321,7 +321,7 @@ export default function ManageKeeb({
                     <input
                         value={keyboard}
                         onChange={(e) => setKeyboard(e.target.value)}
-                        className="mt-5 h-10 w-full rounded-md bg-darkGray p-1 "
+                        className="mt-5 h-10 w-full rounded-md bg-mediumGray p-1 "
                         placeholder="Name"
                     ></input>
                     {enableErrorDisplay && errors.keyboard && (
@@ -337,7 +337,7 @@ export default function ManageKeeb({
                     <input
                         value={switches}
                         onChange={(e) => setSwitches(e.target.value)}
-                        className="mt-5 h-10 w-full rounded-md bg-darkGray p-1 "
+                        className="mt-5 h-10 w-full rounded-md bg-mediumGray p-1 "
                         placeholder="Switches"
                     ></input>
                     {enableErrorDisplay && errors.switches && (
@@ -348,7 +348,7 @@ export default function ManageKeeb({
                     <input
                         value={keycaps}
                         onChange={(e) => setKeycaps(e.target.value)}
-                        className="mt-5 h-10 w-full rounded-md bg-darkGray p-1 "
+                        className="mt-5 h-10 w-full rounded-md bg-mediumGray p-1 "
                         placeholder="Keycaps"
                     ></input>
                     {enableErrorDisplay && errors.keycaps && (
@@ -361,7 +361,7 @@ export default function ManageKeeb({
                                 void submit(e);
                             }}
                             disabled={isSubmitting}
-                            className={`mt-5 rounded-md border-2 border-green-500 bg-keebyGray px-6 py-1 text-green-500 hover:bg-green-500 hover:text-black
+                            className={`mt-5 rounded-md border-2 border-green-500 bg-darkGray px-6 py-1 text-green-500 hover:bg-green-500 hover:text-black
     ${
         isSubmitting ? "text-green-500" : ""
     } transition-all duration-300 ease-in-out`}

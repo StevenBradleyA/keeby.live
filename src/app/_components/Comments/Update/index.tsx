@@ -130,13 +130,13 @@ export default function UpdateComment({
                     <div className="flex gap-5">
                         <button
                             onClick={deleteComment}
-                            className="rounded-md border-2 border-red-500 border-opacity-0 px-2 py-1  text-darkGray hover:border-opacity-100 "
+                            className="rounded-md border-2 border-red-500 border-opacity-0 px-2 py-1  text-mediumGray hover:border-opacity-100 "
                         >
                             Confirm
                         </button>
                         <button
                             onClick={hideDeleteConfirmation}
-                            className="rounded-md border-2 border-green-500 border-opacity-0 px-2 py-1  text-darkGray hover:border-opacity-100 "
+                            className="rounded-md border-2 border-green-500 border-opacity-0 px-2 py-1  text-mediumGray hover:border-opacity-100 "
                         >
                             Deny
                         </button>
@@ -172,13 +172,13 @@ export default function UpdateComment({
                     <div className=" flex w-full justify-end gap-5 ">
                         <button
                             onClick={handleHideEdit}
-                            className="rounded-md border-2 border-green-500 border-opacity-0 px-2 py-1  text-darkGray hover:border-opacity-100 "
+                            className="rounded-md border-2 border-green-500 border-opacity-0 px-2 py-1  text-mediumGray hover:border-opacity-100 "
                         >
                             cancel
                         </button>
                         <button
                             onClick={handleUpdateComment}
-                            className="rounded-md border-2 border-green-500 border-opacity-0 px-2 py-1  text-darkGray hover:border-opacity-100 "
+                            className="rounded-md border-2 border-green-500 border-opacity-0 px-2 py-1  text-mediumGray hover:border-opacity-100 "
                         >
                             submit
                         </button>

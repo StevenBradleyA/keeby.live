@@ -44,7 +44,7 @@ export default function DisplayMessages({ userId }: { userId: string }) {
     return (
         <>
             <div className="flex h-[80vh] w-full gap-2 tablet:px-4 desktop:px-16 ">
-                <div className="h-full w-1/4 overflow-y-auto rounded-xl bg-keebyGray tablet:p-2 desktop:p-3">
+                <div className="h-full w-1/4 overflow-y-auto rounded-xl bg-darkGray tablet:p-2 desktop:p-3">
                     {messages &&
                         messages.map((message) => (
                             <div
@@ -64,7 +64,7 @@ export default function DisplayMessages({ userId }: { userId: string }) {
                 </div>
                 <div className="h-full w-3/4 ">
                     {activeTransactionId === null && (
-                        <div className=" mx-10 mt-10 flex items-end gap-2 text-darkGray">
+                        <div className=" mx-10 mt-10 flex items-end gap-2 text-mediumGray">
                             <h1>
                                 {`You have no messages. Buyers and sellers will be automatically connected here once a purchase is made.`}
                             </h1>

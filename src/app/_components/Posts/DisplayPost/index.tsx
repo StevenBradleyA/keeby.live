@@ -146,11 +146,11 @@ export default function DisplayPostPage({ post }: DisplayPostPageProps) {
 
     return (
         <>
-            <div className="w-full text-darkGray tablet:px-5 desktop:px-16 ">
+            <div className="w-full text-mediumGray tablet:px-5 desktop:px-16 ">
                 <div className="flex  w-full gap-10">
                     <div className="flex w-3/4 flex-col ">
                         <div className="flex w-full gap-10">
-                            <div className=" post-page-user-container  relative h-[70vh] w-1/3 rounded-xl bg-keebyGray  px-10 py-8 tablet:overflow-auto desktop:overflow-hidden">
+                            <div className=" post-page-user-container  relative h-[70vh] w-1/3 rounded-xl bg-darkGray  px-10 py-8 tablet:overflow-auto desktop:overflow-hidden">
                                 <div className="h-full w-full">
                                     {post.user.selectedTag && (
                                         <h3 className="mb-2 flex justify-center text-sm">
@@ -174,7 +174,7 @@ export default function DisplayPostPage({ post }: DisplayPostPageProps) {
                                         priority
                                     />
 
-                                    <div className="post-page-user-overlay absolute bottom-0 left-0 top-1/4 -z-10 h-full w-full  bg-darkGray"></div>
+                                    <div className="post-page-user-overlay absolute bottom-0 left-0 top-1/4 -z-10 h-full w-full  bg-mediumGray"></div>
                                     {post.user && post.user.username && (
                                         <div className="post-page-user-contents text-green-500">
                                             <Link
@@ -193,7 +193,7 @@ export default function DisplayPostPage({ post }: DisplayPostPageProps) {
                             </div>
 
                             <div className="flex w-2/3 flex-col gap-5 ">
-                                <div className=" w-full rounded-xl bg-keebyGray ">
+                                <div className=" w-full rounded-xl bg-darkGray ">
                                     <div className="flex items-center justify-between p-3 ">
                                         <h1 className=" rounded-md bg-white bg-opacity-20 px-4 py-2 text-green-500">
                                             {post.tag}
@@ -367,7 +367,7 @@ export default function DisplayPostPage({ post }: DisplayPostPageProps) {
                                         {post.title}
                                     </h1>
                                 </div>
-                                <div className=" w-full rounded-xl bg-darkGray p-3 text-green-500  ">
+                                <div className=" w-full rounded-xl bg-mediumGray p-3 text-green-500  ">
                                     <div className="mb-2 flex gap-5 text-sm">
                                         <h3 className="flex gap-2">
                                             <svg
@@ -441,7 +441,7 @@ export default function DisplayPostPage({ post }: DisplayPostPageProps) {
                         </div>
                     </div>
 
-                    <div className="w-1/4 rounded-xl bg-darkGray p-3 text-black ">
+                    <div className="w-1/4 rounded-xl bg-mediumGray p-3 text-black ">
                         <PostPagePreviews />
                     </div>
                 </div>

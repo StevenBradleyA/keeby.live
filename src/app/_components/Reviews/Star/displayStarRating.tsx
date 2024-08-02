@@ -6,7 +6,7 @@ interface StarRatingProps {
 
 export default function DisplayStarRating({ rating }: StarRatingProps) {
     const coloredStarColor = "text-green-500";
-    const defaultStarColor = "text-darkGray";
+    const defaultStarColor = "text-mediumGray";
 
     return (
         <div className="flex gap-[2px]">

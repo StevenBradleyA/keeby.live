@@ -57,7 +57,7 @@ const ModifyCommentModal: React.FC<ModifyCommentModalProps> = ({
                         transition={{ duration: 0.3, ease: "easeInOut" }}
                     />
                     <motion.div
-                        className="relative flex rounded-lg bg-keebyGray px-8 py-2 shadow-lg"
+                        className="relative flex rounded-lg bg-darkGray px-8 py-2 shadow-lg"
                         initial={{ scale: 0.8, y: -20, opacity: 0 }}
                         animate={{ scale: 1, y: 0, opacity: 1 }}
                         exit={{ scale: 0.8, y: 20, opacity: 0 }}

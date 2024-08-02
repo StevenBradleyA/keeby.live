@@ -59,7 +59,7 @@ export default function EachPublicProfileReview({
                 />
                 <div className="flex flex-col text-green-500">
                     <h2>{review.user.username}</h2>
-                    <p className=" text-darkGray">
+                    <p className=" text-mediumGray">
                         {formatDate(review.updatedAt)}
                     </p>
                 </div>

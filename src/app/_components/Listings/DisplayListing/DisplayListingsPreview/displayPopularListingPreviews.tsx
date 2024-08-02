@@ -176,7 +176,7 @@ export default function DisplayPopularListingPreviews({
             )}
 
             {keebData && keebData.pages[0]?.popularListings.length === 0 && (
-                <div className=" mt-5 flex items-end gap-2 text-darkGray">
+                <div className=" mt-5 flex items-end gap-2 text-mediumGray">
                     <h1>
                         {`Woah, all sold out. There are currently no listings for sale `}
                     </h1>

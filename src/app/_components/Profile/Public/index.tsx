@@ -64,7 +64,7 @@ export default function PublicProfileUserInfo({
                 <div className="mb-5 text-3xl text-green-500">
                     <TitleScripts page="publicProfile" />
                 </div>
-                <div className="z-10 w-full px-40 text-darkGray">
+                <div className="z-10 w-full px-40 text-mediumGray">
                     <div className="z-10 flex h-[60vh]  w-full justify-center gap-10 ">
                         <div className="flex h-full w-3/12 flex-col overflow-y-auto rounded-2xl bg-black/30 p-2 text-xs">
                             <div className="flex w-full flex-col items-center">

@@ -115,7 +115,7 @@
 //                     />
 //                 )}
 //             </Link>
-//             <div className="flex items-center gap-14 text-darkGray desktop:gap-32">
+//             <div className="flex items-center gap-14 text-mediumGray desktop:gap-32">
 //                 {router.asPath === "/keebshare" ? (
 //                     <Link href="/" aria-label="shop">
 //                         <button className=" keeb-share-preview-button flex items-center gap-2 pr-2  ">
@@ -490,7 +490,7 @@
 //                                         />
 //                                     ) : (
 //                                         <div
-//                                             className=" mb-2 flex w-full gap-2 rounded-md bg-white/5 p-2 text-xs text-darkGray transition-background duration-400 ease-custom-cubic hover:bg-white/10 "
+//                                             className=" mb-2 flex w-full gap-2 rounded-md bg-white/5 p-2 text-xs text-mediumGray transition-background duration-400 ease-custom-cubic hover:bg-white/10 "
 //                                             aria-label="notification"
 //                                         >
 //                                             <div className="flex w-full flex-col items-start">

@@ -53,7 +53,7 @@ export default function AdminEachDisplayTag({ tag }: AdminEachDisplayTagProps) {
             <div className="w-96 rounded-xl bg-black/25 p-5 text-sm text-failure shadow-xl hover:bg-black/30  ">
                 <h1 className="font-titillium text-3xl">{tag.name}</h1>
 
-                <p className="h-20 w-full overflow-y-auto text-darkGray">
+                <p className="h-20 w-full overflow-y-auto text-mediumGray">
                     {tag.description}
                 </p>
             </div>

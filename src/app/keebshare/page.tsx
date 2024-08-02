@@ -89,7 +89,7 @@ export default function KeebShare() {
 
     return (
         <>
-            <div className="mt-10 flex w-full flex-col text-darkGray tablet:px-5 desktop:px-16">
+            <div className="mt-10 flex w-full flex-col text-mediumGray tablet:px-5 desktop:px-16">
                 <div className=" flex w-full  gap-10 ">
                     <div className=" very-sticky flex w-1/4 flex-col">
                         <div className="mb-5 flex gap-5 ">
@@ -125,7 +125,7 @@ export default function KeebShare() {
                         <div
                             className={` relative tablet:h-[68vh] desktop:h-[72vh] ${
                                 isSpecify ? "overflow-auto" : "overflow-hidden"
-                            } w-full rounded-xl bg-keebyGray p-5 text-darkGray`}
+                            } w-full rounded-xl bg-darkGray p-5 text-mediumGray`}
                         >
                             {isSpecify ? (
                                 <div className="flex w-full flex-col items-start gap-5">
@@ -135,7 +135,7 @@ export default function KeebShare() {
                                                 Tag:
                                             </h1>
                                             <button
-                                                className=" absolute -top-1 right-0 h-7 w-7 text-darkGray transition-colors duration-400 ease-custom-cubic hover:text-green-500"
+                                                className=" absolute -top-1 right-0 h-7 w-7 text-mediumGray transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                                                 onClick={handleResetSpecify}
                                             >
                                                 <ResetArrowSvg />
@@ -202,7 +202,7 @@ export default function KeebShare() {
                                         className={`search-input-hack absolute h-10 w-full rounded-md px-3 ${
                                             isSearchFocus
                                                 ? "search-input-placeholder bg-blackAlternative"
-                                                : "bg-darkGray"
+                                                : "bg-mediumGray"
                                         } py-1 text-green-500 outline-none `}
                                         placeholder="Search"
                                         onFocus={() => setIsSearchFocus(true)}

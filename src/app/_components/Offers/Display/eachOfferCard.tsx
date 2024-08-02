@@ -43,7 +43,7 @@ export default function EachOfferCard({ listing }: EachOfferCardProps) {
             {listing.listingOffer.map((offer, index) => (
                 <div
                     key={index}
-                    className="flex w-96 flex-col items-stretch overflow-hidden rounded-2xl bg-keebyGray p-3 font-poppins text-darkGray tablet:h-[30vh] desktop:h-[25vh] "
+                    className="flex w-96 flex-col items-stretch overflow-hidden rounded-2xl bg-darkGray p-3 font-poppins text-mediumGray tablet:h-[30vh] desktop:h-[25vh] "
                 >
                     <h1 className="flex h-1/6 justify-between ">
                         <div>{listing.title}</div>
@@ -51,7 +51,7 @@ export default function EachOfferCard({ listing }: EachOfferCardProps) {
                             className={`${
                                 offer.status === "ACCEPTED"
                                     ? "text-green-500"
-                                    : "text-darkGray"
+                                    : "text-mediumGray"
                             }`}
                         >
                             {offer.status}
@@ -65,7 +65,7 @@ export default function EachOfferCard({ listing }: EachOfferCardProps) {
                                 </p>
                                 <div className="mt-5 flex justify-center gap-10">
                                     <button
-                                        className=" text-md keeb-shop-offer-button mt-5 flex items-center gap-2 rounded-md bg-darkGray py-2 pr-4 text-black "
+                                        className=" text-md keeb-shop-offer-button mt-5 flex items-center gap-2 rounded-md bg-mediumGray py-2 pr-4 text-black "
                                         onClick={openDeclineModal}
                                     >
                                         <svg
@@ -155,7 +155,7 @@ export default function EachOfferCard({ listing }: EachOfferCardProps) {
                             <div className="mt-5">
                                 <div className="flex justify-center">
                                     <button
-                                        className=" text-md keeb-shop-offer-button mt-5 flex items-center gap-2 rounded-md bg-darkGray py-2 pr-4 text-black "
+                                        className=" text-md keeb-shop-offer-button mt-5 flex items-center gap-2 rounded-md bg-mediumGray py-2 pr-4 text-black "
                                         onClick={openDeclineModal}
                                     >
                                         <svg
@@ -217,7 +217,7 @@ export default function EachOfferCard({ listing }: EachOfferCardProps) {
                                     now,
                                     {
                                         addSuffix: true,
-                                    }
+                                    },
                                 )}
                             </p>
                             <p>{offer.buyer.username}</p>

@@ -28,7 +28,7 @@ export default function EachFavoritePostCard({
     const goToPrevImage = () => {
         setImageIndex(
             (prevIndex) =>
-                (prevIndex - 1 + post.images.length) % post.images.length
+                (prevIndex - 1 + post.images.length) % post.images.length,
         );
     };
 
@@ -83,7 +83,7 @@ export default function EachFavoritePostCard({
                                         query: { postId: post.id },
                                     }}
                                 >
-                                <button
+                                    <button
                                         className="text-md keeb-share-preview-button flex items-center gap-2 rounded-md bg-green-500 py-2 pr-4 text-black "
                                         style={{
                                             boxShadow: "0 0 20px #22C55E",
@@ -149,7 +149,7 @@ export default function EachFavoritePostCard({
                         <div className=" post-preview-container relative h-full w-full overflow-hidden">
                             <DisplayYouTubePostPreview link={post.link} />
 
-                            <h1 className=" post-preview-tag  absolute top-0 flex h-1/5 w-full flex-col justify-center break-words bg-keebyGray pl-3 text-lg text-green-500">
+                            <h1 className=" post-preview-tag  absolute top-0 flex h-1/5 w-full flex-col justify-center break-words bg-darkGray pl-3 text-lg text-green-500">
                                 {post.title}
                             </h1>
                             <h1 className=" post-preview-tag absolute bottom-2 left-2 z-10 rounded-3xl bg-white bg-opacity-20 px-4 py-2 text-green-500">
@@ -162,7 +162,7 @@ export default function EachFavoritePostCard({
                                         query: { postId: post.id },
                                     }}
                                 >
-                                   <button
+                                    <button
                                         className="text-md keeb-share-preview-button flex items-center gap-2 rounded-md bg-green-500 py-2 pr-4 text-black "
                                         style={{
                                             boxShadow: "0 0 20px #22C55E",
@@ -245,7 +245,7 @@ export default function EachFavoritePostCard({
                                         query: { postId: post.id },
                                     }}
                                 >
-                                  <button
+                                    <button
                                         className="text-md keeb-share-preview-button flex items-center gap-2 rounded-md bg-green-500 py-2 pr-4 text-black "
                                         style={{
                                             boxShadow: "0 0 20px #22C55E",
@@ -315,38 +315,38 @@ export default function EachFavoritePostCard({
                                     query: { postId: post.id },
                                 }}
                             >
-                             <button
-                                        className="text-md keeb-share-preview-button flex items-center gap-2 rounded-md bg-green-500 py-2 pr-4 text-black "
-                                        style={{
-                                            boxShadow: "0 0 20px #22C55E",
-                                        }}
+                                <button
+                                    className="text-md keeb-share-preview-button flex items-center gap-2 rounded-md bg-green-500 py-2 pr-4 text-black "
+                                    style={{
+                                        boxShadow: "0 0 20px #22C55E",
+                                    }}
+                                >
+                                    <svg
+                                        className="keeb-share-preview-button-arrow w-4"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
                                     >
-                                        <svg
-                                            className="keeb-share-preview-button-arrow w-4"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path
-                                                stroke="currentColor"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                strokeWidth="3"
-                                                d="M3.515 12h16.97m0 0L13.01 4.525M20.485 12l-7.475 7.476"
-                                            ></path>
-                                        </svg>
-                                        <span className="keeb-share-preview-button-text">
-                                            {`Let's Go `}
-                                        </span>
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="currentColor"
-                                            className="keeb-share-preview-button-circle w-2"
-                                            viewBox="0 0 32 32"
-                                        >
-                                            <circle cx="16" cy="16" r="16" />
-                                        </svg>
-                                    </button>
+                                        <path
+                                            stroke="currentColor"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="3"
+                                            d="M3.515 12h16.97m0 0L13.01 4.525M20.485 12l-7.475 7.476"
+                                        ></path>
+                                    </svg>
+                                    <span className="keeb-share-preview-button-text">
+                                        {`Let's Go `}
+                                    </span>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="currentColor"
+                                        className="keeb-share-preview-button-circle w-2"
+                                        viewBox="0 0 32 32"
+                                    >
+                                        <circle cx="16" cy="16" r="16" />
+                                    </svg>
+                                </button>
                             </Link>
                         </div>
                         <h1 className="flex h-1/2 items-center justify-center break-words bg-white bg-opacity-20 pl-3 text-center text-lg text-green-500">

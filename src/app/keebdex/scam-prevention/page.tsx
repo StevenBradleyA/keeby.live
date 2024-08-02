@@ -289,7 +289,7 @@ export default function PreventingScams() {
                             >
                                 Please Stop closing things
                             </h1>
-                            <h2 className="relative mt-10 flex justify-center px-16 text-2xl text-keebyGray ">
+                            <h2 className="relative mt-10 flex justify-center px-16 text-2xl text-darkGray ">
                                 {`This is why we cant have nice things`}
                             </h2>
                         </div>
@@ -341,7 +341,7 @@ export default function PreventingScams() {
                             >
                                 HOW TO PREVENT SCAMS
                             </h1>
-                            <h2 className="relative mt-10 text-xl text-keebyGray ">
+                            <h2 className="relative mt-10 text-xl text-darkGray ">
                                 {`10/10 Wouldn't get scammed again!`}
                                 <button
                                     className="scam-prevention-button absolute -bottom-28 left-1/2 flex h-20 -translate-x-1/2  items-center whitespace-nowrap rounded-2xl bg-fuchsia-300  px-12 text-3xl text-black"
@@ -520,7 +520,10 @@ export default function PreventingScams() {
                 className="mt-40 w-full bg-red-200 "
                 style={{ zIndex: 2 }}
             ></div>
-            <div className="mt-[40rem] w-full z-40 relative" style={{ zIndex: 4 }}>
+            <div
+                className="mt-[40rem] w-full z-40 relative"
+                style={{ zIndex: 4 }}
+            >
                 <Footer />
             </div>
         </>

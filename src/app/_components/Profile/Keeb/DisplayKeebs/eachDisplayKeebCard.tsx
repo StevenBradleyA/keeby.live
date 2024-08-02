@@ -31,11 +31,11 @@ export default function EachDisplayKeebCard({
                     {keeb.name}
                 </h1>
                 <div className="mt-3 ">
-                    <span className="z-20 text-darkGray">Switches:</span>{" "}
+                    <span className="z-20 text-mediumGray">Switches:</span>{" "}
                     {keeb.switches}
                 </div>
                 <div>
-                    <span className="z-20 text-darkGray">Keycaps:</span>{" "}
+                    <span className="z-20 text-mediumGray">Keycaps:</span>{" "}
                     {keeb.keycaps}
                 </div>
             </div>

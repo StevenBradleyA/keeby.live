@@ -21,7 +21,7 @@ interface EachPost extends Post {
 export default function ManageEachPostCard({ post }: EachManagePostCardProps) {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [imageIndex, setImageIndex] = useState<number>(
-        post.previewIndex || 0
+        post.previewIndex || 0,
     );
 
     const goToNextImage = () => {
@@ -31,7 +31,7 @@ export default function ManageEachPostCard({ post }: EachManagePostCardProps) {
     const goToPrevImage = () => {
         setImageIndex(
             (prevIndex) =>
-                (prevIndex - 1 + post.images.length) % post.images.length
+                (prevIndex - 1 + post.images.length) % post.images.length,
         );
     };
 
@@ -152,7 +152,7 @@ export default function ManageEachPostCard({ post }: EachManagePostCardProps) {
                         <div className=" post-preview-container relative h-full w-full overflow-hidden">
                             <DisplayYouTubePostPreview link={post.link} />
 
-                            <h1 className=" post-preview-tag  absolute top-0 flex h-1/5 w-full flex-col justify-center break-words bg-keebyGray pl-3 text-lg text-green-500">
+                            <h1 className=" post-preview-tag  absolute top-0 flex h-1/5 w-full flex-col justify-center break-words bg-darkGray pl-3 text-lg text-green-500">
                                 {post.title}
                             </h1>
                             <h1 className=" post-preview-tag absolute bottom-2 left-2 z-10 rounded-3xl bg-white bg-opacity-20 px-4 py-2 text-green-500">

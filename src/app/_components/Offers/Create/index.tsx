@@ -264,7 +264,7 @@ export default function CreateOffer({ closeModal, listing }: CreateOfferProps) {
                 )}
             </button>
 
-            <div className=" mt-5 text-darkGray">
+            <div className=" mt-5 text-mediumGray">
                 * All Offers are final. Please read{" "}
                 <Link
                     href={`/keebdex/rules`}

@@ -73,7 +73,7 @@ export default function VerifySeller() {
                             <h1 className="px-10 text-6xl text-green-500">
                                 Sell Your Keeb
                             </h1>
-                            <p className="mt-5 rounded-xl bg-keebyGray p-10 text-white">
+                            <p className="mt-5 rounded-xl bg-darkGray p-10 text-white">
                                 {`I wanted to create a fun and safe place to buy and sell keyboards, which is how keeby started! To sell your board on keeby you have
                                 to register your paypal account. This will be a one time only $0.02 charge to verify your account. Finally, you will provide the email associated with your paypal account. This will only be shown to the verified buyer who has payed keeby's fee to purchase your board at the agreed upon price. `}
                             </p>
@@ -205,7 +205,7 @@ export default function VerifySeller() {
                                                 onChange={(e) =>
                                                     setEmail(e.target.value)
                                                 }
-                                                className=" h-10 w-full rounded-md bg-darkGray p-1 text-white "
+                                                className=" h-10 w-full rounded-md bg-mediumGray p-1 text-white "
                                                 placeholder="Email"
                                             />
                                             {enableErrorDisplay &&
@@ -224,7 +224,7 @@ export default function VerifySeller() {
                                                         e.target.value,
                                                     )
                                                 }
-                                                className=" h-10 w-full rounded-md bg-darkGray p-1 text-white"
+                                                className=" h-10 w-full rounded-md bg-mediumGray p-1 text-white"
                                                 placeholder="Email confirmation"
                                             />
                                             {enableErrorDisplay &&
@@ -243,7 +243,7 @@ export default function VerifySeller() {
                                                 )}
                                         </div>
                                     </form>
-                                    <p className=" mt-2 text-darkGray">
+                                    <p className=" mt-2 text-mediumGray">
                                         {`*This email will only be shared with the
                                         verified buyer who has paid Keeby's fee
                                         to purchase your board at the agreed
@@ -406,7 +406,7 @@ export default function VerifySeller() {
                             )}
                         </div>
                         <div className=" w-1/4">
-                            <div className="flex w-full flex-col gap-5 rounded-xl bg-keebyGray p-10">
+                            <div className="flex w-full flex-col gap-5 rounded-xl bg-darkGray p-10">
                                 <Image
                                     alt="profile"
                                     src={
@@ -418,7 +418,7 @@ export default function VerifySeller() {
                                     width={800}
                                     height={800}
                                 />
-                                <div className="rounded-md bg-darkGray p-3 text-center text-white/40">
+                                <div className="rounded-md bg-mediumGray p-3 text-center text-white/40">
                                     Status:{" "}
                                     <span
                                         className={`${
@@ -436,7 +436,7 @@ export default function VerifySeller() {
                                 </div>
                             </div>
 
-                            <div className="mt-10 flex w-full flex-col rounded-xl bg-keebyGray p-10 text-darkGray ">
+                            <div className="mt-10 flex w-full flex-col rounded-xl bg-darkGray p-10 text-mediumGray ">
                                 <Link
                                     href="/keebdex/how-keeby-works"
                                     aria-label="privacy"

@@ -243,7 +243,7 @@ export default function ProfilePlus() {
         !hasProfile && (
             <>
                 <div className="w-full flex justify-center mt-48">
-                    <div className=" rounded-2xl w-full  largeLaptop:w-2/3   bg-keebyGray flex overflow-hidden shadow-2xl relative ">
+                    <div className=" rounded-2xl w-full  largeLaptop:w-2/3   bg-darkGray flex overflow-hidden shadow-2xl relative ">
                         <div className="w-1/2  h-full p-10 flex flex-col items-center justify-center">
                             <Image
                                 src={login}
@@ -267,7 +267,7 @@ export default function ProfilePlus() {
                                     onChange={(e) =>
                                         setUsername(e.target.value)
                                     }
-                                    className="w-full p-3 bg-black rounded-lg placeholder:text-darkGray "
+                                    className="w-full p-3 bg-black rounded-lg placeholder:text-mediumGray "
                                     placeholder="Enter your username"
                                 />
                                 {enableErrorDisplay && errors.username && (
@@ -301,7 +301,7 @@ export default function ProfilePlus() {
                                     onChange={(e) =>
                                         setKeyboard(e.target.value)
                                     }
-                                    className="w-full p-3 bg-black rounded-lg placeholder:text-darkGray mt-3 overflow-hidden"
+                                    className="w-full p-3 bg-black rounded-lg placeholder:text-mediumGray mt-3 overflow-hidden"
                                     placeholder="Keyboard name"
                                 />
                                 {enableErrorDisplay && errors.keyboard && (
@@ -322,7 +322,7 @@ export default function ProfilePlus() {
                                     onChange={(e) =>
                                         setSwitches(e.target.value)
                                     }
-                                    className="w-full p-3 bg-black rounded-lg placeholder:text-darkGray mt-2 "
+                                    className="w-full p-3 bg-black rounded-lg placeholder:text-mediumGray mt-2 "
                                     placeholder="keyboard switches"
                                 />
                                 {enableErrorDisplay && errors.switches && (
@@ -336,7 +336,7 @@ export default function ProfilePlus() {
                                     id="keycaps"
                                     value={keycaps}
                                     onChange={(e) => setKeycaps(e.target.value)}
-                                    className="w-full p-3 bg-black rounded-lg placeholder:text-darkGray mt-2 "
+                                    className="w-full p-3 bg-black rounded-lg placeholder:text-mediumGray mt-2 "
                                     placeholder="keyboard keycaps"
                                 />
                                 {enableErrorDisplay && errors.keycaps && (
@@ -353,7 +353,7 @@ export default function ProfilePlus() {
                                     <div className="h-[2px] bg-white/50 w-full"></div>
                                 </div>
 
-                                <div className="relative mt-3 flex justify-between text-darkGray ">
+                                <div className="relative mt-3 flex justify-between text-mediumGray ">
                                     <div className="w-16 h-12 relative  hover:opacity-70">
                                         <input
                                             name="profile image upload"

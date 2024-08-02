@@ -145,7 +145,7 @@ export default function ContactUs() {
                                             void handleSubmitTicket(e);
                                         }}
                                         disabled={isSubmitting}
-                                        className={`mt-5 rounded-md border-2 border-green-500 bg-keebyGray px-6 py-1 text-green-500 hover:bg-green-500 hover:text-black
+                                        className={`mt-5 rounded-md border-2 border-green-500 bg-darkGray px-6 py-1 text-green-500 hover:bg-green-500 hover:text-black
                     ${
                         isSubmitting ? "text-green-500" : ""
                     } transition-all duration-300 ease-in-out`}

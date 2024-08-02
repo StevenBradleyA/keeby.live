@@ -207,13 +207,13 @@ export default function RootLayout({
 //                             <Link
 //                                 href="/cookie-policy"
 //                                 aria-label="cookie policy"
-//                                 className="mt-1 text-darkGray underline transition-colors duration-400 ease-custom-cubic hover:text-green-500 "
+//                                 className="mt-1 text-mediumGray underline transition-colors duration-400 ease-custom-cubic hover:text-green-500 "
 //                             >
 //                                 Cookie Policy
 //                             </Link>
 
 //                             <button
-//                                 className="profile-manage-button mt-5 flex items-center gap-2 rounded-md  border-2 border-green-500 bg-green-500 py-2 pr-4 text-black hover:bg-keebyGray "
+//                                 className="profile-manage-button mt-5 flex items-center gap-2 rounded-md  border-2 border-green-500 bg-green-500 py-2 pr-4 text-black hover:bg-darkGray "
 //                                 onClick={handleAcceptCookies}
 //                             >
 //                                 <svg

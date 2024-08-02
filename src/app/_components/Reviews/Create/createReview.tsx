@@ -21,7 +21,7 @@ interface StarProps {
 
 const Star = ({ rating, starRating, hover, starHover, onClick }: StarProps) => {
     const filled = "text-green-500 ";
-    const empty = "text-darkGray";
+    const empty = "text-mediumGray";
 
     const starClasses = rating <= starRating ? filled : empty;
     const hoverClasses = hover ? (rating <= hover ? filled : empty) : false;
@@ -170,7 +170,7 @@ export default function CreateReview({
                             className="h-8 w-8 object-contain"
                         />
                     </h1>
-                    <div className=" mb-2 w-full gap-2 rounded-md bg-white/5 p-2 text-xs text-darkGray transition-background duration-400 ease-custom-cubic hover:bg-white/10 ">
+                    <div className=" mb-2 w-full gap-2 rounded-md bg-white/5 p-2 text-xs text-mediumGray transition-background duration-400 ease-custom-cubic hover:bg-white/10 ">
                         <h2 className="flex w-full justify-between">
                             Buy a keeb to review a seller
                         </h2>
@@ -187,11 +187,11 @@ export default function CreateReview({
                 <Image
                     alt="seller profile"
                     src={sellerProfile ? sellerProfile : defaultProfile}
-                    className="h-20 w-20 rounded-md border-2 border-[#616161]"
+                    className="h-20 w-20 rounded-md border-2 border-mediumGray"
                     width={400}
                     height={400}
                 />
-                <h1 className="w-full border-y-2 border-[#616161] p-2 text-xl text-green-500">
+                <h1 className="w-full border-y-2 border-mediumGray p-2 text-xl text-green-500">
                     Review {sellerUsername}
                 </h1>
             </div>
@@ -213,7 +213,7 @@ export default function CreateReview({
             <textarea
                 value={text}
                 onChange={(e) => setText(e.target.value)}
-                className=" h-32 max-h-52 w-full overflow-y-auto rounded-md bg-darkGray p-1 "
+                className=" h-32 max-h-52 w-full overflow-y-auto rounded-md bg-mediumGray p-1 "
                 placeholder="Describe your experience with the seller"
             ></textarea>
             {enableErrorDisplay && errors.text && (
@@ -226,7 +226,7 @@ export default function CreateReview({
                         void submit(e);
                     }}
                     disabled={hasSubmitted || isSubmitting}
-                    className={`rounded-md border-2 border-green-500 bg-keebyGray px-6 py-1 text-green-500 hover:bg-green-500 hover:text-black ${
+                    className={`rounded-md border-2 border-green-500 bg-darkGray px-6 py-1 text-green-500 hover:bg-green-500 hover:text-black ${
                         hasSubmitted ? "text-green-500" : ""
                     } ${
                         isSubmitting ? "text-green-500" : ""

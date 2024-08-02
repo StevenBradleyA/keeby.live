@@ -52,7 +52,7 @@ export default function LoginForm() {
             </div>
             <form className="flex flex-col w-full mt-5">
                 <input
-                    className="w-full p-3 bg-black rounded-lg placeholder:text-darkGray "
+                    className="w-full p-3 bg-black rounded-lg placeholder:text-mediumGray "
                     id="username"
                     type="text"
                     placeholder="Enter your username"
@@ -61,7 +61,7 @@ export default function LoginForm() {
                 />
                 <div className="relative mt-3">
                     <input
-                        className="w-full pl-3 py-3 pr-10 bg-black rounded-lg placeholder:text-darkGray"
+                        className="w-full pl-3 py-3 pr-10 bg-black rounded-lg placeholder:text-mediumGray"
                         id="password"
                         type={showPassword ? "text" : "password"}
                         placeholder="Enter your password"
@@ -70,7 +70,7 @@ export default function LoginForm() {
                     />
                     <button
                         type="button"
-                        className="absolute right-2 top-1/2 -translate-y-1/2 hover:opacity-70 text-darkGray "
+                        className="absolute right-2 top-1/2 -translate-y-1/2 hover:opacity-70 text-mediumGray "
                         onClick={() => setShowPassword(!showPassword)}
                     >
                         <svg

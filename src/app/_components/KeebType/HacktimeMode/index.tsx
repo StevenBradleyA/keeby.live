@@ -179,7 +179,7 @@ $ echo "Rainbow Table Simulation completed."`;
             <div className="hacker-background"></div>
             <div className="hacker-scanlines"></div>
             <div className="z-20 h-full w-full overflow-hidden rounded-xl bg-black bg-opacity-40 pb-5 ">
-                <div className="flex h-10 w-full items-center justify-between bg-keebyGray text-sm text-darkGray">
+                <div className="flex h-10 w-full items-center justify-between bg-darkGray text-sm text-mediumGray">
                     <div className="flex w-1/2 justify-between">
                         <div className="flex gap-1 pl-5">
                             <Image

@@ -38,14 +38,14 @@ export default function EachOfferViewCard({ offer }: EachOfferViewCardProps) {
 
     return (
         <>
-            <div className="flex w-96 flex-col items-stretch overflow-hidden rounded-2xl bg-keebyGray p-3 font-poppins text-darkGray tablet:h-[30vh] desktop:h-[25vh] ">
+            <div className="flex w-96 flex-col items-stretch overflow-hidden rounded-2xl bg-darkGray p-3 font-poppins text-mediumGray tablet:h-[30vh] desktop:h-[25vh] ">
                 <h1 className="flex h-1/6 justify-between ">
                     <div>{offer.listing.title}</div>
                     <p
                         className={`${
                             offer.status === "ACCEPTED"
                                 ? "text-green-500"
-                                : "text-darkGray"
+                                : "text-mediumGray"
                         }`}
                     >
                         {offer.status}

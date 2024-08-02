@@ -97,7 +97,7 @@ export default function EachReplyCommentCard({
                     {reply.user.username && (
                         <Link
                             href={`/profile/public/${reply.user.username}`}
-                            className="text-darkGray"
+                            className="text-mediumGray"
                         >
                             {reply.user.username}
                         </Link>
@@ -114,7 +114,7 @@ export default function EachReplyCommentCard({
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="18"
                                     height="18"
-                                    className="text-darkGray transition-colors duration-400 ease-custom-cubic hover:text-white "
+                                    className="text-mediumGray transition-colors duration-400 ease-custom-cubic hover:text-white "
                                     fill="currentColor"
                                 >
                                     <circle cx="9" cy="4.5" r="1.5" />
@@ -149,7 +149,7 @@ export default function EachReplyCommentCard({
                         {isTooLong && (
                             <button
                                 onClick={toggleReadMore}
-                                className="text-darkGray"
+                                className="text-mediumGray"
                             >
                                 {isExpanded ? "Read Less" : "Read More"}
                             </button>
@@ -165,7 +165,7 @@ export default function EachReplyCommentCard({
                         {isTooLong && (
                             <button
                                 onClick={toggleReadMore}
-                                className="text-darkGray"
+                                className="text-mediumGray"
                             >
                                 {isExpanded ? "Read Less" : "Read More"}
                             </button>
@@ -173,7 +173,7 @@ export default function EachReplyCommentCard({
                     </div>
                 )}
                 <div className="flex gap-5">
-                    <div className="flex gap-2 text-darkGray">
+                    <div className="flex gap-2 text-mediumGray">
                         {session &&
                         session.user &&
                         reply.isLiked !== undefined ? (
@@ -190,7 +190,7 @@ export default function EachReplyCommentCard({
                                     xmlns="http://www.w3.org/2000/svg"
                                     height="16"
                                     width="16"
-                                    className="text-darkGray transition-colors duration-400 ease-custom-cubic hover:text-white "
+                                    className="text-mediumGray transition-colors duration-400 ease-custom-cubic hover:text-white "
                                     viewBox="0 0 512 512"
                                     fill="currentColor"
                                 >
@@ -211,14 +211,14 @@ export default function EachReplyCommentCard({
                     {session && session.user ? (
                         <button
                             onClick={() => setShowNestedReply(!showNestedReply)}
-                            className="text-xs text-darkGray transition-colors duration-400 ease-custom-cubic hover:text-green-500"
+                            className="text-xs text-mediumGray transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                         >
                             Reply
                         </button>
                     ) : (
                         <button
                             onClick={openSignInModal}
-                            className="text-xs text-darkGray transition-colors duration-400 ease-custom-cubic hover:text-green-500"
+                            className="text-xs text-mediumGray transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                         >
                             Reply
                         </button>

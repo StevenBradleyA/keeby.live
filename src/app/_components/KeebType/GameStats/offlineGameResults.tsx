@@ -86,7 +86,7 @@ export default function OfflineGameResults({
                             </span>{" "}
                             {Math.round(offlinePureWpm)}
                         </p>
-                        <h2 className="text-darkGray">Accuracy</h2>
+                        <h2 className="text-mediumGray">Accuracy</h2>
                     </div>
 
                     <div

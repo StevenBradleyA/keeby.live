@@ -29,7 +29,7 @@ export default function ListingSoundTest({ soundTest }: ListingSoundTestProps) {
     };
 
     return (
-        <div className="flex h-full w-full justify-center rounded-xl bg-keebyGray p-5">
+        <div className="flex h-full w-full justify-center rounded-xl bg-darkGray p-5">
             {videoId && (
                 <YouTube
                     videoId={videoId}

@@ -109,7 +109,7 @@ export default function AcceptDeclineOffer({
                         </span>
                         ?
                     </h1>
-                    <h2 className="text-darkGray">{listing.title}</h2>
+                    <h2 className="text-mediumGray">{listing.title}</h2>
                     <div className="mt-10 flex w-[600px] items-center justify-between text-white">
                         <p className="w-3/4">
                             {` * By accepting this offer, you agree to sell your
@@ -133,7 +133,7 @@ export default function AcceptDeclineOffer({
                     </div>
 
                     {rulesAgreed === false ? (
-                        <button className=" text-md keeb-shop-offer-button mt-10 flex items-center gap-2 rounded-md bg-darkGray  py-2 pr-4 text-black ">
+                        <button className=" text-md keeb-shop-offer-button mt-10 flex items-center gap-2 rounded-md bg-mediumGray  py-2 pr-4 text-black ">
                             <svg
                                 className="keeb-shop-offer-button-arrow w-4"
                                 xmlns="http://www.w3.org/2000/svg"
@@ -216,7 +216,7 @@ export default function AcceptDeclineOffer({
 
                     <div className="flex justify-center gap-10 ">
                         <button
-                            className=" text-md keeb-shop-offer-button mt-5 flex items-center gap-2 rounded-md bg-darkGray py-2 pr-4 text-black "
+                            className=" text-md keeb-shop-offer-button mt-5 flex items-center gap-2 rounded-md bg-mediumGray py-2 pr-4 text-black "
                             onClick={handleDelete}
                         >
                             <svg

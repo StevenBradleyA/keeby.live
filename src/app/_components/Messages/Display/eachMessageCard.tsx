@@ -42,7 +42,7 @@ export default function EachMessageCard({
 
     return (
         <div className="w-full overflow-x-hidden ">
-            {/* <div className="my-2 text-center text-xs text-darkGray opacity-50">
+            {/* <div className="my-2 text-center text-xs text-mediumGray opacity-50">
                 {formatDate(message.createdAt)}
             </div> */}
             {message.userId === userId ? (
@@ -120,7 +120,7 @@ export default function EachMessageCard({
                         <polygon points="3,8 11,0 11,16" />
                     </svg>
                     <div
-                        className="whitespace-pre-wrap break-words rounded-md bg-keebyGray px-4 py-2 text-[#0ec879] bg-messenger"
+                        className="whitespace-pre-wrap break-words rounded-md bg-darkGray px-4 py-2 text-[#0ec879] bg-messenger"
                         style={{
                             maxWidth: "66.666%",
                         }}

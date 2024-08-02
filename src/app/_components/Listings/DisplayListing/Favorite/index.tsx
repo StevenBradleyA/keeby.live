@@ -91,7 +91,7 @@ export default function ListingPageFavorite({
         >
             <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="w-7 text-darkGray transition-colors duration-400 ease-custom-cubic  hover:text-white"
+                className="w-7 text-mediumGray transition-colors duration-400 ease-custom-cubic  hover:text-white"
                 viewBox="0 0 24 24"
                 fill="none"
             >

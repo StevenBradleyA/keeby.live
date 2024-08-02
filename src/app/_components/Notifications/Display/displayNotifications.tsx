@@ -17,7 +17,7 @@ export default function DisplayNotifications({ userId }: { userId: string }) {
                 </>
             ) : (
                 <div
-                    className=" mb-2 flex w-full gap-2 rounded-md bg-white/5 p-2 text-xs text-darkGray transition-background duration-400 ease-custom-cubic hover:bg-white/10 "
+                    className=" mb-2 flex w-full gap-2 rounded-md bg-white/5 p-2 text-xs text-mediumGray transition-background duration-400 ease-custom-cubic hover:bg-white/10 "
                     aria-label="notification"
                 >
                     <div className="flex w-full flex-col items-start">

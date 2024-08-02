@@ -79,7 +79,7 @@ export default function EachNotificationCard({
     return (
         <div className="relative w-full">
             <Link
-                className=" mb-2 flex w-full gap-2 rounded-md bg-white/5 p-2 text-xs text-darkGray transition-background duration-400 ease-custom-cubic hover:bg-white/10 "
+                className=" mb-2 flex w-full gap-2 rounded-md bg-white/5 p-2 text-xs text-mediumGray transition-background duration-400 ease-custom-cubic hover:bg-white/10 "
                 aria-label="notification"
                 href={notificationLink}
             >
@@ -88,7 +88,7 @@ export default function EachNotificationCard({
                         <div className="flex w-full justify-start ">
                             Notification
                         </div>
-                        <div className=" flex-shrink-0 text-darkGray">
+                        <div className=" flex-shrink-0 text-mediumGray">
                             {formatDate(notification.createdAt)}
                         </div>
                     </div>

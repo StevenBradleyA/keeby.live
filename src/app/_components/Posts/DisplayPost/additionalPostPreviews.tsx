@@ -91,7 +91,7 @@ export default function PostPagePreviews() {
             )}
 
             {postData && postData.pages[0]?.posts.length === 0 && (
-                <div className=" mt-5 flex items-end gap-2 text-darkGray">
+                <div className=" mt-5 flex items-end gap-2 text-mediumGray">
                     <h1>{`Woah, there are currently no posts `}</h1>
                     <Image src={keebo} alt="keeby mascot" className="w-10" />
                 </div>

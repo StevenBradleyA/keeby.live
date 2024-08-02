@@ -5,11 +5,10 @@ import LoginForm from "~/app/_components/Login/loginForm";
 import AuthProviders from "~/app/_components/Login/authProviders";
 
 export default function SignIn() {
-   
     return (
         <>
             <div className="w-full flex justify-center mt-60">
-                <div className=" rounded-2xl w-full  largeLaptop:w-2/3 desktop:w-1/2  bg-keebyGray flex overflow-hidden shadow-2xl relative ">
+                <div className=" rounded-2xl w-full  largeLaptop:w-2/3 desktop:w-1/2  bg-darkGray flex overflow-hidden shadow-2xl relative ">
                     <div className="w-1/2  h-full p-10 flex flex-col items-center justify-center">
                         <Image
                             src={login}
@@ -55,7 +54,7 @@ export default function SignIn() {
 //             <div className="text-3xl text-green-500">
 //                 <TitleScripts page={"signin"} />
 //             </div>
-//             <div className="z-30 mt-10  rounded-3xl bg-keebyGray px-20 py-10">
+//             <div className="z-30 mt-10  rounded-3xl bg-darkGray px-20 py-10">
 //                 {Object.values(providers).map((provider) => (
 //                     <div key={provider.name}>
 //                         <motion.button

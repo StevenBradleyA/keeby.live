@@ -107,7 +107,7 @@ export default function CreateTransaction({
                     </button>
                 </Link>
             </div>
-            <div className="w-1/2 rounded-md bg-darkGray p-5 ">
+            <div className="w-1/2 rounded-md bg-mediumGray p-5 ">
                 <h2>Order Summary</h2>
                 <div className="flex w-full justify-between">
                     <div className="mt-2 flex flex-col text-xs">
@@ -143,7 +143,7 @@ export default function CreateTransaction({
                                 </div>
                                 <h1>Checkout</h1>
                             </div>
-                            <div className="mt-3 h-[2px] w-full rounded-md bg-darkGray"></div>
+                            <div className="mt-3 h-[2px] w-full rounded-md bg-mediumGray"></div>
                             <button
                                 className="flex flex-col items-center gap-1 text-white/40 transition-colors  duration-400 ease-custom-cubic hover:text-white"
                                 onClick={() => {
@@ -151,7 +151,7 @@ export default function CreateTransaction({
                                         setPurchaseStage("PAYPAL");
                                 }}
                             >
-                                <div className="flex h-7 w-7 items-center justify-center rounded-full bg-darkGray p-2  transition-background  duration-400 ease-custom-cubic hover:bg-green-500   ">
+                                <div className="flex h-7 w-7 items-center justify-center rounded-full bg-mediumGray p-2  transition-background  duration-400 ease-custom-cubic hover:bg-green-500   ">
                                     2
                                 </div>
                                 <div className="">Payment</div>
@@ -172,7 +172,7 @@ export default function CreateTransaction({
                                 at the agreed upon price.
                             </p>
                         </div>
-                        <div className="w-1/3 rounded-md bg-darkGray p-5">
+                        <div className="w-1/3 rounded-md bg-mediumGray p-5">
                             <h2>Summary </h2>
                             <div className="mt-1 h-[2px] w-full bg-white/30"></div>
                             <div className="mt-2 flex justify-between">
@@ -233,7 +233,7 @@ export default function CreateTransaction({
                         </div>
                     </div>
 
-                    <div className="mt-10 text-darkGray">
+                    <div className="mt-10 text-mediumGray">
                         * Please read{" "}
                         <Link
                             href={`/keebdex/rules`}
@@ -263,12 +263,12 @@ export default function CreateTransaction({
                                     className="flex flex-col items-center gap-1 text-white/40 transition-colors  duration-400 ease-custom-cubic hover:text-white"
                                     onClick={() => setPurchaseStage("")}
                                 >
-                                    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-darkGray p-2  transition-background  duration-400 ease-custom-cubic hover:bg-green-500 ">
+                                    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-mediumGray p-2  transition-background  duration-400 ease-custom-cubic hover:bg-green-500 ">
                                         1
                                     </div>
                                     <h1>Checkout</h1>
                                 </button>
-                                <div className="mt-3 h-[2px] w-full rounded-md bg-darkGray"></div>
+                                <div className="mt-3 h-[2px] w-full rounded-md bg-mediumGray"></div>
                                 <button className="flex flex-col items-center gap-1">
                                     <div className="flex h-7 w-7 items-center justify-center rounded-full bg-green-500 p-2 ">
                                         2

@@ -94,21 +94,21 @@ export default function AdminCreateRank({
     return (
         <form className="flex w-full flex-col items-center gap-10 ">
             <div className="flex w-full flex-col gap-1">
-                <label htmlFor="NameInput" className="text-darkGray">
+                <label htmlFor="NameInput" className="text-mediumGray">
                     Name
                 </label>
                 <input
                     id="NameInput"
                     value={rankName}
                     onChange={(e) => setRankName(e.target.value)}
-                    className="h-10 w-full rounded-md bg-darkGray p-1 "
+                    className="h-10 w-full rounded-md bg-mediumGray p-1 "
                     placeholder="Name"
                 />
             </div>
 
             <div className="flex w-full justify-between  gap-10">
                 <div className="flex flex-col gap-1">
-                    <label htmlFor="minWpmInput" className="text-darkGray">
+                    <label htmlFor="minWpmInput" className="text-mediumGray">
                         MinWpm
                     </label>
                     <input
@@ -117,12 +117,12 @@ export default function AdminCreateRank({
                         min={0}
                         value={minWpm}
                         onChange={(e) => setMinWpm(Math.floor(+e.target.value))}
-                        className="h-10 w-full rounded-md bg-darkGray p-1"
+                        className="h-10 w-full rounded-md bg-mediumGray p-1"
                         placeholder="minWpm"
                     />
                 </div>
                 <div className="flex flex-col gap-1">
-                    <label htmlFor="maxWpmInput" className="text-darkGray">
+                    <label htmlFor="maxWpmInput" className="text-mediumGray">
                         maxWpm
                     </label>
                     <input
@@ -131,12 +131,12 @@ export default function AdminCreateRank({
                         min={0}
                         value={maxWpm}
                         onChange={(e) => setMaxWpm(Math.floor(+e.target.value))}
-                        className="h-10 w-full rounded-md bg-darkGray p-1"
+                        className="h-10 w-full rounded-md bg-mediumGray p-1"
                         placeholder="maxWpm"
                     />
                 </div>
                 <div className="flex flex-col gap-1">
-                    <label htmlFor="standingInput" className="text-darkGray">
+                    <label htmlFor="standingInput" className="text-mediumGray">
                         Standing (top -- %)
                     </label>
                     <input
@@ -145,7 +145,7 @@ export default function AdminCreateRank({
                         min={0}
                         value={standing}
                         onChange={(e) => setStanding(+e.target.value)}
-                        className="h-10 w-full rounded-md bg-darkGray p-1"
+                        className="h-10 w-full rounded-md bg-mediumGray p-1"
                         placeholder="standing"
                     />
                 </div>
@@ -205,7 +205,7 @@ export default function AdminCreateRank({
             </div>
 
             <button
-                className=" w-1/2 rounded-md border-2 border-[#ff0000] bg-keebyGray bg-opacity-60 px-6 py-2 text-failure hover:bg-failure hover:bg-opacity-100 hover:text-black"
+                className=" w-1/2 rounded-md border-2 border-[#ff0000] bg-darkGray bg-opacity-60 px-6 py-2 text-failure hover:bg-failure hover:bg-opacity-100 hover:text-black"
                 onClick={(e) => {
                     e.preventDefault();
                     void handleCreateRank(e);

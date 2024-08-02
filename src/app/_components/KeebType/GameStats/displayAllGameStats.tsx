@@ -72,7 +72,7 @@ export default function DisplayAllGameStats({
             <div className="flex h-[45vh] w-full gap-5 ">
                 <div className="flex h-[100%] w-1/4 flex-col ">
                     <div className=" flex items-center gap-2">
-                        <h3 className="text-darkGray">Average WPM</h3>
+                        <h3 className="text-mediumGray">Average WPM</h3>
                         <p className="rounded-md bg-black/10 px-4 py-1 text-xl">
                             {`${parseFloat(gameData.averageWpm.toFixed(2))} `}
                         </p>
@@ -82,7 +82,7 @@ export default function DisplayAllGameStats({
                         rank={gameData.userWithGameResultsAndRank.rank.maxWpm}
                     />
                     <div className=" mt-5 flex items-center gap-2">
-                        <h3 className="text-darkGray">Average Accuracy</h3>
+                        <h3 className="text-mediumGray">Average Accuracy</h3>
                         <p className="rounded-md bg-black/10 px-4 py-1 text-xl text-[#22B5C5] ">
                             {`${parseFloat(
                                 gameData.averageAccuracy.toFixed(2),
@@ -153,7 +153,7 @@ export default function DisplayAllGameStats({
                 <div className="flex w-1/2 flex-col gap-5 ">
                     <div className="flex w-full flex-shrink-0 items-center justify-between rounded-md bg-black/10 p-6 ">
                         <div className="flex flex-col items-center">
-                            <h3 className="text-darkGray">Rank (WPM)</h3>
+                            <h3 className="text-mediumGray">Rank (WPM)</h3>
                             <p className="text-5xl">
                                 {parseFloat(gameData.rankedWpm.toFixed(2))}
                             </p>
@@ -166,7 +166,7 @@ export default function DisplayAllGameStats({
                             className="h-20 w-32 object-contain"
                         />
                         <div className="flex flex-col items-center  ">
-                            <h3 className="text-darkGray">Rank</h3>
+                            <h3 className="text-mediumGray">Rank</h3>
                             <p className="text-2xl">
                                 {
                                     gameData?.userWithGameResultsAndRank?.rank
@@ -177,7 +177,7 @@ export default function DisplayAllGameStats({
                     </div>
                     <div className="flex w-full flex-shrink-0 items-center justify-between rounded-md bg-black/10 p-8">
                         <div className="flex flex-col items-center">
-                            <h3 className="text-darkGray">Rank Min (WPM)</h3>
+                            <h3 className="text-mediumGray">Rank Min (WPM)</h3>
                             <p className="text-5xl">
                                 {
                                     gameData.userWithGameResultsAndRank.rank
@@ -186,7 +186,7 @@ export default function DisplayAllGameStats({
                             </p>
                         </div>
                         <div className="flex flex-col items-center">
-                            <h3 className="text-darkGray">Rank Max (WPM)</h3>
+                            <h3 className="text-mediumGray">Rank Max (WPM)</h3>
                             <p className="text-5xl">
                                 {
                                     gameData.userWithGameResultsAndRank.rank
@@ -195,7 +195,9 @@ export default function DisplayAllGameStats({
                             </p>
                         </div>
                         <div className="flex flex-col items-center">
-                            <h3 className="text-darkGray">Standing (Top %)</h3>
+                            <h3 className="text-mediumGray">
+                                Standing (Top %)
+                            </h3>
                             <p className="text-5xl">
                                 {
                                     gameData.userWithGameResultsAndRank.rank
@@ -211,11 +213,11 @@ export default function DisplayAllGameStats({
                         {!isTotalData && (
                             <>
                                 <div className="flex flex-col items-center">
-                                    <label className="text-darkGray">
+                                    <label className="text-mediumGray">
                                         Keeb
                                     </label>
                                     <select
-                                        className="profile-select-button flex max-w-[200px] items-center gap-1 rounded-md  border-2 border-[#616161] bg-dark py-2 text-green-500"
+                                        className="profile-select-button flex max-w-[200px] items-center gap-1 rounded-md  border-2 border-mediumGray bg-dark py-2 text-green-500"
                                         value={selectedKeeb.id}
                                         onChange={handleKeebChange}
                                     >
@@ -227,11 +229,11 @@ export default function DisplayAllGameStats({
                                     </select>
                                 </div>
                                 <div className="flex flex-col items-center">
-                                    <label className="text-darkGray">
+                                    <label className="text-mediumGray">
                                         Mode
                                     </label>
                                     <select
-                                        className="profile-select-button flex max-w-[200px] items-center gap-1 rounded-md  border-2 border-[#616161] bg-dark py-2 text-green-500"
+                                        className="profile-select-button flex max-w-[200px] items-center gap-1 rounded-md  border-2 border-mediumGray bg-dark py-2 text-green-500"
                                         value={mode}
                                         onChange={(e) =>
                                             setMode(e.target.value)
@@ -249,14 +251,14 @@ export default function DisplayAllGameStats({
                         {isTotalData && (
                             <button
                                 onClick={() => setIsTotalData(false)}
-                                className="profile-select-button flex items-center gap-1 rounded-md border-2  border-[#616161] bg-dark  px-6 py-2 text-green-500"
+                                className="profile-select-button flex items-center gap-1 rounded-md border-2  border-mediumGray bg-dark  px-6 py-2 text-green-500"
                             >
                                 Specific
                             </button>
                         )}
                         <div>
                             <button
-                                className="profile-select-button flex items-center gap-1 rounded-md border-2  border-[#616161] bg-dark  px-6 py-2 text-green-500"
+                                className="profile-select-button flex items-center gap-1 rounded-md border-2  border-mediumGray bg-dark  px-6 py-2 text-green-500"
                                 onClick={() => setIsTotalData(true)}
                             >
                                 All Games
@@ -266,7 +268,7 @@ export default function DisplayAllGameStats({
 
                     <div className="flex w-full items-center justify-between rounded-md bg-black/10 p-8 ">
                         <div className="flex flex-col items-center">
-                            <h3 className="text-darkGray">Total Games</h3>
+                            <h3 className="text-mediumGray">Total Games</h3>
                             <p className="text-5xl">
                                 {
                                     gameData.userWithGameResultsAndRank.games
@@ -277,7 +279,7 @@ export default function DisplayAllGameStats({
                         <Link
                             href={`/keebdex/how-keeby-works`}
                             aria-label="typing tips"
-                            className="profile-select-button flex items-center gap-2 rounded-md border-2  border-[#616161] bg-dark py-2 pl-6 pr-4 text-green-500"
+                            className="profile-select-button flex items-center gap-2 rounded-md border-2  border-mediumGray bg-dark py-2 pl-6 pr-4 text-green-500"
                         >
                             Stats Explained
                             <svg
@@ -298,7 +300,7 @@ export default function DisplayAllGameStats({
                         <Link
                             href={`/keebdex/typing-tips`}
                             aria-label="typing tips"
-                            className="profile-select-button flex items-center gap-2 rounded-md border-2  border-[#616161] bg-dark  py-2 pl-6 pr-4 text-green-500"
+                            className="profile-select-button flex items-center gap-2 rounded-md border-2  border-mediumGray bg-dark  py-2 pl-6 pr-4 text-green-500"
                         >
                             Typing Tips
                             <svg

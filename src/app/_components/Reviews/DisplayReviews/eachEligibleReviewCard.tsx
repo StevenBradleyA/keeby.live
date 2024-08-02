@@ -45,7 +45,7 @@ export default function EachEligibleReviewCard({
 
     return (
         <button
-            className=" mb-2 w-full gap-2 rounded-md bg-white/5 p-2 text-xs text-darkGray transition-background duration-400 ease-custom-cubic hover:bg-white/10 "
+            className=" mb-2 w-full gap-2 rounded-md bg-white/5 p-2 text-xs text-mediumGray transition-background duration-400 ease-custom-cubic hover:bg-white/10 "
             onClick={() => {
                 setSellerId(listing.seller.id);
                 setSellerUsername(listing.seller.username || "");

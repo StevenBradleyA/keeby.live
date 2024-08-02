@@ -130,6 +130,14 @@ declare module "next-auth" {
         user: {
             id: string;
             hasProfile: boolean;
+            isVerified: boolean;
+            username: string;
+            selectedTag: string;
+            profile: string;
+            internetPoints: number;
+            isAdmin: boolean;
+            isNewsletter: boolean;
+            isBanned: boolean;
             // ...other properties
             // role: UserRole;
         } & DefaultSession["user"];

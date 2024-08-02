@@ -25,7 +25,7 @@ export default function KeebyAbout() {
 
     return (
         <>
-            <div className="relative flex h-[80vh] w-full justify-center text-darkGray">
+            <div className="relative flex h-[80vh] w-full justify-center text-mediumGray">
                 <Image
                     alt="about"
                     src={template}
@@ -33,7 +33,7 @@ export default function KeebyAbout() {
                 />
                 <div className="z-10 flex h-full w-2/3  flex-col  justify-between pb-5 pl-28 pr-32 pt-16">
                     <div className="flex h-full w-full items-center gap-5  ">
-                        <div className="h-full w-40 flex-shrink-0 overflow-hidden border-2 border-[#616161]">
+                        <div className="h-full w-40 flex-shrink-0 overflow-hidden border-2 border-mediumGray">
                             <Image
                                 alt="keyboard"
                                 src={leftKeeb}
@@ -42,7 +42,7 @@ export default function KeebyAbout() {
                         </div>
 
                         <div className="flex h-full w-full flex-col  ">
-                            <div className="relative flex h-1 bg-darkGray">
+                            <div className="relative flex h-1 bg-mediumGray">
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     className="absolute -left-4 -top-5 h-10 w-10 text-green-500"
@@ -98,7 +98,7 @@ export default function KeebyAbout() {
                                 <Image
                                     alt="profile"
                                     src={portrait}
-                                    className="h-full w-full  rounded-t-[80px] border-2 border-[#616161] object-cover "
+                                    className="h-full w-full  rounded-t-[80px] border-2 border-mediumGray object-cover "
                                 />
                             </div>
                             <div className="relative h-full  w-full">
@@ -114,7 +114,7 @@ export default function KeebyAbout() {
                             </div>
                         </div>
 
-                        <div className="h-full w-40 flex-shrink-0 overflow-hidden border-2 border-[#616161]  ">
+                        <div className="h-full w-40 flex-shrink-0 overflow-hidden border-2 border-mediumGray  ">
                             <Image
                                 alt="keyboard"
                                 src={rightKeeb}
@@ -179,14 +179,14 @@ export default function KeebyAbout() {
                         </svg>
                     </button>
                 </div>
-                <p className="rounded-md border-2 border-[#616161]  p-10 text-lg text-green-500">
+                <p className="rounded-md border-2 border-mediumGray  p-10 text-lg text-green-500">
                     {` If you are a software engineer and would like to give me a
                     recommendation for a role or an interview that would mean a
                     lot. I'm a entry level dev currently looking for work so
                     please reach out. Thanks :D`}
                 </p>
             </div>
-            <div className="text-darkGray">
+            <div className="text-mediumGray">
                 <ModalDialog isOpen={isModalOpen} onClose={closeModal}>
                     <SupportMe />
                 </ModalDialog>

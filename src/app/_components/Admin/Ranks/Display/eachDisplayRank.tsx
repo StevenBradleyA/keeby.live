@@ -68,9 +68,9 @@ export default function AdminEachDisplayRank({
         <div className="relative w-72">
             <div className="rounded-xl bg-black/25 p-5 text-sm text-failure shadow-xl hover:bg-black/30">
                 <h1 className="font-titillium text-3xl">{rank.name}</h1>
-                <p className="text-darkGray">{`min wpm ${rank.minWpm}`}</p>
-                <p className="text-darkGray">{`max wpm ${rank.maxWpm}`}</p>
-                <p className="mb-1 text-darkGray">{`standing top ${rank.standing}%`}</p>
+                <p className="text-mediumGray">{`min wpm ${rank.minWpm}`}</p>
+                <p className="text-mediumGray">{`max wpm ${rank.maxWpm}`}</p>
+                <p className="mb-1 text-mediumGray">{`standing top ${rank.standing}%`}</p>
 
                 <Image
                     alt="rank"

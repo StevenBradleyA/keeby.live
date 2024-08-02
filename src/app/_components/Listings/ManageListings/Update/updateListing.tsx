@@ -333,7 +333,7 @@ export default function UpdateListing({
     };
 
     return (
-        <div className=" font-poppins text-darkGray">
+        <div className=" font-poppins text-mediumGray">
             {toggle === "MENU" && (
                 <div className="flex flex-col items-start gap-2 p-5">
                     <div className="flex justify-center gap-2">
@@ -420,7 +420,7 @@ export default function UpdateListing({
                 </div>
             )}{" "}
             {toggle === "DELETE" && (
-                <div className=" text-darkGray">
+                <div className=" text-mediumGray">
                     <h1 className="text-center">
                         Are you sure you want to{" "}
                         <span className="text-red-500"> delete</span>{" "}
@@ -429,7 +429,7 @@ export default function UpdateListing({
 
                     <div className="flex justify-center gap-10 ">
                         <button
-                            className=" text-md keeb-shop-offer-button mt-5 flex items-center gap-2 rounded-md bg-darkGray py-2 pr-4 text-black "
+                            className=" text-md keeb-shop-offer-button mt-5 flex items-center gap-2 rounded-md bg-mediumGray py-2 pr-4 text-black "
                             onClick={handleDeleteListing}
                         >
                             <svg
@@ -519,7 +519,7 @@ export default function UpdateListing({
                                 <div className="flex justify-between text-3xl text-green-500">
                                     <TitleScripts page={"createListing"} />
                                 </div>
-                                <h3 className="text-darkGray">
+                                <h3 className="text-mediumGray">
                                     {session.user.username}
                                 </h3>
                             </div>
@@ -532,7 +532,7 @@ export default function UpdateListing({
                                     <div className="flex flex-col gap-1">
                                         <label
                                             htmlFor="titleInput"
-                                            className="text-darkGray"
+                                            className="text-mediumGray"
                                         >
                                             Title
                                         </label>
@@ -542,7 +542,7 @@ export default function UpdateListing({
                                             onChange={(e) =>
                                                 setTitle(e.target.value)
                                             }
-                                            className="h-10 w-full rounded-md bg-darkGray p-1 "
+                                            className="h-10 w-full rounded-md bg-mediumGray p-1 "
                                             placeholder="Title"
                                         />
                                         {enableErrorDisplay && errors.title && (
@@ -561,7 +561,7 @@ export default function UpdateListing({
                                     <div className="flex flex-col gap-1">
                                         <label
                                             htmlFor="soundTypeInput"
-                                            className="text-darkGray"
+                                            className="text-mediumGray"
                                         >
                                             Sound Type
                                         </label>
@@ -591,7 +591,7 @@ export default function UpdateListing({
                                     <div className="flex flex-col gap-1">
                                         <label
                                             htmlFor="youtubeLinkSoundTestInput"
-                                            className="text-darkGray"
+                                            className="text-mediumGray"
                                         >
                                             Youtube Link to Sound Test
                                             (optional)
@@ -602,7 +602,7 @@ export default function UpdateListing({
                                             onChange={(e) =>
                                                 setSoundTest(e.target.value)
                                             }
-                                            className="h-10 w-3/4 rounded-md bg-darkGray p-1"
+                                            className="h-10 w-3/4 rounded-md bg-mediumGray p-1"
                                             placeholder="Sound Test Link"
                                         />
                                         {enableErrorDisplay &&
@@ -616,7 +616,7 @@ export default function UpdateListing({
                                     <div className="flex flex-col gap-1">
                                         <label
                                             htmlFor="priceInput"
-                                            className="text-darkGray"
+                                            className="text-mediumGray"
                                         >
                                             Price (whole number)
                                         </label>
@@ -630,7 +630,7 @@ export default function UpdateListing({
                                                     Math.floor(+e.target.value),
                                                 )
                                             }
-                                            className="h-10 w-3/4 rounded-md bg-darkGray p-1"
+                                            className="h-10 w-3/4 rounded-md bg-mediumGray p-1"
                                             placeholder="$ Price"
                                         />
 
@@ -657,7 +657,7 @@ export default function UpdateListing({
                                     <div className="relative flex w-3/4 flex-col gap-1">
                                         <label
                                             htmlFor="imageUploadInput"
-                                            className="text-darkGray"
+                                            className="text-mediumGray"
                                         >
                                             Upload Images (5 min - 15 max)
                                         </label>
@@ -689,7 +689,7 @@ export default function UpdateListing({
                                         <div className="flex w-5/12 flex-col  gap-1">
                                             <label
                                                 htmlFor="keycapsInput"
-                                                className="text-darkGray"
+                                                className="text-mediumGray"
                                             >
                                                 Keycaps
                                             </label>
@@ -699,7 +699,7 @@ export default function UpdateListing({
                                                 onChange={(e) =>
                                                     setKeycaps(e.target.value)
                                                 }
-                                                className="h-10 w-full rounded-md bg-darkGray p-1"
+                                                className="h-10 w-full rounded-md bg-mediumGray p-1"
                                                 placeholder="Keycaps"
                                             />
                                             {enableErrorDisplay &&
@@ -718,7 +718,7 @@ export default function UpdateListing({
                                         <div className="flex w-5/12 flex-col gap-1 ">
                                             <label
                                                 htmlFor="switchesInput"
-                                                className="text-darkGray"
+                                                className="text-mediumGray"
                                             >
                                                 Switches
                                             </label>
@@ -728,7 +728,7 @@ export default function UpdateListing({
                                                 onChange={(e) =>
                                                     setSwitches(e.target.value)
                                                 }
-                                                className="h-10 w-full rounded-md bg-darkGray p-1"
+                                                className="h-10 w-full rounded-md bg-mediumGray p-1"
                                                 placeholder="Switches"
                                             />
                                             {enableErrorDisplay &&
@@ -747,7 +747,7 @@ export default function UpdateListing({
                                         <div className="flex w-2/12 flex-col gap-1 text-black ">
                                             <label
                                                 htmlFor="switchTypeInput"
-                                                className="text-darkGray"
+                                                className="text-mediumGray"
                                             >
                                                 Switch Type
                                             </label>
@@ -786,7 +786,7 @@ export default function UpdateListing({
                                         <div className="flex w-1/3 flex-col gap-1">
                                             <label
                                                 htmlFor="layoutTypeInput"
-                                                className="text-darkGray"
+                                                className="text-mediumGray"
                                             >
                                                 Layout Type
                                             </label>
@@ -818,7 +818,7 @@ export default function UpdateListing({
                                         <div className="flex w-1/3 flex-col gap-1 text-black">
                                             <label
                                                 htmlFor="pcbTypeInput"
-                                                className="text-darkGray"
+                                                className="text-mediumGray"
                                             >
                                                 PCB Type
                                             </label>
@@ -847,7 +847,7 @@ export default function UpdateListing({
                                         <div className="flex w-1/3 flex-col gap-1 text-black">
                                             <label
                                                 htmlFor="assemblyTypeInput"
-                                                className="text-darkGray"
+                                                className="text-mediumGray"
                                             >
                                                 Build Status
                                             </label>
@@ -878,7 +878,7 @@ export default function UpdateListing({
                                     </div>
 
                                     <div className=" flex w-full flex-col gap-1 ">
-                                        <label className="text-darkGray ">
+                                        <label className="text-mediumGray ">
                                             Description (250 character minimum)
                                         </label>
                                         <textarea
@@ -886,7 +886,7 @@ export default function UpdateListing({
                                             onChange={(e) =>
                                                 setDescription(e.target.value)
                                             }
-                                            className="h-72 w-full rounded-md bg-darkGray p-1 "
+                                            className="h-72 w-full rounded-md bg-mediumGray p-1 "
                                             placeholder="Description"
                                         ></textarea>
 
@@ -901,7 +901,7 @@ export default function UpdateListing({
                             </div>
 
                             <>
-                                <div className="mb-1 mt-5  flex justify-center text-darkGray">
+                                <div className="mb-1 mt-5  flex justify-center text-mediumGray">
                                     Select your preview image by clicking on it.
                                     (16:9 aspect ratio is recommended)
                                 </div>
@@ -1030,7 +1030,7 @@ export default function UpdateListing({
                                         void submit(e);
                                     }}
                                     disabled={hasSubmitted || isSubmitting}
-                                    className={`rounded-md border-2 border-green-500 bg-keebyGray bg-opacity-60 px-6 py-2 text-green-500 hover:bg-green-500 hover:bg-opacity-100 hover:text-black ${
+                                    className={`rounded-md border-2 border-green-500 bg-darkGray bg-opacity-60 px-6 py-2 text-green-500 hover:bg-green-500 hover:bg-opacity-100 hover:text-black ${
                                         hasSubmitted ? "text-green-500" : ""
                                     } ${
                                         isSubmitting ? "text-green-500" : ""

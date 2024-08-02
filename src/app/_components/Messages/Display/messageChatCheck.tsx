@@ -47,7 +47,7 @@ export default function MessageChatCheck({
     return messages ? (
         <div className="h-full w-full">
             <div
-                className="h-[90%] overflow-y-auto text-darkGray"
+                className="h-[90%] overflow-y-auto text-mediumGray"
                 ref={messageScrollRef}
             >
                 <div className="flex justify-center">

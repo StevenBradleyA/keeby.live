@@ -18,7 +18,7 @@ export default function MessageCheck() {
     return sessionData && sessionData.user ? (
         <DisplayMessages userId={sessionData.user.id} />
     ) : (
-        <div className="mt-40 rounded-md bg-keebyGray p-10">
+        <div className="mt-40 rounded-md bg-darkGray p-10">
             <div className="flex items-end gap-2">
                 <h1 className="text-2xl text-green-500">
                     Sign in to use this page

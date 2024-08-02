@@ -148,7 +148,7 @@ export default function Navigation() {
                     </motion.svg> */}
                 <motion.svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="w-24 h-24 text-darkGray absolute -right-2 "
+                    className="w-24 h-24 text-mediumGray absolute -right-2 "
                     viewBox="-24 0 50 24"
                     version="1.1"
                     // variants={navSquare}
@@ -174,7 +174,7 @@ export default function Navigation() {
             <AnimatePresence>
                 {isMenuOpen && (
                     <motion.div
-                        className="fixed top-28 right-8 rounded-2xl w-[500px] h-[100px] bottom-0 bg-black/30 flex justify-between items-center px-5 text-sm text-darkGray"
+                        className="fixed top-28 right-8 rounded-2xl w-[500px] h-[100px] bottom-0 bg-black/30 flex justify-between items-center px-5 text-sm text-mediumGray"
                         ref={menuRef}
                     >
                         <Link
@@ -363,7 +363,7 @@ export default function Navigation() {
 {
     /* <motion.svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="w-20 h-20 text-darkGray absolute -bottom-2 -right-1"
+                    className="w-20 h-20 text-mediumGray absolute -bottom-2 -right-1"
                     viewBox="0 0 32 32"
                     version="1.1"
                     fill="currentColor"

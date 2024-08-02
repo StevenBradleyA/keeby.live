@@ -111,12 +111,12 @@ export default function DisplayListingPage({
         <div className="flex flex-col text-white">
             <div className="flex h-[80vh] w-full ">
                 <div className="flex w-1/4 flex-col items-center px-5 ">
-                    <div className=" relative h-full w-full overflow-hidden rounded-xl bg-keebyGray p-10 ">
+                    <div className=" relative h-full w-full overflow-hidden rounded-xl bg-darkGray p-10 ">
                         <div className=" h-full w-full overflow-hidden ">
                             <button
                                 className={`absolute left-1/2 top-2 w-7 -translate-x-1/2 transform ${
                                     currentIndex === 0
-                                        ? "text-darkGray"
+                                        ? "text-mediumGray"
                                         : "text-white hover:text-green-500"
                                 }`}
                                 onClick={prevImage}
@@ -126,7 +126,7 @@ export default function DisplayListingPage({
                             <button
                                 className={`absolute bottom-2 left-1/2 w-7 -translate-x-1/2 rotate-180 transform ${
                                     currentIndex === maxIndex
-                                        ? "text-darkGray"
+                                        ? "text-mediumGray"
                                         : "text-white hover:text-green-500"
                                 }`}
                                 onClick={nextImage}
@@ -168,7 +168,7 @@ export default function DisplayListingPage({
                     </div>
                 </div>
                 <div className="flex h-full w-1/2 flex-col items-center  gap-10 px-5">
-                    <div className="flex h-[10%] w-full justify-center rounded-xl bg-keebyGray ">
+                    <div className="flex h-[10%] w-full justify-center rounded-xl bg-darkGray ">
                         <h1 className=" listing-page-title-big  px-5 font-titillium text-5xl ">
                             {bigTitle}
                         </h1>
@@ -197,50 +197,52 @@ export default function DisplayListingPage({
                             />
                         )}
                     </div>
-                    <div className="h-[30%] w-full overflow-hidden rounded-xl bg-keebyGray">
+                    <div className="h-[30%] w-full overflow-hidden rounded-xl bg-darkGray">
                         <SellerListingCard listing={listing} />
                     </div>
                 </div>
                 <div className="flex h-full w-1/4 flex-col items-center gap-10 px-5">
-                    <div className=" h-1/3 w-full overflow-hidden rounded-xl bg-keebyGray tablet:p-4 desktop:p-10  ">
+                    <div className=" h-1/3 w-full overflow-hidden rounded-xl bg-darkGray tablet:p-4 desktop:p-10  ">
                         <h2 className=" text-xl desktop:text-2xl ">
                             Keeb Specs
                         </h2>
                         <div className="h-full overflow-auto pb-5 desktop:mt-2 desktop:pb-0 ">
-                            <h3 className=" text-darkGray">{listing.title}</h3>
+                            <h3 className=" text-mediumGray">
+                                {listing.title}
+                            </h3>
                             <h3 className="flex w-full gap-2 ">
-                                <span className=" text-darkGray">{`Keycaps `}</span>
+                                <span className=" text-mediumGray">{`Keycaps `}</span>
                                 <span className="break-all">
                                     {listing.keycaps}
                                 </span>
                             </h3>
                             <h3 className="flex gap-2">
-                                <span className="text-darkGray">{`Switches `}</span>
+                                <span className="text-mediumGray">{`Switches `}</span>
                                 <span className="break-all">
                                     {listing.switches}
                                 </span>
                             </h3>
                             <h3 className="flex gap-2">
-                                <span className="text-darkGray">{`Switch type `}</span>
+                                <span className="text-mediumGray">{`Switch type `}</span>
                                 <span className="break-all">
                                     {listing.switchType}
                                 </span>
                             </h3>
                             <h3 className="flex gap-2">
-                                <span className="text-darkGray">{`Sound type `}</span>
+                                <span className="text-mediumGray">{`Sound type `}</span>
                                 <span className="break-all">
                                     {listing.soundType}
                                 </span>
                             </h3>
                             <h3 className="flex gap-2">
-                                <span className="text-darkGray">{`PCB `}</span>
+                                <span className="text-mediumGray">{`PCB `}</span>
                                 <span className="break-all">
                                     {listing.pcbType}
                                 </span>
                             </h3>
                         </div>
                     </div>
-                    <div className="h-2/3 w-full overflow-hidden rounded-xl bg-keebyGray tablet:p-4 desktop:p-10 ">
+                    <div className="h-2/3 w-full overflow-hidden rounded-xl bg-darkGray tablet:p-4 desktop:p-10 ">
                         <h2 className="mb-2 text-3xl text-purple">
                             Description
                         </h2>
@@ -302,7 +304,7 @@ export default function DisplayListingPage({
                     </div>
                 </div>
                 <div className="mt-10 w-1/4 px-5 ">
-                    <div className="flex flex-col items-center overflow-hidden rounded-xl bg-keebyGray p-5">
+                    <div className="flex flex-col items-center overflow-hidden rounded-xl bg-darkGray p-5">
                         <ListingPagePreviews />
                     </div>
                 </div>

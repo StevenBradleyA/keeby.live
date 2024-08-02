@@ -20,7 +20,7 @@ export default function Footer() {
     };
 
     return (
-        <div className=" w-full bg-keebyGray px-20 pt-10 text-darkGray">
+        <div className=" w-full bg-darkGray px-20 pt-10 text-mediumGray">
             <div className="flex w-full justify-between">
                 <div className="flex w-96 flex-col">
                     <Link
@@ -68,7 +68,7 @@ export default function Footer() {
                                 version="1.1"
                                 id="Layer_1"
                                 viewBox="0 0 461.001 461.001"
-                                className="w-5 cursor-pointer transition-colors duration-400 ease-custom-cubic hover:text-green-500"
+                                className="w-5 cursor-pointer ease-in hover:text-green-500"
                             >
                                 <g>
                                     <path
@@ -94,7 +94,7 @@ export default function Footer() {
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
-                                className="w-4 transition-colors duration-400 ease-custom-cubic hover:text-green-500"
+                                className="w-4 ease-in hover:text-green-500"
                                 viewBox="0 0 24 24"
                                 fill="none"
                             >
@@ -133,7 +133,7 @@ export default function Footer() {
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="currentColor"
-                                className=" w-4 transition-colors duration-400 ease-custom-cubic hover:text-green-500"
+                                className=" w-4 ease-in hover:text-green-500"
                                 viewBox="0 0 552.77 552.77"
                             >
                                 <g>
@@ -154,28 +154,28 @@ export default function Footer() {
                         <Link
                             href="/"
                             aria-label="privacy"
-                            className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
+                            className="ease-in hover:text-green-500"
                         >
                             Keeb Shop
                         </Link>
                         <Link
                             href="/keebshare"
                             aria-label="privacy"
-                            className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
+                            className="ease-in hover:text-green-500"
                         >
                             Keeb Share
                         </Link>
                         <Link
                             href="/keebtype"
                             aria-label="privacy"
-                            className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
+                            className="ease-in hover:text-green-500"
                         >
                             Keeb Type
                         </Link>
                         <Link
                             href="/profile"
                             aria-label="privacy"
-                            className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
+                            className="ease-in hover:text-green-500"
                         >
                             Profile
                         </Link>
@@ -185,21 +185,21 @@ export default function Footer() {
                         <Link
                             href="/keebdex/how-keeby-works"
                             aria-label="privacy"
-                            className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
+                            className="ease-in hover:text-green-500"
                         >
                             How Keeby works
                         </Link>
                         <Link
                             href="/keebdex/scam-prevention"
                             aria-label="privacy"
-                            className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
+                            className="ease-in hover:text-green-500"
                         >
                             Scam Prevention
                         </Link>
                         <Link
                             href="/profile/messages"
                             aria-label="privacy"
-                            className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
+                            className="ease-in hover:text-green-500"
                         >
                             Messages
                         </Link>
@@ -209,14 +209,14 @@ export default function Footer() {
                         <Link
                             href="/keebdex"
                             aria-label="privacy"
-                            className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
+                            className="ease-in hover:text-green-500"
                         >
                             Keeb Dex
                         </Link>
                         <Link
                             href="/keebdex/frequently-asked-questions"
                             aria-label="privacy"
-                            className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
+                            className="ease-in hover:text-green-500"
                         >
                             FAQ
                         </Link>
@@ -226,20 +226,20 @@ export default function Footer() {
                         <Link
                             href="/keebdex/about"
                             aria-label="privacy"
-                            className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
+                            className="ease-in hover:text-green-500"
                         >
                             About
                         </Link>
                         <Link
                             href="/keebdex/newsletter"
                             aria-label="privacy"
-                            className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
+                            className="ease-in hover:text-green-500"
                         >
                             Newsletter
                         </Link>
                         <button
                             onClick={openModal}
-                            className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
+                            className="ease-in hover:text-green-500"
                         >
                             Support Keeby
                         </button>
@@ -250,7 +250,7 @@ export default function Footer() {
                         <Link
                             href="/keebdex/contact"
                             aria-label="privacy"
-                            className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
+                            className="ease-in hover:text-green-500"
                         >
                             Contact Us
                         </Link>
@@ -258,7 +258,7 @@ export default function Footer() {
                 </div>
             </div>
 
-            <div className="mt-5 flex justify-between border-t-2 border-[#616161] py-5">
+            <div className="mt-5 flex justify-between border-t-2 border-mediumGray py-5">
                 <div className="flex  items-center gap-2">
                     <div>Built for enthusiasts |</div>
 
@@ -272,7 +272,8 @@ export default function Footer() {
                             e.preventDefault();
                             window.open("https://www.hacktime.dev", "_blank");
                         }}
-                        className="powered-by flex gap-2  transition-colors duration-400 ease-custom-cubic hover:text-green-500"
+                        className="powered-by flex gap-2 transition-colors duration-400 ease-custom-cubic hover:text-green-500"
+                        // className="powered-by flex gap-2  transition-colors duration-400  a ease-custom-cubic hover:text-green-500"
                     >
                         powered by Hacktime
                         <Image
@@ -288,21 +289,21 @@ export default function Footer() {
                     <Link
                         href="/terms-of-service"
                         aria-label="privacy"
-                        className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
+                        className="ease-in hover:text-green-500"
                     >
                         Terms
                     </Link>
                     <Link
                         href="/privacy-policy"
                         aria-label="privacy"
-                        className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
+                        className="ease-in hover:text-green-500"
                     >
                         Privacy
                     </Link>
                     <Link
                         href="/cookie-policy"
                         aria-label="privacy"
-                        className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
+                        className="ease-in hover:text-green-500"
                     >
                         Cookie
                     </Link>

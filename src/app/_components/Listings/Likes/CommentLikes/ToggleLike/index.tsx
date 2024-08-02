@@ -48,7 +48,7 @@ export default function ToggleCommentLike({
                     className={`${
                         isLiked
                             ? "text-green-500"
-                            : "text-darkGray transition-colors duration-400 ease-custom-cubic hover:text-white "
+                            : "text-mediumGray transition-colors duration-400 ease-custom-cubic hover:text-white "
                     }`}
                     viewBox="0 0 512 512"
                     fill="currentColor"

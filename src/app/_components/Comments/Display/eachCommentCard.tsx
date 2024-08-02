@@ -103,7 +103,7 @@ export default function EachCommentCard({
                         {comment.user.username && (
                             <Link
                                 href={`/profile/public/${comment.user.username}`}
-                                className="text-darkGray"
+                                className="text-mediumGray"
                             >
                                 {comment.user.username}
                             </Link>
@@ -119,7 +119,7 @@ export default function EachCommentCard({
                                         xmlns="http://www.w3.org/2000/svg"
                                         width="18"
                                         height="18"
-                                        className="text-darkGray transition-colors duration-400 ease-custom-cubic hover:text-white "
+                                        className="text-mediumGray transition-colors duration-400 ease-custom-cubic hover:text-white "
                                         fill="currentColor"
                                     >
                                         <circle cx="9" cy="4.5" r="1.5" />
@@ -149,7 +149,7 @@ export default function EachCommentCard({
                         {isTooLong && (
                             <button
                                 onClick={toggleReadMore}
-                                className="text-darkGray"
+                                className="text-mediumGray"
                             >
                                 {isExpanded ? "Read Less" : "Read More"}
                             </button>
@@ -157,7 +157,7 @@ export default function EachCommentCard({
                     </div>
 
                     <div className="mt-1 flex gap-5">
-                        <div className="flex gap-2 text-darkGray">
+                        <div className="flex gap-2 text-mediumGray">
                             {session &&
                             session.user &&
                             comment.isLiked !== undefined ? (
@@ -174,7 +174,7 @@ export default function EachCommentCard({
                                         xmlns="http://www.w3.org/2000/svg"
                                         height="16"
                                         width="16"
-                                        className="text-darkGray transition-colors duration-400 ease-custom-cubic hover:text-white "
+                                        className="text-mediumGray transition-colors duration-400 ease-custom-cubic hover:text-white "
                                         viewBox="0 0 512 512"
                                         fill="currentColor"
                                     >
@@ -199,14 +199,14 @@ export default function EachCommentCard({
                                         !showTopLevelCommentReply,
                                     )
                                 }
-                                className="text-xs text-darkGray transition-colors duration-400 ease-custom-cubic hover:text-green-500"
+                                className="text-xs text-mediumGray transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                             >
                                 Reply
                             </button>
                         ) : (
                             <button
                                 onClick={openSignInModal}
-                                className="text-xs text-darkGray transition-colors duration-400 ease-custom-cubic hover:text-green-500"
+                                className="text-xs text-mediumGray transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                             >
                                 Reply
                             </button>

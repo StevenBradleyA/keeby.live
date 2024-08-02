@@ -76,7 +76,7 @@ export default function SellerListingCard({
                 </div>
             )}
             <div className="flex h-full w-5/6 flex-col ">
-                <div className="flex h-1/2 w-full items-center justify-between text-darkGray">
+                <div className="flex h-1/2 w-full items-center justify-between text-mediumGray">
                     <h3 className="flex justify-end text-purple desktop:text-2xl">{`Price: $${
                         listing.price / 100
                     }`}</h3>
@@ -85,7 +85,7 @@ export default function SellerListingCard({
                         {listing.status === "ACTIVE" ? (
                             <>
                                 <button
-                                    className="rounded-md border-2 border-[#616161] bg-darkGray px-4 py-1 text-green-500  hover:border-green-500 hover:bg-keebyGray desktop:py-2"
+                                    className="rounded-md border-2 border-mediumGray bg-mediumGray px-4 py-1 text-green-500  hover:border-green-500 hover:bg-darkGray desktop:py-2"
                                     onClick={() => {
                                         if (sessionData === null)
                                             openSignInModal();
@@ -97,7 +97,7 @@ export default function SellerListingCard({
                                     Buy Now
                                 </button>
                                 <button
-                                    className="rounded-md border-2 border-[#616161] bg-darkGray px-4 py-1 text-green-500 hover:border-green-500 hover:bg-keebyGray desktop:py-2"
+                                    className="rounded-md border-2 border-mediumGray bg-mediumGray px-4 py-1 text-green-500 hover:border-green-500 hover:bg-darkGray desktop:py-2"
                                     onClick={() => {
                                         if (sessionData === null)
                                             openSignInModal();
@@ -110,7 +110,7 @@ export default function SellerListingCard({
                                 </button>
                             </>
                         ) : (
-                            <div className="rounded-md border-2 border-[#616161] bg-darkGray px-4 py-1 text-green-500 hover:border-green-500 hover:bg-keebyGray desktop:py-2">
+                            <div className="rounded-md border-2 border-mediumGray bg-mediumGray px-4 py-1 text-green-500 hover:border-green-500 hover:bg-darkGray desktop:py-2">
                                 {listing.status === "PENDING"
                                     ? "Listing Pending Sale"
                                     : ""}
@@ -154,7 +154,7 @@ export default function SellerListingCard({
                             <Link
                                 href={`/profile/public/${listing.seller.username}`}
                                 aria-label="seller profile"
-                                className="text-darkGray transition-colors duration-300 ease-custom-cubic hover:text-green-500"
+                                className="text-mediumGray transition-colors duration-300 ease-custom-cubic hover:text-green-500"
                             >
                                 {listing.seller.username}
                             </Link>
@@ -163,7 +163,7 @@ export default function SellerListingCard({
 
                     {listing.seller.avgRating ? (
                         <div className="flex flex-col justify-end">
-                            <h3 className="flex items-center gap-1 text-darkGray">
+                            <h3 className="flex items-center gap-1 text-mediumGray">
                                 Seller Rating{" "}
                                 <span className="flex items-center gap-[2px] text-xs">
                                     ( {listing.seller.avgRating.toFixed(1)}{" "}
@@ -186,7 +186,9 @@ export default function SellerListingCard({
                         </div>
                     ) : (
                         <div className="flex flex-col">
-                            <h3 className="text-darkGray">Unreviewed seller</h3>
+                            <h3 className="text-mediumGray">
+                                Unreviewed seller
+                            </h3>
                             <DisplayStarRating rating={0} />
                         </div>
                     )}

@@ -21,7 +21,7 @@ interface StarProps {
 
 const Star = ({ rating, starRating, hover, starHover, onClick }: StarProps) => {
     const filled = "text-green-500 ";
-    const empty = "text-darkGray";
+    const empty = "text-mediumGray";
 
     const starClasses = rating <= starRating ? filled : empty;
     const hoverClasses = hover ? (rating <= hover ? filled : empty) : false;
@@ -246,11 +246,11 @@ export default function UpdateReview({
                                     ? review.seller.profile
                                     : defaultProfile
                             }
-                            className="h-20 w-20 rounded-md border-2 border-[#616161]"
+                            className="h-20 w-20 rounded-md border-2 border-mediumGray"
                             width={400}
                             height={400}
                         />
-                        <h1 className="w-full border-y-2 border-[#616161] p-2 text-xl text-green-500">
+                        <h1 className="w-full border-y-2 border-mediumGray p-2 text-xl text-green-500">
                             Review {review.seller.username}
                         </h1>
                     </div>
@@ -274,7 +274,7 @@ export default function UpdateReview({
                     <textarea
                         value={text}
                         onChange={(e) => setText(e.target.value)}
-                        className=" h-32 max-h-52 w-full overflow-y-auto rounded-md bg-darkGray p-1 "
+                        className=" h-32 max-h-52 w-full overflow-y-auto rounded-md bg-mediumGray p-1 "
                         placeholder="Describe your experience with the seller"
                     ></textarea>
                     {enableErrorDisplay && errors.text && (
@@ -287,7 +287,7 @@ export default function UpdateReview({
                                 void submit(e);
                             }}
                             disabled={hasSubmitted || isSubmitting}
-                            className={`rounded-md border-2 border-green-500 bg-keebyGray px-6 py-1 text-green-500 hover:bg-green-500 hover:text-black ${
+                            className={`rounded-md border-2 border-green-500 bg-darkGray px-6 py-1 text-green-500 hover:bg-green-500 hover:text-black ${
                                 hasSubmitted ? "text-green-500" : ""
                             } ${
                                 isSubmitting ? "text-green-500" : ""
@@ -308,7 +308,7 @@ export default function UpdateReview({
                 </form>
             )}
             {toggle === "DELETE" && (
-                <div className=" text-darkGray">
+                <div className=" text-mediumGray">
                     <h1 className="text-center">
                         Are you sure you want to{" "}
                         <span className="text-red-500"> delete</span> your
@@ -317,7 +317,7 @@ export default function UpdateReview({
 
                     <div className="flex justify-center gap-10 ">
                         <button
-                            className=" text-md keeb-shop-offer-button mt-5 flex items-center gap-2 rounded-md bg-darkGray py-2 pr-4 text-black "
+                            className=" text-md keeb-shop-offer-button mt-5 flex items-center gap-2 rounded-md bg-mediumGray py-2 pr-4 text-black "
                             onClick={handleDeleteReview}
                         >
                             <svg

@@ -24,7 +24,7 @@ export default function AuthProviders() {
                 Object.values(providers).map((provider) => (
                     <div
                         key={provider.name}
-                        className=" rounded-xl overflow-hidden shadow-xl bg-black hover:text-darkGray text-green-400 "
+                        className=" rounded-xl overflow-hidden shadow-xl bg-black hover:text-mediumGray text-green-400 "
                     >
                         <button
                             className="w-16 h-12  flex items-center justify-center p-2 "

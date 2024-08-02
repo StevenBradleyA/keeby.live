@@ -10,11 +10,11 @@ export default function PrivacyPolicy() {
             </h1>
             <div className="w-full flex flex-col items-center text-white/40">
                 <div className="w-1/2">
-                    <div className="mb-5 flex items-center justify-between text-sm text-darkGray ">
+                    <div className="mb-5 flex items-center justify-between text-sm text-mediumGray ">
                         <div>Effective on 4-2-2024</div>
                         <div>Last updated on 4-2-2024</div>
                     </div>
-                    <p className="mb-5 rounded-md bg-keebyGray p-5 ">
+                    <p className="mb-5 rounded-md bg-darkGray p-5 ">
                         {`Thanks for trusting keeby.live
                     ("we", "us", or "our") with your personal
                     information! We take our responsibility to you very
@@ -34,23 +34,23 @@ export default function PrivacyPolicy() {
                     <h2 className="mb-5 text-4xl text-green-500 ">
                         Information We Collect
                     </h2>
-                    <h3 className="mb-2 text-xl text-darkGray ">
+                    <h3 className="mb-2 text-xl text-mediumGray ">
                         Personal Information
                     </h3>
-                    <p className="mb-5 rounded-md bg-keebyGray p-5  ">
+                    <p className="mb-5 rounded-md bg-darkGray p-5  ">
                         {` We may collect personal information, such as your name, username, email address, typing game results, provided keyboard data, and other contact or identification information that you voluntarily provide to us when you interact with the Website, such as when you list a keyboard or make a post.`}
                     </p>
 
-                    <h3 className="mb-2 text-xl text-darkGray ">
+                    <h3 className="mb-2 text-xl text-mediumGray ">
                         Password Security
                     </h3>
-                    <p className="mb-5 rounded-md bg-keebyGray p-5  ">
+                    <p className="mb-5 rounded-md bg-darkGray p-5  ">
                         {` Your security is our priority. We use OAuth, a secure authentication protocol, to ensure the confidentiality of your account credentials. We never store your passwords directly. OAuth allows us to access your account securely without having access to your password, providing an extra layer of protection for your sensitive information.`}
                     </p>
-                    <h3 className="mb-2 text-xl text-darkGray ">
+                    <h3 className="mb-2 text-xl text-mediumGray ">
                         Data Security
                     </h3>
-                    <p className="mb-5 rounded-md bg-keebyGray p-5  ">
+                    <p className="mb-5 rounded-md bg-darkGray p-5  ">
                         We have implemented measures designed to secure your
                         personal information from accidental loss and from
                         unauthorized access, use, alteration, and disclosure.
@@ -61,13 +61,13 @@ export default function PrivacyPolicy() {
                     <h2 className="mb-5 text-4xl text-green-500 ">
                         How We Use Your Information
                     </h2>
-                    <p className="mb-5 rounded-md bg-keebyGray p-5  ">{`We use the information that we collect about you or that you provide to us, including any personal information: to present our Website and its contents to you; to provide you with information, products, or services that you request from us; to fulfill any other purpose for which you provide it; to carry out our obligations and enforce our rights arising from any contracts entered into between you and us, including for billing and collection; to notify you about changes to our Website or any products or services we offer or provide though it; in any other way we may describe when you provide the information; and for any other purpose with your consent.`}</p>
+                    <p className="mb-5 rounded-md bg-darkGray p-5  ">{`We use the information that we collect about you or that you provide to us, including any personal information: to present our Website and its contents to you; to provide you with information, products, or services that you request from us; to fulfill any other purpose for which you provide it; to carry out our obligations and enforce our rights arising from any contracts entered into between you and us, including for billing and collection; to notify you about changes to our Website or any products or services we offer or provide though it; in any other way we may describe when you provide the information; and for any other purpose with your consent.`}</p>
 
-                    <h3 className="mb-2 text-xl text-darkGray ">
+                    <h3 className="mb-2 text-xl text-mediumGray ">
                         Sharing Of Your Information
                     </h3>
 
-                    <p className="mb-5 rounded-md bg-keebyGray p-5  ">
+                    <p className="mb-5 rounded-md bg-darkGray p-5  ">
                         We do not sell or rent your personal information to
                         third parties. However, we may share personal
                         information with third parties for certain purposes,
@@ -75,15 +75,15 @@ export default function PrivacyPolicy() {
                         advertising on our platform, for analytics and
                         improvement of our services, and as required by law.
                     </p>
-                    <h3 className="mb-2 text-xl text-darkGray ">
+                    <h3 className="mb-2 text-xl text-mediumGray ">
                         Providing Services
                     </h3>
-                    <p className="mb-5 rounded-md bg-keebyGray p-5  ">{`We use your personal information to provide you with the services you request, such as purchasing or selling keyboards, and communicating with you about your purchases. `}</p>
+                    <p className="mb-5 rounded-md bg-darkGray p-5  ">{`We use your personal information to provide you with the services you request, such as purchasing or selling keyboards, and communicating with you about your purchases. `}</p>
 
-                    <h3 className="mb-2 text-xl text-darkGray ">
+                    <h3 className="mb-2 text-xl text-mediumGray ">
                         Publicly Visible Information
                     </h3>
-                    <p className="mb-5 rounded-md bg-keebyGray p-5  ">
+                    <p className="mb-5 rounded-md bg-darkGray p-5  ">
                         Some of your activities on our Website, including
                         posting comments, keeb type game results, and creating
                         social media posts about keyboards, are public by
@@ -98,10 +98,10 @@ export default function PrivacyPolicy() {
                         posts.
                     </p>
 
-                    <h3 className="mb-2 text-xl text-darkGray ">
+                    <h3 className="mb-2 text-xl text-mediumGray ">
                         Control Over Your Information
                     </h3>
-                    <p className="mb-5 rounded-md bg-keebyGray p-5  ">
+                    <p className="mb-5 rounded-md bg-darkGray p-5  ">
                         {`We provide you with the ability to control and manage the
                     personal information you share with us. This includes tools
                     to edit and delete your posts and manage your public
@@ -116,23 +116,23 @@ export default function PrivacyPolicy() {
                         Information Sharing and Disclosure
                     </h2>
 
-                    <h3 className="mb-2 text-xl text-darkGray ">
+                    <h3 className="mb-2 text-xl text-mediumGray ">
                         Service Providers
                     </h3>
-                    <p className="mb-5 rounded-md bg-keebyGray p-5  ">
+                    <p className="mb-5 rounded-md bg-darkGray p-5  ">
                         {`We may share your personal information with third-party service providers who perform services on our behalf, such as payment processing, data analysis, email delivery, hosting services, and customer service.`}
                     </p>
-                    <h3 className="mb-2 text-xl text-darkGray ">
+                    <h3 className="mb-2 text-xl text-mediumGray ">
                         Legal Compliance
                     </h3>
-                    <p className="mb-5 rounded-md bg-keebyGray p-5  ">
+                    <p className="mb-5 rounded-md bg-darkGray p-5  ">
                         {`We may disclose your information if required by law, regulation, court order, or other governmental authority or when we believe in good faith that disclosure is necessary to protect our rights, protect your safety or the safety of others, investigate fraud, or respond to a government request.`}
                     </p>
 
-                    <h3 className="mb-2 text-xl text-darkGray ">
+                    <h3 className="mb-2 text-xl text-mediumGray ">
                         Your Choices About Your Information
                     </h3>
-                    <p className="mb-5 rounded-md bg-keebyGray p-5  ">
+                    <p className="mb-5 rounded-md bg-darkGray p-5  ">
                         {`You have choices regarding the personal information you
                     provide to us and how it's used. This includes the ability
                     to control privacy settings, manage marketing preferences,
@@ -144,13 +144,13 @@ export default function PrivacyPolicy() {
                     <h2 className="mb-5 text-4xl text-green-500 ">
                         What are Cookies?
                     </h2>
-                    <p className="mb-5 rounded-md bg-keebyGray p-5  ">
+                    <p className="mb-5 rounded-md bg-darkGray p-5  ">
                         {` Cookies are small pieces of data stored on your device (computer or mobile device) when you visit a website. They are widely used to make websites work more efficiently and to provide information to the owners of the site.`}
                     </p>
-                    <h3 className="mb-2 text-xl text-darkGray ">
+                    <h3 className="mb-2 text-xl text-mediumGray ">
                         Cookie Policy
                     </h3>
-                    <p className="mb-5 rounded-md bg-keebyGray p-5 ">
+                    <p className="mb-5 rounded-md bg-darkGray p-5 ">
                         {`This Cookie Policy explains how Keeby ("we", "us", or "our") uses cookies on our website www.keeby.live ("Site"). By using our Site, you consent to the use of cookies as described in this Cookie Policy.`}
                     </p>
 
@@ -158,26 +158,26 @@ export default function PrivacyPolicy() {
                         How We Use Cookies
                     </h2>
 
-                    <p className="mb-5 rounded-md bg-keebyGray p-5  ">{` We use cookies to keep you signed in and to remember your active settings. This allows us to provide you with a more personalized experience and saves you time by eliminating the need to re-enter information.`}</p>
-                    <h3 className="mb-2 text-xl text-darkGray ">
+                    <p className="mb-5 rounded-md bg-darkGray p-5  ">{` We use cookies to keep you signed in and to remember your active settings. This allows us to provide you with a more personalized experience and saves you time by eliminating the need to re-enter information.`}</p>
+                    <h3 className="mb-2 text-xl text-mediumGray ">
                         Performance and Analytics
                     </h3>
-                    <p className="mb-5 rounded-md bg-keebyGray p-5  ">{`We use cookies to collect information about how you interact with our Site, including the pages you visit and any errors you may encounter. This helps us improve the performance and functionality of our Site and better understand how our users navigate and use our services. `}</p>
-                    <h3 className="mb-2 text-xl text-darkGray ">
+                    <p className="mb-5 rounded-md bg-darkGray p-5  ">{`We use cookies to collect information about how you interact with our Site, including the pages you visit and any errors you may encounter. This helps us improve the performance and functionality of our Site and better understand how our users navigate and use our services. `}</p>
+                    <h3 className="mb-2 text-xl text-mediumGray ">
                         Third-Party Cookies
                     </h3>
-                    <p className="mb-5 rounded-md bg-keebyGray p-5  ">{`We may also allow third-party service providers, such as Google Analytics, to use cookies on our Site to analyze traffic and usage patterns. These cookies are subject to the privacy policies of these third parties. `}</p>
+                    <p className="mb-5 rounded-md bg-darkGray p-5  ">{`We may also allow third-party service providers, such as Google Analytics, to use cookies on our Site to analyze traffic and usage patterns. These cookies are subject to the privacy policies of these third parties. `}</p>
 
                     <h2 className="mb-5 text-4xl text-green-500 ">
                         Managing Cookies
                     </h2>
 
-                    <p className="mb-5 rounded-md bg-keebyGray p-5  ">{`You can control and manage cookies in various ways. Please note that disabling cookies may affect the functionality of our Site and may prevent you from accessing certain features. Most web browsers allow you to control cookies through their settings. You can usually find these settings in the "Options" or "Preferences" menu of your browser. For more information, refer to your browser's help documentation. You can opt out of certain cookies by using the opt-out tools provided by third-party analytics providers, such as Google Analytics.`}</p>
+                    <p className="mb-5 rounded-md bg-darkGray p-5  ">{`You can control and manage cookies in various ways. Please note that disabling cookies may affect the functionality of our Site and may prevent you from accessing certain features. Most web browsers allow you to control cookies through their settings. You can usually find these settings in the "Options" or "Preferences" menu of your browser. For more information, refer to your browser's help documentation. You can opt out of certain cookies by using the opt-out tools provided by third-party analytics providers, such as Google Analytics.`}</p>
 
                     <h2 className="mb-5 text-4xl text-green-500 ">
                         Changes to Our Privacy Policy
                     </h2>
-                    <p className="mb-5 rounded-md bg-keebyGray p-5  ">
+                    <p className="mb-5 rounded-md bg-darkGray p-5  ">
                         {` keeby.live may revise this Privacy Policy at any time without prior notice. The updated
                      version will be indicated by an updated "Last Updated" date.
                      We encourage you to review the privacy policy periodically
@@ -190,7 +190,7 @@ export default function PrivacyPolicy() {
                         Contact Us
                     </h2>
 
-                    <p className="mb-5 rounded-md bg-keebyGray p-5  ">{`If you have any questions about this Cookie Policy or our use of cookies, please contact us at hacktimesupport@outlook.com.`}</p>
+                    <p className="mb-5 rounded-md bg-darkGray p-5  ">{`If you have any questions about this Cookie Policy or our use of cookies, please contact us at hacktimesupport@outlook.com.`}</p>
                 </div>
             </div>
             <div className="w-full mt-60">

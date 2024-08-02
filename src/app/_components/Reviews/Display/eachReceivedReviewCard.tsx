@@ -54,7 +54,7 @@ export default function EachReceivedReviewCard({
                 />
                 <div className="flex flex-col">
                     <h2>{review.user.username}</h2>
-                    <p className="text-xs text-darkGray">
+                    <p className="text-xs text-mediumGray">
                         {formatDate(review.updatedAt)}
                     </p>
                 </div>
@@ -65,7 +65,7 @@ export default function EachReceivedReviewCard({
                     rating={parseFloat(review.starRating.toFixed(0))}
                 />
             </div>
-            <div className="mt-2 h-16 overflow-y-auto break-words text-darkGray">
+            <div className="mt-2 h-16 overflow-y-auto break-words text-mediumGray">
                 {review.text}
             </div>
         </div>

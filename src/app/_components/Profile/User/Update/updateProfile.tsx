@@ -207,7 +207,7 @@ export default function UpdateProfile({
                         {imageFiles && imageFiles[0] ? (
                             <div className="relative h-32 w-32">
                                 <Image
-                                    className="h-full w-full rounded-md   border-2 border-[#616161] object-cover"
+                                    className="h-full w-full rounded-md   border-2 border-mediumGray object-cover"
                                     alt="profile"
                                     src={URL.createObjectURL(imageFiles[0])}
                                     width={200}
@@ -232,7 +232,7 @@ export default function UpdateProfile({
                                             : defaultProfile
                                     }
                                     alt="profile"
-                                    className="h-full w-full rounded-md   border-2 border-[#616161] object-cover"
+                                    className="h-full w-full rounded-md   border-2 border-mediumGray object-cover"
                                     priority
                                     width={200}
                                     height={200}
@@ -240,7 +240,7 @@ export default function UpdateProfile({
                             </div>
                         )}
                     </div>
-                    <div className="relative flex  w-full items-center border-b-2 border-t-2 border-[#616161] p-4 ">
+                    <div className="relative flex  w-full items-center border-b-2 border-t-2 border-mediumGray p-4 ">
                         <div className="ml-2 flex items-center gap-2">
                             <h1 className="text-2xl text-green-500">
                                 Edit Profile
@@ -251,7 +251,7 @@ export default function UpdateProfile({
                                 className="h-8 w-8"
                             />
                         </div>
-                        <h3 className="absolute -top-5 right-0 text-xs text-darkGray">
+                        <h3 className="absolute -top-5 right-0 text-xs text-mediumGray">
                             {sessionData.user.username}
                         </h3>
                     </div>
@@ -265,7 +265,7 @@ export default function UpdateProfile({
                             id="usernameInput"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
-                            className="h-10 w-full rounded-md bg-darkGray p-1 "
+                            className="h-10 w-full rounded-md bg-mediumGray p-1 "
                             placeholder="Username"
                         ></input>
                     </label>
@@ -291,7 +291,7 @@ export default function UpdateProfile({
                     <label className="w-2/3">
                         Selected Tag
                         <select
-                            className=" h-10 w-full rounded-md bg-darkGray p-1 "
+                            className=" h-10 w-full rounded-md bg-mediumGray p-1 "
                             value={selectedTag}
                             onChange={(e) => setSelectedTag(e.target.value)}
                         >
@@ -307,7 +307,7 @@ export default function UpdateProfile({
                     <label className="w-1/3">
                         Newsletter
                         <button
-                            className={`flex h-10 w-full items-center justify-between overflow-hidden rounded-md bg-darkGray`}
+                            className={`flex h-10 w-full items-center justify-between overflow-hidden rounded-md bg-mediumGray`}
                             onClick={(e) => {
                                 e.preventDefault();
                                 setIsNewsletter(!isNewsletter);
@@ -378,7 +378,7 @@ export default function UpdateProfile({
                                 }}
                             />
                         </label>
-                        <button className="h-32 w-full rounded-md bg-darkGray text-black">
+                        <button className="h-32 w-full rounded-md bg-mediumGray text-black">
                             <span className=" text-center">Choose Image</span>
                         </button>
                     </div>
@@ -405,7 +405,7 @@ export default function UpdateProfile({
                             void submit(e);
                         }}
                         disabled={hasSubmitted || isSubmitting}
-                        className={`rounded-md border-2 border-[#616161] bg-black/40 px-6 py-2 text-[#616161] hover:border-green-500 hover:bg-green-500 hover:text-black`}
+                        className={`rounded-md border-2 border-mediumGray bg-black/40 px-6 py-2 text-[#616161] hover:border-green-500 hover:bg-green-500 hover:text-black`}
                     >
                         {isSubmitting ? (
                             <div className="flex items-center gap-1">

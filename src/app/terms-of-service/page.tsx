@@ -13,12 +13,12 @@ export default function TermsOfService() {
                 <h1 className="flex justify-center text-5xl text-green-500 ">
                     Terms of Service
                 </h1>
-                <div className="mb-5 flex items-center justify-between text-sm text-darkGray ">
+                <div className="mb-5 flex items-center justify-between text-sm text-mediumGray ">
                     <div>Effective on 4-2-2024</div>
                     <div>Last updated on 4-2-2024</div>
                 </div>
                 <h2 className="mb-5 text-4xl text-green-500 ">Agreement</h2>
-                <p className="mb-5 rounded-md bg-keebyGray p-5 ">
+                <p className="mb-5 rounded-md bg-darkGray p-5 ">
                     {` Welcome to keeby.live! These Terms of Service
                     govern your use of our website located at keeby.live. 
                     Please read these Terms of Service carefully
@@ -34,26 +34,26 @@ export default function TermsOfService() {
                     Use of the Website
                 </h2>
                 <h3 className="mb-2 text-xl">Eligibility</h3>
-                <p className="mb-5 rounded-md bg-keebyGray p-5">
+                <p className="mb-5 rounded-md bg-darkGray p-5">
                     You must be at least 18 years old to use the Website. By
                     using the Website, you represent and warrant that you are at
                     least 18 years old.
                 </p>
                 <h3 className="mb-2 text-xl">Personal Information</h3>
-                <p className="mb-5 rounded-md bg-keebyGray p-5">
+                <p className="mb-5 rounded-md bg-darkGray p-5">
                     You agree to provide accurate, current, and complete
                     information during the registration or appointment booking
                     process and to update such information to keep it accurate,
                     current, and complete.
                 </p>
                 <h3 className="mb-2 text-xl">Prohibited Activities</h3>
-                <p className="mb-5 rounded-md bg-keebyGray p-5">
+                <p className="mb-5 rounded-md bg-darkGray p-5">
                     You may not use the Website for any illegal or unauthorized
                     purpose. You may not, in the use of the Website, violate any
                     applicable laws, regulations, or rights of others.
                 </p>
                 <h3 className="mb-2 text-xl">User Content and Conduct</h3>
-                <p className="mb-5 rounded-md bg-keebyGray p-5">
+                <p className="mb-5 rounded-md bg-darkGray p-5">
                     {`You are solely responsible for your account's security and
                     all activities that occur under your account. You must not
                     upload, post, host, or transmit any content that is
@@ -64,7 +64,7 @@ export default function TermsOfService() {
                     notice.`}
                 </p>
                 <h3 className="mb-2 text-xl">Rights of Keeby.live</h3>
-                <p className="mb-5 rounded-md bg-keebyGray p-5">
+                <p className="mb-5 rounded-md bg-darkGray p-5">
                     Keeby.live reserves the right to remove or disable access to
                     any account or content on the Website at any time and for
                     any reason, without prior notice, if we believe there has
@@ -75,7 +75,7 @@ export default function TermsOfService() {
                 <h3 className="mb-2 text-xl">
                     Legal Compliance and Law Enforcement
                 </h3>
-                <p className="mb-5 rounded-md bg-keebyGray p-5">
+                <p className="mb-5 rounded-md bg-darkGray p-5">
                     You agree to comply with all local, state, national, and
                     international laws and regulations applicable to your use of
                     the Website. Keeby.live may disclose any information about
@@ -88,7 +88,7 @@ export default function TermsOfService() {
                     illegal, unethical, or legally actionable.
                 </p>
                 <h3 className="mb-2 text-xl">Limitation of Liability</h3>
-                <p className="mb-5 rounded-md bg-keebyGray p-5">
+                <p className="mb-5 rounded-md bg-darkGray p-5">
                     Keeby.live shall not be liable for any indirect, incidental,
                     special, consequential, or punitive damages, including
                     without limitation, loss of profits, data, use, goodwill, or
@@ -106,7 +106,7 @@ export default function TermsOfService() {
                     Adherence to Our Privacy Policy
                 </h2>
                 <h3 className="mb-2 text-xl">Compliance with Privacy Policy</h3>
-                <p className="mb-5 rounded-md bg-keebyGray p-5">
+                <p className="mb-5 rounded-md bg-darkGray p-5">
                     By accessing and using our Services, you affirm that you
                     have read, understood, and agreed to the terms outlined in
                     our{" "}
@@ -126,7 +126,7 @@ export default function TermsOfService() {
                 <h3 className="mb-2 text-xl">
                     Responsibilities of Data Collection
                 </h3>
-                <p className="mb-5 rounded-md bg-keebyGray p-5">
+                <p className="mb-5 rounded-md bg-darkGray p-5">
                     If, during your use of the Services, you collect any
                     Personal Information from other Users, you must ensure that
                     such collection is for a clear and legitimate purpose
@@ -139,7 +139,7 @@ export default function TermsOfService() {
                     destruction.
                 </p>
                 <h3 className="mb-2 text-xl">Protection of User Information</h3>
-                <p className="mb-5 rounded-md bg-keebyGray p-5">
+                <p className="mb-5 rounded-md bg-darkGray p-5">
                     The security of User Information is paramount. You agree to
                     handle all Personal Information collected from the Services
                     with the highest degree of care. This includes adhering to
@@ -150,7 +150,7 @@ export default function TermsOfService() {
                     immediate steps to mitigate any potential harm or loss.
                 </p>
                 <h3 className="mb-2 text-xl">Reporting and Compliance</h3>
-                <p className="mb-5 rounded-md bg-keebyGray p-5">
+                <p className="mb-5 rounded-md bg-darkGray p-5">
                     {` You are expected to respond swiftly to any complaints,
                     removal requests, or 'do not contact' orders from both us
                     and the Users. In alignment with our commitment to user
@@ -166,7 +166,7 @@ export default function TermsOfService() {
                     Marketplace Transactions
                 </h2>
                 <h3 className="mb-2 text-xl">Refunds and Returns</h3>
-                <p className="mb-5 rounded-md bg-keebyGray p-5">
+                <p className="mb-5 rounded-md bg-darkGray p-5">
                     {`Keeby operates as a facilitator in the marketplace,
                     connecting buyers and sellers of keyboards without directly
                     handling the products. As such, Keeby is not responsible for
@@ -180,7 +180,7 @@ export default function TermsOfService() {
                     solely with the seller, under their specified terms.`}
                 </p>
                 <h3 className="mb-2 text-xl">Dispute Resolution</h3>
-                <p className="mb-5 rounded-md bg-keebyGray p-5">
+                <p className="mb-5 rounded-md bg-darkGray p-5">
                     {`   In the event of a dispute, Keeby provides a platform for
                     buyers and sellers to attempt resolution. For a dispute to
                     be considered, the complaining party must submit video
@@ -192,7 +192,7 @@ export default function TermsOfService() {
                     is strictly as an intermediary platform.`}
                 </p>
                 <h3 className="mb-2 text-xl">Liability Limitation</h3>
-                <p className="mb-5 rounded-md bg-keebyGray p-5">
+                <p className="mb-5 rounded-md bg-darkGray p-5">
                     Keeby aims to create a safe and trustworthy marketplace for
                     keyboard enthusiasts. However, Keeby does not assume
                     liability for the condition of items sold, the accuracy of
@@ -205,7 +205,7 @@ export default function TermsOfService() {
                     issues, or disputes between users.
                 </p>
                 <h3 className="mb-2 text-xl">Fee Acknowledgment</h3>
-                <p className="mb-5 rounded-md bg-keebyGray p-5">
+                <p className="mb-5 rounded-md bg-darkGray p-5">
                     Users acknowledge that Keeby charges a nominal fee for
                     facilitating transactions within the marketplace. This fee
                     is non-refundable and is charged to support the operation of
@@ -218,17 +218,17 @@ export default function TermsOfService() {
                     Intellectual Property
                 </h2>
                 <div className="mb-2 text-xl "> Ownership</div>
-                <p className="mb-5 rounded-md bg-keebyGray p-5 ">
+                <p className="mb-5 rounded-md bg-darkGray p-5 ">
                     {` All content and materials available on the Website, including but not limited to text, graphics, logos, button icons, images, audio clips, data compilations, and software, are the property of keeby.live or its content suppliers and protected by copyright laws.`}
                 </p>
                 <div className="mb-2 text-xl "> Trademarks</div>
-                <p className="mb-5 rounded-md bg-keebyGray p-5 ">
+                <p className="mb-5 rounded-md bg-darkGray p-5 ">
                     {` keeby.live and any other trademarks, service marks, graphics, and logos used in connection with the Website are trademarks or registered trademarks of keeby.live or its licensors.`}
                 </p>
                 <h2 className="mb-5 text-4xl text-green-500 ">
                     Terms of Service Modification
                 </h2>
-                <p className="mb-5 rounded-md bg-keebyGray p-5 ">
+                <p className="mb-5 rounded-md bg-darkGray p-5 ">
                     Keeby.live may revise these Terms of Service for its Website
                     at any time without prior notice. By using this Website, you
                     are agreeing to be bound by the current version of these
@@ -236,7 +236,7 @@ export default function TermsOfService() {
                 </p>
 
                 <h2 className="mb-5 text-4xl text-green-500 ">Disclaimer</h2>
-                <p className="mb-5 rounded-md bg-keebyGray p-5 ">
+                <p className="mb-5 rounded-md bg-darkGray p-5 ">
                     {`EXCLUDING THE EXPLICITLY STATED WARRANTIES WITHIN THESE TERMS, KEEBY.LIVE OFFERS ITS SERVICES ON AN 'AS-IS' AND 'AS-AVAILABLE' BASIS. YOUR ACCESS TO AND USE OF THE SERVICES OR ANY CONTENT IS AT YOUR SOLE RISK. YOU UNDERSTAND AND AGREE THAT THE SERVICES AND CONTENT ARE PROVIDED TO YOU ON AN 'AS IS,' 'WITH ALL FAULTS,' AND 'AS AVAILABLE' BASIS. WITHOUT LIMITING THE FOREGOING, TO THE FULL EXTENT PERMITTED BY LAW, KEEBY.LIVE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT. TO THE EXTENT SUCH DISCLAIMER CONFLICTS WITH APPLICABLE LAW, THE SCOPE AND DURATION OF ANY APPLICABLE WARRANTY WILL BE THE MINIMUM PERMITTED UNDER SUCH LAW.
 
 KEEBY.LIVE MAKES NO REPRESENTATIONS, WARRANTIES, OR GUARANTEES AS TO THE RELIABILITY, TIMELINESS, QUALITY, SUITABILITY, AVAILABILITY, ACCURACY, OR COMPLETENESS OF THE SERVICES OR ANY CONTENT. KEEBY.LIVE DOES NOT GUARANTEE THAT (A) THE SERVICES WILL BE SECURE, TIMELY, UNINTERRUPTED, OR ERROR-FREE, OR OPERATE IN COMBINATION WITH ANY OTHER HARDWARE, SOFTWARE, SYSTEM, OR DATA, (B) THE SERVICES WILL MEET YOUR REQUIREMENTS OR EXPECTATIONS, (C) ANY STORED DATA WILL BE ACCURATE OR RELIABLE, (D) THE QUALITY OF ANY PRODUCTS, SERVICES, INFORMATION, OR OTHER MATERIAL PURCHASED OR OBTAINED BY YOU THROUGH THE SERVICES WILL MEET YOUR REQUIREMENTS OR EXPECTATIONS, (E) ERRORS OR DEFECTS WILL BE CORRECTED, OR (F) THE SERVICE OR THE SERVER(S) THAT MAKE THE SERVICE AVAILABLE ARE FREE OF VIRUSES OR OTHER HARMFUL COMPONENTS.
@@ -250,29 +250,29 @@ IN NO EVENT SHALL KEEBY.LIVE BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CO
 IF APPLICABLE LAW DOES NOT ALLOW THE EXCLUSION OF SOME OR ALL OF THE ABOVE IMPLIED OR STATUTORY WARRANTIES TO APPLY TO YOU, THE ABOVE EXCLUSIONS WILL APPLY TO YOU TO THE FULLEST EXTENT PERMITTED BY APPLICABLE LAW.`}
                 </p>
                 <div className="mb-2 text-xl "> Accuracy of Information</div>
-                <p className="mb-5 rounded-md bg-keebyGray p-5 ">
+                <p className="mb-5 rounded-md bg-darkGray p-5 ">
                     {`While we strive to provide accurate and up-to-date information on our Website, Keeby.live makes no representations or warranties of any kind, express or implied, about the completeness, accuracy, reliability, suitability, or availability concerning the Website or the information, products, services, or related graphics contained on the Website for any purpose. Any reliance you place on such information is therefore strictly at your own risk.`}
                 </p>
                 <div className="mb-2 text-xl ">Service Availability</div>
-                <p className="mb-5 rounded-md bg-keebyGray p-5 ">
+                <p className="mb-5 rounded-md bg-darkGray p-5 ">
                     {` keeby.live reserves the right to modify, suspend, or discontinue any part of the Website or the services provided at any time without prior notice. We will not be liable if, for any reason, all or any part of the Website is unavailable at any time or for any period.`}
                 </p>
                 <div className="mb-2 text-xl ">Third-Party Links </div>
-                <p className="mb-5 rounded-md bg-keebyGray p-5 ">
+                <p className="mb-5 rounded-md bg-darkGray p-5 ">
                     {`Our Website may contain links to third-party websites or services that are not owned or controlled by keeby.live. We have no control over and assume no responsibility for the content, privacy policies, or practices of any third-party websites or services. You further acknowledge and agree that Genevieve Clare Hair shall not be responsible or liable, directly or indirectly, for any damage or loss caused or alleged to be caused by or in connection with the use of or reliance on any such content, goods, or services available on or through any such websites or services.`}
                 </p>
                 <div className="mb-2 text-xl ">
                     Flashing Lights and Epilepsy Risk
                 </div>
-                <p className="mb-5 rounded-md bg-keebyGray p-5 ">
+                <p className="mb-5 rounded-md bg-darkGray p-5 ">
                     {`Some parts of our Website may contain flashing lights or effects that could potentially trigger seizures for individuals with photosensitive epilepsy. By using our Website, you acknowledge and accept that keeby.live is not responsible for any health issues that may arise from viewing or interacting with such content. If you have a history of epilepsy or experience any symptoms while using our Website, please discontinue use immediately and consult with a healthcare professional.`}
                 </p>
                 <div className="mb-2 text-xl "> User Responsibilities</div>
-                <p className="mb-5 rounded-md bg-keebyGray p-5 ">
+                <p className="mb-5 rounded-md bg-darkGray p-5 ">
                     {`Users are responsible for their interactions with other users and third parties. keeby.live disclaims any liability arising from such interactions. Users are also responsible for maintaining the confidentiality of their account information and for ensuring the security of their passwords.`}
                 </p>
                 <h2 className="mb-5 text-4xl text-green-500 ">Contact Us</h2>
-                <p className="mb-5 rounded-md bg-keebyGray p-5  ">{`Please contact us at hacktimesupport@outlook.com.`}</p>
+                <p className="mb-5 rounded-md bg-darkGray p-5  ">{`Please contact us at hacktimesupport@outlook.com.`}</p>
             </div>
             <Footer />
         </>

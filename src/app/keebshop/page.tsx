@@ -192,7 +192,7 @@ export default function KeebShopHome() {
 
     return (
         <>
-            <div className="mt-10 flex w-full flex-col text-darkGray tablet:px-5 desktop:px-16">
+            <div className="mt-10 flex w-full flex-col text-mediumGray tablet:px-5 desktop:px-16">
                 <div className=" flex w-full  gap-10 ">
                     <div className=" very-sticky flex w-1/4 flex-col">
                         <div className="mb-5 flex gap-5 ">
@@ -236,7 +236,7 @@ export default function KeebShopHome() {
                         <div
                             className={` relative w-full ${
                                 isSpecify ? "overflow-auto" : "overflow-hidden"
-                            } rounded-xl bg-keebyGray p-5 text-darkGray tablet:h-[68vh] desktop:h-[72vh]`}
+                            } rounded-xl bg-darkGray p-5 text-mediumGray tablet:h-[68vh] desktop:h-[72vh]`}
                         >
                             {isSpecify ? (
                                 <div className="flex w-full flex-col items-start gap-5 ">
@@ -246,7 +246,7 @@ export default function KeebShopHome() {
                                                 Switch Type:
                                             </h1>
                                             <button
-                                                className=" absolute -top-1 right-0 h-7 w-7 text-darkGray transition-colors duration-400 ease-custom-cubic hover:text-green-500"
+                                                className=" absolute -top-1 right-0 h-7 w-7 text-mediumGray transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                                                 onClick={handleResetSpecify}
                                             >
                                                 <ResetArrowSvg />
@@ -422,7 +422,7 @@ export default function KeebShopHome() {
                                                             : ""
                                                     }
                                                     onChange={handleMinPrice}
-                                                    className="h-8 w-1/3 rounded-md bg-darkGray p-1"
+                                                    className="h-8 w-1/3 rounded-md bg-mediumGray p-1"
                                                     placeholder="$ Min"
                                                 />
                                                 <input
@@ -434,7 +434,7 @@ export default function KeebShopHome() {
                                                             : ""
                                                     }
                                                     onChange={handleMaxPrice}
-                                                    className="h-8 w-1/3 rounded-md bg-darkGray p-1"
+                                                    className="h-8 w-1/3 rounded-md bg-mediumGray p-1"
                                                     placeholder="$ Max"
                                                 />
                                             </div>
@@ -588,7 +588,7 @@ export default function KeebShopHome() {
                                         className={` search-input-hack absolute h-10 w-full rounded-md px-3 ${
                                             isSearchFocus
                                                 ? "search-input-placeholder bg-blackAlternative"
-                                                : "bg-darkGray"
+                                                : "bg-mediumGray"
                                         } py-1 text-green-500 outline-none `}
                                         placeholder="Search"
                                         onFocus={() => setIsSearchFocus(true)}
@@ -644,7 +644,7 @@ export default function KeebShopHome() {
                             <div className="flex items-center gap-16 ">
                                 <div className="shop-price-filter-button relative">
                                     <select
-                                        className=" custom-select  flex h-5 w-8 items-center rounded-lg bg-keebyGray px-2 "
+                                        className=" custom-select  flex h-5 w-8 items-center rounded-lg bg-darkGray px-2 "
                                         value={priceOrder}
                                         onChange={(e) =>
                                             setPriceOrder(e.target.value)
@@ -659,9 +659,9 @@ export default function KeebShopHome() {
                                         </option>
                                     </select>
                                     <span
-                                        className={`select-fake flex h-5 w-8 items-center justify-center rounded-md bg-keebyGray ${
+                                        className={`select-fake flex h-5 w-8 items-center justify-center rounded-md bg-darkGray ${
                                             priceOrder === ""
-                                                ? "text-darkGray"
+                                                ? "text-mediumGray"
                                                 : "text-green-500"
                                         } shop-price-filter-arrow `}
                                     >

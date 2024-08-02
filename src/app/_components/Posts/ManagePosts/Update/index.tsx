@@ -230,7 +230,7 @@ export default function UpdatePost({ post, closeModal }: UpdatePostProps) {
     }, [imageFiles, title, link, post.images, activeDeletedImageIds]);
 
     return (
-        <div className=" font-poppins text-darkGray">
+        <div className=" font-poppins text-mediumGray">
             {toggle === "MENU" && (
                 <div className="flex flex-col items-start gap-2 p-5">
                     <div className="flex gap-2">
@@ -310,7 +310,7 @@ export default function UpdatePost({ post, closeModal }: UpdatePostProps) {
                     </h1>
                     <div className="flex justify-center gap-10 ">
                         <button
-                            className=" text-md keeb-shop-offer-button mt-5 flex items-center gap-2 rounded-md bg-darkGray py-2 pr-4 text-black "
+                            className=" text-md keeb-shop-offer-button mt-5 flex items-center gap-2 rounded-md bg-mediumGray py-2 pr-4 text-black "
                             onClick={handleDeletePost}
                         >
                             <svg
@@ -392,9 +392,9 @@ export default function UpdatePost({ post, closeModal }: UpdatePostProps) {
                                 src={session.user.profile || defaultProfile}
                                 width={300}
                                 height={300}
-                                className="h-20 w-20 border-2 border-[#616161] object-cover "
+                                className="h-20 w-20 border-2 border-mediumGray object-cover "
                             />
-                            <div className="relative flex  w-full items-center border-b-2 border-t-2 border-[#616161] p-2 ">
+                            <div className="relative flex  w-full items-center border-b-2 border-t-2 border-mediumGray p-2 ">
                                 <div className="ml-2 flex items-center gap-2">
                                     <h1 className="text-2xl text-green-500">
                                         Edit Your Post
@@ -405,7 +405,7 @@ export default function UpdatePost({ post, closeModal }: UpdatePostProps) {
                                         className="h-6 w-6"
                                     />
                                 </div>
-                                <h3 className="absolute -top-5 right-0 text-xs text-darkGray">
+                                <h3 className="absolute -top-5 right-0 text-xs text-mediumGray">
                                     {session.user.username}
                                 </h3>
                             </div>
@@ -417,7 +417,7 @@ export default function UpdatePost({ post, closeModal }: UpdatePostProps) {
                                     id="titleInput"
                                     value={title}
                                     onChange={(e) => setTitle(e.target.value)}
-                                    className="h-10 w-full rounded-md bg-darkGray p-1 "
+                                    className="h-10 w-full rounded-md bg-mediumGray p-1 "
                                     placeholder="Title"
                                 />
                                 {enableErrorDisplay && errors.title && (
@@ -538,7 +538,7 @@ export default function UpdatePost({ post, closeModal }: UpdatePostProps) {
                                                 }
                                             />
                                             <button
-                                                className="absolute -right-2 -top-6 transform p-1 text-lg text-darkGray transition-transform duration-300 ease-in-out hover:rotate-45 hover:scale-110 hover:text-red-500"
+                                                className="absolute -right-2 -top-6 transform p-1 text-lg text-mediumGray transition-transform duration-300 ease-in-out hover:rotate-45 hover:scale-110 hover:text-red-500"
                                                 onClick={(e) => {
                                                     e.preventDefault();
                                                     const newImageFiles = [
@@ -589,7 +589,7 @@ export default function UpdatePost({ post, closeModal }: UpdatePostProps) {
                                                         }
                                                     />
                                                     <button
-                                                        className="absolute -right-2 -top-6 transform p-1 text-lg text-darkGray transition-transform duration-300 ease-in-out hover:rotate-45 hover:scale-110 hover:text-red-500"
+                                                        className="absolute -right-2 -top-6 transform p-1 text-lg text-mediumGray transition-transform duration-300 ease-in-out hover:rotate-45 hover:scale-110 hover:text-red-500"
                                                         onClick={(e) => {
                                                             e.preventDefault();
                                                             const newDeletedImageIds =
@@ -631,7 +631,7 @@ export default function UpdatePost({ post, closeModal }: UpdatePostProps) {
                                         onChange={(e) =>
                                             setLink(e.target.value)
                                         }
-                                        className="h-10 w-[35rem] rounded-md bg-darkGray p-1 "
+                                        className="h-10 w-[35rem] rounded-md bg-mediumGray p-1 "
                                         placeholder="YouTube Link"
                                     />
                                 </div>
@@ -640,7 +640,7 @@ export default function UpdatePost({ post, closeModal }: UpdatePostProps) {
                             <textarea
                                 value={text}
                                 onChange={(e) => setText(e.target.value)}
-                                className="mt-2 h-72 w-[35rem] rounded-md bg-darkGray p-1 "
+                                className="mt-2 h-72 w-[35rem] rounded-md bg-mediumGray p-1 "
                                 placeholder="Text (optional)"
                             ></textarea>
                             <div className="mt-2 flex w-full justify-center ">
@@ -650,7 +650,7 @@ export default function UpdatePost({ post, closeModal }: UpdatePostProps) {
                                         void submit(e);
                                     }}
                                     disabled={hasSubmitted || isSubmitting}
-                                    className={`rounded-md border-2 border-green-500 bg-keebyGray px-6 py-1 text-green-500 hover:bg-green-500 hover:text-black ${
+                                    className={`rounded-md border-2 border-green-500 bg-darkGray px-6 py-1 text-green-500 hover:bg-green-500 hover:text-black ${
                                         hasSubmitted ? "text-green-500" : ""
                                     } ${
                                         isSubmitting ? "text-green-500" : ""

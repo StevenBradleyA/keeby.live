@@ -57,7 +57,7 @@ const ModalDialog: React.FC<ModalDialogProps> = ({
                         transition={{ duration: 0.3, ease: "easeInOut" }}
                     />
                     <motion.div
-                        className="relative flex rounded-lg bg-keebyGray p-10 shadow-lg"
+                        className="relative flex rounded-lg bg-darkGray p-10 shadow-lg"
                         initial={{ scale: 0.8, y: -20, opacity: 0 }}
                         animate={{ scale: 1, y: 0, opacity: 1 }}
                         exit={{ scale: 0.8, y: 20, opacity: 0 }}
