@@ -1,4 +1,4 @@
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import type { Images, Listing } from "@prisma/client";
 import Image from "next/image";
 import keebo from "@public/Profile/keebo.png";

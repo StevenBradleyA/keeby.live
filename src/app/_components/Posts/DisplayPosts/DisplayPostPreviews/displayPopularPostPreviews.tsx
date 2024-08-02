@@ -2,7 +2,7 @@ import Image from "next/image";
 import keebo from "@public/Profile/keebo.png";
 import { useEffect, useRef } from "react";
 import LoadingSpinner from "~/app/_components/Loading";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import EachPostCardPreview from "./eachPostCardPreview";
 import { useSession } from "next-auth/react";
 
@@ -50,7 +50,7 @@ export default function DispayPopularPostPreviews({
         },
         {
             getNextPageParam: (lastPage) => lastPage.nextCursor,
-        }
+        },
     );
 
     useEffect(() => {
@@ -62,7 +62,7 @@ export default function DispayPopularPostPreviews({
                     void fetchNextPage();
                 }
             },
-            { threshold: 1.0 }
+            { threshold: 1.0 },
         );
 
         const currentFlag = scrollFlagRef.current;
@@ -92,7 +92,7 @@ export default function DispayPopularPostPreviews({
                     {postData.pages.map((page) =>
                         page.posts.map((post) => (
                             <EachPostCardPreview key={post.id} post={post} />
-                        ))
+                        )),
                     )}
                     <div ref={scrollFlagRef} className="h-10 w-full"></div>
                 </div>

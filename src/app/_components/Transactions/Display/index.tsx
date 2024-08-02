@@ -1,4 +1,4 @@
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import EachSoldTransactionCard from "./eachSoldCard";
 import EachPurchasedTransactionCard from "./eachPurchasedCard";
 

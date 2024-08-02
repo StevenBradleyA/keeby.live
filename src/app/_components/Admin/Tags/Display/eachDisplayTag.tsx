@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ModalDialog from "~/app/_components/Modal";
 import AdminUpdateTag from "../Update/updateTag";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
 
@@ -9,7 +9,7 @@ interface AdminEachDisplayTagProps {
     tag: { id: string; name: string; description: string };
 }
 export default function AdminEachDisplayTag({ tag }: AdminEachDisplayTagProps) {
-    const ctx = api.useContext();
+    const utils = api.useUtils();
     const { data: session } = useSession();
 
     const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
@@ -26,7 +26,7 @@ export default function AdminEachDisplayTag({ tag }: AdminEachDisplayTagProps) {
                     color: "#ff0000",
                 },
             });
-            void ctx.tag.getAll.invalidate();
+            void utils.tag.getAll.invalidate();
         },
     });
 

@@ -1,6 +1,6 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useRef } from "react";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import LoadingSpinner from "~/app/_components/Loading";
 import keebo from "@public/Profile/keebo.png";
 import Image from "next/image";
@@ -36,7 +36,7 @@ export default function PostPagePreviews() {
         },
         {
             getNextPageParam: (lastPage) => lastPage.nextCursor,
-        }
+        },
     );
 
     useEffect(() => {
@@ -45,11 +45,11 @@ export default function PostPagePreviews() {
         const observer = new IntersectionObserver(
             (entries) => {
                 if (entries[0] && entries[0].isIntersecting) {
-                    console.log('hey pagination here')
+                    console.log("hey pagination here");
                     void fetchNextPage();
                 }
             },
-            { threshold: 1.0 }
+            { threshold: 1.0 },
         );
 
         const currentFlag = scrollFlagRef.current;
@@ -79,7 +79,7 @@ export default function PostPagePreviews() {
                     {postData.pages.map((page) =>
                         page.posts.map((post) => (
                             <PostPagePreviewCard key={post.id} post={post} />
-                        ))
+                        )),
                     )}
                     <div ref={scrollFlagRef} className="h-10 w-full"></div>
                 </div>

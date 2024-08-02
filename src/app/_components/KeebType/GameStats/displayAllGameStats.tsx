@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { ChangeEvent } from "react";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import type { Keeb } from "@prisma/client";
 import {
     LineChart,
@@ -85,7 +85,7 @@ export default function DisplayAllGameStats({
                         <h3 className="text-darkGray">Average Accuracy</h3>
                         <p className="rounded-md bg-black/10 px-4 py-1 text-xl text-[#22B5C5] ">
                             {`${parseFloat(
-                                gameData.averageAccuracy.toFixed(2)
+                                gameData.averageAccuracy.toFixed(2),
                             )}`}
                             %
                         </p>
@@ -93,7 +93,7 @@ export default function DisplayAllGameStats({
                     <div className="h-1/2 w-full px-5">
                         <AccuracyVisualizer
                             averageAccuracy={parseFloat(
-                                gameData.averageAccuracy.toFixed(2)
+                                gameData.averageAccuracy.toFixed(2),
                             )}
                         />
                     </div>

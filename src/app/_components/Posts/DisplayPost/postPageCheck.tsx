@@ -1,5 +1,5 @@
 import LoadingSpinner from "~/app/_components/Loading";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import DisplayPostPage from ".";
 interface PostPageCheckProps {
     postId: string;

@@ -1,5 +1,5 @@
 import { useSession } from "next-auth/react";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import { useEffect, useState } from "react";
 import { uploadFileToS3 } from "~/utils/aws";
 import Image from "next/image";
@@ -41,12 +41,12 @@ export default function UpdateProfile({
 }) {
     const { data: sessionData, update } = useSession();
 
-    const ctx = api.useContext();
+    const utils = api.useUtils();
 
     const [username, setUsername] = useState(sessionData?.user.username || "");
     const [debouncedUsername, setDebouncedUsername] = useState(username);
     const [isNewsletter, setIsNewsletter] = useState<boolean>(
-        sessionData?.user.isNewsletter || false
+        sessionData?.user.isNewsletter || false,
     );
     const [imageFiles, setImageFiles] = useState<File[]>([]);
     const [errors, setErrors] = useState<ErrorsObj>({});
@@ -59,11 +59,11 @@ export default function UpdateProfile({
         debouncedUsername,
         {
             enabled: !!debouncedUsername,
-        }
+        },
     );
 
     const [selectedTag, setSelectedTag] = useState<string>(
-        sessionData?.user.selectedTag || ""
+        sessionData?.user.selectedTag || "",
     );
 
     const { data: userTags } = api.user.getUserTags.useQuery(userId);
@@ -79,7 +79,7 @@ export default function UpdateProfile({
                     },
                 });
                 await update();
-                void ctx.user.invalidate();
+                void utils.user.invalidate();
                 const newKey = key + 1;
                 setKey(newKey);
                 closeModal();

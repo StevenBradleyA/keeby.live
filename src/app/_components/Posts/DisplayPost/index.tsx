@@ -17,7 +17,7 @@ import { formatDistance } from "date-fns";
 import Link from "next/link";
 import UserPostPreviews from "./userPostPreviews";
 import CreateComment from "~/app/_components/Comments/Create";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import LoadingSpinner from "~/app/_components/Loading";
 import EachCommentCard from "~/app/_components/Comments/Display/eachCommentCard";
 import PostPagePreviews from "./additionalPostPreviews";

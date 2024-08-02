@@ -1,4 +1,4 @@
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import Image from "next/image";
 import gridBackground from "@public/Profile/profile-plus.png";
 import stockProfile from "@public/Profile/profile-default.png";

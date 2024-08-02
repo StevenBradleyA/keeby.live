@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import ModalDialog from "~/app/_components/Modal";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
 import AdminUpdateRank from "../Update/updateRank";
@@ -19,7 +19,7 @@ interface AdminEachDisplayRankProps {
 export default function AdminEachDisplayRank({
     rank,
 }: AdminEachDisplayRankProps) {
-    const ctx = api.useContext();
+    const utils = api.useUtils();
 
     const { data: session } = useSession();
 
@@ -37,7 +37,7 @@ export default function AdminEachDisplayRank({
                     color: "#ff0000",
                 },
             });
-            void ctx.rank.getAll.invalidate();
+            void utils.rank.getAll.invalidate();
         },
     });
 

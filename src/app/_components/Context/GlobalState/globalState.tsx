@@ -1,5 +1,7 @@
 "use client";
-import { getCookies } from "cookies-next";
+import { getCookie, getCookies, setCookie } from "cookies-next";
+import { useSession } from "next-auth/react";
+import { usePathname, useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 
@@ -25,14 +27,52 @@ interface ThemeProviderProps {
 }
 
 const GlobalStateProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-    const [theme, setTheme] = useState<string>("KEEBY");
     const cookies = getCookies();
+    const { data: session } = useSession();
+    const [theme, setTheme] = useState<string>("KEEBY");
+    const pathname = usePathname();
+    const router = useRouter();
+
+    const hasProfile = session?.user.hasProfile;
 
     useEffect(() => {
         if (cookies.theme) {
             setTheme(cookies.theme);
         }
     }, [cookies]);
+
+    const [showCookieBanner, setShowCookieBanner] = useState<boolean>(false);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
+    useEffect(() => {
+        const isProfilePlus = pathname === "/profile-plus";
+        if (session && hasProfile === false && !isProfilePlus) {
+            void router.push("/profile-plus");
+        }
+
+        const cookieConsent = getCookie("cookieConsent");
+        if (!cookieConsent) {
+            setShowCookieBanner(true);
+            setIsModalOpen(true);
+        }
+    }, [hasProfile, pathname, session]);
+
+    const handleAcceptCookies = () => {
+        setCookie("cookieConsent", "true", {
+            maxAge: 60 * 60 * 24 * 365,
+            path: "/",
+        });
+        setShowCookieBanner(false);
+    };
+
     const value = { theme, setTheme };
     return (
         <GlobalStateContext.Provider value={value}>
@@ -42,10 +82,6 @@ const GlobalStateProvider: React.FC<ThemeProviderProps> = ({ children }) => {
 };
 
 export default GlobalStateProvider;
-
-//     const { data: session } = useSession();
-//     const router = useRouter();
-//     const hasProfile = session?.user.hasProfile;
 
 //     const [showCookieBanner, setShowCookieBanner] = useState<boolean>(false);
 //     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -59,7 +95,7 @@ export default GlobalStateProvider;
 //     };
 
 //     useEffect(() => {
-//         const isProfilePlus = router.asPath === "/profile-plus";
+//         const isProfilePlus = pathname === "/profile-plus";
 //         if (session && hasProfile === false && !isProfilePlus) {
 //             void router.push("/profile-plus");
 //         }
@@ -69,7 +105,7 @@ export default GlobalStateProvider;
 //             setShowCookieBanner(true);
 //             setIsModalOpen(true);
 //         }
-//     }, [hasProfile, router.asPath, session]);
+//     }, [hasProfile, pathname, session]);
 
 //     const handleAcceptCookies = () => {
 //         setCookie("cookieConsent", "true", {

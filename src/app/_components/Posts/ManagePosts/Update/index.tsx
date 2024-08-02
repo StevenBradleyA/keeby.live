@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { Images, Post } from "@prisma/client";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
 import LoadingSpinner from "~/app/_components/Loading";
@@ -48,14 +48,14 @@ interface PostData {
 
 export default function UpdatePost({ post, closeModal }: UpdatePostProps) {
     const { data: session } = useSession();
-    const ctx = api.useContext();
+    const utils = api.useUtils();
 
     const [toggle, setToggle] = useState<string>("MENU");
 
     // update
     const [title, setTitle] = useState<string>(post.title);
     const [showLinkInput, setShowLinkInput] = useState<boolean>(
-        post.link ? true : false
+        post.link ? true : false,
     );
     const [link, setLink] = useState<string>(post.link || "");
     const [text, setText] = useState<string>(post.text || "");
@@ -83,7 +83,7 @@ export default function UpdatePost({ post, closeModal }: UpdatePostProps) {
                     color: "#fff",
                 },
             });
-            void ctx.post.getAllByUserId.invalidate();
+            void utils.post.getAllByUserId.invalidate();
             closeModal();
         },
     });
@@ -97,7 +97,7 @@ export default function UpdatePost({ post, closeModal }: UpdatePostProps) {
                     color: "#fff",
                 },
             });
-            void ctx.post.getAllByUserId.invalidate();
+            void utils.post.getAllByUserId.invalidate();
             closeModal();
         },
     });
@@ -546,7 +546,7 @@ export default function UpdatePost({ post, closeModal }: UpdatePostProps) {
                                                     ];
                                                     newImageFiles.splice(i, 1);
                                                     setImageFiles(
-                                                        newImageFiles
+                                                        newImageFiles,
                                                     );
                                                     setPreview({
                                                         source: "new",
@@ -562,7 +562,7 @@ export default function UpdatePost({ post, closeModal }: UpdatePostProps) {
                                         post.images.length > 0 &&
                                         post.images.map((image, i) =>
                                             !activeDeletedImageIds.includes(
-                                                image.id
+                                                image.id,
                                             ) ? (
                                                 <div
                                                     key={i}
@@ -598,7 +598,7 @@ export default function UpdatePost({ post, closeModal }: UpdatePostProps) {
                                                                     image.id,
                                                                 ];
                                                             setActiveDeletedImageIds(
-                                                                newDeletedImageIds
+                                                                newDeletedImageIds,
                                                             );
                                                             setPreview({
                                                                 source: "prev",
@@ -609,7 +609,7 @@ export default function UpdatePost({ post, closeModal }: UpdatePostProps) {
                                                         &times;
                                                     </button>
                                                 </div>
-                                            ) : null
+                                            ) : null,
                                         )}
                                 </div>
                             )}

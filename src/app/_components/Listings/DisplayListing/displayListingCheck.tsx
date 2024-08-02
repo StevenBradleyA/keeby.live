@@ -1,7 +1,7 @@
 import Footer from "~/app/_components/Footer/mainFooter";
 import DisplayListingPage from "~/app/_components/Listings/DisplayListing";
 import LoadingSpinner from "~/app/_components/Loading";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 
 interface DisplayListingCheckProps {
     listingId: string;

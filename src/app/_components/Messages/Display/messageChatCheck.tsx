@@ -1,5 +1,5 @@
 import LoadingSpinner from "~/app/_components/Loading";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import CreateMessage from "../Create/createMessage";
 import EachMessageCard from "./eachMessageCard";
 import { useEffect, useRef } from "react";

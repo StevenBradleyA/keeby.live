@@ -1,23 +1,36 @@
-import { getProviders } from "next-auth/react";
+"use client";
+import { getProviders, signIn } from "next-auth/react";
+import { useEffect, useState } from "react";
 import { authSvg } from "~/app/_components/Svgs/auth";
+import type { ClientSafeProvider, LiteralUnion } from "next-auth/react";
 
-export default async function AuthProviders() {
-    const providers = await getProviders();
+type Providers = Record<LiteralUnion<string>, ClientSafeProvider> | null;
+
+export default function AuthProviders() {
+    const [providers, setProviders] = useState<Providers>(null);
+
+    useEffect(() => {
+        const fetchProviders = async () => {
+            const res = await getProviders();
+            setProviders(res);
+        };
+
+        void fetchProviders();
+    }, []);
 
     return (
         <div className="flex w-full justify-evenly">
             {providers &&
                 Object.values(providers).map((provider) => (
-                    <div key={provider.name}>
+                    <div
+                        key={provider.name}
+                        className=" rounded-xl overflow-hidden shadow-xl bg-black hover:text-darkGray text-green-400 "
+                    >
                         <button
-                        // onClick={() => void signIn(provider.id)}
-                        // className="button-hover-effect mb-5 rounded-2xl bg-black px-6 py-2 text-green-500"
-                        // whileHover={{ scale: 1.1 }}
-                        // whileTap={{ scale: 0.95 }}
+                            className="w-16 h-12  flex items-center justify-center p-2 "
+                            onClick={() => void signIn(provider.id)}
                         >
-                            <div className="w-16 h-12 bg-black flex items-center justify-center p-2 rounded-xl shadow-xl">
-                                {authSvg(provider.name)}
-                            </div>
+                            {authSvg(provider.name)}
                         </button>
                     </div>
                 ))}

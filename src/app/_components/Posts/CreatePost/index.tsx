@@ -5,7 +5,7 @@ import Image from "next/image";
 import keebo from "@public/Profile/keebo.png";
 import defaultProfile from "@public/Profile/profile-default.png";
 import { useEffect, useState } from "react";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import LoadingSpinner from "~/app/_components/Loading";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
@@ -57,7 +57,7 @@ export default function CreatePostModal({ closeModal }: CreatePostModalProps) {
     const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
     const router = useRouter();
 
-    const ctx = api.useContext();
+    const utils = api.useUtils();
 
     const { mutate } = api.post.create.useMutation({
         onSuccess: async (data) => {
@@ -68,7 +68,7 @@ export default function CreatePostModal({ closeModal }: CreatePostModalProps) {
                     color: "#fff",
                 },
             });
-            void ctx.post.getAllNewPreviewPosts.invalidate();
+            void utils.post.getAllNewPreviewPosts.invalidate();
             await router.push(`/keebshare/${data.newPost.id}`);
             closeModal();
         },

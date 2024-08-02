@@ -1,4 +1,4 @@
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
@@ -19,11 +19,11 @@ export default function AdminUpdateTag({
     closeModal,
 }: AdminUpdateTagProps) {
     const { data: session } = useSession();
-    const ctx = api.useContext();
+    const utils = api.useUtils();
 
     const [tagName, setTagName] = useState<string>(tag.name);
     const [tagDescription, setTagDescription] = useState<string>(
-        tag.description
+        tag.description,
     );
 
     const { mutate: updateTag } = api.tag.update.useMutation({
@@ -36,7 +36,7 @@ export default function AdminUpdateTag({
                 },
             });
             closeModal();
-            void ctx.tag.getAll.invalidate();
+            void utils.tag.getAll.invalidate();
         },
     });
 

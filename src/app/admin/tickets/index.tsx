@@ -3,7 +3,7 @@ import Link from "next/link";
 import hackerman from "@public/Admin/admin-black.png";
 import Custom404 from "~/pages/404";
 import { useSession } from "next-auth/react";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import EachAdminTicket from "~/app/_components/Admin/Tickets/Display/displayAdminTickets";
 import Footer from "~/app/_components/Footer/mainFooter";
 

@@ -1,12 +1,12 @@
 import { signIn, useSession } from "next-auth/react";
 
 import Footer from "~/app/_components/Footer/mainFooter";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import toast from "react-hot-toast";
 
 export default function Newsletter() {
     const { data: sessionData, status, update } = useSession();
-    const ctx = api.useContext();
+    const utils = api.useUtils();
 
     const { mutate } = api.user.updateNewsletter.useMutation({
         onSuccess: async (data) => {
@@ -31,7 +31,7 @@ export default function Newsletter() {
                 }
 
                 await update();
-                void ctx.user.invalidate();
+                void utils.user.invalidate();
             } catch (error) {
                 console.error("Error while navigating:", error);
             }

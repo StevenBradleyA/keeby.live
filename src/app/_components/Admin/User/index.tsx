@@ -1,7 +1,7 @@
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useState } from "react";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import toast from "react-hot-toast";
 import defaultProfile from "@public/Profile/profile-default.png";
 
@@ -23,7 +23,7 @@ export default function EachAdminUser({ user }: EachAdminUserProps) {
         useState<boolean>(false);
 
     const { data: session } = useSession();
-    const ctx = api.useContext();
+    const utils = api.useUtils();
 
     const { mutate } = api.user.delete.useMutation({
         onSuccess: () => {
@@ -35,7 +35,7 @@ export default function EachAdminUser({ user }: EachAdminUserProps) {
                     color: "#ff0000",
                 },
             });
-            void ctx.user.getAll.invalidate();
+            void utils.user.getAll.invalidate();
         },
     });
     const { mutate: deleteProfilePic } = api.user.deleteUserProfile.useMutation(
@@ -49,9 +49,9 @@ export default function EachAdminUser({ user }: EachAdminUserProps) {
                         color: "#ff0000",
                     },
                 });
-                void ctx.user.getAll.invalidate();
+                void utils.user.getAll.invalidate();
             },
-        }
+        },
     );
 
     const handleDeleteUser = () => {

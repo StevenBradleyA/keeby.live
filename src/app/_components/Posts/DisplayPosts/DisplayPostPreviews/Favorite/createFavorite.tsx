@@ -1,4 +1,4 @@
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 
 interface PostPreviewCreateFavoriteProps {
     userId: string;
@@ -9,13 +9,13 @@ export default function PostPreviewCreateFavorite({
     userId,
     postId,
 }: PostPreviewCreateFavoriteProps) {
-    const ctx = api.useContext();
+    const utils = api.useUtils();
 
     const { mutate: favorite } = api.favorite.createPostFavorite.useMutation({
         onSuccess: () => {
-            void ctx.post.getAllPopularPreviewPosts.invalidate();
-            void ctx.post.getAllNewPreviewPosts.invalidate();
-            void ctx.post.getOneById.invalidate();
+            void utils.post.getAllPopularPreviewPosts.invalidate();
+            void utils.post.getAllNewPreviewPosts.invalidate();
+            void utils.post.getOneById.invalidate();
         },
     });
 

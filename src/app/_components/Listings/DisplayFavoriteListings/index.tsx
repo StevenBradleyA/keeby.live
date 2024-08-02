@@ -1,4 +1,4 @@
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import EachFavoriteListingCard from "./eachFavoriteListing";
 
 interface DisplayFavoriteListings {

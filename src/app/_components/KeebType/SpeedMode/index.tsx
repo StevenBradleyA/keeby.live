@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import SentenceGenerator from "./sentenceGenerator";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import { useSession } from "next-auth/react";
 import { useStopwatch } from "react-use-precision-timer";
 import SpeedModeResults from "./results";
@@ -37,10 +37,10 @@ export default function SpeedMode({
     const [userInput, setUserInput] = useState<string>("");
     const [activeWordIndex, setActiveWordIndex] = useState<number>(0);
     const [wordStatus, setWordStatus] = useState<boolean[]>(
-        new Array(gameLength).fill(false)
+        new Array(gameLength).fill(false),
     );
     const [extraCharacters, setExtraCharacters] = useState<string[]>(
-        new Array(gameLength).fill("")
+        new Array(gameLength).fill(""),
     );
     const [trigger, setTrigger] = useState<number>(0);
 
@@ -106,7 +106,7 @@ export default function SpeedMode({
             // wpm
             const totalTypedWords = totalUserInput.trim().split(" ");
             const correctlyTypedWords = totalTypedWords.filter(
-                (word, index) => wordStatus[index]
+                (word, index) => wordStatus[index],
             );
 
             const totalCorrectlyTypedCharacters =
@@ -138,7 +138,7 @@ export default function SpeedMode({
                 accuracy: accuracy,
                 mode: mode,
             };
-            console.log('data check', data)
+            console.log("data check", data);
             createGame(data);
         }
 
@@ -147,7 +147,7 @@ export default function SpeedMode({
             // wpm
             const totalTypedWords = totalUserInput.trim().split(" ");
             const correctlyTypedWords = totalTypedWords.filter(
-                (word, index) => wordStatus[index]
+                (word, index) => wordStatus[index],
             );
             const totalCorrectlyTypedCharacters =
                 correctlyTypedWords.join(" ").length;
@@ -165,7 +165,7 @@ export default function SpeedMode({
 
             setOfflineWpm(totalCorrectlyTypedCharacters / 5 / timeInMinutes);
             setOfflineAccuracy(
-                (totalCorrectlyTypedCharacters / totalPromptCharacters) * 100
+                (totalCorrectlyTypedCharacters / totalPromptCharacters) * 100,
             );
         }
     };
@@ -241,7 +241,7 @@ export default function SpeedMode({
                 // Update the extraCharacters array for the current word.
                 const newExtraCharacters = [...extraCharacters];
                 newExtraCharacters[activeWordIndex] = `${userInput.substring(
-                    activePrompt.length
+                    activePrompt.length,
                 )}`;
                 setExtraCharacters(newExtraCharacters);
             }
@@ -457,7 +457,7 @@ export default function SpeedMode({
                                                                         ></div>
                                                                     )}
                                                             </div>
-                                                        )
+                                                        ),
                                                     )}
                                                 </div>
                                             )}

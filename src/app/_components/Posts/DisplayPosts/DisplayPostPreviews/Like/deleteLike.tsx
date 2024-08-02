@@ -1,4 +1,4 @@
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 
 interface PostPreviewDeleteLikeProps {
     userId: string;
@@ -11,13 +11,13 @@ export default function PostPreviewDeleteLike({
     likeId,
     ownerId,
 }: PostPreviewDeleteLikeProps) {
-    const ctx = api.useContext();
+    const utils = api.useUtils();
 
     const { mutate: deleteLike } = api.like.deletePostLike.useMutation({
         onSuccess: () => {
-            void ctx.post.getAllPopularPreviewPosts.invalidate();
-            void ctx.post.getAllNewPreviewPosts.invalidate();
-            void ctx.post.getOneById.invalidate();
+            void utils.post.getAllPopularPreviewPosts.invalidate();
+            void utils.post.getAllNewPreviewPosts.invalidate();
+            void utils.post.getOneById.invalidate();
         },
     });
 

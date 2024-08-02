@@ -1,4 +1,4 @@
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import EachDisplayKeebCard from "./eachDisplayKeebCard";
 import Image from "next/image";
 import plus from "@public/Vectors/plus-plus.png";

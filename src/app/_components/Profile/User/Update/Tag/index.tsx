@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { ChangeEvent } from "react";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
 
@@ -13,7 +13,7 @@ export default function UpdateUserTag({
     userId,
     currentTag,
 }: UpdateUserTagProps) {
-    const ctx = api.useContext();
+    const utils = api.useUtils();
     const { update } = useSession();
 
     const [selectedTag, setSelectedTag] = useState<string>(currentTag);
@@ -29,7 +29,7 @@ export default function UpdateUserTag({
                     color: "#fff",
                 },
             });
-            void ctx.user.invalidate();
+            void utils.user.invalidate();
             await update();
         },
     });

@@ -1,6 +1,6 @@
 import type { Images, Listing } from "@prisma/client";
 import { useState } from "react";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
@@ -29,7 +29,7 @@ export default function CreateTransaction({
     const [paymentSuccess, setPaymentSuccess] = useState<boolean>(false);
     const [orderId, setOrderId] = useState<string>("");
 
-    const ctx = api.useContext();
+    const utils = api.useUtils();
 
     // create
     const { mutate } = api.transaction.create.useMutation({
@@ -54,10 +54,10 @@ export default function CreateTransaction({
                 setPaymentSuccess(true);
                 setOrderId(data.createTransaction.paypalOrderId);
             }
-            void ctx.listing.getOne.invalidate();
-            void ctx.listing.getAllWithFilters.invalidate();
-            void ctx.listing.getAllSortedByPopularityWithFilters.invalidate();
-            void ctx.offer.getAllByUserId.invalidate();
+            void utils.listing.getOne.invalidate();
+            void utils.listing.getAllWithFilters.invalidate();
+            void utils.listing.getAllSortedByPopularityWithFilters.invalidate();
+            void utils.offer.getAllByUserId.invalidate();
         },
     });
 
@@ -302,7 +302,7 @@ export default function CreateTransaction({
                                     console.log("DETAILS BB", details);
                                     console.log(
                                         "STATUS TESTING BB",
-                                        details.status
+                                        details.status,
                                     );
                                     if (
                                         details &&
@@ -336,7 +336,7 @@ export default function CreateTransaction({
                                             background: "#333",
                                             color: "#fff",
                                         },
-                                    }
+                                    },
                                 );
                             }}
                             onError={() => {
@@ -348,7 +348,7 @@ export default function CreateTransaction({
                                             background: "#333",
                                             color: "#fff",
                                         },
-                                    }
+                                    },
                                 );
                             }}
                         />

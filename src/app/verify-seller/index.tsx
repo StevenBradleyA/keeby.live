@@ -2,7 +2,7 @@ import { useSession } from "next-auth/react";
 import Footer from "~/app/_components/Footer/mainFooter";
 import defaultProfile from "@public/Profile/profile-default.png";
 import Image from "next/image";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -18,7 +18,7 @@ interface ErrorsObj {
 export default function VerifySeller() {
     const { data: sessionData, update } = useSession();
 
-    const ctx = api.useContext();
+    const utils = api.useUtils();
 
     const [purchaseStage, setPurchaseStage] = useState<string>("");
     const [email, setEmail] = useState<string>("");

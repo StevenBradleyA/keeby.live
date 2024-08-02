@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import type { Keeb } from "@prisma/client";
 import { deleteCookie, hasCookie, setCookie } from "cookies-next";
 import { useSession } from "next-auth/react";
@@ -28,7 +28,7 @@ export default function ManageKeeb({
     length,
     userId,
 }: ManageKeebProps) {
-    const ctx = api.useContext();
+    const utils = api.useUtils();
     const [toggle, setToggle] = useState<string>("MENU");
 
     // update
@@ -43,7 +43,7 @@ export default function ManageKeeb({
 
     const { mutate: deleteKeeb } = api.keeb.delete.useMutation({
         onSuccess: (data) => {
-            void ctx.keeb.getAllByUserId.invalidate();
+            void utils.keeb.getAllByUserId.invalidate();
             toast.success("Keed Deleted!", {
                 style: {
                     borderRadius: "10px",
@@ -66,7 +66,7 @@ export default function ManageKeeb({
     });
     const { mutate: updateKeeb } = api.keeb.update.useMutation({
         onSuccess: () => {
-            void ctx.keeb.getAllByUserId.invalidate();
+            void utils.keeb.getAllByUserId.invalidate();
             toast.success("Keed Updated!", {
                 style: {
                     borderRadius: "10px",

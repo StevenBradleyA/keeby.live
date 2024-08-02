@@ -1,7 +1,7 @@
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import defaultProfile from "@public/Profile/profile-default.png";
 import keebo from "@public/Profile/keebo.png";
 import toast from "react-hot-toast";
@@ -31,12 +31,12 @@ export default function CreateKeeb({ closeModal, userId }: CreateKeebProps) {
     const [enableErrorDisplay, setEnableErrorDisplay] =
         useState<boolean>(false);
 
-    const ctx = api.useContext();
+    const utils = api.useUtils();
     const { data: sessionData } = useSession();
 
     const { mutate } = api.keeb.create.useMutation({
         onSuccess: () => {
-            void ctx.keeb.getAllByUserId.invalidate();
+            void utils.keeb.getAllByUserId.invalidate();
             toast.success("New Keed Created!", {
                 style: {
                     borderRadius: "10px",

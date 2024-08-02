@@ -1,5 +1,5 @@
 import type { Notification } from "@prisma/client";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import {
     format,
     formatDistanceToNow,
@@ -17,7 +17,7 @@ interface EachNotificationCardProps {
 export default function EachNotificationCard({
     notification,
 }: EachNotificationCardProps) {
-    const ctx = api.useContext();
+    const utils = api.useUtils();
 
     let notificationLink = "/profile";
 
@@ -70,9 +70,9 @@ export default function EachNotificationCard({
                     color: "#fff",
                 },
             });
-            void ctx.notification.getAllByUserId.invalidate();
-            void ctx.notification.getCountByUserId.invalidate();
-            void ctx.notification.getOfferNotificationsByUserId.invalidate();
+            void utils.notification.getAllByUserId.invalidate();
+            void utils.notification.getCountByUserId.invalidate();
+            void utils.notification.getOfferNotificationsByUserId.invalidate();
         },
     });
 

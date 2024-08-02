@@ -1,4 +1,4 @@
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import EachEligibleReviewCard from "../DisplayReviews/eachEligibleReviewCard";
 import { useEffect, useState } from "react";
 import Image from "next/image";
@@ -55,7 +55,7 @@ export default function CreateReview({
     userId: string;
     closeModal: () => void;
 }) {
-    const ctx = api.useContext();
+    const utils = api.useUtils();
     const [sellerId, setSellerId] = useState<string>("");
     const [listingId, setListingId] = useState<string>("");
     const [sellerUsername, setSellerUsername] = useState<string>("");
@@ -83,7 +83,7 @@ export default function CreateReview({
                     color: "#fff",
                 },
             });
-            void ctx.review.getAllEligibleByUserId.invalidate();
+            void utils.review.getAllEligibleByUserId.invalidate();
             // todo get all invalidate here
             closeModal();
         },

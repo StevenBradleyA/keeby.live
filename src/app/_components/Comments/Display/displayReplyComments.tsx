@@ -1,4 +1,4 @@
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import EachReplyCommentCard from "./eachReplayCommentCard";
 import LoadingSpinner from "~/app/_components/Loading";
 import { useSession } from "next-auth/react";

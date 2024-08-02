@@ -1,5 +1,3 @@
-// import { motion } from "framer-motion";
-// import TitleScripts from "~/app/_components/TitleScripts";
 import Footer from "~/app/_components/Footer/footer";
 import Image from "next/image";
 import login from "@public/Images/login.png";
@@ -7,20 +5,11 @@ import LoginForm from "~/app/_components/Login/loginForm";
 import AuthProviders from "~/app/_components/Login/authProviders";
 
 export default function SignIn() {
-    // const session = await getServerSession(authOptions);
-
-    // If the user is already logged in, redirect.
-    // if (session) {
-    //     redirect("/");
-    // }
-
+   
     return (
         <>
-            {/* <div className="text-3xl text-green-500 mt-32 w-full flex justify-center">
-                <TitleScripts page={"signin"} />
-            </div> */}
             <div className="w-full flex justify-center mt-60">
-                <div className=" rounded-2xl w-1/2  bg-keebyGray flex overflow-hidden shadow-2xl relative ">
+                <div className=" rounded-2xl w-full  largeLaptop:w-2/3 desktop:w-1/2  bg-keebyGray flex overflow-hidden shadow-2xl relative ">
                     <div className="w-1/2  h-full p-10 flex flex-col items-center justify-center">
                         <Image
                             src={login}

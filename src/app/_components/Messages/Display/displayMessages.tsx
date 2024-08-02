@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import EachConversationCard from "./eachConversationCard";
 import keebo from "@public/Profile/keebo.png";
 import Image from "next/image";
@@ -29,12 +29,12 @@ export default function DisplayMessages({ userId }: { userId: string }) {
             setRecipientId(
                 messages[0].userId === userId
                     ? messages[0].recipientId
-                    : messages[0].userId
+                    : messages[0].userId,
             );
             setSellerEmail(
                 messages[0].recipient.paypalEmail
                     ? messages[0].recipient.paypalEmail
-                    : ""
+                    : "",
             );
             setAgreedPrice(messages[0].listingTransaction.agreedPrice);
             setListingTitle(messages[0].listingTransaction.listing.title);

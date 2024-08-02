@@ -1,7 +1,7 @@
 import type { Comment } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 
 interface UpdateCommentProps {
     comment: Comment;
@@ -33,16 +33,16 @@ export default function UpdateComment({
     const [row, setRow] = useState<number>(startingRows);
     const [errors, setErrors] = useState<ErrorsObj>({});
 
-    const ctx = api.useContext();
+    const utils = api.useUtils();
     const { data: session } = useSession();
 
     const { mutate } = api.comment.delete.useMutation({
         onSuccess: () => {
             if (parentId) {
-                void ctx.comment.getAllByTypeId.invalidate();
-                void ctx.comment.getAllReplysByTypeId.invalidate();
+                void utils.comment.getAllByTypeId.invalidate();
+                void utils.comment.getAllReplysByTypeId.invalidate();
             } else {
-                void ctx.comment.getAllByTypeId.invalidate();
+                void utils.comment.getAllByTypeId.invalidate();
             }
             closeModal();
         },
@@ -51,9 +51,9 @@ export default function UpdateComment({
     const { mutate: updateComment } = api.comment.update.useMutation({
         onSuccess: () => {
             if (parentId) {
-                void ctx.comment.getAllReplysByTypeId.invalidate();
+                void utils.comment.getAllReplysByTypeId.invalidate();
             } else {
-                void ctx.comment.getAllByTypeId.invalidate();
+                void utils.comment.getAllByTypeId.invalidate();
             }
             closeModal();
         },

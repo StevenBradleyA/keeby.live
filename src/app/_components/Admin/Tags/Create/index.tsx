@@ -1,4 +1,4 @@
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
@@ -9,7 +9,7 @@ export default function AdminCreateTag({
     closeModal: () => void;
 }) {
     const { data: session } = useSession();
-    const ctx = api.useContext();
+    const utils = api.useUtils();
 
     const [tagName, setTagName] = useState<string>("");
     const [tagDescription, setTagDescription] = useState<string>("");
@@ -24,7 +24,7 @@ export default function AdminCreateTag({
                 },
             });
             closeModal();
-            void ctx.tag.getAll.invalidate();
+            void utils.tag.getAll.invalidate();
         },
     });
 

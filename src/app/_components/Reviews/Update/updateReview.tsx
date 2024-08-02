@@ -3,7 +3,7 @@ import keebo from "@public/Profile/keebo.png";
 import defaultProfile from "@public/Profile/profile-default.png";
 import LoadingSpinner from "~/app/_components/Loading";
 import { useState, useEffect } from "react";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import type { Review } from "@prisma/client";
 import toast from "react-hot-toast";
 
@@ -61,12 +61,12 @@ export default function UpdateReview({
     review,
     closeModal,
 }: ManageReviewProps) {
-    const ctx = api.useContext();
+    const utils = api.useUtils();
 
     const [toggle, setToggle] = useState<string>("MENU");
 
     const [starRating, setStarRating] = useState<number>(
-        parseFloat(review.starRating.toFixed(0))
+        parseFloat(review.starRating.toFixed(0)),
     );
     const [hover, setHover] = useState(0);
 
@@ -86,8 +86,8 @@ export default function UpdateReview({
                     color: "#fff",
                 },
             });
-            void ctx.review.getAllEligibleByUserId.invalidate();
-            void ctx.review.getAllReceivedAndSentByUserId.invalidate();
+            void utils.review.getAllEligibleByUserId.invalidate();
+            void utils.review.getAllReceivedAndSentByUserId.invalidate();
             // todo get all invalidate here
             closeModal();
         },
@@ -102,8 +102,8 @@ export default function UpdateReview({
                     color: "#fff",
                 },
             });
-            void ctx.review.getAllEligibleByUserId.invalidate();
-            void ctx.review.getAllReceivedAndSentByUserId.invalidate();
+            void utils.review.getAllEligibleByUserId.invalidate();
+            void utils.review.getAllReceivedAndSentByUserId.invalidate();
             // todo get all invalidate here
             closeModal();
         },

@@ -1,4 +1,4 @@
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import { useEffect, useState } from "react";
 import { uploadFileToS3 } from "~/utils/aws";
 import { useSession } from "next-auth/react";
@@ -58,7 +58,7 @@ export default function CreateListing() {
     //todo admin ability to delete other listings
 
     const { data: session } = useSession();
-    const ctx = api.useContext();
+    const utils = api.useUtils();
     const router = useRouter();
 
     const accessDenied = !session || !session.user.isVerified;
@@ -91,7 +91,7 @@ export default function CreateListing() {
                     color: "#fff",
                 },
             });
-            void ctx.listing.getAll.invalidate();
+            void utils.listing.getAll.invalidate();
             await router.push("/");
         },
     });

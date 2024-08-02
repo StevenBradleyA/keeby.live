@@ -1,4 +1,4 @@
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import type { RefObject } from "react";
 
 export default function DisplayProfileNotifications({

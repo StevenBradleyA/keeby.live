@@ -101,6 +101,21 @@ export default function TitleScripts({ page }: TitleScriptsProps) {
                 }, delay[i]),
             );
         }
+        if (page === "loginPlus") {
+            const phrases = [
+                "User Authentication Complete",
+                "Booting Login Protocol",
+                "Almost done just a few more",
+                "Choose your identity",
+            ];
+            const delay = [0, 2000, 4000, 6000, 8000, 10000];
+
+            phrases.forEach((phrase, i) =>
+                setTimeout(() => {
+                    setTitle(phrase);
+                }, delay[i]),
+            );
+        }
         if (page === "keebdex") {
             const phrases = [
                 "Insert Coin to Continue",
@@ -134,6 +149,7 @@ export default function TitleScripts({ page }: TitleScriptsProps) {
                 }, delay[i]),
             );
         }
+
         if (page === "publicProfile") {
             const phrases = [
                 "C:\\> Initiating profile sequence",
@@ -183,5 +199,5 @@ export default function TitleScripts({ page }: TitleScriptsProps) {
         }
     }, [page]);
 
-    return <h1 className="moving-title">{title}</h1>;
+    return <h2 className="moving-title">{title}</h2>;
 }

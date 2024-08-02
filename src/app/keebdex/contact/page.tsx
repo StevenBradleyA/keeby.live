@@ -1,7 +1,7 @@
 import { signIn, useSession } from "next-auth/react";
 
 import Footer from "~/app/_components/Footer/mainFooter";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
 import keebo from "@public/Profile/keebo.png";
@@ -14,7 +14,7 @@ interface ErrorsObj {
 
 export default function ContactUs() {
     const { data: sessionData, status, update } = useSession();
-    const ctx = api.useContext();
+    const utils = api.useUtils();
 
     const [text, setText] = useState<string>("");
     const [email, setEmail] = useState<string>("");
@@ -40,7 +40,7 @@ export default function ContactUs() {
                 setEnableErrorDisplay(false);
                 setIsFinished(true);
                 await update();
-                void ctx.user.invalidate();
+                void utils.user.invalidate();
             } catch (error) {
                 console.error("Error while navigating:", error);
             }

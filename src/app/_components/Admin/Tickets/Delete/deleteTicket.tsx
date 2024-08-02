@@ -1,4 +1,4 @@
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import toast from "react-hot-toast";
 import type { Ticket } from "@prisma/client";
 
@@ -11,7 +11,7 @@ export default function DeleteTicket({
     ticket,
     closeModal,
 }: EachAdminTicketProps) {
-    const ctx = api.useContext();
+    const utils = api.useUtils();
 
     const { mutate } = api.ticket.delete.useMutation({
         onSuccess: () => {
@@ -23,7 +23,7 @@ export default function DeleteTicket({
                     color: "#ff0000",
                 },
             });
-            void ctx.ticket.getAll.invalidate();
+            void utils.ticket.getAll.invalidate();
             closeModal();
         },
     });

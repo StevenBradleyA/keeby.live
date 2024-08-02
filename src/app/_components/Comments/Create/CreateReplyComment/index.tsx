@@ -1,6 +1,6 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import Image from "next/image";
 import defaultProfile from "@public/Profile/profile-default.png";
 import ModalDialog from "~/app/_components/Modal";
@@ -45,14 +45,14 @@ export default function CreateReplyComment({
     const [isSignInModalOpen, setIsSignInModalOpen] = useState<boolean>(false);
     const { data: session } = useSession();
 
-    const ctx = api.useContext();
+    const utils = api.useUtils();
 
     const { mutate } = api.comment.createReply.useMutation({
         onSuccess: () => {
-            void ctx.comment.getAllByTypeId.invalidate();
-            void ctx.comment.getAllReplysByTypeId.invalidate();
-            if (type === "listing") void ctx.listing.getOne.invalidate();
-            if (type === "post") void ctx.post.getOneById.invalidate();
+            void utils.comment.getAllByTypeId.invalidate();
+            void utils.comment.getAllReplysByTypeId.invalidate();
+            if (type === "listing") void utils.listing.getOne.invalidate();
+            if (type === "post") void utils.post.getOneById.invalidate();
         },
     });
 

@@ -1,5 +1,5 @@
 import LoadingSpinner from "~/app/_components/Loading";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import EachListingCardPreview from "./eachListingCardPreview";
 import Image from "next/image";
 import keebo from "@public/Profile/keebo.png";
@@ -104,7 +104,7 @@ export default function DisplayListingPreviews({
         },
         {
             getNextPageParam: (lastPage) => lastPage.nextCursor,
-        }
+        },
     );
 
     useEffect(() => {
@@ -116,7 +116,7 @@ export default function DisplayListingPreviews({
                     void fetchNextPage();
                 }
             },
-            { threshold: 1.0 }
+            { threshold: 1.0 },
         );
 
         const currentFlag = scrollFlagRef.current;
@@ -150,7 +150,7 @@ export default function DisplayListingPreviews({
                                 keeb={keeb}
                                 index={i}
                             />
-                        ))
+                        )),
                     )}
 
                     <div ref={scrollFlagRef} className="h-10 w-full"></div>

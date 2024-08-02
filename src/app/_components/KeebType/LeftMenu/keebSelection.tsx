@@ -1,4 +1,4 @@
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import { setCookie } from "cookies-next";
 import { useEffect, useState } from "react";
 import type { ChangeEvent } from "react";

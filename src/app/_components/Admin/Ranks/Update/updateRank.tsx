@@ -1,4 +1,4 @@
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
@@ -24,7 +24,7 @@ export default function AdminUpdateRank({
     closeModal,
 }: AdminUpdateRankProps) {
     const { data: session } = useSession();
-    const ctx = api.useContext();
+    const utils = api.useUtils();
 
     const [rankName, setRankName] = useState<string>(rank.name);
     const [minWpm, setMinWpm] = useState<number>(rank.minWpm);
@@ -42,7 +42,7 @@ export default function AdminUpdateRank({
                 },
             });
             closeModal();
-            void ctx.rank.getAll.invalidate();
+            void utils.rank.getAll.invalidate();
         },
     });
 

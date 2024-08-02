@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import { hash } from "bcryptjs";
 import { signIn, useSession, signOut } from "next-auth/react";
 import Image from "next/image";

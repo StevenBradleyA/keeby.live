@@ -2,7 +2,7 @@ import type { Images } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useState } from "react";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import toast from "react-hot-toast";
 
 interface EachListing {
@@ -18,7 +18,7 @@ interface EachAdminListingProps {
 export default function EachAdminListing({ listing }: EachAdminListingProps) {
     const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
     const { data: session } = useSession();
-    const ctx = api.useContext();
+    const utils = api.useUtils();
 
     const { mutate } = api.listing.delete.useMutation({
         onSuccess: () => {
@@ -30,7 +30,7 @@ export default function EachAdminListing({ listing }: EachAdminListingProps) {
                     color: "#ff0000",
                 },
             });
-            void ctx.listing.getAll.invalidate();
+            void utils.listing.getAll.invalidate();
         },
     });
 

@@ -1,7 +1,7 @@
 import type { Images, Listing } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import Image from "next/image";
 import LoadingSpinner from "~/app/_components/Loading";
 import SellerListingCard from "./SellerCard";
@@ -51,7 +51,7 @@ export default function DisplayListingPage({
         },
         {
             getNextPageParam: (lastPage) => lastPage.nextCursor,
-        }
+        },
     );
 
     const [displayImage, setDisplayImage] = useState(listing.images[0]);
@@ -66,13 +66,13 @@ export default function DisplayListingPage({
 
     const nextImage = () => {
         setCurrentIndex((prevIndex) =>
-            prevIndex < maxIndex ? prevIndex + 1 : prevIndex
+            prevIndex < maxIndex ? prevIndex + 1 : prevIndex,
         );
     };
 
     const prevImage = () => {
         setCurrentIndex((prevIndex) =>
-            prevIndex > 0 ? prevIndex - 1 : prevIndex
+            prevIndex > 0 ? prevIndex - 1 : prevIndex,
         );
     };
 
@@ -85,7 +85,7 @@ export default function DisplayListingPage({
                     void fetchNextPage();
                 }
             },
-            { threshold: 1.0 }
+            { threshold: 1.0 },
         );
 
         const currentFlag = scrollFlagRef.current;
@@ -291,7 +291,7 @@ export default function DisplayListingPage({
                                             type="listing"
                                             typeId={listing.id}
                                         />
-                                    ))
+                                    )),
                                 )}
                                 <div
                                     ref={scrollFlagRef}

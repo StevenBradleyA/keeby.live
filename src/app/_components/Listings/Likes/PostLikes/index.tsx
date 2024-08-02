@@ -1,5 +1,5 @@
 import LoadingSpinner from "~/app/_components/Loading";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 
 interface ListingPageFavoriteProps {
     userId: string;
@@ -9,20 +9,20 @@ export default function PostPreviewLike({
     userId,
     postId,
 }: ListingPageFavoriteProps) {
-    const ctx = api.useContext();
+    const utils = api.useUtils();
 
     const { data: favoriteId, isLoading } =
         api.favorite.checkIfPostIsFavorited.useQuery({ userId, postId });
 
     const { mutate: favorite } = api.favorite.createPostFavorite.useMutation({
         onSuccess: () => {
-            void ctx.favorite.checkIfPostIsFavorited.invalidate();
+            void utils.favorite.checkIfPostIsFavorited.invalidate();
         },
     });
 
     const { mutate: unfavorite } = api.favorite.deletePostFavorite.useMutation({
         onSuccess: () => {
-            void ctx.favorite.checkIfPostIsFavorited.invalidate();
+            void utils.favorite.checkIfPostIsFavorited.invalidate();
         },
     });
 

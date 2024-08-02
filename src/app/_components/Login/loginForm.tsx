@@ -1,12 +1,40 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import TitleScripts from "../TitleScripts";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import LoadingSpinner from "../Loading";
 
 export default function LoginForm() {
+    const { data: session, status } = useSession();
+    const hasShownToast = useRef(false);
+    const router = useRouter();
+
+    // form
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
+
     const [showCreate, setShowCreate] = useState(false);
+
+    useEffect(() => {
+        if (status === "authenticated" && !hasShownToast.current) {
+            toast.success(`Welcome, ${session.user.name}!`, {
+                style: {
+                    borderRadius: "10px",
+                    background: "#333",
+                    color: "#fff",
+                },
+            });
+            hasShownToast.current = true;
+            router.push("/");
+        }
+    }, [status, router, session]);
+
+    if (status === "loading") {
+        return <LoadingSpinner size="30px" />;
+    }
 
     return (
         <>
@@ -16,8 +44,7 @@ export default function LoginForm() {
                     Create one
                 </button>
             </div>
-            <h2 className="text-2xl">Hello Again!</h2>
-            {/* <p className="mt-2">Welcome back youve been missed</p> */}
+            <h1 className="text-2xl">Sign In!</h1>
             <div className="relative mt-2 h-5 w-full flex justify-center ">
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 text-center w-full">
                     <TitleScripts page="login" />

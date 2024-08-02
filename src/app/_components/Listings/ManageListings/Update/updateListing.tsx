@@ -1,4 +1,4 @@
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import type { Images, Listing } from "@prisma/client";
 import Image from "next/image";
 import keebo from "@public/Profile/keebo.png";
@@ -95,13 +95,13 @@ export default function UpdateListing({
     const [soundTest, setSoundTest] = useState<string>(listing.soundTest || "");
     const [soundType, setSoundType] = useState<string>(listing.soundType);
     const [assemblyType, setAssemblyType] = useState<string>(
-        listing.assemblyType
+        listing.assemblyType,
     );
     const [pcbType, setPcbType] = useState<string>(listing.pcbType);
     const [layoutType, setLayoutType] = useState<string>(listing.layoutType);
 
     const { data: session } = useSession();
-    const ctx = api.useContext();
+    const utils = api.useUtils();
 
     const { mutate } = api.listing.delete.useMutation({
         onSuccess: () => {
@@ -112,7 +112,7 @@ export default function UpdateListing({
                     color: "#fff",
                 },
             });
-            void ctx.listing.getAllByUserId.invalidate();
+            void utils.listing.getAllByUserId.invalidate();
             closeModal();
         },
     });
@@ -125,7 +125,7 @@ export default function UpdateListing({
                     color: "#fff",
                 },
             });
-            void ctx.listing.getAllByUserId.invalidate();
+            void utils.listing.getAllByUserId.invalidate();
             closeModal();
         },
     });
@@ -627,7 +627,7 @@ export default function UpdateListing({
                                             value={price === 0 ? "" : price}
                                             onChange={(e) =>
                                                 setPrice(
-                                                    Math.floor(+e.target.value)
+                                                    Math.floor(+e.target.value),
                                                 )
                                             }
                                             className="h-10 w-3/4 rounded-md bg-darkGray p-1"
@@ -757,7 +757,7 @@ export default function UpdateListing({
                                                 value={switchType}
                                                 onChange={(e) =>
                                                     setSwitchType(
-                                                        e.target.value
+                                                        e.target.value,
                                                     )
                                                 }
                                             >
@@ -796,7 +796,7 @@ export default function UpdateListing({
                                                 value={layoutType}
                                                 onChange={(e) =>
                                                     setLayoutType(
-                                                        e.target.value
+                                                        e.target.value,
                                                     )
                                                 }
                                             >
@@ -857,7 +857,7 @@ export default function UpdateListing({
                                                 value={assemblyType}
                                                 onChange={(e) =>
                                                     setAssemblyType(
-                                                        e.target.value
+                                                        e.target.value,
                                                     )
                                                 }
                                             >
@@ -936,10 +936,10 @@ export default function UpdateListing({
                                                         ];
                                                         newImageFiles.splice(
                                                             i,
-                                                            1
+                                                            1,
                                                         );
                                                         setImageFiles(
-                                                            newImageFiles
+                                                            newImageFiles,
                                                         );
                                                         setPreview({
                                                             source: "new",
@@ -956,7 +956,7 @@ export default function UpdateListing({
                                         listing.images.length > 0 &&
                                         listing.images.map((image, i) =>
                                             !activeDeletedImageIds.includes(
-                                                image.id
+                                                image.id,
                                             ) ? (
                                                 <div
                                                     key={i}
@@ -992,7 +992,7 @@ export default function UpdateListing({
                                                                     image.id,
                                                                 ];
                                                             setActiveDeletedImageIds(
-                                                                newDeletedImageIds
+                                                                newDeletedImageIds,
                                                             );
                                                             setPreview({
                                                                 source: "prev",
@@ -1003,7 +1003,7 @@ export default function UpdateListing({
                                                         &times;
                                                     </button>
                                                 </div>
-                                            ) : null
+                                            ) : null,
                                         )}
                                 </div>
                             </>

@@ -1,4 +1,4 @@
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import EachNotificationCard from "./eachNotification";
 
 export default function DisplayNotifications({ userId }: { userId: string }) {

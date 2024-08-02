@@ -1,5 +1,5 @@
 import LoadingSpinner from "~/app/_components/Loading";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 
 interface ListingPageFavoriteProps {
     userId: string;
@@ -9,7 +9,7 @@ export default function ListingPageFavorite({
     userId,
     listingId,
 }: ListingPageFavoriteProps) {
-    const ctx = api.useContext();
+    const utils = api.useUtils();
 
     const { data: favoriteId, isLoading } =
         api.favorite.checkIfListingIsFavorited.useQuery({ userId, listingId });
@@ -17,15 +17,15 @@ export default function ListingPageFavorite({
     const { mutate: favorite } = api.favorite.createListingFavorite.useMutation(
         {
             onSuccess: () => {
-                void ctx.favorite.checkIfListingIsFavorited.invalidate();
+                void utils.favorite.checkIfListingIsFavorited.invalidate();
             },
-        }
+        },
     );
 
     const { mutate: unfavorite } =
         api.favorite.deleteListingFavorite.useMutation({
             onSuccess: () => {
-                void ctx.favorite.checkIfListingIsFavorited.invalidate();
+                void utils.favorite.checkIfListingIsFavorited.invalidate();
             },
         });
 
@@ -50,7 +50,7 @@ export default function ListingPageFavorite({
                 userId: userId,
                 id: favoriteId.id,
             };
-            console.log('hey steven', data)
+            console.log("hey steven", data);
             return unfavorite(data);
         }
     };

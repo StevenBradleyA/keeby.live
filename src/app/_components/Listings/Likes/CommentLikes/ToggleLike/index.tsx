@@ -1,4 +1,4 @@
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 
 interface CreateCommentLikeProps {
     commentId: string;
@@ -15,14 +15,14 @@ export default function ToggleCommentLike({
     topLevel,
     ownerId,
 }: CreateCommentLikeProps) {
-    const ctx = api.useContext();
+    const utils = api.useUtils();
 
     const { mutate } = api.like.toggleCommentLike.useMutation({
         onSuccess: () => {
             if (topLevel) {
-                void ctx.comment.getAllByTypeId.invalidate();
+                void utils.comment.getAllByTypeId.invalidate();
             } else {
-                void ctx.comment.getAllReplysByTypeId.invalidate();
+                void utils.comment.getAllReplysByTypeId.invalidate();
             }
         },
     });

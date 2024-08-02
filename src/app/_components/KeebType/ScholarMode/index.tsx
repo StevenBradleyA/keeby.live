@@ -3,7 +3,7 @@ import { themeStyles } from "../Theme/themeStyles";
 import type { ThemeName } from "../Theme/themeStyles";
 import { useEffect, useRef, useState } from "react";
 import { useStopwatch } from "react-use-precision-timer";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import SpeedModeResults from "../SpeedMode/results";
 import OfflineGameResults from "../GameStats/offlineGameResults";
 import ScholarGenerator from "./scholarGenerator";
@@ -37,11 +37,11 @@ export default function ScholarMode({
     const [userInput, setUserInput] = useState<string>("");
     const [activeWordIndex, setActiveWordIndex] = useState<number>(0);
     const [wordStatus, setWordStatus] = useState<boolean[]>(
-        new Array(prompt.length).fill(false)
+        new Array(prompt.length).fill(false),
     );
     console.log("WORD STATUS CHECH", wordStatus);
     const [extraCharacters, setExtraCharacters] = useState<string[]>(
-        new Array(prompt.length).fill("")
+        new Array(prompt.length).fill(""),
     );
     const [trigger, setTrigger] = useState<number>(0);
 
@@ -72,7 +72,7 @@ export default function ScholarMode({
             // wpm
             const totalTypedWords = totalUserInput.trim().split(" ");
             const correctlyTypedWords = totalTypedWords.filter(
-                (word, index) => wordStatus[index]
+                (word, index) => wordStatus[index],
             );
 
             const totalCorrectlyTypedCharacters =
@@ -112,7 +112,7 @@ export default function ScholarMode({
             // wpm
             const totalTypedWords = totalUserInput.trim().split(" ");
             const correctlyTypedWords = totalTypedWords.filter(
-                (word, index) => wordStatus[index]
+                (word, index) => wordStatus[index],
             );
             const totalCorrectlyTypedCharacters =
                 correctlyTypedWords.join(" ").length;
@@ -130,7 +130,7 @@ export default function ScholarMode({
 
             setOfflineWpm(totalCorrectlyTypedCharacters / 5 / timeInMinutes);
             setOfflineAccuracy(
-                (totalCorrectlyTypedCharacters / totalPromptCharacters) * 100
+                (totalCorrectlyTypedCharacters / totalPromptCharacters) * 100,
             );
         }
     };
@@ -198,7 +198,7 @@ export default function ScholarMode({
             if (activePrompt && userInput.length > activePrompt.length) {
                 const newExtraCharacters = [...extraCharacters];
                 newExtraCharacters[activeWordIndex] = `${userInput.substring(
-                    activePrompt.length
+                    activePrompt.length,
                 )}`;
                 setExtraCharacters(newExtraCharacters);
             }
@@ -233,7 +233,7 @@ export default function ScholarMode({
 
             setTotalUserInput(
                 totalInputArray.join(" ") +
-                    (totalInputArray.length > 0 ? " " : "")
+                    (totalInputArray.length > 0 ? " " : ""),
             );
 
             if (lastWord) {
@@ -432,7 +432,7 @@ export default function ScholarMode({
                                                                         ></div>
                                                                     )}
                                                             </div>
-                                                        )
+                                                        ),
                                                     )}
                                                 </div>
                                             )}

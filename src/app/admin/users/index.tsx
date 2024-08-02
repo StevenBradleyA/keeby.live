@@ -5,7 +5,7 @@ import Custom404 from "~/pages/404";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { debounce } from "lodash";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import EachAdminUser from "~/app/_components/Admin/User";
 import Footer from "~/app/_components/Footer/mainFooter";
 

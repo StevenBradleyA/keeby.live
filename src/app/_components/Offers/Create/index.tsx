@@ -1,6 +1,6 @@
 import type { Images, Listing } from "@prisma/client";
 import { useEffect, useState } from "react";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import { debounce } from "lodash";
 import Link from "next/link";
 import toast from "react-hot-toast";
@@ -56,7 +56,7 @@ export default function CreateOffer({ closeModal, listing }: CreateOfferProps) {
     const [enableErrorDisplay, setEnableErrorDisplay] =
         useState<boolean>(false);
 
-    const ctx = api.useContext();
+    const utils = api.useUtils();
 
     // create
     const { mutate } = api.offer.create.useMutation({
@@ -81,7 +81,7 @@ export default function CreateOffer({ closeModal, listing }: CreateOfferProps) {
                 });
                 setOfferAlreadyExists(true);
             }
-            void ctx.offer.getAllByUserId.invalidate();
+            void utils.offer.getAllByUserId.invalidate();
         },
     });
 

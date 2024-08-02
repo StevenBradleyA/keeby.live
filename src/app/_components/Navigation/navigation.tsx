@@ -5,7 +5,7 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { MutableRefObject } from "react";
-import { signIn, useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import type { MouseEvent } from "react";
 
 export default function Navigation() {
@@ -14,8 +14,8 @@ export default function Navigation() {
 
     const { data: sessionData, status } = useSession();
 
-    console.log(sessionData);
-    console.log(status);
+    // console.log(sessionData);
+    // console.log(status);
 
     const menuRef: MutableRefObject<HTMLDivElement | null> = useRef(null);
     const menuButtonRef: MutableRefObject<HTMLButtonElement | null> =
@@ -75,10 +75,10 @@ export default function Navigation() {
         };
     }, [isMenuOpen, handleClose, handleOutsideClick]);
 
-    const handleSignIn = (e: MouseEvent<HTMLAnchorElement>) => {
-        e.preventDefault();
-        void signIn();
-    };
+    // const handleSignIn = (e: MouseEvent<HTMLAnchorElement>) => {
+    //     e.preventDefault();
+    //     void signIn();
+    // };
 
     return (
         <nav className="fixed top-0 left-0 right-0 p-8  flex justify-between items-center">
@@ -114,9 +114,9 @@ export default function Navigation() {
                         <path
                             d="M7 17L17 7M17 7H8M17 7V16"
                             stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
                         />
                     </svg>
                 </motion.div>
@@ -130,9 +130,9 @@ export default function Navigation() {
                     <path
                         d="M7 17L17 7M17 7H8M17 7V16"
                         stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                     />
                 </motion.svg> */}
                 {/* <motion.svg
@@ -155,7 +155,7 @@ export default function Navigation() {
                 >
                     <g
                         stroke="none"
-                        stroke-width="1"
+                        strokeWidth="1"
                         fill="none"
                         fillRule="evenodd"
                         strokeLinecap="round"
@@ -210,7 +210,7 @@ export default function Navigation() {
                                     <path
                                         d="M8.68439 10.6578L15.3125 7.34375M15.3156 16.6578L8.6938 13.3469M21 6C21 7.65685 19.6569 9 18 9C16.3431 9 15 7.65685 15 6C15 4.34315 16.3431 3 18 3C19.6569 3 21 4.34315 21 6ZM9 12C9 13.6569 7.65685 15 6 15C4.34315 15 3 13.6569 3 12C3 10.3431 4.34315 9 6 9C7.65685 9 9 10.3431 9 12ZM21 18C21 19.6569 19.6569 21 18 21C16.3431 21 15 19.6569 15 18C15 16.3431 16.3431 15 18 15C19.6569 15 21 16.3431 21 18Z"
                                         stroke="currentColor"
-                                        stroke-width="1.5"
+                                        strokeWidth="1.5"
                                     />
                                 </svg>
                                 <h2>Keeb Share</h2>
@@ -237,13 +237,13 @@ export default function Navigation() {
                                         fill="currentColor"
                                     />
                                     <path
-                                        fill-rule="evenodd"
-                                        clip-rule="evenodd"
+                                        fillRule="evenodd"
+                                        clipRule="evenodd"
                                         d="M9.59235 5H13.8141C14.8954 5 14.3016 6.664 13.8638 7.679L13.3656 8.843L13.2983 9C13.7702 8.97651 14.2369 9.11054 14.6282 9.382C16.0921 10.7558 17.2802 12.4098 18.1256 14.251C18.455 14.9318 18.5857 15.6958 18.5019 16.451C18.4013 18.3759 16.8956 19.9098 15.0182 20H8.38823C6.51033 19.9125 5.0024 18.3802 4.89968 16.455C4.81587 15.6998 4.94656 14.9358 5.27603 14.255C6.12242 12.412 7.31216 10.7565 8.77823 9.382C9.1696 9.11054 9.63622 8.97651 10.1081 9L10.0301 8.819L9.54263 7.679C9.1068 6.664 8.5101 5 9.59235 5Z"
                                         stroke="currentColor"
-                                        stroke-width="1.5"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
+                                        strokeWidth="1.5"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
                                     />
                                     <path
                                         d="M13.2983 9.75C13.7125 9.75 14.0483 9.41421 14.0483 9C14.0483 8.58579 13.7125 8.25 13.2983 8.25V9.75ZM10.1081 8.25C9.69391 8.25 9.35812 8.58579 9.35812 9C9.35812 9.41421 9.69391 9.75 10.1081 9.75V8.25ZM15.9776 8.64988C16.3365 8.44312 16.4599 7.98455 16.2531 7.62563C16.0463 7.26671 15.5878 7.14336 15.2289 7.35012L15.9776 8.64988ZM13.3656 8.843L13.5103 9.57891L13.5125 9.57848L13.3656 8.843ZM10.0301 8.819L10.1854 8.08521L10.1786 8.08383L10.0301 8.819ZM8.166 7.34357C7.80346 7.14322 7.34715 7.27469 7.1468 7.63722C6.94644 7.99976 7.07791 8.45607 7.44045 8.65643L8.166 7.34357ZM13.2983 8.25H10.1081V9.75H13.2983V8.25ZM15.2289 7.35012C14.6019 7.71128 13.9233 7.96683 13.2187 8.10752L13.5125 9.57848C14.3778 9.40568 15.2101 9.09203 15.9776 8.64988L15.2289 7.35012ZM13.2209 8.10709C12.2175 8.30441 11.1861 8.29699 10.1854 8.08525L9.87486 9.55275C11.0732 9.80631 12.3086 9.81521 13.5103 9.57891L13.2209 8.10709ZM10.1786 8.08383C9.47587 7.94196 8.79745 7.69255 8.166 7.34357L7.44045 8.65643C8.20526 9.0791 9.02818 9.38184 9.88169 9.55417L10.1786 8.08383Z"
@@ -268,9 +268,9 @@ export default function Navigation() {
                                     <path
                                         d="M7 9H17M7 13H17M21 20L17.6757 18.3378C17.4237 18.2118 17.2977 18.1488 17.1656 18.1044C17.0484 18.065 16.9277 18.0365 16.8052 18.0193C16.6672 18 16.5263 18 16.2446 18H6.2C5.07989 18 4.51984 18 4.09202 17.782C3.71569 17.5903 3.40973 17.2843 3.21799 16.908C3 16.4802 3 15.9201 3 14.8V7.2C3 6.07989 3 5.51984 3.21799 5.09202C3.40973 4.71569 3.71569 4.40973 4.09202 4.21799C4.51984 4 5.0799 4 6.2 4H17.8C18.9201 4 19.4802 4 19.908 4.21799C20.2843 4.40973 20.5903 4.71569 20.782 5.09202C21 5.51984 21 6.0799 21 7.2V20Z"
                                         stroke="currentColor"
-                                        stroke-width="2"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
                                     />
                                 </svg>
                                 <h2>Messages</h2>
@@ -278,7 +278,7 @@ export default function Navigation() {
                         </Link>
                         {sessionData === null ? (
                             <motion.button
-                                onClick={()=> void signIn()}
+                                onClick={() => void signIn()}
                                 aria-label="share your keyboard with others"
                                 className="hover:text-green-500 ease-in "
                             >
@@ -291,9 +291,9 @@ export default function Navigation() {
                                     >
                                         <g
                                             stroke="none"
-                                            stroke-width="1"
+                                            strokeWidth="1"
                                             fill="none"
-                                            fill-rule="evenodd"
+                                            fillRule="evenodd"
                                         >
                                             <g
                                                 transform="translate(-140.000000, -2159.000000)"
@@ -316,7 +316,8 @@ export default function Navigation() {
                             </motion.button>
                         ) : (
                             <Link
-                                href={"/profile"}
+                                href={"/#"}
+                                onClick={() => void signOut()}
                                 aria-label="share your keyboard with others"
                                 className="hover:text-green-500 ease-in "
                             >
@@ -329,9 +330,9 @@ export default function Navigation() {
                                     >
                                         <g
                                             stroke="none"
-                                            stroke-width="1"
+                                            strokeWidth="1"
                                             fill="none"
-                                            fill-rule="evenodd"
+                                            fillRule="evenodd"
                                         >
                                             <g
                                                 transform="translate(-140.000000, -2159.000000)"

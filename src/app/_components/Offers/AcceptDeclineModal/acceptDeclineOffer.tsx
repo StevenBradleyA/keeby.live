@@ -2,7 +2,7 @@ import type { Listing, ListingOffer } from "@prisma/client";
 import Link from "next/link";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 
 interface AcceptDeclineOfferProps {
     closeModal: () => void;
@@ -25,12 +25,12 @@ export default function AcceptDeclineOffer({
     offer,
     modalToggle,
 }: AcceptDeclineOfferProps) {
-    const ctx = api.useContext();
+    const utils = api.useUtils();
     const [rulesAgreed, setRulesAgreed] = useState<boolean>(false);
 
     const { mutate: deleteOffer } = api.offer.delete.useMutation({
         onSuccess: (data) => {
-            void ctx.offer.getAllByUserId.invalidate();
+            void utils.offer.getAllByUserId.invalidate();
             if (data === "Successfully Deleted") {
                 toast.success("Offer Declined!", {
                     style: {
@@ -62,7 +62,7 @@ export default function AcceptDeclineOffer({
 
     const { mutate: updateOffer } = api.offer.update.useMutation({
         onSuccess: () => {
-            void ctx.offer.getAllByUserId.invalidate();
+            void utils.offer.getAllByUserId.invalidate();
             toast.success("Listing Sold, Congrats!", {
                 style: {
                     borderRadius: "10px",

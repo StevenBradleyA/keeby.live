@@ -1,7 +1,7 @@
 // import type { Session } from "next-auth";
 // import type { AppType } from "next/app";
 // import { SessionProvider } from "next-auth/react";
-// import { api } from "~/utils/api";
+// import { api } from "~/trpc/react";
 // import { Toaster } from "react-hot-toast";
 // import "~/styles/globals.css";
 // import Layout from "../components/layout";
@@ -44,7 +44,7 @@
 
 import "~/styles/globals.css";
 import { type Metadata } from "next";
-import { TRPCReactProvider } from "~/app/trpc/react";
+import { TRPCReactProvider } from "~/trpc/react";
 import MobileProvider from "./_components/Context/Mobile";
 import { Toaster } from "react-hot-toast";
 import { env } from "~/env.mjs";
@@ -114,7 +114,7 @@ export default function RootLayout({
         <html lang="en">
             <body className="font-poppins bg-dark text-white">
                 <TRPCReactProvider>
-                        <Toaster />
+                    <Toaster />
                     <SessionProviderWrapper>
                         <MobileProvider>
                             <GlobalStateProvider>

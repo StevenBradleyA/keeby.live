@@ -1,7 +1,7 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import type { RefObject } from "react";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import React from "react";
 
 interface CreateMessageProps {
@@ -26,11 +26,11 @@ export default function CreateMessage({
     const [errors, setErrors] = useState<ErrorsObj>({});
     const { data: session } = useSession();
 
-    const ctx = api.useContext();
+    const utils = api.useUtils();
 
     const { mutate } = api.message.create.useMutation({
         onSuccess: () => {
-            void ctx.message.getAllByTransactionId.invalidate();
+            void utils.message.getAllByTransactionId.invalidate();
         },
     });
 

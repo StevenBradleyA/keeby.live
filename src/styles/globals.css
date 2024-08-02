@@ -1178,7 +1178,7 @@ rgb(57, 162, 217): #2033c1; */
 /* --------------     Sign In      --------------  */
 /* --------------     Sign In      --------------  */
 
-.button-hover-effect {
+/* .button-hover-effect {
     position: relative;
     overflow: hidden;
 }
@@ -1199,7 +1199,7 @@ rgb(57, 162, 217): #2033c1; */
 
 .button-hover-effect:hover::before {
     transform: translateX(-18%);
-}
+} */
 
 /* --------------        KEEBDEX        --------------  */
 /* --------------        KEEBDEX        --------------  */

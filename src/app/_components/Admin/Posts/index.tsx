@@ -2,7 +2,7 @@ import type { Images } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useState } from "react";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import admin from "@public/Admin/admin-black.png";
 import toast from "react-hot-toast";
 
@@ -19,7 +19,7 @@ interface EachAdminPostProps {
 export default function EachAdminPost({ post }: EachAdminPostProps) {
     const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
     const { data: session } = useSession();
-    const ctx = api.useContext();
+    const utils = api.useUtils();
 
     const { mutate } = api.post.delete.useMutation({
         onSuccess: () => {
@@ -31,7 +31,7 @@ export default function EachAdminPost({ post }: EachAdminPostProps) {
                     color: "#ff0000",
                 },
             });
-            void ctx.post.getAll.invalidate();
+            void utils.post.getAll.invalidate();
         },
     });
 
