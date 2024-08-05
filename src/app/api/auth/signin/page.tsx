@@ -1,3 +1,4 @@
+"use client";
 import Footer from "~/app/_components/Footer/footer";
 import Image from "next/image";
 import login from "@public/Images/login.png";

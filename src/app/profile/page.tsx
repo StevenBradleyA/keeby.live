@@ -98,7 +98,7 @@ export default function UserProfile() {
             </div>
         );
     }
-    console.log(scriptIndex);
+    console.log(sessionData?.user.profile);
 
     return sessionData && sessionData.user ? (
         <>

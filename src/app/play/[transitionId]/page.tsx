@@ -13,7 +13,7 @@ export default function KeebPlay() {
             if (pathname === "/play/profile") {
                 void router.push("/profile");
             }
-        }, 26000);
+        }, 2600);
 
         return () => clearTimeout(timeoutId);
     }, [pathname, router]);

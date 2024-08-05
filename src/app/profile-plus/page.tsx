@@ -399,7 +399,7 @@ export default function ProfilePlus() {
                                         <div className=" relative">
                                             <div className="w-14 h-12 bg-black rounded-lg overflow-hidden">
                                                 <Image
-                                                    className="h-full w-full scale-125 object-contain hover:opacity-70"
+                                                    className="h-full w-full scale-150 object-contain hover:opacity-70"
                                                     alt="profile"
                                                     src={preview}
                                                     width={200}
@@ -439,7 +439,7 @@ export default function ProfilePlus() {
                                     </p>
                                 )}
                                 <button
-                                    className="w-full p-3 bg-green-500 shadow-2xl rounded-lg mt-5"
+                                    className="w-full p-3 bg-green-500 shadow-2xl rounded-lg mt-5 flex justify-center"
                                     style={{
                                         boxShadow: "0 0 20px #22C55E",
                                     }}
@@ -451,12 +451,7 @@ export default function ProfilePlus() {
                                     disabled={hasSubmitted || isSubmitting}
                                 >
                                     {isSubmitting ? (
-                                        <div className="flex items-center gap-1">
-                                            Saving Data
-                                            <div className="w-6">
-                                                <LoadingSpinner size="16px" />
-                                            </div>
-                                        </div>
+                                        <LoadingSpinner size="20px" />
                                     ) : (
                                         "Complete profile"
                                     )}
