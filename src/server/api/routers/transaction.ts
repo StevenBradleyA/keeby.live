@@ -94,7 +94,7 @@ export const transactionRouter = createTRPCRouter({
             return await ctx.db.user.update({
                 where: { id: userId },
                 data: {
-                    isVerified: true,
+                    isModerator: true,
                     paypalEmail: email,
                 },
             });

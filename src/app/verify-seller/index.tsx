@@ -79,7 +79,7 @@ export default function VerifySeller() {
                             </p>
 
                             {purchaseStage === "" &&
-                                sessionData.user.isVerified === true && (
+                                sessionData.user.isModerator === true && (
                                     <div className="flex justify-center">
                                         <Link
                                             href="/create-listing"
@@ -126,7 +126,7 @@ export default function VerifySeller() {
                                 )}
 
                             {purchaseStage === "" &&
-                                sessionData.user.isVerified === false && (
+                                sessionData.user.isModerator === false && (
                                     <div className="flex justify-center">
                                         <button
                                             className=" text-md keeb-shop-offer-button z-10 mt-10 flex cursor-pointer items-center gap-2 rounded-md bg-green-500 py-3 pl-1 pr-5 text-black "
@@ -422,13 +422,15 @@ export default function VerifySeller() {
                                     Status:{" "}
                                     <span
                                         className={`${
-                                            sessionData.user.isVerified === true
+                                            sessionData.user.isModerator ===
+                                            true
                                                 ? "text-green-500"
                                                 : ""
                                         }`}
                                     >
                                         {`${
-                                            sessionData.user.isVerified === true
+                                            sessionData.user.isModerator ===
+                                            true
                                                 ? "Verified"
                                                 : "Not Verified"
                                         }`}

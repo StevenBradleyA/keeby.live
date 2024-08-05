@@ -61,7 +61,7 @@ export default function CreateListing() {
     const utils = api.useUtils();
     const router = useRouter();
 
-    const accessDenied = !session || !session.user.isVerified;
+    const accessDenied = !session || !session.user.isModerator;
 
     const [description, setDescription] = useState<string>("");
     const [keycaps, setKeycaps] = useState<string>("");

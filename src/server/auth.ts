@@ -26,7 +26,7 @@
 //             profile: string;
 //             selectedTag: string;
 //             internetPoints: number;
-//             isVerified: boolean;
+//             isModerator: boolean;
 //             hasProfile: boolean;
 //             isAdmin: boolean;
 //             isNewsletter: boolean;
@@ -115,7 +115,6 @@ import { type Adapter } from "next-auth/adapters";
 import DiscordProvider from "next-auth/providers/discord";
 import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
-
 import { env } from "~/env.mjs";
 import { db } from "~/server/db";
 
@@ -130,7 +129,7 @@ declare module "next-auth" {
         user: {
             id: string;
             hasProfile: boolean;
-            isVerified: boolean;
+            isModerator: boolean;
             username: string;
             selectedTag: string;
             profile: string;

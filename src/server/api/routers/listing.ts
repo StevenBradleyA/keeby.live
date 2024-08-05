@@ -449,7 +449,7 @@ export const listingRouter = createTRPCRouter({
             } = input;
             if (
                 ctx.session.user.id === sellerId &&
-                ctx.session.user.isVerified
+                ctx.session.user.isModerator
             ) {
                 const createData: CreateData = {
                     title,
@@ -544,7 +544,7 @@ export const listingRouter = createTRPCRouter({
             } = input;
             if (
                 ctx.session.user.id === sellerId &&
-                ctx.session.user.isVerified
+                ctx.session.user.isModerator
             ) {
                 const listingCheck = await ctx.db.listing.findUnique({
                     where: { id: id },

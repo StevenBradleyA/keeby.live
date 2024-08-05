@@ -460,7 +460,7 @@ export default function UserProfile() {
                             />
 
                             {toggle === "KEEBSHOP" &&
-                                sessionData.user.isVerified && (
+                                sessionData.user.isModerator && (
                                     <div className="flex w-full items-end ">
                                         <div className="flex w-full items-center justify-between gap-5 ">
                                             <p className="flex-shrink-0">
@@ -480,7 +480,7 @@ export default function UserProfile() {
                                 )}
 
                             {toggle === "KEEBSHOP" &&
-                                !sessionData.user.isVerified && (
+                                !sessionData.user.isModerator && (
                                     <div className=" flex w-full items-end">
                                         <div className="flex w-full items-center gap-5">
                                             <p className="flex-shrink-0">

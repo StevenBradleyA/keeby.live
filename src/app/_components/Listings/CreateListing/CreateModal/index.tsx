@@ -6,7 +6,7 @@ import keebo from "@public/Profile/keebo.png";
 
 export default function CreateListingModal() {
     const { data: sessionData } = useSession();
-    const isVerifiedSeller = sessionData?.user.isVerified === true;
+    const isModeratorSeller = sessionData?.user.isModerator === true;
 
     return (
         <>
@@ -65,7 +65,7 @@ export default function CreateListingModal() {
                     <div className="flex justify-center">
                         <Link
                             href={
-                                isVerifiedSeller
+                                isModeratorSeller
                                     ? "/create-listing"
                                     : "/verify-seller"
                             }

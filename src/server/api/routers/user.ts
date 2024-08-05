@@ -7,6 +7,7 @@ import {
 import { env } from "~/env.mjs";
 import { compare } from "bcryptjs";
 import { removeFileFromS3 } from "../utils";
+import bcrypt from "bcryptjs";
 
 interface TokenData {
     scope: string;
@@ -260,6 +261,41 @@ export const userRouter = createTRPCRouter({
                     },
                 },
             });
+        }),
+
+    providerCheck: publicProcedure
+        .input(z.string())
+        .mutation(async ({ input, ctx }) => {
+            try {
+                // Check if the username exists in the database
+                const user = await ctx.db.user.findFirst({
+                    where: { email: input },
+                    include: {
+                        accounts: {
+                            select: {
+                                provider: true,
+                            },
+                        },
+                    },
+                });
+
+                if (!user) {
+                    return "Invalid credentials";
+                }
+                // If user exists, return the provider names
+                const providers = user.accounts.map(
+                    (account) => account.provider,
+                );
+                return providers.length > 0
+                    ? providers
+                    : "No providers found for this user";
+
+              
+            } catch (error) {
+                // Handle any errors that occur during the database query
+                console.error("Error checking username:", error);
+                throw new Error("Error checking username");
+            }
         }),
 
     usernameCheck: publicProcedure
@@ -642,7 +678,7 @@ export const userRouter = createTRPCRouter({
     //                     const updateUser = await ctx.db.user.update({
     //                         where: { id: userId },
     //                         data: {
-    //                             isVerified: true,
+    //                             isModerator: true,
     //                             refreshToken: tokenData.refresh_token,
     //                             paypalId: userInfo.user_id,
     //                         },
@@ -671,7 +707,7 @@ export const userRouter = createTRPCRouter({
     //         return await ctx.db.user.update({
     //             where: { id: userId },
     //             data: {
-    //                 isVerified: true,
+    //                 isModerator: true,
     //             },
     //         });
     //     }),

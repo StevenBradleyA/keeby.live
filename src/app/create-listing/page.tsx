@@ -5,7 +5,7 @@ import CreateListing from "~/app/_components/Listings/CreateListing/Create";
 export default function CreateListingAgreement() {
     const { data: session } = useSession();
 
-    const accessDenied = !session || !session.user.isVerified;
+    const accessDenied = !session || !session.user.isModerator;
 
     if (accessDenied) {
         return <Custom404 />;

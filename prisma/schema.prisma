@@ -329,9 +329,9 @@ model User {
     selectedTag    String?
     paypalEmail    String?
 
-    isVerified   Boolean @default(false)
     isAdmin      Boolean @default(false)
     hasProfile   Boolean @default(false)
+    isModerator  Boolean @default(false)
     isNewsletter Boolean @default(false)
     isBanned     Boolean @default(false)
 
