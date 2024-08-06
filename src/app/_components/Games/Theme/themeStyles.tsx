@@ -7,7 +7,7 @@ export type ThemeName =
     | "KEEBYRED"
     | "HACKERMAN";
 
-interface ThemeStyle {
+export interface ThemeStyle {
     title: string;
     baseColor: string;
     secondaryBase: string;
@@ -44,7 +44,7 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
         title: "",
         baseColor: "bg-dark",
         secondaryBase: "bg-darkGray",
-        backgroundColor: "bg-green-300",
+        backgroundColor: "bg-green-300/30",
         border: "border-green-300",
         textColor: "text-mediumGray",
         hoverText: "hover:text-green-300",

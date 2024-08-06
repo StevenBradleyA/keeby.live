@@ -1,4 +1,4 @@
-import Footer from "~/app/_components/Footer/mainFooter";
+"use client";
 import Image from "next/image";
 import portrait from "@public/About/portrait.png";
 import leftKeeb from "@public/About/left.png";
@@ -8,7 +8,7 @@ import keebo from "@public/Profile/keebo.png";
 import { useState } from "react";
 import ModalDialog from "~/app/_components/Modal";
 import SupportMe from "~/app/_components/Footer/supportModal";
-import TitleScripts from "~/app/_components/TitleScripts";
+import Footer from "~/app/_components/Footer/footer";
 
 export default function KeebyAbout() {
     // add support modal

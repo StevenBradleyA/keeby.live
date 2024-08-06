@@ -1,6 +1,6 @@
 "use client";
 import LeftMenu from "~/app/_components/Games/LeftMenu";
-import RightMenu from "~/app/_components/Games/RightMenu";
+// import RightMenu from "~/app/_components/Games/RightMenu";
 import SpeedMode from "~/app/_components/Games/SpeedMode";
 import { useState, useEffect } from "react";
 import { getCookies } from "cookies-next";
@@ -69,7 +69,7 @@ export default function KeebType() {
                 />
             </div>
 
-            {mode === "Speed" && (
+            {mode === "speed" && (
                 <div className="w-full z-20 px-60 ">
                     <SpeedMode
                         gameLength={gameLength}
@@ -81,7 +81,7 @@ export default function KeebType() {
                     />
                 </div>
             )}
-            {mode === "Scholar" && (
+            {mode === "scholar" && (
                 <div className="w-full z-20 ">
                     <ScholarMode
                         setGameOver={setGameOver}
@@ -93,12 +93,12 @@ export default function KeebType() {
                     />
                 </div>
             )}
-            {mode === "Freeplay" && (
+            {mode === "freeplay" && (
                 <div className="w-[70%] z-20 ">
                     <FreeplayMode theme={theme} />
                 </div>
             )}
-            {mode === "Hacktime" && (
+            {mode === "hackingTime" && (
                 <div className="w-[70%] h-full z-20">
                     <HacktimeMode />
                 </div>

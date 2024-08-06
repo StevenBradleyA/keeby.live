@@ -224,15 +224,15 @@ export default function Footer() {
                     <div className="flex flex-col gap-1">
                         <h2 className="text-green-500">Company</h2>
                         <Link
-                            href="/keebdex/about"
-                            aria-label="privacy"
+                            href="/about"
+                            aria-label="Learn about Keeby!"
                             className="ease-in hover:text-green-500"
                         >
                             About
                         </Link>
                         <Link
                             href="/keebdex/newsletter"
-                            aria-label="privacy"
+                            aria-label="Want to join our Newsletter?"
                             className="ease-in hover:text-green-500"
                         >
                             Newsletter
@@ -240,6 +240,7 @@ export default function Footer() {
                         <button
                             onClick={openModal}
                             className="ease-in hover:text-green-500"
+                            aria-label="Want to Support Keeby?"
                         >
                             Support Keeby
                         </button>

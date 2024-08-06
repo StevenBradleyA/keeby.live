@@ -173,8 +173,8 @@ export default function Navigation() {
                         ref={menuRef}
                     >
                         <Link
-                            href={"/keebshare"}
-                            aria-label="share your keyboard with others"
+                            href={"/"}
+                            aria-label="Practice your typing skills"
                             className="hover:text-green-500 ease-in "
                             onClick={() => setIsMenuOpen(false)}
                         >

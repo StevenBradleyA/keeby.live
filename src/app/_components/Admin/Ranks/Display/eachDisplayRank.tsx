@@ -62,8 +62,6 @@ export default function AdminEachDisplayRank({
         setIsModalOpen(false);
     };
 
-    console.log(session);
-
     return (
         <div className="relative w-72">
             <div className="rounded-xl bg-black/25 p-5 text-sm text-failure shadow-xl hover:bg-black/30">
