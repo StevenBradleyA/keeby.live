@@ -19,7 +19,7 @@ import ManagePosts from "~/app/_components/Posts/ManagePosts";
 import DisplayFavoriteListings from "~/app/_components/Listings/DisplayFavoriteListings";
 import DisplayFavoritePosts from "~/app/_components/Posts/DisplayFavoritePosts";
 import DisplayProfileKeebs from "~/app/_components/Profile/Keeb/DisplayKeebs";
-import DisplayAllGameStatsCheck from "~/app/_components/KeebType/GameStats/displayAllGameStatsCheck";
+import DisplayAllGameStatsCheck from "~/app/_components/Games/GameStats/displayAllGameStatsCheck";
 import UpdateUserTag from "~/app/_components/Profile/User/Update/Tag";
 import ModalDialog from "~/app/_components/Modal";
 import UpdateProfile from "~/app/_components/Profile/User/Update/updateProfile";
@@ -98,7 +98,6 @@ export default function UserProfile() {
             </div>
         );
     }
-    console.log(sessionData?.user.profile);
 
     return sessionData && sessionData.user ? (
         <>

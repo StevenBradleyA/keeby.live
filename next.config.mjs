@@ -63,7 +63,6 @@ const config = {
             "s3.us-west-2.amazonaws.com",
             "lh3.googleusercontent.com",
             "www.paypalobjects.com",
-            // "local.testing.s3.us-west-2.amazonaws.com",
         ],
     },
 };

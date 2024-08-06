@@ -4,8 +4,8 @@ import { useState } from "react";
 import ModalDialog from "../Modal";
 import SupportMe from "./supportModal";
 import { useGlobalState } from "../Context/GlobalState/globalState";
-import { themeStyles } from "../KeebType/Theme/themeStyles";
-import type { ThemeName } from "../KeebType/Theme/themeStyles";
+import { themeStyles } from "../Games/Theme/themeStyles";
+import type { ThemeName } from "../Games/Theme/themeStyles";
 
 export default function KeebTypeFooter() {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);

@@ -80,13 +80,16 @@ export default function LeftMenu({
         setScholarType(newScholarType);
     };
 
+    // remove selects and lets do custom modals that look really cool and work with the current color theme...
+    //
+
     return (
         <div
-            className={`flex flex-col rounded-xl border-2 ${styles.border} border-opacity-50 ${styles.backgroundColor} bg-opacity-30 p-5 ${styles.hit} w-full  laptop:h-[65%] desktop:h-[55%] `}
+            className={`flex flex-col rounded-xl  border-opacity-50 ${styles.backgroundColor} bg-opacity-30 p-5 ${styles.hit} w-full h-full`}
         >
             <label className="">Mode</label>
             <select
-                className={` w-full rounded-md  ${styles.menuInputBackground} py-1 shadow-sm `}
+                className={` w-full rounded-md  ${styles.menuInputBackground} py-1 shadow-sm`}
                 value={mode}
                 onChange={handleModeChange}
             >
