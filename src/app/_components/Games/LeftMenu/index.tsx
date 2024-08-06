@@ -137,22 +137,6 @@ export default function LeftMenu({
                 </svg>
                 Mode
             </button>
-            <ModalDialog isOpen={isModeModalOpen} onClose={closeModeModal}>
-                <ModeModal
-                    setGameOver={setGameOver}
-                    setMode={setMode}
-                    styles={styles}
-                    closeModeModal={closeModeModal}
-                />
-            </ModalDialog>
-
-            <ModalDialog isOpen={isThemeModalOpen} onClose={closeThemeModal}>
-                <ThemeModal
-                    setTheme={setTheme}
-                    styles={styles}
-                    closeThemeModal={closeThemeModal}
-                />
-            </ModalDialog>
 
             {mode === "speed" && (
                 <>
@@ -232,6 +216,23 @@ export default function LeftMenu({
                     background={styles.menuInputBackground}
                 />
             )}
+
+            <ModalDialog isOpen={isModeModalOpen} onClose={closeModeModal}>
+                <ModeModal
+                    setGameOver={setGameOver}
+                    setMode={setMode}
+                    styles={styles}
+                    closeModeModal={closeModeModal}
+                />
+            </ModalDialog>
+
+            <ModalDialog isOpen={isThemeModalOpen} onClose={closeThemeModal}>
+                <ThemeModal
+                    setTheme={setTheme}
+                    styles={styles}
+                    closeThemeModal={closeThemeModal}
+                />
+            </ModalDialog>
         </div>
     );
 }

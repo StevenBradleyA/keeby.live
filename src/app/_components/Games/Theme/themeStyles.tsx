@@ -75,7 +75,7 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
         title: "",
         baseColor: "bg-dark",
         secondaryBase: "bg-darkGray",
-        backgroundColor: "bg-red-500",
+        backgroundColor: "bg-red-500/30",
         border: "border-red-500",
         textColor: "text-mediumGray",
         hoverText: "hover:text-red-500",
