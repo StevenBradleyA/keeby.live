@@ -12,7 +12,8 @@ import PostPreviewDeleteFavorite from "../DisplayPosts/DisplayPostPreviews/Favor
 import ModalDialog from "~/app/_components/Modal";
 import SignInModal from "~/app/_components/Comments/Modal/signInModal";
 import DisplayYouTubePostPreview from "../DisplayPosts/DisplayPostPreviews/displayYouTubePreview";
-import Footer from "~/app/_components/Footer/mainFooter";
+import Footer from "../_components/Footer/footer";
+
 import { formatDistance } from "date-fns";
 import Link from "next/link";
 import UserPostPreviews from "./userPostPreviews";

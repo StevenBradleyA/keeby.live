@@ -1,6 +1,8 @@
+"use client";
 import { signIn, useSession } from "next-auth/react";
 
-import Footer from "~/app/_components/Footer/mainFooter";
+import Footer from "../_components/Footer/footer";
+
 import { api } from "~/trpc/react";
 import toast from "react-hot-toast";
 
@@ -65,7 +67,7 @@ export default function Newsletter() {
                         "linear-gradient(to bottom, #87CEEB,#A0DFFD,#B0E0E6 , #ADD8E6, #C3B1E1, #D6A6D6, #FBC1CC)",
                 }}
             ></div>
-            <div className="relative z-10 h-[88vh] w-full overflow-hidden">
+            <div className="relative z-10 h-[88vh] w-full overflow-hidden mt-40">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="absolute left-1/2 top-0 h-[500px] w-[500px] -translate-x-1/2"
@@ -236,7 +238,7 @@ export default function Newsletter() {
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 1024 1024"
-                        className="-mb-2 w-28"
+                        className="-mb-2 w-28 "
                         version="1.1"
                         stroke="black"
                     >
@@ -319,7 +321,7 @@ export default function Newsletter() {
                         </div>
                         <div className="mt-5 flex justify-center gap-10">
                             <button
-                                className="border border-gray-400 border-l-gray-100 border-t-gray-100 bg-gray-200 px-4 py-2 text-black shadow-inner active:border-b-gray-400 active:border-l-gray-200 active:border-r-gray-400 active:border-t-gray-200"
+                                className="border hover:brightness-95 border-gray-400 border-l-gray-100 border-t-gray-100 bg-gray-200 px-4 py-2 text-black shadow-inner active:border-b-gray-400 active:border-l-gray-200 active:border-r-gray-400 active:border-t-gray-200"
                                 onClick={(e) => {
                                     if (sessionData === null) {
                                         void signIn();
@@ -329,7 +331,7 @@ export default function Newsletter() {
                                 Yes, Please
                             </button>
                             <button
-                                className="border border-gray-400 border-l-gray-100 border-t-gray-100 bg-gray-200 px-4 py-2 text-black shadow-inner active:border-b-gray-400 active:border-l-gray-200 active:border-r-gray-400 active:border-t-gray-200"
+                                className="border hover:brightness-95 border-gray-400 border-l-gray-100 border-t-gray-100 bg-gray-200 px-4 py-2 text-black shadow-inner active:border-b-gray-400 active:border-l-gray-200 active:border-r-gray-400 active:border-t-gray-200"
                                 onClick={(e) => {
                                     if (sessionData === null) {
                                         void signIn();
@@ -343,7 +345,7 @@ export default function Newsletter() {
                 </div>
             </div>
 
-            <div className=" z-10 w-full">
+            <div className="relative z-40 w-full">
                 <Footer />
             </div>
         </>

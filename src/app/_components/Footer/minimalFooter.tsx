@@ -21,6 +21,8 @@ export default function KeebTypeFooter() {
     const { theme } = useGlobalState();
     const styles = themeStyles[theme as ThemeName] || themeStyles["KEEBY"];
 
+    // maybe replace text with simple icons 
+
     return (
         <div className={`${styles.textColor} flex gap-5 `}>
             <Link
@@ -28,28 +30,35 @@ export default function KeebTypeFooter() {
                 aria-label="about keeby"
                 className={`ease-in ${styles.hoverText} `}
             >
-                About
+                about
+            </Link>
+            <Link
+                href="/keebdex/how-keeby-works"
+                aria-label="how keeby works"
+                className={`ease-in ${styles.hoverText} `}
+            >
+                marketplace
+            </Link>
+            <Link
+                href="/keebdex/how-keeby-works"
+                aria-label="how keeby works"
+                className={`ease-in ${styles.hoverText} `}
+            >
+                share
+            </Link>
+            <Link
+                href="/keebdex/how-keeby-works"
+                aria-label="how keeby works"
+                className={`ease-in ${styles.hoverText} `}
+            >
+                shop
             </Link>
             <button
                 onClick={openModal}
                 className={`ease-in ${styles.hoverText} `}
             >
-                Support Keeby
+                support
             </button>
-            <Link
-                href="/keebdex/how-keeby-works"
-                aria-label="how keeby works"
-                className={`ease-in ${styles.hoverText} `}
-            >
-                Keeb Share
-            </Link>
-            <Link
-                href="/keebdex/how-keeby-works"
-                aria-label="how keeby works"
-                className={`ease-in ${styles.hoverText} `}
-            >
-                Keeb Shop
-            </Link>
             <ModalDialog isOpen={isModalOpen} onClose={closeModal}>
                 <SupportMe />
             </ModalDialog>
@@ -59,14 +68,14 @@ export default function KeebTypeFooter() {
                 aria-label="Privacy Policy"
                 className={`ease-in ${styles.hoverText} `}
             >
-                Privacy
+                privacy
             </Link>
             <Link
                 href="/terms-of-service"
                 aria-label="Terms of Service"
                 className={`ease-in ${styles.hoverText} `}
             >
-                Terms
+                terms
             </Link>
         </div>
     );

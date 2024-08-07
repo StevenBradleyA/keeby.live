@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { debounce } from "lodash";
 import EachAdminPost from "~/app/_components/Admin/Posts";
-import Footer from "~/app/_components/Footer/mainFooter";
+import Footer from "../_components/Footer/footer";
 
 export default function AdminPosts() {
     const { data: session } = useSession();

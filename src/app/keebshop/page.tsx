@@ -12,7 +12,7 @@ import NotificationSvg from "~/app/_components/Svgs/notification";
 import { getCookies } from "cookies-next";
 import { setCookie } from "cookies-next";
 import { debounce } from "lodash";
-import Footer from "~/app/_components/Footer/mainFooter";
+import Footer from "../_components/Footer/footer";
 
 export default function KeebShopHome() {
     const cookies = getCookies();

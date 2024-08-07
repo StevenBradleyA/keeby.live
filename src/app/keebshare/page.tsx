@@ -9,7 +9,8 @@ import { setCookie } from "cookies-next";
 import CreatePostModal from "~/app/_components/Posts/CreatePost";
 import DisplayNewPostPreviews from "~/app/_components/Posts/DisplayPosts/DisplayPostPreviews/displayNewPostPreviews";
 import DisplayPopularPostPreviews from "~/app/_components/Posts/DisplayPosts/DisplayPostPreviews/displayPopularPostPreviews";
-import Footer from "~/app/_components/Footer/mainFooter";
+import Footer from "../_components/Footer/footer";
+
 import { debounce } from "lodash";
 
 export default function KeebShare() {

@@ -151,8 +151,9 @@ export default function Footer() {
                 <div className="flex gap-12">
                     <div className="flex flex-col gap-1">
                         <h2 className="text-green-500">Explore</h2>
+
                         <Link
-                            href="/"
+                            href="/keebshop"
                             aria-label="privacy"
                             className="ease-in hover:text-green-500"
                         >
@@ -173,32 +174,39 @@ export default function Footer() {
                             Keeb Type
                         </Link>
                         <Link
+                            href="/marketplace"
+                            aria-label="look at mechanical keyboard listings"
+                            className="ease-in hover:text-green-500"
+                        >
+                            Marketplace
+                        </Link>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                        <h2 className="text-green-500">Keeby Users</h2>
+                        <Link
                             href="/profile"
-                            aria-label="privacy"
+                            aria-label="profile"
                             className="ease-in hover:text-green-500"
                         >
                             Profile
                         </Link>
-                    </div>
-                    <div className="flex flex-col gap-1">
-                        <h2 className="text-green-500">Sellers & Buyers</h2>
                         <Link
                             href="/keebdex/how-keeby-works"
-                            aria-label="privacy"
+                            aria-label="learn how keeby works"
                             className="ease-in hover:text-green-500"
                         >
                             How Keeby works
                         </Link>
                         <Link
                             href="/keebdex/scam-prevention"
-                            aria-label="privacy"
+                            aria-label="prevent marketplace scams"
                             className="ease-in hover:text-green-500"
                         >
                             Scam Prevention
                         </Link>
                         <Link
                             href="/profile/messages"
-                            aria-label="privacy"
+                            aria-label="See your messages"
                             className="ease-in hover:text-green-500"
                         >
                             Messages
@@ -207,15 +215,15 @@ export default function Footer() {
                     <div className="flex flex-col gap-1">
                         <h2 className="text-green-500">Help</h2>
                         <Link
-                            href="/keebdex"
-                            aria-label="privacy"
+                            href="/contact"
+                            aria-label="contact us for support"
                             className="ease-in hover:text-green-500"
                         >
-                            Keeb Dex
+                            Contact Us
                         </Link>
                         <Link
                             href="/keebdex/frequently-asked-questions"
-                            aria-label="privacy"
+                            aria-label="frequently asked questions"
                             className="ease-in hover:text-green-500"
                         >
                             FAQ
@@ -231,7 +239,7 @@ export default function Footer() {
                             About
                         </Link>
                         <Link
-                            href="/keebdex/newsletter"
+                            href="/newsletter"
                             aria-label="Want to join our Newsletter?"
                             className="ease-in hover:text-green-500"
                         >
@@ -248,13 +256,6 @@ export default function Footer() {
                         <ModalDialog isOpen={isModalOpen} onClose={closeModal}>
                             <SupportMe />
                         </ModalDialog>
-                        <Link
-                            href="/keebdex/contact"
-                            aria-label="privacy"
-                            className="ease-in hover:text-green-500"
-                        >
-                            Contact Us
-                        </Link>
                     </div>
                 </div>
             </div>

@@ -1,4 +1,5 @@
-import Footer from "~/app/_components/Footer/mainFooter";
+import Footer from "../_components/Footer/footer";
+
 import DisplayListingPage from "~/app/_components/Listings/DisplayListing";
 import LoadingSpinner from "~/app/_components/Loading";
 import { api } from "~/trpc/react";

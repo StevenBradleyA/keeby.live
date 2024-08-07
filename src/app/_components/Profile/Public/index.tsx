@@ -8,7 +8,8 @@ import EachReceivedReviewCard from "~/app/_components/Reviews/Display/eachReceiv
 import EachPublicProfileReview from "~/app/_components/Reviews/Display/publicProfileReviews";
 import { RadialBarChart, RadialBar, Legend, PolarAngleAxis } from "recharts";
 import CustomProgressPie from "./customProgressPie";
-import Footer from "~/app/_components/Footer/mainFooter";
+import Footer from "../_components/Footer/footer";
+
 import unranked from "@public/KeebType/unranked.png";
 import TitleScripts from "~/app/_components/TitleScripts";
 import { motion } from "framer-motion";

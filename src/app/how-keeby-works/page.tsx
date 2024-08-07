@@ -1,4 +1,4 @@
-import Footer from "~/app/_components/Footer/mainFooter";
+import Footer from "../_components/Footer/footer";
 
 export default function HowKeebyWorks() {
     // what do I actually want here lmao????

@@ -1,6 +1,7 @@
 import { signIn, useSession } from "next-auth/react";
 
-import Footer from "~/app/_components/Footer/mainFooter";
+import Footer from "../_components/Footer/footer";
+
 import { api } from "~/trpc/react";
 import toast from "react-hot-toast";
 import { useEffect, useState } from "react";

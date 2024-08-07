@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { debounce } from "lodash";
 import { api } from "~/trpc/react";
 import EachAdminUser from "~/app/_components/Admin/User";
-import Footer from "~/app/_components/Footer/mainFooter";
+import Footer from "../_components/Footer/footer";
 
 export default function AdminUsers() {
     const { data: session } = useSession();

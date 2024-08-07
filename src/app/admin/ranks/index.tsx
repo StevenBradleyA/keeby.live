@@ -10,7 +10,7 @@ import AdminCreateRank from "~/app/_components/Admin/Ranks/Create";
 import AdminCreateTag from "~/app/_components/Admin/Tags/Create";
 import AdminEachDisplayTag from "~/app/_components/Admin/Tags/Display/eachDisplayTag";
 import AdminEachDisplayRank from "~/app/_components/Admin/Ranks/Display/eachDisplayRank";
-import Footer from "~/app/_components/Footer/mainFooter";
+import Footer from "../_components/Footer/footer";
 
 export default function AdminRanks() {
     const { data: session } = useSession();

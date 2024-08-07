@@ -1,5 +1,6 @@
 import Image from "next/image";
-import Footer from "~/app/_components/Footer/mainFooter";
+import Footer from "../_components/Footer/footer";
+
 import { useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import keebo from "@public/Profile/keebo.png";
