@@ -70,7 +70,7 @@ export default function KeebType() {
             </div>
 
             {mode === "speed" && (
-                <div className="w-full z-20 px-60 ">
+                <div className="w-full z-20 ">
                     <SpeedMode
                         gameLength={gameLength}
                         setGameOver={setGameOver}
@@ -82,7 +82,7 @@ export default function KeebType() {
                 </div>
             )}
             {mode === "scholar" && (
-                <div className="w-full z-20 ">
+                <div className="w-full z-20 px-60 ">
                     <ScholarMode
                         setGameOver={setGameOver}
                         gameOver={gameOver}
@@ -94,12 +94,12 @@ export default function KeebType() {
                 </div>
             )}
             {mode === "freeplay" && (
-                <div className="w-[70%] z-20 ">
+                <div className="w-full z-20 px-80 ">
                     <FreeplayMode theme={theme} />
                 </div>
             )}
             {mode === "hackingTime" && (
-                <div className="w-[70%] h-full z-20">
+                <div className="w-full h-full z-20 px-96 pb-20">
                     <HacktimeMode />
                 </div>
             )}

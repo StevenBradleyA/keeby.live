@@ -107,6 +107,20 @@ select:-webkit-autofill:focus {
     filter: invert(54%) sepia(20%) saturate(1111%) hue-rotate(220deg)
         brightness(91%) contrast(89%);
 }
+
+.png-logo {
+    filter: invert(39%) sepia(0%) saturate(0%) hue-rotate(351deg)
+        brightness(96%) contrast(99%);
+    transition: transform 0.4s cubic-bezier(0.35, 0, 0, 1);
+    transform: rotate(0);
+}
+
+.png-logo:hover {
+    transform: rotate(180deg);
+    filter: invert(48%) sepia(5%) saturate(3277%) hue-rotate(72deg)
+        brightness(116%) contrast(126%);
+}
+
 /* --------------                            --------------  */
 /* --------------                            --------------  */
 

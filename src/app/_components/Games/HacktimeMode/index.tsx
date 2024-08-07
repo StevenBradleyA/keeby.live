@@ -135,29 +135,28 @@ $ echo "Rainbow Table Simulation completed."`;
     }, [scriptIndex, focusRef, hackingScript]);
 
     // matrix with hacktime logos
-
     return (
         <div className="relative z-10 flex w-full px-5 text-lg text-green-500 h-full">
             <div className="absolute -right-10 bottom-0 flex flex-col gap-2">
                 <Image
                     alt="hacktime logo"
                     src={hacktimeLogo}
-                    className="png-green h-12 w-12"
+                    className="png-green  h-10 w-10"
                 />
                 <Image
                     alt="hacktime logo"
                     src={hacktimeLogo}
-                    className="png-green h-12 w-12"
+                    className="png-green  h-10 w-10"
                 />
                 <Image
                     alt="hacktime logo"
                     src={hacktimeLogo}
-                    className="png-green h-12 w-12"
+                    className="png-green  h-10 w-10"
                 />
                 <Image
                     alt="hacktime logo"
                     src={hacktimeLogo}
-                    className="png-green h-12 w-12"
+                    className="png-green  h-10 w-10"
                 />
             </div>
 
@@ -179,23 +178,23 @@ $ echo "Rainbow Table Simulation completed."`;
             <div className="hacker-background"></div>
             <div className="hacker-scanlines"></div>
             <div className="z-20 h-full w-full overflow-hidden rounded-xl bg-black bg-opacity-40 pb-5 ">
-                <div className="flex h-10 w-full items-center justify-between bg-darkGray text-sm text-mediumGray">
+                <div className="flex h-10 w-full items-center justify-between bg-darkGray/60 text-sm text-mediumGray">
                     <div className="flex w-1/2 justify-between">
-                        <div className="flex gap-1 pl-5">
+                        <div className="flex gap-1 pl-5 z-20">
                             <Image
                                 alt="hacktime logo"
                                 src={hacktimeLogo}
-                                className="png-dark-gray h-5 w-5"
-                            />{" "}
-                            <Image
-                                alt="hacktime logo"
-                                src={hacktimeLogo}
-                                className="png-dark-gray h-5 w-5"
+                                className="png-logo h-5 w-5 z-40"
                             />
                             <Image
                                 alt="hacktime logo"
                                 src={hacktimeLogo}
-                                className="png-dark-gray h-5 w-5"
+                                className="png-logo h-5 w-5 z-40"
+                            />
+                            <Image
+                                alt="hacktime logo"
+                                src={hacktimeLogo}
+                                className="png-logo h-5 w-5 z-40"
                             />
                         </div>
                         {`-zsh`}

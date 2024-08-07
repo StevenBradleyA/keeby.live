@@ -8,6 +8,7 @@ import type { ThemeName } from "../Theme/themeStyles";
 import ModalDialog from "../../Modal";
 import ModeModal from "./modeModal";
 import ThemeModal from "./themeModal";
+import LengthModal from "./lengthModal";
 
 interface LeftMenuProps {
     mode: string;
@@ -53,23 +54,14 @@ export default function LeftMenu({
         useState<boolean>(false);
     const [isKeebModalOpen, setIsKeebModalOpen] = useState<boolean>(false);
 
-    const handleGameLength = (e: ChangeEvent<HTMLSelectElement>) => {
-        const newGameLength: number = +e.target.value;
-        setCookie("gameLength", newGameLength, {
-            maxAge: 60 * 60 * 24 * 365,
-            path: "/",
-        });
-        setGameLength(newGameLength);
-    };
-
-    const handleScholarTypeChange = (e: ChangeEvent<HTMLSelectElement>) => {
-        const newScholarType: string = e.target.value;
-        setCookie("scholarType", newScholarType, {
-            maxAge: 60 * 60 * 24 * 365,
-            path: "/",
-        });
-        setScholarType(newScholarType);
-    };
+    // const handleScholarTypeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    //     const newScholarType: string = e.target.value;
+    //     setCookie("scholarType", newScholarType, {
+    //         maxAge: 60 * 60 * 24 * 365,
+    //         path: "/",
+    //     });
+    //     setScholarType(newScholarType);
+    // };
 
     const openModeModal = () => {
         setIsModeModalOpen(true);
@@ -140,20 +132,8 @@ export default function LeftMenu({
 
             {mode === "speed" && (
                 <>
-                    {/* <label className="mt-2 ">Length</label>
-                    <select
-                        className={` rounded-md shadow-sm ${styles.menuInputBackground} py-1 `}
-                        value={gameLength}
-                        onChange={handleGameLength}
-                    >
-                        <option value={10}>10</option>
-                        <option value={20} defaultValue={20}>
-                            20
-                        </option>
-                        <option value={50}>50</option>
-                    </select> */}
                     <button
-                        className=" flex flex-col items-center justify-center"
+                        className=" flex flex-col items-center justify-center hover:opacity-70"
                         onClick={openLengthModal}
                     >
                         <svg
@@ -192,7 +172,7 @@ export default function LeftMenu({
             )}
 
             <button
-                className=" flex flex-col items-center justify-center"
+                className=" flex flex-col items-center justify-center hover:opacity-70"
                 onClick={openThemeModal}
             >
                 <svg
@@ -231,6 +211,14 @@ export default function LeftMenu({
                     setTheme={setTheme}
                     styles={styles}
                     closeThemeModal={closeThemeModal}
+                />
+            </ModalDialog>
+            <ModalDialog isOpen={isLengthModalOpen} onClose={closeLengthModal}>
+                <LengthModal
+                    setGameLength={setGameLength}
+                    styles={styles}
+                    setGameOver={setGameOver}
+                    closeLengthModal={closeLengthModal}
                 />
             </ModalDialog>
         </div>

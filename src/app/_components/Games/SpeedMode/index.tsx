@@ -337,7 +337,7 @@ export default function SpeedMode({
     return (
         <div className="z-10 flex flex-col w-full">
             {gameOver === false && (
-                <div className="mt-72 flex w-full flex-col">
+                <div className="mt-72 flex w-full flex-col px-60">
                     <SentenceGenerator
                         gameLength={gameLength}
                         setPrompt={setPrompt}
@@ -536,7 +536,7 @@ export default function SpeedMode({
             )}
 
             {gameOver && session === null && (
-                <div className={`flex w-full flex-col ${styles.hit}`}>
+                <div className={`flex w-full flex-col ${styles.hit} pl-60 `}>
                     <div
                         className={`z-10 w-full rounded-lg border-2 ${styles.border} border-opacity-50 ${styles.backgroundColor} flex justify-between bg-opacity-30 px-5 py-2`}
                     >

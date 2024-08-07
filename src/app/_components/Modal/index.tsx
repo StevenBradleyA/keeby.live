@@ -1,5 +1,7 @@
-import { useCallback, useEffect } from "react";
+"use client";
+import { useCallback, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import type { MutableRefObject } from "react";
 
 interface ModalDialogProps {
     isOpen: boolean;
@@ -12,31 +14,62 @@ const ModalDialog: React.FC<ModalDialogProps> = ({
     onClose,
     children,
 }) => {
+    const modalRef: MutableRefObject<HTMLDivElement | null> = useRef(null);
+
+    // const handleClose = useCallback(() => {
+    //     onClose();
+    // }, [onClose]);
+
+    // const handleBackgroundClick = () => {
+    //     handleClose();
+    // };
+
+    // const handleModalClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    //     event.stopPropagation();
+    // };
+
+    // useEffect(() => {
+    //     const handleOutsideClick = (e: Event) => {
+    //         if (
+    //             isOpen &&
+    //             modalRef.current &&
+    //             !modalRef.current.contains(e.target as Node)
+    //         ) {
+    //             handleClose();
+    //         }
+    //     };
+
+    //     window.addEventListener("mousedown", handleOutsideClick);
+
+    //     return () => {
+    //         window.removeEventListener("mousedown", handleOutsideClick);
+    //     };
+    // }, [isOpen, handleClose]);
+
     const handleClose = useCallback(() => {
         onClose();
     }, [onClose]);
 
-    const handleBackgroundClick = () => {
-        handleClose();
-    };
+    const handleOutsideClick = useCallback(
+        (e: Event) => {
+            if (!isOpen) return;
 
-    const handleModalClick = (event: React.MouseEvent<HTMLDivElement>) => {
-        event.stopPropagation();
-    };
-
-    useEffect(() => {
-        const handleOutsideClick = (event: MouseEvent) => {
-            if (isOpen && event.target instanceof HTMLDialogElement) {
+            if (
+                modalRef.current &&
+                !modalRef.current.contains(e.target as Node)
+            ) {
                 handleClose();
             }
-        };
+        },
+        [isOpen, handleClose],
+    );
 
+    useEffect(() => {
         window.addEventListener("mousedown", handleOutsideClick);
-
         return () => {
             window.removeEventListener("mousedown", handleOutsideClick);
         };
-    }, [isOpen, handleClose]);
+    }, [isOpen, handleClose, handleOutsideClick]);
 
     return (
         <AnimatePresence>
@@ -47,7 +80,6 @@ const ModalDialog: React.FC<ModalDialogProps> = ({
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.3, ease: "easeInOut" }}
-                    onClick={handleBackgroundClick}
                 >
                     <motion.div
                         className="fixed inset-0 bg-black/40"
@@ -66,7 +98,7 @@ const ModalDialog: React.FC<ModalDialogProps> = ({
                             damping: 15,
                             stiffness: 250,
                         }}
-                        onClick={handleModalClick}
+                        ref={modalRef}
                     >
                         <button
                             className="absolute right-4 top-2 transform text-lg text-gray-600 transition-transform duration-300 ease-in-out hover:rotate-45 hover:scale-110 hover:text-green-500"
