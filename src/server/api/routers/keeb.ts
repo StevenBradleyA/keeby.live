@@ -13,7 +13,7 @@ export const keebRouter = createTRPCRouter({
     getAllByUserId: publicProcedure
         .input(z.string())
         .query(({ ctx, input }) => {
-            return ctx.prisma.keeb.findMany({
+            return ctx.db.keeb.findMany({
                 where: {
                     userId: input,
                 },

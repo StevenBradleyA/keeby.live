@@ -21,7 +21,6 @@ export default function KeebType() {
     const cookies = getCookies();
     const [mode, setMode] = useState<string>("Speed");
     const { theme, setTheme } = useGlobalState();
-    const [keeb, setKeeb] = useState<string>("");
     const [keebId, setKeebId] = useState<string>("");
     const [gameOver, setGameOver] = useState<boolean>(false);
 
@@ -39,9 +38,7 @@ export default function KeebType() {
         if (cookies.gameLength) {
             setGameLength(+cookies.gameLength);
         }
-        if (cookies.keeb) {
-            setKeeb(cookies.keeb);
-        }
+
         if (cookies.keebId) {
             setKeebId(cookies.keebId);
         }
@@ -59,8 +56,6 @@ export default function KeebType() {
                     setGameLength={setGameLength}
                     theme={theme}
                     setTheme={setTheme}
-                    keeb={keeb}
-                    setKeeb={setKeeb}
                     keebId={keebId}
                     setKeebId={setKeebId}
                     scholarType={scholarType}

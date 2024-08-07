@@ -9,6 +9,7 @@ import ModalDialog from "../../Modal";
 import ModeModal from "./modeModal";
 import ThemeModal from "./themeModal";
 import LengthModal from "./lengthModal";
+import KeebModal from "./keebModal";
 
 interface LeftMenuProps {
     mode: string;
@@ -17,8 +18,6 @@ interface LeftMenuProps {
     setGameLength: (gameLength: number) => void;
     theme: string;
     setTheme: (theme: string) => void;
-    keeb: string;
-    setKeeb: (keeb: string) => void;
     keebId: string;
     setKeebId: (keebId: string) => void;
     scholarType: string;
@@ -33,8 +32,6 @@ export default function LeftMenu({
     setGameLength,
     theme,
     setTheme,
-    keeb,
-    setKeeb,
     keebId,
     setKeebId,
     scholarType,
@@ -92,8 +89,11 @@ export default function LeftMenu({
     const closeScholarTypeModal = () => {
         setIsScholarTypeModalOpen(false);
     };
+
     const openKeebModal = () => {
-        setIsKeebModalOpen(true);
+        if (session && session.user) {
+            setIsKeebModalOpen(true);
+        }
     };
 
     const closeKeebModal = () => {
@@ -187,7 +187,7 @@ export default function LeftMenu({
                 className=" flex flex-col items-center justify-center hover:opacity-70"
                 onClick={() => {
                     if (session && session.user && session.user.hasProfile) {
-                        openKeebModal;
+                        openKeebModal();
                     } else {
                         void signIn();
                     }
@@ -290,17 +290,6 @@ export default function LeftMenu({
                 Learn about keyboards
             </button>
 
-            {/* {session && session.user.hasProfile && (
-                <MenuKeebSelection
-                    userId={session.user.id}
-                    keeb={keeb}
-                    keebId={keebId}
-                    setKeeb={setKeeb}
-                    setKeebId={setKeebId}
-                    background={styles.menuInputBackground}
-                />
-            )} */}
-
             <ModalDialog isOpen={isModeModalOpen} onClose={closeModeModal}>
                 <ModeModal
                     setGameOver={setGameOver}
@@ -324,6 +313,18 @@ export default function LeftMenu({
                     setGameOver={setGameOver}
                     closeLengthModal={closeLengthModal}
                 />
+            </ModalDialog>
+            <ModalDialog isOpen={isKeebModalOpen} onClose={closeKeebModal}>
+                {session?.user.id && (
+                    <KeebModal
+                        styles={styles}
+                        setGameOver={setGameOver}
+                        closeKeebModal={closeKeebModal}
+                        userId={session.user.id}
+                        setKeebId={setKeebId}
+                        keebId={keebId}
+                    />
+                )}
             </ModalDialog>
         </div>
     );
