@@ -36,7 +36,7 @@ export default function EachManageListingCard({
         <div className="keebshop-listing-preview-container relative flex w-full flex-col">
             <Link
                 href={{
-                    pathname: "/keebshop/[listingId]",
+                    pathname: "/marketplace/[listingId]",
                     query: { listingId: listing.id },
                 }}
             >

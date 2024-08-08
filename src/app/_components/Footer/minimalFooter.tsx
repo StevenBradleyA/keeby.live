@@ -21,7 +21,7 @@ export default function KeebTypeFooter() {
     const { theme } = useGlobalState();
     const styles = themeStyles[theme as ThemeName] || themeStyles["KEEBY"];
 
-    // maybe replace text with simple icons 
+    // maybe replace text with simple icons
 
     return (
         <div className={`${styles.textColor} flex gap-5 `}>
@@ -33,22 +33,22 @@ export default function KeebTypeFooter() {
                 about
             </Link>
             <Link
-                href="/keebdex/how-keeby-works"
-                aria-label="how keeby works"
+                href="/marketplace"
+                aria-label="Checkout out keyboard listings"
                 className={`ease-in ${styles.hoverText} `}
             >
                 marketplace
             </Link>
             <Link
-                href="/keebdex/how-keeby-works"
-                aria-label="how keeby works"
+                href="/share"
+                aria-label="Share your keyboard with others"
                 className={`ease-in ${styles.hoverText} `}
             >
                 share
             </Link>
             <Link
-                href="/keebdex/how-keeby-works"
-                aria-label="how keeby works"
+                href="/shop"
+                aria-label="Shop mechanical keyboards"
                 className={`ease-in ${styles.hoverText} `}
             >
                 shop

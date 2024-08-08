@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useState } from "react";
 import ModalDialog from "~/app/_components/Modal";
 import plus from "@public/Vectors/plus-plus.png";

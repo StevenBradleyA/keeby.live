@@ -498,7 +498,7 @@ export default function SpeedMode({
             )}
 
             {gameOver && finishedGameId && session && session.user && (
-                <div className={`flex w-full flex-col ${styles.hit}`}>
+                <div className={`flex w-full flex-col ${styles.hit} pl-60`}>
                     <div
                         className={`z-10 w-full rounded-lg border-2 ${styles.border} border-opacity-50 ${styles.backgroundColor} bg-opacity-30 px-5 py-2`}
                     >

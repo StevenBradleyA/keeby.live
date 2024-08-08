@@ -153,14 +153,14 @@ export default function Footer() {
                         <h2 className="text-green-500">Explore</h2>
 
                         <Link
-                            href="/keebshop"
+                            href="/shop"
                             aria-label="privacy"
                             className="ease-in hover:text-green-500"
                         >
                             Keeb Shop
                         </Link>
                         <Link
-                            href="/keebshare"
+                            href="/share"
                             aria-label="privacy"
                             className="ease-in hover:text-green-500"
                         >
