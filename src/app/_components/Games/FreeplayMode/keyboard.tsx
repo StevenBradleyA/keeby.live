@@ -55,21 +55,21 @@ export default function FreeplayKeyboard({
 
         window.addEventListener(
             "keydown",
-            handleKeyDown as unknown as EventListener
+            handleKeyDown as unknown as EventListener,
         );
         window.addEventListener(
             "keyup",
-            handleKeyUp as unknown as EventListener
+            handleKeyUp as unknown as EventListener,
         );
 
         return () => {
             window.removeEventListener(
                 "keydown",
-                handleKeyDown as unknown as EventListener
+                handleKeyDown as unknown as EventListener,
             );
             window.removeEventListener(
                 "keyup",
-                handleKeyUp as unknown as EventListener
+                handleKeyUp as unknown as EventListener,
             );
         };
     }, [setTypedText, setActiveKeys, focusRef]);
@@ -379,7 +379,7 @@ export default function FreeplayKeyboard({
                                     : ""
                             } ${backspace} ${
                                 styles.keebSpecialBackground
-                            } flex items-center gap-1 p-1 text-[10px]`}
+                            } flex items-center justify-center gap-1 p-1 text-[10px]`}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
@@ -390,25 +390,20 @@ export default function FreeplayKeyboard({
                                 borderBottomColor: styles.keebSpecialBottom,
                             }}
                         >
-                            <div>
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="currentColor"
-                                    version="1.1"
-                                    id="Capa_1"
-                                    className="h-2 w-2"
-                                    viewBox="0 0 401.949 401.949"
-                                >
-                                    <g>
-                                        <g>
-                                            <g id="Layer_5_54_">
-                                                <path d="M401.947,159.301c0-8.583-6.949-15.742-15.497-15.889l0,0H197.515c-7.021-1.589-12.309-7.886-12.309-15.369V78.976     c0-8.675-5.397-11.163-11.993-5.535L4.948,190.735c-6.598,5.634-6.598,14.847,0,20.479l168.262,117.29     c6.599,5.632,11.996,3.146,11.996-5.528v-49.067c0-8.673,7.097-15.771,15.771-15.771l185.201-0.276     c8.676-0.004,15.771-7.101,15.771-15.771L401.947,159.301z" />
-                                            </g>
-                                        </g>
-                                    </g>
-                                </svg>
-                            </div>
-                            <div>Backspace</div>
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="w-7 h-7 rotate-180"
+                                viewBox="-6 -4 32 32"
+                                fill="none"
+                            >
+                                <path
+                                    d="M24 6V18M-4 12H20M20 12L16 8M20 12L16 16"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                            </svg>
                         </div>
                     </div>
                     <div className="row mt-[2px] flex w-[618.6px] gap-[1px]">
@@ -418,7 +413,7 @@ export default function FreeplayKeyboard({
                                 activeKeys.includes("Tab") ? "pressed" : ""
                             } ${tab} ${
                                 styles.keebSpecialBackground
-                            } flex flex-col items-start pl-1 text-[10px] `}
+                            } flex flex-col items-center justify-center pl-1 text-[10px] `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
@@ -431,33 +426,16 @@ export default function FreeplayKeyboard({
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
-                                className="-mb-1 -mt-[2px] h-7 w-7 rotate-180 text-black"
-                                viewBox="0 0 16 16"
-                                version="1.1"
+                                className="w-6 h-6"
+                                viewBox="-4 0 28 24"
+                                fill="none"
                             >
                                 <path
-                                    fill="currentColor"
-                                    d="M9 9h-9v-2h9v-3l5 4-5 4v-2z"
-                                />
-                                <path
-                                    fill="currentColor"
-                                    d="M14 4h2v8h-2v-8z"
-                                />
-                            </svg>
-                            Tab
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-7 w-7  text-black"
-                                viewBox="0 0 16 16"
-                                version="1.1"
-                            >
-                                <path
-                                    fill="currentColor"
-                                    d="M9 9h-9v-2h9v-3l5 4-5 4v-2z"
-                                />
-                                <path
-                                    fill="currentColor"
-                                    d="M14 4h2v8h-2v-8z"
+                                    d="M20 6V18M-4 12H16M16 12L12 8M16 12L12 16"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
                                 />
                             </svg>
                         </div>
@@ -729,7 +707,7 @@ export default function FreeplayKeyboard({
                                 activeKeys.includes("CapsLock") ? "pressed" : ""
                             } ${caps} ${
                                 styles.keebSpecialBackground
-                            } flex items-center gap-1 p-1 text-[10px]`}
+                            } flex items-center justify-center p-1 `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
@@ -740,7 +718,20 @@ export default function FreeplayKeyboard({
                                 borderBottomColor: styles.keebSpecialBottom,
                             }}
                         >
-                            Caps Lock
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="w-5 h-5"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                            >
+                                <path
+                                    d="M8 8L12 4M12 4L16 8M12 4V16M4 20H20"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                            </svg>
                         </div>
                         <div
                             data-key="a"
@@ -964,7 +955,7 @@ export default function FreeplayKeyboard({
                                 activeKeys.includes("Enter") ? "pressed" : ""
                             } ${backspace}  ${
                                 styles.keebSpecialBackground
-                            } flex items-center gap-1 p-1 text-[10px]`}
+                            } flex items-center justify-center gap-1 p-1 text-[10px]`}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
@@ -975,25 +966,35 @@ export default function FreeplayKeyboard({
                                 borderBottomColor: styles.keebSpecialBottom,
                             }}
                         >
-                            <div>
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="currentColor"
-                                    version="1.1"
-                                    id="Capa_1"
-                                    className="h-2 w-2"
-                                    viewBox="0 0 401.949 401.949"
-                                >
-                                    <g>
-                                        <g>
-                                            <g id="Layer_5_54_">
-                                                <path d="M401.947,159.301c0-8.583-6.949-15.742-15.497-15.889l0,0H197.515c-7.021-1.589-12.309-7.886-12.309-15.369V78.976     c0-8.675-5.397-11.163-11.993-5.535L4.948,190.735c-6.598,5.634-6.598,14.847,0,20.479l168.262,117.29     c6.599,5.632,11.996,3.146,11.996-5.528v-49.067c0-8.673,7.097-15.771,15.771-15.771l185.201-0.276     c8.676-0.004,15.771-7.101,15.771-15.771L401.947,159.301z" />
-                                            </g>
-                                        </g>
-                                    </g>
-                                </svg>
-                            </div>
-                            <div>Enter</div>
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="w-6 h-6"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                            >
+                                <path
+                                    d="M20 7V8.2C20 9.88016 20 10.7202 19.673 11.362C19.3854 11.9265 18.9265 12.3854 18.362 12.673C17.7202 13 16.8802 13 14 13H2M2 13L6 9M2 13L6 17"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                            </svg>
+
+                            {/* <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="w-7 h-7"
+                                viewBox="0 0 30 24"
+                                fill="none"
+                            >
+                                <path
+                                    d="M26 7V8.2C26 9.88016 26 10.7202 25.673 11.362C25.3854 11.9265 24.9265 12.3854 24.362 12.673C23.7202 13 22.8802 13 20 13H0M0 13L5 9M0 13L5 17"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                            </svg> */}
                         </div>
                     </div>
                     <div className="row mt-[2px] flex gap-[1px]">
@@ -1005,7 +1006,7 @@ export default function FreeplayKeyboard({
                                     : ""
                             } ${shift} ${
                                 styles.keebSpecialBackground
-                            } flex items-center gap-1 p-1 text-[10px]`}
+                            } flex items-center justify-center p-1 text-[10px]`}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
@@ -1016,7 +1017,20 @@ export default function FreeplayKeyboard({
                                 borderBottomColor: styles.keebSpecialBottom,
                             }}
                         >
-                            Shift
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="w-6 h-6"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                            >
+                                <path
+                                    d="M12 6V18M12 6L7 11M12 6L17 11"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                            </svg>
                         </div>
                         <div
                             data-key="z"
@@ -1222,7 +1236,7 @@ export default function FreeplayKeyboard({
                                     : ""
                             } ${rShift} ${
                                 styles.keebSpecialBackground
-                            } flex items-center gap-1 p-1 text-[10px]`}
+                            } flex items-center justify-center p-1 `}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
@@ -1233,7 +1247,20 @@ export default function FreeplayKeyboard({
                                 borderBottomColor: styles.keebSpecialBottom,
                             }}
                         >
-                            Shift
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="w-6 h-6"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                            >
+                                <path
+                                    d="M12 6V18M12 6L7 11M12 6L17 11"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                            </svg>
                         </div>
                     </div>
                     <div className="row mt-[2px] flex gap-[1px]">
@@ -1245,7 +1272,7 @@ export default function FreeplayKeyboard({
                                     : ""
                             } ${alt} ${
                                 styles.keebSpecialBackground
-                            } flex items-center gap-1 p-1 text-[10px]`}
+                            } flex items-center justify-center gap-1 p-1 text-[10px]`}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
@@ -1256,7 +1283,20 @@ export default function FreeplayKeyboard({
                                 borderBottomColor: styles.keebSpecialBottom,
                             }}
                         >
-                            ctrl
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="w-7 h-7"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                            >
+                                <path
+                                    d="M9.5 11.5L7 14M17 14L12 9"
+                                    stroke="currentColor"
+                                    strokeWidth="1.5"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                            </svg>
                         </div>
                         <div
                             data-key="lwin"
@@ -1264,7 +1304,7 @@ export default function FreeplayKeyboard({
                                 activeKeys.includes("MetaLeft") ? "pressed" : ""
                             } ${alt} ${
                                 styles.keebSpecialBackground
-                            } flex items-center gap-1 p-1 text-[10px]`}
+                            } flex items-center justify-center p-1`}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
@@ -1275,11 +1315,20 @@ export default function FreeplayKeyboard({
                                 borderBottomColor: styles.keebSpecialBottom,
                             }}
                         >
-                            <Image
-                                alt="keeby mascot"
-                                className="h-4 w-4 "
-                                src={keebo}
-                            />
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="w-5 h-5"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                            >
+                                <path
+                                    d="M16 9L20 5V16H4V5L6 7M8 9L12 5L14 7M4 19H20"
+                                    stroke="currentColor"
+                                    strokeWidth="1.5"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                            </svg>
                         </div>
                         <div
                             data-key="lalt"
@@ -1287,7 +1336,7 @@ export default function FreeplayKeyboard({
                                 activeKeys.includes("AltLeft") ? "pressed" : ""
                             } ${alt} ${
                                 styles.keebSpecialBackground
-                            } flex items-center gap-1 p-1 text-[10px]`}
+                            } flex items-center justify-center p-1`}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
@@ -1298,7 +1347,43 @@ export default function FreeplayKeyboard({
                                 borderBottomColor: styles.keebSpecialBottom,
                             }}
                         >
-                            alt
+                            {/* <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="w-4 h-4"
+                                viewBox="0 -1.5 20 20"
+                                version="1.1"
+                            >
+                                <g
+                                    id="Page-1"
+                                    stroke="none"
+                                    strokeWidth="1"
+                                    fill="none"
+                                    fillRule="evenodd"
+                                >
+                                    <g
+                                        transform="translate(-60.000000, -4840.000000)"
+                                        fill="currentColor"
+                                    >
+                                        <g transform="translate(56.000000, 160.000000)">
+                                            <path d="M20.18,4680 L7.819,4680 L4,4685.97804 L14,4697 L24,4685.76489 L20.18,4680 Z M19.095,4681.96452 L21.498,4685.59103 L13.985,4694.03062 L6.492,4685.77275 L8.925,4681.96452 L19,4681.96452 L19.095,4681.96452 Z"></path>
+                                        </g>
+                                    </g>
+                                </g>
+                            </svg> */}
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="w-6 h-6"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                            >
+                                <path
+                                    d="M15 17L20 12L15 7M6.5 9.5L9 7M9 17L4 12"
+                                    stroke="currentColor"
+                                    strokeWidth="1.5"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                            </svg>
                         </div>
                         <div
                             data-key="space"
@@ -1323,7 +1408,7 @@ export default function FreeplayKeyboard({
                                 activeKeys.includes("AltRight") ? "pressed" : ""
                             } ${alt} ${
                                 styles.keebSpecialBackground
-                            } flex items-center gap-1 p-1 text-[10px]`}
+                            } flex items-center justify-center p-1 text-[10px]`}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
@@ -1334,7 +1419,20 @@ export default function FreeplayKeyboard({
                                 borderBottomColor: styles.keebSpecialBottom,
                             }}
                         >
-                            alt
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="w-6 h-6"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                            >
+                                <path
+                                    d="M15 17L20 12L15 7M6.5 9.5L9 7M9 17L4 12"
+                                    stroke="currentColor"
+                                    strokeWidth="1.5"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                            </svg>
                         </div>
                         <div
                             data-key="rwin"
@@ -1344,7 +1442,7 @@ export default function FreeplayKeyboard({
                                     : ""
                             } ${alt} ${
                                 styles.keebSpecialBackground
-                            } flex items-center gap-1 p-1 text-[10px]`}
+                            } flex items-center justify-center p-1 text-[10px]`}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
@@ -1355,7 +1453,33 @@ export default function FreeplayKeyboard({
                                 borderBottomColor: styles.keebSpecialBottom,
                             }}
                         >
-                            win
+                            {/* <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                             className="w-4 h-4"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                            >
+                                <path
+                                    d="M9 9H15M9 9V15M9 9H6C4.34315 9 3 7.65685 3 6C3 4.34315 4.34315 3 6 3C7.65685 3 9 4.34315 9 6M15 9V15M15 9V6C15 4.34315 16.3431 3 18 3C19.6569 3 21 4.34315 21 6C21 7.65685 19.6569 9 18 9M15 15V18C15 19.6569 16.3431 21 18 21C19.6569 21 21 19.6569 21 18C21 16.3431 19.6569 15 18 15H15ZM9 15H12M9 15L6 15C4.34315 15 3 16.3431 3 18C3 19.6569 4.34315 21 6 21C7.65685 21 9 19.6569 9 18V15Z"
+                                    stroke="currentColor"
+                                    strokeWidth="1.5"
+                                    strokeLinecap="round"
+                                />
+                            </svg> */}
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="w-5 h-5"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                            >
+                                <path
+                                    d="M16 9L20 5V16H4V5L6 7M8 9L12 5L14 7M4 19H20"
+                                    stroke="currentColor"
+                                    strokeWidth="1.5"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                            </svg>
                         </div>
                         <div
                             data-key="rctx"
@@ -1365,7 +1489,7 @@ export default function FreeplayKeyboard({
                                     : ""
                             } ${alt} ${
                                 styles.keebSpecialBackground
-                            } flex items-center gap-1 p-1 text-[10px]`}
+                            } flex items-center justify-center p-1 text-[10px]`}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
@@ -1376,7 +1500,20 @@ export default function FreeplayKeyboard({
                                 borderBottomColor: styles.keebSpecialBottom,
                             }}
                         >
-                            ctx
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-5 w-5"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                            >
+                                <path
+                                    d="M4 17H8M12 17H20M4 12H20M4 7H12M16 7H20"
+                                    stroke="currentColor"
+                                    strokeWidth="1.5"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                            </svg>
                         </div>
                         <div
                             data-key="rctrl"
@@ -1386,7 +1523,7 @@ export default function FreeplayKeyboard({
                                     : ""
                             } ${alt} ${
                                 styles.keebSpecialBackground
-                            } flex items-center gap-1 p-1 text-[10px]`}
+                            } flex items-center justify-center p-1 text-[10px]`}
                             style={{
                                 border: "3px solid transparent",
                                 borderTop: "2px solid transparent",
@@ -1397,7 +1534,20 @@ export default function FreeplayKeyboard({
                                 borderBottomColor: styles.keebSpecialBottom,
                             }}
                         >
-                            ctrl
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="w-7 h-7"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                            >
+                                <path
+                                    d="M9.5 11.5L7 14M17 14L12 9"
+                                    stroke="currentColor"
+                                    strokeWidth="1.5"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                            </svg>
                         </div>
                     </div>
                 </div>
