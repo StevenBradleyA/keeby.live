@@ -76,7 +76,7 @@ export default function Navigation() {
     }, [isMenuOpen, handleClose, handleOutsideClick]);
 
     return (
-        <nav className="fixed top-0 left-0 right-0 p-8 flex justify-between items-center z-50">
+        <nav className="fixed top-0 left-0 right-0 px-14 py-9 flex justify-between items-center z-50">
             <Link
                 href={"/"}
                 aria-label="home button"

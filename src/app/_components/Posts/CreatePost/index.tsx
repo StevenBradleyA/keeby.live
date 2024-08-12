@@ -1,3 +1,5 @@
+"use client";
+
 import { useSession } from "next-auth/react";
 import { signIn } from "next-auth/react";
 import { motion } from "framer-motion";
@@ -8,7 +10,7 @@ import { useEffect, useState } from "react";
 import { api } from "~/trpc/react";
 import LoadingSpinner from "~/app/_components/Loading";
 import toast from "react-hot-toast";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { uploadFileToS3 } from "~/utils/aws";
 
 interface ErrorsObj {
@@ -218,7 +220,7 @@ export default function CreatePostModal({ closeModal }: CreatePostModalProps) {
                             }
                             width={300}
                             height={300}
-                            className="h-20 w-20 border-2 border-mediumGray object-cover "
+                            className="h-20 w-20 border-2 border-mediumGray object-cover rounded-md "
                         />
                         <div className="relative flex  w-full items-center border-b-2 border-t-2 border-mediumGray p-2 ">
                             <div className="ml-2 flex items-center gap-2">

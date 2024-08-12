@@ -1404,7 +1404,7 @@ select:-webkit-autofill:focus {
     position: sticky;
     top: 140px;
     align-self: flex-start;
-    z-index: 5;
+    z-index: 30;
 }
 
 .custom-select {
