@@ -1,8 +1,6 @@
 "use client";
 import { signIn, useSession } from "next-auth/react";
-import { useState, type ChangeEvent } from "react";
-import { setCookie } from "cookies-next";
-import MenuKeebSelection from "./keebSelection";
+import { useState } from "react";
 import { themeStyles } from "../Theme/themeStyles";
 import type { ThemeName } from "../Theme/themeStyles";
 import ModalDialog from "../../Modal";
@@ -10,6 +8,7 @@ import ModeModal from "./modeModal";
 import ThemeModal from "./themeModal";
 import LengthModal from "./lengthModal";
 import KeebModal from "./keebModal";
+import CategoryModal from "./categoryModal";
 
 interface LeftMenuProps {
     mode: string;
@@ -47,18 +46,9 @@ export default function LeftMenu({
     const [isModeModalOpen, setIsModeModalOpen] = useState<boolean>(false);
     const [isLengthModalOpen, setIsLengthModalOpen] = useState<boolean>(false);
     const [isThemeModalOpen, setIsThemeModalOpen] = useState<boolean>(false);
-    const [isScholarTypeModalOpen, setIsScholarTypeModalOpen] =
+    const [isCategoryModalOpen, setIsCategoryModalOpen] =
         useState<boolean>(false);
     const [isKeebModalOpen, setIsKeebModalOpen] = useState<boolean>(false);
-
-    // const handleScholarTypeChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    //     const newScholarType: string = e.target.value;
-    //     setCookie("scholarType", newScholarType, {
-    //         maxAge: 60 * 60 * 24 * 365,
-    //         path: "/",
-    //     });
-    //     setScholarType(newScholarType);
-    // };
 
     const openModeModal = () => {
         setIsModeModalOpen(true);
@@ -82,12 +72,12 @@ export default function LeftMenu({
     const closeThemeModal = () => {
         setIsThemeModalOpen(false);
     };
-    const openScholarTypeModal = () => {
-        setIsScholarTypeModalOpen(true);
+    const openCategoryModal = () => {
+        setIsCategoryModalOpen(true);
     };
 
-    const closeScholarTypeModal = () => {
-        setIsScholarTypeModalOpen(false);
+    const closeCategoryModal = () => {
+        setIsCategoryModalOpen(false);
     };
 
     const openKeebModal = () => {
@@ -151,20 +141,37 @@ export default function LeftMenu({
 
             {mode === "scholar" && (
                 <>
-                    <label className="mt-2 ">Type</label>
-                    <select
-                        className={`
-                    rounded-md ${styles.menuInputBackground} py-1 shadow-sm `}
-                        value={scholarType}
-                        // onChange={handleScholarTypeChange}
+                    <button
+                        className=" flex flex-col items-center justify-center hover:opacity-70"
+                        onClick={openCategoryModal}
                     >
-                        <option value="Animals">animal</option>
-                        <option value="Vocab">vocab</option>
-                        <option value="Keyboards">keyboards</option>
-                        {/* <option value="SoftwareEngineering">
-                            software engineering
-                        </option> */}
-                    </select>
+                        {/* <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="w-6 h-6"
+                            viewBox="0 0 28 28"
+                            fill="none"
+                        >
+                            <path
+                                d="M21.2501 3C21.4925 3 21.7176 3.11688 21.8574 3.30983L21.9119 3.39706L25.9186 10.9098L25.9615 11.0122L25.9731 11.05L25.9901 11.1273L25.9994 11.2153L25.9973 11.3147L26.0001 11.25C26.0001 11.3551 25.9785 11.4552 25.9394 11.5461L25.9106 11.6057L25.87 11.6723L25.8173 11.7408L14.6 24.7047C14.4999 24.8391 14.3628 24.9277 14.2139 24.9703L14.1559 24.9844L14.0585 24.9979L13.9999 25L13.8993 24.9932L13.8142 24.9771L13.7109 24.9432L13.6852 24.931C13.5949 24.8911 13.5119 24.8316 13.4425 24.7535L2.17081 11.7263L2.1087 11.6387L2.06079 11.5456L2.02611 11.4463L2.00297 11.3152L2.00269 11.1878L2.01755 11.0891L2.02714 11.0499L2.06104 10.9538L2.08838 10.8971L6.08838 3.39706C6.20243 3.18321 6.41149 3.0396 6.64753 3.00704L6.75014 3H21.2501ZM17.9061 12H10.0911L14.0011 22.16L17.9061 12ZM8.48514 12H4.38914L11.7621 20.518L8.48514 12ZM23.6081 12H19.5151L16.2421 20.511L23.6081 12ZM10.0241 4.499H7.19914L3.99814 10.5H8.42314L10.0241 4.499ZM16.4231 4.499H11.5761L9.97514 10.5H18.0231L16.4231 4.499ZM20.8001 4.499H17.9751L19.5761 10.5H23.9991L20.8001 4.499Z"
+                                fill="currentColor"
+                            />
+                        </svg> */}
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="w-6 h-6"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                        >
+                            <path
+                                d="M4 17H8M12 17H20M4 12H20M4 7H12M16 7H20"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            />
+                        </svg>
+                        Category
+                    </button>
                 </>
             )}
 
@@ -294,6 +301,7 @@ export default function LeftMenu({
                 <ModeModal
                     setGameOver={setGameOver}
                     setMode={setMode}
+                    mode={mode}
                     styles={styles}
                     closeModeModal={closeModeModal}
                 />
@@ -302,13 +310,25 @@ export default function LeftMenu({
             <ModalDialog isOpen={isThemeModalOpen} onClose={closeThemeModal}>
                 <ThemeModal
                     setTheme={setTheme}
-                    styles={styles}
                     closeThemeModal={closeThemeModal}
                 />
             </ModalDialog>
+            <ModalDialog
+                isOpen={isCategoryModalOpen}
+                onClose={closeCategoryModal}
+            >
+                <CategoryModal
+                    styles={styles}
+                    closeCategoryModal={closeCategoryModal}
+                    scholarType={scholarType}
+                    setScholarType={setScholarType}
+                />
+            </ModalDialog>
+
             <ModalDialog isOpen={isLengthModalOpen} onClose={closeLengthModal}>
                 <LengthModal
                     setGameLength={setGameLength}
+                    gameLength={gameLength}
                     styles={styles}
                     setGameOver={setGameOver}
                     closeLengthModal={closeLengthModal}

@@ -1207,6 +1207,8 @@ export default function ScholarGenerator({
         "Armadillos are capable of holding their breath for up to six minutes, allowing them to walk underwater across the bottoms of streams and ponds.",
         "Tardigrades, also known as water bears, can survive extreme conditions, including the vacuum of space.",
     ];
+
+    
     // different types of keycap plastic, tape mode, tempest tape mode, thock isn't one component but everything together,
     const keyboardFacts: string[] = [
         "Mechanical keyboards use individual mechanical switches for each key.",
@@ -1228,11 +1230,11 @@ export default function ScholarGenerator({
     ];
 
     const data = useMemo(() => {
-        if (scholarType === "Vocab") {
+        if (scholarType === "vocab") {
             return vocabDefinitions;
-        } else if (scholarType === "Animals") {
+        } else if (scholarType === "animals") {
             return animalFacts;
-        } else if (scholarType === "Keyboards") {
+        } else if (scholarType === "keyboards") {
             return keyboardFacts;
         } else {
             console.error("Invalid scholar type");

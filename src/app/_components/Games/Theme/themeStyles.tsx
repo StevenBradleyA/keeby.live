@@ -16,6 +16,7 @@ export interface ThemeStyle {
     border: string;
     cursor: string;
     hoverText: string;
+    hoverBackground: string;
     hit: string;
     miss: string;
     pause: string;
@@ -47,6 +48,7 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
         backgroundColor: "bg-green-300/30",
         border: "border-green-300",
         textColor: "text-mediumGray",
+        hoverBackground: "hover:bg-green-300 hover:bg-opacity-30",
         hoverText: "hover:text-green-300",
         cursor: "bg-green-300",
         menuInputBackground: "bg-white/30",
@@ -78,6 +80,7 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
         backgroundColor: "bg-red-500/30",
         border: "border-red-500",
         textColor: "text-mediumGray",
+        hoverBackground: "hover:bg-red-500 hover:bg-opacity-30",
         hoverText: "hover:text-red-500",
         cursor: "bg-red-500",
         menuInputBackground: "bg-white/30",
@@ -120,6 +123,7 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
         backgroundColor: "bg-black",
         border: "border-[#15ff00]",
         textColor: "text-mediumGray",
+        hoverBackground: "hover:bg-black hover:bg-opacity-30",
         hoverText: "hover:text-mediumGray",
         cursor: "bg-[#15ff00]",
         menuInputBackground: "bg-white/30",
@@ -151,6 +155,7 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
         backgroundColor: "bg-[#f9dcc4]",
         border: "border-[#ffff]",
         textColor: "text-[#383838]",
+        hoverBackground: "hover:bg-[#f9dcc4] hover:bg-opacity-30",
         hoverText: "hover:text-[#fab4a9]",
         cursor: "bg-[#ffffff]",
         menuInputBackground: "bg-[#f8edeb]/30",
@@ -182,6 +187,7 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
         backgroundColor: "bg-[#9ccfd8]",
         border: "border-[#e0def4]",
         textColor: "text-[#c4a7e7]",
+        hoverBackground: "hover:bg-[#9ccfd8] hover:bg-opacity-30",
         hoverText: "hover:text-[#f6c177]",
         cursor: "bg-[#f6c177]",
         menuInputBackground: "bg-white/30",
@@ -222,7 +228,7 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
         graphBackground: "rgba(189, 168, 212, 0.3)",
         graphBorder: "rgba(173, 158, 202, 0.5)",
         graphHighlight: "rgba(209, 196, 233)",
-
+        hoverBackground: "hover:bg-[#BAB1D7] hover:bg-opacity-30",
         keebTextColor: "text-[#a7e12b]",
         keebCaseTop: "border-t-[#1f1d27]",
         keebCaseBottom: "border-b-[#1a1a1a]",
@@ -245,6 +251,7 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
         backgroundColor: "bg-[#FFFBEA]",
         border: "border-[#ffff]",
         textColor: "text-[#8A6201]",
+        hoverBackground: "hover:bg-[#FFFBEA] hover:bg-opacity-30",
         hoverText: "hover:text-[#fdd835]",
         cursor: "bg-[#fdd835]",
         menuInputBackground: "bg-white/30",

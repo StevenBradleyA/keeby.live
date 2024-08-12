@@ -1,16 +1,13 @@
 "use client";
 import { setCookie } from "cookies-next";
-import type { ThemeStyle } from "../Theme/themeStyles";
 
 interface ThemeModalProps {
     setTheme: (mode: string) => void;
-    styles: ThemeStyle;
     closeThemeModal: () => void;
 }
 
 export default function ThemeModal({
     setTheme,
-    styles,
     closeThemeModal,
 }: ThemeModalProps) {
     const handleThemeChange = (newTheme: string) => {

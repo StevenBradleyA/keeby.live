@@ -44,7 +44,7 @@ export default function KeebModal({
     }, [keebId, setKeebId, keebData]);
 
     if (isLoading) return <LoadingSpinner size="20px" />;
-
+    
     return (
         <>
             <div className="flex flex-col gap-5 w-[400px] h-[300px]">
@@ -53,7 +53,7 @@ export default function KeebModal({
                     keebData.map((e) => (
                         <button
                             key={e.id}
-                            className={` w-full items-center rounded-lg hover:brightness-110 ease-in flex justify-center text-white ${styles.backgroundColor} p-3 ${keebId === e.id ? "border-2 border-white" : ""}`}
+                            className={` w-full items-center rounded-lg hover:brightness-110 ease-in flex justify-center text-white ${styles.backgroundColor} p-3 ${keebId === e.id ? `border-2 ${styles.border}` : ""}`}
                             onClick={() => handleKeebChange(e.name, e.id)}
                         >
                             {e.name}
