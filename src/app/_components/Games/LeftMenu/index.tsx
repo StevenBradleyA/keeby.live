@@ -9,6 +9,11 @@ import ThemeModal from "./themeModal";
 import LengthModal from "./lengthModal";
 import KeebModal from "./keebModal";
 import CategoryModal from "./categoryModal";
+import PlayerStatsModal from "../GameStats/playerStatsModal";
+import LeaderboardModal from "../Leaderboards/leaderboardModal";
+import RanksModal from "../GameStats/ranksModal";
+import ImproveAtTyping from "../../Guide/improveAtTyping";
+import LearnAboutKeyboards from "../../Guide/learnAboutKeyboards";
 
 interface LeftMenuProps {
     mode: string;
@@ -49,7 +54,15 @@ export default function LeftMenu({
     const [isCategoryModalOpen, setIsCategoryModalOpen] =
         useState<boolean>(false);
     const [isKeebModalOpen, setIsKeebModalOpen] = useState<boolean>(false);
+    const [isStatsModalOpen, setIsStatsModalOpen] = useState<boolean>(false);
+    const [isLeaderboardModalOpen, setIsLeaderboardModalOpen] =
+        useState<boolean>(false);
+    const [isRanksModalOpen, setIsRanksModalOpen] = useState<boolean>(false);
+    const [isImproveModalOpen, setIsImproveModalOpen] =
+        useState<boolean>(false);
+    const [isGuideModalOpen, setIsGuideModalOpen] = useState<boolean>(false);
 
+    //  top modals
     const openModeModal = () => {
         setIsModeModalOpen(true);
     };
@@ -88,6 +101,48 @@ export default function LeftMenu({
 
     const closeKeebModal = () => {
         setIsKeebModalOpen(false);
+    };
+
+    // ----
+
+    const openStatsModal = () => {
+        setIsStatsModalOpen(true);
+    };
+
+    const closeStatsModal = () => {
+        setIsStatsModalOpen(false);
+    };
+
+    const openLeaderboardModal = () => {
+        setIsLeaderboardModalOpen(true);
+    };
+
+    const closeLeaderboardModal = () => {
+        setIsLeaderboardModalOpen(false);
+    };
+
+    const openRanksModal = () => {
+        setIsRanksModalOpen(true);
+    };
+
+    const closeRanksModal = () => {
+        setIsRanksModalOpen(false);
+    };
+
+    const openImproveModal = () => {
+        setIsImproveModalOpen(true);
+    };
+
+    const closeImproveModal = () => {
+        setIsImproveModalOpen(false);
+    };
+
+    const openGuideModal = () => {
+        setIsGuideModalOpen(true);
+    };
+
+    const closeGuideModal = () => {
+        setIsGuideModalOpen(false);
     };
 
     // remove selects and lets do custom modals that look really cool and work with the current color theme...
@@ -208,7 +263,10 @@ export default function LeftMenu({
 
             <div className={`w-full h-[2px] bg-white/30`}></div>
 
-            <button className=" flex flex-col items-center justify-center hover:opacity-70">
+            <button
+                className=" flex flex-col items-center justify-center hover:opacity-70"
+                onClick={openStatsModal}
+            >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-6 w-6"
@@ -228,7 +286,10 @@ export default function LeftMenu({
                 </svg>
                 Stats
             </button>
-            <button className=" flex flex-col items-center justify-center hover:opacity-70">
+            <button
+                className=" flex flex-col items-center justify-center hover:opacity-70"
+                onClick={openLeaderboardModal}
+            >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="currentColor"
@@ -239,7 +300,10 @@ export default function LeftMenu({
                 </svg>
                 Leaderboards
             </button>
-            <button className=" flex flex-col items-center justify-center hover:opacity-70">
+            <button
+                className=" flex flex-col items-center justify-center hover:opacity-70"
+                onClick={openRanksModal}
+            >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-6 w-6"
@@ -258,7 +322,10 @@ export default function LeftMenu({
                 </svg>
                 Ranks
             </button>
-            <button className=" flex flex-col items-center justify-center hover:opacity-70">
+            <button
+                className=" flex flex-col items-center justify-center hover:opacity-70"
+                onClick={openImproveModal}
+            >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="w-6 h-6"
@@ -274,7 +341,10 @@ export default function LeftMenu({
                 </svg>
                 Improve
             </button>
-            <button className=" flex flex-col items-center justify-center hover:opacity-70">
+            <button
+                className=" flex flex-col items-center justify-center hover:opacity-70"
+                onClick={openGuideModal}
+            >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="w-6 h-6"
@@ -337,6 +407,31 @@ export default function LeftMenu({
                         keebId={keebId}
                     />
                 )}
+            </ModalDialog>
+
+            <ModalDialog isOpen={isStatsModalOpen} onClose={closeStatsModal}>
+                <PlayerStatsModal />
+            </ModalDialog>
+
+            <ModalDialog
+                isOpen={isLeaderboardModalOpen}
+                onClose={closeLeaderboardModal}
+            >
+                <LeaderboardModal />
+            </ModalDialog>
+
+            <ModalDialog isOpen={isRanksModalOpen} onClose={closeRanksModal}>
+                <RanksModal />
+            </ModalDialog>
+            <ModalDialog
+                isOpen={isImproveModalOpen}
+                onClose={closeImproveModal}
+            >
+                <ImproveAtTyping />
+            </ModalDialog>
+
+            <ModalDialog isOpen={isGuideModalOpen} onClose={closeGuideModal}>
+                <LearnAboutKeyboards />
             </ModalDialog>
         </div>
     );
