@@ -1,6 +1,6 @@
 import type { Images } from "@prisma/client";
 import Link from "next/link";
-import DisplayYouTubePostPreview from "../DisplayPosts/DisplayPostPreviews/displayYouTubePreview";
+import DisplayYouTubePostPreview from "./DisplayPosts/DisplayPostPreviews/displayYouTubePreview";
 import ChevronRound from "~/app/_components/Svgs/chevron";
 import Image from "next/image";
 import { useState } from "react";

@@ -1,6 +1,6 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import PostPageCheck from "~/app/_components/Posts/DisplayPost/postPageCheck";
+import PostPageCheck from "~/app/_components/Posts/Display/postPageCheck";
 
 export default function PostPage() {
     const router = useRouter();

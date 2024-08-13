@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import ChevronRound from "~/app/_components/Svgs/chevron";
-import DisplayYouTubePostPreview from "../DisplayPosts/DisplayPostPreviews/displayYouTubePreview";
+import DisplayYouTubePostPreview from "../Display/DisplayPosts/DisplayPostPreviews/displayYouTubePreview";
 import keebo from "@public/Profile/keebo.png";
 import ModalDialog from "~/app/_components/Modal";
 import UpdatePost from "./Update";

@@ -5,13 +5,13 @@ import defaultProfile from "@public/Images/defaultProfile.png";
 import { useEffect, useRef, useState } from "react";
 import type { Images } from "@prisma/client";
 import { useSession } from "next-auth/react";
-import PostPreviewDeleteLike from "../DisplayPosts/DisplayPostPreviews/Like/deleteLike";
-import PostPreviewCreateLike from "../DisplayPosts/DisplayPostPreviews/Like/createLike";
-import PostPreviewCreateFavorite from "../DisplayPosts/DisplayPostPreviews/Favorite/createFavorite";
-import PostPreviewDeleteFavorite from "../DisplayPosts/DisplayPostPreviews/Favorite/deleteFavorite";
+import PostPreviewDeleteLike from "./DisplayPosts/DisplayPostPreviews/Like/deleteLike";
+import PostPreviewCreateLike from "./DisplayPosts/DisplayPostPreviews/Like/createLike";
+import PostPreviewCreateFavorite from "./DisplayPosts/DisplayPostPreviews/Favorite/createFavorite";
+import PostPreviewDeleteFavorite from "./DisplayPosts/DisplayPostPreviews/Favorite/deleteFavorite";
 import ModalDialog from "~/app/_components/Modal";
 import SignInModal from "~/app/_components/Comments/Modal/signInModal";
-import DisplayYouTubePostPreview from "../DisplayPosts/DisplayPostPreviews/displayYouTubePreview";
+import DisplayYouTubePostPreview from "./DisplayPosts/DisplayPostPreviews/displayYouTubePreview";
 import Footer from "../_components/Footer/footer";
 
 import { formatDistance } from "date-fns";
