@@ -215,6 +215,18 @@ export const favoriteRouter = createTRPCRouter({
                     "You must be logged in to perform this action.",
                 );
             }
+
+            const existingFavorite = await ctx.db.favorites.findFirst({
+                where: {
+                    userId: userId,
+                    postId: postId,
+                },
+            });
+
+            if (existingFavorite) {
+                throw new Error("You have already favorited this post.");
+            }
+
             await ctx.db.favorites.create({
                 data: {
                     userId: userId,
@@ -239,6 +251,10 @@ export const favoriteRouter = createTRPCRouter({
                     },
                 });
             }
+            return {
+                success: true,
+                message: "Post successfully favorited.",
+            };
         }),
     deleteListingFavorite: protectedProcedure
         .input(
@@ -290,9 +306,11 @@ export const favoriteRouter = createTRPCRouter({
         .mutation(async ({ ctx, input }) => {
             const { userId, postId } = input;
 
-            if (ctx.session.user.id !== userId) {
+            if (
+                !(userId === ctx.session?.user.id || ctx.session?.user.isAdmin)
+            ) {
                 throw new Error(
-                    "You must be logged in to perform this action.",
+                    "You are not authorized to perform this action.",
                 );
             }
 

@@ -2,8 +2,6 @@
 import type { Session } from "next-auth";
 import type { Images } from "@prisma/client";
 import { signIn } from "next-auth/react";
-import PostPreviewCreateFavorite from "../DisplayPosts/DisplayPostPreviews/Favorite/createFavorite";
-import PostPreviewDeleteFavorite from "../DisplayPosts/DisplayPostPreviews/Favorite/deleteFavorite";
 import { useEffect, useState } from "react";
 import { api } from "~/trpc/react";
 
@@ -41,7 +39,7 @@ export default function EachPostPreviewFavorite({
     session,
 }: EachPostPreviewProps) {
     // We are using optimistic UI updates here as a balance to keep SEO optimization for posts
-    
+
     const [isFakeFavorited, setIsFakeFavorited] = useState<boolean>(false);
     const [favoriteCount, setFavoriteCount] = useState<number>(0);
 

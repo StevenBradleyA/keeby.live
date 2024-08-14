@@ -81,6 +81,25 @@ export const likeRouter = createTRPCRouter({
         .mutation(async ({ ctx, input }) => {
             const { postId, userId, ownerId } = input;
 
+            if (
+                !(userId === ctx.session?.user.id || ctx.session?.user.isAdmin)
+            ) {
+                throw new Error(
+                    "You are not authorized to perform this action.",
+                );
+            }
+
+            const existingLike = await ctx.db.postLike.findFirst({
+                where: {
+                    userId: userId,
+                    postId: postId,
+                },
+            });
+
+            if (existingLike) {
+                throw new Error("You have already liked this post.");
+            }
+
             await ctx.db.postLike.create({
                 data: {
                     userId: userId,
@@ -98,39 +117,65 @@ export const likeRouter = createTRPCRouter({
                 },
             });
 
-            return { success: true };
+            return {
+                success: true,
+                message: "Post successfully liked.",
+            };
         }),
 
     deletePostLike: publicProcedure
         .input(
             z.object({
-                id: z.string(),
+                postId: z.string(),
                 userId: z.string(),
                 ownerId: z.string(),
             }),
         )
         .mutation(async ({ ctx, input }) => {
-            const { id, userId, ownerId } = input;
+            const { postId, userId, ownerId } = input;
 
-            if (userId === ctx.session?.user.id || ctx.session?.user.isAdmin) {
-                await ctx.db.postLike.delete({
-                    where: {
-                        id: id,
-                    },
-                });
-
-                await ctx.db.user.update({
-                    where: {
-                        id: ownerId,
-                    },
-                    data: {
-                        internetPoints: {
-                            decrement: 1,
-                        },
-                    },
-                });
-
-                return { success: true };
+            if (
+                !(userId === ctx.session?.user.id || ctx.session?.user.isAdmin)
+            ) {
+                throw new Error(
+                    "You are not authorized to perform this action.",
+                );
             }
+
+            const like = await ctx.db.postLike.findFirst({
+                where: {
+                    postId: postId,
+                    userId: userId,
+                },
+                select: {
+                    id: true,
+                },
+            });
+
+            if (!like) {
+                throw new Error("Like not found.");
+            }
+
+            await ctx.db.postLike.delete({
+                where: {
+                    id: like.id,
+                },
+            });
+
+            await ctx.db.user.update({
+                where: {
+                    id: ownerId,
+                },
+                data: {
+                    internetPoints: {
+                        decrement: 1,
+                    },
+                },
+            });
+
+            return {
+                success: true,
+                message: "Like successfully removed.",
+            };
         }),
 });
