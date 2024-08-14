@@ -332,13 +332,6 @@ export default function CreatePostModal({ closeModal }: CreatePostModalProps) {
                                         type="file"
                                         multiple
                                         accept="image/png, image/jpg, image/jpeg, image/heic, image/heif"
-                                        // onChange={(e) => {
-                                        //     if (e.target.files)
-                                        //         setImageFiles([
-                                        //             ...imageFiles,
-                                        //             ...e.target.files,
-                                        //         ]);
-                                        // }}
                                         onChange={(e) =>
                                             void handleImageChange(e)
                                         }

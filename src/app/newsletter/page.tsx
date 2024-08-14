@@ -315,8 +315,7 @@ export default function Newsletter() {
                             )}
 
                             <h1 className="text-lg">
-                                Newsletter - Get keebs for sale delivered to
-                                your inbox
+                                Newsletter - Want to see awesome keyboard listings in your inbox?
                             </h1>
                         </div>
                         <div className="mt-5 flex justify-center gap-10">

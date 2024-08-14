@@ -77,6 +77,7 @@ interface PostPage {
     _count: {
         comments: number;
         postLikes: number;
+        favorites: number;
     };
     images: Images[];
     user: UserWithPosts;
@@ -597,7 +598,11 @@ export const postRouter = createTRPCRouter({
                 },
                 include: {
                     _count: {
-                        select: { comments: true, postLikes: true },
+                        select: {
+                            comments: true,
+                            postLikes: true,
+                            favorites: true,
+                        },
                     },
                     images: {
                         where: {
@@ -631,6 +636,7 @@ export const postRouter = createTRPCRouter({
                                         select: {
                                             comments: true,
                                             postLikes: true,
+                                            favorites: true,
                                         },
                                     },
                                     images: {

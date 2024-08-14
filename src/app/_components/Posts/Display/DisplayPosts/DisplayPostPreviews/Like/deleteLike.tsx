@@ -29,7 +29,7 @@ export default function PostPreviewDeleteLike({
                 ownerId: ownerId,
             };
 
-            return deleteLike(data);
+            // return deleteLike(data);
         }
     };
     return (

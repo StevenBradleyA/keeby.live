@@ -120,7 +120,7 @@ export default function AuthProviders() {
         <>
             {isProviderCheck === false ? (
                 <div className="absolute top-3 right-3 text-xs flex gap-1 text-white/50">
-                    <h3>Which provider did I use?</h3>
+                    <h3>Which provider did I use before?</h3>
                     <button
                         className="text-green-500 hover:opacity-75"
                         onClick={() => setIsProviderCheck(true)}

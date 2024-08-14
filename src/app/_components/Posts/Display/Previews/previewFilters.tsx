@@ -72,19 +72,7 @@ export default function SharePreviewFilters() {
         };
     }, [searchInput]);
 
-    // useEffect(() => {
-    //     if (cookies.filter) {
-    //         setFilter(cookies.filter);
-    //     }
-    // }, [cookies]);
 
-    // const handleFilters = (isNew: string) => {
-    //     setFilter(isNew);
-    //     setCookie("filter", isNew, {
-    //         maxAge: 60 * 60 * 24 * 365, // 1 year
-    //         path: "/",
-    //     });
-    // };
     return (
         <>
             <div className="flex w-full items-start z-20 fixed top-44 bg-dark px-2 tablet:px-5 desktop:px-16 text-mediumGray">
@@ -154,7 +142,7 @@ export default function SharePreviewFilters() {
                         <div className="flex w-full flex-col items-start gap-5">
                             <div className="flex w-full flex-col items-start">
                                 <div className="relative flex w-full">
-                                    <h1 className="text-green-500">Tag:</h1>
+                                    <h1 className="text-green-500">Tags:</h1>
                                     <button
                                         className=" absolute -top-1 right-0 h-7 w-7 text-mediumGray ease-in hover:text-green-500"
                                         onClick={handleResetSpecify}
@@ -163,34 +151,34 @@ export default function SharePreviewFilters() {
                                     </button>
                                 </div>
                                 <button
-                                    onClick={() => handleTagSelect("builds")}
-                                    className={` ease-in hover:text-white  ${
-                                        tag === "builds"
+                                    onClick={() => handleTagSelect("showcase")}
+                                    className={` mt-1 ease-in hover:text-white  ${
+                                        tag === "showcase"
                                             ? "border-b border-white text-white"
                                             : "border-b border-white border-opacity-0"
                                     }`}
                                 >
-                                    builds
+                                    showcase
                                 </button>
                                 <button
-                                    onClick={() => handleTagSelect("memes")}
+                                    onClick={() => handleTagSelect("meme")}
                                     className={`ease-in hover:text-white  ${
-                                        tag === "memes"
+                                        tag === "meme"
                                             ? "border-b border-white text-white"
                                             : "border-b border-white border-opacity-0"
                                     }`}
                                 >
-                                    memes
+                                    meme
                                 </button>
                                 <button
-                                    onClick={() => handleTagSelect("tutorials")}
+                                    onClick={() => handleTagSelect("guide")}
                                     className={`ease-in hover:text-white  ${
-                                        tag === "tutorials"
+                                        tag === "guide"
                                             ? "border-b border-white text-white"
                                             : "border-b border-white border-opacity-0"
                                     }`}
                                 >
-                                    tutorials
+                                    guide
                                 </button>
                                 <button
                                     onClick={() =>

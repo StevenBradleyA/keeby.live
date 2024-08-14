@@ -5,7 +5,7 @@ import { signIn } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { api } from "~/trpc/react";
 
-interface EachPostPreviewProps {
+interface EachPostProps {
     post: EachPost;
     session: Session | null;
 }
@@ -34,10 +34,10 @@ interface Count {
     favorites: number;
 }
 
-export default function EachPostPreviewFavorite({
+export default function EachPostFavorite({
     post,
     session,
-}: EachPostPreviewProps) {
+}: EachPostProps) {
     // We are using optimistic UI updates here as a balance to keep SEO optimization for posts
 
     const [isFakeFavorited, setIsFakeFavorited] = useState<boolean>(false);

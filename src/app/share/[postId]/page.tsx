@@ -1,19 +1,30 @@
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
-import PostPageCheck from "~/app/_components/Posts/Display/postPageCheck";
+import LoadingSpinner from "~/app/_components/Loading";
+import DisplayPostPage from "~/app/_components/Posts/Display";
+import { getServerAuthSession } from "~/server/auth";
+import { api } from "~/trpc/server";
 
-export default function PostPage() {
-    const router = useRouter();
-    const postId = router.query.postId as string;
+export default async function PostPage({
+    params,
+}: {
+    params: { postId: string };
+}) {
+    const { postId } = params;
+    const session = await getServerAuthSession();
 
-    const { data: session } = useSession();
+    const post = await api.post.getOneById({
+        id: postId,
+        userId: session && session.user.id ? session.user.id : undefined,
+    });
 
     return (
         <>
-            {postId && session && session.user && (
-                <PostPageCheck postId={postId} userId={session.user.id} />
+            {post ? (
+                <DisplayPostPage post={post} />
+            ) : (
+                <div>
+                    <LoadingSpinner size="20px" />
+                </div>
             )}
-            {postId && session === null && <PostPageCheck postId={postId} />}
         </>
     );
 }

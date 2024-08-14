@@ -1,14 +1,11 @@
 "use client";
-
-import PostPreviewCreateLike from "../DisplayPosts/DisplayPostPreviews/Like/createLike";
-import PostPreviewDeleteLike from "../DisplayPosts/DisplayPostPreviews/Like/deleteLike";
 import type { Session } from "next-auth";
 import type { Images } from "@prisma/client";
 import { signIn } from "next-auth/react";
 import { api } from "~/trpc/react";
 import { useEffect, useState } from "react";
 
-interface EachPostPreviewProps {
+interface EachPostProps {
     post: EachPost;
     session: Session | null;
 }
@@ -37,10 +34,10 @@ interface Count {
     favorites: number;
 }
 
-export default function EachPostPreviewLike({
+export default function EachPostLike({
     post,
     session,
-}: EachPostPreviewProps) {
+}: EachPostProps) {
     // We are using optimistic UI updates here as a balance to keep SEO optimization for posts
 
     const [isFakeLiked, setIsFakeLiked] = useState<boolean>(false);
@@ -105,11 +102,11 @@ export default function EachPostPreviewLike({
     return (
         <>
             {session === null && (
-                <div className="flex gap-1 items-center">
+                <div className="flex gap-1 items-center ">
                     <button onClick={() => void signIn()}>
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            className="w-5 h-5 ease-in hover:text-mediumGray text-white "
+                            className="w-5 h-5 ease-in hover:text-mediumGray text-white"
                             viewBox="0 0 24 24"
                             fill="none"
                         >
@@ -122,7 +119,7 @@ export default function EachPostPreviewLike({
                             />
                         </svg>
                     </button>
-                    {post._count.postLikes}
+                    <span>{post._count.postLikes}</span>
                 </div>
             )}
             {session && session.user && isFakeLiked === true && (
@@ -143,7 +140,7 @@ export default function EachPostPreviewLike({
                             />
                         </svg>
                     </button>
-                    {likeCount}
+                    <span>{likeCount}</span>
                 </div>
             )}
             {session && session.user && isFakeLiked === false && (
@@ -164,7 +161,7 @@ export default function EachPostPreviewLike({
                             />
                         </svg>
                     </button>
-                    {likeCount}
+                    <span>{likeCount}</span>
                 </div>
             )}
         </>

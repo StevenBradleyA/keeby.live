@@ -1083,12 +1083,12 @@ export default function UserProfile() {
     ) : (
         <>
             <div className="mt-72 w-full flex justify-center">
-                <div className="flex flex-col items-center rounded-lg bg-darkGray p-10">
+                <div className="flex flex-col items-center rounded-lg bg-darkGray p-10 shadow-lg">
                     <div className="flex items-end gap-2">
                         <h1 className="text-2xl text-green-500">
-                            Sign in to see your profile
+                            Sign in to view your profile
                         </h1>
-                        <Image alt="keebo" src={keebo} className="h-12 w-12" />
+                        <Image alt="keebo" src={keebo} className="h-12 w-12 object-contain" />
                     </div>
                     <div className=" mt-3 flex justify-center">
                         <button
