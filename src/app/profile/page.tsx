@@ -17,7 +17,6 @@ import hacktime from "@public/Vectors/hacktime.png";
 import ManageListings from "~/app/_components/Listings/ManageListings";
 import ManagePosts from "~/app/_components/Posts/ManagePosts";
 import DisplayFavoriteListings from "~/app/_components/Listings/DisplayFavoriteListings";
-import DisplayFavoritePosts from "~/app/_components/Posts/DisplayFavoritePosts";
 import DisplayProfileKeebs from "~/app/_components/Profile/Keeb/DisplayKeebs";
 import DisplayAllGameStatsCheck from "~/app/_components/Games/GameStats/displayAllGameStatsCheck";
 import UpdateUserTag from "~/app/_components/Profile/User/Update/Tag";
@@ -35,6 +34,7 @@ import DisplayProfileReviews from "~/app/_components/Reviews/Display/displayProf
 import Footer from "../_components/Footer/footer";
 import { useMobile } from "../_components/Context/Mobile";
 import TitleScripts from "../_components/TitleScripts";
+import DisplayFavoritePosts from "../_components/Posts/Display/DisplayFavoritePosts";
 
 export default function UserProfile() {
     // mdn digest() -- might be useful for us here

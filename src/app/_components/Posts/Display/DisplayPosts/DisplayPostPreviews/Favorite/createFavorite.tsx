@@ -1,3 +1,4 @@
+'use client'
 import { api } from "~/trpc/react";
 
 interface PostPreviewCreateFavoriteProps {
@@ -13,8 +14,7 @@ export default function PostPreviewCreateFavorite({
 
     const { mutate: favorite } = api.favorite.createPostFavorite.useMutation({
         onSuccess: () => {
-            void utils.post.getAllPopularPreviewPosts.invalidate();
-            void utils.post.getAllNewPreviewPosts.invalidate();
+            void utils.post.getAllPreviewPosts.invalidate();
             void utils.post.getOneById.invalidate();
         },
     });
@@ -36,7 +36,7 @@ export default function PostPreviewCreateFavorite({
         <button onClick={handleFavoriteClick}>
             <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="w-full transition-colors duration-400 ease-custom-cubic hover:text-white "
+                className="w-5 h-5 ease-in hover:text-mediumGray text-white "
                 viewBox="0 0 24 24"
                 fill="none"
             >

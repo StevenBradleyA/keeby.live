@@ -3,7 +3,7 @@ import keebo from "@public/Profile/keebo.png";
 import { useEffect, useRef } from "react";
 import LoadingSpinner from "~/app/_components/Loading";
 import { api } from "~/trpc/react";
-import EachPostCardPreview from "./eachPostCardPreview";
+import EachPostCardPreview from "../../Previews/eachPostPreview";
 import { useSession } from "next-auth/react";
 
 interface DisplayNewPostPreviewsProps {

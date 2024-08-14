@@ -7,18 +7,15 @@ export default function KeebShare({
 }: {
     searchParams?: { filter: string; tag: string; search: string };
 }) {
-
-
-// update pages for pagination as well 
-
+    // update pages for pagination as well
 
     return (
         <>
             <div className="h-44 w-full fixed top-0 left-0 right-0 z-20 bg-dark"></div>
             <SharePreviewFilters />
-            <div className="mt-56  text-mediumGray tablet:px-5 desktop:px-16 flex flex-col relative items-end w-full min-h-[60rem]">
-                <GetAllPreviewPosts searchParams={searchParams} />
-            </div>
+
+            
+            <GetAllPreviewPosts searchParams={searchParams} />
 
             {/* <div className="mt-56  text-mediumGray tablet:px-5 desktop:px-16 flex flex-col relative items-end w-full min-h-[60rem] ">
                 <div className=" flex w-3/4 flex-col h-full pl-10">

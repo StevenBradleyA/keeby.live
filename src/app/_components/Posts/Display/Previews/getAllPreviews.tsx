@@ -1,5 +1,8 @@
+import Image from "next/image";
 import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/server";
+import keebo from "@public/Profile/keebo.png";
+import EachPostCardPreview from "./eachPostPreview";
 
 interface GetAllPreviewPostsProps {
     searchParams?: SearchParams;
@@ -38,23 +41,30 @@ export default async function GetAllPreviewPosts({
         filterParams.userId = session.user.id;
     }
 
-    console.log(filterParams);
-
-    // const posts = await api.post.getAllPreviewPosts.prefetch({
-    //     ...filterParams,
-    // });
-    const posts = await api.post.getAllPreviewPosts({
+    const postPreviews = await api.post.getAllPreviewPosts({
         ...filterParams,
     });
 
-    console.log(posts);
-
     return (
-        <>
-            <h1>post</h1>
-            {/* {postPreviews &&
-                postPreviews.length > 0 &&
-                postPreviews.map((e, i) => <div key={i}>{e.title}</div>)} */}
-        </>
+        <div className="mt-56 tablet:px-5 desktop:px-16 flex  w-full  ">
+            <div className="w-1/4"></div>
+            <div className=" h-full z-10 w-3/4 min-h-[60rem] pl-10 flex gap-5 ">
+                {postPreviews &&
+                    postPreviews.posts &&
+                    postPreviews.posts.length > 0 &&
+                    postPreviews.posts.map((e) => (
+                        <EachPostCardPreview key={e.id} post={e} />
+                    ))}
+
+                {/* 
+            {postPreviews.posts.length === 0 ||
+                (!postPreviews && ( */}
+                <div className=" mt-5 flex items-end gap-2 text-mediumGray">
+                    <h1>{`Oops, no posts match your search`}</h1>
+                    <Image src={keebo} alt="keeby mascot" className="w-10" />
+                </div>
+                {/* ))} */}
+            </div>
+        </div>
     );
 }

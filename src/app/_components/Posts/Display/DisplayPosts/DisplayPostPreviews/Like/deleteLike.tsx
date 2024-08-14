@@ -15,8 +15,7 @@ export default function PostPreviewDeleteLike({
 
     const { mutate: deleteLike } = api.like.deletePostLike.useMutation({
         onSuccess: () => {
-            void utils.post.getAllPopularPreviewPosts.invalidate();
-            void utils.post.getAllNewPreviewPosts.invalidate();
+            void utils.post.getAllPreviewPosts.invalidate();
             void utils.post.getOneById.invalidate();
         },
     });
@@ -37,11 +36,17 @@ export default function PostPreviewDeleteLike({
         <button onClick={handleDeleteLike}>
             <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="w-full text-green-500 "
-                viewBox="0 0 512 512"
-                fill="currentColor"
+                className="w-5 h-5 ease-in hover:text-mediumGray text-green-500 "
+                viewBox="0 0 24 24"
+                fill="none"
             >
-                <path d="M313.4 32.9c26 5.2 42.9 30.5 37.7 56.5l-2.3 11.4c-5.3 26.7-15.1 52.1-28.8 75.2H464c26.5 0 48 21.5 48 48c0 18.5-10.5 34.6-25.9 42.6C497 275.4 504 288.9 504 304c0 23.4-16.8 42.9-38.9 47.1c4.4 7.3 6.9 15.8 6.9 24.9c0 21.3-13.9 39.4-33.1 45.6c.7 3.3 1.1 6.8 1.1 10.4c0 26.5-21.5 48-48 48H294.5c-19 0-37.5-5.6-53.3-16.1l-38.5-25.7C176 420.4 160 390.4 160 358.3V320 272 247.1c0-29.2 13.3-56.7 36-75l7.4-5.9c26.5-21.2 44.6-51 51.2-84.2l2.3-11.4c5.2-26 30.5-42.9 56.5-37.7zM32 192H96c17.7 0 32 14.3 32 32V448c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32V224c0-17.7 14.3-32 32-32z" />
+                <path
+                    d="M8 10V20M8 10L4 9.99998V20L8 20M8 10L13.1956 3.93847C13.6886 3.3633 14.4642 3.11604 15.1992 3.29977L15.2467 3.31166C16.5885 3.64711 17.1929 5.21057 16.4258 6.36135L14 9.99998H18.5604C19.8225 9.99998 20.7691 11.1546 20.5216 12.3922L19.3216 18.3922C19.1346 19.3271 18.3138 20 17.3604 20L8 20"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                />
             </svg>
         </button>
     );

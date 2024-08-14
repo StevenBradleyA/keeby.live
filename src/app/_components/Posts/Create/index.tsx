@@ -12,6 +12,8 @@ import LoadingSpinner from "~/app/_components/Loading";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { uploadFileToS3 } from "~/utils/aws";
+import type { ChangeEvent } from "react";
+import heic2any from "heic2any";
 
 interface ErrorsObj {
     image?: string;
@@ -43,26 +45,26 @@ interface CreatePostModalProps {
 
 export default function CreatePostModal({ closeModal }: CreatePostModalProps) {
     const { data: sessionData } = useSession();
+    const router = useRouter();
+    const utils = api.useUtils();
 
+    // form state
     const [title, setTitle] = useState<string>("");
     const [showLinkInput, setShowLinkInput] = useState<boolean>(false);
     const [link, setLink] = useState<string>("");
     const [text, setText] = useState<string>("");
     const [tag, setTag] = useState<string>("discussion");
-
-    const [errors, setErrors] = useState<ErrorsObj>({});
-    const [imageFiles, setImageFiles] = useState<File[]>([]);
-    const [preview, setPreview] = useState<number>(0);
-    const [enableErrorDisplay, setEnableErrorDisplay] =
-        useState<boolean>(false);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
-    const router = useRouter();
+    const [imageFiles, setImageFiles] = useState<File[]>([]);
+    const [preview, setPreview] = useState<number>(0);
+    const [errors, setErrors] = useState<ErrorsObj>({});
+    const [enableErrorDisplay, setEnableErrorDisplay] =
+        useState<boolean>(false);
 
-    const utils = api.useUtils();
-
+    // server interactions --
     const { mutate } = api.post.create.useMutation({
-        onSuccess: async (data) => {
+        onSuccess: (data) => {
             toast.success("Post Complete!", {
                 style: {
                     borderRadius: "10px",
@@ -71,10 +73,124 @@ export default function CreatePostModal({ closeModal }: CreatePostModalProps) {
                 },
             });
             void utils.post.getAllNewPreviewPosts.invalidate();
-            await router.push(`/keebshare/${data.newPost.id}`);
+            void router.push(`/share/${data.newPost.id}`);
             closeModal();
         },
     });
+
+    // helpers --
+    const handleImageChange = async (event: ChangeEvent<HTMLInputElement>) => {
+        const files = event.target.files;
+
+        if (files && files.length > 0) {
+            const processedFiles: File[] = [];
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (file) {
+                    if (
+                        file.type === "image/heic" ||
+                        file.type === "image/heif"
+                    ) {
+                        try {
+                            const convertedBlob = (await heic2any({
+                                blob: file,
+                                toType: "image/jpeg",
+                            })) as Blob;
+                            const convertedFile = new File(
+                                [convertedBlob],
+                                file.name.replace(/\.[^/.]+$/, ".jpg"),
+                                { type: "image/jpeg" },
+                            );
+                            processedFiles.push(convertedFile);
+                        } catch (error) {
+                            console.error("Error converting HEIC file:", error);
+                        }
+                    } else {
+                        processedFiles.push(file);
+                    }
+                }
+            }
+
+            setImageFiles(processedFiles);
+        }
+    };
+
+    const submit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        setEnableErrorDisplay(true);
+
+        if (!Object.values(errors).length && !isSubmitting) {
+            try {
+                const sessionUserId = sessionData?.user?.id;
+
+                if (!sessionUserId) {
+                    throw new Error("Session expired");
+                }
+
+                const data: PostData = {
+                    userId: sessionUserId,
+                    title,
+                    tag,
+                    preview,
+                };
+
+                setIsSubmitting(true);
+                if (imageFiles.length > 0) {
+                    const imagePromises = imageFiles.map((file) => {
+                        return new Promise<string>((resolve, reject) => {
+                            const reader = new FileReader();
+                            reader.readAsDataURL(file);
+                            reader.onloadend = () => {
+                                if (typeof reader.result === "string") {
+                                    const base64Data =
+                                        reader.result.split(",")[1];
+                                    if (base64Data) {
+                                        resolve(base64Data);
+                                    }
+                                } else {
+                                    reject(new Error("Failed to read file"));
+                                }
+                            };
+                            reader.onerror = () => {
+                                reject(new Error("Failed to read file"));
+                            };
+                        });
+                    });
+
+                    const base64DataArray = await Promise.all(imagePromises);
+                    const imageUrlArr: string[] = [];
+
+                    for (const base64Data of base64DataArray) {
+                        const buffer = Buffer.from(base64Data, "base64");
+                        const imageUrl = await uploadFileToS3(buffer);
+                        imageUrlArr.push(imageUrl);
+                    }
+
+                    data.images = imageUrlArr.map((imageUrl) => ({
+                        link: imageUrl || "",
+                    }));
+                }
+
+                if (link) {
+                    data.link = link;
+                }
+                if (text) {
+                    data.text = text;
+                }
+
+                mutate(data);
+                setImageFiles([]);
+                setHasSubmitted(true);
+                setIsSubmitting(false);
+            } catch (error) {
+                console.error("Submission failed:", error);
+                setIsSubmitting(false);
+            }
+        }
+    };
+
+    // monitors --
 
     useEffect(() => {
         const maxFileSize = 8 * 1024 * 1024;
@@ -86,8 +202,8 @@ export default function CreatePostModal({ closeModal }: CreatePostModalProps) {
         if (!title.length) {
             errorsObj.title = "Please provide a title for your post";
         }
-        if (title.length > 50) {
-            errorsObj.titleExcess = "Title cannot exceed 50 characters";
+        if (title.length > 40) {
+            errorsObj.titleExcess = "Title cannot exceed 40 characters";
         }
 
         const isValidYouTubeUrl = (url: string) => {
@@ -110,80 +226,6 @@ export default function CreatePostModal({ closeModal }: CreatePostModalProps) {
 
         setErrors(errorsObj);
     }, [imageFiles, title, link]);
-
-    const submit = async (e: React.FormEvent) => {
-        e.preventDefault();
-
-        setEnableErrorDisplay(true);
-
-        if (!Object.values(errors).length && !isSubmitting) {
-            try {
-                const sessionUserId = sessionData?.user?.id;
-
-                if (!sessionUserId) {
-                    throw new Error("Session expired");
-                }
-
-                const data: PostData = {
-                    userId: sessionUserId,
-                    title,
-                    tag,
-                    preview,
-                    images: [],
-                };
-
-                setIsSubmitting(true);
-
-                const imagePromises = imageFiles.map((file) => {
-                    return new Promise<string>((resolve, reject) => {
-                        const reader = new FileReader();
-                        reader.readAsDataURL(file);
-                        reader.onloadend = () => {
-                            if (typeof reader.result === "string") {
-                                const base64Data = reader.result.split(",")[1];
-                                if (base64Data) {
-                                    resolve(base64Data);
-                                }
-                            } else {
-                                reject(new Error("Failed to read file"));
-                            }
-                        };
-                        reader.onerror = () => {
-                            reject(new Error("Failed to read file"));
-                        };
-                    });
-                });
-
-                const base64DataArray = await Promise.all(imagePromises);
-                const imageUrlArr: string[] = [];
-
-                for (const base64Data of base64DataArray) {
-                    const buffer = Buffer.from(base64Data, "base64");
-                    const imageUrl = await uploadFileToS3(buffer);
-                    imageUrlArr.push(imageUrl);
-                }
-
-                data.images = imageUrlArr.map((imageUrl) => ({
-                    link: imageUrl || "",
-                }));
-
-                if (link) {
-                    data.link = link;
-                }
-                if (text) {
-                    data.text = text;
-                }
-
-                mutate(data);
-                setImageFiles([]);
-                setHasSubmitted(true);
-                setIsSubmitting(false);
-            } catch (error) {
-                console.error("Submission failed:", error);
-                setIsSubmitting(false);
-            }
-        }
-    };
 
     return (
         <>
@@ -209,7 +251,7 @@ export default function CreatePostModal({ closeModal }: CreatePostModalProps) {
                     </div>
                 </div>
             ) : (
-                <div className="h-[550px] overflow-auto p-2 ">
+                <div className="h-[550px] w-[650px] overflow-auto  px-3 ">
                     <div className="flex items-center">
                         <Image
                             alt="keeb"
@@ -230,7 +272,7 @@ export default function CreatePostModal({ closeModal }: CreatePostModalProps) {
                                 <Image
                                     alt="keebo"
                                     src={keebo}
-                                    className="h-6 w-6"
+                                    className="h-6 w-6 object-contain"
                                 />
                             </div>
                             <h3 className="absolute -top-5 right-0 text-xs text-mediumGray">
@@ -242,19 +284,20 @@ export default function CreatePostModal({ closeModal }: CreatePostModalProps) {
                     <form className="mt-5 text-white">
                         <div className="flex flex-col gap-1">
                             <input
-                                id="titleInput"
+                                name="title"
+                                id="title"
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
-                                className="h-10 w-full rounded-md bg-mediumGray p-1 "
-                                placeholder="Title"
+                                className=" w-full rounded-md bg-mediumGray p-2 placeholder:text-lightGray "
+                                placeholder="Enter a title..."
                             />
                             {enableErrorDisplay && errors.title && (
-                                <p className="text-sm text-red-400">
+                                <p className="text-xs text-red-400">
                                     {errors.title}
                                 </p>
                             )}
                             {enableErrorDisplay && errors.titleExcess && (
-                                <p className="text-sm text-red-400">
+                                <p className="text-xs text-red-400">
                                     {errors.titleExcess}
                                 </p>
                             )}
@@ -262,7 +305,6 @@ export default function CreatePostModal({ closeModal }: CreatePostModalProps) {
                         <div className="mt-2 flex w-full items-center justify-between">
                             <div className="flex gap-5 ">
                                 <button
-                                    className="w-8"
                                     onClick={(e) => {
                                         e.preventDefault();
                                         setShowLinkInput(!showLinkInput);
@@ -274,7 +316,7 @@ export default function CreatePostModal({ closeModal }: CreatePostModalProps) {
                                         version="1.1"
                                         id="Layer_1"
                                         viewBox="0 0 461.001 461.001"
-                                        className="youtube-transition"
+                                        className="hover:text-mediumGray ease-in text-red-500 w-8 h-8"
                                         fill="currentColor"
                                     >
                                         <g>
@@ -283,26 +325,29 @@ export default function CreatePostModal({ closeModal }: CreatePostModalProps) {
                                     </svg>
                                 </button>
 
-                                <button className="relative w-8 keeb-share-image-button ">
+                                <button className="relative keeb-share-image-button text-black hover:text-mediumGray ">
                                     <input
                                         id="imageUploadInput"
                                         className="absolute left-0 top-0 w-8 opacity-0  "
                                         type="file"
                                         multiple
                                         accept="image/png, image/jpg, image/jpeg, image/heic, image/heif"
-                                        onChange={(e) => {
-                                            if (e.target.files)
-                                                setImageFiles([
-                                                    ...imageFiles,
-                                                    ...e.target.files,
-                                                ]);
-                                        }}
+                                        // onChange={(e) => {
+                                        //     if (e.target.files)
+                                        //         setImageFiles([
+                                        //             ...imageFiles,
+                                        //             ...e.target.files,
+                                        //         ]);
+                                        // }}
+                                        onChange={(e) =>
+                                            void handleImageChange(e)
+                                        }
                                     />
 
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         viewBox="0 0 24 24"
-                                        className=" keeb-share-image-transition "
+                                        className=" ease-in  w-8 h-8"
                                         fill="currentColor"
                                     >
                                         <path
@@ -317,62 +362,72 @@ export default function CreatePostModal({ closeModal }: CreatePostModalProps) {
                             </div>
                             <select
                                 id="tagInput"
-                                className=" h-8 w-32 rounded-md bg-green-500 p-1 px-2 py-1 text-black"
+                                className=" w-32 rounded-md bg-green-500 px-2 py-1 text-black hover:opacity-70"
                                 value={tag}
                                 onChange={(e) => setTag(e.target.value)}
                             >
                                 <option value="discussion">Discussion</option>
                                 <option value="guide">Guide</option>
-                                <option value="events">Events</option>
                                 <option value="meme">Meme</option>
-                                <option value="news">News</option>
                                 <option value="showcase">Showcase</option>
-                                <option value="software">Software</option>
-                                <option value="typing">Typing</option>
                             </select>
                         </div>
 
                         {imageFiles.length > 0 && (
-                            <div className="mt-2 flex w-[35rem] flex-wrap justify-center gap-5 rounded-md bg-black bg-opacity-20 p-5 ">
-                                {imageFiles.map((e, i) => (
-                                    <div key={i} className="relative">
-                                        <Image
-                                            className={`h-16 w-24 cursor-pointer rounded-lg object-cover shadow-sm hover:scale-105 hover:shadow-md ${
+                            <>
+                                <div className="mt-2 flex w-full flex-wrap justify-center gap-5 rounded-md bg-black bg-opacity-20 p-5 ">
+                                    {imageFiles.map((e, i) => (
+                                        <div
+                                            key={i}
+                                            className={` relative rounded-lg   ${
                                                 i === preview
                                                     ? "border-4 border-green-500"
                                                     : "border-4 border-black border-opacity-0"
                                             } `}
-                                            alt={`listing-${i}`}
-                                            src={URL.createObjectURL(e)}
-                                            width={100}
-                                            height={100}
-                                            onClick={() => setPreview(i)}
-                                        />
-                                        <button
-                                            className="absolute -right-2 -top-6 transform p-1 text-lg text-mediumGray transition-transform duration-300 ease-in-out hover:rotate-45 hover:scale-110 hover:text-red-500"
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                const newImageFiles = [
-                                                    ...imageFiles,
-                                                ];
-                                                newImageFiles.splice(i, 1);
-                                                setImageFiles(newImageFiles);
-                                                setPreview(0);
-                                            }}
                                         >
-                                            &times;
-                                        </button>
-                                    </div>
-                                ))}
-                            </div>
+                                            <div className="h-[70px] w-[93px] cursor-pointer object-contain  bg-black/20 overflow-hidden rounded-lg hover:shadow-md hover:brightness-110 shadow-sm ">
+                                                <Image
+                                                    className="w-full h-full object-contain scale-110"
+                                                    alt={`listing-${i}`}
+                                                    src={URL.createObjectURL(e)}
+                                                    width={100}
+                                                    height={100}
+                                                    onClick={() =>
+                                                        setPreview(i)
+                                                    }
+                                                />
+                                            </div>
+                                            <button
+                                                className="absolute -right-2 -top-7 transform p-1 text-lg text-mediumGray transition-transform duration-300 ease-in-out hover:rotate-45 hover:scale-110 hover:text-red-500"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    const newImageFiles = [
+                                                        ...imageFiles,
+                                                    ];
+                                                    newImageFiles.splice(i, 1);
+                                                    setImageFiles(
+                                                        newImageFiles,
+                                                    );
+                                                    setPreview(0);
+                                                }}
+                                            >
+                                                &times;
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                                <p className="text-xs mt-1 text-mediumGray">
+                                    4:3 ratio recommended
+                                </p>
+                            </>
                         )}
                         {enableErrorDisplay && errors.imageExcess && (
-                            <p className="text-sm text-red-400">
+                            <p className="text-xs text-red-400">
                                 {errors.imageExcess}
                             </p>
                         )}
                         {enableErrorDisplay && errors.imageLarge && (
-                            <p className="text-sm text-red-400">
+                            <p className="text-xs text-red-400">
                                 {errors.imageLarge}
                             </p>
                         )}
@@ -382,16 +437,17 @@ export default function CreatePostModal({ closeModal }: CreatePostModalProps) {
                                     id="youTubeLinkInput"
                                     value={link}
                                     onChange={(e) => setLink(e.target.value)}
-                                    className="h-10 w-[35rem] rounded-md bg-mediumGray p-1 "
-                                    placeholder="YouTube Link"
+                                    className="w-full rounded-md bg-mediumGray p-2 placeholder:text-lightGray"
+                                    placeholder="Add a YouTube Link..."
                                 />
                             </div>
                         )}
                         <textarea
+                            name="description"
                             value={text}
                             onChange={(e) => setText(e.target.value)}
-                            className="mt-2 h-72 w-[35rem] rounded-md bg-mediumGray p-1 "
-                            placeholder="Text (optional)"
+                            className="mt-2 h-60 w-full resize-none rounded-md bg-mediumGray p-2 placeholder:text-lightGray"
+                            placeholder="Describe the content of your post"
                         ></textarea>
                         <div className="mt-2 flex w-full justify-center ">
                             <button
@@ -408,10 +464,7 @@ export default function CreatePostModal({ closeModal }: CreatePostModalProps) {
                             >
                                 {isSubmitting ? (
                                     <div className="flex items-center gap-1">
-                                        Uploading
-                                        <div className="w-6">
-                                            <LoadingSpinner size="16px" />
-                                        </div>
+                                        <LoadingSpinner size="16px" />
                                     </div>
                                 ) : (
                                     "Post"

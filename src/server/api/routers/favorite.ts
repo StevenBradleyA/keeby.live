@@ -283,22 +283,36 @@ export const favoriteRouter = createTRPCRouter({
     deletePostFavorite: protectedProcedure
         .input(
             z.object({
-                id: z.string(),
                 userId: z.string(),
                 postId: z.string(),
             }),
         )
         .mutation(async ({ ctx, input }) => {
-            const { id, userId, postId } = input;
+            const { userId, postId } = input;
 
             if (ctx.session.user.id !== userId) {
                 throw new Error(
                     "You must be logged in to perform this action.",
                 );
             }
+
+            const favorite = await ctx.db.favorites.findFirst({
+                where: {
+                    postId: postId,
+                    userId: userId,
+                },
+                select: {
+                    id: true,
+                },
+            });
+
+            if (!favorite) {
+                throw new Error("Favorite not found.");
+            }
+
             await ctx.db.favorites.delete({
                 where: {
-                    id: id,
+                    id: favorite.id,
                 },
             });
             const postCheck = await ctx.db.post.findUnique({
@@ -318,5 +332,10 @@ export const favoriteRouter = createTRPCRouter({
                     },
                 });
             }
+
+            return {
+                success: true,
+                message: "Favorite successfully removed.",
+            };
         }),
 });
