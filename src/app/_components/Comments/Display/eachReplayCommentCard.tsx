@@ -97,7 +97,7 @@ export default function EachReplyCommentCard({
                     {reply.user.username && (
                         <Link
                             href={`/profile/public/${reply.user.username}`}
-                            className="text-mediumGray"
+                            className="text-mediumGray hover:opacity-70"
                         >
                             {reply.user.username}
                         </Link>
@@ -112,9 +112,7 @@ export default function EachReplyCommentCard({
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
-                                    width="18"
-                                    height="18"
-                                    className="text-mediumGray transition-colors duration-400 ease-custom-cubic hover:text-white "
+                                    className="text-mediumGray ease-in hover:text-white w-4 h-4"
                                     fill="currentColor"
                                 >
                                     <circle cx="9" cy="4.5" r="1.5" />
@@ -149,7 +147,7 @@ export default function EachReplyCommentCard({
                         {isTooLong && (
                             <button
                                 onClick={toggleReadMore}
-                                className="text-mediumGray"
+                                className="text-mediumGray hover:opacity-70 mt-1 text-xs"
                             >
                                 {isExpanded ? "Read Less" : "Read More"}
                             </button>
@@ -165,7 +163,7 @@ export default function EachReplyCommentCard({
                         {isTooLong && (
                             <button
                                 onClick={toggleReadMore}
-                                className="text-mediumGray"
+                                className="text-mediumGray hover:opacity-70 mt-1 text-xs"
                             >
                                 {isExpanded ? "Read Less" : "Read More"}
                             </button>
@@ -188,9 +186,7 @@ export default function EachReplyCommentCard({
                             <button onClick={openSignInModal}>
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
-                                    height="16"
-                                    width="16"
-                                    className="text-mediumGray transition-colors duration-400 ease-custom-cubic hover:text-white "
+                                    className="text-mediumGray ease-in hover:text-white w-4 h-4"
                                     viewBox="0 0 512 512"
                                     fill="currentColor"
                                 >
@@ -211,14 +207,14 @@ export default function EachReplyCommentCard({
                     {session && session.user ? (
                         <button
                             onClick={() => setShowNestedReply(!showNestedReply)}
-                            className="text-xs text-mediumGray transition-colors duration-400 ease-custom-cubic hover:text-green-500"
+                            className="text-xs text-mediumGray ease-in hover:text-green-500"
                         >
                             Reply
                         </button>
                     ) : (
                         <button
                             onClick={openSignInModal}
-                            className="text-xs text-mediumGray transition-colors duration-400 ease-custom-cubic hover:text-green-500"
+                            className="text-xs text-mediumGray ease-in hover:text-green-500"
                         >
                             Reply
                         </button>

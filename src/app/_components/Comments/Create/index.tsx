@@ -1,9 +1,11 @@
+"use client";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { api } from "~/trpc/react";
 import React from "react";
 import ModalDialog from "~/app/_components/Modal";
 import SignInModal from "../Modal/signInModal";
+import toast from "react-hot-toast";
 
 interface CreateCommentProps {
     typeId: string;
@@ -27,6 +29,14 @@ export default function CreateComment({ typeId, type }: CreateCommentProps) {
 
     const { mutate } = api.comment.createComment.useMutation({
         onSuccess: () => {
+            toast.success("Sent!", {
+                style: {
+                    borderRadius: "10px",
+                    background: "#333",
+                    color: "#fff",
+                },
+            });
+
             void utils.comment.getAllByTypeId.invalidate();
             if (type === "listing") void utils.listing.getOne.invalidate();
             if (type === "post") void utils.post.getOneById.invalidate();

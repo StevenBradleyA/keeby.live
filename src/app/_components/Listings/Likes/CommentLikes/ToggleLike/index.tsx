@@ -1,3 +1,4 @@
+"use client";
 import { api } from "~/trpc/react";
 
 interface CreateCommentLikeProps {
@@ -43,12 +44,10 @@ export default function ToggleCommentLike({
             <button onClick={submit}>
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    height="16"
-                    width="16"
-                    className={`${
+                    className={`w-4 h-4 ${
                         isLiked
-                            ? "text-green-500"
-                            : "text-mediumGray transition-colors duration-400 ease-custom-cubic hover:text-white "
+                            ? "text-green-500 hover:text-mediumGray ease-in"
+                            : "text-mediumGray ease-in hover:text-white "
                     }`}
                     viewBox="0 0 512 512"
                     fill="currentColor"

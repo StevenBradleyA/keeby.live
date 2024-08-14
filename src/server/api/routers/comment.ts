@@ -373,19 +373,31 @@ export const commentRouter = createTRPCRouter({
         )
         .mutation(async ({ input, ctx }) => {
             const { id, parentId, userId } = input;
-            if (ctx.session.user.id === userId || ctx.session.user.isAdmin) {
-                // Top-level comment
-                if (!parentId) {
-                    await ctx.db.comment.deleteMany({
-                        where: { parentId: id },
-                    });
-                    return ctx.prisma.comment.delete({ where: { id: id } });
-                } else {
-                    // Not a top-level comment
-                    return ctx.prisma.comment.delete({ where: { id: id } });
-                }
+            if (
+                !(userId === ctx.session?.user.id || ctx.session?.user.isAdmin)
+            ) {
+                throw new Error(
+                    "You are not authorized to perform this action.",
+                );
             }
+            // Top-level comment
+            if (!parentId) {
+                await ctx.db.comment.deleteMany({
+                    where: { parentId: id },
+                });
 
-            throw new Error("Invalid userId");
+                await ctx.db.comment.delete({ where: { id: id } });
+                return {
+                    success: true,
+                    message: "Comments successfully deleted.",
+                };
+            } else {
+                // Not a top-level comment
+                await ctx.db.comment.delete({ where: { id: id } });
+                return {
+                    success: true,
+                    message: "Comment successfully deleted.",
+                };
+            }
         }),
 });

@@ -1,3 +1,5 @@
+'use client'
+
 import { useSession } from "next-auth/react";
 import { useEffect, useRef } from "react";
 import { api } from "~/trpc/react";

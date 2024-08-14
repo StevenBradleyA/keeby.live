@@ -48,7 +48,7 @@ export default function UserPostPreviews({ user }: UserPostPreviewProps) {
                             />
                         </div>
                         <Link
-                            href={`/keebshare/${e.id}`}
+                            href={`/share/${e.id}`}
                             className="transition-colors hover:text-green-500 "
                         >
                             <div className="flex w-full flex-col ">

@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import defaultProfile from "@public/Images/defaultProfile.png";
 import Link from "next/link";
@@ -103,7 +104,7 @@ export default function EachCommentCard({
                         {comment.user.username && (
                             <Link
                                 href={`/profile/public/${comment.user.username}`}
-                                className="text-mediumGray"
+                                className="text-mediumGray hover:opacity-70"
                             >
                                 {comment.user.username}
                             </Link>
@@ -117,9 +118,7 @@ export default function EachCommentCard({
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
-                                        width="18"
-                                        height="18"
-                                        className="text-mediumGray transition-colors duration-400 ease-custom-cubic hover:text-white "
+                                        className="text-mediumGray ease-in hover:text-white w-4 h-4 "
                                         fill="currentColor"
                                     >
                                         <circle cx="9" cy="4.5" r="1.5" />
@@ -149,7 +148,7 @@ export default function EachCommentCard({
                         {isTooLong && (
                             <button
                                 onClick={toggleReadMore}
-                                className="text-mediumGray"
+                                className="text-mediumGray hover:opacity-70 mt-1 text-xs"
                             >
                                 {isExpanded ? "Read Less" : "Read More"}
                             </button>
@@ -172,9 +171,7 @@ export default function EachCommentCard({
                                 <button onClick={openSignInModal}>
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
-                                        height="16"
-                                        width="16"
-                                        className="text-mediumGray transition-colors duration-400 ease-custom-cubic hover:text-white "
+                                        className="text-mediumGray ease-in hover:text-white w-4 h-4 "
                                         viewBox="0 0 512 512"
                                         fill="currentColor"
                                     >
@@ -199,14 +196,14 @@ export default function EachCommentCard({
                                         !showTopLevelCommentReply,
                                     )
                                 }
-                                className="text-xs text-mediumGray transition-colors duration-400 ease-custom-cubic hover:text-green-500"
+                                className="text-xs text-mediumGray ease-in hover:text-green-500"
                             >
                                 Reply
                             </button>
                         ) : (
                             <button
                                 onClick={openSignInModal}
-                                className="text-xs text-mediumGray transition-colors duration-400 ease-custom-cubic hover:text-green-500"
+                                className="text-xs text-mediumGray ease-in hover:text-green-500"
                             >
                                 Reply
                             </button>
@@ -226,31 +223,31 @@ export default function EachCommentCard({
                 </div>
             </div>
             {comment._count.replies > 0 && (
-                <button
-                    onClick={() => setOpenReplies(!openReplies)}
-                    className="ml-14 mt-2 flex justify-start text-sm text-green-500"
-                >
-                    <div className="flex items-center gap-2 ">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="rgb(34 197 94)"
-                            width="12px"
-                            height="12px"
-                            viewBox="0 0 24 24"
-                            className={`${openReplies ? "rotate-180 " : ""}`}
-                        >
-                            <path d="M11.178 19.569a.998.998 0 0 0 1.644 0l9-13A.999.999 0 0 0 21 5H3a1.002 1.002 0 0 0-.822 1.569l9 13z" />
-                        </svg>
+                <div className="ml-14 mt-2 ">
+                    <button
+                        onClick={() => setOpenReplies(!openReplies)}
+                        className="flex justify-start text-sm text-green-500  hover:opacity-70"
+                    >
+                        <div className="flex items-center gap-2 ">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                className={`w-3 h-3 ${openReplies ? "rotate-180 " : ""} `}
+                                fill="currentColor"
+                            >
+                                <path d="M11.178 19.569a.998.998 0 0 0 1.644 0l9-13A.999.999 0 0 0 21 5H3a1.002 1.002 0 0 0-.822 1.569l9 13z" />
+                            </svg>
 
-                        {openReplies
-                            ? "hide replies"
-                            : `${comment._count.replies} ${
-                                  comment._count.replies === 1
-                                      ? "reply"
-                                      : "replies"
-                              }`}
-                    </div>
-                </button>
+                            {openReplies
+                                ? "hide replies"
+                                : `${comment._count.replies} ${
+                                      comment._count.replies === 1
+                                          ? "reply"
+                                          : "replies"
+                                  }`}
+                        </div>
+                    </button>
+                </div>
             )}
             {openReplies && (
                 <DisplayReplyComments
