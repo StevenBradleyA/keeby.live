@@ -1,5 +1,6 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import type { MutableRefObject } from "react";
 
 interface ModifyCommentModalProps {
     isOpen: boolean;
@@ -12,36 +13,32 @@ const ModifyCommentModal: React.FC<ModifyCommentModalProps> = ({
     onClose,
     children,
 }) => {
+    const modalRef: MutableRefObject<HTMLDivElement | null> = useRef(null);
+
     const handleClose = useCallback(() => {
         onClose();
     }, [onClose]);
 
-    const handleBackgroundClick = () => {
-        handleClose();
-    };
+    const handleOutsideClick = useCallback(
+        (e: Event) => {
+            if (!isOpen) return;
 
-    const handleModalClick = (event: React.MouseEvent<HTMLDivElement>) => {
-        event.stopPropagation();
-    };
-
-    useEffect(() => {
-        const handleOutsideClick = (event: MouseEvent) => {
-            if (isOpen && event.target instanceof HTMLDialogElement) {
+            if (
+                modalRef.current &&
+                !modalRef.current.contains(e.target as Node)
+            ) {
                 handleClose();
             }
-        };
+        },
+        [isOpen, handleClose],
+    );
 
+    useEffect(() => {
         window.addEventListener("mousedown", handleOutsideClick);
-
         return () => {
             window.removeEventListener("mousedown", handleOutsideClick);
         };
-    }, [isOpen, handleClose]);
-
-
-
-
-    // refactor this to use ref in a minute
+    }, [isOpen, handleClose, handleOutsideClick]);
 
     return (
         <AnimatePresence>
@@ -52,7 +49,6 @@ const ModifyCommentModal: React.FC<ModifyCommentModalProps> = ({
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.3, ease: "easeInOut" }}
-                    onClick={handleBackgroundClick}
                 >
                     <motion.div
                         className="fixed inset-0 "
@@ -71,7 +67,7 @@ const ModifyCommentModal: React.FC<ModifyCommentModalProps> = ({
                             damping: 15,
                             stiffness: 350,
                         }}
-                        onClick={handleModalClick}
+                        ref={modalRef}
                     >
                         {children}
                     </motion.div>

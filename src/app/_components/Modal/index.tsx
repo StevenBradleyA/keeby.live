@@ -16,36 +16,6 @@ const ModalDialog: React.FC<ModalDialogProps> = ({
 }) => {
     const modalRef: MutableRefObject<HTMLDivElement | null> = useRef(null);
 
-    // const handleClose = useCallback(() => {
-    //     onClose();
-    // }, [onClose]);
-
-    // const handleBackgroundClick = () => {
-    //     handleClose();
-    // };
-
-    // const handleModalClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    //     event.stopPropagation();
-    // };
-
-    // useEffect(() => {
-    //     const handleOutsideClick = (e: Event) => {
-    //         if (
-    //             isOpen &&
-    //             modalRef.current &&
-    //             !modalRef.current.contains(e.target as Node)
-    //         ) {
-    //             handleClose();
-    //         }
-    //     };
-
-    //     window.addEventListener("mousedown", handleOutsideClick);
-
-    //     return () => {
-    //         window.removeEventListener("mousedown", handleOutsideClick);
-    //     };
-    // }, [isOpen, handleClose]);
-
     const handleClose = useCallback(() => {
         onClose();
     }, [onClose]);

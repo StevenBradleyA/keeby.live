@@ -70,7 +70,7 @@ export default async function DisplayPostPage({ post }: DisplayPostPageProps) {
     return (
         <>
             <div className="w-full text-mediumGray tablet:px-5 desktop:px-16 mt-40 flex gap-10">
-                <div className="flex w-full tablet:w-3/4 flex-col">
+                <div className="flex w-full tablet:w-3/4 flex-col flex-shrink-0">
                     <div className="flex w-full gap-10">
                         <div className=" post-page-user-container  relative h-[65vh] hidden tablet:block tablet:w-1/3 rounded-xl bg-darkGray  px-10 py-8 tablet:overflow-auto desktop:overflow-hidden">
                             <div className="h-full w-full ">
@@ -221,7 +221,7 @@ export default async function DisplayPostPage({ post }: DisplayPostPageProps) {
                     </div>
                 </div>
 
-                <div className="w-1/4 rounded-xl bg-mediumGray p-3 text-black ">
+                <div className=" w-full self-start min-h-[120vh] overflow-hidden rounded-xl bg-mediumGray p-3 text-black ">
                     <PostPagePreviews />
                 </div>
             </div>
