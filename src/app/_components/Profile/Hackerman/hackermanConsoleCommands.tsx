@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useRef, useState } from "react";
 
 interface Command {
@@ -52,7 +53,7 @@ export default function HackermanConsoleCommands() {
 
             // Update the script index for the next cycle
             setCurrentScriptIndex(
-                (prevIndex) => (prevIndex + 1) % scripts.length
+                (prevIndex) => (prevIndex + 1) % scripts.length,
             );
 
             // Scroll the console output to the bottom

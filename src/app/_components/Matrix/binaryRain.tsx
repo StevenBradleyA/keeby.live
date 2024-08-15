@@ -2,7 +2,17 @@
 
 import { useEffect, useRef } from "react";
 
-export default function BinaryRain() {
+interface BinaryRainProps {
+    textColor: string;
+    fontSize: number;
+    letters: string;
+}
+
+export default function BinaryRain({
+    textColor,
+    fontSize,
+    letters,
+}: BinaryRainProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
@@ -12,12 +22,12 @@ export default function BinaryRain() {
         const ctx = canvas.getContext("2d");
         if (!ctx) return;
 
-        const letters = "010110";
+        // const letters = "010110";
+        // const font_size = 10;
         const lettersArr = letters.split("");
         let height = (canvas.height = window.innerHeight);
         let width = (canvas.width = window.innerWidth);
-        const font_size = 10;
-        const columns = width / font_size;
+        const columns = width / fontSize;
         const drops: number[] = Array.from({ length: columns }, () => 1);
 
         let frame = 1;
@@ -28,22 +38,21 @@ export default function BinaryRain() {
         };
 
         const showLetters = () => {
-            ctx.fillStyle = "#fff";
-            ctx.font = `${font_size}px Gotham`;
+            ctx.fillStyle = textColor;
+            ctx.font = `${fontSize}px Gotham`;
 
             drops.forEach((drop, i) => {
                 const text =
                     lettersArr[Math.floor(Math.random() * lettersArr.length)];
 
                 if (drop !== undefined && text !== undefined) {
-                    const textPosY = drop * font_size;
-                    ctx.fillText(text, i * font_size, textPosY);
+                    const textPosY = drop * fontSize;
+                    ctx.fillText(text, i * fontSize, textPosY);
 
                     if (textPosY > height && Math.random() > 0.956) {
                         drops[i] = 0;
                     }
 
-                    // drops[i]++;
                     if (drops[i] !== undefined) drops[i]++;
                 }
             });
@@ -73,13 +82,11 @@ export default function BinaryRain() {
         return () => {
             window.removeEventListener("resize", resizeHandler);
         };
-    }, []);
+    }, [textColor, fontSize, letters]);
 
     return (
         <>
-            <div>
-                <canvas ref={canvasRef} className="text-green-500"></canvas>
-            </div>
+            <canvas ref={canvasRef}></canvas>
         </>
     );
 }

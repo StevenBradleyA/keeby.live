@@ -35,6 +35,7 @@ import Footer from "../_components/Footer/footer";
 import { useMobile } from "../_components/Context/Mobile";
 import TitleScripts from "../_components/TitleScripts";
 import DisplayFavoritePosts from "../_components/Posts/Display/DisplayFavoritePosts";
+import BinaryRain from "../_components/Matrix/binaryRain";
 
 export default function UserProfile() {
     // mdn digest() -- might be useful for us here
@@ -123,9 +124,15 @@ export default function UserProfile() {
                                     />
                                 </button>
                             </div>
-                            <div className=" h-40 w-full overflow-hidden border-2 border-mediumGray">
+                            <div className=" h-40 w-full overflow-hidden border-2 border-mediumGray relative">
                                 {isHackType ? (
-                                    <MatrixRain />
+                                    <div className="absolute -bottom-10 -left-10 -top-10 -right-10">
+                                        <BinaryRain
+                                            textColor="#22c55e"
+                                            fontSize={10}
+                                            letters="keebypoggers01011"
+                                        />
+                                    </div>
                                 ) : (
                                     <Image
                                         alt="profile matrix"
@@ -1088,7 +1095,11 @@ export default function UserProfile() {
                         <h1 className="text-2xl text-green-500">
                             Sign in to view your profile
                         </h1>
-                        <Image alt="keebo" src={keebo} className="h-12 w-12 object-contain" />
+                        <Image
+                            alt="keebo"
+                            src={keebo}
+                            className="h-12 w-12 object-contain"
+                        />
                     </div>
                     <div className=" mt-3 flex justify-center">
                         <button

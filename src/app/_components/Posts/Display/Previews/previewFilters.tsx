@@ -218,29 +218,13 @@ export default function SharePreviewFilters() {
 
                             {isSearchFocus && (
                                 <div className="bg-red-500/10 absolute -bottom-10 -left-10 -top-10 -right-10 z-10  ">
-
-                                <BinaryRain/>
-
-
+                                    <BinaryRain
+                                        textColor="#22c55e"
+                                        fontSize={10}
+                                        letters="010110"
+                                    />
                                 </div>
                             )}
-                            {/* {isSearchFocus && (
-                                <div className=" search-input-matrix absolute -bottom-[70vh] left-0 top-0 -m-5 rounded-md opacity-70  ">
-                                    <video
-                                        className="h-full object-cover"
-                                        autoPlay
-                                        loop
-                                        muted
-                                    >
-                                        <source
-                                            src="https://s3.us-west-2.amazonaws.com/keeby.live/matrix-fade-green.mp4"
-                                            type="video/mp4"
-                                        />
-                                        Your browser does not support the video
-                                        tag.
-                                    </video>
-                                </div>
-                            )} */}
                         </div>
                     )}
                 </div>

@@ -2928,7 +2928,13 @@ input[type="checkbox"]:hover {
 /* --------------     404    --------------  */
 /* --------------     404    --------------  */
 .space-gradient {
-    background: radial-gradient(circle at center 30%, #ffffff 0%, #777777 25%, #333333 50%, #000000 100%);
+    background: radial-gradient(
+        circle at center 30%,
+        #ffffff 0%,
+        #777777 25%,
+        #333333 50%,
+        #000000 100%
+    );
 }
 
 /* --------------     END 404    --------------  */
