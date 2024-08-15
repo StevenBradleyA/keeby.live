@@ -154,21 +154,21 @@ export default function Footer() {
 
                         <Link
                             href="/shop"
-                            aria-label="privacy"
+                            aria-label="shop keyboard products"
                             className="ease-in hover:text-green-500"
                         >
                             Keeb Shop
                         </Link>
                         <Link
                             href="/share"
-                            aria-label="privacy"
+                            aria-label="share your keyboards with others"
                             className="ease-in hover:text-green-500"
                         >
                             Keeb Share
                         </Link>
                         <Link
-                            href="/keebtype"
-                            aria-label="privacy"
+                            href="/"
+                            aria-label="Play keeb type!"
                             className="ease-in hover:text-green-500"
                         >
                             Keeb Type
@@ -222,7 +222,7 @@ export default function Footer() {
                             Contact Us
                         </Link>
                         <Link
-                            href="/keebdex/frequently-asked-questions"
+                            href="/frequently-asked-questions"
                             aria-label="frequently asked questions"
                             className="ease-in hover:text-green-500"
                         >

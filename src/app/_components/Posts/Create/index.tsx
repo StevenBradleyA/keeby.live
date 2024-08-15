@@ -251,7 +251,7 @@ export default function CreatePostModal({ closeModal }: CreatePostModalProps) {
                     </div>
                 </div>
             ) : (
-                <div className="h-[550px] w-[650px] overflow-auto  px-3 ">
+                <div className="h-[500px] w-[600px] overflow-auto  px-3 ">
                     <div className="flex items-center">
                         <Image
                             alt="keeb"
@@ -410,7 +410,7 @@ export default function CreatePostModal({ closeModal }: CreatePostModalProps) {
                                     ))}
                                 </div>
                                 <p className="text-xs mt-1 text-mediumGray">
-                                    4:3 ratio recommended
+                                    16:9 ratio recommended
                                 </p>
                             </>
                         )}

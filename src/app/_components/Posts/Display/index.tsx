@@ -8,9 +8,9 @@ import UserPostPreviews from "./userPostPreviews";
 import CreateComment from "~/app/_components/Comments/Create";
 import PostPagePreviews from "./additionalPostPreviews";
 import Footer from "../../Footer/footer";
-import EachPostLike from "./Previews/eachPostLike";
-import EachPostFavorite from "./Previews/eachPostFavorite";
-import EachPostImage from "./Previews/eachPostImage";
+import EachPostLike from "./eachPostLike";
+import EachPostFavorite from "./eachPostFavorite";
+import EachPostImage from "./eachPostImage";
 import { getServerAuthSession } from "~/server/auth";
 import DisplayComments from "../../Comments/Display/displayComments";
 
@@ -69,10 +69,10 @@ export default async function DisplayPostPage({ post }: DisplayPostPageProps) {
     // we want SEO on this page so we are going to have a UI optimizations for liking, and favorites
     return (
         <>
-            <div className="w-full text-mediumGray tablet:px-5 desktop:px-16 mt-40 flex gap-10">
-                <div className="flex w-full tablet:w-3/4 flex-col flex-shrink-0">
+            <div className="w-full text-mediumGray px-3 laptop:px-5 desktop:px-16 mt-40 flex gap-10">
+                <div className="flex w-full laptop:w-3/4 flex-col flex-shrink-0">
                     <div className="flex w-full gap-10">
-                        <div className=" post-page-user-container  relative h-[65vh] hidden tablet:block tablet:w-1/3 rounded-xl bg-darkGray  px-10 py-8 tablet:overflow-auto desktop:overflow-hidden">
+                        <div className=" post-page-user-container  relative overflow-hidden hidden laptop:block laptop:w-1/3 rounded-xl bg-darkGray  px-10 py-8 ">
                             <div className="h-full w-full ">
                                 {post.user.selectedTag && (
                                     <div className="w-full justify-center flex">
@@ -129,7 +129,7 @@ export default async function DisplayPostPage({ post }: DisplayPostPageProps) {
                             </div>
                         </div>
 
-                        <div className="flex w-full tablet:w-2/3 flex-col gap-5 ">
+                        <div className="flex w-full laptop:w-2/3 flex-col gap-5 ">
                             <div className=" w-full rounded-xl bg-darkGray ">
                                 <div className="flex items-center justify-between p-3 w-full ">
                                     <h2 className=" rounded-3xl bg-white/10 px-4 py-2 text-green-500">
@@ -222,7 +222,7 @@ export default async function DisplayPostPage({ post }: DisplayPostPageProps) {
                 </div>
 
                 <div className=" w-full self-start min-h-[120vh] overflow-hidden rounded-xl bg-mediumGray p-3 text-black ">
-                    <PostPagePreviews />
+                    <PostPagePreviews postId={post.id}/>
                 </div>
             </div>
             <div className="mt-96 w-full">

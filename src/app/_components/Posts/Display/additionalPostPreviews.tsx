@@ -1,38 +1,16 @@
-"use client";
-import { useSession } from "next-auth/react";
-import { api } from "~/trpc/react";
-import LoadingSpinner from "~/app/_components/Loading";
+import { api } from "~/trpc/server";
 import keebo from "@public/Profile/keebo.png";
 import Image from "next/image";
 import PostPagePreviewCard from "./eachAdditionalPostPreviewCard";
+import { getServerAuthSession } from "~/server/auth";
 
-interface Filters {
-    searchQuery?: string;
-    tag?: string;
-    userId?: string;
-}
+export default async function PostPagePreviews({ postId }: { postId: string }) {
+    const session = await getServerAuthSession();
 
-export default function PostPagePreviews() {
-    const queryInputs: Filters = {};
-
-    const { data: session } = useSession();
-
-    if (session && session.user) {
-        queryInputs.userId = session.user.id;
-    }
-
-    const { data: postData, isLoading } =
-        api.post.getAllNewPreviewPosts.useQuery({
-            userId: session && session.user.id ? session.user.id : undefined,
-        });
-
-    if (isLoading) {
-        return (
-            <div className="mt-5 pl-5">
-                <LoadingSpinner size="20px" />
-            </div>
-        );
-    }
+    const postData = await api.post.getAllNewPreviewPosts({
+        userId: session && session.user.id ? session.user.id : undefined,
+        postId: postId,
+    });
 
     return (
         <>

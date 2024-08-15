@@ -1,7 +1,6 @@
+"use client";
 import { signIn, useSession } from "next-auth/react";
-
 import Footer from "../_components/Footer/footer";
-
 import { api } from "~/trpc/react";
 import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
@@ -83,6 +82,14 @@ export default function ContactUs() {
         setErrors(errorsObj);
     }, [text, email]);
 
+
+
+    // todo definetly add a category or something here 
+
+    // category - suggestion - help - compliment 
+
+    // if compliment... thank you. I love mechanical keyboards so I wanted to share that with others by making keeby. 
+
     return (
         <>
             <div
@@ -92,11 +99,11 @@ export default function ContactUs() {
                 //         "linear-gradient(to bottom, #000000, #050505, #0A0A0A, #0F0F0F, #141414, #191919, #1E1E1E, #232323, #1B3833, #237544, #2B8E4F, #34A05A, #3AB35C)",
                 // }}
             ></div>
-            <div className="relative z-10 h-[88vh] w-full overflow-hidden">
+            <div className="relative z-10 h-[90vh] w-full overflow-hidden">
                 <div className="contact-grid absolute z-20"></div>
                 <div className="contact-grid-mirror absolute z-20 "></div>
 
-                <div className="absolute left-1/2 top-1/2 z-20 w-[600px] -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-2xl border-2 border-green-500 bg-black/20 p-10 text-green-500">
+                <div className="absolute left-1/2 top-1/2 z-20 w-[600px] -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-2xl border-2 border-green-500 bg-black/50 p-10 text-green-500">
                     {isFinished === false ? (
                         <>
                             <h1 className="text-xl">

@@ -8,12 +8,11 @@ import { useRouter, useSearchParams, usePathname } from "next/navigation";
 // import { getCookies, setCookie } from "cookies-next";
 
 export default function SharePreviewFilters() {
-
     const router = useRouter();
     const searchParams = useSearchParams();
     const pathname = usePathname();
 
-    const filter = searchParams.get("filter") || "Hot";
+    const filter = searchParams.get("filter") || "hot";
     const search = searchParams.get("search") || "";
     const tag = searchParams.get("tag") || "";
 
@@ -72,7 +71,6 @@ export default function SharePreviewFilters() {
         };
     }, [searchInput]);
 
-
     return (
         <>
             <div className="flex w-full items-start z-20 fixed top-44 bg-dark px-2 tablet:px-5 desktop:px-16 text-mediumGray">
@@ -109,21 +107,21 @@ export default function SharePreviewFilters() {
                     <div className="flex gap-5 items-start">
                         <button
                             className={`ease-in ${
-                                filter === "Hot"
+                                filter === "hot"
                                     ? "border-b border-white text-white hover:text-white"
                                     : "border-b border-white border-opacity-0 hover:text-white/40"
                             }`}
-                            onClick={() => handleFilters("Hot")}
+                            onClick={() => handleFilters("hot")}
                         >
                             Hot
                         </button>
                         <button
                             className={`ease-in ${
-                                filter === "New"
+                                filter === "new"
                                     ? "border-b border-white text-white hover:text-white"
                                     : "border-b border-white border-opacity-0 hover:text-white/40"
                             }`}
-                            onClick={() => handleFilters("New")}
+                            onClick={() => handleFilters("new")}
                         >
                             New
                         </button>

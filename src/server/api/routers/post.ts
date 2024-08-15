@@ -186,6 +186,7 @@ export const postRouter = createTRPCRouter({
         )
         .query(async ({ ctx, input }) => {
             const { search, tag, filter, userId } = input;
+            console.log("HEYYYYYY", filter)
 
             const whereFilters: Prisma.PostWhereInput = {
                 AND: [
@@ -314,14 +315,20 @@ export const postRouter = createTRPCRouter({
         .input(
             z.object({
                 userId: z.string().optional(),
+                postId: z.string(),
             }),
         )
         .query(async ({ ctx, input }) => {
-            const { userId } = input;
+            const { userId, postId } = input;
 
             const limit = 5;
 
             const posts: PostWithCount[] = await ctx.db.post.findMany({
+                where: {
+                    id: {
+                        not: postId,
+                    },
+                },
                 include: {
                     _count: {
                         select: {

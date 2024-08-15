@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import Footer from "../_components/Footer/footer";
 
@@ -508,7 +509,7 @@ export default function FrequentlyAskedQuestions() {
                     </div>
                 </div>
             </div>
-            <div className="z-20 mt-96 w-full">
+            <div className="z-40 mt-96 w-full relative">
                 <Footer />
             </div>
         </>

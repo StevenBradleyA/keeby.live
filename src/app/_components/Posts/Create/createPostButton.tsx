@@ -16,13 +16,26 @@ export default function CreatePostButton() {
         setIsModalOpen(false);
     };
 
+    const createButton = {
+        hover: {
+            scale: 1.1,
+            transition: {
+                type: "spring",
+                stiffness: 250,
+                damping: 8,
+            },
+        },
+        tap: { scale: 0.9 },
+    };
+
     return (
         <div>
             <motion.button
-                className=" bg-green-500 rounded-lg p-1 ease-in"
+                className=" bg-green-500 rounded-lg p-1 ease-in text-black"
                 onClick={openModal}
-                whileTap={{ scale: 0.9 }}
-                whileHover={{ scale: 1.15 }}
+                whileTap="tap"
+                whileHover="hover"
+                variants={createButton}
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"

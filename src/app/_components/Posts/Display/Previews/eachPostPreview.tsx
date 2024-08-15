@@ -4,9 +4,9 @@ import { getServerAuthSession } from "~/server/auth";
 import Link from "next/link";
 import Image from "next/image";
 import keebo from "@public/Profile/keebo.png";
-import EachPostLike from "./eachPostLike";
-import EachPostFavorite from "./eachPostFavorite";
-import EachPostImage from "./eachPostImage";
+import EachPostLike from "../eachPostLike";
+import EachPostFavorite from "../eachPostFavorite";
+import EachPostImage from "../eachPostImage";
 
 interface EachPostPreviewProps {
     post: EachPost;

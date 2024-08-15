@@ -1,17 +1,19 @@
-import { useRouter } from "next/router";
 import PublicProfileUserInfo from "~/app/_components/Profile/Public";
-import Custom404 from "~/pages/404";
+import NotFound from "~/app/not-found";
 
-export default function PublicProfile() {
-    const router = useRouter();
-    const { username } = router.query;
+export default function PublicProfile({
+    params,
+}: {
+    params: { username: string };
+}) {
+    const { username } = params;
 
     return (
         <>
             {username && typeof username === "string" ? (
                 <PublicProfileUserInfo username={username} />
             ) : (
-                <Custom404 />
+                <NotFound />
             )}
         </>
     );

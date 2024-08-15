@@ -13,7 +13,7 @@ export default function SupportMe() {
                     e.preventDefault();
                     window.open(
                         "https://www.youtube.com/@KeebyLive?sub_confirmation=1",
-                        "_blank"
+                        "_blank",
                     );
                 }}
                 className="flex h-32 w-36 items-center justify-center rounded-md bg-black/50 transition-colorBackground duration-300 ease-custom-cubic hover:bg-black/30 hover:text-red-500"
@@ -34,16 +34,16 @@ export default function SupportMe() {
                 </svg>
             </a>
             <a
-                href="https://www.youtube.com/@KeebyLive?sub_confirmation=1"
+                href="https://www.instagram.com/keeby.live/?hl=en"
                 target="_blank"
                 rel="noopener noreferrer"
                 role="button"
-                aria-label="Subscribe on YouTube"
+                aria-label="Follow me on Instagram"
                 onClick={(e) => {
                     e.preventDefault();
                     window.open(
-                        "https://www.youtube.com/@KeebyLive?sub_confirmation=1",
-                        "_blank"
+                        "https://www.instagram.com/keeby.live/?hl=en",
+                        "_blank",
                     );
                 }}
                 className="flex h-32 w-36 items-center justify-center rounded-md bg-black/50 transition-colorBackground duration-300 ease-custom-cubic hover:bg-black/30 hover:text-fuchsia-500"
@@ -82,7 +82,7 @@ export default function SupportMe() {
                     e.preventDefault();
                     window.open(
                         "https://www.youtube.com/@KeebyLive?sub_confirmation=1",
-                        "_blank"
+                        "_blank",
                     );
                 }}
                 className="flex h-32 w-36 flex-col items-center justify-center rounded-md bg-black/50 text-sm transition-colorBackground duration-300 ease-custom-cubic hover:bg-black/30 hover:text-amber-700"
@@ -107,7 +107,7 @@ export default function SupportMe() {
                 </svg>
             </a>
             <a
-                href="https://www.youtube.com/@KeebyLive?sub_confirmation=1"
+                href="https://www.steven-anderson.com/contact"
                 target="_blank"
                 rel="noopener noreferrer"
                 role="button"
@@ -115,8 +115,8 @@ export default function SupportMe() {
                 onClick={(e) => {
                     e.preventDefault();
                     window.open(
-                        "https://www.youtube.com/@KeebyLive?sub_confirmation=1",
-                        "_blank"
+                        "https://www.steven-anderson.com/contact",
+                        "_blank",
                     );
                 }}
                 className="flex h-32 w-36 flex-col items-center justify-center rounded-md bg-black/50 text-sm transition-colorBackground duration-300 ease-custom-cubic hover:bg-black/30 hover:text-green-500"

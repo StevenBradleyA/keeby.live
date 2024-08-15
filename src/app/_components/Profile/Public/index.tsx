@@ -1,19 +1,15 @@
+"use client";
+
 import { api } from "~/trpc/react";
 import Image from "next/image";
-import gridBackground from "@public/Profile/profile-plus.png";
-import stockProfile from "@public/Profile/profile-default.png";
 import defaultProfile from "@public/Images/defaultProfile.png";
 import DisplayStarRating from "~/app/_components/Reviews/Star/displayStarRating";
-import EachReceivedReviewCard from "~/app/_components/Reviews/Display/eachReceivedReviewCard";
 import EachPublicProfileReview from "~/app/_components/Reviews/Display/publicProfileReviews";
-import { RadialBarChart, RadialBar, Legend, PolarAngleAxis } from "recharts";
 import CustomProgressPie from "./customProgressPie";
-import Footer from "../_components/Footer/footer";
-
 import unranked from "@public/KeebType/unranked.png";
 import TitleScripts from "~/app/_components/TitleScripts";
 import { motion } from "framer-motion";
-import { userInfo } from "os";
+import Footer from "../../Footer/footer";
 
 interface PublicProfileProps {
     username: string;
@@ -31,7 +27,6 @@ export default function PublicProfileUserInfo({
     // show all seller keebs ????
     // show seller posts and listings???
     //  show seller average wpm and selected tag fo sho
-    console.log(userData);
 
     // todo ideas maybe add a matching circle for internetpoints?
     const percentage = (5 / 5) * 100;
@@ -62,7 +57,7 @@ export default function PublicProfileUserInfo({
     return (
         userData && (
             <>
-                <div className="mb-5 text-3xl text-green-500">
+                <div className="mb-5 text-3xl text-green-500 flex justify-center mt-40">
                     <TitleScripts page="publicProfile" />
                 </div>
                 <div className="z-10 w-full px-40 text-mediumGray">
