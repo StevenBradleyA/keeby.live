@@ -6,6 +6,7 @@ import ResetArrowSvg from "~/app/_components/Svgs/reset";
 import NotificationSvg from "~/app/_components/Svgs/notification";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useGlobalState } from "~/app/_components/Context/GlobalState/globalState";
+import BinaryRain from "~/app/_components/Matrix/binaryRain";
 
 export default function SharePreviewFilters() {
     const router = useRouter();
@@ -200,12 +201,12 @@ export default function SharePreviewFilters() {
                             </div>
                         </div>
                     ) : (
-                        <div className="relative w-full ">
+                        <div className="relative w-full h-full ">
                             <input
                                 id="searchInput"
                                 value={searchInput}
                                 onChange={(e) => setSearchInput(e.target.value)}
-                                className={`search-input-hack absolute h-10 w-full rounded-md px-3 ${
+                                className={`search-input-hack absolute h-10 w-full rounded-md px-3 z-20 ${
                                     isSearchFocus
                                         ? "search-input-placeholder bg-blackAlternative"
                                         : "bg-mediumGray"
@@ -216,6 +217,14 @@ export default function SharePreviewFilters() {
                             />
 
                             {isSearchFocus && (
+                                <div className="bg-red-500/10 absolute -bottom-10 -left-10 -top-10 -right-10 z-10  ">
+
+                                <BinaryRain/>
+
+
+                                </div>
+                            )}
+                            {/* {isSearchFocus && (
                                 <div className=" search-input-matrix absolute -bottom-[70vh] left-0 top-0 -m-5 rounded-md opacity-70  ">
                                     <video
                                         className="h-full object-cover"
@@ -231,7 +240,7 @@ export default function SharePreviewFilters() {
                                         tag.
                                     </video>
                                 </div>
-                            )}
+                            )} */}
                         </div>
                     )}
                 </div>
