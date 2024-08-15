@@ -2,12 +2,16 @@
 import { getCookie, getCookies, setCookie } from "cookies-next";
 import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 
 interface StateContextType {
     theme: string;
-    setTheme: (theme: string) => void;
+    // setTheme: (theme: string) => void;
+    setTheme: React.Dispatch<React.SetStateAction<string>>;
+    footerInViewRef: React.RefObject<HTMLDivElement>;
+    pageNumber: number;
+    setPageNumber: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const GlobalStateContext = createContext<StateContextType | undefined>(
@@ -30,6 +34,8 @@ const GlobalStateProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     const cookies = getCookies();
     const { data: session } = useSession();
     const [theme, setTheme] = useState<string>("KEEBY");
+    const footerInViewRef = useRef(null);
+    const [pageNumber, setPageNumber] = useState<number>(1);
     const pathname = usePathname();
     const router = useRouter();
 
@@ -73,7 +79,13 @@ const GlobalStateProvider: React.FC<ThemeProviderProps> = ({ children }) => {
         setShowCookieBanner(false);
     };
 
-    const value = { theme, setTheme };
+    const value = {
+        theme,
+        setTheme,
+        footerInViewRef,
+        pageNumber,
+        setPageNumber,
+    };
     return (
         <GlobalStateContext.Provider value={value}>
             {children}

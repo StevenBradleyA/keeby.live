@@ -4,12 +4,16 @@ import hacktime from "@public/Vectors/hacktime.png";
 import keebo from "@public/Profile/keebo.png";
 import title from "@public/Nav/home.png";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ModalDialog from "../Modal";
 import SupportMe from "./supportModal";
+import { useGlobalState } from "../Context/GlobalState/globalState";
+import { usePathname } from "next/navigation";
 
 export default function Footer() {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const { footerInViewRef, setPageNumber, pageNumber } = useGlobalState();
+    const pathname = usePathname();
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -19,8 +23,52 @@ export default function Footer() {
         setIsModalOpen(false);
     };
 
+    useEffect(() => {
+        // Initialize the page number within the ref if it's not already set
+        if (pathname.includes("/share") || pathname.includes("/marketplace")) {
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            // console.log("Footer is in view");
+                            setPageNumber((prev: number) => prev + 1);
+                        }
+
+                        // } else {
+                        // Perform actions when footer is out of view
+                        // console.log("Footer is out of view");
+                        // }
+                    });
+                },
+                { threshold: 0.1 },
+            );
+
+            if (footerInViewRef.current) {
+                observer.observe(footerInViewRef.current);
+            }
+
+            return () => {
+                if (footerInViewRef.current) {
+                    observer.unobserve(footerInViewRef.current);
+                }
+            };
+        }
+    }, [footerInViewRef]);
+
+    useEffect(() => {
+        if (pathname.includes("/share") || pathname.includes("/marketplace")) {
+            setPageNumber(1);
+        }
+    }, [pathname, setPageNumber]);
+
+
+   
+
     return (
-        <div className=" w-full bg-darkGray px-20 pt-10 text-mediumGray">
+        <div
+            className=" w-full bg-darkGray px-20 pt-10 text-mediumGray"
+            ref={footerInViewRef}
+        >
             <div className="flex w-full justify-between">
                 <div className="flex w-96 flex-col">
                     <Link

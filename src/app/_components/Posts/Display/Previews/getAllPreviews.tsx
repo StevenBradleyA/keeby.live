@@ -12,6 +12,7 @@ interface SearchParams {
     filter?: string;
     tag?: string;
     search?: string;
+    page?: string;
 }
 
 interface Filters {
@@ -19,6 +20,7 @@ interface Filters {
     tag?: string;
     filter?: string;
     userId?: string;
+    page?: string;
 }
 
 export default async function GetAllPreviewPosts({
@@ -36,6 +38,9 @@ export default async function GetAllPreviewPosts({
     }
     if (searchParams && searchParams.filter) {
         filterParams.filter = searchParams.filter;
+    }
+    if (searchParams && searchParams.page) {
+        filterParams.page = searchParams.page;
     }
     if (session && session.user) {
         filterParams.userId = session.user.id;

@@ -288,7 +288,7 @@ export default function CreatePostModal({ closeModal }: CreatePostModalProps) {
                                 id="title"
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
-                                className=" w-full rounded-md bg-mediumGray p-2 placeholder:text-lightGray "
+                                className=" w-full rounded-md bg-mediumGray p-2 placeholder:text-lightGray hover:opacity-70"
                                 placeholder="Enter a title..."
                             />
                             {enableErrorDisplay && errors.title && (
@@ -439,7 +439,7 @@ export default function CreatePostModal({ closeModal }: CreatePostModalProps) {
                             name="description"
                             value={text}
                             onChange={(e) => setText(e.target.value)}
-                            className="mt-2 h-60 w-full resize-none rounded-md bg-mediumGray p-2 placeholder:text-lightGray"
+                            className="mt-2 h-60 w-full resize-none rounded-md bg-mediumGray p-2 placeholder:text-lightGray hover:opacity-70"
                             placeholder="Describe the content of your post"
                         ></textarea>
                         <div className="mt-2 flex w-full justify-center ">

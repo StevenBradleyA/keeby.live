@@ -4,40 +4,36 @@ import { debounce } from "lodash";
 import CreatePostButton from "../../Create/createPostButton";
 import ResetArrowSvg from "~/app/_components/Svgs/reset";
 import NotificationSvg from "~/app/_components/Svgs/notification";
-import { useRouter, useSearchParams, usePathname } from "next/navigation";
-// import { getCookies, setCookie } from "cookies-next";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useGlobalState } from "~/app/_components/Context/GlobalState/globalState";
 
 export default function SharePreviewFilters() {
     const router = useRouter();
     const searchParams = useSearchParams();
-    const pathname = usePathname();
 
     const filter = searchParams.get("filter") || "hot";
     const search = searchParams.get("search") || "";
     const tag = searchParams.get("tag") || "";
-
-    // const cookies = getCookies();
-    // const [filter, setFilter] = useState<string>("Hot");
-    // const [debouncedSearchQuery, setDebouncedSearchQuery] =
-    // useState<string>("");
-    // const [tag, setTag] = useState<string>("");
+    const page = parseInt(searchParams.get("page") || "1");
 
     const [searchInput, setSearchInput] = useState<string>(search);
     const [isSearchFocus, setIsSearchFocus] = useState<boolean>(false);
     const [isSpecify, setIsSpecify] = useState<boolean>(false);
+    const { pageNumber, setPageNumber } = useGlobalState();
 
-    const updateQueryParams = (params: Record<string, string>) => {
+    const updateQueryParams = (params: Record<string, string | number>) => {
         const newSearchParams = new URLSearchParams(searchParams.toString());
 
         Object.keys(params).forEach((key) => {
             if (params[key]) {
-                newSearchParams.set(key, params[key]);
+                newSearchParams.set(key, params[key].toString());
             } else {
                 newSearchParams.delete(key);
             }
         });
 
-        router.replace(`${pathname}?${newSearchParams.toString()}`);
+        const newUrl = `${window.location.pathname}?${newSearchParams.toString()}`;
+        router.push(newUrl, { scroll: false });
     };
 
     const handleSearchClick = () => {
@@ -70,6 +66,17 @@ export default function SharePreviewFilters() {
             handler.cancel();
         };
     }, [searchInput]);
+
+    useEffect(() => {
+        // Reset page number when the filter changes
+        setPageNumber(1);
+    }, [filter, tag, search, setPageNumber]);
+
+    useEffect(() => {
+        if (page !== pageNumber) {
+            updateQueryParams({ page: pageNumber });
+        }
+    }, [pageNumber]);
 
     return (
         <>
@@ -232,3 +239,17 @@ export default function SharePreviewFilters() {
         </>
     );
 }
+
+// const updateQueryParams = (params: Record<string, string>) => {
+//     const newSearchParams = new URLSearchParams(searchParams.toString());
+
+//     Object.keys(params).forEach((key) => {
+//         if (params[key]) {
+//             newSearchParams.set(key, params[key]);
+//         } else {
+//             newSearchParams.delete(key);
+//         }
+//     });
+
+//     router.replace(`${pathname}?${newSearchParams.toString()}`);
+// };

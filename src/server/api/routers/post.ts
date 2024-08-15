@@ -182,131 +182,213 @@ export const postRouter = createTRPCRouter({
                 tag: z.string().optional(),
                 filter: z.string().optional(),
                 userId: z.string().optional(),
+                page: z.string().optional(),
             }),
         )
         .query(async ({ ctx, input }) => {
-            const { search, tag, filter, userId } = input;
-            console.log("HEYYYYYY", filter)
+            const { search, tag, filter, userId, page } = input;
+            const limit = 12;
+            const currentPage = parseInt(page || "1", 10);
+            const cumulativeTake = currentPage * limit;
 
-            const whereFilters: Prisma.PostWhereInput = {
-                AND: [
-                    tag ? { tag } : {},
-                    search
-                        ? {
-                              OR: [
-                                  {
-                                      title: {
-                                          contains: search,
-                                      },
-                                  },
-                                  {
-                                      text: {
-                                          contains: search,
-                                      },
-                                  },
-                              ],
-                          }
-                        : {},
-                ].filter((obj) => Object.keys(obj).length > 0),
-            };
-
-            const posts: PostWithCount[] = await ctx.db.post.findMany({
-                where: whereFilters,
-                include: {
-                    _count: {
-                        select: {
-                            comments: true,
-                            postLikes: true,
-                            favorites: true,
-                        },
-                    },
-                    images: {
-                        where: {
-                            OR: [
-                                { resourceType: "POSTPREVIEW" },
-                                { resourceType: "POST" },
-                            ],
-                        },
-                    },
-                    user: {
-                        select: {
-                            id: true,
-                            profile: true,
-                            username: true,
-                        },
-                    },
-                },
-                orderBy: { createdAt: "desc" },
-            });
-
-            // we need to sort preview images to be first
-            posts.forEach((post) => {
-                post.images.sort((a, b) => {
-                    if (
-                        a.resourceType === "POSTPREVIEW" &&
-                        b.resourceType !== "POSTPREVIEW"
-                    ) {
-                        return -1;
-                    } else if (
-                        a.resourceType !== "POSTPREVIEW" &&
-                        b.resourceType === "POSTPREVIEW"
-                    ) {
-                        return 1;
-                    }
-                    return 0;
-                });
-            });
-
-            if (userId) {
-                const likesMap = new Map(
-                    await ctx.db.postLike
-                        .findMany({
-                            where: {
-                                userId: userId,
-                                postId: { in: posts.map((post) => post.id) },
-                            },
-                            select: { postId: true, id: true },
-                        })
-                        .then((results) =>
-                            results.map((result) => [result.postId, result.id]),
-                        ),
-                );
-
-                const favoritesMap = new Map(
-                    await ctx.db.favorites
-                        .findMany({
-                            where: {
-                                userId: userId,
-                                postId: { in: posts.map((post) => post.id) },
-                            },
-                            select: { postId: true, id: true },
-                        })
-                        .then((results) =>
-                            results.map((result) => [result.postId, result.id]),
-                        ),
-                );
-
-                posts.forEach((post) => {
-                    post.isLiked = likesMap.has(post.id);
-                    post.likeId = likesMap.get(post.id);
-                    post.isFavorited = favoritesMap.has(post.id);
-                    post.favoriteId = favoritesMap.get(post.id);
-                });
-            }
-
-            // by default we want to return popular posts ---
             if (filter === "new") {
+                const whereFilters: Prisma.PostWhereInput = {
+                    AND: [
+                        tag ? { tag } : {},
+                        search
+                            ? {
+                                  OR: [
+                                      {
+                                          title: {
+                                              contains: search,
+                                          },
+                                      },
+                                      {
+                                          text: {
+                                              contains: search,
+                                          },
+                                      },
+                                  ],
+                              }
+                            : {},
+                    ].filter((obj) => Object.keys(obj).length > 0),
+                };
+
+                const posts: PostWithCount[] = await ctx.db.post.findMany({
+                    where: whereFilters,
+                    include: {
+                        _count: {
+                            select: {
+                                comments: true,
+                                postLikes: true,
+                                favorites: true,
+                            },
+                        },
+                        images: {
+                            where: {
+                                OR: [
+                                    { resourceType: "POSTPREVIEW" },
+                                    { resourceType: "POST" },
+                                ],
+                            },
+                        },
+                        user: {
+                            select: {
+                                id: true,
+                                profile: true,
+                                username: true,
+                            },
+                        },
+                    },
+                    orderBy: { createdAt: "desc" },
+                    take: cumulativeTake,
+                });
+
+                // we need to sort preview images to be first
+                posts.forEach((post) => {
+                    post.images.sort((a, b) => {
+                        if (
+                            a.resourceType === "POSTPREVIEW" &&
+                            b.resourceType !== "POSTPREVIEW"
+                        ) {
+                            return -1;
+                        } else if (
+                            a.resourceType !== "POSTPREVIEW" &&
+                            b.resourceType === "POSTPREVIEW"
+                        ) {
+                            return 1;
+                        }
+                        return 0;
+                    });
+                });
+
                 return {
                     posts,
                 };
             } else {
-                const popularPosts = posts.sort((a, b) => {
-                    const totalA = a._count.comments + a._count.postLikes;
-                    const totalB = b._count.comments + b._count.postLikes;
-                    return totalB - totalA;
+                const whereFilters: Prisma.PostWhereInput = {
+                    AND: [
+                        tag ? { tag } : {},
+                        search
+                            ? {
+                                  OR: [
+                                      {
+                                          title: {
+                                              contains: search,
+                                          },
+                                      },
+                                      {
+                                          text: {
+                                              contains: search,
+                                          },
+                                      },
+                                  ],
+                              }
+                            : {},
+                    ].filter((obj) => Object.keys(obj).length > 0),
+                };
+
+                const posts: PostWithCount[] = await ctx.db.post.findMany({
+                    where: whereFilters,
+                    include: {
+                        _count: {
+                            select: {
+                                comments: true,
+                                postLikes: true,
+                                favorites: true,
+                            },
+                        },
+                        images: {
+                            where: {
+                                OR: [
+                                    { resourceType: "POSTPREVIEW" },
+                                    { resourceType: "POST" },
+                                ],
+                            },
+                        },
+                        user: {
+                            select: {
+                                id: true,
+                                profile: true,
+                                username: true,
+                            },
+                        },
+                    },
+                    orderBy: [
+                        { postLikes: { _count: "desc" } },
+                        { comments: { _count: "desc" } },
+                        { createdAt: "desc" },
+                    ],
+                    take: cumulativeTake,
                 });
+
+                // we need to sort preview images to be first
+                posts.forEach((post) => {
+                    post.images.sort((a, b) => {
+                        if (
+                            a.resourceType === "POSTPREVIEW" &&
+                            b.resourceType !== "POSTPREVIEW"
+                        ) {
+                            return -1;
+                        } else if (
+                            a.resourceType !== "POSTPREVIEW" &&
+                            b.resourceType === "POSTPREVIEW"
+                        ) {
+                            return 1;
+                        }
+                        return 0;
+                    });
+                });
+
+                if (userId) {
+                    const likesMap = new Map(
+                        await ctx.db.postLike
+                            .findMany({
+                                where: {
+                                    userId: userId,
+                                    postId: {
+                                        in: posts.map((post) => post.id),
+                                    },
+                                },
+                                select: { postId: true, id: true },
+                            })
+                            .then((results) =>
+                                results.map((result) => [
+                                    result.postId,
+                                    result.id,
+                                ]),
+                            ),
+                    );
+
+                    const favoritesMap = new Map(
+                        await ctx.db.favorites
+                            .findMany({
+                                where: {
+                                    userId: userId,
+                                    postId: {
+                                        in: posts.map((post) => post.id),
+                                    },
+                                },
+                                select: { postId: true, id: true },
+                            })
+                            .then((results) =>
+                                results.map((result) => [
+                                    result.postId,
+                                    result.id,
+                                ]),
+                            ),
+                    );
+
+                    posts.forEach((post) => {
+                        post.isLiked = likesMap.has(post.id);
+                        post.likeId = likesMap.get(post.id);
+                        post.isFavorited = favoritesMap.has(post.id);
+                        post.favoriteId = favoritesMap.get(post.id);
+                    });
+                }
+
                 return {
-                    posts: popularPosts,
+                    posts,
                 };
             }
         }),
