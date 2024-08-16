@@ -59,13 +59,13 @@ export default async function EachPostPreview({ post }: EachPostPreviewProps) {
                 )}
             </div>
 
-            <h1 className="mt-2 w-full flex no-wrap overflow-hidden whitespace-nowrap text-base text-white">
+            <h2 className="mt-2 w-full flex no-wrap overflow-hidden whitespace-nowrap text-base text-white">
                 {post.title}
-            </h1>
+            </h2>
             <div className="flex w-full justify-between mt-1">
-                <h2 className="bg-darkGray py-1 px-4 rounded-2xl text-green-500">
+                <h3 className="bg-darkGray py-1 px-4 rounded-2xl text-green-500">
                     {post.tag}
-                </h2>
+                </h3>
                 <div className="gap-2 flex items-center">
                     {/* <div className="flex gap-1 items-center">
                         <svg

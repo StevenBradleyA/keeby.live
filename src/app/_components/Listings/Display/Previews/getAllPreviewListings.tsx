@@ -2,6 +2,7 @@ import Image from "next/image";
 import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/server";
 import keebo from "@public/Profile/keebo.png";
+import EachListingCardPreview from "./eachListingCardPreview";
 
 interface GetAllPreviewPostsProps {
     searchParams?: SearchParams;
@@ -79,8 +80,7 @@ export default async function GetAllPreviewListings({
                 listingPreviews.listings &&
                 listingPreviews.listings.length > 0 ? (
                     listingPreviews.listings.map((e) => (
-                        // <EachPostCar key={e.id} post={e} />
-                        <div className="w-96 h-60 bg-black rounded-lg"></div>
+                        <EachListingCardPreview key={e.id} listing={e} />
                     ))
                 ) : (
                     <div className="flex gap-2 text-mediumGray">
