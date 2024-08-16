@@ -217,7 +217,7 @@ export default function SharePreviewFilters() {
                             />
 
                             {isSearchFocus && (
-                                <div className="bg-red-500/10 absolute -bottom-10 -left-10 -top-10 -right-10 z-10  ">
+                                <div className="absolute -bottom-10 -left-10 -top-10 -right-10 z-10  ">
                                     <BinaryRain
                                         textColor="#22c55e"
                                         fontSize={10}
@@ -232,17 +232,3 @@ export default function SharePreviewFilters() {
         </>
     );
 }
-
-// const updateQueryParams = (params: Record<string, string>) => {
-//     const newSearchParams = new URLSearchParams(searchParams.toString());
-
-//     Object.keys(params).forEach((key) => {
-//         if (params[key]) {
-//             newSearchParams.set(key, params[key]);
-//         } else {
-//             newSearchParams.delete(key);
-//         }
-//     });
-
-//     router.replace(`${pathname}?${newSearchParams.toString()}`);
-// };

@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useRef } from "react";
 
 interface BinaryRainProps {
@@ -23,7 +22,7 @@ export default function BinaryRain({
         if (!ctx) return;
 
         // const letters = "010110";
-        // const font_size = 10;
+        // const fontSize = 10;
         const lettersArr = letters.split("");
         let height = (canvas.height = window.innerHeight);
         let width = (canvas.width = window.innerWidth);
@@ -82,7 +81,7 @@ export default function BinaryRain({
         return () => {
             window.removeEventListener("resize", resizeHandler);
         };
-    }, [textColor, fontSize, letters]);
+    }, [textColor, letters, fontSize]);
 
     return (
         <>
