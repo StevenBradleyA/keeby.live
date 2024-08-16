@@ -39,8 +39,16 @@ type UpdateData = {
 interface PreviewListing extends Listing {
     _count: {
         comments: number;
+        favorites: number;
     };
     images: ListingPreviewImage[];
+    isFavorited?: boolean;
+    favoriteId?: string;
+    seller: {
+        id: string;
+        profile: string | null;
+        username: string | null;
+    };
 }
 
 interface ListingPreviewImage {
@@ -207,7 +215,232 @@ export const listingRouter = createTRPCRouter({
 
             return listingWithImages;
         }),
+    getAllPreviewListings: publicProcedure
+        .input(
+            z.object({
+                filter: z.string().optional(),
+                search: z.string().optional(),
+                userId: z.string().optional(),
+                page: z.string().optional(),
+                switchType: z.string().optional(),
+                soundType: z.string().optional(),
+                assemblyType: z.string().optional(),
+                pcbType: z.string().optional(),
+                minPrice: z.string().optional(),
+                maxPrice: z.string().optional(),
+                priceOrder: z.string().optional(),
+                layoutType: z.string().optional(),
+            }),
+        )
+        .query(async ({ ctx, input }) => {
+            const {
+                search,
+                soundType,
+                switchType,
+                layoutType,
+                assemblyType,
+                pcbType,
+                minPrice: minPriceString,
+                maxPrice: maxPriceString,
+                filter,
+                userId,
+                page,
+            } = input;
 
+            const limit = 12;
+            const currentPage = parseInt(page || "1", 10);
+            const cumulativeTake = currentPage * limit;
+            const minPrice = Number(minPriceString);
+            const maxPrice = Number(maxPriceString);
+
+            if (filter === "new") {
+                const whereFilters: Prisma.ListingWhereInput = {
+                    AND: [
+                        soundType ? { soundType } : {},
+                        switchType ? { switchType } : {},
+                        assemblyType ? { assemblyType } : {},
+                        pcbType ? { pcbType } : {},
+                        soundType ? { soundType } : {},
+                        layoutType ? { layoutType } : {},
+                        minPrice ? { price: { gte: minPrice } } : {},
+                        maxPrice ? { price: { lte: maxPrice } } : {},
+                        search
+                            ? {
+                                  OR: [
+                                      {
+                                          title: {
+                                              contains: search,
+                                          },
+                                      },
+                                      {
+                                          text: {
+                                              contains: search,
+                                          },
+                                      },
+                                  ],
+                              }
+                            : {},
+                    ].filter((obj) => Object.keys(obj).length > 0),
+                };
+
+                const listings: PreviewListing[] =
+                    await ctx.db.listing.findMany({
+                        where: whereFilters,
+                        include: {
+                            _count: {
+                                select: {
+                                    comments: true,
+                                    favorites: true,
+                                },
+                            },
+                            images: {
+                                where: { resourceType: "LISTINGPREVIEW" },
+                            },
+                            seller: {
+                                select: {
+                                    id: true,
+                                    profile: true,
+                                    username: true,
+                                },
+                            },
+                        },
+                        orderBy: { createdAt: "desc" },
+                        //     orderBy: priceOrder
+                        // ? priceOrder === "asc"
+                        //     ? [{ price: "asc" }, { createdAt: "desc" }]
+                        //     : [{ price: "desc" }, { createdAt: "desc" }]
+                        // : [{ createdAt: "desc" }],
+                        take: cumulativeTake,
+                    });
+
+                if (userId) {
+                    const favoritesMap = new Map(
+                        await ctx.db.favorites
+                            .findMany({
+                                where: {
+                                    userId: userId,
+                                    listingId: {
+                                        in: listings.map(
+                                            (listing) => listing.id,
+                                        ),
+                                    },
+                                },
+                                select: { listingId: true, id: true },
+                            })
+                            .then((results) =>
+                                results.map((result) => [
+                                    result.listingId,
+                                    result.id,
+                                ]),
+                            ),
+                    );
+
+                    listings.forEach((listing) => {
+                        listing.isFavorited = favoritesMap.has(listing.id);
+                        listing.favoriteId = favoritesMap.get(listing.id);
+                    });
+                }
+
+                return {
+                    listings,
+                };
+            } else {
+                const whereFilters: Prisma.ListingWhereInput = {
+                    AND: [
+                        soundType ? { soundType } : {},
+                        switchType ? { switchType } : {},
+                        assemblyType ? { assemblyType } : {},
+                        pcbType ? { pcbType } : {},
+                        soundType ? { soundType } : {},
+                        layoutType ? { layoutType } : {},
+                        minPrice ? { price: { gte: minPrice } } : {},
+                        maxPrice ? { price: { lte: maxPrice } } : {},
+                        search
+                            ? {
+                                  OR: [
+                                      {
+                                          title: {
+                                              contains: search,
+                                          },
+                                      },
+                                      {
+                                          text: {
+                                              contains: search,
+                                          },
+                                      },
+                                  ],
+                              }
+                            : {},
+                    ].filter((obj) => Object.keys(obj).length > 0),
+                };
+
+                const listings: PreviewListing[] =
+                    await ctx.db.listing.findMany({
+                        where: whereFilters,
+                        include: {
+                            _count: {
+                                select: {
+                                    comments: true,
+                                    favorites: true,
+                                },
+                            },
+                            images: {
+                                where: { resourceType: "LISTINGPREVIEW" },
+                            },
+                            seller: {
+                                select: {
+                                    id: true,
+                                    profile: true,
+                                    username: true,
+                                },
+                            },
+                        },
+                        orderBy: [
+                            { favorites: { _count: "desc" } },
+                            { comments: { _count: "desc" } },
+                            { createdAt: "desc" },
+                        ],
+                        //     orderBy: priceOrder
+                        // ? priceOrder === "asc"
+                        //     ? [{ price: "asc" }, { createdAt: "desc" }]
+                        //     : [{ price: "desc" }, { createdAt: "desc" }]
+                        // : [{ createdAt: "desc" }],
+                        take: cumulativeTake,
+                    });
+
+                if (userId) {
+                    const favoritesMap = new Map(
+                        await ctx.db.favorites
+                            .findMany({
+                                where: {
+                                    userId: userId,
+                                    listingId: {
+                                        in: listings.map(
+                                            (listing) => listing.id,
+                                        ),
+                                    },
+                                },
+                                select: { listingId: true, id: true },
+                            })
+                            .then((results) =>
+                                results.map((result) => [
+                                    result.listingId,
+                                    result.id,
+                                ]),
+                            ),
+                    );
+
+                    listings.forEach((listing) => {
+                        listing.isFavorited = favoritesMap.has(listing.id);
+                        listing.favoriteId = favoritesMap.get(listing.id);
+                    });
+                }
+
+                return {
+                    listings,
+                };
+            }
+        }),
     getAllWithFilters: publicProcedure
         .input(
             z.object({
