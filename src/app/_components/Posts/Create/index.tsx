@@ -237,17 +237,40 @@ export default function CreatePostModal({ closeModal }: CreatePostModalProps) {
                         </h1>
                         <Image alt="keebo" src={keebo} className="h-12 w-12" />
                     </div>
-                    <div className="mt-5 flex justify-center">
-                        <motion.button
-                            whileHover={{
-                                scale: 1.1,
+                    <div className="flex justify-center">
+                        <button
+                            className="text-md keeb-share-preview-button mt-5 flex items-center gap-2 rounded-md bg-green-500 py-2 pr-4 text-black "
+                            style={{
+                                boxShadow: "0 0 20px #22C55E",
                             }}
-                            whileTap={{ scale: 0.95 }}
-                            className="  rounded-xl border-2 border-black bg-black px-6 py-2 text-green-500 hover:border-green-500 hover:bg-darkGray"
                             onClick={() => void signIn()}
                         >
-                            {`Let's go`}
-                        </motion.button>
+                            <svg
+                                className="keeb-share-preview-button-arrow w-4"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke="currentColor"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="3"
+                                    d="M3.515 12h16.97m0 0L13.01 4.525M20.485 12l-7.475 7.476"
+                                ></path>
+                            </svg>
+                            <span className="keeb-share-preview-button-text">
+                                {`Let's Go `}
+                            </span>
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="currentColor"
+                                className="keeb-share-preview-button-circle w-2"
+                                viewBox="0 0 32 32"
+                            >
+                                <circle cx="16" cy="16" r="16" />
+                            </svg>
+                        </button>
                     </div>
                 </div>
             ) : (

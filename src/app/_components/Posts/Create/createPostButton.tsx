@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import ModalDialog from "../../Modal";
 import CreatePostModal from ".";

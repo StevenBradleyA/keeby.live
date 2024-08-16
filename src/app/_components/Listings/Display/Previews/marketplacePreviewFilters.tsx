@@ -1,12 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
 import { debounce } from "lodash";
-// import CreatePostButton from "../../Create/createPostButton";
 import ResetArrowSvg from "~/app/_components/Svgs/reset";
 import NotificationSvg from "~/app/_components/Svgs/notification";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useGlobalState } from "~/app/_components/Context/GlobalState/globalState";
 import BinaryRain from "~/app/_components/Matrix/binaryRain";
+import CreateListingButton from "../../Create/createListingButton";
 
 export default function MarketplacePreviewFilters() {
     const router = useRouter();
@@ -17,17 +17,22 @@ export default function MarketplacePreviewFilters() {
 
     const switchType = searchParams.get("switchType") || "";
     const soundType = searchParams.get("soundType") || "";
-    const isBudget = searchParams.get("isBudget") === "true"; // Assuming it's a boolean value
-    const isBallin = searchParams.get("isBallin") === "true"; // Assuming it's a boolean value
-    const minPrice = searchParams.get("minPrice") || "";
-    const maxPrice = searchParams.get("maxPrice") || "";
+    // const isBudget = searchParams.get("isBudget") === "true";
+    // const isBallin = searchParams.get("isBallin") === "true"
+    // const priceOrder = searchParams.get("priceOrder") || "";
+
+    const minPrice = parseInt(searchParams.get("minPrice") || "");
+    const maxPrice = parseInt(searchParams.get("maxPrice") || "");
     const layoutType = searchParams.get("layoutType") || "";
     const assemblyType = searchParams.get("assemblyType") || "";
     const pcbType = searchParams.get("pcbType") || "";
-    const priceOrder = searchParams.get("priceOrder") || "";
     const page = parseInt(searchParams.get("page") || "1");
 
     const [searchInput, setSearchInput] = useState<string>(search);
+    //
+    const [minPriceInput, setMinPriceInput] = useState<number>(minPrice);
+    const [maxPriceInput, setMaxPriceInput] = useState<number>(maxPrice);
+
     const [isSearchFocus, setIsSearchFocus] = useState<boolean>(false);
     const [isSpecify, setIsSpecify] = useState<boolean>(false);
     const { pageNumber, setPageNumber } = useGlobalState();
@@ -62,7 +67,11 @@ export default function MarketplacePreviewFilters() {
             assemblyType: "",
             pcbType: "",
             layoutType: "",
+            maxPrice: "",
+            minPrice: "",
         });
+        setMinPriceInput(0);
+        setMaxPriceInput(0);
     };
 
     const handleSwitchSelect = (type: string) => {
@@ -71,7 +80,6 @@ export default function MarketplacePreviewFilters() {
     const handleSoundSelect = (type: string) => {
         updateQueryParams({ soundType: soundType === type ? "" : type });
     };
-
     const handleAssemblySelect = (type: string) => {
         updateQueryParams({ assemblyType: assemblyType === type ? "" : type });
     };
@@ -88,14 +96,18 @@ export default function MarketplacePreviewFilters() {
 
     useEffect(() => {
         const handler = debounce(() => {
-            updateQueryParams({ search: searchInput });
+            updateQueryParams({
+                search: searchInput,
+                minPrice: minPriceInput,
+                maxPrice: maxPriceInput,
+            });
         }, 250);
 
         handler();
         return () => {
             handler.cancel();
         };
-    }, [searchInput]);
+    }, [searchInput, minPriceInput, maxPriceInput]);
 
     useEffect(() => {
         // Reset page number when the filter changes
@@ -141,7 +153,11 @@ export default function MarketplacePreviewFilters() {
                         >
                             Specify
                         </button>
-                        {(switchType || assemblyType) && (
+                        {(switchType ||
+                            assemblyType ||
+                            soundType ||
+                            switchType ||
+                            layoutType) && (
                             <div className="absolute -right-5 bottom-3 h-5 w-5 text-green-500  ">
                                 <NotificationSvg />
                             </div>
@@ -171,7 +187,7 @@ export default function MarketplacePreviewFilters() {
                             New
                         </button>
                     </div>
-                    {/* <CreatePostButton /> */}
+                    <CreateListingButton />
                 </div>
             </div>
 
@@ -183,246 +199,306 @@ export default function MarketplacePreviewFilters() {
                 >
                     {isSpecify ? (
                         <div className="flex w-full flex-col items-start">
-                            <div className="flex w-full flex-col items-start">
-                                <div className="relative flex w-full">
+                            <div className="relative flex w-full">
+                                <h2 className="text-green-500">Switches:</h2>
+                                <button
+                                    className=" absolute -top-1 right-0 h-7 w-7 text-mediumGray ease-in hover:text-green-500"
+                                    onClick={handleResetSpecify}
+                                >
+                                    <ResetArrowSvg />
+                                </button>
+                            </div>
+                            <div className="flex gap-5">
+                                <div className="flex w-full flex-col items-start">
+                                    <button
+                                        onClick={() =>
+                                            handleSwitchSelect("linear")
+                                        }
+                                        className={` mt-1 ease-in hover:text-white  ${
+                                            switchType === "linear"
+                                                ? "border-b border-white text-white"
+                                                : "border-b border-white border-opacity-0"
+                                        }`}
+                                    >
+                                        linear
+                                    </button>
+                                    <button
+                                        onClick={() =>
+                                            handleSwitchSelect("tactile")
+                                        }
+                                        className={` ease-in hover:text-white  ${
+                                            switchType === "tactile"
+                                                ? "border-b border-white text-white"
+                                                : "border-b border-white border-opacity-0"
+                                        }`}
+                                    >
+                                        tactile
+                                    </button>
+                                    <button
+                                        onClick={() =>
+                                            handleSwitchSelect("silent")
+                                        }
+                                        className={` ease-in hover:text-white  ${
+                                            switchType === "silent"
+                                                ? "border-b border-white text-white"
+                                                : "border-b border-white border-opacity-0"
+                                        }`}
+                                    >
+                                        silent
+                                    </button>
+                                    <button
+                                        onClick={() =>
+                                            handleSwitchSelect("clicky")
+                                        }
+                                        className={` ease-in hover:text-white  ${
+                                            switchType === "clicky"
+                                                ? "border-b border-white text-white"
+                                                : "border-b border-white border-opacity-0"
+                                        }`}
+                                    >
+                                        clicky
+                                    </button>
+                                    <button
+                                        onClick={() =>
+                                            handleSwitchSelect("other")
+                                        }
+                                        className={` ease-in hover:text-white  ${
+                                            switchType === "other"
+                                                ? "border-b border-white text-white"
+                                                : "border-b border-white border-opacity-0"
+                                        }`}
+                                    >
+                                        other
+                                    </button>
+
+                                    <h2 className="text-green-500">Sound:</h2>
+                                    <button
+                                        onClick={() =>
+                                            handleSoundSelect("thock")
+                                        }
+                                        className={` mt-1 ease-in hover:text-white  ${
+                                            soundType === "thock"
+                                                ? "border-b border-white text-white"
+                                                : "border-b border-white border-opacity-0"
+                                        }`}
+                                    >
+                                        thock
+                                    </button>
+                                    <button
+                                        onClick={() =>
+                                            handleSoundSelect("clack")
+                                        }
+                                        className={` ease-in hover:text-white  ${
+                                            soundType === "clack"
+                                                ? "border-b border-white text-white"
+                                                : "border-b border-white border-opacity-0"
+                                        }`}
+                                    >
+                                        clack
+                                    </button>
+                                    <button
+                                        onClick={() =>
+                                            handleSoundSelect("click")
+                                        }
+                                        className={` ease-in hover:text-white  ${
+                                            soundType === "click"
+                                                ? "border-b border-white text-white"
+                                                : "border-b border-white border-opacity-0"
+                                        }`}
+                                    >
+                                        click
+                                    </button>
+                                    <button
+                                        onClick={() =>
+                                            handleSoundSelect("silent")
+                                        }
+                                        className={` ease-in hover:text-white  ${
+                                            soundType === "silent"
+                                                ? "border-b border-white text-white"
+                                                : "border-b border-white border-opacity-0"
+                                        }`}
+                                    >
+                                        silent
+                                    </button>
+
                                     <h2 className="text-green-500">
-                                        Switches:
+                                        Assembly:
                                     </h2>
                                     <button
-                                        className=" absolute -top-1 right-0 h-7 w-7 text-mediumGray ease-in hover:text-green-500"
-                                        onClick={handleResetSpecify}
+                                        onClick={() =>
+                                            handleAssemblySelect("assembled")
+                                        }
+                                        className={` mt-1 ease-in hover:text-white  ${
+                                            assemblyType === "assembled"
+                                                ? "border-b border-white text-white"
+                                                : "border-b border-white border-opacity-0"
+                                        }`}
                                     >
-                                        <ResetArrowSvg />
+                                        assembled
+                                    </button>
+                                    <button
+                                        onClick={() =>
+                                            handleAssemblySelect("unassembled")
+                                        }
+                                        className={` ease-in hover:text-white  ${
+                                            assemblyType === "unassembled"
+                                                ? "border-b border-white text-white"
+                                                : "border-b border-white border-opacity-0"
+                                        }`}
+                                    >
+                                        unassembled
+                                    </button>
+
+                                    <h2 className="text-green-500">PCB:</h2>
+                                    <button
+                                        onClick={() =>
+                                            handlePcbSelect("hotswap")
+                                        }
+                                        className={` mt-1 ease-in hover:text-white  ${
+                                            pcbType === "hotswap"
+                                                ? "border-b border-white text-white"
+                                                : "border-b border-white border-opacity-0"
+                                        }`}
+                                    >
+                                        hotswap
+                                    </button>
+                                    <button
+                                        onClick={() =>
+                                            handlePcbSelect("soldered")
+                                        }
+                                        className={` ease-in hover:text-white  ${
+                                            pcbType === "soldered"
+                                                ? "border-b border-white text-white"
+                                                : "border-b border-white border-opacity-0"
+                                        }`}
+                                    >
+                                        soldered
+                                    </button>
+
+                                    <h2 className="text-green-500">Layout:</h2>
+                                    <button
+                                        onClick={() =>
+                                            handleLayoutSelect("alice")
+                                        }
+                                        className={` mt-1 ease-in hover:text-white  ${
+                                            layoutType === "alice"
+                                                ? "border-b border-white text-white"
+                                                : "border-b border-white border-opacity-0"
+                                        }`}
+                                    >
+                                        alice
+                                    </button>
+                                    <button
+                                        onClick={() =>
+                                            handleLayoutSelect("split")
+                                        }
+                                        className={` ease-in hover:text-white  ${
+                                            layoutType === "split"
+                                                ? "border-b border-white text-white"
+                                                : "border-b border-white border-opacity-0"
+                                        }`}
+                                    >
+                                        split
+                                    </button>
+                                    <button
+                                        onClick={() =>
+                                            handleLayoutSelect("ortho")
+                                        }
+                                        className={` ease-in hover:text-white  ${
+                                            layoutType === "ortho"
+                                                ? "border-b border-white text-white"
+                                                : "border-b border-white border-opacity-0"
+                                        }`}
+                                    >
+                                        ortho
+                                    </button>
+                                    <button
+                                        onClick={() =>
+                                            handleLayoutSelect("100")
+                                        }
+                                        className={` ease-in hover:text-white  ${
+                                            layoutType === "100"
+                                                ? "border-b border-white text-white"
+                                                : "border-b border-white border-opacity-0"
+                                        }`}
+                                    >
+                                        100
+                                    </button>
+                                    <button
+                                        onClick={() =>
+                                            handleLayoutSelect("100")
+                                        }
+                                        className={` ease-in hover:text-white  ${
+                                            layoutType === "100"
+                                                ? "border-b border-white text-white"
+                                                : "border-b border-white border-opacity-0"
+                                        }`}
+                                    >
+                                        75
+                                    </button>
+                                    <button
+                                        onClick={() =>
+                                            handleLayoutSelect("100")
+                                        }
+                                        className={` ease-in hover:text-white  ${
+                                            layoutType === "100"
+                                                ? "border-b border-white text-white"
+                                                : "border-b border-white border-opacity-0"
+                                        }`}
+                                    >
+                                        65
+                                    </button>
+                                    <button
+                                        onClick={() =>
+                                            handleLayoutSelect("100")
+                                        }
+                                        className={` ease-in hover:text-white  ${
+                                            layoutType === "100"
+                                                ? "border-b border-white text-white"
+                                                : "border-b border-white border-opacity-0"
+                                        }`}
+                                    >
+                                        60
+                                    </button>
+                                    <button
+                                        onClick={() =>
+                                            handleLayoutSelect("100")
+                                        }
+                                        className={` ease-in hover:text-white  ${
+                                            layoutType === "100"
+                                                ? "border-b border-white text-white"
+                                                : "border-b border-white border-opacity-0"
+                                        }`}
+                                    >
+                                        40
                                     </button>
                                 </div>
-                                <button
-                                    onClick={() => handleSwitchSelect("linear")}
-                                    className={` mt-1 ease-in hover:text-white  ${
-                                        switchType === "linear"
-                                            ? "border-b border-white text-white"
-                                            : "border-b border-white border-opacity-0"
-                                    }`}
-                                >
-                                    linear
-                                </button>
-                                <button
-                                    onClick={() =>
-                                        handleSwitchSelect("tactile")
-                                    }
-                                    className={` ease-in hover:text-white  ${
-                                        switchType === "tactile"
-                                            ? "border-b border-white text-white"
-                                            : "border-b border-white border-opacity-0"
-                                    }`}
-                                >
-                                    tactile
-                                </button>
-                                <button
-                                    onClick={() => handleSwitchSelect("silent")}
-                                    className={` ease-in hover:text-white  ${
-                                        switchType === "silent"
-                                            ? "border-b border-white text-white"
-                                            : "border-b border-white border-opacity-0"
-                                    }`}
-                                >
-                                    silent
-                                </button>
-                                <button
-                                    onClick={() => handleSwitchSelect("clicky")}
-                                    className={` ease-in hover:text-white  ${
-                                        switchType === "clicky"
-                                            ? "border-b border-white text-white"
-                                            : "border-b border-white border-opacity-0"
-                                    }`}
-                                >
-                                    clicky
-                                </button>
-                                <button
-                                    onClick={() => handleSwitchSelect("other")}
-                                    className={` ease-in hover:text-white  ${
-                                        switchType === "other"
-                                            ? "border-b border-white text-white"
-                                            : "border-b border-white border-opacity-0"
-                                    }`}
-                                >
-                                    other
-                                </button>
-                            </div>
-                            <div className="flex w-full flex-col items-start">
-                                <h2 className="text-green-500">Sound:</h2>
-                                <button
-                                    onClick={() => handleSoundSelect("thock")}
-                                    className={` mt-1 ease-in hover:text-white  ${
-                                        soundType === "thock"
-                                            ? "border-b border-white text-white"
-                                            : "border-b border-white border-opacity-0"
-                                    }`}
-                                >
-                                    thock
-                                </button>
-                                <button
-                                    onClick={() => handleSoundSelect("clack")}
-                                    className={` ease-in hover:text-white  ${
-                                        soundType === "clack"
-                                            ? "border-b border-white text-white"
-                                            : "border-b border-white border-opacity-0"
-                                    }`}
-                                >
-                                    clack
-                                </button>
-                                <button
-                                    onClick={() => handleSoundSelect("click")}
-                                    className={` ease-in hover:text-white  ${
-                                        soundType === "click"
-                                            ? "border-b border-white text-white"
-                                            : "border-b border-white border-opacity-0"
-                                    }`}
-                                >
-                                    click
-                                </button>
-                                <button
-                                    onClick={() => handleSoundSelect("silent")}
-                                    className={` ease-in hover:text-white  ${
-                                        soundType === "silent"
-                                            ? "border-b border-white text-white"
-                                            : "border-b border-white border-opacity-0"
-                                    }`}
-                                >
-                                    silent
-                                </button>
-                            </div>
-                            <div className="flex w-full flex-col items-start">
-                                <h2 className="text-green-500">Assembly:</h2>
-                                <button
-                                    onClick={() =>
-                                        handleAssemblySelect("assembled")
-                                    }
-                                    className={` mt-1 ease-in hover:text-white  ${
-                                        assemblyType === "assembled"
-                                            ? "border-b border-white text-white"
-                                            : "border-b border-white border-opacity-0"
-                                    }`}
-                                >
-                                    assembled
-                                </button>
-                                <button
-                                    onClick={() =>
-                                        handleAssemblySelect("unassembled")
-                                    }
-                                    className={` ease-in hover:text-white  ${
-                                        assemblyType === "unassembled"
-                                            ? "border-b border-white text-white"
-                                            : "border-b border-white border-opacity-0"
-                                    }`}
-                                >
-                                    unassembled
-                                </button>
-                            </div>
-                            <div className="flex w-full flex-col items-start">
-                                <h2 className="text-green-500">PCB:</h2>
-                                <button
-                                    onClick={() => handlePcbSelect("hotswap")}
-                                    className={` mt-1 ease-in hover:text-white  ${
-                                        pcbType === "hotswap"
-                                            ? "border-b border-white text-white"
-                                            : "border-b border-white border-opacity-0"
-                                    }`}
-                                >
-                                    hotswap
-                                </button>
-                                <button
-                                    onClick={() => handlePcbSelect("soldered")}
-                                    className={` ease-in hover:text-white  ${
-                                        pcbType === "soldered"
-                                            ? "border-b border-white text-white"
-                                            : "border-b border-white border-opacity-0"
-                                    }`}
-                                >
-                                    soldered
-                                </button>
-                            </div>
-                            <div className="flex w-full flex-col items-start">
-                                <h2 className="text-green-500">Layout:</h2>
-                                <button
-                                    onClick={() => handleLayoutSelect("alice")}
-                                    className={` mt-1 ease-in hover:text-white  ${
-                                        layoutType === "alice"
-                                            ? "border-b border-white text-white"
-                                            : "border-b border-white border-opacity-0"
-                                    }`}
-                                >
-                                    alice
-                                </button>
-                                <button
-                                    onClick={() => handleLayoutSelect("split")}
-                                    className={` ease-in hover:text-white  ${
-                                        layoutType === "split"
-                                            ? "border-b border-white text-white"
-                                            : "border-b border-white border-opacity-0"
-                                    }`}
-                                >
-                                    split
-                                </button>
-                                <button
-                                    onClick={() => handleLayoutSelect("ortho")}
-                                    className={` ease-in hover:text-white  ${
-                                        layoutType === "ortho"
-                                            ? "border-b border-white text-white"
-                                            : "border-b border-white border-opacity-0"
-                                    }`}
-                                >
-                                    ortho
-                                </button>
-                                <button
-                                    onClick={() => handleLayoutSelect("100")}
-                                    className={` ease-in hover:text-white  ${
-                                        layoutType === "100"
-                                            ? "border-b border-white text-white"
-                                            : "border-b border-white border-opacity-0"
-                                    }`}
-                                >
-                                    100
-                                </button>
-                                <button
-                                    onClick={() => handleLayoutSelect("100")}
-                                    className={` ease-in hover:text-white  ${
-                                        layoutType === "100"
-                                            ? "border-b border-white text-white"
-                                            : "border-b border-white border-opacity-0"
-                                    }`}
-                                >
-                                    75
-                                </button>
-                                <button
-                                    onClick={() => handleLayoutSelect("100")}
-                                    className={` ease-in hover:text-white  ${
-                                        layoutType === "100"
-                                            ? "border-b border-white text-white"
-                                            : "border-b border-white border-opacity-0"
-                                    }`}
-                                >
-                                    65
-                                </button>
-                                <button
-                                    onClick={() => handleLayoutSelect("100")}
-                                    className={` ease-in hover:text-white  ${
-                                        layoutType === "100"
-                                            ? "border-b border-white text-white"
-                                            : "border-b border-white border-opacity-0"
-                                    }`}
-                                >
-                                    60
-                                </button>
-                                <button
-                                    onClick={() => handleLayoutSelect("100")}
-                                    className={` ease-in hover:text-white  ${
-                                        layoutType === "100"
-                                            ? "border-b border-white text-white"
-                                            : "border-b border-white border-opacity-0"
-                                    }`}
-                                >
-                                    40
-                                </button>
+                                <div className="flex flex-col ">
+                                    <input
+                                        id="minimum price"
+                                        type="number"
+                                        value={minPriceInput}
+                                        onChange={(e) =>
+                                            setMinPriceInput(+e.target.value)
+                                        }
+                                        className="h-8 w-32 rounded-md bg-black text-white p-1"
+                                        placeholder="Min price"
+                                        min="0"
+                                        step={1}
+                                    />
+                                    <input
+                                        id="max price"
+                                        type="number"
+                                        value={maxPriceInput}
+                                        onChange={(e) =>
+                                            setMaxPriceInput(+e.target.value)
+                                        }
+                                        className="h-8 w-32 rounded-md bg-black text-white p-1"
+                                        placeholder="Max price"
+                                        min="0"
+                                        step={1}
+                                    />
+                                </div>
                             </div>
                         </div>
                     ) : (
