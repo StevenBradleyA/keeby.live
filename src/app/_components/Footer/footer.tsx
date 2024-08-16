@@ -61,9 +61,6 @@ export default function Footer() {
         }
     }, [pathname, setPageNumber]);
 
-
-   
-
     return (
         <div
             className=" w-full bg-darkGray px-20 pt-10 text-mediumGray"
@@ -239,14 +236,14 @@ export default function Footer() {
                             Profile
                         </Link>
                         <Link
-                            href="/keebdex/how-keeby-works"
+                            href="/how-keeby-works"
                             aria-label="learn how keeby works"
                             className="ease-in hover:text-green-500"
                         >
                             How Keeby works
                         </Link>
                         <Link
-                            href="/keebdex/scam-prevention"
+                            href="/scam-prevention"
                             aria-label="prevent marketplace scams"
                             className="ease-in hover:text-green-500"
                         >

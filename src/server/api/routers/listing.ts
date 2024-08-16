@@ -447,55 +447,54 @@ export const listingRouter = createTRPCRouter({
                 sellerId,
                 images,
             } = input;
-            if (
-                ctx.session.user.id === sellerId &&
-                ctx.session.user.isModerator
-            ) {
-                const createData: CreateData = {
-                    title,
-                    text,
-                    keycaps,
-                    switches,
-                    switchType,
-                    soundType,
-                    layoutType,
-                    pcbType,
-                    assemblyType,
-                    price,
-                    sellerId,
-                    status: "ACTIVE",
-                };
-                if (soundTest) {
-                    createData.soundTest = soundTest;
-                }
-
-                const newListing = await ctx.db.listing.create({
-                    data: createData,
-                });
-
-                const createdImages = await Promise.all(
-                    images.map(async (image, i) => {
-                        const imageType =
-                            i === preview ? "LISTINGPREVIEW" : "LISTING";
-
-                        return ctx.prisma.images.create({
-                            data: {
-                                link: image.link,
-                                resourceType: imageType,
-                                listingId: newListing.id,
-                                userId: newListing.sellerId,
-                            },
-                        });
-                    }),
+            if (ctx.session.user.id !== sellerId) {
+                throw new Error(
+                    "You don't have the right, O you don't have the right",
                 );
-
-                return {
-                    newListing,
-                    createdImages,
-                };
             }
 
-            throw new Error("Invalid userId");
+            const createData: CreateData = {
+                title,
+                text,
+                keycaps,
+                switches,
+                switchType,
+                soundType,
+                layoutType,
+                pcbType,
+                assemblyType,
+                price,
+                sellerId,
+                status: "ACTIVE",
+            };
+            if (soundTest) {
+                createData.soundTest = soundTest;
+            }
+
+            const newListing = await ctx.db.listing.create({
+                data: createData,
+            });
+
+            const createdImages = await Promise.all(
+                images.map(async (image, i) => {
+                    const imageType =
+                        i === preview ? "LISTINGPREVIEW" : "LISTING";
+
+                    return ctx.db.images.create({
+                        data: {
+                            link: image.link,
+                            resourceType: imageType,
+                            listingId: newListing.id,
+                            userId: newListing.sellerId,
+                        },
+                    });
+                }),
+            );
+
+            return {
+                newListing,
+                createdImages,
+            };
         }),
 
     update: protectedProcedure

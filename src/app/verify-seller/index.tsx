@@ -441,21 +441,21 @@ export default function VerifySeller() {
 
                             <div className="mt-10 flex w-full flex-col rounded-xl bg-darkGray p-10 text-mediumGray ">
                                 <Link
-                                    href="/keebdex/how-keeby-works"
+                                    href="/how-keeby-works"
                                     aria-label="privacy"
                                     className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                                 >
                                     How Keeby Works
                                 </Link>
                                 <Link
-                                    href="/keebdex/rules"
+                                    href="/rules"
                                     aria-label="keeby rules"
                                     className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                                 >
                                     Keeby Rules
                                 </Link>
                                 <Link
-                                    href="/keebdex/scam-prevention"
+                                    href="/scam-prevention"
                                     aria-label="scam prevention"
                                     className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                                 >

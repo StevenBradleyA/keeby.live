@@ -277,7 +277,7 @@ export default function DisplayAllGameStats({
                             </p>
                         </div>
                         <Link
-                            href={`/keebdex/how-keeby-works`}
+                            href={`/how-keeby-works`}
                             aria-label="typing tips"
                             className="profile-select-button flex items-center gap-2 rounded-md border-2  border-mediumGray bg-dark py-2 pl-6 pr-4 text-green-500"
                         >
@@ -298,7 +298,7 @@ export default function DisplayAllGameStats({
                             </svg>
                         </Link>
                         <Link
-                            href={`/keebdex/typing-tips`}
+                            href={`/typing-tips`}
                             aria-label="typing tips"
                             className="profile-select-button flex items-center gap-2 rounded-md border-2  border-mediumGray bg-dark  py-2 pl-6 pr-4 text-green-500"
                         >

@@ -10,7 +10,9 @@ import { useRouter } from "next/navigation";
 import defaultProfile from "@public/Images/defaultProfile.png";
 import TitleScripts from "~/app/_components/TitleScripts";
 import LoadingSpinner from "~/app/_components/Loading";
-import NotFound from "~/app/not-found";
+import Link from "next/link";
+import heic2any from "heic2any";
+import type { ChangeEvent } from "react";
 
 interface ErrorsObj {
     image?: string;
@@ -56,13 +58,16 @@ interface ListingData {
     images: Image[];
 }
 
-export default function CreateListingAgreement() {
-    const { data: session } = useSession();
+export default function CreateListing() {
+    // todo separate mobile form maybe even tablet cut off its just not gonna work on small screen sizes with this layout...
+    // lets make the price input look nicer with an svg and padding...
+
+    const { data: session, status } = useSession();
+
     const utils = api.useUtils();
     const router = useRouter();
 
-    const accessDenied = session === null;
-
+    // form state
     const [description, setDescription] = useState<string>("");
     const [keycaps, setKeycaps] = useState<string>("");
     const [switchType, setSwitchType] = useState<string>("linear");
@@ -82,9 +87,10 @@ export default function CreateListingAgreement() {
     const [pcbType, setPcbType] = useState<string>("hotswap");
     const [layoutType, setLayoutType] = useState<string>("100%");
 
+    // server interactions --
     const { mutate } = api.listing.create.useMutation({
-        onSuccess: async () => {
-            toast.success("Listing Complete!", {
+        onSuccess: async (data) => {
+            toast.success("Keyboard Listed!", {
                 style: {
                     borderRadius: "10px",
                     background: "#333",
@@ -92,15 +98,129 @@ export default function CreateListingAgreement() {
                 },
             });
             void utils.listing.getAll.invalidate();
-            router.push("/marketplace");
+            router.push(`/marketplace/${data.newListing.id}`);
         },
     });
+
+    // helpers --
+    const handleImageChange = async (event: ChangeEvent<HTMLInputElement>) => {
+        const files = event.target.files;
+
+        if (files && files.length > 0) {
+            const processedFiles: File[] = [];
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (file) {
+                    if (
+                        file.type === "image/heic" ||
+                        file.type === "image/heif"
+                    ) {
+                        try {
+                            const convertedBlob = (await heic2any({
+                                blob: file,
+                                toType: "image/jpeg",
+                            })) as Blob;
+                            const convertedFile = new File(
+                                [convertedBlob],
+                                file.name.replace(/\.[^/.]+$/, ".jpg"),
+                                { type: "image/jpeg" },
+                            );
+                            processedFiles.push(convertedFile);
+                        } catch (error) {
+                            console.error("Error converting HEIC file:", error);
+                        }
+                    } else {
+                        processedFiles.push(file);
+                    }
+                }
+            }
+
+            setImageFiles(processedFiles);
+        }
+    };
+
+    const submit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setEnableErrorDisplay(true);
+
+        if (!Object.values(errors).length && !isSubmitting && session) {
+            try {
+                if (!session.user.id) {
+                    throw new Error("User must be signed in");
+                }
+                const roundedPrice = Math.round(price);
+
+                const data: ListingData = {
+                    sellerId: session.user.id,
+                    title,
+                    keycaps,
+                    switches,
+                    switchType,
+                    layoutType,
+                    pcbType,
+                    assemblyType,
+                    soundType,
+                    text: description,
+                    price: roundedPrice,
+                    preview,
+                    images: [],
+                };
+
+                setIsSubmitting(true);
+
+                const imagePromises = imageFiles.map((file) => {
+                    return new Promise<string>((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.readAsDataURL(file);
+                        reader.onloadend = () => {
+                            if (typeof reader.result === "string") {
+                                const base64Data = reader.result.split(",")[1];
+                                if (base64Data) {
+                                    resolve(base64Data);
+                                }
+                            } else {
+                                reject(new Error("Failed to read file"));
+                            }
+                        };
+                        reader.onerror = () => {
+                            reject(new Error("Failed to read file"));
+                        };
+                    });
+                });
+
+                const base64DataArray = await Promise.all(imagePromises);
+                const imageUrlArr: string[] = [];
+
+                for (const base64Data of base64DataArray) {
+                    const buffer = Buffer.from(base64Data, "base64");
+                    const imageUrl = await uploadFileToS3(buffer);
+                    imageUrlArr.push(imageUrl);
+                }
+
+                data.images = imageUrlArr.map((imageUrl) => ({
+                    link: imageUrl || "",
+                }));
+
+                if (soundTest) {
+                    data.soundTest = soundTest;
+                }
+
+                mutate(data);
+                setImageFiles([]);
+                setHasSubmitted(true);
+                setIsSubmitting(false);
+            } catch (error) {
+                console.error("Submission failed:", error);
+                setIsSubmitting(false);
+            }
+        }
+    };
 
     useEffect(() => {
         const maxFileSize = 8 * 1024 * 1024;
         const errorsObj: ErrorsObj = {};
-        if (imageFiles.length > 15) {
-            errorsObj.imageExcess = "Cannot provide more than 15 photos";
+        if (imageFiles.length > 10) {
+            errorsObj.imageExcess = "Cannot provide more than 10 photos";
         }
         if (imageFiles.length < 5) {
             errorsObj.imageShortage = "Please provide at least 5 photos";
@@ -198,90 +318,15 @@ export default function CreateListingAgreement() {
         pcbType,
     ]);
 
-    const submit = async (e: React.FormEvent) => {
-        e.preventDefault();
-
-        setEnableErrorDisplay(true);
-
-        if (!Object.values(errors).length && !isSubmitting) {
-            try {
-                const sessionUserId = session?.user?.id;
-
-                if (!sessionUserId) {
-                    throw new Error("Session expired");
-                }
-
-                const data: ListingData = {
-                    sellerId: sessionUserId,
-                    title,
-                    keycaps,
-                    switches,
-                    switchType,
-                    layoutType,
-                    pcbType,
-                    assemblyType,
-                    soundType,
-                    text: description,
-                    price: price * 100,
-                    preview,
-                    images: [],
-                };
-
-                setIsSubmitting(true);
-
-                const imagePromises = imageFiles.map((file) => {
-                    return new Promise<string>((resolve, reject) => {
-                        const reader = new FileReader();
-                        reader.readAsDataURL(file);
-                        reader.onloadend = () => {
-                            if (typeof reader.result === "string") {
-                                const base64Data = reader.result.split(",")[1];
-                                if (base64Data) {
-                                    resolve(base64Data);
-                                }
-                            } else {
-                                reject(new Error("Failed to read file"));
-                            }
-                        };
-                        reader.onerror = () => {
-                            reject(new Error("Failed to read file"));
-                        };
-                    });
-                });
-
-                const base64DataArray = await Promise.all(imagePromises);
-                const imageUrlArr: string[] = [];
-
-                for (const base64Data of base64DataArray) {
-                    const buffer = Buffer.from(base64Data, "base64");
-                    const imageUrl = await uploadFileToS3(buffer);
-                    imageUrlArr.push(imageUrl);
-                }
-
-                data.images = imageUrlArr.map((imageUrl) => ({
-                    link: imageUrl || "",
-                }));
-
-                if (soundTest) {
-                    data.soundTest = soundTest;
-                }
-
-                mutate(data);
-                setImageFiles([]);
-                setHasSubmitted(true);
-                setIsSubmitting(false);
-            } catch (error) {
-                console.error("Submission failed:", error);
-                setIsSubmitting(false);
-            }
-        }
-    };
-
-    if (accessDenied) {
-        return <NotFound />;
+    if (status === "loading") {
+        return (
+            <div className="mt-60 flex justify-center w-full">
+                <LoadingSpinner size="20px" />
+            </div>
+        );
     }
 
-    return (
+    return session !== null ? (
         <>
             <div className="mt-40 w-full flex flex-col items-center px-2 laptop:px-16">
                 <div className="flex w-full  desktop:w-2/3 items-center">
@@ -299,15 +344,30 @@ export default function CreateListingAgreement() {
 
                     <div className="flex h-24 w-full flex-col justify-center rounded-r-xl   bg-darkGray shadow-lg bg-opacity-90 px-5">
                         <div className="flex justify-between ">
-                            <div>
-                                <div className="flex justify-between text-3xl text-green-500">
-                                    <TitleScripts page={"createListing"} />
-                                </div>
-                                <h3 className="text-mediumGray">
+                            <div className="text-3xl text-green-500">
+                                <TitleScripts page={"createListing"} />
+                                <h3 className="text-mediumGray text-base">
                                     {session && session.user
                                         ? session.user.username
                                         : ""}
                                 </h3>
+                            </div>
+                            <div className="text-green-500 text-sm flex flex-col items-end">
+                                <h3>*Keeby does not handle transactions</h3>
+                                <Link
+                                    aria-label="Learn how keeby works"
+                                    href="/how-keeby-works"
+                                    className="text-white hover:underline hover:opacity-80 ease-in"
+                                >
+                                    How Keeby works
+                                </Link>
+                                <Link
+                                    aria-label="Prevent scams when listing"
+                                    href="/scam-prevention"
+                                    className="text-white hover:underline hover:opacity-80 ease-in"
+                                >
+                                    How to Prevent Scams
+                                </Link>
                             </div>
                         </div>
                     </div>
@@ -315,7 +375,7 @@ export default function CreateListingAgreement() {
                 <div className=" mt-5 flex w-full desktop:w-2/3 flex-col items-center rounded-xl bg-darkGray shadow-lg bg-opacity-90 px-10 py-5  ">
                     <form className="w-full text-white">
                         <div className="flex justify-between gap-10">
-                            <div className="flex w-1/3 flex-col gap-5">
+                            <div className="flex w-1/3 flex-col">
                                 <div className="flex flex-col gap-1">
                                     <label
                                         htmlFor="titleInput"
@@ -329,133 +389,129 @@ export default function CreateListingAgreement() {
                                         onChange={(e) =>
                                             setTitle(e.target.value)
                                         }
-                                        className="h-10 w-full rounded-md bg-mediumGray p-1 "
+                                        className="h-10 w-full rounded-md bg-mediumGray p-1 hover:opacity-80 ease-in "
                                         placeholder="Title"
                                     />
                                     {enableErrorDisplay && errors.title && (
-                                        <p className="text-sm text-red-400">
+                                        <p className="text-xs text-red-400">
                                             {errors.title}
                                         </p>
                                     )}
                                     {enableErrorDisplay &&
                                         errors.titleExcess && (
-                                            <p className="text-sm text-red-400">
+                                            <p className="text-xs text-red-400">
                                                 {errors.titleExcess}
                                             </p>
                                         )}
                                 </div>
 
-                                <div className="flex flex-col gap-1">
-                                    <label
-                                        htmlFor="soundTypeInput"
-                                        className="text-mediumGray"
-                                    >
-                                        Sound Type
-                                    </label>
-                                    <select
-                                        id="soundTypeInput"
-                                        className=" h-10 w-3/4 rounded-md bg-green-500 p-1 px-2 py-1 text-black"
-                                        value={soundType}
-                                        onChange={(e) =>
-                                            setSoundType(e.target.value)
-                                        }
-                                    >
-                                        <option value="thock">Thock</option>
-                                        <option value="clack">Clack</option>
-                                        <option value="click">Click</option>
-                                        <option value="silent">Silent</option>
-                                    </select>
-                                    {enableErrorDisplay && errors.soundType && (
-                                        <p className="text-sm text-red-400">
-                                            {errors.soundType}
-                                        </p>
-                                    )}
-                                </div>
+                                <label
+                                    htmlFor="soundTypeInput"
+                                    className="text-mediumGray mt-3"
+                                >
+                                    Sound Type
+                                </label>
+                                <select
+                                    id="soundTypeInput"
+                                    className="mt-1 h-10 w-3/4 rounded-md bg-green-500 p-1 px-2 py-1 text-black hover:opacity-80 ease-in"
+                                    value={soundType}
+                                    onChange={(e) =>
+                                        setSoundType(e.target.value)
+                                    }
+                                >
+                                    <option value="thock">Thock</option>
+                                    <option value="clack">Clack</option>
+                                    <option value="click">Click</option>
+                                    <option value="silent">Silent</option>
+                                </select>
+                                {enableErrorDisplay && errors.soundType && (
+                                    <p className="text-xs text-red-400">
+                                        {errors.soundType}
+                                    </p>
+                                )}
 
-                                <div className="flex flex-col gap-1">
-                                    <label
-                                        htmlFor="youtubeLinkSoundTestInput"
-                                        className="text-mediumGray"
-                                    >
-                                        Youtube Link to Sound Test (optional)
-                                    </label>
-                                    <input
-                                        id="youtubeLinkSoundTestInput"
-                                        value={soundTest}
-                                        onChange={(e) =>
-                                            setSoundTest(e.target.value)
-                                        }
-                                        className="h-10 w-3/4 rounded-md bg-mediumGray p-1"
-                                        placeholder="Sound Test Link"
-                                    />
-                                    {enableErrorDisplay && errors.soundTest && (
-                                        <p className="text-sm text-red-400">
-                                            {errors.soundTest}
-                                        </p>
-                                    )}
-                                </div>
+                                <label
+                                    htmlFor="youtubeLinkSoundTestInput"
+                                    className="text-mediumGray mt-3"
+                                >
+                                    Youtube Link to Sound Test (optional)
+                                </label>
+                                <input
+                                    id="youtubeLinkSoundTestInput"
+                                    value={soundTest}
+                                    onChange={(e) =>
+                                        setSoundTest(e.target.value)
+                                    }
+                                    className="mt-1 h-10 w-3/4 rounded-md bg-mediumGray p-1 hover:opacity-80 ease-in"
+                                    placeholder="Sound Test Link"
+                                />
+                                {enableErrorDisplay && errors.soundTest && (
+                                    <p className="text-xs text-red-400">
+                                        {errors.soundTest}
+                                    </p>
+                                )}
 
-                                <div className="flex flex-col gap-1">
-                                    <label
-                                        htmlFor="priceInput"
-                                        className="text-mediumGray"
-                                    >
-                                        Price (account for shipping costs)
-                                    </label>
+                                <label
+                                    htmlFor="priceInput"
+                                    className="text-mediumGray mt-3"
+                                >
+                                    Price (factor in shipping costs)
+                                </label>
+                                <div className="relative mt-1">
                                     <input
                                         id="priceInput"
                                         type="number"
-                                        min={0}
-                                        value={price === 0 ? "" : price}
+                                        min="0"
+                                        step="10"
+                                        value={price}
                                         onChange={(e) =>
-                                            setPrice(
-                                                Math.floor(+e.target.value),
-                                            )
+                                            setPrice(+e.target.value)
                                         }
-                                        className="h-10 w-3/4 rounded-md bg-mediumGray p-1"
+                                        className=" h-10 w-3/4 rounded-md bg-mediumGray pl-10 pr-1 py-1 hover:opacity-80 ease-in"
                                         placeholder="$ Price"
                                     />
-
-                                    {enableErrorDisplay && errors.priceNone && (
-                                        <p className="text-sm text-red-400">
-                                            {errors.priceNone}
-                                        </p>
-                                    )}
-                                    {enableErrorDisplay &&
-                                        errors.priceExcess && (
-                                            <p className="text-sm text-red-400">
-                                                {errors.priceExcess}
-                                            </p>
-                                        )}
-                                    {enableErrorDisplay &&
-                                        errors.priceNotWhole && (
-                                            <p className="text-sm text-red-400">
-                                                {errors.priceNotWhole}
-                                            </p>
-                                        )}
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="absolute left-2 top-1/2 -translate-y-1/2  w-6 h-6 "
+                                        fill="currentColor"
+                                        viewBox="-2 0 19 19"
+                                    >
+                                        <path d="m13.842 11.52-4.389 4.388a1.112 1.112 0 0 1-1.567 0l-6.28-6.28a3.027 3.027 0 0 1-.771-1.892l.043-3.681A1.141 1.141 0 0 1 2 2.935L5.67 2.9a3.04 3.04 0 0 1 1.892.773l6.28 6.28a1.112 1.112 0 0 1 0 1.567zM3.826 5.133a.792.792 0 1 0-.792.792.792.792 0 0 0 .792-.792zm6.594 7.348a.554.554 0 0 0 0-.784l-.401-.401a2.53 2.53 0 0 0 .35-.83 1.565 1.565 0 0 0-.397-1.503 1.59 1.59 0 0 0-1.017-.46 2.14 2.14 0 0 0-.75.085h-.002a2.444 2.444 0 0 0-.59.277H7.61a2.677 2.677 0 0 0-.438.357 2.043 2.043 0 0 1-.259.22 1.29 1.29 0 0 1-.329.17h-.002a.835.835 0 0 1-.338.038h-.002a.53.53 0 0 1-.314-.136.539.539 0 0 1-.106-.534 1.54 1.54 0 0 1 .41-.71 1.632 1.632 0 0 1 .23-.165l.03-.019a1.783 1.783 0 0 1 .322-.155.942.942 0 0 1 .325-.06.554.554 0 0 0 0-1.108h-.001a2.058 2.058 0 0 0-.717.132 2.846 2.846 0 0 0-.529.26l-.01.006-.398-.4a.554.554 0 1 0-.784.785l.388.387a2.513 2.513 0 0 0-.347.803 1.644 1.644 0 0 0 .404 1.561 1.622 1.622 0 0 0 .983.456 1.922 1.922 0 0 0 .805-.089 2.372 2.372 0 0 0 .624-.319 3.142 3.142 0 0 0 .398-.339 1.569 1.569 0 0 1 .256-.208 1.381 1.381 0 0 1 .32-.151 1.023 1.023 0 0 1 .348-.038.485.485 0 0 1 .308.139c.05.049.165.165.097.488a1.558 1.558 0 0 1-.413.729 2.476 2.476 0 0 1-.28.219 1.727 1.727 0 0 1-.306.157.687.687 0 0 1-.32.042.554.554 0 1 0-.08 1.106c.052.004.103.005.152.005a1.723 1.723 0 0 0 .685-.134 2.678 2.678 0 0 0 .507-.27l.01-.007.397.398a.555.555 0 0 0 .783 0z" />
+                                    </svg>
                                 </div>
 
-                                <div className="relative flex w-3/4 flex-col gap-1">
-                                    <label
-                                        htmlFor="imageUploadInput"
-                                        className="text-mediumGray"
-                                    >
-                                        Upload Images (5 min - 15 max)
-                                    </label>
+                                {enableErrorDisplay && errors.priceNone && (
+                                    <p className="text-xs text-red-400">
+                                        {errors.priceNone}
+                                    </p>
+                                )}
+                                {enableErrorDisplay && errors.priceExcess && (
+                                    <p className="text-xs text-red-400">
+                                        {errors.priceExcess}
+                                    </p>
+                                )}
+                                {enableErrorDisplay && errors.priceNotWhole && (
+                                    <p className="text-xs text-red-400">
+                                        {errors.priceNotWhole}
+                                    </p>
+                                )}
 
+                                <label
+                                    htmlFor="imageUploadInput"
+                                    className="text-mediumGray mt-3"
+                                >
+                                    Upload Images (5 min - 15 max)
+                                </label>
+                                <div className="relative flex w-3/4 flex-col hover:opacity-80 ease-in mt-1">
                                     <input
                                         id="imageUploadInput"
                                         className="absolute top-7 h-28 w-72 cursor-pointer opacity-0"
                                         type="file"
                                         multiple
                                         accept="image/png, image/jpg, image/jpeg, image/heic, image/heif"
-                                        onChange={(e) => {
-                                            if (e.target.files)
-                                                setImageFiles([
-                                                    ...imageFiles,
-                                                    ...e.target.files,
-                                                ]);
-                                        }}
+                                        onChange={(e) =>
+                                            void handleImageChange(e)
+                                        }
                                     />
                                     <button className="h-28 w-full rounded-md bg-green-500">
                                         <span className=" text-center text-black">
@@ -479,18 +535,18 @@ export default function CreateListingAgreement() {
                                             onChange={(e) =>
                                                 setKeycaps(e.target.value)
                                             }
-                                            className="h-10 w-full rounded-md bg-mediumGray p-1"
+                                            className="h-10 w-full rounded-md bg-mediumGray p-1 hover:opacity-80 ease-in"
                                             placeholder="Keycaps"
                                         />
                                         {enableErrorDisplay &&
                                             errors.keycaps && (
-                                                <p className="text-sm text-red-400">
+                                                <p className="text-xs text-red-400">
                                                     {errors.keycaps}
                                                 </p>
                                             )}
                                         {enableErrorDisplay &&
                                             errors.keycapsExcess && (
-                                                <p className="text-sm text-red-400">
+                                                <p className="text-xs text-red-400">
                                                     {errors.keycapsExcess}
                                                 </p>
                                             )}
@@ -508,18 +564,18 @@ export default function CreateListingAgreement() {
                                             onChange={(e) =>
                                                 setSwitches(e.target.value)
                                             }
-                                            className="h-10 w-full rounded-md bg-mediumGray p-1"
+                                            className="h-10 w-full rounded-md bg-mediumGray p-1 hover:opacity-80 ease-in"
                                             placeholder="Switches"
                                         />
                                         {enableErrorDisplay &&
                                             errors.switches && (
-                                                <p className="text-sm text-red-400">
+                                                <p className="text-xs text-red-400">
                                                     {errors.switches}
                                                 </p>
                                             )}
                                         {enableErrorDisplay &&
                                             errors.switchesExcess && (
-                                                <p className="text-sm text-red-400">
+                                                <p className="text-xs text-red-400">
                                                     {errors.switchesExcess}
                                                 </p>
                                             )}
@@ -533,7 +589,7 @@ export default function CreateListingAgreement() {
                                         </label>
                                         <select
                                             id="switchTypeInput"
-                                            className=" h-10 w-full rounded-md bg-green-500 p-1 px-2 py-1"
+                                            className=" h-10 w-full rounded-md bg-green-500 p-1 px-2 py-1 hover:opacity-80 ease-in"
                                             value={switchType}
                                             onChange={(e) =>
                                                 setSwitchType(e.target.value)
@@ -552,7 +608,7 @@ export default function CreateListingAgreement() {
                                         </select>
                                         {enableErrorDisplay &&
                                             errors.switchType && (
-                                                <p className="text-sm text-red-400">
+                                                <p className="text-xs text-red-400">
                                                     {errors.switchType}
                                                 </p>
                                             )}
@@ -568,7 +624,7 @@ export default function CreateListingAgreement() {
                                         </label>
                                         <select
                                             id="layoutTypeInput"
-                                            className=" h-10 w-full rounded-md bg-green-500 p-1 px-2 py-1 text-black"
+                                            className=" h-10 w-full rounded-md bg-green-500 p-1 px-2 py-1 text-black hover:opacity-80 ease-in"
                                             value={layoutType}
                                             onChange={(e) =>
                                                 setLayoutType(e.target.value)
@@ -585,7 +641,7 @@ export default function CreateListingAgreement() {
                                         </select>
                                         {enableErrorDisplay &&
                                             errors.layoutType && (
-                                                <p className="text-sm text-red-400">
+                                                <p className="text-xs text-red-400">
                                                     {errors.layoutType}
                                                 </p>
                                             )}
@@ -599,7 +655,7 @@ export default function CreateListingAgreement() {
                                         </label>
                                         <select
                                             id="pcbTypeInput"
-                                            className=" h-10 w-full rounded-md bg-green-500 p-1 px-2 py-1"
+                                            className=" h-10 w-full rounded-md bg-green-500 p-1 px-2 py-1 hover:opacity-80 ease-in"
                                             value={pcbType}
                                             onChange={(e) =>
                                                 setPcbType(e.target.value)
@@ -614,7 +670,7 @@ export default function CreateListingAgreement() {
                                         </select>
                                         {enableErrorDisplay &&
                                             errors.pcbType && (
-                                                <p className="text-sm text-red-400">
+                                                <p className="text-xs text-red-400">
                                                     {errors.pcbType}
                                                 </p>
                                             )}
@@ -628,7 +684,7 @@ export default function CreateListingAgreement() {
                                         </label>
                                         <select
                                             id="assemblyTypeInput"
-                                            className=" h-10 w-full rounded-md bg-green-500 p-1 px-2 py-1"
+                                            className=" h-10 w-full rounded-md bg-green-500 p-1 px-2 py-1 hover:opacity-80 ease-in"
                                             value={assemblyType}
                                             onChange={(e) =>
                                                 setAssemblyType(e.target.value)
@@ -643,7 +699,7 @@ export default function CreateListingAgreement() {
                                         </select>
                                         {enableErrorDisplay &&
                                             errors.assemblyType && (
-                                                <p className="text-sm text-red-400">
+                                                <p className="text-xs text-red-400">
                                                     {errors.assemblyType}
                                                 </p>
                                             )}
@@ -659,13 +715,13 @@ export default function CreateListingAgreement() {
                                         onChange={(e) =>
                                             setDescription(e.target.value)
                                         }
-                                        className="h-72 w-full rounded-md bg-mediumGray p-1 "
+                                        className="h-64 w-full rounded-md bg-mediumGray p-3 hover:opacity-80 ease-in"
                                         placeholder="Description"
                                     ></textarea>
 
                                     {enableErrorDisplay &&
                                         errors.description && (
-                                            <p className="text-sm text-red-400">
+                                            <p className="text-xs text-red-400">
                                                 {errors.description}
                                             </p>
                                         )}
@@ -676,22 +732,22 @@ export default function CreateListingAgreement() {
                         {imageFiles.length > 0 && (
                             <>
                                 <div className="mb-1 mt-5  flex justify-center text-mediumGray">
-                                    Select your preview image by clicking on it.
-                                    (16:9 aspect ratio is recommended)
+                                    Select a preview image by clicking. ( 16:9
+                                    aspect ratio recommended )
                                 </div>
                                 <div className="flex w-full flex-wrap justify-center gap-10 rounded-md bg-white bg-opacity-40 p-10 ">
                                     {imageFiles.map((e, i) => (
                                         <div key={i} className="relative">
                                             <Image
-                                                className={`h-28 w-auto cursor-pointer rounded-lg object-cover shadow-sm hover:scale-105 hover:shadow-md ${
+                                                className={` w-48 h-28 cursor-pointer rounded-lg object-cover shadow-sm ease-in hover:brightness-105 hover:shadow-md ${
                                                     i === preview
                                                         ? "border-4 border-green-500"
                                                         : "border-4 border-black border-opacity-0"
                                                 } `}
                                                 alt={`listing-${i}`}
                                                 src={URL.createObjectURL(e)}
-                                                width={100}
-                                                height={100}
+                                                width={300}
+                                                height={300}
                                                 onClick={() => setPreview(i)}
                                             />
                                             <button
@@ -726,7 +782,7 @@ export default function CreateListingAgreement() {
                             </p>
                         )}
                         {enableErrorDisplay && errors.imageShortage && (
-                            <p className="text-sm text-red-400">
+                            <p className="text-xs text-red-400">
                                 {errors.imageShortage}
                             </p>
                         )}
@@ -745,10 +801,7 @@ export default function CreateListingAgreement() {
                             >
                                 {isSubmitting ? (
                                     <div className="flex items-center gap-1">
-                                        Uploading
-                                        <div className="w-6">
-                                            <LoadingSpinner size="16px" />
-                                        </div>
+                                        <LoadingSpinner size="20px" />
                                     </div>
                                 ) : (
                                     "Submit Listing"
@@ -762,6 +815,10 @@ export default function CreateListingAgreement() {
             <div className="mt-60">
                 <Footer />
             </div>
+        </>
+    ) : (
+        <>
+            <div>sign in yoink from profile</div>
         </>
     );
 }

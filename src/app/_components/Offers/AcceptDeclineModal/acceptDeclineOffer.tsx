@@ -196,7 +196,7 @@ export default function AcceptDeclineOffer({
                     <p className="mt-10">
                         * Disputes are handled by PayPal. Please refer to{" "}
                         <Link
-                            href={`/keebdex/scam-prevention`}
+                            href={`/scam-prevention`}
                             aria-label="scam prevention"
                             className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                         >

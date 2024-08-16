@@ -267,7 +267,7 @@ export default function CreateOffer({ closeModal, listing }: CreateOfferProps) {
             <div className=" mt-5 text-mediumGray">
                 * All Offers are final. Please read{" "}
                 <Link
-                    href={`/keebdex/rules`}
+                    href={`/rules`}
                     aria-label="keeby rules"
                     className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                 >

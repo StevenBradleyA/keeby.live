@@ -236,7 +236,7 @@ export default function CreateTransaction({
                     <div className="mt-10 text-mediumGray">
                         * Please read{" "}
                         <Link
-                            href={`/keebdex/rules`}
+                            href={`/rules`}
                             aria-label="keeby rules"
                             className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                         >
@@ -244,7 +244,7 @@ export default function CreateTransaction({
                         </Link>{" "}
                         and{" "}
                         <Link
-                            href={`/keebdex/scam-prevention`}
+                            href={`/scam-prevention`}
                             aria-label="scam prevention"
                             className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                         >

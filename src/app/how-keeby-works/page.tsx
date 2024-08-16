@@ -1,9 +1,7 @@
+import Link from "next/link";
 import Footer from "../_components/Footer/footer";
 
 export default function HowKeebyWorks() {
-    // what do I actually want here lmao????
-    //
-
     // calculations
     // const timeInSeconds = stopwatch.getElapsedRunningTime() / 1000;
     // const timeInMinutes = timeInSeconds / 60;
@@ -59,56 +57,89 @@ export default function HowKeebyWorks() {
                                 Keeby is the one place for everything mechanical
                                 keyboard, built for enthusiasts!
                             </p>
-                            <h2 className=" mt-5 text-3xl">KEEBSHOP </h2>
+                            <h2 className=" mt-5 text-3xl">MARKETPLACE </h2>
                             <p className="mt-2">
-                                {`A marketplace where users can buy and sell
-                                mechanical keyboards. I wanted a safe and fun
-                                place to buy and look at other builds for sale.
-                                So I created a marketplace where seller's are
-                                verified and can be reviewed by the community.`}
+                                {`Marketplace is where users can enjoy
+                                mechanical keyboard listings. I wanted a fun and safe
+                                place to buy/sell and look at other builds for sale, 
+                                so I created a marketplace where seller's and
+                                buyers can be reviewed by the community.`}
                             </p>
                             <h2 className=" mt-2 text-xl text-hotPink">
-                                Buying
+                                How does it work?
                             </h2>
                             <p>
-                                When you purchase a keyboard. Buyers pay Keeby
-                                5% of the total agreed price. When payed, Keeby
-                                connects the buyer and seller in a private
-                                message. Once in a private message the buyer and
-                                seller confirm details and perform a transaction
-                                of the agreed price via paypal. Keeby provides
-                                instructions, and seller information to help
-                                protect you as a buyer and prevent scams.
+                                Keeby does not handle any transactions between
+                                buyers and sellers, we are not a marketplace
+                                facilitator. Keeby only makes profit from ads
+                                and support from the community. When you agree
+                                to buy a keyboard from a seller or your offer is
+                                accepted by a seller, you are put in a private
+                                message with the seller. You and the seller will
+                                arrange payment and shipping details. We
+                                recommend all transactions only occur through
+                                paypal as they have a strong dispute resolution
+                                support so you don't get scammed. Please protect
+                                yourself as both a buyer and a seller by reading
+                                and following{" "}
+                                <Link
+                                    href="/scam-prevention"
+                                    aria-label="learn how to prevent scams"
+                                    className="text-hotPink hover:underline hover:opacity-70"
+                                >
+                                    Scam Prevention
+                                </Link>
                             </p>
+
                             <h2 className=" mt-2 text-xl text-hotPink">
-                                Selling
+                                Newsletter
                             </h2>
                             <p>
-                                {`To Sell a keyboard you must pay a $0.02 fee via
-                                paypal to verify your account. Once verified you
-                                can sell as many keyboards as you like! During
-                                verification, you must also provide the email
-                                associated with your paypal account. This will
-                                be shown to the buyer when he pays the keeby fee
-                                to purchase your keyboard. Seller's pay for
-                                shipping and must sell at the agreed price to
-                                the buyer via Paypal.`}
+                                Want to see cool mechanical keyboards for sale
+                                in your inbox everyday? I know my wallet
+                                doesn't! Sign up here{" "}
+                                <Link
+                                    href="/newsletter"
+                                    aria-label="Sign up for our newsletter"
+                                    className="text-hotPink hover:underline hover:opacity-70"
+                                >
+                                    Newsletter
+                                </Link>
                             </p>
 
                             <h2 className=" mt-5 text-3xl">KEEBSHARE </h2>
                             <p className="mt-2">
                                 A fun place to share your builds, post sound
-                                tests, and talk about anything mechanical
-                                keyboard related.
+                                tests, memes, and talk about anything and
+                                everything mechanical keyboard related.
                             </p>
                             <h2 className=" mt-2 text-xl text-hotPink">
                                 Internet points
                             </h2>
                             <p>
-                                Earn internet points by receiving comment likes,
-                                or favorites on listings and posts. Bigger
-                                number better person.
+                                Earn internet points by receiving likes on
+                                comments and posts, or favorites on listings and
+                                posts. Just remember, bigger number = better
+                                person.
                             </p>
+
+                            <h2 className=" mt-5 text-3xl">KEEBSHOP </h2>
+                            <p className="mt-2">
+                                Check out links to products and companies I like
+                                to use for building and buying keyboards. All of
+                                these links are to companies I've used before.
+                                Keeby does not sell any keyboard products.
+                            </p>
+                            <h2 className=" mt-2 text-xl text-hotPink">
+                                Affiliate Links
+                            </h2>
+                            <p>
+                                Currently none of the links are affliate, but we
+                                would love to work with you! If we've used and
+                                like your product we would be honored to promote
+                                and work with you!
+                            </p>
+
                             <h2 className=" mt-5 text-3xl">KEEBTYPE </h2>
                             <p className="mt-2">
                                 A Typing game made for the keyboard connoisseur.

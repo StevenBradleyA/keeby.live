@@ -77,7 +77,7 @@ export default function MessageChatCheck({
                         in the payment notes. Please read{" "}
                         <Link
                             aria-label="scam prevention"
-                            href={`/keebdex/scam-prevention`}
+                            href={`/scam-prevention`}
                             className="transition-colors duration-300 ease-custom-cubic hover:text-white"
                         >
                             Scam Prevention
