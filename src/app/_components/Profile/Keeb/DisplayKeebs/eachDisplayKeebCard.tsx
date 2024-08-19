@@ -1,6 +1,6 @@
 import type { Keeb } from "@prisma/client";
 import { useState } from "react";
-import ModalDialog from "~/app/_components/Modal";
+import ModalDialog from "~/app/_components/Context/Modal";
 import ManageKeeb from "../ManageKeeb";
 
 interface KeebProps {

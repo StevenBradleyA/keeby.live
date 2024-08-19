@@ -5,7 +5,7 @@ import { api } from "~/trpc/react";
 import Custom404 from "~/pages/404";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
-import ModalDialog from "~/app/_components/Modal";
+import ModalDialog from "~/app/_components/Context/Modal";
 import AdminCreateRank from "~/app/_components/Admin/Ranks/Create";
 import AdminCreateTag from "~/app/_components/Admin/Tags/Create";
 import AdminEachDisplayTag from "~/app/_components/Admin/Tags/Display/eachDisplayTag";

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React, { useState } from "react";
-import ModalDialog from "~/app/_components/Modal";
+import ModalDialog from "~/app/_components/Context/Modal";
 import { api } from "~/trpc/react";
 import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";

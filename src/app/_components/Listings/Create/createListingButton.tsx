@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import ModalDialog from "../../Modal";
+import ModalDialog from "../../Context/Modal";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import keebo from "@public/Profile/keebo.png";

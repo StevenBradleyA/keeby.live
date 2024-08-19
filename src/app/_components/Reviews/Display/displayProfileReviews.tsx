@@ -2,7 +2,7 @@ import { api } from "~/trpc/react";
 import plus from "@public/Vectors/plus-plus.png";
 import Image from "next/image";
 import { useState } from "react";
-import ModalDialog from "~/app/_components/Modal";
+import ModalDialog from "~/app/_components/Context/Modal";
 import CreateReview from "../Create/createReview";
 import EachReceivedReviewCard from "./eachReceivedReviewCard";
 import EachSentReviewCard from "./eachSentReviewCard";

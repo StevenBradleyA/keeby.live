@@ -11,7 +11,7 @@ import {
 } from "date-fns";
 import DisplayStarRating from "../Star/displayStarRating";
 import { useState } from "react";
-import ModalDialog from "~/app/_components/Modal";
+import ModalDialog from "~/app/_components/Context/Modal";
 import UpdateReview from "../Update/updateReview";
 
 interface EachSentReviewCardProps {

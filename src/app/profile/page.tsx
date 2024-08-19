@@ -20,7 +20,7 @@ import DisplayFavoriteListings from "~/app/_components/Listings/DisplayFavoriteL
 import DisplayProfileKeebs from "~/app/_components/Profile/Keeb/DisplayKeebs";
 import DisplayAllGameStatsCheck from "~/app/_components/Games/GameStats/displayAllGameStatsCheck";
 import UpdateUserTag from "~/app/_components/Profile/User/Update/Tag";
-import ModalDialog from "~/app/_components/Modal";
+import ModalDialog from "~/app/_components/Context/Modal";
 import UpdateProfile from "~/app/_components/Profile/User/Update/updateProfile";
 import HackermanTypeBinary from "~/app/_components/Profile/Hackerman/hackermanTypeBinary";
 import MatrixRain from "~/app/_components/Profile/Hackerman/matrix";

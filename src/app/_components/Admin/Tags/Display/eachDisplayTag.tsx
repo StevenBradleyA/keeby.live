@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ModalDialog from "~/app/_components/Modal";
+import ModalDialog from "~/app/_components/Context/Modal";
 import AdminUpdateTag from "../Update/updateTag";
 import { api } from "~/trpc/react";
 import toast from "react-hot-toast";

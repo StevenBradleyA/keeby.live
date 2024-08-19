@@ -3,7 +3,7 @@ import { signIn, useSession } from "next-auth/react";
 import { useState } from "react";
 import { themeStyles } from "../Theme/themeStyles";
 import type { ThemeName } from "../Theme/themeStyles";
-import ModalDialog from "../../Modal";
+import ModalDialog from "../../Context/Modal";
 import ModeModal from "./modeModal";
 import ThemeModal from "./themeModal";
 import LengthModal from "./lengthModal";

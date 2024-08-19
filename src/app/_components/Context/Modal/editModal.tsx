@@ -2,13 +2,13 @@ import { useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { MutableRefObject } from "react";
 
-interface ModifyCommentModalProps {
+interface ModalDialogueEditProps {
     isOpen: boolean;
     onClose: () => void;
     children: React.ReactNode;
 }
 
-const ModifyCommentModal: React.FC<ModifyCommentModalProps> = ({
+const ModalDialogueEdit: React.FC<ModalDialogueEditProps> = ({
     isOpen,
     onClose,
     children,
@@ -77,4 +77,4 @@ const ModifyCommentModal: React.FC<ModifyCommentModalProps> = ({
     );
 };
 
-export default ModifyCommentModal;
+export default ModalDialogueEdit;

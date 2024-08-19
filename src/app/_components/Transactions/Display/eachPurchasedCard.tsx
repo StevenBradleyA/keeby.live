@@ -2,7 +2,7 @@ import type { ListingTransaction } from "@prisma/client";
 import { formatDistance } from "date-fns";
 import Link from "next/link";
 import { useState } from "react";
-import ModalDialog from "~/app/_components/Modal";
+import ModalDialog from "~/app/_components/Context/Modal";
 
 interface EachOfferViewCardProps {
     transaction: ListingTransaction & {

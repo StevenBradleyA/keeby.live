@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import ModalDialog from "../../Modal";
+import ModalDialog from "../../Context/Modal";
 import CreatePostModal from ".";
 import { motion } from "framer-motion";
 

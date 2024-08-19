@@ -32,6 +32,7 @@ export default function ListingPagePhotoSideBar({
     // const [displayImage, setDisplayImage] = useState(listing.images[0]);
 
     // const [listingPageImageIndex, setCurrentIndex] = useState<number>(0);
+    // todo fix image sizes...
 
     return (
         <div className=" relative h-full w-full overflow-hidden rounded-xl bg-darkGray p-10 ">
@@ -39,7 +40,7 @@ export default function ListingPagePhotoSideBar({
                 <button
                     className={`absolute left-1/2 top-2 w-7 -translate-x-1/2 transform ${
                         listingPageImageIndex === 0
-                            ? "text-mediumGray"
+                            ? "hover:text-keebyPurple ease-in"
                             : "text-white hover:text-green-500 ease-in"
                     }`}
                     onClick={() => {
@@ -58,7 +59,7 @@ export default function ListingPagePhotoSideBar({
                 <button
                     className={`absolute bottom-2 left-1/2 w-7 -translate-x-1/2 rotate-180 transform ${
                         listingPageImageIndex === images.length - 1
-                            ? "text-mediumGray"
+                            ? "hover:text-keebyPurple ease-in"
                             : "text-white hover:text-green-500 ease-in"
                     }`}
                     onClick={() => {
@@ -73,14 +74,14 @@ export default function ListingPagePhotoSideBar({
                 <div
                     className=" flex h-full w-full flex-col items-center gap-5 "
                     style={{
-                        transform: `translateY(-${listingPageImageIndex * 10}%)`,
+                        transform: `translateY(-${listingPageImageIndex * 13}%)`,
                         transition: "transform 0.3s ease-in-out",
                     }}
                 >
                     {images.map((e, i) => {
                         return (
                             <button
-                                className="h-1/4 w-full listing-page-image"
+                                className="h-40 flex-shrink-0 w-full listing-page-image rounded-xl overflow-hidden"
                                 key={i}
                             >
                                 <Image
@@ -91,7 +92,7 @@ export default function ListingPagePhotoSideBar({
                                     onClick={() => {
                                         setListingPageImageIndex(i);
                                     }}
-                                    className={`${listingPageImageIndex === i ? "opacity-30" : ""} h-full w-full rounded-xl object-cover "`}
+                                    className={`${listingPageImageIndex === i ? "opacity-50" : ""} h-full w-full object-cover`}
                                     priority
                                 />
                             </button>

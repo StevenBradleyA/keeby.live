@@ -1,5 +1,5 @@
 import type { Ticket } from "@prisma/client";
-import ModalDialog from "~/app/_components/Modal";
+import ModalDialog from "~/app/_components/Context/Modal";
 import { useState } from "react";
 import DeleteTicket from "../Delete/deleteTicket";
 

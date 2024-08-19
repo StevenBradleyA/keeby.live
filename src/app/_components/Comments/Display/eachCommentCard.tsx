@@ -3,14 +3,14 @@ import Image from "next/image";
 import defaultProfile from "@public/Images/defaultProfile.png";
 import Link from "next/link";
 import CreateReplyComment from "../Create/CreateReplyComment";
-import ModifyCommentModal from "../Modal";
+import ModifyCommentModal from "../../Context/Modal/editModal";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import ToggleCommentLike from "~/app/_components/Listings/Likes/CommentLikes/ToggleLike";
 import DisplayReplyComments from "./displayReplyComments";
-import ModalDialog from "~/app/_components/Modal";
-import UpdateComment from "../Update";
-import SignInModal from "../Modal/signInModal";
+import ModalDialog from "~/app/_components/Context/Modal";
+import UpdateComment from "../Manage";
+import SignInModal from "~/app/_components/Modal/signInModal";
 
 interface EachCommentCardProps {
     type: string;

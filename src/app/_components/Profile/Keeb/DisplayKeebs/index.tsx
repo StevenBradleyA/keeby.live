@@ -3,7 +3,7 @@ import EachDisplayKeebCard from "./eachDisplayKeebCard";
 import Image from "next/image";
 import plus from "@public/Vectors/plus-plus.png";
 import { useState } from "react";
-import ModalDialog from "~/app/_components/Modal";
+import ModalDialog from "~/app/_components/Context/Modal";
 import CreateKeeb from "../CreateKeeb";
 
 export default function DisplayKeebs({ userId }: { userId: string }) {

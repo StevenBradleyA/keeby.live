@@ -1,7 +1,7 @@
 import type { ListingOffer } from "@prisma/client";
 import { formatDistance } from "date-fns";
 import { useState } from "react";
-import ModalDialog from "~/app/_components/Modal";
+import ModalDialog from "~/app/_components/Context/Modal";
 import TitleScripts from "~/app/_components/TitleScripts";
 import CreateTransaction from "~/app/_components/Transactions/Create";
 

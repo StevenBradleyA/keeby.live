@@ -1,11 +1,11 @@
-'use client'
+"use client";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { api } from "~/trpc/react";
 import Image from "next/image";
 import defaultProfile from "@public/Images/defaultProfile.png";
-import ModalDialog from "~/app/_components/Modal";
-import SignInModal from "../../Modal/signInModal";
+import ModalDialog from "~/app/_components/Context/Modal";
+import SignInModal from "../../../Modal/signInModal";
 
 interface CreateReplyCommentProps {
     type: string;

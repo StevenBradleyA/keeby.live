@@ -35,76 +35,22 @@ export default function DisplayListingPage({
     listing,
 }: DisplayListingPageProps) {
     const { data: session } = useSession();
-    // const scrollFlagRef = useRef<HTMLDivElement | null>(null);
-    // const scrollRef = useRef<HTMLDivElement | null>(null);
-
-    // const {
-    //     data: comments,
-    //     hasNextPage,
-    //     fetchNextPage,
-    //     isLoading,
-    //     isFetchingNextPage,
-    // } = api.comment.getAllByTypeId.useInfiniteQuery(
-    //     {
-    //         type: "listing",
-    //         typeId: listing.id,
-    //         userId: session?.user.id,
-    //     },
-    //     {
-    //         getNextPageParam: (lastPage) => lastPage.nextCursor,
-    //     },
-    // );
-
-    // const [displayImage, setDisplayImage] = useState(listing.images[0]);
 
     const currentListingNameArr = listing.title.split(" ");
     const smallTitle = currentListingNameArr.pop();
     const bigTitle = currentListingNameArr.join(" ");
 
-
-
-
-
-    // useEffect(() => {
-    //     if (isLoading || isFetchingNextPage || !hasNextPage) return;
-
-    //     const observer = new IntersectionObserver(
-    //         (entries) => {
-    //             if (entries[0] && entries[0].isIntersecting) {
-    //                 void fetchNextPage();
-    //             }
-    //         },
-    //         { threshold: 1.0 },
-    //     );
-
-    //     const currentFlag = scrollFlagRef.current;
-    //     if (currentFlag) {
-    //         observer.observe(currentFlag);
-    //     }
-
-    //     return () => {
-    //         if (observer && currentFlag) {
-    //             observer.unobserve(currentFlag);
-    //         }
-    //     };
-    // }, [hasNextPage, isLoading, isFetchingNextPage, fetchNextPage]);
-
-    // if (isLoading)
-    //     return (
-    //         <div className="mt-44">
-    //             <LoadingSpinner size="40px" />
-    //         </div>
-    //     );
+    // todo lets move seller card here then just component for modals...
+    // also lets add comment count .. time listed... favorite count ... yeah know info that is useful. plus a redesign would look real noice...
 
     return (
         <>
             <div className="flex flex-col text-white mt-40 w-full">
-                <div className="flex h-[80vh] w-full ">
-                    <div className="flex w-1/4 flex-col items-center px-5 h-full bg-red-200 ">
-                        <ListingPagePhotoSideBar images={listing.images}/>
-                       
+                <div className="flex h-[80vh] w-full px-3 laptop:px-5 desktop:px-16 gap-3 desktop:gap-10  ">
+                    <div className="hidden laptop:flex w-1/4 laptop:flex-shrink-0 h-full">
+                        <ListingPagePhotoSideBar images={listing.images} />
                     </div>
-                    <div className="flex h-full w-1/2 flex-col items-center  gap-10 px-5">
+                    <div className="flex h-full w-full flex-col items-center  gap-5 laptop:gap-10">
                         <div className="flex w-full justify-center rounded-xl bg-darkGray ">
                             <h1 className=" listing-page-title-big  px-5 font-titillium text-5xl ">
                                 {bigTitle}
@@ -117,9 +63,8 @@ export default function DisplayListingPage({
                         </div>
 
                         <div className="relative flex h-[58%] flex-shrink-0 w-full justify-center rounded-xl bg-black/30 ">
-                            <ListingPageImage images={listing.images}/>
+                            <ListingPageImage images={listing.images} />
 
-                            
                             {/* {session && session.user && (
                                 <ListingPageFavorite
                                     userId={session.user.id}
@@ -131,52 +76,52 @@ export default function DisplayListingPage({
                             <SellerListingCard listing={listing} />
                         </div>
                     </div>
-                    <div className="flex h-full w-1/4 flex-col items-center gap-10 px-5">
+                    <div className="flex h-full w-1/4 flex-col items-center gap-5 laptop:gap-10  flex-shrink-0 ">
                         <div className=" h-1/3 w-full overflow-hidden rounded-xl bg-darkGray tablet:p-4 desktop:p-10  ">
                             <h2 className=" text-xl desktop:text-2xl ">
                                 Keeb Specs
                             </h2>
-                            <div className="h-full overflow-auto pb-5 desktop:mt-2 desktop:pb-0 ">
+                            <div className="h-full overflow-auto pb-5 mt-2 desktop:pb-0 text-sm laptop:text-base">
                                 <h3 className=" text-mediumGray">
                                     {listing.title}
                                 </h3>
-                                <h3 className="flex w-full gap-2 ">
+                                <p className="flex w-full gap-2 ">
                                     <span className=" text-mediumGray">{`Keycaps `}</span>
                                     <span className="break-all">
                                         {listing.keycaps}
                                     </span>
-                                </h3>
-                                <h3 className="flex gap-2">
+                                </p>
+                                <p className="flex gap-2">
                                     <span className="text-mediumGray">{`Switches `}</span>
                                     <span className="break-all">
                                         {listing.switches}
                                     </span>
-                                </h3>
-                                <h3 className="flex gap-2">
+                                </p>
+                                <p className="flex gap-2">
                                     <span className="text-mediumGray">{`Switch type `}</span>
                                     <span className="break-all">
                                         {listing.switchType}
                                     </span>
-                                </h3>
-                                <h3 className="flex gap-2">
+                                </p>
+                                <p className="flex gap-2">
                                     <span className="text-mediumGray">{`Sound type `}</span>
                                     <span className="break-all">
                                         {listing.soundType}
                                     </span>
-                                </h3>
-                                <h3 className="flex gap-2">
+                                </p>
+                                <p className="flex gap-2">
                                     <span className="text-mediumGray">{`PCB `}</span>
                                     <span className="break-all">
                                         {listing.pcbType}
                                     </span>
-                                </h3>
+                                </p>
                             </div>
                         </div>
                         <div className="h-2/3 w-full overflow-hidden rounded-xl bg-darkGray tablet:p-4 desktop:p-10 ">
-                            <h2 className="mb-2 text-3xl text-purple">
+                            <h2 className="mb-2 text-xl desktop:text-2xl text-keebyPurple">
                                 Description
                             </h2>
-                            <div className="h-full overflow-auto pb-20">
+                            <div className="h-full overflow-auto pb-20 text-sm laptop:text-base">
                                 <p className=" break-words">{listing.text}</p>
                             </div>
                         </div>
@@ -234,9 +179,9 @@ export default function DisplayListingPage({
                 </div>
             </div>
 
-            <div className="mt-60 w-full">
+            {/* <div className="mt-60 w-full">
                 <Footer />
-            </div>
+            </div> */}
         </>
     );
 }

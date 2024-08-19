@@ -3,8 +3,8 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { api } from "~/trpc/react";
 import React from "react";
-import ModalDialog from "~/app/_components/Modal";
-import SignInModal from "../Modal/signInModal";
+import ModalDialog from "~/app/_components/Context/Modal";
+import SignInModal from "~/app/_components/Modal/signInModal";
 import toast from "react-hot-toast";
 
 interface CreateCommentProps {

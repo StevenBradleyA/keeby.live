@@ -4,7 +4,7 @@ import Image from "next/image";
 import keebo from "@public/Profile/keebo.png";
 import { useState } from "react";
 import Link from "next/link";
-import ModalDialog from "~/app/_components/Modal";
+import ModalDialog from "~/app/_components/Context/Modal";
 import UpdateListing from "../Update/updateListing";
 
 interface EachManageListingCardProps {

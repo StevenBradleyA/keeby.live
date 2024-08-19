@@ -33,7 +33,7 @@ export default function EachListingCardPreview({
             href={`/marketplace/${listing.id}`}
             aria-label="Check out this listing"
         >
-            <div className="keebshop-listing-preview-container relative flex h-64 w-96 flex-col  overflow-hidden rounded-2xl">
+            <div className="keebshop-listing-preview-container relative flex h-64 w-96 flex-col overflow-hidden rounded-2xl">
                 {listing.images && listing.images[0] && (
                     <div className="listing-preview-hover-effect w-full h-full z-20 relative bg-black/30 ">
                         <Image

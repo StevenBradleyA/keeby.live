@@ -5,7 +5,7 @@ import { useState } from "react";
 import ChevronRound from "~/app/_components/Svgs/chevron";
 import DisplayYouTubePostPreview from "../Display/DisplayPosts/DisplayPostPreviews/displayYouTubePreview";
 import keebo from "@public/Profile/keebo.png";
-import ModalDialog from "~/app/_components/Modal";
+import ModalDialog from "~/app/_components/Context/Modal";
 import UpdatePost from "./Update";
 
 interface EachManagePostCardProps {

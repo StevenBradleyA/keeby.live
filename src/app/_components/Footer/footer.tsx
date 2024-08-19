@@ -5,7 +5,7 @@ import keebo from "@public/Profile/keebo.png";
 import title from "@public/Nav/home.png";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import ModalDialog from "../Modal";
+import ModalDialog from "../Context/Modal";
 import SupportMe from "./supportModal";
 import { useGlobalState } from "../Context/GlobalState/globalState";
 import { usePathname } from "next/navigation";

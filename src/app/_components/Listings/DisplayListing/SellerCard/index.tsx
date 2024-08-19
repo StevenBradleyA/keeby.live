@@ -3,10 +3,10 @@ import Link from "next/link";
 import defaultProfile from "@public/Images/defaultProfile.png";
 import type { Images, Listing } from "@prisma/client";
 import { useState } from "react";
-import ModalDialog from "~/app/_components/Modal";
+import ModalDialog from "~/app/_components/Context/Modal";
 import CreateTransaction from "../../../Transactions/Create";
 import CreateOffer from "../../../Offers/Create";
-import SignInModal from "~/app/_components/Comments/Modal/signInModal";
+import SignInModal from "~/app/_components/Modal/signInModal";
 import { useSession } from "next-auth/react";
 import DisplayStarRating from "~/app/_components/Reviews/Star/displayStarRating";
 

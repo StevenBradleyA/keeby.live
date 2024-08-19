@@ -5,10 +5,10 @@ import { useSession } from "next-auth/react";
 import CreateReplyComment from "../Create/CreateReplyComment";
 import { useState } from "react";
 import ToggleCommentLike from "~/app/_components/Listings/Likes/CommentLikes/ToggleLike";
-import ModalDialog from "~/app/_components/Modal";
-import ModifyCommentModal from "../Modal";
-import UpdateComment from "../Update";
-import SignInModal from "../Modal/signInModal";
+import ModalDialog from "~/app/_components/Context/Modal";
+import ModifyCommentModal from "../../Context/Modal/editModal";
+import UpdateComment from "../Manage";
+import SignInModal from "~/app/_components/Modal/signInModal";
 
 interface EachReplyCardProps {
     typeId: string;

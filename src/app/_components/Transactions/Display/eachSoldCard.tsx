@@ -2,7 +2,7 @@ import type { ListingTransaction } from "@prisma/client";
 import { formatDistance } from "date-fns";
 import Link from "next/link";
 import { useState } from "react";
-import ModalDialog from "~/app/_components/Modal";
+import ModalDialog from "~/app/_components/Context/Modal";
 
 interface EachOfferViewCardProps {
     transaction: ListingTransaction & {
@@ -44,9 +44,7 @@ export default function EachSoldTransactionCard({
                         <div>${(transaction.agreedPrice / 100).toFixed(2)}</div>
                     </div>
                     <div className="mt-1 flex justify-between">
-                        <h3 className="text-white/30">
-                            Buyer Verified
-                        </h3>
+                        <h3 className="text-white/30">Buyer Verified</h3>
                         <div>Confirmed</div>
                     </div>
                 </div>
