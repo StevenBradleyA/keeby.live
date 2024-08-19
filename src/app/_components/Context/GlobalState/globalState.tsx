@@ -12,6 +12,8 @@ interface StateContextType {
     footerInViewRef: React.RefObject<HTMLDivElement>;
     pageNumber: number;
     setPageNumber: React.Dispatch<React.SetStateAction<number>>;
+    listingPageImageIndex: number;
+    setListingPageImageIndex: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const GlobalStateContext = createContext<StateContextType | undefined>(
@@ -34,8 +36,12 @@ const GlobalStateProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     const cookies = getCookies();
     const { data: session } = useSession();
     const [theme, setTheme] = useState<string>("KEEBY");
-    const footerInViewRef = useRef(null);
     const [pageNumber, setPageNumber] = useState<number>(1);
+    const [listingPageImageIndex, setListingPageImageIndex] =
+        useState<number>(0);
+
+    const footerInViewRef = useRef(null);
+
     const pathname = usePathname();
     const router = useRouter();
 
@@ -85,6 +91,8 @@ const GlobalStateProvider: React.FC<ThemeProviderProps> = ({ children }) => {
         footerInViewRef,
         pageNumber,
         setPageNumber,
+        listingPageImageIndex,
+        setListingPageImageIndex,
     };
     return (
         <GlobalStateContext.Provider value={value}>

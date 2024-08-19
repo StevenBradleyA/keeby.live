@@ -1,9 +1,30 @@
-import { useRouter } from "next/router";
-import DisplayListingCheck from "~/app/_components/Listings/DisplayListing/displayListingCheck";
+import DisplayListingPage from "~/app/_components/Listings/DisplayListing";
+import LoadingSpinner from "~/app/_components/Loading";
+import { getServerAuthSession } from "~/server/auth";
+import { api } from "~/trpc/server";
 
-export default function ListingPage() {
-    const router = useRouter();
-    const listingId = router.query.listingId as string;
+export default async function ListingPage({
+    params,
+}: {
+    params: { listingId: string };
+}) {
+    const { listingId } = params;
+    const session = await getServerAuthSession();
 
-    return listingId && <DisplayListingCheck listingId={listingId} />;
+    const listing = await api.listing.getOneById({
+        id: listingId,
+        userId: session && session.user.id ? session.user.id : undefined,
+    });
+
+    return (
+        <>
+            {listing ? (
+                <DisplayListingPage listing={listing} />
+            ) : (
+                <div>
+                    <LoadingSpinner size="20px" />
+                </div>
+            )}
+        </>
+    );
 }

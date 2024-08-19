@@ -58,10 +58,17 @@ export default function SellerListingCard({
     };
 
     // todo MAKE STARS ACTUALLY REFLECTIVE TO ONE DECIMAL POINT ------- rounding is lame
+
+    // todo figure out server side rendering
+
+    // context for the state change? would be easy that way you can have separate components
+    // also don't forget we need to have different layouts
+    // add a pop out modal when you click the central image maybe? or a full screen button on the picture...
+
     return (
         <div className="flex h-full w-full gap-5 p-2 desktop:p-5">
             {listing.seller && listing.seller.username && (
-                <div className="h-full w-1/6">
+                <div className="w-32 h-32">
                     <Image
                         src={
                             listing.seller.profile

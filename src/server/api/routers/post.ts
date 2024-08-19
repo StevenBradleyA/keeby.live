@@ -91,7 +91,7 @@ type ExtendedPost = Post & {
     previewIndex?: number;
 };
 
-// todo potentially not update user if post id matches userId so they dont gain points for liking their own stuff.. this would prevent farming
+// todo potentially not update user if posgt id matches userId so they dont gain points for liking their own stuff.. this would prevent farming
 
 export const postRouter = createTRPCRouter({
     getAll: publicProcedure

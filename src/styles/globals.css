@@ -1383,6 +1383,8 @@ select:-webkit-autofill:focus {
 /* --------------         KEEB SHOP          --------------  */
 /* --------------         KEEB SHOP          --------------  */
 
+/* previews */
+
 .keebshop-listing-preview-container {
 }
 
@@ -1399,63 +1401,25 @@ select:-webkit-autofill:focus {
     opacity: 0;
 }
 
-.very-sticky {
-    position: -webkit-sticky;
-    position: sticky;
-    top: 140px;
-    align-self: flex-start;
-    z-index: 30;
-}
-
-.custom-select {
-    cursor: pointer;
+.keebshop-preview-arrow {
     opacity: 0;
-    z-index: 10;
+    visibility: hidden;
+    transition:
+    visibility 0s linear 0.5s,
+    opacity 0.5s ease-in-out 0s;
 }
 
-.select-fake {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -1;
+.keebshop-listing-preview-container:hover .keebshop-preview-arrow {
+    opacity: 1;
+    visibility: visible;
+
 }
 
-.search-input-placeholder::placeholder {
-    color: rgb(34 197 94);
-}
 
-.search-input-hack {
-    z-index: 20;
-}
-.search-input-matrix {
-    z-index: 1;
-}
-
-.shop-create-listing {
-    filter: invert(39%) sepia(0%) saturate(0%) hue-rotate(351deg)
-        brightness(96%) contrast(99%);
-    transition: filter 0.4s cubic-bezier(0.35, 0, 0, 1);
-}
-.shop-create-listing:hover {
-    filter: invert(48%) sepia(5%) saturate(3277%) hue-rotate(72deg)
-        brightness(116%) contrast(126%);
-}
-
-.shop-price-filter-button {
-}
-
-.shop-price-filter-arrow {
-    transition: color 0.4s cubic-bezier(0.35, 0, 0, 1);
-}
-
-.shop-price-filter-button:hover .shop-price-filter-arrow {
-    color: white;
-}
 
 /*  ----    Listings Hover effect    ---- */
-.listing-preview-hover-effect {
-    background-color: #000000;
-}
+
+
 
 .listing-preview-hover-effect img {
     transition: opacity 0.55s ease;
@@ -1538,6 +1502,61 @@ select:-webkit-autofill:focus {
 
 /*  ----    End Listings Hover effect    ---- */
 /*  ----    End Listings Hover effect    ---- */
+
+/* previews end */
+
+.very-sticky {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 140px;
+    align-self: flex-start;
+    z-index: 30;
+}
+
+.custom-select {
+    cursor: pointer;
+    opacity: 0;
+    z-index: 10;
+}
+
+.select-fake {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.search-input-placeholder::placeholder {
+    color: rgb(34 197 94);
+}
+
+.search-input-hack {
+    z-index: 20;
+}
+.search-input-matrix {
+    z-index: 1;
+}
+
+.shop-create-listing {
+    filter: invert(39%) sepia(0%) saturate(0%) hue-rotate(351deg)
+        brightness(96%) contrast(99%);
+    transition: filter 0.4s cubic-bezier(0.35, 0, 0, 1);
+}
+.shop-create-listing:hover {
+    filter: invert(48%) sepia(5%) saturate(3277%) hue-rotate(72deg)
+        brightness(116%) contrast(126%);
+}
+
+.shop-price-filter-button {
+}
+
+.shop-price-filter-arrow {
+    transition: color 0.4s cubic-bezier(0.35, 0, 0, 1);
+}
+
+.shop-price-filter-button:hover .shop-price-filter-arrow {
+    color: white;
+}
 
 /* --------------                            --------------  */
 

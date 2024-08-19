@@ -60,6 +60,7 @@ interface ListingPage extends Listing {
     images: Images[];
     _count: {
         comments: number;
+        favorites: number;
     };
     seller: {
         id: string;
@@ -69,6 +70,8 @@ interface ListingPage extends Listing {
         avgRating?: number | null;
         totalRatings?: number | null;
     };
+    isFavorited?: boolean;
+    favoriteId?: string;
 }
 
 type ExtendedListing = Listing & {
@@ -154,22 +157,24 @@ export const listingRouter = createTRPCRouter({
             }));
         }),
 
-    getOne: publicProcedure
+    getOneById: publicProcedure
         .input(
             z.object({
                 id: z.string(),
+                userId: z.string().optional(),
             }),
         )
         .query(async ({ input, ctx }) => {
+            const { id, userId } = input;
             const listingWithImages: ListingPage | null =
                 await ctx.db.listing.findUnique({
                     where: {
-                        id: input.id,
+                        id: id,
                     },
                     include: {
                         images: true,
                         _count: {
-                            select: { comments: true },
+                            select: { comments: true, favorites: true },
                         },
                         seller: {
                             select: {
@@ -179,8 +184,19 @@ export const listingRouter = createTRPCRouter({
                                 selectedTag: true,
                             },
                         },
+                        favorites: userId
+                            ? {
+                                  where: { userId: userId },
+                                  select: { id: true },
+                              }
+                            : false,
                     },
                 });
+            // Add favorite details if a user ID was provided and favorites were fetched
+            if (userId && listingWithImages) {
+                listingWithImages.isFavorited = listingWithImages.isFavorited;
+                listingWithImages.favoriteId = listingWithImages.favoriteId;
+            }
 
             if (listingWithImages) {
                 const averageStarRating = await ctx.db.review.aggregate({
@@ -212,6 +228,8 @@ export const listingRouter = createTRPCRouter({
                     return 0;
                 });
             }
+
+            // if user id we need to know if this was favorited...
 
             return listingWithImages;
         }),

@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import keebo from "@public/Profile/keebo.png";
-import ArrowPopup from "./arrowPopup";
 
 interface EachListingCardProps {
     listing: EachListing;
@@ -30,13 +29,13 @@ export default function EachListingCardPreview({
     listing,
 }: EachListingCardProps) {
     return (
-        <div className="keebshop-listing-preview-container relative flex w-96 flex-col">
-            <Link
-                href={`/marketplace/${listing.id}`}
-                aria-label="Check out this listing"
-            >
+        <Link
+            href={`/marketplace/${listing.id}`}
+            aria-label="Check out this listing"
+        >
+            <div className="keebshop-listing-preview-container relative flex h-64 w-96 flex-col  overflow-hidden rounded-2xl">
                 {listing.images && listing.images[0] && (
-                    <div className="listing-preview-hover-effect relative h-64 w-96 cursor-pointer overflow-hidden rounded-2xl bg-black/30 ">
+                    <div className="listing-preview-hover-effect w-full h-full z-20 relative bg-black/30 ">
                         <Image
                             alt="preview"
                             src={
@@ -46,7 +45,7 @@ export default function EachListingCardPreview({
                             }
                             width={600}
                             height={600}
-                            className={`h-full w-full object-cover`}
+                            className="h-full w-full object-cover"
                             priority
                         />
                         <div></div>
@@ -89,10 +88,12 @@ export default function EachListingCardPreview({
                                 <p>{listing._count.favorites}</p>
                             </div>
                         </div>
+                        <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 text-green-500 bg-black/50 py-2 rounded-md keebshop-preview-arrow z-30 px-4 text-sm">
+                            {`Continue`}
+                        </div>
                     </div>
                 )}
-                <ArrowPopup />
-            </Link>
-        </div>
+            </div>
+        </Link>
     );
 }
