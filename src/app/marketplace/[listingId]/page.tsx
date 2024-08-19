@@ -1,4 +1,4 @@
-import DisplayListingPage from "~/app/_components/Listings/DisplayListing";
+import DisplayListingPage from "~/app/_components/Listings/Display/ListingPage";
 import LoadingSpinner from "~/app/_components/Loading";
 import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/server";

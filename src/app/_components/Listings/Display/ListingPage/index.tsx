@@ -1,14 +1,13 @@
-"use client";
 import type { Images, Listing } from "@prisma/client";
-import { useSession } from "next-auth/react";
 import SellerListingCard from "./SellerCard";
 import ListingSoundTest from "./SoundTest";
-import ListingPageFavorite from "./Favorite";
+import ListingPageFavorite from "./listingPageFavorite";
 import CreateComment from "~/app/_components/Comments/Create";
-import Footer from "../../Footer/footer";
-import DisplayComments from "../../Comments/Display/displayComments";
+import DisplayComments from "../../../Comments/Display/displayComments";
 import ListingPagePhotoSideBar from "./listingPagePhotoSideBar";
 import ListingPageImage from "./listingPageImage";
+import { getServerAuthSession } from "~/server/auth";
+import Footer from "../../../Footer/footer";
 
 interface DisplayListingPageProps {
     listing: ListingWithImagesAndCount;
@@ -31,10 +30,10 @@ interface ListingWithImagesAndCount extends Listing {
     favoriteId?: string;
 }
 
-export default function DisplayListingPage({
+export default async function DisplayListingPage({
     listing,
 }: DisplayListingPageProps) {
-    const { data: session } = useSession();
+    const session = await getServerAuthSession();
 
     const currentListingNameArr = listing.title.split(" ");
     const smallTitle = currentListingNameArr.pop();
@@ -47,11 +46,11 @@ export default function DisplayListingPage({
         <>
             <div className="flex flex-col text-white mt-40 w-full">
                 <div className="flex h-[80vh] w-full px-3 laptop:px-5 desktop:px-16 gap-3 desktop:gap-10  ">
-                    <div className="hidden laptop:flex w-1/4 laptop:flex-shrink-0 h-full">
+                    <div className="hidden laptop:flex w-1/4 laptop:flex-shrink-0 h-full   ">
                         <ListingPagePhotoSideBar images={listing.images} />
                     </div>
                     <div className="flex h-full w-full flex-col items-center  gap-5 laptop:gap-10">
-                        <div className="flex w-full justify-center rounded-xl bg-darkGray ">
+                        <div className="flex w-full justify-center rounded-xl bg-darkGray shadow-lg ">
                             <h1 className=" listing-page-title-big  px-5 font-titillium text-5xl ">
                                 {bigTitle}
                             </h1>
@@ -62,22 +61,20 @@ export default function DisplayListingPage({
                             )}
                         </div>
 
-                        <div className="relative flex h-[58%] flex-shrink-0 w-full justify-center rounded-xl bg-black/30 ">
+                        <div className="relative flex h-[58%] flex-shrink-0 w-full justify-center rounded-xl bg-black/30 shadow-lg  ">
                             <ListingPageImage images={listing.images} />
 
-                            {/* {session && session.user && (
-                                <ListingPageFavorite
-                                    userId={session.user.id}
-                                    listingId={listing.id}
-                                />
-                            )} */}
+                            <ListingPageFavorite
+                                listing={listing}
+                                session={session}
+                            />
                         </div>
-                        <div className="h-full w-full overflow-hidden rounded-xl bg-darkGray ">
+                        <div className="h-full w-full overflow-hidden rounded-xl bg-darkGray shadow-lg ">
                             <SellerListingCard listing={listing} />
                         </div>
                     </div>
-                    <div className="flex h-full w-1/4 flex-col items-center gap-5 laptop:gap-10  flex-shrink-0 ">
-                        <div className=" h-1/3 w-full overflow-hidden rounded-xl bg-darkGray tablet:p-4 desktop:p-10  ">
+                    <div className="flex h-full w-1/4 flex-col items-center gap-5 laptop:gap-10  flex-shrink-0  ">
+                        <div className=" h-1/3 w-full overflow-hidden rounded-xl bg-darkGray tablet:p-4 desktop:p-10 shadow-lg  ">
                             <h2 className=" text-xl desktop:text-2xl ">
                                 Keeb Specs
                             </h2>
@@ -117,7 +114,7 @@ export default function DisplayListingPage({
                                 </p>
                             </div>
                         </div>
-                        <div className="h-2/3 w-full overflow-hidden rounded-xl bg-darkGray tablet:p-4 desktop:p-10 ">
+                        <div className="h-2/3 w-full overflow-hidden rounded-xl bg-darkGray tablet:p-4 desktop:p-10 shadow-lg ">
                             <h2 className="mb-2 text-xl desktop:text-2xl text-keebyPurple">
                                 Description
                             </h2>

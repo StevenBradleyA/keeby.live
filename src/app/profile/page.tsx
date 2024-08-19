@@ -16,7 +16,7 @@ import computerType from "@public/Profile/computer-type.png";
 import hacktime from "@public/Vectors/hacktime.png";
 import ManageListings from "~/app/_components/Listings/ManageListings";
 import ManagePosts from "~/app/_components/Posts/ManagePosts";
-import DisplayFavoriteListings from "~/app/_components/Listings/DisplayFavoriteListings";
+import DisplayFavoriteListings from "~/app/_components/Listings/Favorites";
 import DisplayProfileKeebs from "~/app/_components/Profile/Keeb/DisplayKeebs";
 import DisplayAllGameStatsCheck from "~/app/_components/Games/GameStats/displayAllGameStatsCheck";
 import UpdateUserTag from "~/app/_components/Profile/User/Update/Tag";

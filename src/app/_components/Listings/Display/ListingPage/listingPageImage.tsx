@@ -1,11 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { useGlobalState } from "../../Context/GlobalState/globalState";
+import { useGlobalState } from "../../../Context/GlobalState/globalState";
 import type { Images } from "@prisma/client";
 import { useState } from "react";
-import ModalDialog from "~/app/_components/Context/Modal";
-import ModalDialogueNoStyling from "../../Context/Modal/noStylingModal";
+import ModalDialogueNoStyling from "../../../Context/Modal/noStylingModal";
 
 interface ListingPageImageProps {
     images: Images[];
@@ -17,15 +16,9 @@ export default function ListingPageImage({ images }: ListingPageImageProps) {
 
     const [isImageModalOpen, setIsImageModalOpen] = useState<boolean>(false);
 
-    const openModal = () => {
-        setIsImageModalOpen(true);
-    };
-
     const closeModal = () => {
         setIsImageModalOpen(false);
     };
-
-    // modal plus we need arrows to be hidden when not hovered...
 
     return (
         images &&
@@ -44,7 +37,7 @@ export default function ListingPageImage({ images }: ListingPageImageProps) {
                         }}
                     />
                     <button
-                        className={`absolute left-3 top-1/2 -translate-y-1/2 bg-darkGray/80 rounded-full p-2 hover:opacity-80 ${listingPageImageIndex === 0 ? "ease-in hover:text-keebyPurple" : "ease-in hover:text-green-500"}`}
+                        className={` absolute left-3 top-1/2 -translate-y-1/2 bg-darkGray/80 rounded-full p-2 hover:opacity-80 ${listingPageImageIndex === 0 ? "ease-in hover:text-keebyPurple" : "ease-in hover:text-green-500"}`}
                         onClick={() => {
                             if (listingPageImageIndex >= 1) {
                                 setListingPageImageIndex(
@@ -67,9 +60,8 @@ export default function ListingPageImage({ images }: ListingPageImageProps) {
                             />
                         </svg>
                     </button>
-
                     <button
-                        className={`absolute right-3 top-1/2 -translate-y-1/2 bg-darkGray/80 rounded-full p-2 hover:opacity-80 ${listingPageImageIndex === images.length - 1 ? "ease-in hover:text-keebyPurple" : "hover:text-green-500 ease-in"}`}
+                        className={` absolute right-3 top-1/2 -translate-y-1/2 bg-darkGray/80 rounded-full p-2 hover:opacity-80 ${listingPageImageIndex === images.length - 1 ? "ease-in hover:text-keebyPurple" : "hover:text-green-500 ease-in"}`}
                         onClick={() => {
                             setListingPageImageIndex(
                                 (prev) => (prev + 1) % images.length,
@@ -88,6 +80,7 @@ export default function ListingPageImage({ images }: ListingPageImageProps) {
                         </svg>
                     </button>
                 </div>
+
                 <ModalDialogueNoStyling
                     isOpen={isImageModalOpen}
                     onClose={closeModal}

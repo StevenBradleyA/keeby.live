@@ -6,7 +6,7 @@ import CreateReplyComment from "../Create/CreateReplyComment";
 import ModifyCommentModal from "../../Context/Modal/editModal";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
-import ToggleCommentLike from "~/app/_components/Listings/Likes/CommentLikes/ToggleLike";
+import ToggleCommentLike from "~/app/_components/Posts/Likes/CommentLikes/ToggleLike";
 import DisplayReplyComments from "./displayReplyComments";
 import ModalDialog from "~/app/_components/Context/Modal";
 import UpdateComment from "../Manage";

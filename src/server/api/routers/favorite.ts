@@ -173,8 +173,19 @@ export const favoriteRouter = createTRPCRouter({
             const { userId, listingId } = input;
             if (ctx.session.user.id !== userId) {
                 throw new Error(
-                    "You must be logged in to perform this action.",
+                    "You don't have the right, O you don't have the right",
                 );
+            }
+
+            const existingFavorite = await ctx.db.favorites.findFirst({
+                where: {
+                    userId: userId,
+                    listingId: listingId,
+                },
+            });
+
+            if (existingFavorite) {
+                throw new Error("You have already favorited this post.");
             }
 
             await ctx.db.favorites.create({
@@ -183,6 +194,7 @@ export const favoriteRouter = createTRPCRouter({
                     listingId: listingId,
                 },
             });
+
             const listingCheck = await ctx.db.listing.findUnique({
                 where: {
                     id: listingId,
@@ -200,6 +212,10 @@ export const favoriteRouter = createTRPCRouter({
                     },
                 });
             }
+            return {
+                success: true,
+                message: "Post successfully favorited.",
+            };
         }),
     createPostFavorite: protectedProcedure
         .input(
@@ -259,25 +275,40 @@ export const favoriteRouter = createTRPCRouter({
     deleteListingFavorite: protectedProcedure
         .input(
             z.object({
-                id: z.string(),
                 userId: z.string(),
                 listingId: z.string(),
             }),
         )
         .mutation(async ({ ctx, input }) => {
-            const { id, userId, listingId } = input;
+            const { userId, listingId } = input;
 
-            if (ctx.session.user.id !== userId) {
+            if (
+                !(userId === ctx.session?.user.id || ctx.session?.user.isAdmin)
+            ) {
                 throw new Error(
-                    "You must be logged in to perform this action.",
+                    "You are not authorized to perform this action.",
                 );
             }
-            await ctx.db.favorites.delete({
+
+            const favorite = await ctx.db.favorites.findFirst({
                 where: {
-                    id: id,
+                    listingId: listingId,
+                    userId: userId,
+                },
+                select: {
+                    id: true,
                 },
             });
 
+            if (!favorite) {
+                throw new Error("Favorite not found.");
+            }
+
+            await ctx.db.favorites.delete({
+                where: {
+                    id: favorite.id,
+                },
+            });
             const listingCheck = await ctx.db.listing.findUnique({
                 where: {
                     id: listingId,
@@ -295,6 +326,11 @@ export const favoriteRouter = createTRPCRouter({
                     },
                 });
             }
+
+            return {
+                success: true,
+                message: "Favorite successfully removed.",
+            };
         }),
     deletePostFavorite: protectedProcedure
         .input(

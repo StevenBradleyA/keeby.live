@@ -1,9 +1,9 @@
 "use client";
 
 import type { Images } from "@prisma/client";
-import ChevronRound from "../../Svgs/chevron";
+import ChevronRound from "../../../Svgs/chevron";
 import Image from "next/image";
-import { useGlobalState } from "../../Context/GlobalState/globalState";
+import { useGlobalState } from "../../../Context/GlobalState/globalState";
 
 interface ListingPagePhotoSideBarProps {
     images: Images[];
@@ -12,30 +12,11 @@ interface ListingPagePhotoSideBarProps {
 export default function ListingPagePhotoSideBar({
     images,
 }: ListingPagePhotoSideBarProps) {
-    // going to need context state here...
-
     const { listingPageImageIndex, setListingPageImageIndex } =
         useGlobalState();
 
-    // const nextImage = () => {
-    //     setCurrentIndex((prevIndex) =>
-    //         prevIndex < maxIndex ? prevIndex + 1 : prevIndex,
-    //     );
-    // };
-
-    // const prevImage = () => {
-    //     setCurrentIndex((prevIndex) =>
-    //         prevIndex > 0 ? prevIndex - 1 : prevIndex,
-    //     );
-    // };
-
-    // const [displayImage, setDisplayImage] = useState(listing.images[0]);
-
-    // const [listingPageImageIndex, setCurrentIndex] = useState<number>(0);
-    // todo fix image sizes...
-
     return (
-        <div className=" relative h-full w-full overflow-hidden rounded-xl bg-darkGray p-10 ">
+        <div className=" relative h-full w-full overflow-hidden rounded-xl bg-darkGray p-10 shadow-lg ">
             <div className=" h-full w-full overflow-hidden ">
                 <button
                     className={`absolute left-1/2 top-2 w-7 -translate-x-1/2 transform ${

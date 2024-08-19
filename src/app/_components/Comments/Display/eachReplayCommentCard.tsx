@@ -4,7 +4,7 @@ import defaultProfile from "@public/Images/defaultProfile.png";
 import { useSession } from "next-auth/react";
 import CreateReplyComment from "../Create/CreateReplyComment";
 import { useState } from "react";
-import ToggleCommentLike from "~/app/_components/Listings/Likes/CommentLikes/ToggleLike";
+import ToggleCommentLike from "~/app/_components/Posts/Likes/CommentLikes/ToggleLike";
 import ModalDialog from "~/app/_components/Context/Modal";
 import ModifyCommentModal from "../../Context/Modal/editModal";
 import UpdateComment from "../Manage";
