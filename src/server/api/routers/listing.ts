@@ -70,6 +70,9 @@ interface ListingPage extends Listing {
         avgRating?: number | null;
         totalRatings?: number | null;
     };
+    favorites?: {
+        id: string;
+    }[];
     isFavorited?: boolean;
     favoriteId?: string;
 }
@@ -194,8 +197,17 @@ export const listingRouter = createTRPCRouter({
                 });
             // Add favorite details if a user ID was provided and favorites were fetched
             if (userId && listingWithImages) {
-                listingWithImages.isFavorited = listingWithImages.isFavorited;
-                listingWithImages.favoriteId = listingWithImages.favoriteId;
+                listingWithImages.isFavorited =
+                    listingWithImages.favorites &&
+                    listingWithImages.favorites[0]
+                        ? (listingWithImages.isFavorited = true)
+                        : (listingWithImages.isFavorited = false);
+                listingWithImages.favoriteId =
+                    listingWithImages.favorites &&
+                    listingWithImages.favorites[0]
+                        ? (listingWithImages.favoriteId =
+                              listingWithImages.favorites[0].id)
+                        : (listingWithImages.favoriteId = undefined);
             }
 
             if (listingWithImages) {
@@ -229,7 +241,7 @@ export const listingRouter = createTRPCRouter({
                 });
             }
 
-            // if user id we need to know if this was favorited...
+            // todo we need REVIEWS
 
             return listingWithImages;
         }),
@@ -459,205 +471,205 @@ export const listingRouter = createTRPCRouter({
                 };
             }
         }),
-    getAllWithFilters: publicProcedure
-        .input(
-            z.object({
-                searchQuery: z.string().optional(),
-                switchType: z.string().optional(),
-                minPrice: z.number().optional(),
-                maxPrice: z.number().optional(),
-                priceOrder: z.string().optional(),
-                layoutType: z.string().optional(),
-                assemblyType: z.string().optional(),
-                hotSwapType: z.string().optional(),
-                soundType: z.string().optional(),
-                cursor: z.string().nullish(),
-                limit: z.number().min(1).max(100).nullish(),
-            }),
-        )
-        .query(async ({ ctx, input }) => {
-            const {
-                searchQuery,
-                switchType,
-                soundType,
-                assemblyType,
-                hotSwapType,
-                layoutType,
-                minPrice,
-                maxPrice,
-                priceOrder,
-                cursor,
-            } = input;
+    // getAllWithFilters: publicProcedure
+    //     .input(
+    //         z.object({
+    //             searchQuery: z.string().optional(),
+    //             switchType: z.string().optional(),
+    //             minPrice: z.number().optional(),
+    //             maxPrice: z.number().optional(),
+    //             priceOrder: z.string().optional(),
+    //             layoutType: z.string().optional(),
+    //             assemblyType: z.string().optional(),
+    //             hotSwapType: z.string().optional(),
+    //             soundType: z.string().optional(),
+    //             cursor: z.string().nullish(),
+    //             limit: z.number().min(1).max(100).nullish(),
+    //         }),
+    //     )
+    //     .query(async ({ ctx, input }) => {
+    //         const {
+    //             searchQuery,
+    //             switchType,
+    //             soundType,
+    //             assemblyType,
+    //             hotSwapType,
+    //             layoutType,
+    //             minPrice,
+    //             maxPrice,
+    //             priceOrder,
+    //             cursor,
+    //         } = input;
 
-            const limit = input.limit ?? 12;
+    //         const limit = input.limit ?? 12;
 
-            const whereFilters: Prisma.ListingWhereInput = {
-                AND: [
-                    { status: "ACTIVE" },
-                    switchType ? { switchType } : {},
-                    soundType ? { soundType } : {},
-                    assemblyType ? { assemblyType } : {},
-                    hotSwapType ? { hotSwapType } : {},
-                    layoutType ? { layoutType } : {},
-                    minPrice ? { price: { gte: minPrice } } : {},
-                    maxPrice ? { price: { lte: maxPrice } } : {},
-                    searchQuery
-                        ? {
-                              OR: [
-                                  {
-                                      title: {
-                                          contains: searchQuery,
-                                      },
-                                  },
-                                  {
-                                      text: {
-                                          contains: searchQuery,
-                                      },
-                                  },
-                              ],
-                          }
-                        : {},
-                ].filter((obj) => Object.keys(obj).length > 0),
-            };
+    //         const whereFilters: Prisma.ListingWhereInput = {
+    //             AND: [
+    //                 { status: "ACTIVE" },
+    //                 switchType ? { switchType } : {},
+    //                 soundType ? { soundType } : {},
+    //                 assemblyType ? { assemblyType } : {},
+    //                 hotSwapType ? { hotSwapType } : {},
+    //                 layoutType ? { layoutType } : {},
+    //                 minPrice ? { price: { gte: minPrice } } : {},
+    //                 maxPrice ? { price: { lte: maxPrice } } : {},
+    //                 searchQuery
+    //                     ? {
+    //                           OR: [
+    //                               {
+    //                                   title: {
+    //                                       contains: searchQuery,
+    //                                   },
+    //                               },
+    //                               {
+    //                                   text: {
+    //                                       contains: searchQuery,
+    //                                   },
+    //                               },
+    //                           ],
+    //                       }
+    //                     : {},
+    //             ].filter((obj) => Object.keys(obj).length > 0),
+    //         };
 
-            const listings: PreviewListing[] = await ctx.db.listing.findMany({
-                where: whereFilters,
-                include: {
-                    _count: {
-                        select: { comments: true },
-                    },
-                    images: {
-                        where: { resourceType: "LISTINGPREVIEW" },
-                        select: { id: true, link: true },
-                    },
-                },
-                take: limit + 1,
-                skip: cursor ? 1 : 0,
-                cursor: cursor ? { id: cursor } : undefined,
-                orderBy: priceOrder
-                    ? priceOrder === "asc"
-                        ? [{ price: "asc" }, { createdAt: "desc" }]
-                        : [{ price: "desc" }, { createdAt: "desc" }]
-                    : [{ createdAt: "desc" }],
-            });
+    //         const listings: PreviewListing[] = await ctx.db.listing.findMany({
+    //             where: whereFilters,
+    //             include: {
+    //                 _count: {
+    //                     select: { comments: true },
+    //                 },
+    //                 images: {
+    //                     where: { resourceType: "LISTINGPREVIEW" },
+    //                     select: { id: true, link: true },
+    //                 },
+    //             },
+    //             take: limit + 1,
+    //             skip: cursor ? 1 : 0,
+    //             cursor: cursor ? { id: cursor } : undefined,
+    //             orderBy: priceOrder
+    //                 ? priceOrder === "asc"
+    //                     ? [{ price: "asc" }, { createdAt: "desc" }]
+    //                     : [{ price: "desc" }, { createdAt: "desc" }]
+    //                 : [{ createdAt: "desc" }],
+    //         });
 
-            let nextCursor: typeof cursor | undefined = undefined;
-            if (listings.length > limit) {
-                const nextItem = listings.pop();
-                if (nextItem !== undefined) {
-                    nextCursor = nextItem.id;
-                }
-            }
+    //         let nextCursor: typeof cursor | undefined = undefined;
+    //         if (listings.length > limit) {
+    //             const nextItem = listings.pop();
+    //             if (nextItem !== undefined) {
+    //                 nextCursor = nextItem.id;
+    //             }
+    //         }
 
-            return {
-                listings,
-                nextCursor,
-            };
-        }),
+    //         return {
+    //             listings,
+    //             nextCursor,
+    //         };
+    //     }),
 
-    getAllSortedByPopularityWithFilters: publicProcedure
-        .input(
-            z.object({
-                searchQuery: z.string().optional(),
-                switchType: z.string().optional(),
-                minPrice: z.number().optional(),
-                maxPrice: z.number().optional(),
-                priceOrder: z.string().optional(),
-                layoutType: z.string().optional(),
-                assemblyType: z.string().optional(),
-                hotSwapType: z.string().optional(),
-                soundType: z.string().optional(),
-                cursor: z.string().nullish(),
-                limit: z.number().min(1).max(100).nullish(),
-            }),
-        )
-        .query(async ({ ctx, input }) => {
-            const {
-                searchQuery,
-                switchType,
-                soundType,
-                assemblyType,
-                hotSwapType,
-                layoutType,
-                minPrice,
-                maxPrice,
-                priceOrder,
-                cursor,
-            } = input;
-            const limit = input.limit ?? 12;
+    // getAllSortedByPopularityWithFilters: publicProcedure
+    //     .input(
+    //         z.object({
+    //             searchQuery: z.string().optional(),
+    //             switchType: z.string().optional(),
+    //             minPrice: z.number().optional(),
+    //             maxPrice: z.number().optional(),
+    //             priceOrder: z.string().optional(),
+    //             layoutType: z.string().optional(),
+    //             assemblyType: z.string().optional(),
+    //             hotSwapType: z.string().optional(),
+    //             soundType: z.string().optional(),
+    //             cursor: z.string().nullish(),
+    //             limit: z.number().min(1).max(100).nullish(),
+    //         }),
+    //     )
+    //     .query(async ({ ctx, input }) => {
+    //         const {
+    //             searchQuery,
+    //             switchType,
+    //             soundType,
+    //             assemblyType,
+    //             hotSwapType,
+    //             layoutType,
+    //             minPrice,
+    //             maxPrice,
+    //             priceOrder,
+    //             cursor,
+    //         } = input;
+    //         const limit = input.limit ?? 12;
 
-            const whereFilters: Prisma.ListingWhereInput = {
-                AND: [
-                    { status: "ACTIVE" },
-                    switchType ? { switchType } : {},
-                    soundType ? { soundType } : {},
-                    assemblyType ? { assemblyType } : {},
-                    hotSwapType ? { hotSwapType } : {},
-                    layoutType ? { layoutType } : {},
-                    minPrice ? { price: { gte: minPrice } } : {},
-                    maxPrice ? { price: { lte: maxPrice } } : {},
-                    searchQuery
-                        ? {
-                              OR: [
-                                  {
-                                      title: {
-                                          contains: searchQuery,
-                                      },
-                                  },
-                                  {
-                                      text: {
-                                          contains: searchQuery,
-                                      },
-                                  },
-                              ],
-                          }
-                        : {},
-                ].filter((obj) => Object.keys(obj).length > 0),
-            };
+    //         const whereFilters: Prisma.ListingWhereInput = {
+    //             AND: [
+    //                 { status: "ACTIVE" },
+    //                 switchType ? { switchType } : {},
+    //                 soundType ? { soundType } : {},
+    //                 assemblyType ? { assemblyType } : {},
+    //                 hotSwapType ? { hotSwapType } : {},
+    //                 layoutType ? { layoutType } : {},
+    //                 minPrice ? { price: { gte: minPrice } } : {},
+    //                 maxPrice ? { price: { lte: maxPrice } } : {},
+    //                 searchQuery
+    //                     ? {
+    //                           OR: [
+    //                               {
+    //                                   title: {
+    //                                       contains: searchQuery,
+    //                                   },
+    //                               },
+    //                               {
+    //                                   text: {
+    //                                       contains: searchQuery,
+    //                                   },
+    //                               },
+    //                           ],
+    //                       }
+    //                     : {},
+    //             ].filter((obj) => Object.keys(obj).length > 0),
+    //         };
 
-            const listings: PreviewListing[] = await ctx.db.listing.findMany({
-                where: whereFilters,
-                include: {
-                    _count: {
-                        select: { comments: true },
-                    },
-                    images: {
-                        where: { resourceType: "LISTINGPREVIEW" },
-                        select: { id: true, link: true },
-                    },
-                },
-                take: limit + 1,
-                skip: cursor ? 1 : 0,
-                cursor: cursor ? { id: cursor } : undefined,
-            });
+    //         const listings: PreviewListing[] = await ctx.db.listing.findMany({
+    //             where: whereFilters,
+    //             include: {
+    //                 _count: {
+    //                     select: { comments: true },
+    //                 },
+    //                 images: {
+    //                     where: { resourceType: "LISTINGPREVIEW" },
+    //                     select: { id: true, link: true },
+    //                 },
+    //             },
+    //             take: limit + 1,
+    //             skip: cursor ? 1 : 0,
+    //             cursor: cursor ? { id: cursor } : undefined,
+    //         });
 
-            // sort by popularity (comment count)
-            let popularListings = listings.sort(
-                (a, b) => b._count.comments - a._count.comments,
-            );
+    //         // sort by popularity (comment count)
+    //         let popularListings = listings.sort(
+    //             (a, b) => b._count.comments - a._count.comments,
+    //         );
 
-            // if priceOrder then sort based on that
-            if (priceOrder === "asc") {
-                popularListings = popularListings.sort(
-                    (a, b) => a.price - b.price,
-                );
-            } else if (priceOrder === "desc") {
-                popularListings = popularListings.sort(
-                    (a, b) => b.price - a.price,
-                );
-            }
+    //         // if priceOrder then sort based on that
+    //         if (priceOrder === "asc") {
+    //             popularListings = popularListings.sort(
+    //                 (a, b) => a.price - b.price,
+    //             );
+    //         } else if (priceOrder === "desc") {
+    //             popularListings = popularListings.sort(
+    //                 (a, b) => b.price - a.price,
+    //             );
+    //         }
 
-            let nextCursor: typeof cursor | undefined = undefined;
-            if (popularListings.length > limit) {
-                const nextItem = popularListings.pop();
-                nextCursor = nextItem?.id;
-            }
+    //         let nextCursor: typeof cursor | undefined = undefined;
+    //         if (popularListings.length > limit) {
+    //             const nextItem = popularListings.pop();
+    //             nextCursor = nextItem?.id;
+    //         }
 
-            return {
-                popularListings,
-                nextCursor,
-            };
-        }),
+    //         return {
+    //             popularListings,
+    //             nextCursor,
+    //         };
+    //     }),
     create: protectedProcedure
         .input(
             z.object({
@@ -867,7 +879,7 @@ export const listingRouter = createTRPCRouter({
                                     ? "LISTINGPREVIEW"
                                     : "LISTING";
 
-                            return ctx.prisma.images.create({
+                            return ctx.db.images.create({
                                 data: {
                                     link: image.link,
                                     resourceType: imageType,

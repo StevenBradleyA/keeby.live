@@ -166,6 +166,7 @@ export default function ListingPageImage({ images }: ListingPageImageProps) {
                         <div className="absolute left-1/2 -translate-x-1/2 bottom-3 px-4 py-2 bg-darkGray/80 rounded-3xl flex items-center gap-2">
                             {images.map((image, i) => (
                                 <button
+                                    key={i}
                                     className={`hover:opacity-70 ease-in ${i === listingPageImageIndex ? "" : "opacity-50"}`}
                                     onClick={() => setListingPageImageIndex(i)}
                                 >

@@ -1,24 +1,27 @@
-'use client'
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import defaultProfile from "@public/Images/defaultProfile.png";
-import type { Images, Listing } from "@prisma/client";
 import { useState } from "react";
 import ModalDialog from "~/app/_components/Context/Modal";
-import CreateTransaction from "../../../../Transactions/Create";
-import CreateOffer from "../../../../Offers/Create";
+import CreateTransaction from "../../../Transactions/Create";
+import CreateOffer from "../../../Offers/Create";
 import SignInModal from "~/app/_components/Modal/signInModal";
 import { useSession } from "next-auth/react";
 import DisplayStarRating from "~/app/_components/Reviews/Star/displayStarRating";
+import type { Images, Listing } from "@prisma/client";
+import type { Session } from "next-auth";
 
-interface DisplayListingPageProps {
-    listing: ListingWithImagesAndCount;
+interface BuyListingButtonProps {
+    listing: EachListing;
+    session: Session | null;
 }
 
-interface ListingWithImagesAndCount extends Listing {
+interface EachListing extends Listing {
     images: Images[];
     _count: {
         comments: number;
+        favorites: number;
     };
     seller: {
         id: string;
@@ -26,13 +29,15 @@ interface ListingWithImagesAndCount extends Listing {
         selectedTag: string | null;
         profile: string | null;
         avgRating?: number | null;
-        totalRatings?: number | null;
     };
+    isFavorited?: boolean;
+    favoriteId?: string;
 }
 
-export default function SellerListingCard({
+export default function BuyListingButtons({
     listing,
-}: DisplayListingPageProps) {
+    session,
+}: BuyListingButtonProps) {
     const { data: sessionData } = useSession();
     const [isBuyModalOpen, setIsBuyModalOpen] = useState<boolean>(false);
     const [isOfferModalOpen, setIsOfferModalOpen] = useState<boolean>(false);
