@@ -3,7 +3,6 @@
 import { api } from "~/trpc/react";
 import Image from "next/image";
 import defaultProfile from "@public/Images/defaultProfile.png";
-import DisplayStarRating from "~/app/_components/Reviews/Star/displayStarRating";
 import EachPublicProfileReview from "~/app/_components/Reviews/Display/publicProfileReviews";
 import CustomProgressPie from "./customProgressPie";
 import unranked from "@public/KeebType/unranked.png";
@@ -299,9 +298,9 @@ export default function PublicProfileUserInfo({
                                                 </h2>
                                             </div>
                                         </div>
-                                        <div className="flex justify-center">
+                                        {/* <div className="flex justify-center">
                                             <DisplayStarRating rating={0} />
-                                        </div>
+                                        </div> */}
                                         <div className="mt-2 h-10 overflow-y-auto break-words text-green-500">
                                             ¯\_(ツ)_/¯
                                         </div>

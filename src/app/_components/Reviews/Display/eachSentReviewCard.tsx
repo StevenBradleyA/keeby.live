@@ -9,7 +9,7 @@ import {
     isToday,
     isYesterday,
 } from "date-fns";
-import DisplayStarRating from "../Star/displayStarRating";
+// import DisplayStarRating from "../Star/displayStarRating";
 import { useState } from "react";
 import ModalDialog from "~/app/_components/Context/Modal";
 import UpdateReview from "../Update/updateReview";
@@ -71,12 +71,12 @@ export default function EachSentReviewCard({
                         </p>
                     </div>
                 </div>
-                <div className="mt-1 flex justify-center">
+                {/* <div className="mt-1 flex justify-center">
                     {" "}
                     <DisplayStarRating
                         rating={parseFloat(review.starRating.toFixed(0))}
                     />
-                </div>
+                </div> */}
                 <div className="mt-2 h-16 overflow-y-auto break-words text-mediumGray">
                     {review.text}
                 </div>

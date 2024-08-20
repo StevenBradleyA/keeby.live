@@ -9,7 +9,7 @@ export default function SignInModal() {
                 <h1 className="text-2xl text-green-500">
                     Sign in to use this feature
                 </h1>
-                <Image alt="keebo" src={keebo} className="h-12 w-12" />
+                <Image alt="keebo" src={keebo} className="h-12 w-12 object-contain" />
             </div>
             <div className=" flex justify-center">
                 <button

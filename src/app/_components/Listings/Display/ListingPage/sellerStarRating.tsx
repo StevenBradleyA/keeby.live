@@ -22,10 +22,10 @@ export default function SellerStarRating({
     };
 
     return (
-        <div className="flex flex-col text-sm text-mediumGray">
+        <div className="flex flex-col text-mediumGray pl-3">
             <p>
                 {avgRating && totalRatings
-                    ? `${totalRatings} reviews (${avgRating.toFixed(1)})`
+                    ? `${totalRatings} review${totalRatings === 1 ? "" : "s"} (${avgRating.toFixed(1)}) `
                     : "unreviewed seller"}
             </p>
             <div className="flex gap-1">

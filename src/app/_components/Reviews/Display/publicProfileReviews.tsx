@@ -9,7 +9,7 @@ import {
     isToday,
     isYesterday,
 } from "date-fns";
-import DisplayStarRating from "../Star/displayStarRating";
+// import DisplayStarRating from "../Star/displayStarRating";
 
 interface EachPublicProfileReviewProps {
     review: EachReview;
@@ -64,12 +64,12 @@ export default function EachPublicProfileReview({
                     </p>
                 </div>
             </div>
-            <div className="mt-1 flex justify-center">
+            {/* <div className="mt-1 flex justify-center">
                 {" "}
                 <DisplayStarRating
                     rating={parseFloat(review.starRating.toFixed(0))}
                 />
-            </div>
+            </div> */}
             <div className="mt-2 h-10 overflow-y-auto break-words">
                 {" "}
                 {review.text}

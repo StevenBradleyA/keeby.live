@@ -4,6 +4,8 @@ import type { Session } from "next-auth";
 import { useEffect, useState } from "react";
 import { signIn } from "next-auth/react";
 import { api } from "~/trpc/react";
+import ModalDialog from "~/app/_components/Context/Modal";
+import SignInModal from "~/app/_components/Modal/signInModal";
 
 interface ListingPageFavoriteProps {
     listing: EachListing;
@@ -35,6 +37,7 @@ export default function ListingPageFavorite({
     // state optimistic UI
     const [isFakeFavorited, setIsFakeFavorited] = useState<boolean>(false);
     const [favoriteCount, setFavoriteCount] = useState<number>(0);
+    const [isSignInModalOpen, setIsSignInModalOpen] = useState<boolean>(false);
 
     // server interactions
     const { mutate: favorite } = api.favorite.createListingFavorite.useMutation(
@@ -87,6 +90,12 @@ export default function ListingPageFavorite({
             return favorite(data);
         }
     };
+    const openSignInModal = () => {
+        setIsSignInModalOpen(true);
+    };
+    const closeSignInModal = () => {
+        setIsSignInModalOpen(false);
+    };
 
     useEffect(() => {
         setIsFakeFavorited(listing.isFavorited ?? false);
@@ -97,7 +106,7 @@ export default function ListingPageFavorite({
         <>
             {session === null && (
                 <button
-                    onClick={() => void signIn()}
+                    onClick={openSignInModal}
                     className="flex gap-1 items-center absolute right-3 bottom-3"
                 >
                     <svg
@@ -166,6 +175,9 @@ export default function ListingPageFavorite({
                 </button>
             )}
             {session === null && <button></button>}
+            <ModalDialog isOpen={isSignInModalOpen} onClose={closeSignInModal}>
+                <SignInModal />
+            </ModalDialog>
         </>
     );
 }

@@ -89,7 +89,7 @@ export default function EachListingCardPreview({
                             </div>
                         </div>
                         <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 text-green-500 bg-black/50 py-2 rounded-md keebshop-preview-arrow z-30 px-4 text-sm">
-                            {`Continue`}
+                            Continue
                         </div>
                     </div>
                 )}

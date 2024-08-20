@@ -12,6 +12,7 @@ import Image from "next/image";
 import defaultProfile from "@public/Images/defaultProfile.png";
 import { formatDistance } from "date-fns";
 import SellerStarRating from "./sellerStarRating";
+import Link from "next/link";
 
 interface DisplayListingPageProps {
     listing: ListingWithImagesAndCount;
@@ -48,9 +49,6 @@ export default async function DisplayListingPage({
     const now = new Date();
     const timeAgo = formatDistance(postDate, now, { addSuffix: true });
 
-    // todo lets move seller card here then just component for modals...
-    // also lets add comment count .. time listed... favorite count ... yeah know info that is useful. plus a redesign would look real noice...
-    console.log(listing);
     return (
         <>
             <div className="flex flex-col text-white mt-40 w-full">
@@ -78,31 +76,60 @@ export default async function DisplayListingPage({
                                 session={session}
                             />
                         </div>
-                        <div className="h-full w-full overflow-hidden rounded-xl bg-darkGray shadow-lg flex justify-between p-10">
-                            <div className="flex gap-5">
-                                <Image
-                                    alt="seller profile"
-                                    className="w-28 h-28 rounded-xl object-cover"
-                                    src={
-                                        listing.seller.profile
-                                            ? listing.seller.profile
-                                            : defaultProfile
-                                    }
-                                    width={400}
-                                    height={400}
-                                    priority
-                                />
-                                <div className="flex flex-col  text-keebyPurple">
-                                    <p>Price: ${listing.price}</p>
-                                    <p>{listing.seller.username}</p>
-                                </div>
-                                <div>{timeAgo}</div>
+                        <div className="h-full w-full overflow-hidden rounded-xl bg-darkGray shadow-lg flex justify-between p-3 desktop:p-10 text-sm">
+                            <Image
+                                alt="seller profile"
+                                className="w-28 h-28 rounded-xl object-cover"
+                                src={
+                                    listing.seller.profile
+                                        ? listing.seller.profile
+                                        : defaultProfile
+                                }
+                                width={400}
+                                height={400}
+                                priority
+                            />
 
-                                <div className="bg-mediumGray px-4 py-2 rounded-3xl ">
-                                    <div className="flex gap-1">
+                            <div className="flex flex-col  w-full justify-between pl-5">
+                                <div className="flex items-start gap-1 pl-3">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="w-4 h-4 text-mediumGray"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                    >
+                                        <path
+                                            fillRule="evenodd"
+                                            clipRule="evenodd"
+                                            d="M6 8C6 4.68629 8.68629 2 12 2C15.3137 2 18 4.68629 18 8C18 11.3137 15.3137 14 12 14C8.68629 14 6 11.3137 6 8Z"
+                                            fill="currentColor"
+                                        />
+                                        <path
+                                            fill-rule="evenodd"
+                                            clip-rule="evenodd"
+                                            d="M5.43094 16.9025C7.05587 16.2213 9.2233 16 12 16C14.771 16 16.9351 16.2204 18.5586 16.8981C20.3012 17.6255 21.3708 18.8613 21.941 20.6587C22.1528 21.3267 21.6518 22 20.9592 22H3.03459C2.34482 22 1.84679 21.3297 2.0569 20.6654C2.62537 18.8681 3.69119 17.6318 5.43094 16.9025Z"
+                                            fill="currentColor"
+                                        />
+                                    </svg>
+                                    <Link
+                                        aria-label="check out this user's profile"
+                                        href={`/profile/public/${listing.seller.username}`}
+                                        className="text-keebyPurple hover:opacity-75 ease-in"
+                                    >
+                                        {listing.seller.username}
+                                    </Link>
+                                </div>
+
+                                <SellerStarRating
+                                    avgRating={listing.seller.avgRating}
+                                    totalRatings={listing.seller.totalRatings}
+                                />
+
+                                <div className="bg-mediumGray  mt-2 px-4 py-2 rounded-xl flex gap-3 items-center self-start text-green-500 ">
+                                    <div className="flex gap-1 items-center">
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
-                                            className="w-4 h-4  "
+                                            className="w-4 h-4"
                                             viewBox="0 0 24 24"
                                             fill="none"
                                         >
@@ -119,32 +146,39 @@ export default async function DisplayListingPage({
 
                                         <p>{listing._count.favorites}</p>
                                     </div>
-                                    <div className="flex gap-1">
+                                    <div className="flex gap-1 items-center">
                                         <svg
-                                            className="w-4 "
+                                            className="w-4 h-4"
                                             viewBox="0 0 24 24"
-                                            fill="rgb(34 197 94)"
+                                            fill="currentColor"
                                         >
                                             <path d="M5.25,18 C3.45507456,18 2,16.5449254 2,14.75 L2,6.25 C2,4.45507456 3.45507456,3 5.25,3 L18.75,3 C20.5449254,3 22,4.45507456 22,6.25 L22,14.75 C22,16.5449254 20.5449254,18 18.75,18 L13.0124851,18 L7.99868152,21.7506795 C7.44585139,22.1641649 6.66249789,22.0512036 6.2490125,21.4983735 C6.08735764,21.2822409 6,21.0195912 6,20.7499063 L5.99921427,18 L5.25,18 Z M12.5135149,16.5 L18.75,16.5 C19.7164983,16.5 20.5,15.7164983 20.5,14.75 L20.5,6.25 C20.5,5.28350169 19.7164983,4.5 18.75,4.5 L5.25,4.5 C4.28350169,4.5 3.5,5.28350169 3.5,6.25 L3.5,14.75 C3.5,15.7164983 4.28350169,16.5 5.25,16.5 L7.49878573,16.5 L7.49899997,17.2497857 L7.49985739,20.2505702 L12.5135149,16.5 Z"></path>
                                         </svg>
 
                                         <p>{listing._count.comments}</p>
                                     </div>
+                                    <p>{timeAgo}</p>
                                 </div>
                             </div>
+                            <div className="flex flex-col  items-end w-full justify-between">
+                                <BuyListingButtons
+                                    listing={listing}
+                                    session={session}
+                                />
 
-                            <SellerStarRating
-                                // avgRating={listing.seller.avgRating}
-                                // totalRatings={listing.seller.totalRatings}
-                                avgRating={2.2}
-                                totalRatings={12}
-                            />
+                                <div className="text-keebyPurple flex text-3xl gap-1 items-end">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="w-10 h-10"
+                                        viewBox="-2 0 19 19"
+                                        fill="currentColor"
+                                    >
+                                        <path d="m13.842 11.52-4.389 4.388a1.112 1.112 0 0 1-1.567 0l-6.28-6.28a3.027 3.027 0 0 1-.771-1.892l.043-3.681A1.141 1.141 0 0 1 2 2.935L5.67 2.9a3.04 3.04 0 0 1 1.892.773l6.28 6.28a1.112 1.112 0 0 1 0 1.567zM3.826 5.133a.792.792 0 1 0-.792.792.792.792 0 0 0 .792-.792zm6.594 7.348a.554.554 0 0 0 0-.784l-.401-.401a2.53 2.53 0 0 0 .35-.83 1.565 1.565 0 0 0-.397-1.503 1.59 1.59 0 0 0-1.017-.46 2.14 2.14 0 0 0-.75.085h-.002a2.444 2.444 0 0 0-.59.277H7.61a2.677 2.677 0 0 0-.438.357 2.043 2.043 0 0 1-.259.22 1.29 1.29 0 0 1-.329.17h-.002a.835.835 0 0 1-.338.038h-.002a.53.53 0 0 1-.314-.136.539.539 0 0 1-.106-.534 1.54 1.54 0 0 1 .41-.71 1.632 1.632 0 0 1 .23-.165l.03-.019a1.783 1.783 0 0 1 .322-.155.942.942 0 0 1 .325-.06.554.554 0 0 0 0-1.108h-.001a2.058 2.058 0 0 0-.717.132 2.846 2.846 0 0 0-.529.26l-.01.006-.398-.4a.554.554 0 1 0-.784.785l.388.387a2.513 2.513 0 0 0-.347.803 1.644 1.644 0 0 0 .404 1.561 1.622 1.622 0 0 0 .983.456 1.922 1.922 0 0 0 .805-.089 2.372 2.372 0 0 0 .624-.319 3.142 3.142 0 0 0 .398-.339 1.569 1.569 0 0 1 .256-.208 1.381 1.381 0 0 1 .32-.151 1.023 1.023 0 0 1 .348-.038.485.485 0 0 1 .308.139c.05.049.165.165.097.488a1.558 1.558 0 0 1-.413.729 2.476 2.476 0 0 1-.28.219 1.727 1.727 0 0 1-.306.157.687.687 0 0 1-.32.042.554.554 0 1 0-.08 1.106c.052.004.103.005.152.005a1.723 1.723 0 0 0 .685-.134 2.678 2.678 0 0 0 .507-.27l.01-.007.397.398a.555.555 0 0 0 .783 0z" />
+                                    </svg>
 
-                            {/* star ratings for seller avg number of reviews should also handle Null cases */}
-                            {/* <BuyListingButtons
-                                listing={listing}
-                                session={session}
-                            /> */}
+                                    <p>${listing.price}</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div className="flex h-full w-1/4 flex-col items-center gap-5 laptop:gap-10  flex-shrink-0  ">
@@ -199,18 +233,18 @@ export default async function DisplayListingPage({
                     </div>
                 </div>
 
-                <div className="flex w-full ">
-                    <div className="flex w-3/4 flex-col px-5 ">
+                <div className="flex w-full px-3 laptop:px-5 desktop:px-16 gap-10 mt-10 ">
+                    <div className="flex w-full laptop:w-3/4 flex-col ">
                         {listing.soundTest && (
-                            <div className="mt-10 flex h-[35rem] w-full  ">
+                            <div className="mb-10 flex h-[35rem] w-full  ">
                                 <ListingSoundTest
                                     soundTest={listing.soundTest}
                                 />
                             </div>
                         )}
 
-                        <div className="mt-10 w-full">
-                            <div className=" mb-1 flex gap-1">
+                        <div className=" w-full">
+                            <div className=" mb-1 flex gap-1 items-center">
                                 <h1 className="text-lg text-green-500">
                                     {`${
                                         listing._count.comments
@@ -223,7 +257,7 @@ export default async function DisplayListingPage({
                                     }`}
                                 </h1>
                                 <svg
-                                    className="w-5"
+                                    className="w-5 h-5"
                                     viewBox="0 0 24 24"
                                     fill="rgb(34 197 94)"
                                 >
@@ -242,17 +276,18 @@ export default async function DisplayListingPage({
                             />
                         </div>
                     </div>
-                    {/* <div className="mt-10 w-1/4 px-5 ">
-                    <div className="flex flex-col items-center overflow-hidden rounded-xl bg-darkGray p-5">
-                        <ListingPagePreviews />
-                    </div>
-                </div> */}
+                    <div className="w-1/4 bg-darkGray rounded-xl h-[30rem] hidden laptop:block flex-shrink-0"></div>
                 </div>
             </div>
 
-            {/* <div className="mt-60 w-full">
+            {/* <div className="mt-10 w-1/4 px-5 ">
+                    <div className="flex flex-col items-center overflow-hidden rounded-xl bg-darkGray p-5">
+                    <ListingPagePreviews />
+                    </div>
+                    </div> */}
+            <div className="mt-60 w-full">
                 <Footer />
-            </div> */}
+            </div>
         </>
     );
 }
