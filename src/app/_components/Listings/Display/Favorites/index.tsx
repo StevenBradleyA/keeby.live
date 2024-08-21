@@ -1,5 +1,7 @@
+"use client";
 import { api } from "~/trpc/react";
 import EachFavoriteListingCard from "./eachFavoriteListing";
+import LoadingSpinner from "~/app/_components/Loading";
 
 interface DisplayFavoriteListings {
     userId: string;
@@ -8,16 +10,26 @@ interface DisplayFavoriteListings {
 export default function DisplayFavoriteListings({
     userId,
 }: DisplayFavoriteListings) {
-    const { data: favoriteListings } =
-        api.favorite.getAllFavoriteListings.useQuery({
+    // server
+    const { data: favoriteListings, isLoading } =
+        api.listing.getAllFavoritesByUserId.useQuery({
             userId,
         });
 
+    // condition checks
+    if (isLoading) {
+        return (
+            <div className="mt-10 ml-10 text-green-500">
+                <LoadingSpinner size="20px" />
+            </div>
+        );
+    }
+
     return (
         <div className="mt-5 w-full font-poppins">
-            <h1>
+            <h2>
                 Favorites ( {favoriteListings ? favoriteListings.length : 0} )
-            </h1>
+            </h2>
             <div className="flex w-full flex-wrap gap-10 ">
                 {favoriteListings &&
                     favoriteListings.length > 0 &&

@@ -16,14 +16,13 @@ import computerType from "@public/Profile/computer-type.png";
 import hacktime from "@public/Vectors/hacktime.png";
 import ManageListings from "~/app/_components/Listings/ManageListings";
 import ManagePosts from "~/app/_components/Posts/ManagePosts";
-import DisplayFavoriteListings from "~/app/_components/Listings/Favorites";
+
 import DisplayProfileKeebs from "~/app/_components/Profile/Keeb/DisplayKeebs";
 import DisplayAllGameStatsCheck from "~/app/_components/Games/GameStats/displayAllGameStatsCheck";
 import UpdateUserTag from "~/app/_components/Profile/User/Update/Tag";
 import ModalDialog from "~/app/_components/Context/Modal";
 import UpdateProfile from "~/app/_components/Profile/User/Update/updateProfile";
 import HackermanTypeBinary from "~/app/_components/Profile/Hackerman/hackermanTypeBinary";
-import MatrixRain from "~/app/_components/Profile/Hackerman/matrix";
 import AsciiArt from "~/app/_components/Profile/ThreeScenes/asciiArt";
 import DisplayOffers from "~/app/_components/Offers/Display/displayOffers";
 import DisplayTransactions from "~/app/_components/Transactions/Display";
@@ -36,6 +35,7 @@ import { useMobile } from "../_components/Context/Mobile";
 import TitleScripts from "../_components/TitleScripts";
 import DisplayFavoritePosts from "../_components/Posts/Display/DisplayFavoritePosts";
 import BinaryRain from "../_components/Matrix/binaryRain";
+import DisplayFavoriteListings from "../_components/Listings/Display/Favorites";
 
 export default function UserProfile() {
     // mdn digest() -- might be useful for us here
@@ -94,8 +94,8 @@ export default function UserProfile() {
 
     if (status === "loading") {
         return (
-            <div className="mt-48">
-                <LoadingSpinner size="40px" />
+            <div className="mt-48 text-green-500">
+                <LoadingSpinner size="20px" />
             </div>
         );
     }
@@ -350,10 +350,10 @@ export default function UserProfile() {
                                                 ? sessionData.user.profile
                                                 : defaultProfile
                                         }
-                                        width={800}
-                                        height={800}
+                                        width={400}
+                                        height={400}
                                         priority={true}
-                                        className="h-full w-full scale-150 object-contain hover:opacity-70"
+                                        className="h-full w-full hover:opacity-70"
                                     />
                                 </div>
                             </div>
@@ -1038,13 +1038,13 @@ export default function UserProfile() {
                         </div>
                     )}
 
-                    {/* {toggle === "KEEBSHOP" &&
+                    {toggle === "KEEBSHOP" &&
                         keebShopCategory === "FAVORITES" && (
                             <DisplayFavoriteListings
                                 userId={sessionData.user.id}
                             />
                         )}
-                    {toggle === "KEEBSHOP" &&
+                    {/* {toggle === "KEEBSHOP" &&
                         keebShopCategory === "LISTINGS" && (
                             <ManageListings userId={sessionData.user.id} />
                         )}

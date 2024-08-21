@@ -103,12 +103,9 @@ export const transactionRouter = createTRPCRouter({
         .input(
             z.object({
                 buyerId: z.string(),
-                paypalOrderId: z.string(),
-                transactionId: z.string(),
-                listingId: z.string(),
-                payed: z.string(),
-                agreedPrice: z.number(),
                 sellerId: z.string(),
+                listingId: z.string(),
+                agreedPrice: z.number(),
             }),
         )
         .mutation(async ({ input, ctx }) => {
@@ -124,89 +121,87 @@ export const transactionRouter = createTRPCRouter({
                     "You don't have the right, O you don't have the right",
                 );
             }
-
-            let isAvailable = false;
-
             const listingCheck = await ctx.db.listing.findUnique({
                 where: {
                     id: listingId,
                 },
             });
 
-            if (listingCheck?.status === "SOLD") {
-                return { isAvailable: false };
+            if (!listingCheck) {
+                throw new Error("Cannot find listing");
+            }
+            if (listingCheck.status === "SOLD") {
+                throw new Error("Listing is already sold");
             }
 
             const createTransaction = await ctx.db.listingTransaction.create({
                 data: {
-                    status: "PAYED",
-                    payed: parseFloat(payed) * 100,
                     agreedPrice: agreedPrice,
                     listingId: listingId,
                     buyerId: buyerId,
-                    transactionId: transactionId,
-                    paypalOrderId: paypalOrderId,
                 },
             });
-            if (createTransaction) {
-                const seller = await ctx.db.user.findUnique({
-                    where: {
-                        id: sellerId,
-                    },
-                });
-                const buyer = await ctx.db.user.findUnique({
-                    where: {
-                        id: buyerId,
-                    },
-                });
 
-                if (seller && buyer) {
-                    await ctx.db.message.create({
-                        data: {
-                            listingTransactionId: createTransaction.id,
-                            userId: buyerId,
-                            recipientId: sellerId,
-                            text: `Hey ${
-                                seller.username ? seller.username : ""
-                            }, I'm ready to purchase your keyboard for the agreed price of $${(
-                                agreedPrice / 100
-                            ).toFixed(2)} via paypal!`,
-                        },
-                    });
-
-                    await ctx.db.notification.create({
-                        data: {
-                            userId: sellerId,
-                            text: `You received a new message!`,
-                            type: "MESSAGE",
-                            status: "UNREAD",
-                        },
-                    });
-                    // todo RESEND send email confirmations here...
-                }
-
-                await ctx.db.listing.update({
-                    where: {
-                        id: listingId,
-                    },
+            if (!createTransaction) {
+                throw new Error("Cannot find transaction");
+            }
+            const seller = await ctx.db.user.findUnique({
+                where: {
+                    id: sellerId,
+                },
+            });
+            const buyer = await ctx.db.user.findUnique({
+                where: {
+                    id: buyerId,
+                },
+            });
+            if (seller && buyer) {
+                await ctx.db.message.create({
                     data: {
-                        status: "SOLD",
-                        buyerId: buyerId,
+                        listingTransactionId: createTransaction.id,
+                        userId: buyerId,
+                        recipientId: sellerId,
+                        text: `Hey ${
+                            seller.username ? seller.username : ""
+                        }, I'm ready to purchase your keyboard for the agreed price of $${(
+                            agreedPrice / 100
+                        ).toFixed(2)} via paypal!`,
                     },
                 });
 
-                await ctx.db.listingOffer.deleteMany({
-                    where: {
-                        id: listingId,
+                await ctx.db.notification.create({
+                    data: {
+                        userId: sellerId,
+                        text: `You received a new message!`,
+                        type: "MESSAGE",
+                        status: "UNREAD",
                     },
                 });
-
-                isAvailable = true;
-
-                return { isAvailable, createTransaction };
             }
 
-            return { isAvailable };
+            // todo RESEND send email confirmations here...
+
+            await ctx.db.listing.update({
+                where: {
+                    id: listingId,
+                },
+                data: {
+                    status: "SOLD",
+                    buyerId: buyerId,
+                },
+            });
+
+            // await ctx.db.listingOffer.deleteMany({
+            //     where: {
+            //         id: listingId,
+            //     },
+            // });
+
+            // isAvailable = true;
+
+            // return { isAvailable, createTransaction };
+
+            // return { isAvailable };
         }),
     // create: protectedProcedure
     //     .input(

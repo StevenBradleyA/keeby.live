@@ -51,6 +51,15 @@ interface PreviewListing extends Listing {
     };
 }
 
+interface PreviewFavoriteListings extends Listing {
+    _count: {
+        comments: number;
+        favorites: number;
+    };
+    images: Images[];
+    favorites: { id: string }[];
+}
+
 interface ListingPreviewImage {
     id: string;
     link: string;
@@ -158,6 +167,48 @@ export const listingRouter = createTRPCRouter({
                     (image) => image.resourceType === "LISTINGPREVIEW",
                 ),
             }));
+        }),
+    getAllFavoritesByUserId: publicProcedure
+        .input(
+            z.object({
+                userId: z.string(),
+            }),
+        )
+        .query(async ({ input, ctx }): Promise<PreviewFavoriteListings[]> => {
+            const { userId } = input;
+
+            const allUserListings = await ctx.db.listing.findMany({
+                where: {
+                    favorites: {
+                        some: {
+                            userId: userId,
+                        },
+                    },
+                },
+                include: {
+                    images: {
+                        where: { resourceType: "LISTINGPREVIEW" },
+                    },
+                    _count: {
+                        select: { comments: true, favorites: true },
+                    },
+                    favorites: {
+                        where: {
+                            userId: userId,
+                        },
+                        select: {
+                            id: true,
+                        },
+                    },
+                },
+                // orderBy: {
+                //     favorites: {
+                //         createdAt: "desc",
+                //     },
+                // },
+            });
+
+            return allUserListings;
         }),
 
     getOneById: publicProcedure

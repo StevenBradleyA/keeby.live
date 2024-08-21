@@ -71,6 +71,8 @@ model Favorites {
     userId    String
     listingId String?
     postId    String?
+    createdAt DateTime @default(now())
+
 
     user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
     listing Listing? @relation(fields: [listingId], references: [id], onDelete: Cascade)
@@ -186,10 +188,10 @@ model ListingTransaction {
     payed       Int
     agreedPrice Int
 
-    status        String
-    // PAYED REFUNDED
-    paypalOrderId String
-    transactionId String
+    // status        String
+    // PENDING SOLD
+    // paypalOrderId String
+    // transactionId String
     createdAt     DateTime @default(now())
     updatedAt     DateTime @updatedAt
     buyerId       String

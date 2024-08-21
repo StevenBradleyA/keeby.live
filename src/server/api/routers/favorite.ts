@@ -69,43 +69,43 @@ export const favoriteRouter = createTRPCRouter({
             return isFavorited;
         }),
 
-    getAllFavoriteListings: publicProcedure
-        .input(
-            z.object({
-                userId: z.string(),
-            }),
-        )
-        .query(async ({ ctx, input }) => {
-            return ctx.prisma.favorites
-                .findMany({
-                    where: {
-                        userId: input.userId,
-                        listingId: { not: null },
-                        postId: null,
-                    },
-                    select: {
-                        listing: {
-                            include: {
-                                _count: {
-                                    select: { comments: true },
-                                },
-                                images: {
-                                    where: { resourceType: "LISTINGPREVIEW" },
-                                    select: { id: true, link: true },
-                                },
-                            },
-                        },
-                    },
-                })
-                .then((favorites) => {
-                    if (favorites.length === 0) {
-                        return null;
-                    }
-                    return favorites.map(
-                        (favorite) => favorite.listing as ExtendedListing,
-                    );
-                });
-        }),
+    // getAllFavoriteListings: publicProcedure
+    //     .input(
+    //         z.object({
+    //             userId: z.string(),
+    //         }),
+    //     )
+    //     .query(async ({ ctx, input }) => {
+    //         return ctx.prisma.favorites
+    //             .findMany({
+    //                 where: {
+    //                     userId: input.userId,
+    //                     listingId: { not: null },
+    //                     postId: null,
+    //                 },
+    //                 select: {
+    //                     listing: {
+    //                         include: {
+    //                             _count: {
+    //                                 select: { comments: true },
+    //                             },
+    //                             images: {
+    //                                 where: { resourceType: "LISTINGPREVIEW" },
+    //                                 select: { id: true, link: true },
+    //                             },
+    //                         },
+    //                     },
+    //                 },
+    //             })
+    //             .then((favorites) => {
+    //                 if (favorites.length === 0) {
+    //                     return null;
+    //                 }
+    //                 return favorites.map(
+    //                     (favorite) => favorite.listing as ExtendedListing,
+    //                 );
+    //             });
+    //     }),
     getAllFavoritePosts: publicProcedure
         .input(
             z.object({
