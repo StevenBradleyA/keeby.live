@@ -33,7 +33,7 @@ import DisplayProfileReviews from "~/app/_components/Reviews/Display/displayProf
 import Footer from "../_components/Footer/footer";
 import { useMobile } from "../_components/Context/Mobile";
 import TitleScripts from "../_components/TitleScripts";
-import DisplayFavoritePosts from "../_components/Posts/Display/DisplayFavoritePosts";
+import DisplayFavoritePosts from "../_components/Posts/Display/Favorites";
 import BinaryRain from "../_components/Matrix/binaryRain";
 import DisplayFavoriteListings from "../_components/Listings/Display/Favorites";
 
@@ -1044,10 +1044,10 @@ export default function UserProfile() {
                                 userId={sessionData.user.id}
                             />
                         )}
-                    {toggle === "KEEBSHARE" &&
+                    {/* {toggle === "KEEBSHARE" &&
                         keebShareCategory === "POSTS" && (
                             <ManagePosts userId={sessionData.user.id} />
-                        )}
+                        )} */}
 
                     {toggle === "KEEBTYPE" && keebTypeCategory === "STATS" && (
                         <DisplayAllGameStatsCheck

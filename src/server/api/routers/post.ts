@@ -393,6 +393,111 @@ export const postRouter = createTRPCRouter({
             }
         }),
 
+    getAllFavoritePreviewPosts: publicProcedure
+        .input(
+            z.object({
+                userId: z.string(),
+            }),
+        )
+        .query(async ({ ctx, input }) => {
+            const { userId } = input;
+
+            const limit = 5;
+
+            const posts: PostWithCount[] = await ctx.db.post.findMany({
+                where: {
+                    favorites: {
+                        some: {
+                            userId: userId,
+                        },
+                    },
+                },
+                include: {
+                    _count: {
+                        select: {
+                            comments: true,
+                            postLikes: true,
+                            favorites: true,
+                        },
+                    },
+                    images: {
+                        where: {
+                            OR: [
+                                { resourceType: "POSTPREVIEW" },
+                                { resourceType: "POST" },
+                            ],
+                        },
+                    },
+                    user: {
+                        select: {
+                            id: true,
+                            profile: true,
+                            username: true,
+                        },
+                    },
+                },
+                orderBy: { createdAt: "desc" },
+                take: limit,
+            });
+
+            // we need to sort preview images to be first
+            posts.forEach((post) => {
+                post.images.sort((a, b) => {
+                    if (
+                        a.resourceType === "POSTPREVIEW" &&
+                        b.resourceType !== "POSTPREVIEW"
+                    ) {
+                        return -1;
+                    } else if (
+                        a.resourceType !== "POSTPREVIEW" &&
+                        b.resourceType === "POSTPREVIEW"
+                    ) {
+                        return 1;
+                    }
+                    return 0;
+                });
+            });
+
+            const likesMap = new Map(
+                await ctx.db.postLike
+                    .findMany({
+                        where: {
+                            userId: userId,
+                            postId: { in: posts.map((post) => post.id) },
+                        },
+                        select: { postId: true, id: true },
+                    })
+                    .then((results) =>
+                        results.map((result) => [result.postId, result.id]),
+                    ),
+            );
+
+            const favoritesMap = new Map(
+                await ctx.db.favorites
+                    .findMany({
+                        where: {
+                            userId: userId,
+                            postId: { in: posts.map((post) => post.id) },
+                        },
+                        select: { postId: true, id: true },
+                    })
+                    .then((results) =>
+                        results.map((result) => [result.postId, result.id]),
+                    ),
+            );
+
+            posts.forEach((post) => {
+                post.isLiked = likesMap.has(post.id);
+                post.likeId = likesMap.get(post.id);
+                post.isFavorited = favoritesMap.has(post.id);
+                post.favoriteId = favoritesMap.get(post.id);
+            });
+
+            return {
+                posts,
+            };
+        }),
+
     getAllNewPreviewPosts: publicProcedure
         .input(
             z.object({

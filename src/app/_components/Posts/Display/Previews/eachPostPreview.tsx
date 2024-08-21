@@ -1,15 +1,17 @@
 import type { Images } from "@prisma/client";
 import defaultProfile from "@public/Images/defaultProfile.png";
-import { getServerAuthSession } from "~/server/auth";
+// import { getServerAuthSession } from "~/server/auth";
 import Link from "next/link";
 import Image from "next/image";
 import keebo from "@public/Profile/keebo.png";
 import EachPostLike from "../eachPostLike";
 import EachPostFavorite from "../eachPostFavorite";
 import EachPostImage from "../eachPostImage";
+import type { Session } from "next-auth";
 
 interface EachPostPreviewProps {
     post: EachPost;
+    session: Session | null;
 }
 
 interface EachPost {
@@ -36,8 +38,10 @@ interface Count {
     favorites: number;
 }
 
-export default async function EachPostPreview({ post }: EachPostPreviewProps) {
-    const session = await getServerAuthSession();
+export default function EachPostPreview({
+    post,
+    session,
+}: EachPostPreviewProps) {
 
     return (
         <div className="w-96 h-72 bg-black/30 rounded-xl flex flex-col p-2 text-sm items-start text-white">
