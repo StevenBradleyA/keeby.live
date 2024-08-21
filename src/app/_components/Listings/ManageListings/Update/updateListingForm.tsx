@@ -6,7 +6,6 @@ import { useEffect, useState, type ChangeEvent } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
 import defaultProfile from "@public/Images/defaultProfile.png";
 import TitleScripts from "~/app/_components/TitleScripts";
 import LoadingSpinner from "~/app/_components/Loading";
@@ -83,7 +82,6 @@ export default function UpdateListingForm({
     closeModal,
 }: UpdateListingFormProps) {
     const utils = api.useUtils();
-    const router = useRouter();
     const { data: session, status } = useSession();
 
     // form state
@@ -93,7 +91,6 @@ export default function UpdateListingForm({
     const [switches, setSwitches] = useState<string>(listing.switches);
     const [title, setTitle] = useState<string>(listing.title);
     const [price, setPrice] = useState<number>(listing.price);
-    // const [preview, setPreview] = useState<number>(0);
     const [preview, setPreview] = useState<{
         source: string;
         index: number;
@@ -262,13 +259,6 @@ export default function UpdateListingForm({
         const maxFileSize = 8 * 1024 * 1024;
         const errorsObj: ErrorsObj = {};
 
-        // if (imageFiles.length > 10) {
-        //     errorsObj.imageExcess = "Cannot provide more than 10 photos";
-        // }
-        // if (imageFiles.length < 5) {
-        //     errorsObj.imageShortage = "Please provide at least 5 photos";
-        // }
-
         const totalImageCount =
             (imageFiles.length ?? 0) +
             (listing.images?.length ?? 0) -
@@ -372,7 +362,10 @@ export default function UpdateListingForm({
         layoutType,
         assemblyType,
         pcbType,
+        activeDeletedImageIds,
+        listing.images,
     ]);
+
     if (status === "loading") {
         return (
             <div className="mt-60 flex justify-center w-full">
@@ -380,7 +373,6 @@ export default function UpdateListingForm({
             </div>
         );
     }
-console.log(preview)
     return (
         <div className="w-[90vw] h-[85vh] flex flex-col items-center overflow-y-auto">
             <div className="flex w-full desktop:w-2/3 items-center">
@@ -807,12 +799,7 @@ console.log(preview)
                                                     setActiveDeletedImageIds(
                                                         newDeletedImageIds,
                                                     );
-                                                    // setPreview({
-                                                    //     source: "prev",
-                                                    //     index: 0,
-                                                    //     id: images[0].id? "": ""
-                                                    // });
-                                                    // Find the first non-deleted image
+
                                                     const remainingImages =
                                                         listing.images.filter(
                                                             (img) =>
@@ -821,7 +808,6 @@ console.log(preview)
                                                                 ),
                                                         );
 
-                                                    // Set preview to the first remaining image or clear it if none left
                                                     if (
                                                         remainingImages.length >
                                                             0 &&
@@ -835,8 +821,12 @@ console.log(preview)
                                                         });
                                                     } else {
                                                         setPreview({
-                                                            source: "",
-                                                            index: 0, // No image left
+                                                            source:
+                                                                imageFiles.length >
+                                                                0
+                                                                    ? "new"
+                                                                    : "",
+                                                            index: 0,
                                                             id: "",
                                                         });
                                                     }
@@ -881,7 +871,7 @@ console.log(preview)
                                                 setPreview({
                                                     source: "new",
                                                     index: 0,
-                                                    id: ''
+                                                    id: "",
                                                 });
                                             }}
                                         >

@@ -205,6 +205,7 @@ export const listingRouter = createTRPCRouter({
                         },
                     },
                 },
+                // todo add this when db is reset
                 // orderBy: {
                 //     favorites: {
                 //         createdAt: "desc",
@@ -214,7 +215,76 @@ export const listingRouter = createTRPCRouter({
 
             return allUserListings;
         }),
+    getAllNewPreviewListings: publicProcedure
+        .input(
+            z.object({
+                userId: z.string().optional(),
+                listingId: z.string().optional(),
+            }),
+        )
+        .query(async ({ ctx, input }) => {
+            const { userId, listingId } = input;
 
+            const limit = 5;
+
+            const listings: PreviewListing[] = await ctx.db.listing.findMany({
+                where: {
+                    id: {
+                        not: listingId,
+                    },
+                },
+                include: {
+                    _count: {
+                        select: {
+                            comments: true,
+                            favorites: true,
+                        },
+                    },
+                    images: {
+                        where: { resourceType: "LISTINGPREVIEW" },
+                    },
+                    seller: {
+                        select: {
+                            id: true,
+                            profile: true,
+                            username: true,
+                        },
+                    },
+                },
+                orderBy: { createdAt: "desc" },
+                take: limit,
+            });
+
+            if (userId) {
+                const favoritesMap = new Map(
+                    await ctx.db.favorites
+                        .findMany({
+                            where: {
+                                userId: userId,
+                                listingId: {
+                                    in: listings.map((listing) => listing.id),
+                                },
+                            },
+                            select: { listingId: true, id: true },
+                        })
+                        .then((results) =>
+                            results.map((result) => [
+                                result.listingId,
+                                result.id,
+                            ]),
+                        ),
+                );
+
+                listings.forEach((listing) => {
+                    listing.isFavorited = favoritesMap.has(listing.id);
+                    listing.favoriteId = favoritesMap.get(listing.id);
+                });
+            }
+
+            return {
+                listings,
+            };
+        }),
     getAllPreviewListings: publicProcedure
         .input(
             z.object({
@@ -991,54 +1061,45 @@ export const listingRouter = createTRPCRouter({
         )
         .mutation(async ({ input, ctx }) => {
             const { id, sellerId } = input;
-
-            const listingCheck = await ctx.db.listing.findUnique({
-                where: { id: id },
-            });
-            if (listingCheck) {
-                if (
-                    listingCheck.status === "SOLD" ||
-                    listingCheck.status === "PENDING"
-                ) {
-                    throw new Error("Listing not active");
-                }
+            if (ctx.session.user.id !== sellerId && !ctx.session.user.isAdmin) {
+                throw new Error(
+                    "You don't have the right, O you don't have the right",
+                );
             }
 
-            if (ctx.session.user.id === sellerId || ctx.session.user.isAdmin) {
-                const images = await ctx.db.images.findMany({
-                    where: {
-                        listingId: id,
-                    },
-                });
+            const images = await ctx.db.images.findMany({
+                where: {
+                    listingId: id,
+                },
+            });
 
-                if (images.length > 0) {
-                    const imageIds = images.map((image) => image.id);
-                    const removeFilePromises = images.map((image) =>
-                        removeFileFromS3(image.link),
+            if (images.length > 0) {
+                const imageIds = images.map((image) => image.id);
+                const removeFilePromises = images.map((image) =>
+                    removeFileFromS3(image.link),
+                );
+                try {
+                    // here we are waiting for all promises and capturing those that are rejected
+                    const results =
+                        await Promise.allSettled(removeFilePromises);
+                    const errors = results.filter(
+                        (result) => result.status === "rejected",
                     );
-                    try {
-                        // here we are waiting for all promises and capturing those that are rejected
-                        const results =
-                            await Promise.allSettled(removeFilePromises);
-                        const errors = results.filter(
-                            (result) => result.status === "rejected",
+
+                    if (errors.length > 0) {
+                        console.error(
+                            "Errors occurred while removing files from S3:",
+                            errors,
                         );
-
-                        if (errors.length > 0) {
-                            console.error(
-                                "Errors occurred while removing files from S3:",
-                                errors,
-                            );
-                        }
-
-                        await ctx.db.images.deleteMany({
-                            where: {
-                                id: { in: imageIds },
-                            },
-                        });
-                    } catch (err) {
-                        console.error("An unexpected error occurred:", err);
                     }
+
+                    await ctx.db.images.deleteMany({
+                        where: {
+                            id: { in: imageIds },
+                        },
+                    });
+                } catch (err) {
+                    console.error("An unexpected error occurred:", err);
                 }
             }
 

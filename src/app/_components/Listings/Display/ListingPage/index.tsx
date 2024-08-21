@@ -13,6 +13,7 @@ import defaultProfile from "@public/Images/defaultProfile.png";
 import { formatDistance } from "date-fns";
 import SellerStarRating from "./sellerStarRating";
 import Link from "next/link";
+import ListingPagePreviews from "./listingPagePreviews";
 
 interface DisplayListingPageProps {
     listing: ListingWithImagesAndCount;
@@ -183,15 +184,7 @@ export default async function DisplayListingPage({
                                 Keeb Specs
                             </h2>
                             <div className="h-full overflow-auto pb-5 mt-2 desktop:pb-0 text-sm laptop:text-base">
-                                <h3 className=" text-mediumGray">
-                                    {listing.title}
-                                </h3>
-                                <p className="flex w-full gap-2 ">
-                                    <span className=" text-mediumGray">{`Keycaps `}</span>
-                                    <span className="break-all">
-                                        {listing.keycaps}
-                                    </span>
-                                </p>
+                        
                                 <p className="flex gap-2">
                                     <span className="text-mediumGray">{`Switches `}</span>
                                     <span className="break-all">
@@ -202,6 +195,18 @@ export default async function DisplayListingPage({
                                     <span className="text-mediumGray">{`Switch type `}</span>
                                     <span className="break-all">
                                         {listing.switchType}
+                                    </span>
+                                </p>
+                                <p className="flex w-full gap-2 ">
+                                    <span className=" text-mediumGray">{`Keycaps `}</span>
+                                    <span className="break-all">
+                                        {listing.keycaps}
+                                    </span>
+                                </p>
+                                <p className="flex w-full gap-2 ">
+                                    <span className=" text-mediumGray">{`Layout `}</span>
+                                    <span className="break-all">
+                                        {listing.layoutType}
                                     </span>
                                 </p>
                                 <p className="flex gap-2">
@@ -272,15 +277,11 @@ export default async function DisplayListingPage({
                             />
                         </div>
                     </div>
-                    <div className="w-1/4 bg-darkGray rounded-xl h-[30rem] hidden laptop:block flex-shrink-0"></div>
+                    <div className="w-1/4 py-10 self-start flex-col items-center justify-center bg-darkGray rounded-xl laptop:flex-col hidden laptop:flex flex-shrink-0 overflow-hidden">
+                        <ListingPagePreviews listingId={listing.id} />
+                    </div>
                 </div>
             </div>
-
-            {/* <div className="mt-10 w-1/4 px-5 ">
-                    <div className="flex flex-col items-center overflow-hidden rounded-xl bg-darkGray p-5">
-                    <ListingPagePreviews />
-                    </div>
-                    </div> */}
 
             <div className="mt-60 w-full">
                 <Footer />
