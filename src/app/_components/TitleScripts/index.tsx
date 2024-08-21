@@ -84,6 +84,21 @@ export default function TitleScripts({ page }: TitleScriptsProps) {
                 }, delay[i]),
             );
         }
+        if (page === "editListing") {
+            const phrases = [
+                "Please Stand By",
+                "Scanning for Thock",
+                "ಠ_ಠ none found",
+                "Edit a Listing",
+            ];
+            const delay = [0, 2000, 4000, 6000, 8000];
+
+            phrases.forEach((phrase, i) =>
+                setTimeout(() => {
+                    setTitle(phrase);
+                }, delay[i]),
+            );
+        }
 
         // "Prove Your Identity - Then Announce, Im In",
         if (page === "login") {

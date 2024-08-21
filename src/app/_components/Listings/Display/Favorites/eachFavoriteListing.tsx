@@ -17,11 +17,6 @@ interface PreviewFavoriteListing extends Listing {
     favorites: { id: string }[];
 }
 
-interface ListingPreviewImage {
-    id: string;
-    link: string;
-}
-
 export default function EachFavoriteListingCard({
     listing,
 }: EachFavoriteListingCardProps) {

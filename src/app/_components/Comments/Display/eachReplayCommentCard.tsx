@@ -6,9 +6,9 @@ import CreateReplyComment from "../Create/CreateReplyComment";
 import { useState } from "react";
 import ToggleCommentLike from "~/app/_components/Posts/Likes/CommentLikes/ToggleLike";
 import ModalDialog from "~/app/_components/Context/Modal";
-import ModifyCommentModal from "../../Context/Modal/editModal";
 import UpdateComment from "../Manage";
 import SignInModal from "~/app/_components/Modal/signInModal";
+import ModalDialogueEdit from "../../Context/Modal/editModal";
 
 interface EachReplyCardProps {
     typeId: string;
@@ -121,7 +121,7 @@ export default function EachReplyCommentCard({
                                 </svg>
                             </button>
                         )}
-                    <ModifyCommentModal
+                    <ModalDialogueEdit
                         isOpen={isModalOpen}
                         onClose={closeModal}
                     >
@@ -131,7 +131,7 @@ export default function EachReplyCommentCard({
                             startingRows={lines.length}
                             parentId={parentId}
                         />
-                    </ModifyCommentModal>
+                    </ModalDialogueEdit>
                 </div>
 
                 {reply.referencedUser ? (

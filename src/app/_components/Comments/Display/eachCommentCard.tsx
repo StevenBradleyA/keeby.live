@@ -3,7 +3,6 @@ import Image from "next/image";
 import defaultProfile from "@public/Images/defaultProfile.png";
 import Link from "next/link";
 import CreateReplyComment from "../Create/CreateReplyComment";
-import ModifyCommentModal from "../../Context/Modal/editModal";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import ToggleCommentLike from "~/app/_components/Posts/Likes/CommentLikes/ToggleLike";
@@ -11,6 +10,7 @@ import DisplayReplyComments from "./displayReplyComments";
 import ModalDialog from "~/app/_components/Context/Modal";
 import UpdateComment from "../Manage";
 import SignInModal from "~/app/_components/Modal/signInModal";
+import ModalDialogueEdit from "../../Context/Modal/editModal";
 
 interface EachCommentCardProps {
     type: string;
@@ -127,7 +127,7 @@ export default function EachCommentCard({
                                     </svg>
                                 </button>
                             )}
-                        <ModifyCommentModal
+                        <ModalDialogueEdit
                             isOpen={isModalOpen}
                             onClose={closeModal}
                         >
@@ -136,7 +136,7 @@ export default function EachCommentCard({
                                 closeModal={closeModal}
                                 startingRows={lines.length}
                             />
-                        </ModifyCommentModal>
+                        </ModalDialogueEdit>
                     </div>
 
                     <div>

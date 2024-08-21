@@ -61,6 +61,7 @@ interface ListingData {
 export default function CreateListing() {
     // todo separate mobile form maybe even tablet cut off its just not gonna work on small screen sizes with this layout...
     // lets make the price input look nicer with an svg and padding...
+    // or make it horizontal on mobile...
 
     const { data: session, status } = useSession();
 
@@ -216,6 +217,7 @@ export default function CreateListing() {
         }
     };
 
+// monitoring
     useEffect(() => {
         const maxFileSize = 8 * 1024 * 1024;
         const errorsObj: ErrorsObj = {};

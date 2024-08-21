@@ -59,6 +59,13 @@ interface PreviewFavoriteListings extends Listing {
     images: Images[];
     favorites: { id: string }[];
 }
+interface SellerListings extends Listing {
+    _count: {
+        comments: number;
+        favorites: number;
+    };
+    images: Images[];
+}
 
 interface ListingPreviewImage {
     id: string;
@@ -146,7 +153,7 @@ export const listingRouter = createTRPCRouter({
                 userId: z.string(),
             }),
         )
-        .query(async ({ input, ctx }): Promise<ExtendedListing[]> => {
+        .query(async ({ input, ctx }): Promise<SellerListings[]> => {
             const { userId } = input;
 
             const allUserListings = await ctx.db.listing.findMany({
@@ -154,19 +161,16 @@ export const listingRouter = createTRPCRouter({
                     sellerId: userId,
                 },
                 include: {
-                    images: true,
+                    images: {
+                        where: { resourceType: "LISTINGPREVIEW" },
+                    },
                     _count: {
-                        select: { comments: true },
+                        select: { comments: true, favorites: true },
                     },
                 },
             });
 
-            return allUserListings.map((listing) => ({
-                ...listing,
-                previewIndex: listing.images.findIndex(
-                    (image) => image.resourceType === "LISTINGPREVIEW",
-                ),
-            }));
+            return allUserListings;
         }),
     getAllFavoritesByUserId: publicProcedure
         .input(
@@ -211,91 +215,6 @@ export const listingRouter = createTRPCRouter({
             return allUserListings;
         }),
 
-    getOneById: publicProcedure
-        .input(
-            z.object({
-                id: z.string(),
-                userId: z.string().optional(),
-            }),
-        )
-        .query(async ({ input, ctx }) => {
-            const { id, userId } = input;
-            const listingWithImages: ListingPage | null =
-                await ctx.db.listing.findUnique({
-                    where: {
-                        id: id,
-                    },
-                    include: {
-                        images: true,
-                        _count: {
-                            select: { comments: true, favorites: true },
-                        },
-                        seller: {
-                            select: {
-                                id: true,
-                                username: true,
-                                profile: true,
-                                selectedTag: true,
-                            },
-                        },
-                        favorites: userId
-                            ? {
-                                  where: { userId: userId },
-                                  select: { id: true },
-                              }
-                            : false,
-                    },
-                });
-            // Add favorite details if a user ID was provided and favorites were fetched
-            if (userId && listingWithImages) {
-                listingWithImages.isFavorited =
-                    listingWithImages.favorites &&
-                    listingWithImages.favorites[0]
-                        ? (listingWithImages.isFavorited = true)
-                        : (listingWithImages.isFavorited = false);
-                listingWithImages.favoriteId =
-                    listingWithImages.favorites &&
-                    listingWithImages.favorites[0]
-                        ? (listingWithImages.favoriteId =
-                              listingWithImages.favorites[0].id)
-                        : (listingWithImages.favoriteId = undefined);
-            }
-
-            if (listingWithImages) {
-                const averageStarRating = await ctx.db.review.aggregate({
-                    where: { sellerId: listingWithImages.seller.id },
-                    _avg: { starRating: true },
-                    _count: {
-                        starRating: true,
-                    },
-                });
-
-                listingWithImages.seller.avgRating =
-                    averageStarRating._avg.starRating;
-
-                listingWithImages.seller.totalRatings =
-                    averageStarRating._count.starRating;
-
-                listingWithImages.images.sort((a, b) => {
-                    if (
-                        a.resourceType === "LISTINGPREVIEW" &&
-                        b.resourceType !== "LISTINGPREVIEW"
-                    ) {
-                        return -1;
-                    } else if (
-                        a.resourceType !== "LISTINGPREVIEW" &&
-                        b.resourceType === "LISTINGPREVIEW"
-                    ) {
-                        return 1;
-                    }
-                    return 0;
-                });
-            }
-
-            // todo we need REVIEWS
-
-            return listingWithImages;
-        }),
     getAllPreviewListings: publicProcedure
         .input(
             z.object({
@@ -721,6 +640,93 @@ export const listingRouter = createTRPCRouter({
     //             nextCursor,
     //         };
     //     }),
+
+    getOneById: publicProcedure
+        .input(
+            z.object({
+                id: z.string(),
+                userId: z.string().optional(),
+            }),
+        )
+        .query(async ({ input, ctx }) => {
+            const { id, userId } = input;
+            const listingWithImages: ListingPage | null =
+                await ctx.db.listing.findUnique({
+                    where: {
+                        id: id,
+                    },
+                    include: {
+                        images: true,
+                        _count: {
+                            select: { comments: true, favorites: true },
+                        },
+                        seller: {
+                            select: {
+                                id: true,
+                                username: true,
+                                profile: true,
+                                selectedTag: true,
+                            },
+                        },
+                        favorites: userId
+                            ? {
+                                  where: { userId: userId },
+                                  select: { id: true },
+                              }
+                            : false,
+                    },
+                });
+            // Add favorite details if a user ID was provided and favorites were fetched
+            if (userId && listingWithImages) {
+                listingWithImages.isFavorited =
+                    listingWithImages.favorites &&
+                    listingWithImages.favorites[0]
+                        ? (listingWithImages.isFavorited = true)
+                        : (listingWithImages.isFavorited = false);
+                listingWithImages.favoriteId =
+                    listingWithImages.favorites &&
+                    listingWithImages.favorites[0]
+                        ? (listingWithImages.favoriteId =
+                              listingWithImages.favorites[0].id)
+                        : (listingWithImages.favoriteId = undefined);
+            }
+
+            if (listingWithImages) {
+                const averageStarRating = await ctx.db.review.aggregate({
+                    where: { sellerId: listingWithImages.seller.id },
+                    _avg: { starRating: true },
+                    _count: {
+                        starRating: true,
+                    },
+                });
+
+                listingWithImages.seller.avgRating =
+                    averageStarRating._avg.starRating;
+
+                listingWithImages.seller.totalRatings =
+                    averageStarRating._count.starRating;
+
+                listingWithImages.images.sort((a, b) => {
+                    if (
+                        a.resourceType === "LISTINGPREVIEW" &&
+                        b.resourceType !== "LISTINGPREVIEW"
+                    ) {
+                        return -1;
+                    } else if (
+                        a.resourceType !== "LISTINGPREVIEW" &&
+                        b.resourceType === "LISTINGPREVIEW"
+                    ) {
+                        return 1;
+                    }
+                    return 0;
+                });
+            }
+
+            // todo we need REVIEWS
+
+            return listingWithImages;
+        }),
+
     create: protectedProcedure
         .input(
             z.object({
@@ -826,7 +832,11 @@ export const listingRouter = createTRPCRouter({
                 pcbType: z.string(),
                 assemblyType: z.string(),
                 soundTest: z.string().optional(),
-                preview: z.object({ source: z.string(), index: z.number() }),
+                preview: z.object({
+                    source: z.string(),
+                    index: z.number(),
+                    id: z.string(),
+                }),
                 deleteImageIds: z.array(z.string()).optional(),
                 sellerId: z.string(),
                 images: z.array(
@@ -855,126 +865,121 @@ export const listingRouter = createTRPCRouter({
                 images,
                 deleteImageIds,
             } = input;
-            if (
-                ctx.session.user.id === sellerId &&
-                ctx.session.user.isModerator
-            ) {
-                const listingCheck = await ctx.db.listing.findUnique({
-                    where: { id: id },
-                });
-                if (listingCheck) {
-                    if (
-                        listingCheck.status === "SOLD" ||
-                        listingCheck.status === "PENDING"
-                    ) {
-                        throw new Error("Listing not active");
-                    }
+
+            if (ctx.session.user.id !== sellerId) {
+                throw new Error("invalid userId");
+            }
+            const listingCheck = await ctx.db.listing.findUnique({
+                where: { id: id },
+            });
+
+            if (listingCheck) {
+                if (
+                    listingCheck.status === "SOLD" ||
+                    listingCheck.status === "PENDING"
+                ) {
+                    throw new Error("Listing not active");
                 }
-
-                const updateData: UpdateData = {
-                    title,
-                    text,
-                    keycaps,
-                    switches,
-                    switchType,
-                    soundType,
-                    layoutType,
-                    pcbType,
-                    assemblyType,
-                    price,
-                };
-                if (soundTest) {
-                    updateData.soundTest = soundTest;
-                }
-
-                const updatedListing = await ctx.db.listing.update({
-                    where: { id: id },
-                    data: updateData,
-                });
-
-                await ctx.db.images.updateMany({
-                    where: {
-                        listingId: id,
-                        resourceType: "LISTINGPREVIEW",
-                    },
-                    data: {
-                        resourceType: "LISTING",
-                    },
-                });
-
-                if (preview.source === "prev") {
-                    const allExistingImages = await ctx.db.images.findMany({
-                        where: {
-                            listingId: id,
-                        },
-                    });
-
-                    const imageToUpdate = allExistingImages[preview.index];
-                    if (imageToUpdate) {
-                        await ctx.db.images.update({
-                            where: {
-                                id: imageToUpdate.id,
-                            },
-                            data: {
-                                resourceType: "LISTINGPREVIEW",
-                            },
-                        });
-                    }
-                }
-
-                if (images && images.length > 0) {
-                    await Promise.all(
-                        images.map(async (image, i) => {
-                            const imageType =
-                                preview.source === "new" && preview.index === i
-                                    ? "LISTINGPREVIEW"
-                                    : "LISTING";
-
-                            return ctx.db.images.create({
-                                data: {
-                                    link: image.link,
-                                    resourceType: imageType,
-                                    listingId: id,
-                                    userId: sellerId,
-                                },
-                            });
-                        }),
-                    );
-                }
-
-                if (deleteImageIds && deleteImageIds.length > 0) {
-                    const images = await ctx.db.images.findMany({
-                        where: {
-                            id: { in: deleteImageIds },
-                        },
-                    });
-                    const removeFilePromises = images.map(async (image) => {
-                        try {
-                            await removeFileFromS3(image.link);
-                        } catch (err) {
-                            console.error(
-                                `Failed to remove file from S3: `,
-                                err,
-                            );
-                            throw new Error(`Failed to remove file from S3: `);
-                        }
-                    });
-
-                    await Promise.all(removeFilePromises);
-
-                    await ctx.db.images.deleteMany({
-                        where: {
-                            id: { in: deleteImageIds },
-                        },
-                    });
-                }
-
-                return {
-                    updatedListing,
-                };
             }
 
-            throw new Error("Invalid userId");
+            const updateData: UpdateData = {
+                title,
+                text,
+                keycaps,
+                switches,
+                switchType,
+                soundType,
+                layoutType,
+                pcbType,
+                assemblyType,
+                price,
+            };
+            if (soundTest) {
+                updateData.soundTest = soundTest;
+            }
+
+            const updatedListing = await ctx.db.listing.update({
+                where: { id: id },
+                data: updateData,
+            });
+
+            if (deleteImageIds && deleteImageIds.length > 0) {
+                const images = await ctx.db.images.findMany({
+                    where: {
+                        id: { in: deleteImageIds },
+                    },
+                });
+                const removeFilePromises = images.map(async (image) => {
+                    try {
+                        await removeFileFromS3(image.link);
+                    } catch (err) {
+                        console.error(`Failed to remove file from S3: `, err);
+                        throw new Error(`Failed to remove file from S3: `);
+                    }
+                });
+
+                await Promise.all(removeFilePromises);
+
+                await ctx.db.images.deleteMany({
+                    where: {
+                        id: { in: deleteImageIds },
+                    },
+                });
+            }
+
+            await ctx.db.images.updateMany({
+                where: {
+                    listingId: id,
+                    resourceType: "LISTINGPREVIEW",
+                },
+                data: {
+                    resourceType: "LISTING",
+                },
+            });
+
+            if (preview.source === "prev") {
+                const newPreview = await ctx.db.images.findFirst({
+                    where: {
+                        id: preview.id,
+                        listingId: id,
+                    },
+                });
+
+                if (newPreview) {
+                    await ctx.db.images.update({
+                        where: {
+                            id: newPreview.id,
+                        },
+                        data: {
+                            resourceType: "LISTINGPREVIEW",
+                        },
+                    });
+                }
+            }
+
+            if (images && images.length > 0) {
+                await Promise.all(
+                    images.map(async (image, i) => {
+                        const imageType =
+                            preview.source === "new" && preview.index === i
+                                ? "LISTINGPREVIEW"
+                                : "LISTING";
+
+                        return ctx.db.images.create({
+                            data: {
+                                link: image.link,
+                                resourceType: imageType,
+                                listingId: id,
+                                userId: sellerId,
+                            },
+                        });
+                    }),
+                );
+            }
+
+            return {
+                updatedListing,
+            };
         }),
 
     delete: protectedProcedure

@@ -49,7 +49,7 @@ export default function UserProfile() {
     const cookies = getCookies();
     const [key, setKey] = useState(0);
     const [isRetro, setIsRetro] = useState<boolean>(false);
-    const [toggle, setToggle] = useState<string>("KEEBSHOP");
+    const [toggle, setToggle] = useState<string>("MARKETPLACE");
     const [scriptIndex, setScriptIndex] = useState<number>(1);
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -465,45 +465,22 @@ export default function UserProfile() {
                                 className=" h-[92%] w-full object-cover"
                             />
 
-                            {toggle === "KEEBSHOP" &&
-                                sessionData.user.isModerator && (
-                                    <div className="flex w-full items-end ">
-                                        <div className="flex w-full items-center justify-between gap-5 ">
-                                            <p className="flex-shrink-0">
-                                                {`INTERNET POINTS ${sessionData.user.internetPoints}`}
-                                            </p>
-                                            <div className="h-0 w-full border-[1px] border-green-500"></div>
-
-                                            <Link
-                                                href="/verify-seller"
-                                                aria-label="Seller Verification"
-                                                className="flex-shrink-0 transition-colors duration-400 ease-custom-cubic hover:text-white"
-                                            >
-                                                VERIFIED SELLER
-                                            </Link>
-                                        </div>
+                            {toggle === "MARKETPLACE" && (
+                                <div className="flex w-full items-end ">
+                                    <div className="flex w-full items-center justify-between gap-5 ">
+                                        <p className="flex-shrink-0">
+                                            {`INTERNET POINTS ${sessionData.user.internetPoints}`}
+                                        </p>
+                                        <div className="h-0 w-full border-[1px] border-green-500"></div>
+                                        {/* change keebo to the marketplace icon later */}
+                                        <Image
+                                            alt="keebo mascot"
+                                            src={keebo}
+                                            className="w-6 h-6 object-contain"
+                                        />
                                     </div>
-                                )}
-
-                            {toggle === "KEEBSHOP" &&
-                                !sessionData.user.isModerator && (
-                                    <div className=" flex w-full items-end">
-                                        <div className="flex w-full items-center gap-5">
-                                            <p className="flex-shrink-0">
-                                                {`INTERNET POINTS ${sessionData.user.internetPoints}`}
-                                            </p>
-                                            <div className="h-0 w-full border-[1px] border-green-500"></div>
-
-                                            <Link
-                                                href="/verify-seller"
-                                                aria-label="/verify-seller"
-                                                className=" flex-shrink-0 text-mediumGray transition-colors duration-400 ease-custom-cubic hover:text-white"
-                                            >
-                                                UNVERIFIED SELLER
-                                            </Link>
-                                        </div>
-                                    </div>
-                                )}
+                                </div>
+                            )}
 
                             {toggle === "KEEBSHARE" && (
                                 <div className=" flex w-full items-end">
@@ -536,15 +513,15 @@ export default function UserProfile() {
                                         width={200}
                                         height={200}
                                         className={`${
-                                            toggle === "KEEBSHOP"
+                                            toggle === "MARKETPLACE"
                                                 ? "png-light-gray"
                                                 : "png-computer"
                                         } w-20 cursor-pointer object-cover`}
-                                        onClick={() => setToggle("KEEBSHOP")}
+                                        onClick={() => setToggle("MARKETPLACE")}
                                     />
                                     <h2
                                         className={`${
-                                            toggle === "KEEBSHOP"
+                                            toggle === "MARKETPLACE"
                                                 ? "text-mediumGray"
                                                 : "text-green-500"
                                         }`}
@@ -612,13 +589,13 @@ export default function UserProfile() {
                                 {toggle}
                             </h1>
                             <div className=" flex w-full items-center gap-5 text-2xl">
-                                {toggle === "KEEBSHOP" && <p> BUY</p>}
+                                {toggle === "MARKETPLACE" && <p> BUY</p>}
                                 {toggle === "KEEBSHARE" && <p> SHARE</p>}
                                 {toggle === "KEEBTYPE" && <p> TYPE</p>}
 
                                 <div className="w-full border-[1px] border-green-500"></div>
 
-                                {toggle === "KEEBSHOP" && <div> SELL</div>}
+                                {toggle === "MARKETPLACE" && <div> SELL</div>}
                                 {toggle === "KEEBSHARE" && <div> ENJOY</div>}
                                 {toggle === "KEEBTYPE" && <div> WITH</div>}
 
@@ -629,7 +606,7 @@ export default function UserProfile() {
                         </div>
                     </div>
 
-                    {toggle === "KEEBSHOP" && (
+                    {toggle === "MARKETPLACE" && (
                         <div className="mt-10 flex  w-full justify-evenly border-2 border-mediumGray p-5 ">
                             <button
                                 className={`profile-favorites-button flex items-center gap-1 border-2 ${
@@ -1038,26 +1015,26 @@ export default function UserProfile() {
                         </div>
                     )}
 
-                    {toggle === "KEEBSHOP" &&
+                    {toggle === "MARKETPLACE" &&
                         keebShopCategory === "FAVORITES" && (
                             <DisplayFavoriteListings
                                 userId={sessionData.user.id}
                             />
                         )}
-                    {/* {toggle === "KEEBSHOP" &&
+                    {toggle === "MARKETPLACE" &&
                         keebShopCategory === "LISTINGS" && (
                             <ManageListings userId={sessionData.user.id} />
                         )}
-                    {toggle === "KEEBSHOP" && keebShopCategory === "OFFERS" && (
+                    {/* {toggle === "MARKETPLACE" && keebShopCategory === "OFFERS" && (
                         <DisplayOffers userId={sessionData.user.id} />
                     )}
-                    {toggle === "KEEBSHOP" &&
+                    {toggle === "MARKETPLACE" &&
                         keebShopCategory === "REVIEWS" && (
                             <DisplayProfileReviews
                                 userId={sessionData.user.id}
                             />
                         )}
-                    {toggle === "KEEBSHOP" &&
+                    {toggle === "MARKETPLACE" &&
                         keebShopCategory === "TRANSACTIONS" && (
                             <DisplayTransactions userId={sessionData.user.id} />
                         )} */}

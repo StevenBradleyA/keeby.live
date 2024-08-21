@@ -147,13 +147,13 @@ export default function UpdateComment({
                     <div className="flex gap-5">
                         <button
                             onClick={deleteComment}
-                            className="rounded-md border-opacity-0 px-2 py-1  text-mediumGray hover:bg-red-500/10 hover:text-red-500 ease-in "
+                            className="rounded-md  px-2 py-1  text-mediumGray hover:bg-red-500/10 hover:text-red-500 ease-in "
                         >
                             Confirm
                         </button>
                         <button
                             onClick={hideDeleteConfirmation}
-                            className="rounded-md border-opacity-0 px-2 py-1  text-mediumGray hover:bg-green-500/10 hover:text-green-500 ease-in"
+                            className="rounded-md  px-2 py-1  text-mediumGray hover:bg-green-500/10 hover:text-green-500 ease-in"
                         >
                             Deny
                         </button>
