@@ -98,14 +98,16 @@ export default function BuyListingButtons({
             <ModalDialog isOpen={isBuyModalOpen} onClose={closeBuyModal}>
                 <CreateTransaction
                     closeModal={closeBuyModal}
-                    listingId={listing.id}
-                    sellerId={listing.sellerId}
-                    price={listing.price}
-                    title={listing.title}
+                    listing={listing}
+                    session={session}
                 />
             </ModalDialog>
             <ModalDialog isOpen={isOfferModalOpen} onClose={closeOfferModal}>
-                <CreateOffer closeModal={closeOfferModal} listing={listing} />
+                <CreateOffer
+                    closeModal={closeOfferModal}
+                    listing={listing}
+                    session={session}
+                />
             </ModalDialog>
 
             <ModalDialog isOpen={isSignInModalOpen} onClose={closeSignInModal}>

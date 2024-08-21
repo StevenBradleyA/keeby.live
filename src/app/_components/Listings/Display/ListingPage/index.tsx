@@ -70,7 +70,6 @@ export default async function DisplayListingPage({
 
                         <div className="relative flex h-[58%] flex-shrink-0 w-full justify-center rounded-xl bg-black/30 shadow-lg  ">
                             <ListingPageImage images={listing.images} />
-
                             <ListingPageFavorite
                                 listing={listing}
                                 session={session}
@@ -119,12 +118,10 @@ export default async function DisplayListingPage({
                                         {listing.seller.username}
                                     </Link>
                                 </div>
-
                                 <SellerStarRating
                                     avgRating={listing.seller.avgRating}
                                     totalRatings={listing.seller.totalRatings}
                                 />
-
                                 <div className="bg-mediumGray  mt-2 px-4 py-2 rounded-xl flex gap-3 items-center self-start text-green-500 ">
                                     <div className="flex gap-1 items-center">
                                         <svg
@@ -165,7 +162,6 @@ export default async function DisplayListingPage({
                                     listing={listing}
                                     session={session}
                                 />
-
                                 <div className="text-keebyPurple flex text-3xl gap-1 items-end">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -285,6 +281,7 @@ export default async function DisplayListingPage({
                     <ListingPagePreviews />
                     </div>
                     </div> */}
+
             <div className="mt-60 w-full">
                 <Footer />
             </div>
