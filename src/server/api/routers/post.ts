@@ -1003,9 +1003,9 @@ export const postRouter = createTRPCRouter({
                 id: z.string(),
                 title: z.string(),
                 tag: z.string(),
+                userId: z.string(),
                 text: z.string().optional(),
                 link: z.string().optional(),
-                userId: z.string(),
                 images: z
                     .array(
                         z.object({
@@ -1028,10 +1028,10 @@ export const postRouter = createTRPCRouter({
                 id,
                 title,
                 tag,
+                userId,
                 link,
                 text,
                 preview,
-                userId,
                 images,
                 deleteImageIds,
             } = input;
@@ -1084,33 +1084,41 @@ export const postRouter = createTRPCRouter({
             }
             // ----
 
-            await ctx.db.images.updateMany({
+            const existingImageCheck = await ctx.db.images.findMany({
                 where: {
                     postId: id,
-                    resourceType: "POSTPREVIEW",
-                },
-                data: {
-                    resourceType: "POST",
                 },
             });
 
-            if (preview && preview.source === "prev") {
-                const newPreview = await ctx.db.images.findFirst({
+            if (existingImageCheck.length > 0) {
+                await ctx.db.images.updateMany({
                     where: {
-                        id: preview.id,
                         postId: id,
+                        resourceType: "POSTPREVIEW",
+                    },
+                    data: {
+                        resourceType: "POST",
                     },
                 });
 
-                if (newPreview) {
-                    await ctx.db.images.update({
+                if (preview && preview.source === "prev") {
+                    const newPreview = await ctx.db.images.findFirst({
                         where: {
-                            id: newPreview.id,
-                        },
-                        data: {
-                            resourceType: "POSTPREVIEW",
+                            id: preview.id,
+                            postId: id,
                         },
                     });
+
+                    if (newPreview) {
+                        await ctx.db.images.update({
+                            where: {
+                                id: newPreview.id,
+                            },
+                            data: {
+                                resourceType: "POSTPREVIEW",
+                            },
+                        });
+                    }
                 }
             }
 
@@ -1126,14 +1134,13 @@ export const postRouter = createTRPCRouter({
                             data: {
                                 link: image.link,
                                 resourceType: imageType,
-                                listingId: id,
+                                postId: id,
                                 userId: userId,
                             },
                         });
                     }),
                 );
             }
-
             return updatePost;
         }),
 
@@ -1146,40 +1153,44 @@ export const postRouter = createTRPCRouter({
         )
         .mutation(async ({ input, ctx }) => {
             const { id, userId } = input;
-            if (ctx.session.user.id === userId || ctx.session.user.isAdmin) {
-                const images = await ctx.db.images.findMany({
-                    where: {
-                        postId: id,
-                    },
-                });
 
-                if (images.length > 0) {
-                    const imageIds = images.map((image) => image.id);
-                    const removeFilePromises = images.map((image) =>
-                        removeFileFromS3(image.link),
+            if (ctx.session.user.id !== userId && !ctx.session.user.isAdmin) {
+                throw new Error(
+                    "You don't have the right, O you don't have the right",
+                );
+            }
+            const images = await ctx.db.images.findMany({
+                where: {
+                    postId: id,
+                },
+            });
+
+            if (images.length > 0) {
+                const imageIds = images.map((image) => image.id);
+                const removeFilePromises = images.map((image) =>
+                    removeFileFromS3(image.link),
+                );
+                try {
+                    const results =
+                        await Promise.allSettled(removeFilePromises);
+                    const errors = results.filter(
+                        (result) => result.status === "rejected",
                     );
-                    try {
-                        const results =
-                            await Promise.allSettled(removeFilePromises);
-                        const errors = results.filter(
-                            (result) => result.status === "rejected",
+
+                    if (errors.length > 0) {
+                        console.error(
+                            "Errors occurred while removing files from S3:",
+                            errors,
                         );
-
-                        if (errors.length > 0) {
-                            console.error(
-                                "Errors occurred while removing files from S3:",
-                                errors,
-                            );
-                        }
-
-                        await ctx.db.images.deleteMany({
-                            where: {
-                                id: { in: imageIds },
-                            },
-                        });
-                    } catch (err) {
-                        console.error("An unexpected error occurred:", err);
                     }
+
+                    await ctx.db.images.deleteMany({
+                        where: {
+                            id: { in: imageIds },
+                        },
+                    });
+                } catch (err) {
+                    console.error("An unexpected error occurred:", err);
                 }
             }
 

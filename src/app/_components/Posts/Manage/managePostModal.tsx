@@ -2,7 +2,7 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { api } from "~/trpc/react";
-import { Images } from "@prisma/client";
+import type { Images } from "@prisma/client";
 import UpdatePost from "./Update/updatePost";
 import ModalDialog from "../../Context/Modal";
 
@@ -59,7 +59,7 @@ export default function ManagePostModal({
     // server
     const { mutate } = api.post.delete.useMutation({
         onSuccess: () => {
-            toast.success("Listing Deleted!", {
+            toast.success("Post Deleted!", {
                 style: {
                     borderRadius: "10px",
                     background: "#333",
@@ -104,7 +104,7 @@ export default function ManagePostModal({
                 <div className="p-5 w-[500px] ">
                     {!isDeleteFinal ? (
                         <>
-                            <h1 className="flex justify-center w-full">
+                            <h1 className="flex justify-center w-full text-green-500">
                                 Are you sure you want to delete {post.title}?
                             </h1>
                             <div className="flex gap-5 justify-center mt-5">
@@ -124,7 +124,7 @@ export default function ManagePostModal({
                         </>
                     ) : (
                         <>
-                            <h1 className="flex justify-center w-full">
+                            <h1 className="flex justify-center w-full text-green-500">
                                 Last chance, your post will be gone forever!
                             </h1>
                             <div className="flex gap-5 justify-center mt-5">

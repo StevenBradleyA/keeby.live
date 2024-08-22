@@ -67,12 +67,11 @@ model CommentLike {
 }
 
 model Favorites {
-    id        String  @id @default(cuid())
+    id        String   @id @default(cuid())
     userId    String
     listingId String?
     postId    String?
     createdAt DateTime @default(now())
-
 
     user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
     listing Listing? @relation(fields: [listingId], references: [id], onDelete: Cascade)
@@ -114,8 +113,8 @@ model Images {
     listingId String?
     postId    String?
 
-    listing Listing? @relation(fields: [listingId], references: [id])
-    post    Post?    @relation(fields: [postId], references: [id])
+    listing Listing? @relation(fields: [listingId], references: [id], onDelete: Cascade)
+    post    Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
 
     @@index([listingId], name: "idxImagesListingId")
     @@index([postId], name: "idxImagesPostId")
@@ -168,9 +167,8 @@ model Listing {
 }
 
 model ListingOffer {
-    id    String @id @default(cuid())
-    price Int
-
+    id        String   @id @default(cuid())
+    price     Int
     status    String
     // PENDING, ACCEPTED
     createdAt DateTime @default(now())
@@ -180,22 +178,17 @@ model ListingOffer {
     buyerId   String
 
     listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
-    buyer   User    @relation(fields: [buyerId], references: [id])
+    buyer   User    @relation(fields: [buyerId], references: [id], onDelete: Cascade)
 }
 
 model ListingTransaction {
-    id          String @id @default(cuid())
+    id          String   @id @default(cuid())
     payed       Int
     agreedPrice Int
-
-    // status        String
-    // PENDING SOLD
-    // paypalOrderId String
-    // transactionId String
-    createdAt     DateTime @default(now())
-    updatedAt     DateTime @updatedAt
-    buyerId       String
-    listingId     String
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    buyerId     String
+    listingId   String
 
     buyer   User      @relation(fields: [buyerId], references: [id], onDelete: Cascade)
     listing Listing   @relation(fields: [listingId], references: [id], onDelete: Cascade)
@@ -212,9 +205,9 @@ model Message {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    user               User               @relation("messageOwner", fields: [userId], references: [id])
-    recipient          User               @relation("messageRecipient", fields: [recipientId], references: [id])
-    listingTransaction ListingTransaction @relation(fields: [listingTransactionId], references: [id])
+    user               User               @relation("messageOwner", fields: [userId], references: [id], onDelete: Cascade)
+    recipient          User               @relation("messageRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
+    listingTransaction ListingTransaction @relation(fields: [listingTransactionId], references: [id], onDelete: Cascade)
 
     @@index([userId], name: "idxMessageSenderId")
     @@index([recipientId], name: "idxMessageRecipientId")
@@ -260,7 +253,7 @@ model PostLike {
     postId String
 
     user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-    post Post @relation(fields: [postId], references: [id])
+    post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
 
     @@unique([userId, postId])
 }
@@ -307,7 +300,7 @@ model Ticket {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    user User @relation(fields: [userId], references: [id])
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Session {

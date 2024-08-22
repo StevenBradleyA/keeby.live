@@ -47,13 +47,16 @@ interface ErrorsObj {
     tag?: string;
     titleExcess?: string;
     link?: string;
-    // imageShortage?: string;
 }
 
 export default function UpdatePostForm({
     post,
     closeModal,
 }: UpdateListingFormProps) {
+
+// todo test and fix pls
+
+
     const utils = api.useUtils();
     const { data: session, status } = useSession();
 
@@ -255,7 +258,7 @@ export default function UpdatePostForm({
         );
     }
     return (
-        <div className="h-[500px] w-[600px] flex flex-col items-center overflow-y-auto px-5">
+        <div className="h-[600px] w-[600px] flex flex-col items-center overflow-y-auto px-5">
             <div className="flex items-center w-full">
                 <Image
                     alt="keeb"
