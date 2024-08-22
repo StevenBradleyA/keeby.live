@@ -145,34 +145,96 @@ export const postRouter = createTRPCRouter({
                 userId: z.string(),
             }),
         )
-        .query(async ({ input, ctx }): Promise<ExtendedPost[]> => {
+        .query(async ({ ctx, input }) => {
             const { userId } = input;
 
-            const allUserPosts = await ctx.db.post.findMany({
+            const posts: PostWithCount[] = await ctx.db.post.findMany({
                 where: {
                     userId: userId,
                 },
                 include: {
-                    images: true,
                     _count: {
-                        select: { comments: true, postLikes: true },
+                        select: {
+                            comments: true,
+                            postLikes: true,
+                            favorites: true,
+                        },
+                    },
+                    images: {
+                        where: {
+                            OR: [
+                                { resourceType: "POSTPREVIEW" },
+                                { resourceType: "POST" },
+                            ],
+                        },
+                    },
+                    user: {
+                        select: {
+                            id: true,
+                            profile: true,
+                            username: true,
+                        },
                     },
                 },
+                orderBy: { createdAt: "desc" },
             });
 
-            return allUserPosts.map((post) => {
-                const previewIndex =
-                    post.images && post.images.length > 0
-                        ? post.images.findIndex(
-                              (image) => image.resourceType === "POSTPREVIEW",
-                          )
-                        : -1;
-
-                return {
-                    ...post,
-                    ...(previewIndex !== -1 && { previewIndex }),
-                };
+            // we need to sort preview images to be first
+            posts.forEach((post) => {
+                post.images.sort((a, b) => {
+                    if (
+                        a.resourceType === "POSTPREVIEW" &&
+                        b.resourceType !== "POSTPREVIEW"
+                    ) {
+                        return -1;
+                    } else if (
+                        a.resourceType !== "POSTPREVIEW" &&
+                        b.resourceType === "POSTPREVIEW"
+                    ) {
+                        return 1;
+                    }
+                    return 0;
+                });
             });
+
+            const likesMap = new Map(
+                await ctx.db.postLike
+                    .findMany({
+                        where: {
+                            userId: userId,
+                            postId: { in: posts.map((post) => post.id) },
+                        },
+                        select: { postId: true, id: true },
+                    })
+                    .then((results) =>
+                        results.map((result) => [result.postId, result.id]),
+                    ),
+            );
+
+            const favoritesMap = new Map(
+                await ctx.db.favorites
+                    .findMany({
+                        where: {
+                            userId: userId,
+                            postId: { in: posts.map((post) => post.id) },
+                        },
+                        select: { postId: true, id: true },
+                    })
+                    .then((results) =>
+                        results.map((result) => [result.postId, result.id]),
+                    ),
+            );
+
+            posts.forEach((post) => {
+                post.isLiked = likesMap.has(post.id);
+                post.likeId = likesMap.get(post.id);
+                post.isFavorited = favoritesMap.has(post.id);
+                post.favoriteId = favoritesMap.get(post.id);
+            });
+
+            return {
+                posts,
+            };
         }),
 
     getAllPreviewPosts: publicProcedure
@@ -402,8 +464,6 @@ export const postRouter = createTRPCRouter({
         .query(async ({ ctx, input }) => {
             const { userId } = input;
 
-            const limit = 5;
-
             const posts: PostWithCount[] = await ctx.db.post.findMany({
                 where: {
                     favorites: {
@@ -437,7 +497,6 @@ export const postRouter = createTRPCRouter({
                     },
                 },
                 orderBy: { createdAt: "desc" },
-                take: limit,
             });
 
             // we need to sort preview images to be first
@@ -955,7 +1014,11 @@ export const postRouter = createTRPCRouter({
                     )
                     .optional(),
                 preview: z
-                    .object({ source: z.string(), index: z.number() })
+                    .object({
+                        source: z.string(),
+                        index: z.number(),
+                        id: z.string(),
+                    })
                     .optional(),
                 deleteImageIds: z.array(z.string()).optional(),
             }),
@@ -973,109 +1036,105 @@ export const postRouter = createTRPCRouter({
                 deleteImageIds,
             } = input;
 
-            if (ctx.session.user.id === userId) {
-                const updateData: CreateData = {
-                    title,
-                    tag,
-                    userId,
-                };
-
-                if (link?.length) {
-                    updateData.link = link;
-                }
-                if (text?.length) {
-                    updateData.text = text;
-                }
-
-                const updatePost = await ctx.db.post.update({
-                    where: { id: id },
-                    data: updateData,
-                });
-
-                if (images || deleteImageIds || preview) {
-                    await ctx.db.images.updateMany({
-                        where: {
-                            postId: id,
-                            resourceType: "POSTPREVIEW",
-                        },
-                        data: {
-                            resourceType: "POST",
-                        },
-                    });
-
-                    if (preview && preview.source === "prev") {
-                        const allExistingImages = await ctx.db.images.findMany({
-                            where: {
-                                postId: id,
-                            },
-                        });
-                        const imageToUpdate = allExistingImages[preview.index];
-                        if (imageToUpdate) {
-                            await ctx.db.images.update({
-                                where: {
-                                    id: imageToUpdate.id,
-                                },
-                                data: {
-                                    resourceType: "POSTPREVIEW",
-                                },
-                            });
-                        }
-                    }
-                    if (images && images.length > 0 && preview) {
-                        await Promise.all(
-                            images.map(async (image, i) => {
-                                const imageType =
-                                    preview.source === "new" &&
-                                    preview.index === i
-                                        ? "POSTPREVIEW"
-                                        : "POST";
-
-                                return ctx.prisma.images.create({
-                                    data: {
-                                        link: image.link,
-                                        resourceType: imageType,
-                                        postId: id,
-                                        userId: userId,
-                                    },
-                                });
-                            }),
-                        );
-                    }
-
-                    if (deleteImageIds && deleteImageIds.length > 0) {
-                        const images = await ctx.db.images.findMany({
-                            where: {
-                                id: { in: deleteImageIds },
-                            },
-                        });
-                        const removeFilePromises = images.map(async (image) => {
-                            try {
-                                await removeFileFromS3(image.link);
-                            } catch (err) {
-                                console.error(
-                                    `Failed to remove file from S3: `,
-                                    err,
-                                );
-                                throw new Error(
-                                    `Failed to remove file from S3: `,
-                                );
-                            }
-                        });
-
-                        await Promise.all(removeFilePromises);
-
-                        await ctx.db.images.deleteMany({
-                            where: {
-                                id: { in: deleteImageIds },
-                            },
-                        });
-                    }
-                }
-
-                return updatePost;
+            if (ctx.session.user.id !== userId) {
+                throw new Error("invalid userId");
             }
 
-            throw new Error("Invalid userId");
+            const updateData: CreateData = {
+                title,
+                tag,
+                userId,
+            };
+
+            if (link?.length) {
+                updateData.link = link;
+            }
+            if (text?.length) {
+                updateData.text = text;
+            }
+
+            const updatePost = await ctx.db.post.update({
+                where: { id: id },
+                data: updateData,
+            });
+
+            // ------
+            if (deleteImageIds && deleteImageIds.length > 0) {
+                const images = await ctx.db.images.findMany({
+                    where: {
+                        id: { in: deleteImageIds },
+                    },
+                });
+                const removeFilePromises = images.map(async (image) => {
+                    try {
+                        await removeFileFromS3(image.link);
+                    } catch (err) {
+                        console.error(`Failed to remove file from S3: `, err);
+                        throw new Error(`Failed to remove file from S3: `);
+                    }
+                });
+
+                await Promise.all(removeFilePromises);
+
+                await ctx.db.images.deleteMany({
+                    where: {
+                        id: { in: deleteImageIds },
+                    },
+                });
+            }
+            // ----
+
+            await ctx.db.images.updateMany({
+                where: {
+                    postId: id,
+                    resourceType: "POSTPREVIEW",
+                },
+                data: {
+                    resourceType: "POST",
+                },
+            });
+
+            if (preview && preview.source === "prev") {
+                const newPreview = await ctx.db.images.findFirst({
+                    where: {
+                        id: preview.id,
+                        postId: id,
+                    },
+                });
+
+                if (newPreview) {
+                    await ctx.db.images.update({
+                        where: {
+                            id: newPreview.id,
+                        },
+                        data: {
+                            resourceType: "POSTPREVIEW",
+                        },
+                    });
+                }
+            }
+
+            if (images && images.length > 0 && preview) {
+                await Promise.all(
+                    images.map(async (image, i) => {
+                        const imageType =
+                            preview.source === "new" && preview.index === i
+                                ? "POSTPREVIEW"
+                                : "POST";
+
+                        return ctx.db.images.create({
+                            data: {
+                                link: image.link,
+                                resourceType: imageType,
+                                listingId: id,
+                                userId: userId,
+                            },
+                        });
+                    }),
+                );
+            }
+
+            return updatePost;
         }),
 
     delete: protectedProcedure

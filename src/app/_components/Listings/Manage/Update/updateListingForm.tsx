@@ -751,136 +751,133 @@ export default function UpdateListingForm({
                             </div>
                         </div>
                     </div>
-
-                    <>
-                        <div className="mb-1 mt-5  flex justify-center text-mediumGray">
-                            Select a preview image by clicking. ( 16:9 aspect
-                            ratio recommended )
-                        </div>
-                        <div className="flex w-full flex-wrap justify-center gap-10 rounded-md bg-white bg-opacity-40 p-10 ">
-                            {listing.images &&
-                                listing.images.length > 0 &&
-                                listing.images
-                                    .filter(
-                                        (image) =>
-                                            !activeDeletedImageIds.includes(
-                                                image.id,
-                                            ),
-                                    )
-                                    .map((image, i) => (
-                                        <div key={i} className="relative">
-                                            <Image
-                                                className={` w-48 h-28 cursor-pointer rounded-lg object-cover shadow-sm ease-in hover:brightness-105 hover:shadow-md ${
-                                                    i === preview.index &&
-                                                    preview.source === "prev"
-                                                        ? "border-4 border-green-500"
-                                                        : "border-4 border-black border-opacity-0"
-                                                } `}
-                                                alt={`listing-${i}`}
-                                                src={image.link}
-                                                width={100}
-                                                height={100}
-                                                onClick={() =>
-                                                    setPreview({
-                                                        source: "prev",
-                                                        index: i,
-                                                        id: image.id,
-                                                    })
-                                                }
-                                            />
-                                            <button
-                                                className="absolute right-[-10px] top-[-32px] transform p-1 text-2xl text-gray-600 transition-transform duration-300 ease-in-out hover:rotate-45 hover:scale-110 hover:text-red-500"
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    const newDeletedImageIds = [
-                                                        ...activeDeletedImageIds,
-                                                        image.id,
-                                                    ];
-                                                    setActiveDeletedImageIds(
-                                                        newDeletedImageIds,
-                                                    );
-
-                                                    const remainingImages =
-                                                        listing.images.filter(
-                                                            (img) =>
-                                                                !newDeletedImageIds.includes(
-                                                                    img.id,
-                                                                ),
-                                                        );
-
-                                                    if (
-                                                        remainingImages.length >
-                                                            0 &&
-                                                        remainingImages[0]
-                                                    ) {
-                                                        setPreview({
-                                                            source: "prev",
-                                                            index: 0,
-                                                            id: remainingImages[0]
-                                                                .id,
-                                                        });
-                                                    } else {
-                                                        setPreview({
-                                                            source:
-                                                                imageFiles.length >
-                                                                0
-                                                                    ? "new"
-                                                                    : "",
-                                                            index: 0,
-                                                            id: "",
-                                                        });
-                                                    }
-                                                }}
-                                            >
-                                                &times;
-                                            </button>
-                                        </div>
-                                    ))}
-
-                            {imageFiles.length > 0 &&
-                                imageFiles.map((e, i) => (
+                    <div className="mb-1 mt-5  flex justify-center text-mediumGray">
+                        Select a preview image by clicking. ( 16:9 aspect ratio
+                        recommended )
+                    </div>
+                    <div className="flex w-full flex-wrap justify-center gap-10 rounded-md bg-white bg-opacity-40 p-10 ">
+                        {listing.images &&
+                            listing.images.length > 0 &&
+                            listing.images
+                                .filter(
+                                    (image) =>
+                                        !activeDeletedImageIds.includes(
+                                            image.id,
+                                        ),
+                                )
+                                .map((image, i) => (
                                     <div key={i} className="relative">
                                         <Image
                                             className={` w-48 h-28 cursor-pointer rounded-lg object-cover shadow-sm ease-in hover:brightness-105 hover:shadow-md ${
                                                 i === preview.index &&
-                                                "new" === preview.source
+                                                preview.source === "prev"
                                                     ? "border-4 border-green-500"
                                                     : "border-4 border-black border-opacity-0"
                                             } `}
                                             alt={`listing-${i}`}
-                                            src={URL.createObjectURL(e)}
-                                            width={300}
-                                            height={300}
+                                            src={image.link}
+                                            width={100}
+                                            height={100}
                                             onClick={() =>
                                                 setPreview({
-                                                    source: "new",
+                                                    source: "prev",
                                                     index: i,
-                                                    id: "",
+                                                    id: image.id,
                                                 })
                                             }
                                         />
                                         <button
-                                            className="absolute right-[-10px] top-[-32px] transform p-1 text-2xl text-black transition-transform duration-300 ease-in-out hover:rotate-45 hover:scale-110 hover:text-red-500"
+                                            className="absolute right-[-10px] top-[-32px] transform p-1 text-2xl text-gray-600 transition-transform duration-300 ease-in-out hover:rotate-45 hover:scale-110 hover:text-red-500"
                                             onClick={(e) => {
                                                 e.preventDefault();
-                                                const newImageFiles = [
-                                                    ...imageFiles,
+                                                const newDeletedImageIds = [
+                                                    ...activeDeletedImageIds,
+                                                    image.id,
                                                 ];
-                                                newImageFiles.splice(i, 1);
-                                                setImageFiles(newImageFiles);
-                                                setPreview({
-                                                    source: "new",
-                                                    index: 0,
-                                                    id: "",
-                                                });
+                                                setActiveDeletedImageIds(
+                                                    newDeletedImageIds,
+                                                );
+
+                                                const remainingImages =
+                                                    listing.images.filter(
+                                                        (img) =>
+                                                            !newDeletedImageIds.includes(
+                                                                img.id,
+                                                            ),
+                                                    );
+
+                                                if (
+                                                    remainingImages.length >
+                                                        0 &&
+                                                    remainingImages[0]
+                                                ) {
+                                                    setPreview({
+                                                        source: "prev",
+                                                        index: 0,
+                                                        id: remainingImages[0]
+                                                            .id,
+                                                    });
+                                                } else {
+                                                    setPreview({
+                                                        source:
+                                                            imageFiles.length >
+                                                            0
+                                                                ? "new"
+                                                                : "",
+                                                        index: 0,
+                                                        id: "",
+                                                    });
+                                                }
                                             }}
                                         >
                                             &times;
                                         </button>
                                     </div>
                                 ))}
-                        </div>
-                    </>
+
+                        {imageFiles.length > 0 &&
+                            imageFiles.map((e, i) => (
+                                <div key={i} className="relative">
+                                    <Image
+                                        className={` w-48 h-28 cursor-pointer rounded-lg object-cover shadow-sm ease-in hover:brightness-105 hover:shadow-md ${
+                                            i === preview.index &&
+                                            "new" === preview.source
+                                                ? "border-4 border-green-500"
+                                                : "border-4 border-black border-opacity-0"
+                                        } `}
+                                        alt={`listing-${i}`}
+                                        src={URL.createObjectURL(e)}
+                                        width={300}
+                                        height={300}
+                                        onClick={() =>
+                                            setPreview({
+                                                source: "new",
+                                                index: i,
+                                                id: "",
+                                            })
+                                        }
+                                    />
+                                    <button
+                                        className="absolute right-[-10px] top-[-32px] transform p-1 text-2xl text-black transition-transform duration-300 ease-in-out hover:rotate-45 hover:scale-110 hover:text-red-500"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            const newImageFiles = [
+                                                ...imageFiles,
+                                            ];
+                                            newImageFiles.splice(i, 1);
+                                            setImageFiles(newImageFiles);
+                                            setPreview({
+                                                source: "new",
+                                                index: 0,
+                                                id: "",
+                                            });
+                                        }}
+                                    >
+                                        &times;
+                                    </button>
+                                </div>
+                            ))}
+                    </div>
 
                     {errors.imageExcess && (
                         <p className=" text-red-400">{errors.imageExcess}</p>

@@ -1,32 +1,46 @@
 "use client";
-
-import { Images, Listing } from "@prisma/client";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { api } from "~/trpc/react";
+import { Images } from "@prisma/client";
+import UpdatePost from "./Update/updatePost";
 import ModalDialog from "../../Context/Modal";
-import UpdateListing from "./Update/updateListing";
 
-interface ManageListingModalProps {
-    listing: PreviewFavoriteListing;
+interface ManagePostModalProps {
     userId: string;
     closeModal: () => void;
+    post: EachPost;
 }
 
-interface PreviewFavoriteListing extends Listing {
-    _count: {
-        comments: number;
-        favorites: number;
-    };
+interface EachPost {
+    id: string;
+    tag: string;
+    title: string;
+    link: string | null;
+    text: string | null;
+    isLiked?: boolean;
+    likeId?: string;
+    isFavorited?: boolean;
+    favoriteId?: string;
+    _count: Count;
     images: Images[];
+    user: {
+        id: string;
+        profile: string | null;
+        username: string | null;
+    };
 }
-export default function ManageListingModal({
-    listing,
+interface Count {
+    comments: number;
+    postLikes: number;
+    favorites: number;
+}
+
+export default function ManagePostModal({
+    post,
     userId,
     closeModal,
-}: ManageListingModalProps) {
-    // handle the delete here and the update in a separate modal where we will have to fetch that juicy listing...
-
+}: ManagePostModalProps) {
     // state
     const [isDelete, setIsDelete] = useState<boolean>(false);
     const [isDeleteFinal, setIsDeleteFinal] = useState<boolean>(false);
@@ -43,7 +57,7 @@ export default function ManageListingModal({
     const utils = api.useUtils();
 
     // server
-    const { mutate } = api.listing.delete.useMutation({
+    const { mutate } = api.post.delete.useMutation({
         onSuccess: () => {
             toast.success("Listing Deleted!", {
                 style: {
@@ -52,17 +66,17 @@ export default function ManageListingModal({
                     color: "#fff",
                 },
             });
-            void utils.listing.getAllByUserId.invalidate();
+            void utils.post.getAllByUserId.invalidate();
             closeModal();
         },
     });
 
     // helpers
     const handleDeleteListing = () => {
-        if (userId === listing.sellerId) {
+        if (userId === post.user.id) {
             const data = {
-                id: listing.id,
-                sellerId: listing.sellerId,
+                id: post.id,
+                userId: post.user.id,
             };
 
             mutate(data);
@@ -91,7 +105,7 @@ export default function ManageListingModal({
                     {!isDeleteFinal ? (
                         <>
                             <h1 className="flex justify-center w-full">
-                                Are you sure you want to delete {listing.title}?
+                                Are you sure you want to delete {post.title}?
                             </h1>
                             <div className="flex gap-5 justify-center mt-5">
                                 <button
@@ -111,7 +125,7 @@ export default function ManageListingModal({
                     ) : (
                         <>
                             <h1 className="flex justify-center w-full">
-                                Last chance, your listing will be gone forever!
+                                Last chance, your post will be gone forever!
                             </h1>
                             <div className="flex gap-5 justify-center mt-5">
                                 <button
@@ -133,8 +147,8 @@ export default function ManageListingModal({
             )}
 
             <ModalDialog isOpen={isEditOpen} onClose={closeEditModal}>
-                <UpdateListing
-                    listingId={listing.id}
+                <UpdatePost
+                    postId={post.id}
                     userId={userId}
                     closeModal={closeEditModal}
                 />

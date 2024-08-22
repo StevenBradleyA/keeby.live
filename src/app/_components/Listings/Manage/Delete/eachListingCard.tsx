@@ -128,8 +128,6 @@ export default function EachManageListingCard({
                     </div>
                 </div>
             </div>
-
-            {/* <UpdateListing listing={listing} closeModal={closeModal} /> */}
         </>
     );
 }

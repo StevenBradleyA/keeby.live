@@ -14,8 +14,8 @@ import computerShare from "@public/Profile/computer-share.png";
 import computerShop from "@public/Profile/computer-shop.png";
 import computerType from "@public/Profile/computer-type.png";
 import hacktime from "@public/Vectors/hacktime.png";
-import ManageListings from "~/app/_components/Listings/ManageListings";
-import ManagePosts from "~/app/_components/Posts/ManagePosts";
+import ManageListings from "~/app/_components/Listings/Manage";
+import ManagePosts from "~/app/_components/Posts/Manage";
 
 import DisplayProfileKeebs from "~/app/_components/Profile/Keeb/DisplayKeebs";
 import DisplayAllGameStatsCheck from "~/app/_components/Games/GameStats/displayAllGameStatsCheck";
@@ -1044,10 +1044,10 @@ export default function UserProfile() {
                                 userId={sessionData.user.id}
                             />
                         )}
-                    {/* {toggle === "KEEBSHARE" &&
+                    {toggle === "KEEBSHARE" &&
                         keebShareCategory === "POSTS" && (
                             <ManagePosts userId={sessionData.user.id} />
-                        )} */}
+                        )}
 
                     {toggle === "KEEBTYPE" && keebTypeCategory === "STATS" && (
                         <DisplayAllGameStatsCheck
