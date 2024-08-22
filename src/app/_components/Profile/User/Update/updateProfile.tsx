@@ -1,3 +1,4 @@
+"use client";
 import { useSession } from "next-auth/react";
 import { api } from "~/trpc/react";
 import { useEffect, useState } from "react";
@@ -8,6 +9,9 @@ import keebo from "@public/Profile/keebo.png";
 import toast from "react-hot-toast";
 import LoadingSpinner from "~/app/_components/Loading";
 import { motion } from "framer-motion";
+import type { ChangeEvent } from "react";
+import heic2any from "heic2any";
+import CroppedImage from "../../Cropper/croppingImage";
 
 interface ErrorsObj {
     image?: string;
@@ -40,9 +44,9 @@ export default function UpdateProfile({
     setKey: (newKey: number) => void;
 }) {
     const { data: sessionData, update } = useSession();
-
     const utils = api.useUtils();
 
+    // form state --
     const [username, setUsername] = useState(sessionData?.user.username || "");
     const [debouncedUsername, setDebouncedUsername] = useState(username);
     const [isNewsletter, setIsNewsletter] = useState<boolean>(
@@ -54,18 +58,18 @@ export default function UpdateProfile({
         useState<boolean>(false);
     const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const [showCropper, setShowCropper] = useState(false);
+    const [selectedTag, setSelectedTag] = useState<string>(
+        sessionData?.user.selectedTag || "",
+    );
 
+    // server interactions --
     const { data: usernameCheck } = api.user.usernameCheck.useQuery(
         debouncedUsername,
         {
             enabled: !!debouncedUsername,
         },
     );
-
-    const [selectedTag, setSelectedTag] = useState<string>(
-        sessionData?.user.selectedTag || "",
-    );
-
     const { data: userTags } = api.user.getUserTags.useQuery(userId);
 
     const { mutate } = api.user.update.useMutation({
@@ -89,40 +93,43 @@ export default function UpdateProfile({
         },
     });
 
-    useEffect(() => {
-        const maxFileSize = 6 * 1024 * 1024;
-        const errorsObj: ErrorsObj = {};
+    // helpers --
+    const handleImageChange = async (event: ChangeEvent<HTMLInputElement>) => {
+        const files = event.target.files;
 
-        if (!username.length) {
-            errorsObj.username = "Please provide a username";
-        }
-        if (username.length > 30) {
-            errorsObj.usernameExcess = "Username cannot exceed 30 characters";
-        }
-
-        if (imageFiles.length > 1) {
-            errorsObj.imageExcess = "Cannot provide more than 1 photo";
-        }
-
-        for (const file of imageFiles) {
-            if (file.size > maxFileSize) {
-                errorsObj.imageLarge = "Image exceeds the max 6 MB file size";
-                break;
+        if (files && files.length > 0) {
+            const processedFiles: File[] = [];
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (file) {
+                    if (
+                        file.type === "image/heic" ||
+                        file.type === "image/heif"
+                    ) {
+                        try {
+                            const convertedBlob = (await heic2any({
+                                blob: file,
+                                toType: "image/jpeg",
+                            })) as Blob;
+                            const convertedFile = new File(
+                                [convertedBlob],
+                                file.name.replace(/\.[^/.]+$/, ".jpg"),
+                                { type: "image/jpeg" },
+                            );
+                            processedFiles.push(convertedFile);
+                        } catch (error) {
+                            console.error("Error converting HEIC file:", error);
+                        }
+                    } else {
+                        processedFiles.push(file);
+                    }
+                }
             }
+
+            setImageFiles(processedFiles);
+            setShowCropper(true);
         }
-
-        setErrors(errorsObj);
-    }, [imageFiles, username]);
-
-    useEffect(() => {
-        const handler = setTimeout(() => {
-            setDebouncedUsername(username);
-        }, 500);
-
-        return () => {
-            clearTimeout(handler);
-        };
-    }, [username]);
+    };
 
     const submit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -190,7 +197,7 @@ export default function UpdateProfile({
                     }));
                 }
                 mutate(data);
-                setImageFiles([]);
+                // setImageFiles([]);
                 setHasSubmitted(true);
                 setIsSubmitting(false);
             } catch (error) {
@@ -199,9 +206,45 @@ export default function UpdateProfile({
             }
         }
     };
+
+    useEffect(() => {
+        const maxFileSize = 6 * 1024 * 1024;
+        const errorsObj: ErrorsObj = {};
+
+        if (!username.length) {
+            errorsObj.username = "Please provide a username";
+        }
+        if (username.length > 30) {
+            errorsObj.usernameExcess = "Username cannot exceed 30 characters";
+        }
+
+        if (imageFiles.length > 1) {
+            errorsObj.imageExcess = "Cannot provide more than 1 photo";
+        }
+
+        for (const file of imageFiles) {
+            if (file.size > maxFileSize) {
+                errorsObj.imageLarge = "Image exceeds the max 6 MB file size";
+                break;
+            }
+        }
+
+        setErrors(errorsObj);
+    }, [imageFiles, username]);
+
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            setDebouncedUsername(username);
+        }, 500);
+
+        return () => {
+            clearTimeout(handler);
+        };
+    }, [username]);
+
     return (
         sessionData && (
-            <form className="  flex h-full w-[600px] flex-col font-poppins text-green-500  ">
+            <form className="  flex h-full w-[600px] flex-col font-poppins text-green-500 relative ">
                 <div className="flex items-center">
                     <div className="w-32">
                         {imageFiles && imageFiles[0] ? (
@@ -265,7 +308,7 @@ export default function UpdateProfile({
                             id="usernameInput"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
-                            className="h-10 w-full rounded-md bg-mediumGray p-1 "
+                            className="h-10 w-full rounded-md bg-mediumGray p-1 hover:opacity-80"
                             placeholder="Username"
                         ></input>
                     </label>
@@ -291,7 +334,7 @@ export default function UpdateProfile({
                     <label className="w-2/3">
                         Selected Tag
                         <select
-                            className=" h-10 w-full rounded-md bg-mediumGray p-1 "
+                            className=" h-10 w-full rounded-md bg-mediumGray p-1 hover:opacity-80 "
                             value={selectedTag}
                             onChange={(e) => setSelectedTag(e.target.value)}
                         >
@@ -353,46 +396,30 @@ export default function UpdateProfile({
                         </button>
                     </label>
                 </div>
-                <div>
-                    <div className="relative mt-5 flex flex-col gap-1">
-                        <label>
-                            {`${
-                                sessionData.user.profile ? "Update" : "Add"
-                            } Profile Picture (1:1 aspect ratio recommended)`}
-                            <input
-                                name="profileImage"
-                                id="profileImageInput"
-                                className="absolute left-0 top-7 h-32 w-full cursor-pointer rounded-md opacity-0"
-                                type="file"
-                                accept="image/png, image/jpg, image/jpeg, image/heic, image/heif"
-                                onChange={(e) => {
-                                    if (
-                                        e.target.files &&
-                                        e.target.files.length > 0
-                                    ) {
-                                        const file = e.target.files[0];
-                                        if (file instanceof File) {
-                                            setImageFiles([file]);
-                                        }
-                                    }
-                                }}
-                            />
-                        </label>
-                        <button className="h-32 w-full rounded-md bg-mediumGray text-black">
-                            <span className=" text-center">Choose Image</span>
-                        </button>
-                    </div>
-                    {errors.imageExcess && (
-                        <p className="text-sm text-red-400">
-                            {errors.imageExcess}
-                        </p>
-                    )}
-                    {errors.imageLarge && (
-                        <p className="text-sm text-red-400">
-                            {errors.imageLarge}
-                        </p>
-                    )}
+                <label className="mt-5">
+                    {`${
+                        sessionData.user.profile ? "Update" : "Add"
+                    } Profile Picture (1:1 aspect ratio recommended)`}
+                </label>
+                <div className="relative  hover:opacity-80">
+                    <input
+                        name="profile image upload"
+                        id="profile image"
+                        className="absolute left-0 top-0 bottom-0 right-0 h-full w-full rounded-lg opacity-0 z-30 "
+                        type="file"
+                        accept="image/png, image/jpg, image/jpeg, image/heic, image/heif"
+                        onChange={(e) => void handleImageChange(e)}
+                    />
+                    <button className="h-32 w-full rounded-md bg-mediumGray text-black">
+                        <span className=" text-center">Choose Image</span>
+                    </button>
                 </div>
+                {errors.imageExcess && (
+                    <p className="text-sm text-red-400">{errors.imageExcess}</p>
+                )}
+                {errors.imageLarge && (
+                    <p className="text-sm text-red-400">{errors.imageLarge}</p>
+                )}
 
                 <div className="mt-5 flex justify-center">
                     <motion.button
@@ -419,6 +446,13 @@ export default function UpdateProfile({
                         )}
                     </motion.button>
                 </div>
+                {showCropper && imageFiles && imageFiles[0] && (
+                    <CroppedImage
+                        imageFiles={imageFiles}
+                        setImageFiles={setImageFiles}
+                        setShowCropper={setShowCropper}
+                    />
+                )}
             </form>
         )
     );

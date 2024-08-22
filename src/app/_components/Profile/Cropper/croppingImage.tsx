@@ -108,11 +108,14 @@ export default function CroppedImage({
             )}
             <div className="w-full flex justify-center absolute -bottom-10">
                 <button
-                    className=" px-8  py-3 bg-green-500 shadow-2xl rounded-lg mt-5 flex justify-center hover:opacity-80 items-center gap-1"
+                    className=" px-8  py-3 bg-green-500 shadow-2xl rounded-lg mt-5 flex justify-center hover:opacity-80 items-center gap-1 text-white"
                     style={{
                         boxShadow: "0 0 20px #22C55E",
                     }}
-                    onClick={() => void handleCrop()}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        void handleCrop();
+                    }}
                 >
                     Crop
                     <svg

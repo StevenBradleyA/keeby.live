@@ -58,10 +58,6 @@ export default function ProfilePlus() {
         useState<boolean>(false);
     const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-    // const [preview, setPreview] = useState<string | null>(null);
-
-    // -----
-    // Cropping state --
     const [showCropper, setShowCropper] = useState(false);
 
     // server interactions --
@@ -131,36 +127,6 @@ export default function ProfilePlus() {
             setShowCropper(true);
         }
     };
-
-    // const handleImageChange = async (event: ChangeEvent<HTMLInputElement>) => {
-    //     const file = event.target.files?.[0];
-    //     if (file) {
-    //         if (file.type === "image/heic" || file.type === "image/heif") {
-    //             try {
-    //                 const convertedBlob = (await heic2any({
-    //                     blob: file,
-    //                     toType: "image/jpeg",
-    //                 })) as Blob;
-    //                 const convertedFile = new File(
-    //                     [convertedBlob],
-    //                     file.name.replace(/\.[^/.]+$/, ".jpg"),
-    //                     { type: "image/jpeg" },
-    //                 );
-    //                 setImageFiles([convertedFile]);
-    //                 setPreview(URL.createObjectURL(convertedFile));
-    //                 //! adding here
-    //                 setShowCropper(true);
-    //             } catch (error) {
-    //                 console.error("Error converting HEIC file:", error);
-    //             }
-    //         } else {
-    //             setImageFiles([file]);
-    //             setPreview(URL.createObjectURL(file));
-    //             // !
-    //             setShowCropper(true);
-    //         }
-    //     }
-    // };
 
     const submit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -496,9 +462,9 @@ export default function ProfilePlus() {
                     </div>
                 </div>
 
-                {/* <div className="w-full mt-96 ">
+                <div className="w-full mt-96 ">
                     <Footer />
-                </div> */}
+                </div>
             </>
         )
     );

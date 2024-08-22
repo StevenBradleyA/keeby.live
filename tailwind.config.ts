@@ -29,6 +29,7 @@ export default {
             },
             borderColor: {
                 mediumGray: "#616161",
+                darkGray: "#2f2f2f",
             },
             textColor: {
                 blackAlternative: "#181818",

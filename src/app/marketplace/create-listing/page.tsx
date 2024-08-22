@@ -341,7 +341,7 @@ export default function CreateListing() {
                         alt="profile"
                         width={400}
                         height={400}
-                        className=" h-40 w-40 rounded-xl "
+                        className=" h-40 w-40 rounded-xl border-2 border-darkGray"
                     />
 
                     <div className="flex h-24 w-full flex-col justify-center rounded-r-xl   bg-darkGray shadow-lg bg-opacity-90 px-5">
