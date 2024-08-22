@@ -353,7 +353,7 @@ export default function UserProfile() {
                                         width={400}
                                         height={400}
                                         priority={true}
-                                        className="h-full w-full hover:opacity-70"
+                                        className="h-full w-full"
                                     />
                                 </div>
                             </div>

@@ -7,13 +7,13 @@ import Image from "next/image";
 import defaultProfile from "@public/Images/defaultProfile.png";
 import toast from "react-hot-toast";
 import LoadingSpinner from "~/app/_components/Loading";
-import { motion } from "framer-motion";
 import Footer from "../_components/Footer/footer";
 import login from "@public/Images/login.png";
 import TitleScripts from "../_components/TitleScripts";
 import { api } from "~/trpc/react";
 import heic2any from "heic2any";
 import type { ChangeEvent } from "react";
+import CroppedImage from "../_components/Profile/Cropper/croppingImage";
 
 interface ErrorsObj {
     image?: string;
@@ -58,7 +58,11 @@ export default function ProfilePlus() {
         useState<boolean>(false);
     const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-    const [preview, setPreview] = useState<string | null>(null);
+    // const [preview, setPreview] = useState<string | null>(null);
+
+    // -----
+    // Cropping state --
+    const [showCropper, setShowCropper] = useState(false);
 
     // server interactions --
 
@@ -92,30 +96,71 @@ export default function ProfilePlus() {
     // helpers --
 
     const handleImageChange = async (event: ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (file) {
-            if (file.type === "image/heic" || file.type === "image/heif") {
-                try {
-                    const convertedBlob = (await heic2any({
-                        blob: file,
-                        toType: "image/jpeg",
-                    })) as Blob;
-                    const convertedFile = new File(
-                        [convertedBlob],
-                        file.name.replace(/\.[^/.]+$/, ".jpg"),
-                        { type: "image/jpeg" },
-                    );
-                    setImageFiles([convertedFile]);
-                    setPreview(URL.createObjectURL(convertedFile));
-                } catch (error) {
-                    console.error("Error converting HEIC file:", error);
+        const files = event.target.files;
+
+        if (files && files.length > 0) {
+            const processedFiles: File[] = [];
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (file) {
+                    if (
+                        file.type === "image/heic" ||
+                        file.type === "image/heif"
+                    ) {
+                        try {
+                            const convertedBlob = (await heic2any({
+                                blob: file,
+                                toType: "image/jpeg",
+                            })) as Blob;
+                            const convertedFile = new File(
+                                [convertedBlob],
+                                file.name.replace(/\.[^/.]+$/, ".jpg"),
+                                { type: "image/jpeg" },
+                            );
+                            processedFiles.push(convertedFile);
+                        } catch (error) {
+                            console.error("Error converting HEIC file:", error);
+                        }
+                    } else {
+                        processedFiles.push(file);
+                    }
                 }
-            } else {
-                setImageFiles([file]);
-                setPreview(URL.createObjectURL(file));
             }
+
+            setImageFiles(processedFiles);
+            setShowCropper(true);
         }
     };
+
+    // const handleImageChange = async (event: ChangeEvent<HTMLInputElement>) => {
+    //     const file = event.target.files?.[0];
+    //     if (file) {
+    //         if (file.type === "image/heic" || file.type === "image/heif") {
+    //             try {
+    //                 const convertedBlob = (await heic2any({
+    //                     blob: file,
+    //                     toType: "image/jpeg",
+    //                 })) as Blob;
+    //                 const convertedFile = new File(
+    //                     [convertedBlob],
+    //                     file.name.replace(/\.[^/.]+$/, ".jpg"),
+    //                     { type: "image/jpeg" },
+    //                 );
+    //                 setImageFiles([convertedFile]);
+    //                 setPreview(URL.createObjectURL(convertedFile));
+    //                 //! adding here
+    //                 setShowCropper(true);
+    //             } catch (error) {
+    //                 console.error("Error converting HEIC file:", error);
+    //             }
+    //         } else {
+    //             setImageFiles([file]);
+    //             setPreview(URL.createObjectURL(file));
+    //             // !
+    //             setShowCropper(true);
+    //         }
+    //     }
+    // };
 
     const submit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -176,10 +221,9 @@ export default function ProfilePlus() {
                     }));
                 }
                 mutate(data);
-                setImageFiles([]);
-                setPreview(null);
                 setHasSubmitted(true);
                 setIsSubmitting(false);
+                // setImageFiles([]);
             } catch (error) {
                 console.error("Submission failed:", error);
                 setIsSubmitting(false);
@@ -242,9 +286,9 @@ export default function ProfilePlus() {
         session &&
         !hasProfile && (
             <>
-                <div className="w-full flex justify-center mt-48">
-                    <div className=" rounded-2xl w-full  largeLaptop:w-2/3   bg-darkGray flex overflow-hidden shadow-2xl relative ">
-                        <div className="w-1/2  h-full p-10 flex flex-col items-center justify-center">
+                <div className="w-full flex justify-center mt-48 px-3 tablet:px-20">
+                    <div className=" rounded-2xl w-full desktop:w-2/3 bg-darkGray flex shadow-2xl relative ">
+                        <div className="hidden tablet:w-1/2  h-full tablet:p-10 tablet:flex tablet:flex-col items-center justify-center">
                             <Image
                                 src={login}
                                 alt="login"
@@ -252,7 +296,7 @@ export default function ProfilePlus() {
                                 priority
                             />
                         </div>
-                        <div className="w-1/2 p-20 flex flex-col items-center relative">
+                        <div className="w-full tablet:w-1/2 p-5 tablet:p-20 flex flex-col items-center relative">
                             <h1 className="text-2xl">Complete Your Profile!</h1>
                             <div className="relative mt-2 h-5 w-full flex justify-center ">
                                 <div className="absolute top-0 left-1/2 -translate-x-1/2 text-center w-full">
@@ -267,7 +311,7 @@ export default function ProfilePlus() {
                                     onChange={(e) =>
                                         setUsername(e.target.value)
                                     }
-                                    className="w-full p-3 bg-black rounded-lg placeholder:text-mediumGray "
+                                    className="w-full p-3 bg-black rounded-lg placeholder:text-mediumGray hover:opacity-70 "
                                     placeholder="Enter your username"
                                 />
                                 {enableErrorDisplay && errors.username && (
@@ -281,11 +325,6 @@ export default function ProfilePlus() {
                                             {errors.usernameExcess}
                                         </p>
                                     )}
-                                {/* {enableErrorDisplay && usernameCheck && (
-                                    <p className="text-xs text-red-400">
-                                        Username already in use
-                                    </p>
-                                )} */}
                                 <div className="flex items-center w-full mt-5 gap-2 text-white/50 text-xs">
                                     <div className="h-[2px] bg-white/50 w-full"></div>
                                     <h3 className="flex-shrink-0">
@@ -301,7 +340,7 @@ export default function ProfilePlus() {
                                     onChange={(e) =>
                                         setKeyboard(e.target.value)
                                     }
-                                    className="w-full p-3 bg-black rounded-lg placeholder:text-mediumGray mt-3 overflow-hidden"
+                                    className="w-full p-3 bg-black rounded-lg placeholder:text-mediumGray mt-3 overflow-hidden hover:opacity-70"
                                     placeholder="Keyboard name"
                                 />
                                 {enableErrorDisplay && errors.keyboard && (
@@ -322,7 +361,7 @@ export default function ProfilePlus() {
                                     onChange={(e) =>
                                         setSwitches(e.target.value)
                                     }
-                                    className="w-full p-3 bg-black rounded-lg placeholder:text-mediumGray mt-2 "
+                                    className="w-full p-3 bg-black rounded-lg placeholder:text-mediumGray mt-2 hover:opacity-70"
                                     placeholder="keyboard switches"
                                 />
                                 {enableErrorDisplay && errors.switches && (
@@ -336,7 +375,7 @@ export default function ProfilePlus() {
                                     id="keycaps"
                                     value={keycaps}
                                     onChange={(e) => setKeycaps(e.target.value)}
-                                    className="w-full p-3 bg-black rounded-lg placeholder:text-mediumGray mt-2 "
+                                    className="w-full p-3 bg-black rounded-lg placeholder:text-mediumGray mt-2 hover:opacity-70 "
                                     placeholder="keyboard keycaps"
                                 />
                                 {enableErrorDisplay && errors.keycaps && (
@@ -354,25 +393,13 @@ export default function ProfilePlus() {
                                 </div>
 
                                 <div className="relative mt-3 flex justify-between text-mediumGray ">
-                                    <div className="w-16 h-12 relative  hover:opacity-70">
+                                    <div className="w-12 h-12 relative  hover:opacity-70">
                                         <input
                                             name="profile image upload"
                                             id="profile image"
-                                            className="absolute left-0 top-0 bottom-0 right-0 h-full w-full rounded-lg opacity-0 z-30"
+                                            className="absolute left-0 top-0 bottom-0 right-0 h-full w-full rounded-lg opacity-0 z-30 "
                                             type="file"
                                             accept="image/png, image/jpg, image/jpeg, image/heic, image/heif"
-                                            // onChange={(e) => {
-                                            //     if (
-                                            //         e.target.files &&
-                                            //         e.target.files.length > 0
-                                            //     ) {
-                                            //         const file =
-                                            //             e.target.files[0];
-                                            //         if (file instanceof File) {
-                                            //             setImageFiles([file]);
-                                            //         }
-                                            //     }
-                                            // }}
                                             onChange={(e) =>
                                                 void handleImageChange(e)
                                             }
@@ -395,15 +422,17 @@ export default function ProfilePlus() {
                                         </button>
                                     </div>
 
-                                    {imageFiles && imageFiles[0] && preview ? (
+                                    {imageFiles && imageFiles[0] ? (
                                         <div className=" relative">
-                                            <div className="w-14 h-12 bg-black rounded-lg overflow-hidden">
+                                            <div className="w-12 h-12 bg-black rounded-lg overflow-hidden">
                                                 <Image
-                                                    className="h-full w-full scale-150 object-contain hover:opacity-70"
+                                                    className="h-full w-full object-contain "
                                                     alt="profile"
-                                                    src={preview}
-                                                    width={200}
-                                                    height={200}
+                                                    src={URL.createObjectURL(
+                                                        imageFiles[0],
+                                                    )}
+                                                    width={300}
+                                                    height={300}
                                                 />
                                             </div>
                                             <button
@@ -411,18 +440,17 @@ export default function ProfilePlus() {
                                                 onClick={(e) => {
                                                     e.preventDefault();
                                                     setImageFiles([]);
-                                                    setPreview(null);
                                                 }}
                                             >
                                                 &times;
                                             </button>
                                         </div>
                                     ) : (
-                                        <div className="w-14 h-12 bg-black rounded-lg overflow-hidden  hover:opacity-70">
+                                        <div className="w-12 h-12 bg-black rounded-lg overflow-hidden ">
                                             <Image
                                                 src={defaultProfile}
                                                 alt="profile"
-                                                className="h-full w-full scale-110 object-contain "
+                                                className="h-full w-full object-cover "
                                                 priority
                                             />
                                         </div>
@@ -439,7 +467,7 @@ export default function ProfilePlus() {
                                     </p>
                                 )}
                                 <button
-                                    className="w-full p-3 bg-green-500 shadow-2xl rounded-lg mt-5 flex justify-center"
+                                    className="w-full p-3 bg-green-500 shadow-2xl rounded-lg mt-5 flex justify-center hover:opacity-80"
                                     style={{
                                         boxShadow: "0 0 20px #22C55E",
                                     }}
@@ -458,17 +486,19 @@ export default function ProfilePlus() {
                                 </button>
                             </form>
                         </div>
-
-                        {/* <div className="w-1/3 bg-lightGray h-full p-10 flex flex-col items-center justify-center rounded-l-3xl">
-                       
-                       </div>
-                       <Image src={login} alt="login" className="w-80 h-80 absolute right-40 bottom-10"/> */}
+                        {showCropper && imageFiles && imageFiles[0] && (
+                            <CroppedImage
+                                imageFiles={imageFiles}
+                                setImageFiles={setImageFiles}
+                                setShowCropper={setShowCropper}
+                            />
+                        )}
                     </div>
                 </div>
 
-                <div className="w-full mt-96 ">
+                {/* <div className="w-full mt-96 ">
                     <Footer />
-                </div>
+                </div> */}
             </>
         )
     );

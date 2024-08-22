@@ -151,7 +151,7 @@ export default function AuthProviders() {
                 <>
                     <form className="flex flex-col w-full mt-5">
                         <input
-                            className="w-full p-3 bg-black rounded-lg placeholder:text-mediumGray "
+                            className="w-full p-3 bg-black rounded-lg placeholder:text-mediumGray hover:opacity-80 "
                             id="email"
                             type="email"
                             placeholder="Enter your email"
@@ -166,7 +166,7 @@ export default function AuthProviders() {
                         )}
 
                         <button
-                            className="w-full p-3 bg-green-500 shadow-2xl rounded-lg mt-5 flex justify-center"
+                            className="w-full p-3 bg-green-500 hover:opacity-90 shadow-2xl rounded-lg mt-5 flex justify-center"
                             style={{
                                 boxShadow: "0 0 20px #22C55E",
                             }}
