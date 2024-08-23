@@ -1067,7 +1067,7 @@ export default function UserProfile() {
     ) : (
         <>
             <div className="mt-72 w-full flex justify-center">
-                <div className="flex flex-col items-center rounded-lg bg-darkGray p-10 shadow-lg">
+                <div className="flex flex-col items-center rounded-xl bg-darkGray p-10 shadow-lg">
                     <div className="flex items-end gap-2">
                         <h1 className="text-2xl text-green-500">
                             Sign in to view your profile
@@ -1078,9 +1078,9 @@ export default function UserProfile() {
                             className="h-12 w-12 object-contain"
                         />
                     </div>
-                    <div className=" mt-3 flex justify-center">
+                    <div className=" mt-5 flex justify-center">
                         <button
-                            className="text-md keeb-share-preview-button mt-5 flex items-center gap-2 rounded-md bg-green-500 py-2 pr-4 text-black "
+                            className="text-md keeb-share-preview-button flex items-center gap-2 rounded-md bg-green-500 py-2 pr-4 text-black "
                             style={{
                                 boxShadow: "0 0 20px #22C55E",
                             }}

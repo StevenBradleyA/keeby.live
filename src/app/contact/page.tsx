@@ -18,6 +18,7 @@ export default function ContactUs() {
 
     const [text, setText] = useState<string>("");
     const [email, setEmail] = useState<string>("");
+    const [type, setType] = useState<string>("help");
 
     const [errors, setErrors] = useState<ErrorsObj>({});
     const [isFinished, setIsFinished] = useState<boolean>(false);
@@ -61,6 +62,7 @@ export default function ContactUs() {
                 userId: sessionData.user.id,
                 text: text,
                 email: email,
+                type: type,
             };
             mutate(data);
         }
@@ -82,68 +84,68 @@ export default function ContactUs() {
         setErrors(errorsObj);
     }, [text, email]);
 
-
-
-    // todo definetly add a category or something here 
-
-    // category - suggestion - help - compliment 
-
-    // if compliment... thank you. I love mechanical keyboards so I wanted to share that with others by making keeby. 
-
     return (
         <>
-            <div
-                className="fixed bottom-0 left-0 right-0 top-0 z-10 "
-                // style={{
-                //     background:
-                //         "linear-gradient(to bottom, #000000, #050505, #0A0A0A, #0F0F0F, #141414, #191919, #1E1E1E, #232323, #1B3833, #237544, #2B8E4F, #34A05A, #3AB35C)",
-                // }}
-            ></div>
+            <div className="fixed bottom-0 left-0 right-0 top-0 z-10 "></div>
             <div className="relative z-10 h-[90vh] w-full overflow-hidden">
                 <div className="contact-grid absolute z-20"></div>
                 <div className="contact-grid-mirror absolute z-20 "></div>
 
-                <div className="absolute left-1/2 top-1/2 z-20 w-[600px] -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-2xl border-2 border-green-500 bg-black/50 p-10 text-green-500">
+                <div className="absolute left-1/2 top-1/2 z-20 w-[600px] -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-xl border-2 border-green-500 bg-black/50 p-10 text-green-500">
                     {isFinished === false ? (
                         <>
-                            <h1 className="text-xl">
-                                Need Help? Submit a ticket below to contact us!
-                            </h1>
+                            <div className="w-full flex justify-center">
+                                <h1 className="text-2xl">Contact</h1>
+                            </div>
 
-                            <form className="mt-5">
-                                <div className="flex w-full flex-col ">
-                                    <input
-                                        id="email"
-                                        value={email}
+                            <form className=" flex flex-col">
+                                <div className="w-full justify-end flex">
+                                    <select
+                                        id="layoutTypeInput"
+                                        className=" h-10 w-1/3 rounded-md bg-green-500 p-1 px-2 py-1 text-black hover:opacity-80 ease-in"
+                                        value={type}
                                         onChange={(e) =>
-                                            setEmail(e.target.value)
+                                            setType(e.target.value)
                                         }
-                                        className=" h-10 w-full rounded-md bg-dark p-1 text-green-500 "
-                                        placeholder="Email"
-                                    />
-                                    {enableErrorDisplay && errors.email && (
-                                        <p className="text-sm text-red-400">
-                                            {errors.email}
-                                        </p>
-                                    )}
+                                    >
+                                        <option value="help">Help</option>
+                                        <option value="bug">Bug Report</option>
+                                        <option value="feature">
+                                            Feature Request
+                                        </option>
+                                        <option value="praise">
+                                            I love Keeby
+                                        </option>
+                                    </select>
                                 </div>
-                                <div className="mt-3 flex w-full flex-col ">
-                                    <textarea
-                                        id="text"
-                                        value={text}
-                                        onChange={(e) =>
-                                            setText(e.target.value)
-                                        }
-                                        className=" h-32 w-full overflow-y-auto rounded-md bg-dark p-1 text-green-500 "
-                                        placeholder="Describe your issue"
-                                        style={{ resize: "none" }}
-                                    />
-                                    {enableErrorDisplay && errors.text && (
-                                        <p className="text-sm text-red-400">
-                                            {errors.text}
-                                        </p>
-                                    )}
-                                </div>
+
+                                <input
+                                    id="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    className=" mt-2 h-10 w-full rounded-md bg-dark p-1 text-green-500 hover:opacity-80 ease-in"
+                                    placeholder="Email"
+                                />
+                                {enableErrorDisplay && errors.email && (
+                                    <p className="text-sm text-red-400">
+                                        {errors.email}
+                                    </p>
+                                )}
+
+                                <textarea
+                                    id="text"
+                                    value={text}
+                                    onChange={(e) => setText(e.target.value)}
+                                    className=" mt-2 h-32 w-full rounded-md bg-dark p-1 text-green-500 hover:opacity-80 ease-in resize-none"
+                                    placeholder="Describe your issue"
+                                    style={{ resize: "none" }}
+                                />
+                                {enableErrorDisplay && errors.text && (
+                                    <p className="text-sm text-red-400">
+                                        {errors.text}
+                                    </p>
+                                )}
+
                                 <div className="flex justify-center">
                                     <button
                                         onClick={(e) => {
@@ -168,10 +170,27 @@ export default function ContactUs() {
                     ) : (
                         <>
                             <div className="flex  flex-col items-center w-full">
-                                <h2 className="text-2xl">Thank You</h2>
-                                <p>
-                                    We will get back to you as soon as possible!
-                                </p>
+                                {type !== "praise" ? (
+                                    <>
+                                        <h2 className="text-2xl">Thank You</h2>
+                                        <p>
+                                            We will get back to you as soon as
+                                            possible!
+                                        </p>
+                                    </>
+                                ) : (
+                                    <>
+                                        <h2 className="text-2xl">
+                                            Thank you for the love!
+                                        </h2>
+                                        <p>
+                                            Your kind words mean the world! I
+                                            made keeby to share my passion with
+                                            others, so I'm very happy you're
+                                            enjoying the site.
+                                        </p>
+                                    </>
+                                )}
 
                                 <Image
                                     alt="keeby mascot"
@@ -184,7 +203,7 @@ export default function ContactUs() {
                 </div>
             </div>
 
-            <div className=" z-10 w-full">
+            <div className=" z-30 relative w-full">
                 <Footer />
             </div>
         </>
