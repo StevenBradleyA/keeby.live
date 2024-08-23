@@ -1,11 +1,11 @@
+"use client";
 import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
-import type { RefObject } from "react";
 import { api } from "~/trpc/react";
 import React from "react";
 
 interface CreateMessageProps {
-    activeTransactionId: string;
+    selectedTransactionId: string;
     recipientId: string;
     userId: string;
 }
@@ -15,7 +15,7 @@ interface ErrorsObj {
 }
 
 export default function CreateMessage({
-    activeTransactionId,
+    selectedTransactionId,
     recipientId,
     userId,
 }: CreateMessageProps) {
@@ -55,12 +55,6 @@ export default function CreateMessage({
         }
     };
 
-    const handleSubmitClick = (e: React.FormEvent) => {
-        e.preventDefault();
-
-        submit(e);
-    };
-
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -74,7 +68,7 @@ export default function CreateMessage({
                 text,
                 userId: userId,
                 recipientId: recipientId,
-                listingTransactionId: activeTransactionId,
+                listingTransactionId: selectedTransactionId,
             };
 
             setText("");
@@ -109,7 +103,10 @@ export default function CreateMessage({
                 />
                 <button
                     className="send-message-button bg-messenger absolute right-1 top-1 z-10 rounded-full p-[2px]"
-                    onClick={handleSubmitClick}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        submit(e);
+                    }}
                     ref={buttonRef}
                 >
                     <svg

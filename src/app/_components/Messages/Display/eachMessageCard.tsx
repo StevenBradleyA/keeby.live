@@ -1,12 +1,4 @@
 import type { Message } from "@prisma/client";
-import {
-    format,
-    formatDistanceToNow,
-    isThisWeek,
-    isThisYear,
-    isToday,
-    isYesterday,
-} from "date-fns";
 import defaultProfile from "@public/Images/defaultProfile.png";
 import Image from "next/image";
 
@@ -24,31 +16,12 @@ export default function EachMessageCard({
     message,
     userId,
 }: EachMessageCardProps) {
-    // const formatDate = (date: Date) => {
-    //     const messageDate = new Date(date);
-
-    //     if (isToday(messageDate)) {
-    //         return formatDistanceToNow(messageDate, { addSuffix: true });
-    //     } else if (isYesterday(messageDate)) {
-    //         return "Yesterday";
-    //     } else if (isThisWeek(messageDate)) {
-    //         return format(messageDate, "EEEE");
-    //     } else if (isThisYear(messageDate)) {
-    //         return format(messageDate, "MMM d");
-    //     } else {
-    //         return format(messageDate, "MMM d, yyyy");
-    //     }
-    // };
-
     return (
         <div className="w-full overflow-x-hidden ">
-            {/* <div className="my-2 text-center text-xs text-mediumGray opacity-50">
-                {formatDate(message.createdAt)}
-            </div> */}
             {message.userId === userId ? (
                 <div className=" flex  justify-end rounded-md pr-3 ">
                     <div
-                        className="whitespace-pre-wrap break-words  rounded-md px-4  py-2 text-[#0ad5c1] bg-messenger "
+                        className="whitespace-pre-wrap break-words  rounded-md px-4 py-2 text-messageBlue bg-messenger "
                         style={{
                             maxWidth: "66.666%",
                         }}
@@ -120,7 +93,7 @@ export default function EachMessageCard({
                         <polygon points="3,8 11,0 11,16" />
                     </svg>
                     <div
-                        className="whitespace-pre-wrap break-words rounded-md bg-darkGray px-4 py-2 text-[#0ec879] bg-messenger"
+                        className="whitespace-pre-wrap break-words rounded-md bg-darkGray px-4 py-2 text-messageGreen bg-messenger"
                         style={{
                             maxWidth: "66.666%",
                         }}

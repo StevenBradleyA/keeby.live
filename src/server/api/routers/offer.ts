@@ -92,7 +92,12 @@ export const offerRouter = createTRPCRouter({
                     id: listingId,
                 },
             });
-            if (listingCheck?.status === "SOLD") {
+
+            if (!listingCheck) {
+                throw new Error("Can't find listing");
+            }
+
+            if (listingCheck.status === "SOLD") {
                 return { pendingOffer: true };
             }
 

@@ -1,51 +1,60 @@
-'use client'
-import { useEffect, useState } from "react";
-import { api } from "~/trpc/react";
+"use client";
+import { useState } from "react";
 import EachConversationCard from "./eachConversationCard";
 import keebo from "@public/Profile/keebo.png";
 import Image from "next/image";
 import MessageChatCheck from "./messageChatCheck";
+import type { Message } from "@prisma/client";
 
-export default function DisplayMessages({ userId }: { userId: string }) {
-    const { data: messages, isLoading } =
-        api.message.getAllByUserId.useQuery(userId);
+interface DisplayMessagesProps {
+    userId: string;
+    messages: EachMessage[];
+}
 
-    const [activeTransactionId, setActiveTransactionId] = useState<
-        string | null
-    >(null);
-    const [recipientId, setRecipientId] = useState<string>("");
-    const [sellerEmail, setSellerEmail] = useState<string>("");
-    const [listingTitle, setListingTitle] = useState<string>("");
-    const [agreedPrice, setAgreedPrice] = useState<number>(0);
+interface EachMessage extends Message {
+    user: {
+        username: string | null;
+        profile: string | null;
+    };
+    recipient: {
+        username: string | null;
+        profile: string | null;
+    };
+    listingTransaction: {
+        agreedPrice: number;
+        listing: {
+            title: string;
+        } | null;
+    };
+}
 
-    useEffect(() => {
-        if (
-            !isLoading &&
-            messages &&
-            messages[0] &&
-            activeTransactionId === null
-        ) {
-            setActiveTransactionId(messages[0].listingTransactionId);
-
-            setRecipientId(
-                messages[0].userId === userId
-                    ? messages[0].recipientId
-                    : messages[0].userId,
-            );
-            setSellerEmail(
-                messages[0].recipient.paypalEmail
-                    ? messages[0].recipient.paypalEmail
-                    : "",
-            );
-            setAgreedPrice(messages[0].listingTransaction.agreedPrice);
-            // setListingTitle(messages[0].listingTransaction.listing.title);
-        }
-    }, [isLoading]);
+export default function DisplayMessages({
+    userId,
+    messages,
+}: DisplayMessagesProps) {
+    const [selectedTransactionId, setSelectedTransactionId] = useState<string>(
+        messages[0] ? messages[0].listingTransactionId : "",
+    );
+    const [recipientId, setRecipientId] = useState<string>(
+        messages[0]
+            ? messages[0].userId === userId
+                ? messages[0].recipientId
+                : messages[0].userId
+            : "",
+    );
+    const [listingTitle, setListingTitle] = useState<string>(
+        messages[0] && messages[0].listingTransaction.listing
+            ? messages[0].listingTransaction.listing.title
+            : "Transaction canceled",
+    );
+    const [listingPrice, setListingPrice] = useState<number>(
+        messages[0] ? messages[0].listingTransaction.agreedPrice : 0,
+    );
 
     return (
         <>
-            <div className="flex h-[80vh] w-full gap-2 tablet:px-4 desktop:px-16 ">
-                <div className="h-full w-1/4 overflow-y-auto rounded-xl bg-darkGray tablet:p-2 desktop:p-3">
+            <div className="flex h-[80vh] w-full gap-2 tablet:px-4 desktop:px-16 px-3 mt-40 ">
+                <div className="h-full w-1/4 overflow-y-auto rounded-xl bg-darkGray tablet:p-2 desktop:p-3 flex flex-col gap-2">
                     {messages &&
                         messages.map((message) => (
                             <div
@@ -55,40 +64,42 @@ export default function DisplayMessages({ userId }: { userId: string }) {
                                 <EachConversationCard
                                     userId={userId}
                                     message={message}
-                                    setActiveTransactionId={
-                                        setActiveTransactionId
+                                    selectedTransactionId={
+                                        selectedTransactionId
+                                    }
+                                    setSelectedTransactionId={
+                                        setSelectedTransactionId
                                     }
                                     setRecipientId={setRecipientId}
+                                    setListingTitle={setListingTitle}
+                                    setListingPrice={setListingPrice}
                                 />
                             </div>
                         ))}
                 </div>
                 <div className="h-full w-3/4 ">
-                    {activeTransactionId === null && (
+                    {selectedTransactionId === "" && (
                         <div className=" mx-10 mt-10 flex items-end gap-2 text-mediumGray">
                             <h1>
-                                {`You have no messages. Buyers and sellers will be automatically connected here once a purchase is made.`}
+                                {`Select a conversation to see your messages!`}
                             </h1>
                             <Image
                                 src={keebo}
                                 alt="keeby mascot"
-                                className="w-10"
+                                className="w-10 h-10 object-contain"
                             />
                         </div>
                     )}
 
-                    {typeof activeTransactionId === "string" &&
-                        activeTransactionId.length > 0 &&
+                    {selectedTransactionId.length > 0 &&
                         recipientId.length > 0 &&
-                        listingTitle.length > 0 &&
-                        agreedPrice > 0 && (
+                        messages && (
                             <MessageChatCheck
-                                activeTransactionId={activeTransactionId}
+                                selectedTransactionId={selectedTransactionId}
                                 recipientId={recipientId}
-                                sellerEmail={sellerEmail}
                                 userId={userId}
+                                listingPrice={listingPrice}
                                 listingTitle={listingTitle}
-                                agreedPrice={agreedPrice}
                             />
                         )}
                 </div>

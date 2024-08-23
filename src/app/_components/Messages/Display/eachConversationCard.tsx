@@ -1,5 +1,5 @@
+'use client'
 import type { Message } from "@prisma/client";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 import defaultProfile from "@public/Images/defaultProfile.png";
 import {
@@ -12,9 +12,12 @@ import {
 
 interface EachConversationCardProps {
     message: MessageCard;
-    setActiveTransactionId: (activeTransactionId: string) => void;
     setRecipientId: (recipientId: string) => void;
     userId: string;
+    selectedTransactionId: string;
+    setSelectedTransactionId: (selectedTransactionId: string) => void;
+    setListingPrice: (listingPrice: number) => void;
+    setListingTitle: (listingTitle: string) => void;
 }
 
 interface MessageCard extends Message {
@@ -27,15 +30,19 @@ interface MessageCard extends Message {
         profile: string | null;
     };
     listingTransaction: {
-        listing: { title: string };
+        agreedPrice: number;
+        listing: { title: string } | null;
     };
 }
 
 export default function EachConversationCard({
     message,
-    setActiveTransactionId,
     setRecipientId,
+    selectedTransactionId,
+    setSelectedTransactionId,
     userId,
+    setListingTitle,
+    setListingPrice,
 }: EachConversationCardProps) {
     const isSender = message.userId === userId;
     const otherParty = isSender === true ? message.recipient : message.user;
@@ -66,10 +73,16 @@ export default function EachConversationCard({
 
     return (
         <button
-            className="mb-2 flex w-full gap-2 rounded-md bg-white/5 p-2 text-xs   transition-background duration-400 ease-custom-cubic hover:bg-white/10 "
+            className={` flex w-full gap-2 rounded-md  p-2 text-xs ease-in hover:bg-white/10 ${selectedTransactionId === message.listingTransactionId ? "bg-white/10" : "bg-white/5"}`}
             onClick={() => {
-                setActiveTransactionId(message.listingTransactionId);
                 setRecipientId(isSender ? message.recipientId : message.userId);
+                setSelectedTransactionId(message.listingTransactionId);
+                setListingPrice(message.listingTransaction.agreedPrice);
+                setListingTitle(
+                    message.listingTransaction.listing
+                        ? message.listingTransaction.listing.title
+                        : "Transaction canceled",
+                );
             }}
         >
             <Image
@@ -89,8 +102,12 @@ export default function EachConversationCard({
                         {formatDate(message.createdAt)}
                     </div>
                 </div>
-                <h1 className="mt-1 tablet:text-xs desktop:text-base">
-                    {message.listingTransaction.listing.title}
+                <h1
+                    className={`mt-1 tablet:text-xs desktop:text-base ${message.listingTransaction.listing ? "text-messageBlue" : "text-mediumGray"}`}
+                >
+                    {message.listingTransaction.listing
+                        ? message.listingTransaction.listing.title
+                        : "Transaction canceled"}
                 </h1>
             </div>
         </button>

@@ -1,30 +1,36 @@
-'use client'
+"use client";
 import { signIn, useSession } from "next-auth/react";
 import DisplayMessages from "~/app/_components/Messages/Display/displayMessages";
 import keebo from "@public/Profile/keebo.png";
 import Image from "next/image";
 import LoadingSpinner from "~/app/_components/Loading";
+import GetAllMessages from "~/app/_components/Messages/Display/getAllMessages";
 
 export default function MessageCheck() {
     const { data: sessionData, status } = useSession();
 
     if (status === "loading") {
         return (
-            <div className="mt-48">
-                <LoadingSpinner size="40px" />
+            <div className="mt-40 ml-20 text-messageBlue">
+                <LoadingSpinner size="20px" />
             </div>
         );
     }
 
     return sessionData && sessionData.user ? (
-        <DisplayMessages userId={sessionData.user.id} />
+        // <DisplayMessages userId={sessionData.user.id} />
+        <GetAllMessages userId={sessionData.user.id}/>
     ) : (
         <div className="mt-40 rounded-md bg-darkGray p-10">
             <div className="flex items-end gap-2">
                 <h1 className="text-2xl text-green-500">
-                    Sign in to use this page
+                    Sign in to see your messages
                 </h1>
-                <Image alt="keebo" src={keebo} className="h-12 w-12" />
+                <Image
+                    alt="keebo"
+                    src={keebo}
+                    className="h-12 w-12 object-contain"
+                />
             </div>
             <div className=" flex justify-center">
                 <button

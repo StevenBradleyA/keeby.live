@@ -24,7 +24,6 @@ export const messageRouter = createTRPCRouter({
                         select: {
                             username: true,
                             profile: true,
-                            paypalEmail: true,
                         },
                     },
                     listingTransaction: {
@@ -39,7 +38,7 @@ export const messageRouter = createTRPCRouter({
                     },
                 },
                 orderBy: {
-                    createdAt: "asc",
+                    createdAt: "desc",
                 },
                 distinct: ["listingTransactionId"],
             });

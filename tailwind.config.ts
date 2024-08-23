@@ -26,6 +26,8 @@ export default {
                 poolBlue: "rgb(57, 162, 217)",
                 vibrantPurple: "rgb(175, 110, 255)",
                 vibrantGreen: "rgb(0, 255, 170)",
+                messageBlue: "#0ad5c1",
+                messageGreen: "#0ec879",
             },
             borderColor: {
                 mediumGray: "#616161",
@@ -45,6 +47,8 @@ export default {
                 poolBlue: "rgb(57, 162, 217)",
                 vibrantPurple: "rgb(175, 110, 255)",
                 vibrantGreen: "rgb(0, 255, 170)",
+                messageBlue: "#0ad5c1",
+                messageGreen: "#0ec879",
             },
             fontFamily: {
                 mrDafoe: ["Mr Dafoe", "cursive"],
