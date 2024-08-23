@@ -1,12 +1,10 @@
+'use client'
 import type { ListingTransaction } from "@prisma/client";
-import { formatDistance } from "date-fns";
 import Link from "next/link";
-import { useState } from "react";
-import ModalDialog from "~/app/_components/Context/Modal";
 
 interface EachOfferViewCardProps {
     transaction: ListingTransaction & {
-        listing: Listing;
+        listing: Listing | null;
     };
 }
 
@@ -20,75 +18,53 @@ export default function EachPurchasedTransactionCard({
 }: EachOfferViewCardProps) {
     const now = new Date();
 
-    // todo carrier and tracking number input
-
-    // todo PURCHASED SIDE OF THINGS SHOW TRANSACTION ID COST THEY PAYED etc...
-
     return (
         <>
-            <div className="flex w-96 flex-col items-stretch overflow-hidden rounded-2xl bg-black/30 hover:bg-black/20 transition-background duration-300 ease-custom-cubic p-3 font-poppins text-sm text-green-500  ">
+            <div className="flex w-96 flex-col text-xs rounded-2xl bg-darkGray shadow-lg  p-5 font-poppins text-green-500  ">
                 <div className=" w-full">
-                    <h2>Order Summary</h2>
-                    <div className="flex w-full justify-between">
-                        <div className="mt-2 flex flex-col text-xs">
-                            <h3 className="text-white/50">Order Number</h3>
-                            <p>#{transaction.paypalOrderId}</p>
-                        </div>
-                        <div className="mt-2 flex flex-col text-xs">
+                    <h2 className="text-base">Order Summary</h2>
+                    <div className="flex w-full justify-between mt-2">
+                        <div className=" flex flex-col ">
                             <h3 className="text-white/50">Keyboard</h3>
-                            <p>{transaction.listing.title}</p>
+                            <p>
+                                {transaction.listing
+                                    ? transaction.listing.title
+                                    : "seller canceled transaction :("}
+                            </p>
                         </div>
+                        {transaction.listing && (
+                            <div className=" flex flex-col">
+                                <h3 className="text-white/50">Seller</h3>
+                                <p>{transaction.listing.seller.username}</p>
+                            </div>
+                        )}
                     </div>
                     <div className="mt-1 h-[2px] w-full bg-white/50"></div>
 
-                    <div className="mt-2 flex justify-between">
-                        <h3 className="text-white/30">Total Payed</h3>
-                        <div>${(transaction.payed / 100).toFixed(2)}</div>
-                    </div>
                     <div className="mt-1 flex justify-between">
-                        <h3 className="text-white/30">Seller Agreed Price </h3>
-                        <div>${(transaction.agreedPrice / 100).toFixed(2)}</div>
+                        <h3 className="text-white/50">Agreed Price </h3>
+                        <div>${transaction.agreedPrice}</div>
                     </div>
                 </div>
-                <div className="flex items-start justify-center tablet:my-5 desktop:my-3">
+                {transaction.listing ? (
                     <Link
                         href="/profile/messages"
                         aria-label="messages"
-                        className=" keeb-shop-offer-button z-10 flex cursor-pointer items-center gap-2 rounded-md bg-green-500 py-3 pl-1 pr-5  text-black "
-                        style={{
-                            boxShadow: "0 0 20px #22C55E",
-                        }}
+                        className=" z-10 flex items-center gap-2 rounded-md bg-green-500 py-1 px-4 text-black hover:opacity-80 ease-in mt-5 self-start "
                     >
-                        <>
-                            <svg
-                                className="keeb-shop-offer-button-arrow w-4"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    stroke="currentColor"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="3"
-                                    d="M3.515 12h16.97m0 0L13.01 4.525M20.485 12l-7.475 7.476"
-                                ></path>
-                            </svg>
-                            <span className="keeb-shop-offer-button-text">
-                                {`Messages `}
-                            </span>
-
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="currentColor"
-                                className="keeb-shop-offer-button-circle w-2"
-                                viewBox="0 0 32 32"
-                            >
-                                <circle cx="16" cy="16" r="16" />
-                            </svg>
-                        </>
+                        <svg
+                            className="w-5 h-5"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                        >
+                            <path d="M5.25,18 C3.45507456,18 2,16.5449254 2,14.75 L2,6.25 C2,4.45507456 3.45507456,3 5.25,3 L18.75,3 C20.5449254,3 22,4.45507456 22,6.25 L22,14.75 C22,16.5449254 20.5449254,18 18.75,18 L13.0124851,18 L7.99868152,21.7506795 C7.44585139,22.1641649 6.66249789,22.0512036 6.2490125,21.4983735 C6.08735764,21.2822409 6,21.0195912 6,20.7499063 L5.99921427,18 L5.25,18 Z M12.5135149,16.5 L18.75,16.5 C19.7164983,16.5 20.5,15.7164983 20.5,14.75 L20.5,6.25 C20.5,5.28350169 19.7164983,4.5 18.75,4.5 L5.25,4.5 C4.28350169,4.5 3.5,5.28350169 3.5,6.25 L3.5,14.75 C3.5,15.7164983 4.28350169,16.5 5.25,16.5 L7.49878573,16.5 L7.49899997,17.2497857 L7.49985739,20.2505702 L12.5135149,16.5 Z"></path>
+                        </svg>
                     </Link>
-                </div>
+                ) : (
+                    <div className=" z-10 flex items-center gap-2 rounded-md bg-mediumGray py-1 px-4 text-black  mt-5 self-start ">
+                        Transaction Revoked
+                    </div>
+                )}
             </div>
         </>
     );

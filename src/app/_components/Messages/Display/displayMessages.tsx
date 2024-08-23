@@ -1,3 +1,4 @@
+'use client'
 import { useEffect, useState } from "react";
 import { api } from "~/trpc/react";
 import EachConversationCard from "./eachConversationCard";
@@ -37,7 +38,7 @@ export default function DisplayMessages({ userId }: { userId: string }) {
                     : "",
             );
             setAgreedPrice(messages[0].listingTransaction.agreedPrice);
-            setListingTitle(messages[0].listingTransaction.listing.title);
+            // setListingTitle(messages[0].listingTransaction.listing.title);
         }
     }, [isLoading]);
 

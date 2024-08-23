@@ -13,7 +13,6 @@ export const transactionRouter = createTRPCRouter({
                 where: {
                     listing: {
                         sellerId: userId,
-                        status: "SOLD",
                     },
                 },
                 include: {
@@ -33,9 +32,6 @@ export const transactionRouter = createTRPCRouter({
             const purchased = await ctx.db.listingTransaction.findMany({
                 where: {
                     buyerId: userId,
-                    listing: {
-                        status: "SOLD",
-                    },
                 },
                 include: {
                     listing: {
