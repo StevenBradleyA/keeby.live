@@ -1025,10 +1025,10 @@ export default function UserProfile() {
                         keebShopCategory === "LISTINGS" && (
                             <ManageListings userId={sessionData.user.id} />
                         )}
-                    {/* {toggle === "MARKETPLACE" && keebShopCategory === "OFFERS" && (
+                    {toggle === "MARKETPLACE" && keebShopCategory === "OFFERS" && (
                         <DisplayOffers userId={sessionData.user.id} />
                     )}
-                    {toggle === "MARKETPLACE" &&
+                    {/* {toggle === "MARKETPLACE" &&
                         keebShopCategory === "REVIEWS" && (
                             <DisplayProfileReviews
                                 userId={sessionData.user.id}

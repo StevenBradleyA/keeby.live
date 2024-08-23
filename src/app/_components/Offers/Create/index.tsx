@@ -1,12 +1,13 @@
+"use client";
 import type { Images, Listing } from "@prisma/client";
 import { useEffect, useState } from "react";
 import { api } from "~/trpc/react";
-import { debounce } from "lodash";
 import Link from "next/link";
 import toast from "react-hot-toast";
-import { useSession } from "next-auth/react";
+import keebo from "@public/Profile/keebo.png";
 import LoadingSpinner from "~/app/_components/Loading";
 import type { Session } from "next-auth";
+import Image from "next/image";
 
 interface CreateOfferProps {
     closeModal: () => void;
@@ -44,6 +45,9 @@ export default function CreateOffer({
     listing,
     session,
 }: CreateOfferProps) {
+    const utils = api.useUtils();
+
+    // state
     const [price, setPrice] = useState<number>(0);
     const [offerAlreadyExists, setOfferAlreadyExists] =
         useState<boolean>(false);
@@ -53,9 +57,8 @@ export default function CreateOffer({
     const [enableErrorDisplay, setEnableErrorDisplay] =
         useState<boolean>(false);
     const [page, setPage] = useState<number>(0);
-    const utils = api.useUtils();
 
-    // create
+    // server
     const { mutate } = api.offer.create.useMutation({
         onSuccess: (data) => {
             if (data?.pendingOffer === false) {
@@ -82,15 +85,18 @@ export default function CreateOffer({
         },
     });
 
+    // helpers
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
 
         setEnableErrorDisplay(true);
 
         if (!Object.values(errors).length && !isSubmitting && session) {
+            const roundedPrice = Math.round(price);
+
             try {
                 const data = {
-                    price: Math.round(price * 100),
+                    price: roundedPrice,
                     listingId: listing.id,
                     buyerId: session.user.id,
                     buyerUsername: session.user.username,
@@ -108,42 +114,21 @@ export default function CreateOffer({
         }
     };
 
-    // auto rounding
-    const roundToTwo = (num: number): number => {
-        return Math.round((num + Number.EPSILON) * 100) / 100;
-    };
-
-    const debouncePriceUpdate = debounce((newPrice: number) => {
-        if (parseFloat(newPrice.toFixed(2)) !== newPrice) {
-            setPrice(roundToTwo(newPrice));
-        }
-    }, 500);
-
-    useEffect(() => {
-        const priceParts = price.toString().split(".");
-        if (
-            priceParts.length > 1 &&
-            priceParts[1] &&
-            priceParts[1].length > 2
-        ) {
-            debouncePriceUpdate(price);
-        }
-    }, [price, debouncePriceUpdate]);
-
-    // errors
+    // monitoring
     useEffect(() => {
         const errorsObj: ErrorsObj = {};
 
         if (price === 0) {
             errorsObj.price = "Please enter a price to make an offer.";
         }
-        if (price <= (listing.price / 100) * 0.5 && price > 0) {
+        if (price <= listing.price * 0.3 && price > 0) {
             errorsObj.priceSmall =
-                "Please make a more competitive offer. It should exceed 50% of the listing price.";
+                "Please make a more competitive offer. It should exceed 30% of the listing price.";
         }
-        if (price > listing.price / 100) {
+        if (price > listing.price) {
             errorsObj.priceExcess = "Please provide a price below the asking.";
         }
+
         if (listing.sellerId === session?.user.id) {
             errorsObj.listingOwner =
                 "Offers cannot be made on your own listings.";
@@ -182,7 +167,7 @@ export default function CreateOffer({
                         >
                             2
                         </div>
-                        <h1>Offer</h1>
+                        <h3>Offer</h3>
                     </button>
                 </div>
             </div>
@@ -190,16 +175,38 @@ export default function CreateOffer({
                 <>
                     <div className="mt-10 flex w-full justify-center gap-10 text-white">
                         <div className="w-2/3 p-5">
-                            <h2>Hey there,</h2>
+                            <div className="flex items-end gap-1 text-xl">
+                                <h1>Make an Offer</h1>
+                                <Image
+                                    alt="keebo mascot"
+                                    src={keebo}
+                                    className="w-8 h-8 object-contain"
+                                />
+                            </div>
                             <p className="mt-2">
-                                Before making an offer please know that. Keeby
-                                does not handle transactions. When you agree to
-                                buy a keyboard you will be put in a private
-                                message with the seller. All purchases are
-                                directly between buyer and seller. Keeby
-                                recommends only using paypal for transactions
-                                and read keeby rules and scam prevention to keep
-                                yourself safe.
+                                Keeby does not handle transactions. If the
+                                seller accepts your offer, you will be put in a
+                                private message with the seller. All purchases
+                                and shipping are directly between buyer and
+                                seller. Keeby recommends only using paypal for
+                                transactions because they have a strong dispute
+                                resolution. Please read{" "}
+                                <Link
+                                    href={"/how-keeby-works"}
+                                    aria-label="Learn how keeby works"
+                                    className="hover:text-green-500 ease-in "
+                                >
+                                    keeby rules
+                                </Link>{" "}
+                                and{" "}
+                                <Link
+                                    href={"/scam-prevention"}
+                                    aria-label="Learn how to prevent scams"
+                                    className="hover:text-green-500 ease-in"
+                                >
+                                    scam prevention
+                                </Link>{" "}
+                                to keep yourself safe!
                             </p>
                             <div className="w-full flex justify-center mt-10">
                                 <button
@@ -247,7 +254,7 @@ export default function CreateOffer({
                         <Link
                             href={`/rules`}
                             aria-label="keeby rules"
-                            className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
+                            className="ease-in hover:text-green-500"
                         >
                             KeebyRules
                         </Link>{" "}
@@ -255,7 +262,7 @@ export default function CreateOffer({
                         <Link
                             href={`/scam-prevention`}
                             aria-label="scam prevention"
-                            className="transition-colors duration-400 ease-custom-cubic hover:text-green-500"
+                            className="ease-in hover:text-green-500"
                         >
                             ScamPrevention
                         </Link>{" "}
@@ -275,31 +282,25 @@ export default function CreateOffer({
                             list="defaultNumbers"
                             className=" w-full rounded-md bg-dark px-5 py-3 text-green-500"
                             placeholder="$ Price"
-                            value={price.toString()}
+                            value={price}
                             onChange={(e) => setPrice(+e.target.value)}
                             min="0"
                             max={listing.price}
-                            step="0.01"
+                            step="10"
                         />
-                        <p className="absolute left-2 top-3 text-green-500">
+                        <div className="absolute left-2 top-3 text-green-500">
                             $
-                        </p>
+                        </div>
                     </div>
                     <datalist id="defaultNumbers">
-                        <option
-                            value={((listing.price / 100) * 0.9).toFixed(0)}
-                        >
-                            ${((listing.price / 100) * 0.9).toFixed(2)}
+                        <option value={Math.round(listing.price * 0.9)}>
+                            ${Math.round(listing.price * 0.9)}
                         </option>
-                        <option
-                            value={((listing.price / 100) * 0.8).toFixed(0)}
-                        >
-                            ${((listing.price / 100) * 0.8).toFixed(2)}
+                        <option value={Math.round(listing.price * 0.8)}>
+                            ${Math.round(listing.price * 0.8)}
                         </option>
-                        <option
-                            value={((listing.price / 100) * 0.7).toFixed(0)}
-                        >
-                            ${((listing.price / 100) * 0.7).toFixed(2)}
+                        <option value={Math.round(listing.price * 0.7)}>
+                            ${Math.round(listing.price * 0.7)}
                         </option>
                     </datalist>
                     {enableErrorDisplay && errors.price && (

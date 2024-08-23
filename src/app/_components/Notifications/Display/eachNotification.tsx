@@ -1,3 +1,4 @@
+'use client'
 import type { Notification } from "@prisma/client";
 import { api } from "~/trpc/react";
 import {

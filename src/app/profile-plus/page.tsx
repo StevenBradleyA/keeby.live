@@ -21,6 +21,7 @@ interface ErrorsObj {
     imageLarge?: string;
     username?: string;
     usernameExcess?: string;
+    usernameTaken?: string;
     taken?: string;
     keyboard?: string;
     keyboardExcess?: string;
@@ -209,6 +210,10 @@ export default function ProfilePlus() {
         if (username.length > 30) {
             errorsObj.usernameExcess = "Username cannot exceed 30 characters";
         }
+        if (usernameCheck === true) {
+            errorsObj.usernameTaken = "This username is taken";
+        }
+
         if (!keyboard.length) {
             errorsObj.keyboard = "Please provide your keyboard";
         }
@@ -236,7 +241,7 @@ export default function ProfilePlus() {
         }
 
         setErrors(errorsObj);
-    }, [imageFiles, username, keyboard, switches, keycaps]);
+    }, [imageFiles, username, keyboard, switches, keycaps, usernameCheck]);
 
     useEffect(() => {
         const handler = setTimeout(() => {
@@ -291,6 +296,11 @@ export default function ProfilePlus() {
                                             {errors.usernameExcess}
                                         </p>
                                     )}
+                                {enableErrorDisplay && errors.usernameTaken && (
+                                    <p className="text-xs text-red-400">
+                                        {errors.usernameTaken}
+                                    </p>
+                                )}
                                 <div className="flex items-center w-full mt-5 gap-2 text-white/50 text-xs">
                                     <div className="h-[2px] bg-white/50 w-full"></div>
                                     <h3 className="flex-shrink-0">

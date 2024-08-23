@@ -1,11 +1,19 @@
+"use client";
 import { api } from "~/trpc/react";
 import EachOfferCard from "./eachOfferCard";
 import EachOfferViewCard from "./eachOfferViewCard";
+import LoadingSpinner from "../../Loading";
 
 export default function DisplayOffers({ userId }: { userId: string }) {
-    const { data: allOffers } = api.offer.getAllByUserId.useQuery(userId);
+    const { data: allOffers, isLoading } =
+        api.offer.getAllByUserId.useQuery(userId);
 
-    console.log(allOffers);
+    if (isLoading)
+        return (
+            <div className="mt-10 ml-10">
+                <LoadingSpinner size="20px" />
+            </div>
+        );
 
     return (
         <div className="mt-5 w-full font-poppins">

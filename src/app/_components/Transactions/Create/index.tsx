@@ -6,10 +6,6 @@ import toast from "react-hot-toast";
 import type { Images, Listing } from "@prisma/client";
 import type { Session } from "next-auth";
 
-// import { PayPalButtons } from "@paypal/react-paypal-js";
-
-// todo UNINSTLL SALES_TAX
-
 interface CreateTransactionProps {
     closeModal: () => void;
     listing: EachListing;
@@ -40,52 +36,51 @@ export default function CreateTransaction({
 }: CreateTransactionProps) {
     const [page, setPage] = useState<number>(0);
 
-    const utils = api.useUtils();
-
     // server
+    const { mutate } = api.transaction.createBuyerDriven.useMutation({
+        onSuccess: () => {
+            toast.success("Good choice!", {
+                style: {
+                    borderRadius: "10px",
+                    background: "#333",
+                    color: "#fff",
+                },
+            });
+            toast.success("Seller connection successful!", {
+                style: {
+                    borderRadius: "10px",
+                    background: "#333",
+                    color: "#fff",
+                },
+            });
+            closeModal();
+        },
+    });
 
+    const submit = (e: React.FormEvent) => {
+        e.preventDefault();
 
+        if (session && session.user.id === listing.seller.id) {
+            toast.error("Sorry, you can't buy your own listing", {
+                style: {
+                    borderRadius: "10px",
+                    background: "#333",
+                    color: "#fff",
+                },
+            });
+        }
 
+        if (session && session.user.id !== listing.seller.id) {
+            const data = {
+                buyerId: session.user.id,
+                sellerId: listing.seller.id,
+                listingId: listing.id,
+                agreedPrice: listing.price,
+            };
 
-
-
-    // const { mutate } = api.transaction.create.useMutation({
-    //     onSuccess: (data) => {
-    //         if (data?.isAvailable === false) {
-    //             toast.error("Purchase Failed, try again later", {
-    //                 style: {
-    //                     borderRadius: "10px",
-    //                     background: "#333",
-    //                     color: "#fff",
-    //                 },
-    //             });
-    //         }
-    //         if (data?.isAvailable === true && data.createTransaction) {
-    //             toast.success("Payment Successful!", {
-    //                 style: {
-    //                     borderRadius: "10px",
-    //                     background: "#333",
-    //                     color: "#fff",
-    //                 },
-    //             });
-    //             setPaymentSuccess(true);
-    //             setOrderId(data.createTransaction.paypalOrderId);
-    //         }
-    //         // void utils.listing.getOne.invalidate();
-    //         // void utils.listing.getAllWithFilters.invalidate();
-    //         // void utils.listing.getAllSortedByPopularityWithFilters.invalidate();
-    //         void utils.offer.getAllByUserId.invalidate();
-    //     },
-    // });
-
-
-
-    // helpers
-
-
-    // just do a quick submit that does some error handling and calls mutate
-    // todo check make sure sellerID cannot match the session.userId... can't buy your own listing...
-    // can throw a cheeky toast
+            mutate(data);
+        }
+    };
 
     return (
         <div className="flex flex-col items-center text-white w-[1000px]">
@@ -248,7 +243,10 @@ export default function CreateTransaction({
                                     style={{
                                         boxShadow: "0 0 20px #22C55E",
                                     }}
-                                    onClick={() => setPage(1)}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        submit(e);
+                                    }}
                                 >
                                     <>
                                         <svg

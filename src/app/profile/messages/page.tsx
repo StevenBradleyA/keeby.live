@@ -1,3 +1,4 @@
+'use client'
 import { signIn, useSession } from "next-auth/react";
 import DisplayMessages from "~/app/_components/Messages/Display/displayMessages";
 import keebo from "@public/Profile/keebo.png";

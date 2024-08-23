@@ -130,69 +130,6 @@ export const offerRouter = createTRPCRouter({
             }
         }),
 
-    update: protectedProcedure
-        .input(
-            z.object({
-                id: z.string(),
-                listingId: z.string(),
-                buyerId: z.string(),
-                sellerId: z.string(),
-            }),
-        )
-        .mutation(async ({ input, ctx }) => {
-            const { id, listingId, buyerId, sellerId } = input;
-
-            if (ctx.session.user.id !== sellerId) {
-                throw new Error(
-                    "You do not have the necessary permissions to perform this action.",
-                );
-            }
-
-            const buyer = await ctx.db.user.findUnique({
-                where: {
-                    id: buyerId,
-                },
-            });
-
-            if (buyer && buyer.email) {
-                //todo send buyer email here
-
-                await ctx.db.listing.update({
-                    where: {
-                        id: listingId,
-                    },
-                    data: {
-                        status: "PENDING",
-                    },
-                });
-                await ctx.db.listingOffer.update({
-                    where: {
-                        id: id,
-                    },
-                    data: {
-                        status: "ACCEPTED",
-                    },
-                });
-                const listingCheck = await ctx.db.listing.findUnique({
-                    where: { id: listingId },
-                });
-
-                if (listingCheck) {
-                    await ctx.db.notification.create({
-                        data: {
-                            userId: buyerId,
-                            text: `Your offer was accepted for ${listingCheck.title}!`,
-                            type: "OFFER",
-                            status: "UNREAD",
-                        },
-                    });
-                }
-
-                return "Successfully Updated";
-            }
-            throw new Error("Buyer does not exist or has no valid email.");
-        }),
-
     delete: protectedProcedure
         .input(
             z.object({
@@ -238,29 +175,6 @@ export const offerRouter = createTRPCRouter({
                             status: "UNREAD",
                         },
                     });
-                }
-
-                if (listingStatus === "PENDING" && listingCheck) {
-                    await ctx.db.listing.update({
-                        where: {
-                            id: listingId,
-                        },
-                        data: {
-                            status: "ACTIVE",
-                        },
-                    });
-
-                    await ctx.db.notification.create({
-                        data: {
-                            userId: buyerId,
-                            text: `You waited too long to pay. Seller has revoked your accepted offer.`,
-                            type: "OFFERREJECT",
-                            typeId: listingId,
-                            status: "UNREAD",
-                        },
-                    });
-
-                    return "Deleted and Active";
                 }
 
                 return "Successfully Deleted";

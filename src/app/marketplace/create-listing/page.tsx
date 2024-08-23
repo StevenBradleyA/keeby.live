@@ -207,9 +207,9 @@ export default function CreateListing() {
                 }
 
                 mutate(data);
-                setImageFiles([]);
                 setHasSubmitted(true);
                 setIsSubmitting(false);
+                // setImageFiles([]);
             } catch (error) {
                 console.error("Submission failed:", error);
                 setIsSubmitting(false);
