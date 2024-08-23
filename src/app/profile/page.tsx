@@ -1028,7 +1028,7 @@ export default function UserProfile() {
                     {toggle === "MARKETPLACE" && keebShopCategory === "OFFERS" && (
                         <DisplayOffers userId={sessionData.user.id} />
                     )}
-                    {/* {toggle === "MARKETPLACE" &&
+                    {toggle === "MARKETPLACE" &&
                         keebShopCategory === "REVIEWS" && (
                             <DisplayProfileReviews
                                 userId={sessionData.user.id}
@@ -1037,7 +1037,7 @@ export default function UserProfile() {
                     {toggle === "MARKETPLACE" &&
                         keebShopCategory === "TRANSACTIONS" && (
                             <DisplayTransactions userId={sessionData.user.id} />
-                        )} */}
+                        )}
                     {toggle === "KEEBSHARE" &&
                         keebShareCategory === "FAVORITES" && (
                             <DisplayFavoritePosts

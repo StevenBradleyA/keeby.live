@@ -24,28 +24,24 @@ export default function EachSoldTransactionCard({
 
     return (
         <>
-            <div className="flex w-96 flex-col items-stretch overflow-hidden rounded-2xl bg-black/30 hover:bg-black/20 transition-background duration-300 ease-custom-cubic p-3 font-poppins text-sm text-green-500  ">
+            <div className="flex w-96 flex-col items-stretch overflow-hidden rounded-2xl bg-darkGray shadow-lg transition-background duration-300 ease-custom-cubic p-3 text-xs font-poppins  text-green-500  ">
                 <div className=" w-full">
-                    <h2>Order Summary</h2>
+                    <h2 className="text-base">Order Summary</h2>
                     <div className="flex w-full justify-between">
-                        <div className="mt-2 flex flex-col text-xs">
+                        <div className="mt-2 flex flex-col gap-1">
                             <h3 className="text-white/50">Keyboard</h3>
                             <p>{transaction.listing.title}</p>
                         </div>
-                        <div className="mt-2 flex flex-col text-xs">
+                        <div className="mt-2 flex flex-col gap-1">
                             <h3 className="text-white/50">Buyer</h3>
                             <p>{transaction.buyer.username}</p>
                         </div>
                     </div>
-                    <div className="mt-1 h-[2px] w-full bg-white/50"></div>
+                    <div className="mt-2 h-[2px] w-full bg-white/50"></div>
 
                     <div className="mt-1 flex justify-between">
-                        <h3 className="text-white/30">Agreed Sale Price </h3>
-                        <div>${(transaction.agreedPrice / 100).toFixed(2)}</div>
-                    </div>
-                    <div className="mt-1 flex justify-between">
-                        <h3 className="text-white/30">Buyer Verified</h3>
-                        <div>Confirmed</div>
+                        <h3 className="text-white/50">Agreed Sale Price </h3>
+                        <div>${transaction.agreedPrice}</div>
                     </div>
                 </div>
                 <div className="flex items-center justify-center tablet:my-5 desktop:my-3">

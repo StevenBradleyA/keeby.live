@@ -1,3 +1,4 @@
+'use client'
 import { api } from "~/trpc/react";
 import plus from "@public/Vectors/plus-plus.png";
 import Image from "next/image";
@@ -6,9 +7,10 @@ import ModalDialog from "~/app/_components/Context/Modal";
 import CreateReview from "../Create/createReview";
 import EachReceivedReviewCard from "./eachReceivedReviewCard";
 import EachSentReviewCard from "./eachSentReviewCard";
+import LoadingSpinner from "../../Loading";
 
 export default function DisplayProfileReviews({ userId }: { userId: string }) {
-    const { data: allReviews } =
+    const { data: allReviews, isLoading } =
         api.review.getAllReceivedAndSentByUserId.useQuery(userId);
 
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -20,6 +22,14 @@ export default function DisplayProfileReviews({ userId }: { userId: string }) {
     const closeModal = () => {
         setIsModalOpen(false);
     };
+
+    if(isLoading){
+        return (
+            <div className="ml-10 mt-10">
+                <LoadingSpinner size="20px"/>
+            </div>
+        )
+    }
 
     return (
         <div className="mt-5 w-full font-poppins">

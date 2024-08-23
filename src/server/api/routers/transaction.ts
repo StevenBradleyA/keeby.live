@@ -33,6 +33,9 @@ export const transactionRouter = createTRPCRouter({
             const purchased = await ctx.db.listingTransaction.findMany({
                 where: {
                     buyerId: userId,
+                    listing: {
+                        status: "SOLD",
+                    },
                 },
                 include: {
                     listing: {
@@ -97,6 +100,7 @@ export const transactionRouter = createTRPCRouter({
                 },
                 data: {
                     status: "SOLD",
+                    buyerId: buyerId,
                 },
             });
 
@@ -208,6 +212,7 @@ export const transactionRouter = createTRPCRouter({
                 },
                 data: {
                     status: "SOLD",
+                    buyerId: buyerId,
                 },
             });
 
