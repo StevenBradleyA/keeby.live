@@ -511,205 +511,6 @@ export const listingRouter = createTRPCRouter({
                 };
             }
         }),
-    // getAllWithFilters: publicProcedure
-    //     .input(
-    //         z.object({
-    //             searchQuery: z.string().optional(),
-    //             switchType: z.string().optional(),
-    //             minPrice: z.number().optional(),
-    //             maxPrice: z.number().optional(),
-    //             priceOrder: z.string().optional(),
-    //             layoutType: z.string().optional(),
-    //             assemblyType: z.string().optional(),
-    //             hotSwapType: z.string().optional(),
-    //             soundType: z.string().optional(),
-    //             cursor: z.string().nullish(),
-    //             limit: z.number().min(1).max(100).nullish(),
-    //         }),
-    //     )
-    //     .query(async ({ ctx, input }) => {
-    //         const {
-    //             searchQuery,
-    //             switchType,
-    //             soundType,
-    //             assemblyType,
-    //             hotSwapType,
-    //             layoutType,
-    //             minPrice,
-    //             maxPrice,
-    //             priceOrder,
-    //             cursor,
-    //         } = input;
-
-    //         const limit = input.limit ?? 12;
-
-    //         const whereFilters: Prisma.ListingWhereInput = {
-    //             AND: [
-    //                 { status: "ACTIVE" },
-    //                 switchType ? { switchType } : {},
-    //                 soundType ? { soundType } : {},
-    //                 assemblyType ? { assemblyType } : {},
-    //                 hotSwapType ? { hotSwapType } : {},
-    //                 layoutType ? { layoutType } : {},
-    //                 minPrice ? { price: { gte: minPrice } } : {},
-    //                 maxPrice ? { price: { lte: maxPrice } } : {},
-    //                 searchQuery
-    //                     ? {
-    //                           OR: [
-    //                               {
-    //                                   title: {
-    //                                       contains: searchQuery,
-    //                                   },
-    //                               },
-    //                               {
-    //                                   text: {
-    //                                       contains: searchQuery,
-    //                                   },
-    //                               },
-    //                           ],
-    //                       }
-    //                     : {},
-    //             ].filter((obj) => Object.keys(obj).length > 0),
-    //         };
-
-    //         const listings: PreviewListing[] = await ctx.db.listing.findMany({
-    //             where: whereFilters,
-    //             include: {
-    //                 _count: {
-    //                     select: { comments: true },
-    //                 },
-    //                 images: {
-    //                     where: { resourceType: "LISTINGPREVIEW" },
-    //                     select: { id: true, link: true },
-    //                 },
-    //             },
-    //             take: limit + 1,
-    //             skip: cursor ? 1 : 0,
-    //             cursor: cursor ? { id: cursor } : undefined,
-    //             orderBy: priceOrder
-    //                 ? priceOrder === "asc"
-    //                     ? [{ price: "asc" }, { createdAt: "desc" }]
-    //                     : [{ price: "desc" }, { createdAt: "desc" }]
-    //                 : [{ createdAt: "desc" }],
-    //         });
-
-    //         let nextCursor: typeof cursor | undefined = undefined;
-    //         if (listings.length > limit) {
-    //             const nextItem = listings.pop();
-    //             if (nextItem !== undefined) {
-    //                 nextCursor = nextItem.id;
-    //             }
-    //         }
-
-    //         return {
-    //             listings,
-    //             nextCursor,
-    //         };
-    //     }),
-
-    // getAllSortedByPopularityWithFilters: publicProcedure
-    //     .input(
-    //         z.object({
-    //             searchQuery: z.string().optional(),
-    //             switchType: z.string().optional(),
-    //             minPrice: z.number().optional(),
-    //             maxPrice: z.number().optional(),
-    //             priceOrder: z.string().optional(),
-    //             layoutType: z.string().optional(),
-    //             assemblyType: z.string().optional(),
-    //             hotSwapType: z.string().optional(),
-    //             soundType: z.string().optional(),
-    //             cursor: z.string().nullish(),
-    //             limit: z.number().min(1).max(100).nullish(),
-    //         }),
-    //     )
-    //     .query(async ({ ctx, input }) => {
-    //         const {
-    //             searchQuery,
-    //             switchType,
-    //             soundType,
-    //             assemblyType,
-    //             hotSwapType,
-    //             layoutType,
-    //             minPrice,
-    //             maxPrice,
-    //             priceOrder,
-    //             cursor,
-    //         } = input;
-    //         const limit = input.limit ?? 12;
-
-    //         const whereFilters: Prisma.ListingWhereInput = {
-    //             AND: [
-    //                 { status: "ACTIVE" },
-    //                 switchType ? { switchType } : {},
-    //                 soundType ? { soundType } : {},
-    //                 assemblyType ? { assemblyType } : {},
-    //                 hotSwapType ? { hotSwapType } : {},
-    //                 layoutType ? { layoutType } : {},
-    //                 minPrice ? { price: { gte: minPrice } } : {},
-    //                 maxPrice ? { price: { lte: maxPrice } } : {},
-    //                 searchQuery
-    //                     ? {
-    //                           OR: [
-    //                               {
-    //                                   title: {
-    //                                       contains: searchQuery,
-    //                                   },
-    //                               },
-    //                               {
-    //                                   text: {
-    //                                       contains: searchQuery,
-    //                                   },
-    //                               },
-    //                           ],
-    //                       }
-    //                     : {},
-    //             ].filter((obj) => Object.keys(obj).length > 0),
-    //         };
-
-    //         const listings: PreviewListing[] = await ctx.db.listing.findMany({
-    //             where: whereFilters,
-    //             include: {
-    //                 _count: {
-    //                     select: { comments: true },
-    //                 },
-    //                 images: {
-    //                     where: { resourceType: "LISTINGPREVIEW" },
-    //                     select: { id: true, link: true },
-    //                 },
-    //             },
-    //             take: limit + 1,
-    //             skip: cursor ? 1 : 0,
-    //             cursor: cursor ? { id: cursor } : undefined,
-    //         });
-
-    //         // sort by popularity (comment count)
-    //         let popularListings = listings.sort(
-    //             (a, b) => b._count.comments - a._count.comments,
-    //         );
-
-    //         // if priceOrder then sort based on that
-    //         if (priceOrder === "asc") {
-    //             popularListings = popularListings.sort(
-    //                 (a, b) => a.price - b.price,
-    //             );
-    //         } else if (priceOrder === "desc") {
-    //             popularListings = popularListings.sort(
-    //                 (a, b) => b.price - a.price,
-    //             );
-    //         }
-
-    //         let nextCursor: typeof cursor | undefined = undefined;
-    //         if (popularListings.length > limit) {
-    //             const nextItem = popularListings.pop();
-    //             nextCursor = nextItem?.id;
-    //         }
-
-    //         return {
-    //             popularListings,
-    //             nextCursor,
-    //         };
-    //     }),
 
     getOneById: publicProcedure
         .input(
@@ -763,7 +564,10 @@ export const listingRouter = createTRPCRouter({
 
             if (listingWithImages) {
                 const averageStarRating = await ctx.db.review.aggregate({
-                    where: { sellerId: listingWithImages.seller.id },
+                    where: {
+                        type: "SELLER",
+                        recipientId: listingWithImages.seller.id,
+                    },
                     _avg: { starRating: true },
                     _count: {
                         starRating: true,
@@ -791,8 +595,6 @@ export const listingRouter = createTRPCRouter({
                     return 0;
                 });
             }
-
-            // todo we need REVIEWS
 
             return listingWithImages;
         }),
@@ -1052,6 +854,83 @@ export const listingRouter = createTRPCRouter({
             };
         }),
 
+    relist: protectedProcedure
+        .input(
+            z.object({
+                listingId: z.string(),
+                transactionId: z.string(),
+                buyerId: z.string(),
+                sellerId: z.string(),
+            }),
+        )
+        .mutation(async ({ input, ctx }) => {
+            const { listingId, transactionId, buyerId, sellerId } = input;
+
+            if (ctx.session.user.id !== sellerId) {
+                throw new Error(
+                    "You don't have the right, O you don't have the right",
+                );
+            }
+            const transactionCheck = await ctx.db.listingTransaction.findUnique({
+                where: {id: transactionId}
+            })
+
+            const listingCheck = await ctx.db.listing.findUnique({
+                where: { id: listingId },
+            });
+            const sellerCheck = await ctx.db.user.findUnique({
+                where: {
+                    id: sellerId,
+                },
+            });
+            const buyerCheck = await ctx.db.user.findUnique({
+                where: {
+                    id: buyerId,
+                },
+            });
+            if (!transactionCheck) {
+                throw new Error("Transaction does not exist");
+            }
+            if (transactionCheck.status !== "ACCEPTED") {
+                throw new Error("Transaction already revoked");
+            }
+            if (!listingCheck) {
+                throw new Error("Listing does not exist");
+            }
+            if (!buyerCheck) {
+                throw new Error("Can't find buyer");
+            }
+            if (!sellerCheck) {
+                throw new Error("Can't find seller");
+            }
+
+            await ctx.db.listing.update({
+                where: { id: listingCheck.id },
+                data: {
+                    status: "ACTIVE",
+                    buyerId: null,
+                },
+            });
+
+            await ctx.db.listingTransaction.update({
+                where: { id: transactionId },
+                data: {
+                    status: "REVOKED",
+                    listingId: null,
+                },
+            });
+            await ctx.db.notification.create({
+                data: {
+                    userId: buyerId,
+                    text: `Seller has canceled your transaction D:`,
+                    type: "",
+                    status: "UNREAD",
+                },
+            });
+
+            return "succesful";
+        }),
+
     delete: protectedProcedure
         .input(
             z.object({
@@ -1108,3 +987,203 @@ export const listingRouter = createTRPCRouter({
             return "Successfully deleted";
         }),
 });
+
+// getAllWithFilters: publicProcedure
+//     .input(
+//         z.object({
+//             searchQuery: z.string().optional(),
+//             switchType: z.string().optional(),
+//             minPrice: z.number().optional(),
+//             maxPrice: z.number().optional(),
+//             priceOrder: z.string().optional(),
+//             layoutType: z.string().optional(),
+//             assemblyType: z.string().optional(),
+//             hotSwapType: z.string().optional(),
+//             soundType: z.string().optional(),
+//             cursor: z.string().nullish(),
+//             limit: z.number().min(1).max(100).nullish(),
+//         }),
+//     )
+//     .query(async ({ ctx, input }) => {
+//         const {
+//             searchQuery,
+//             switchType,
+//             soundType,
+//             assemblyType,
+//             hotSwapType,
+//             layoutType,
+//             minPrice,
+//             maxPrice,
+//             priceOrder,
+//             cursor,
+//         } = input;
+
+//         const limit = input.limit ?? 12;
+
+//         const whereFilters: Prisma.ListingWhereInput = {
+//             AND: [
+//                 { status: "ACTIVE" },
+//                 switchType ? { switchType } : {},
+//                 soundType ? { soundType } : {},
+//                 assemblyType ? { assemblyType } : {},
+//                 hotSwapType ? { hotSwapType } : {},
+//                 layoutType ? { layoutType } : {},
+//                 minPrice ? { price: { gte: minPrice } } : {},
+//                 maxPrice ? { price: { lte: maxPrice } } : {},
+//                 searchQuery
+//                     ? {
+//                           OR: [
+//                               {
+//                                   title: {
+//                                       contains: searchQuery,
+//                                   },
+//                               },
+//                               {
+//                                   text: {
+//                                       contains: searchQuery,
+//                                   },
+//                               },
+//                           ],
+//                       }
+//                     : {},
+//             ].filter((obj) => Object.keys(obj).length > 0),
+//         };
+
+//         const listings: PreviewListing[] = await ctx.db.listing.findMany({
+//             where: whereFilters,
+//             include: {
+//                 _count: {
+//                     select: { comments: true },
+//                 },
+//                 images: {
+//                     where: { resourceType: "LISTINGPREVIEW" },
+//                     select: { id: true, link: true },
+//                 },
+//             },
+//             take: limit + 1,
+//             skip: cursor ? 1 : 0,
+//             cursor: cursor ? { id: cursor } : undefined,
+//             orderBy: priceOrder
+//                 ? priceOrder === "asc"
+//                     ? [{ price: "asc" }, { createdAt: "desc" }]
+//                     : [{ price: "desc" }, { createdAt: "desc" }]
+//                 : [{ createdAt: "desc" }],
+//         });
+
+//         let nextCursor: typeof cursor | undefined = undefined;
+//         if (listings.length > limit) {
+//             const nextItem = listings.pop();
+//             if (nextItem !== undefined) {
+//                 nextCursor = nextItem.id;
+//             }
+//         }
+
+//         return {
+//             listings,
+//             nextCursor,
+//         };
+//     }),
+
+// getAllSortedByPopularityWithFilters: publicProcedure
+//     .input(
+//         z.object({
+//             searchQuery: z.string().optional(),
+//             switchType: z.string().optional(),
+//             minPrice: z.number().optional(),
+//             maxPrice: z.number().optional(),
+//             priceOrder: z.string().optional(),
+//             layoutType: z.string().optional(),
+//             assemblyType: z.string().optional(),
+//             hotSwapType: z.string().optional(),
+//             soundType: z.string().optional(),
+//             cursor: z.string().nullish(),
+//             limit: z.number().min(1).max(100).nullish(),
+//         }),
+//     )
+//     .query(async ({ ctx, input }) => {
+//         const {
+//             searchQuery,
+//             switchType,
+//             soundType,
+//             assemblyType,
+//             hotSwapType,
+//             layoutType,
+//             minPrice,
+//             maxPrice,
+//             priceOrder,
+//             cursor,
+//         } = input;
+//         const limit = input.limit ?? 12;
+
+//         const whereFilters: Prisma.ListingWhereInput = {
+//             AND: [
+//                 { status: "ACTIVE" },
+//                 switchType ? { switchType } : {},
+//                 soundType ? { soundType } : {},
+//                 assemblyType ? { assemblyType } : {},
+//                 hotSwapType ? { hotSwapType } : {},
+//                 layoutType ? { layoutType } : {},
+//                 minPrice ? { price: { gte: minPrice } } : {},
+//                 maxPrice ? { price: { lte: maxPrice } } : {},
+//                 searchQuery
+//                     ? {
+//                           OR: [
+//                               {
+//                                   title: {
+//                                       contains: searchQuery,
+//                                   },
+//                               },
+//                               {
+//                                   text: {
+//                                       contains: searchQuery,
+//                                   },
+//                               },
+//                           ],
+//                       }
+//                     : {},
+//             ].filter((obj) => Object.keys(obj).length > 0),
+//         };
+
+//         const listings: PreviewListing[] = await ctx.db.listing.findMany({
+//             where: whereFilters,
+//             include: {
+//                 _count: {
+//                     select: { comments: true },
+//                 },
+//                 images: {
+//                     where: { resourceType: "LISTINGPREVIEW" },
+//                     select: { id: true, link: true },
+//                 },
+//             },
+//             take: limit + 1,
+//             skip: cursor ? 1 : 0,
+//             cursor: cursor ? { id: cursor } : undefined,
+//         });
+
+//         // sort by popularity (comment count)
+//         let popularListings = listings.sort(
+//             (a, b) => b._count.comments - a._count.comments,
+//         );
+
+//         // if priceOrder then sort based on that
+//         if (priceOrder === "asc") {
+//             popularListings = popularListings.sort(
+//                 (a, b) => a.price - b.price,
+//             );
+//         } else if (priceOrder === "desc") {
+//             popularListings = popularListings.sort(
+//                 (a, b) => b.price - a.price,
+//             );
+//         }
+
+//         let nextCursor: typeof cursor | undefined = undefined;
+//         if (popularListings.length > limit) {
+//             const nextItem = popularListings.pop();
+//             nextCursor = nextItem?.id;
+//         }
+
+//         return {
+//             popularListings,
+//             nextCursor,
+//         };
+//     }),

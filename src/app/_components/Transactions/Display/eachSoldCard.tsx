@@ -1,13 +1,14 @@
+"use client";
 import type { ListingTransaction } from "@prisma/client";
-import { formatDistance } from "date-fns";
 import Link from "next/link";
 import { useState } from "react";
 import ModalDialog from "~/app/_components/Context/Modal";
+import RelistListingModal from "../../Listings/Manage/Update/relistListingModal";
 
 interface EachOfferViewCardProps {
     transaction: ListingTransaction & {
         buyer: Buyer;
-        listing: { title: string };
+        listing: { title: string } | null;
     };
 }
 
@@ -18,19 +19,25 @@ interface Buyer {
 export default function EachSoldTransactionCard({
     transaction,
 }: EachOfferViewCardProps) {
-    const now = new Date();
+    const [isOpen, setIsOpen] = useState<boolean>(false);
 
-    // todo carrier and tracking number input
+    const closeModal = () => {
+        setIsOpen(false);
+    };
 
     return (
         <>
-            <div className="flex w-96 flex-col items-stretch overflow-hidden rounded-2xl bg-darkGray shadow-lg transition-background duration-300 ease-custom-cubic p-3 text-xs font-poppins  text-green-500  ">
+            <div className="flex w-96 flex-col items-stretch overflow-hidden rounded-2xl bg-darkGray shadow-lg transition-background duration-300 ease-custom-cubic p-5 text-xs font-poppins  text-green-500  ">
                 <div className=" w-full">
                     <h2 className="text-base">Order Summary</h2>
                     <div className="flex w-full justify-between">
                         <div className="mt-2 flex flex-col gap-1">
                             <h3 className="text-white/50">Keyboard</h3>
-                            <p>{transaction.listing.title}</p>
+                            <p>
+                                {transaction.listing
+                                    ? transaction.listing.title
+                                    : "deleted listing"}
+                            </p>
                         </div>
                         <div className="mt-2 flex flex-col gap-1">
                             <h3 className="text-white/50">Buyer</h3>
@@ -44,46 +51,35 @@ export default function EachSoldTransactionCard({
                         <div>${transaction.agreedPrice}</div>
                     </div>
                 </div>
-                <div className="flex items-center justify-center tablet:my-5 desktop:my-3">
+                <div className="flex justify-between items-center mt-5">
+                    <button
+                        className=" bg-mediumGray px-4 py-2 rounded-md text-black hover:opacity-80 ease-in "
+                        onClick={() => setIsOpen(true)}
+                    >
+                        {`Buyer Won't Pay`}
+                    </button>
+
                     <Link
                         href="/profile/messages"
                         aria-label="messages"
-                        className=" keeb-shop-offer-button z-10 flex cursor-pointer items-center gap-2 rounded-md bg-green-500 py-3 pl-1 pr-5 text-black "
-                        style={{
-                            boxShadow: "0 0 20px #22C55E",
-                        }}
+                        className=" z-10 flex cursor-pointer items-center gap-2 rounded-md bg-green-500 py-1 px-4 text-black hover:opacity-80 ease-in "
                     >
-                        <>
-                            <svg
-                                className="keeb-shop-offer-button-arrow w-4"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    stroke="currentColor"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="3"
-                                    d="M3.515 12h16.97m0 0L13.01 4.525M20.485 12l-7.475 7.476"
-                                ></path>
-                            </svg>
-                            <span className="keeb-shop-offer-button-text">
-                                {`Messages `}
-                            </span>
-
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="currentColor"
-                                className="keeb-shop-offer-button-circle w-2"
-                                viewBox="0 0 32 32"
-                            >
-                                <circle cx="16" cy="16" r="16" />
-                            </svg>
-                        </>
+                        <svg
+                            className="w-5 h-5"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                        >
+                            <path d="M5.25,18 C3.45507456,18 2,16.5449254 2,14.75 L2,6.25 C2,4.45507456 3.45507456,3 5.25,3 L18.75,3 C20.5449254,3 22,4.45507456 22,6.25 L22,14.75 C22,16.5449254 20.5449254,18 18.75,18 L13.0124851,18 L7.99868152,21.7506795 C7.44585139,22.1641649 6.66249789,22.0512036 6.2490125,21.4983735 C6.08735764,21.2822409 6,21.0195912 6,20.7499063 L5.99921427,18 L5.25,18 Z M12.5135149,16.5 L18.75,16.5 C19.7164983,16.5 20.5,15.7164983 20.5,14.75 L20.5,6.25 C20.5,5.28350169 19.7164983,4.5 18.75,4.5 L5.25,4.5 C4.28350169,4.5 3.5,5.28350169 3.5,6.25 L3.5,14.75 C3.5,15.7164983 4.28350169,16.5 5.25,16.5 L7.49878573,16.5 L7.49899997,17.2497857 L7.49985739,20.2505702 L12.5135149,16.5 Z"></path>
+                        </svg>
                     </Link>
                 </div>
             </div>
+            <ModalDialog isOpen={isOpen} onClose={closeModal}>
+                <RelistListingModal
+                    transaction={transaction}
+                    closeModal={closeModal}
+                />
+            </ModalDialog>
         </>
     );
 }

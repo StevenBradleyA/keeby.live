@@ -53,7 +53,7 @@ export const transactionRouter = createTRPCRouter({
 
             return { sold, purchased };
         }),
-
+    //! NOTIFY BUYER AND SELLER THAT THEY CAN NOW REVIEW
     createBuyerDriven: protectedProcedure
         .input(
             z.object({
@@ -109,6 +109,7 @@ export const transactionRouter = createTRPCRouter({
                     agreedPrice: agreedPrice,
                     listingId: listingId,
                     buyerId: buyerId,
+                    sellerId: sellerId,
                 },
             });
 
@@ -123,14 +124,6 @@ export const transactionRouter = createTRPCRouter({
             }
 
             if (seller && buyer) {
-                await ctx.db.notification.create({
-                    data: {
-                        userId: sellerId,
-                        text: `${buyer.username} wants to buy ${listingCheck.title}!`,
-                        type: "MESSAGE",
-                        status: "UNREAD",
-                    },
-                });
                 await ctx.db.message.create({
                     data: {
                         listingTransactionId: newTransaction.id,
@@ -141,20 +134,18 @@ export const transactionRouter = createTRPCRouter({
                         }, I'm ready to purchase your keyboard for the agreed price of $${agreedPrice} via paypal!`,
                     },
                 });
-
                 await ctx.db.notification.create({
                     data: {
                         userId: sellerId,
-                        text: `You received a new message!`,
+                        text: `${buyer.username} wants to buy ${listingCheck.title}!`,
                         type: "MESSAGE",
                         status: "UNREAD",
                     },
                 });
-
                 await ctx.db.notification.create({
                     data: {
                         userId: buyerId,
-                        text: `You received a new message!`,
+                        text: `You have a new conversation!`,
                         type: "MESSAGE",
                         status: "UNREAD",
                     },
@@ -221,6 +212,7 @@ export const transactionRouter = createTRPCRouter({
                     agreedPrice: agreedPrice,
                     listingId: listingId,
                     buyerId: buyerId,
+                    sellerId: sellerId,
                 },
             });
 
@@ -260,20 +252,18 @@ export const transactionRouter = createTRPCRouter({
                         }, I'm ready to purchase your keyboard for the agreed price of $${agreedPrice} via paypal!`,
                     },
                 });
-
                 await ctx.db.notification.create({
                     data: {
                         userId: sellerId,
-                        text: `You received a new message!`,
+                        text: `${buyer.username} wants to buy ${listingCheck.title}!`,
                         type: "MESSAGE",
                         status: "UNREAD",
                     },
                 });
-
                 await ctx.db.notification.create({
                     data: {
                         userId: buyerId,
-                        text: `You received a new message!`,
+                        text: `You have a new conversation!`,
                         type: "MESSAGE",
                         status: "UNREAD",
                     },

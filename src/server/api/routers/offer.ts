@@ -50,7 +50,6 @@ export const offerRouter = createTRPCRouter({
                         select: {
                             id: true,
                             price: true,
-                            status: true,
                             createdAt: true,
                             updatedAt: true,
                             listingId: true,
@@ -109,7 +108,6 @@ export const offerRouter = createTRPCRouter({
                 const createOffer = await ctx.db.listingOffer.create({
                     data: {
                         price: price,
-                        status: "PENDING",
                         listingId: listingId,
                         buyerId: buyerId,
                     },

@@ -30,20 +30,18 @@ export default function EachOfferViewCard({ offer }: EachOfferViewCardProps) {
                         {offer.listing.title}
                     </h1>
                     <p className="text-sm py-2 px-4 text-mediumGray ">
-                        {offer.status}
+                        PENDING
                     </p>
                 </div>
                 <div className="flex w-full flex-col items-center justify-center">
                     <p className=" flex justify-center text-4xl text-green-500 ">
                         ${offer.price}
                     </p>
-                    {offer.status === "PENDING" && (
-                        <div>
-                            <div className=" flex justify-center text-purple ">
-                                <TitleScripts page={"offerBuyer"} />
-                            </div>
+                    <div>
+                        <div className=" flex justify-center text-purple ">
+                            <TitleScripts page={"offerBuyer"} />
                         </div>
-                    )}
+                    </div>
                 </div>
 
                 <div className="flex items-center gap-5 self-start bg-mediumGray px-4 py-2 rounded-xl text-green-500 text-sm">

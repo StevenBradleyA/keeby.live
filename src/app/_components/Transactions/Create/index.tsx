@@ -209,14 +209,14 @@ export default function CreateTransaction({
                             <div className="flex w-full gap-10">
                                 <div className="w-1/2 flex-col flex">
                                     <p>
-                                        * Yes, I've read scam prevention and
+                                        {` * Yes, I've read scam prevention and
                                         keebyrules. By agreeing to buy this
                                         listing it will lock the listing.
                                         Seller's have the ability to relist if
                                         you do not purchase the keyboard. It is
                                         recommended that Seller's pay shipping
                                         if in US, if overseas buyer's may need
-                                        to discuss with seller.
+                                        to discuss with seller.`}
                                     </p>
                                 </div>
 
@@ -264,7 +264,7 @@ export default function CreateTransaction({
                                             ></path>
                                         </svg>
                                         <span className="keeb-shop-offer-button-text">
-                                            Yes, I'm sure
+                                            {`Yes, I'm sure`}
                                         </span>
 
                                         <svg

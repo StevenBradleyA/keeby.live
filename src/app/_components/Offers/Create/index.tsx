@@ -140,7 +140,13 @@ export default function CreateOffer({
         }
 
         setErrors(errorsObj);
-    }, [price, offerAlreadyExists, listing.price]);
+    }, [
+        price,
+        offerAlreadyExists,
+        listing.price,
+        listing.sellerId,
+        session?.user.id,
+    ]);
 
     return (
         <div className="flex flex-col items-center text-white w-[800px]">

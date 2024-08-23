@@ -67,11 +67,13 @@ model CommentLike {
 }
 
 model Favorites {
-    id        String   @id @default(cuid())
+    id        String  @id @default(cuid())
     userId    String
     listingId String?
     postId    String?
+
     createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
     user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
     listing Listing? @relation(fields: [listingId], references: [id], onDelete: Cascade)
@@ -222,6 +224,7 @@ model Notification {
     id     String  @id @default(cuid())
     text   String
     type   String
+    // MESSAGE 
     typeId String?
     status String
     // READ, UNREAD
@@ -279,6 +282,8 @@ model Review {
     starRating Int
     createdAt  DateTime @default(now())
     updatedAt  DateTime @updatedAt
+    type       String
+    // BUYER SELLER
 
     userId        String
     recipientId   String
