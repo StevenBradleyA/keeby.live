@@ -1,3 +1,4 @@
+"use client";
 import { api } from "~/trpc/react";
 
 export default function DisplayNotificationCount({
@@ -8,9 +9,9 @@ export default function DisplayNotificationCount({
     const { data: notifications } =
         api.notification.getCountByUserId.useQuery(userId);
 
-    return notifications ? (
-        <div className="absolute -right-0 -top-0 text-[10px] text-red-500">
-            {notifications > 0 ? notifications : ""}
+    return notifications && notifications > 0 ? (
+        <div className="absolute -right-1 -top-1 text-xs text-green-500">
+            {notifications}
         </div>
     ) : null;
 }

@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import type { Notification } from "@prisma/client";
 import { api } from "~/trpc/react";
 import {
@@ -13,20 +13,41 @@ import Link from "next/link";
 
 interface EachNotificationCardProps {
     notification: Notification;
+    setIsMenuOpen: (isMenuOpen: boolean) => void;
+    setIsSecondaryMenuOpen: (isSecondaryMenuOpen: boolean) => void;
 }
 
 export default function EachNotificationCard({
     notification,
+    setIsMenuOpen,
+    setIsSecondaryMenuOpen,
 }: EachNotificationCardProps) {
     const utils = api.useUtils();
 
+    // serverInteractions
+    const { mutate: deleteNotification } = api.notification.delete.useMutation({
+        onSuccess: () => {
+            toast.success("Notification Deleted!", {
+                icon: "🫡",
+                style: {
+                    borderRadius: "10px",
+                    background: "#333",
+                    color: "#fff",
+                },
+            });
+            void utils.notification.getAllByUserId.invalidate();
+            void utils.notification.getCountByUserId.invalidate();
+        },
+    });
+
+    // notification function
     let notificationLink = "/profile";
 
     if (
         typeof notification.typeId === "string" &&
         notification.type === "LISTINGCOMMENT"
     ) {
-        notificationLink = `/keebshop/${notification.typeId}`;
+        notificationLink = `/marketplace/${notification.typeId}`;
     } else if (notification.type === "LISTINGCREATE") {
         notificationLink = `/create-listing`;
     } else if (
@@ -41,9 +62,10 @@ export default function EachNotificationCard({
         typeof notification.typeId === "string" &&
         notification.type === "OFFERREJECT"
     ) {
-        notificationLink = `/keebshop/${notification.typeId}`;
+        notificationLink = `/marketplace/${notification.typeId}`;
     }
 
+    // helpers
     const formatDate = (date: Date) => {
         if (isToday(date)) {
             return formatDistanceToNow(date, { addSuffix: true });
@@ -61,28 +83,16 @@ export default function EachNotificationCard({
         }
     };
 
-    const { mutate: deleteNotification } = api.notification.delete.useMutation({
-        onSuccess: () => {
-            toast.success("Notification Deleted!", {
-                icon: "🫡",
-                style: {
-                    borderRadius: "10px",
-                    background: "#333",
-                    color: "#fff",
-                },
-            });
-            void utils.notification.getAllByUserId.invalidate();
-            void utils.notification.getCountByUserId.invalidate();
-            void utils.notification.getOfferNotificationsByUserId.invalidate();
-        },
-    });
-
     return (
         <div className="relative w-full">
             <Link
-                className=" mb-2 flex w-full gap-2 rounded-md bg-white/5 p-2 text-xs text-mediumGray transition-background duration-400 ease-custom-cubic hover:bg-white/10 "
+                className=" mb-2 flex w-full gap-2 rounded-md bg-white/5 p-2 text-xs text-mediumGray ease-in hover:bg-white/10 "
                 aria-label="notification"
                 href={notificationLink}
+                onClick={() => {
+                    setIsMenuOpen(false);
+                    setIsSecondaryMenuOpen(false);
+                }}
             >
                 <div className="flex w-full flex-col items-start">
                     <div className="flex w-full justify-between  ">
@@ -98,7 +108,7 @@ export default function EachNotificationCard({
                     </h1>
                 </div>
             </Link>
-            <button className="absolute -bottom-1 right-0 z-10 rounded-full bg-white/20 p-[2px] transition-background duration-400 ease-custom-cubic hover:bg-green-500">
+            <button className="absolute -bottom-1 right-0 z-10 rounded-full bg-white/20 p-[2px] ease-in hover:bg-green-500">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="#000000"

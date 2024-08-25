@@ -7,6 +7,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { MutableRefObject } from "react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
+import DisplayNotifications from "../Notifications/Display/displayNotifications";
+import NotificationCheck from "../Notifications/Display/notificationCheck";
+import DisplayNotificationCount from "../Notifications/Display/displayCount";
 
 export default function Navigation() {
     // line indicator
@@ -18,10 +21,17 @@ export default function Navigation() {
     // console.log(status);
 
     const menuRef: MutableRefObject<HTMLDivElement | null> = useRef(null);
+    const secondaryMenuRef: MutableRefObject<HTMLDivElement | null> =
+        useRef(null);
     const menuButtonRef: MutableRefObject<HTMLButtonElement | null> =
         useRef(null);
+    const secondaryMenuButtonRef: MutableRefObject<HTMLButtonElement | null> =
+        useRef(null);
 
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+    const [isSecondaryMenuOpen, setIsSecondaryMenuOpen] =
+        useState<boolean>(false);
+    const [notificationCount, setNotificationCount] = useState<number>(0);
 
     // animations
 
@@ -97,8 +107,29 @@ export default function Navigation() {
             },
         },
     };
-    // hover animations
+    const secondaryMenuAppear = {
+        hidden: {
+            clipPath: "inset(0 0 100% 0)",
+        },
+        visible: {
+            clipPath: "inset(0 0 0 0)",
 
+            transition: {
+                duration: 0.4,
+                ease: "easeOut",
+            },
+        },
+        exit: {
+            clipPath: "inset(0 0 100% 0)",
+
+            transition: {
+                duration: 0.4,
+                ease: "easeOut",
+            },
+        },
+    };
+
+    // hover animations
     const keebTypeHover = {
         initial: {
             opacity: 0,
@@ -152,33 +183,47 @@ export default function Navigation() {
             },
         },
     };
+    //  helpers
 
     const handleClose = useCallback(() => {
         setIsMenuOpen(false);
+        setIsSecondaryMenuOpen(false);
     }, []);
 
     const handleOutsideClick = useCallback(
         (e: Event) => {
             if (!isMenuOpen) return;
 
-            if (
+            const isClickInsideMainMenu =
                 menuRef.current &&
-                !menuRef.current.contains(e.target as Node) &&
-                menuButtonRef.current &&
-                !menuButtonRef.current.contains(e.target as Node)
-            ) {
+                (menuRef.current.contains(e.target as Node) ||
+                    (menuButtonRef.current &&
+                        menuButtonRef.current.contains(e.target as Node)));
+
+            const isClickInsideSecondaryMenu =
+                secondaryMenuRef.current &&
+                (secondaryMenuRef.current.contains(e.target as Node) ||
+                    (secondaryMenuButtonRef.current &&
+                        secondaryMenuButtonRef.current.contains(
+                            e.target as Node,
+                        )));
+
+            if (!isClickInsideMainMenu && !isClickInsideSecondaryMenu) {
                 handleClose();
             }
         },
         [isMenuOpen, handleClose],
     );
 
+    // monitoring
     useEffect(() => {
         window.addEventListener("mousedown", handleOutsideClick);
         return () => {
             window.removeEventListener("mousedown", handleOutsideClick);
         };
-    }, [isMenuOpen, handleClose, handleOutsideClick]);
+    }, [isMenuOpen, isSecondaryMenuOpen, handleOutsideClick]);
+
+    console.log(notificationCount);
 
     return (
         <nav className="fixed top-0 left-0 right-0 px-14 py-9 flex justify-between items-center z-50">
@@ -195,9 +240,12 @@ export default function Navigation() {
                 whileHover={isMenuOpen ? "openHover" : "hover"}
                 initial="initial"
                 onClick={() => {
-                    isMenuOpen === false
-                        ? setIsMenuOpen(true)
-                        : setIsMenuOpen(false);
+                    if (!isMenuOpen) setIsMenuOpen(true);
+
+                    if (isMenuOpen) {
+                        if (isSecondaryMenuOpen) setIsSecondaryMenuOpen(false);
+                        setIsMenuOpen(false);
+                    }
                 }}
                 animate={isMenuOpen ? "open" : "initial"}
             >
@@ -246,7 +294,6 @@ export default function Navigation() {
                     className="w-24 h-24 text-mediumGray absolute -right-2 "
                     viewBox="-24 0 50 24"
                     version="1.1"
-                    // variants={navSquare}
                 >
                     <g
                         stroke="none"
@@ -340,7 +387,6 @@ export default function Navigation() {
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         version="1.1"
-                                        // viewBox="0 0 1280 769"
                                         viewBox="100 100 1080 569"
                                         className="h-12 w-20 z-30 text-green-500 "
                                         fill="none"
@@ -581,11 +627,16 @@ export default function Navigation() {
                         </Link>
 
                         <motion.div className="flex flex-col gap-1 items-center">
-                            <Link
-                                href={"/profile/messages"}
-                                aria-label="share your keyboard with others"
-                                className="hover:text-green-500 ease-in "
-                                onClick={() => setIsMenuOpen(false)}
+                            <button
+                                onClick={() => {
+                                    if (isSecondaryMenuOpen === false) {
+                                        setIsSecondaryMenuOpen(true);
+                                    } else {
+                                        setIsSecondaryMenuOpen(false);
+                                    }
+                                }}
+                                className="hover:text-green-500 ease-in relative "
+                                ref={secondaryMenuButtonRef}
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -601,7 +652,13 @@ export default function Navigation() {
                                         stroke-linejoin="round"
                                     />
                                 </svg>
-                            </Link>
+
+                                {sessionData && (
+                                    <DisplayNotificationCount
+                                        userId={sessionData.user.id}
+                                    />
+                                )}
+                            </button>
                             <Link
                                 href={"/profile/messages"}
                                 aria-label="share your keyboard with others"
@@ -754,36 +811,25 @@ export default function Navigation() {
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            <AnimatePresence>
+                {isSecondaryMenuOpen && (
+                    <motion.div
+                        className="bg-black/90 rounded-lg fixed top-60 right-14 w-[400px] h-[400px] overflow-y-auto p-3"
+                        ref={secondaryMenuRef}
+                        variants={secondaryMenuAppear}
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                    >
+                        <NotificationCheck
+                            setIsMenuOpen={setIsMenuOpen}
+                            setIsSecondaryMenuOpen={setIsSecondaryMenuOpen}
+                            session={sessionData}
+                        />
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </nav>
     );
-}
-{
-    /* <motion.svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-20 h-20 text-mediumGray absolute -bottom-2 -right-1"
-                    viewBox="0 0 32 32"
-                    version="1.1"
-                    fill="currentColor"
-                    variants={keyboardNav}
-                >
-                    <path
-                        d="M20.122 7.774c-1.18 1.337-2.631 2.006-4.356 2.006-1.339 0-3.634-0.628-3.634-0.628-0.932-0.226-1.597-0.338-1.993-0.338-0.953 0-1.771 0.407-2.451 1.223s-1.021 1.475-1.021 2.6c0 0-1.486-0.063-1.055-0.056 0-1.629 0.496-2.625 1.488-3.734s2.222-1.665 3.692-1.665c0.697 0 1.47 0.118 2.317 0.354 0 0 1.842 0.612 3.121 0.612 1.951 0 3.283-0.855 3.99-2.566 0.332-0.823 0.67-1.235 1.014-1.235 0.492 0 0.74 0.23 0.74 0.689 0 0.813-0.439 1.712-1.318 2.696z"
-                        fill=""
-                        id="cable"
-                    />
-                    <path
-                        d="M27.967 27.984h-23.935c-1.102 0-1.994-0.894-1.994-1.995v-10.969c0-1.103 0.893-1.995 1.994-1.995h23.935c1.102 0 1.996 0.893 1.996 1.995v10.969c0 1.101-0.895 1.994-1.996 1.994zM28.965 15.020c0-0.552-0.447-0.998-0.998-0.998h-23.935c-0.551 0-0.997 0.446-0.997 0.998v10.97c0 0.551 0.446 0.998 0.997 0.998h23.935c0.551 0 0.998-0.447 0.998-0.998v-10.97z"
-                        // fill="blue"
-                        id="case"
-                    />
-                    <path
-                        d="M16 10V22M16 22L11 17M16 22L21 17"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        transform="scale(0.6) translate(11, 18)"
-                        stroke="#22C55E"
-                        id="arrow"
-                    />
-                </motion.svg> */
 }

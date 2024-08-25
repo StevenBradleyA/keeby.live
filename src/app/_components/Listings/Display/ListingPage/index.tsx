@@ -105,8 +105,8 @@ export default async function DisplayListingPage({
                                             fill="currentColor"
                                         />
                                         <path
-                                            fill-rule="evenodd"
-                                            clip-rule="evenodd"
+                                            fillRule="evenodd"
+                                            clipRule="evenodd"
                                             d="M5.43094 16.9025C7.05587 16.2213 9.2233 16 12 16C14.771 16 16.9351 16.2204 18.5586 16.8981C20.3012 17.6255 21.3708 18.8613 21.941 20.6587C22.1528 21.3267 21.6518 22 20.9592 22H3.03459C2.34482 22 1.84679 21.3297 2.0569 20.6654C2.62537 18.8681 3.69119 17.6318 5.43094 16.9025Z"
                                             fill="currentColor"
                                         />
@@ -184,7 +184,6 @@ export default async function DisplayListingPage({
                                 Keeb Specs
                             </h2>
                             <div className="h-full overflow-auto pb-5 mt-2 desktop:pb-0 text-sm laptop:text-base">
-                        
                                 <p className="flex gap-2">
                                     <span className="text-mediumGray">{`Switches `}</span>
                                     <span className="break-all">
