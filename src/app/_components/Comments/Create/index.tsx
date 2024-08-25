@@ -38,7 +38,7 @@ export default function CreateComment({ typeId, type }: CreateCommentProps) {
             });
 
             void utils.comment.getAllByTypeId.invalidate();
-            if (type === "listing") void utils.listing.getOne.invalidate();
+            if (type === "listing") void utils.listing.getOneById.invalidate();
             if (type === "post") void utils.post.getOneById.invalidate();
         },
     });

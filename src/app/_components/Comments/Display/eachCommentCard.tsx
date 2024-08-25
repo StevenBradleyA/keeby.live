@@ -95,7 +95,7 @@ export default function EachCommentCard({
                         alt="profile"
                         height={600}
                         width={600}
-                        className="h-full w-full rounded-md object-cover"
+                        className="h-full w-full rounded-md"
                         priority
                     />
                 </div>

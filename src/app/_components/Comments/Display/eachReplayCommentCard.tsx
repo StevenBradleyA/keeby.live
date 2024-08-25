@@ -88,7 +88,7 @@ export default function EachReplyCommentCard({
                     alt="profile"
                     height={600}
                     width={600}
-                    className="h-10 w-10 rounded-md object-cover"
+                    className="h-10 w-10 rounded-md"
                     priority
                 />
             </div>

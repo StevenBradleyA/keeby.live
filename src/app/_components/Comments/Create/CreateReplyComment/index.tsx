@@ -151,7 +151,7 @@ export default function CreateReplyComment({
                         alt="profile"
                         height={600}
                         width={600}
-                        className="h-7 w-7 rounded-md object-cover"
+                        className="h-7 w-7 rounded-md"
                     />
 
                     <textarea

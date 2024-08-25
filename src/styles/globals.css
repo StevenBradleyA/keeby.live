@@ -1405,21 +1405,16 @@ select:-webkit-autofill:focus {
     opacity: 0;
     visibility: hidden;
     transition:
-    visibility 0s linear 0.5s,
-    opacity 0.5s ease-in-out 0s;
+        visibility 0s linear 0.5s,
+        opacity 0.5s ease-in-out 0s;
 }
 
 .keebshop-listing-preview-container:hover .keebshop-preview-arrow {
     opacity: 1;
     visibility: visible;
-
 }
 
-
-
 /*  ----    Listings Hover effect    ---- */
-
-
 
 .listing-preview-hover-effect img {
     transition: opacity 0.55s ease;
@@ -2368,6 +2363,9 @@ input[type="checkbox"]:hover {
 /* --------------     END MESSAGES    --------------  */
 /* --------------     END MESSAGES    --------------  */
 /* --------------     END MESSAGES    --------------  */
+
+
+
 
 /* --------------     404    --------------  */
 /* --------------     404    --------------  */
