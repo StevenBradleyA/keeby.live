@@ -101,10 +101,10 @@ export default function ManagePostModal({
                     </button>
                 </div>
             ) : (
-                <div className="p-5 w-[500px] ">
+                <div className="p-5 w-[300px] ">
                     {!isDeleteFinal ? (
                         <>
-                            <h1 className="flex justify-center w-full text-green-500">
+                            <h1 className="flex justify-center w-full text-green-500 text-center">
                                 Are you sure you want to delete {post.title}?
                             </h1>
                             <div className="flex gap-5 justify-center mt-5">
@@ -124,7 +124,7 @@ export default function ManagePostModal({
                         </>
                     ) : (
                         <>
-                            <h1 className="flex justify-center w-full text-green-500">
+                            <h1 className="flex justify-center w-full text-green-500 text-center">
                                 Last chance, your post will be gone forever!
                             </h1>
                             <div className="flex gap-5 justify-center mt-5">

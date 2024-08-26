@@ -1,27 +1,15 @@
-"use client";
-
 import Image from "next/image";
 import defaultProfile from "@public/Images/defaultProfile.png";
-import toast from "react-hot-toast";
+import LoadingSpinner from "~/app/_components/Loading";
+import { useState, useEffect } from "react";
 import { api } from "~/trpc/react";
-import { useEffect, useState } from "react";
-import LoadingSpinner from "../../Loading";
-
-interface CreateReviewFormProps {
-    userId: string;
-    closeModal: () => void;
-    type: string;
-    recipientId: string;
-    recipientUsername: string;
-    recipientProfile: string;
-    transactionId: string;
-}
+import type { Review } from "@prisma/client";
+import toast from "react-hot-toast";
 
 interface ErrorsObj {
     text?: string;
     starRating?: string;
 }
-
 interface StarProps {
     rating: number;
     starRating: number;
@@ -59,21 +47,26 @@ const Star = ({ rating, starRating, hover, starHover, onClick }: StarProps) => {
     );
 };
 
-export default function CreateReviewForm({
-    userId,
-    recipientId,
-    recipientProfile,
-    recipientUsername,
-    closeModal,
-    transactionId,
-    type,
-}: CreateReviewFormProps) {
-    const utils = api.useUtils();
+interface ManageReviewProps {
+    review: EachReview;
+    closeModal: () => void;
+}
 
+interface EachReview extends Review {
+    recipient: { username: string | null; profile: string | null };
+}
+
+export default function UpdateReview({
+    review,
+    closeModal,
+}: ManageReviewProps) {
+    const utils = api.useUtils();
     // form state
-    const [starRating, setStarRating] = useState<number>(0);
+    const [starRating, setStarRating] = useState<number>(
+        parseFloat(review.starRating.toFixed(0)),
+    );
     const [hover, setHover] = useState(0);
-    const [text, setText] = useState<string>("");
+    const [text, setText] = useState<string>(review.text);
     const [errors, setErrors] = useState<ErrorsObj>({});
     const [enableErrorDisplay, setEnableErrorDisplay] =
         useState<boolean>(false);
@@ -81,9 +74,9 @@ export default function CreateReviewForm({
     const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
 
     // server interactions
-    const { mutate: createReview } = api.review.create.useMutation({
+    const { mutate: updateReview } = api.review.update.useMutation({
         onSuccess: () => {
-            toast.success("Review Completed!", {
+            toast.success("Review Updated!", {
                 style: {
                     borderRadius: "10px",
                     background: "#333",
@@ -113,15 +106,13 @@ export default function CreateReviewForm({
                 setIsSubmitting(true);
 
                 const data = {
-                    transactionId: transactionId,
-                    userId: userId,
-                    recipientId: recipientId,
-                    type: type,
+                    id: review.id,
+                    userId: review.userId,
                     starRating: starRating,
                     text: text,
                 };
 
-                createReview(data);
+                updateReview(data);
                 setHasSubmitted(true);
                 setIsSubmitting(false);
             } catch (error) {
@@ -136,10 +127,11 @@ export default function CreateReviewForm({
         const errorsObj: ErrorsObj = {};
 
         if (starRating === 0) {
-            errorsObj.starRating = "Please provide a star rating";
+            errorsObj.starRating =
+                "Please provide a star rating for your review";
         }
         if (!text.length) {
-            errorsObj.text = "Please provide a description for your review";
+            errorsObj.text = "Please provide text for your review";
         }
 
         setErrors(errorsObj);
@@ -147,20 +139,21 @@ export default function CreateReviewForm({
 
     return (
         <>
-            <form className="w-full text-white text-sm">
+            <form className=" text-white text-sm h-[450px] w-[500px] overflow-y-auto px-5">
                 <div className=" flex w-full items-center">
                     <Image
                         alt="seller profile"
                         src={
-                            recipientProfile ? recipientProfile : defaultProfile
+                            review.recipient.profile
+                                ? review.recipient.profile
+                                : defaultProfile
                         }
                         className="h-20 w-20 rounded-md border-2 border-mediumGray"
                         width={400}
                         height={400}
                     />
                     <h1 className="w-full border-y-2 border-mediumGray p-2 text-base text-green-500">
-                        Review {type === "BUYER" ? "buyer" : "seller"}{" "}
-                        {recipientUsername}
+                        Edit Review for {review.recipient.username}
                     </h1>
                 </div>
                 <div className="mt-5 mb-3 flex w-full items-center justify-center">
@@ -182,7 +175,7 @@ export default function CreateReviewForm({
                     value={text}
                     onChange={(e) => setText(e.target.value)}
                     className=" h-48 w-full rounded-md bg-mediumGray p-2 resize-none hover:opacity-80 "
-                    placeholder={`Describe your experience with the ${type === "BUYER" ? "buyer" : "seller"}`}
+                    placeholder={`Describe your experience with the ${review.type === "BUYER" ? "buyer" : "seller"}`}
                 ></textarea>
                 {enableErrorDisplay && errors.text && (
                     <p className="text-xs text-red-400">{errors.text}</p>

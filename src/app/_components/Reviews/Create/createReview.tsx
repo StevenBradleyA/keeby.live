@@ -3,8 +3,8 @@ import { useState } from "react";
 import Image from "next/image";
 import keebo from "@public/Profile/keebo.png";
 import LoadingSpinner from "~/app/_components/Loading";
-import EachReviewForBuyer from "../DisplayReviews/eachReviewForBuyer";
-import EachReviewForSeller from "../DisplayReviews/eachReviewForSeller";
+import EachReviewForBuyer from "../Display/DisplayReviews/eachReviewForBuyer";
+import EachReviewForSeller from "../Display/DisplayReviews/eachReviewForSeller";
 import CreateReviewForm from "./createReviewForm";
 
 export default function CreateReview({

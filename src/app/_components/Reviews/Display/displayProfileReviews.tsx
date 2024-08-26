@@ -87,7 +87,7 @@ export default function DisplayProfileReviews({ userId }: { userId: string }) {
             {allReviews &&
                 allReviews.myReviews.map((review) => (
                     <div key={review.id}>
-                        <EachSentReviewCard review={review} />
+                        <EachSentReviewCard review={review} userId={userId} />
                     </div>
                 ))}
         </div>

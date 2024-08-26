@@ -1,30 +1,26 @@
 "use client";
-
-import type { Images, Listing } from "@prisma/client";
+import type { Review } from "@prisma/client";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { api } from "~/trpc/react";
+import UpdateReview from "./updateReview";
 import ModalDialog from "../../Context/Modal";
-import UpdateListing from "./Update/updateListing";
 
-interface ManageListingModalProps {
-    listing: PreviewFavoriteListing;
+interface ManageReviewProps {
+    review: EachReview;
     userId: string;
     closeModal: () => void;
 }
 
-interface PreviewFavoriteListing extends Listing {
-    _count: {
-        comments: number;
-        favorites: number;
-    };
-    images: Images[];
+interface EachReview extends Review {
+    recipient: { username: string | null; profile: string | null };
 }
-export default function ManageListingModal({
-    listing,
+
+export default function ManageReview({
+    review,
     userId,
     closeModal,
-}: ManageListingModalProps) {
+}: ManageReviewProps) {
     // state
     const [isDelete, setIsDelete] = useState<boolean>(false);
     const [isDeleteFinal, setIsDeleteFinal] = useState<boolean>(false);
@@ -41,26 +37,27 @@ export default function ManageListingModal({
     const utils = api.useUtils();
 
     // server
-    const { mutate } = api.listing.delete.useMutation({
+    const { mutate } = api.review.delete.useMutation({
         onSuccess: () => {
-            toast.success("Listing Deleted!", {
+            toast.success("Review Deleted!", {
                 style: {
                     borderRadius: "10px",
                     background: "#333",
                     color: "#fff",
                 },
             });
-            void utils.listing.getAllByUserId.invalidate();
+            void utils.review.getAllEligibleByUserId.invalidate();
+            void utils.review.getAllReceivedAndSentByUserId.invalidate();
             closeModal();
         },
     });
 
     // helpers
-    const handleDeleteListing = () => {
-        if (userId === listing.sellerId) {
+    const handleDeleteReview = () => {
+        if (userId === review.userId) {
             const data = {
-                id: listing.id,
-                sellerId: listing.sellerId,
+                id: review.id,
+                userId: userId,
             };
 
             mutate(data);
@@ -89,7 +86,7 @@ export default function ManageListingModal({
                     {!isDeleteFinal ? (
                         <>
                             <h1 className="flex justify-center w-full text-center">
-                                Are you sure you want to delete {listing.title}?
+                                Are you sure you want to delete this review?
                             </h1>
                             <div className="flex gap-5 justify-center mt-5">
                                 <button
@@ -109,12 +106,12 @@ export default function ManageListingModal({
                     ) : (
                         <>
                             <h1 className="flex justify-center w-full text-center">
-                                Last chance, your listing will be gone forever!
+                                Last chance, your review will be gone forever!
                             </h1>
                             <div className="flex gap-5 justify-center mt-5">
                                 <button
                                     className="rounded-md  px-4 py-1  text-white bg-mediumGray/30 hover:bg-red-500/10 hover:text-red-500 ease-in flex items-center "
-                                    onClick={handleDeleteListing}
+                                    onClick={handleDeleteReview}
                                 >
                                     Delete Forever
                                 </button>
@@ -131,11 +128,7 @@ export default function ManageListingModal({
             )}
 
             <ModalDialog isOpen={isEditOpen} onClose={closeEditModal}>
-                <UpdateListing
-                    listingId={listing.id}
-                    userId={userId}
-                    closeModal={closeEditModal}
-                />
+                <UpdateReview review={review} closeModal={closeEditModal} />
             </ModalDialog>
         </>
     );
