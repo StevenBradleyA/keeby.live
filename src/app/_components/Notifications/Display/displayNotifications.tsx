@@ -26,7 +26,7 @@ export default function DisplayNotifications({
     return (
         <div className="w-full">
             {notifications && notifications.length > 0 ? (
-                <>
+                <div className="flex flex-col gap-2">
                     {notifications.map((notification) => (
                         <div key={notification.id} className="w-full">
                             <EachNotificationCard
@@ -36,7 +36,7 @@ export default function DisplayNotifications({
                             />
                         </div>
                     ))}
-                </>
+                </div>
             ) : (
                 <div className="relative w-full">
                     <button className=" mb-2 flex w-full gap-2 rounded-md bg-white/5 p-2 text-xs text-mediumGray ease-in hover:bg-white/10 ">

@@ -350,7 +350,7 @@ export default function UpdateProfile({
                     <label className="w-1/3">
                         Newsletter
                         <button
-                            className={`flex h-10 w-full items-center justify-between overflow-hidden rounded-md bg-mediumGray`}
+                            className="flex h-10 w-full items-center justify-between overflow-hidden rounded-md bg-mediumGray hover:opacity-80"
                             onClick={(e) => {
                                 e.preventDefault();
                                 setIsNewsletter(!isNewsletter);

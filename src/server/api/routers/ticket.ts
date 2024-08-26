@@ -26,17 +26,17 @@ export const ticketRouter = createTRPCRouter({
                 userId: z.string(),
                 text: z.string(),
                 email: z.string(),
-                tag: z.string(),
+                type: z.string(),
             }),
         )
         .mutation(async ({ ctx, input }) => {
-            const { userId, text, email, tag } = input;
+            const { userId, text, email, type } = input;
 
             if (ctx.session.user.id !== userId) {
                 throw new Error("Invalid Credentials");
             }
 
-            if (tag === "praise") {
+            if (type === "praise") {
                 const existingTag = await ctx.db.tag.findUnique({
                     where: {
                         name: "PraiseTheSun",
@@ -86,7 +86,7 @@ export const ticketRouter = createTRPCRouter({
                     userId: userId,
                     text: text,
                     email: email,
-                    tag: tag,
+                    type: type,
                 },
             });
         }),

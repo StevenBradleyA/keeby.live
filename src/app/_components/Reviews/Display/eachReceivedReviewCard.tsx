@@ -1,3 +1,4 @@
+'use client'
 import type { Review } from "@prisma/client";
 import Image from "next/image";
 import defaultProfile from "@public/Images/defaultProfile.png";

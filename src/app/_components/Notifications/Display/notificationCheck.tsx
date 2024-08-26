@@ -38,13 +38,11 @@ export default function NotificationCheck({
                     </button>
                 </div>
             ) : (
-                <div className="flex flex-col gap-2">
-                    <DisplayNotifications
-                        userId={session.user.id}
-                        setIsMenuOpen={setIsMenuOpen}
-                        setIsSecondaryMenuOpen={setIsSecondaryMenuOpen}
-                    />
-                </div>
+                <DisplayNotifications
+                    userId={session.user.id}
+                    setIsMenuOpen={setIsMenuOpen}
+                    setIsSecondaryMenuOpen={setIsSecondaryMenuOpen}
+                />
             )}
         </>
     );

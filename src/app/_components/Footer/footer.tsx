@@ -9,8 +9,11 @@ import ModalDialog from "../Context/Modal";
 import SupportMe from "./supportModal";
 import { useGlobalState } from "../Context/GlobalState/globalState";
 import { usePathname } from "next/navigation";
+import { signOut, useSession } from "next-auth/react";
 
 export default function Footer() {
+    const { data: session } = useSession();
+
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const { footerInViewRef, setPageNumber, pageNumber } = useGlobalState();
     const pathname = usePathname();
@@ -263,14 +266,25 @@ export default function Footer() {
                             href="/contact"
                             aria-label="contact us for support"
                             className="ease-in hover:text-green-500"
-                        >
+                            >
                             Contact Us
                         </Link>
+                        {session && (
+                            <div>
+                                <button
+                                    onClick={() => void signOut()}
+                                    aria-label="Sign out of your account"
+                                    className="ease-in hover:text-green-500 p-0 m-0"
+                                >
+                                    Sign Out
+                                </button>
+                            </div>
+                        )}
                         <Link
                             href="/frequently-asked-questions"
                             aria-label="frequently asked questions"
                             className="ease-in hover:text-green-500"
-                        >
+                            >
                             FAQ
                         </Link>
                     </div>
@@ -320,7 +334,6 @@ export default function Footer() {
                             window.open("https://www.hacktime.dev", "_blank");
                         }}
                         className="powered-by flex gap-2 transition-colors duration-400 ease-custom-cubic hover:text-green-500"
-                        // className="powered-by flex gap-2  transition-colors duration-400  a ease-custom-cubic hover:text-green-500"
                     >
                         powered by Hacktime
                         <Image

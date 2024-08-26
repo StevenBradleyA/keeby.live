@@ -8,11 +8,10 @@ import {
 export const reviewRouter = createTRPCRouter({
     getAllEligibleByUserId: publicProcedure
         .input(z.string())
-        .query(({ input: userId, ctx }) => {
-            return ctx.prisma.listing.findMany({
+        .query(async ({ input: userId, ctx }) => {
+            const reviewsForBuyers = await ctx.db.listingTransaction.findMany({
                 where: {
                     buyerId: userId,
-                    status: "SOLD",
                     reviews: {
                         none: {
                             userId: userId,
@@ -21,8 +20,11 @@ export const reviewRouter = createTRPCRouter({
                 },
                 select: {
                     id: true,
-                    title: true,
-
+                    listing: {
+                        select: {
+                            title: true,
+                        },
+                    },
                     updatedAt: true,
                     seller: {
                         select: {
@@ -33,6 +35,34 @@ export const reviewRouter = createTRPCRouter({
                     },
                 },
             });
+
+            const reviewsForSellers = await ctx.db.listingTransaction.findMany({
+                where: {
+                    sellerId: userId,
+                    reviews: {
+                        none: {
+                            userId: userId,
+                        },
+                    },
+                },
+                select: {
+                    id: true,
+                    listing: {
+                        select: {
+                            title: true,
+                        },
+                    },
+                    updatedAt: true,
+                    buyer: {
+                        select: {
+                            id: true,
+                            username: true,
+                            profile: true,
+                        },
+                    },
+                },
+            });
+            return { reviewsForSellers, reviewsForBuyers };
         }),
 
     getAllReceivedByUserId: publicProcedure
@@ -51,31 +81,31 @@ export const reviewRouter = createTRPCRouter({
         .input(z.string())
         .query(async ({ input: userId, ctx }) => {
             const receivedReviews = await ctx.db.review.findMany({
-                where: { sellerId: userId },
+                where: { recipientId: userId },
                 include: {
                     user: {
                         select: { username: true, profile: true },
                     },
                 },
             });
-            const sentReviews = await ctx.db.review.findMany({
+            const myReviews = await ctx.db.review.findMany({
                 where: { userId: userId },
                 include: {
-                    seller: {
+                    recipient: {
                         select: { username: true, profile: true },
                     },
                 },
             });
 
-            return { receivedReviews, sentReviews };
+            return { receivedReviews, myReviews };
         }),
     getAllSentByUserId: publicProcedure
         .input(z.string())
         .query(({ input: userId, ctx }) => {
-            return ctx.prisma.review.findMany({
+            return ctx.db.review.findMany({
                 where: { userId: userId },
                 include: {
-                    seller: {
+                    recipient: {
                         select: { username: true, profile: true },
                     },
                 },
@@ -85,41 +115,66 @@ export const reviewRouter = createTRPCRouter({
     create: protectedProcedure
         .input(
             z.object({
+                transactionId: z.string(),
                 text: z.string(),
                 starRating: z.number(),
                 userId: z.string(),
-                sellerId: z.string(),
-                listingId: z.string(),
+                recipientId: z.string(),
+                type: z.string(),
             }),
         )
         .mutation(async ({ input, ctx }) => {
-            const { text, starRating, userId, sellerId, listingId } = input;
+            const {
+                text,
+                starRating,
+                userId,
+                recipientId,
+                transactionId,
+                type,
+            } = input;
 
             if (ctx.session.user.id !== userId) {
                 throw new Error("Invalid userId");
             }
 
-            await ctx.db.review.create({
-                data: {
-                    text: text,
-                    starRating: starRating,
-                    sellerId: sellerId,
-                    listingId: listingId,
-                    userId: userId,
+            const transactionCheck = await ctx.db.listingTransaction.findFirst({
+                where: {
+                    id: transactionId,
+                    reviews: {
+                        none: {
+                            userId: userId,
+                        },
+                    },
                 },
             });
+            if (!transactionCheck) {
+                throw new Error("Review already exists for this transaction");
+            }
+
+            await ctx.db.review.create({
+                data: {
+                    transactionId: transactionId,
+                    userId: userId,
+                    text: text,
+                    recipientId: recipientId,
+                    starRating: starRating,
+                    type: type,
+                },
+            });
+
             await ctx.db.notification.create({
                 data: {
-                    userId: sellerId,
-                    text: `You received a seller review!`,
+                    userId: recipientId,
+                    text: `You received a review!`,
                     type: "REVIEW",
                     status: "UNREAD",
                 },
             });
-            // todo create new tags maybe
-            // review 5 stars - seller pro
-            // review below - wet pancakes
+
+            // todo tag unlocks
+            // review below 5 stars give the recipient the unlock - wet pancakes
             // then notify  about new tags new tag ... unlocked!
+
         }),
 
     update: protectedProcedure

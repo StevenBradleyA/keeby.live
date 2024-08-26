@@ -62,21 +62,14 @@ export default function KeebTypeFooter() {
             <ModalDialog isOpen={isModalOpen} onClose={closeModal}>
                 <SupportMe />
             </ModalDialog>
-
+            {/* 
             <Link
-                href="/privacy-policy"
-                aria-label="Privacy Policy"
+                href="/profile"
+                aria-label="Check out your profile"
                 className={`ease-in ${styles.hoverText} `}
             >
-                privacy
-            </Link>
-            <Link
-                href="/terms-of-service"
-                aria-label="Terms of Service"
-                className={`ease-in ${styles.hoverText} `}
-            >
-                terms
-            </Link>
+                profile
+            </Link> */}
         </div>
     );
 }

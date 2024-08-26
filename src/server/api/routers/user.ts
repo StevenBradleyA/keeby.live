@@ -74,20 +74,7 @@ export const userRouter = createTRPCRouter({
             where: { id: input },
         });
     }),
-    // todo lets get rid of get seller and add into first listing route
-    getSeller: publicProcedure
-        .input(z.string())
-        .query(async ({ input, ctx }) => {
-            const seller = await ctx.db.user.findUnique({
-                where: { id: input },
-                select: { profile: true, username: true, selectedTag: true },
-            });
-            const allSellerStars = await ctx.db.review.aggregate({
-                where: { sellerId: input },
-                _avg: { starRating: true },
-            });
-            return { seller, allSellerStars };
-        }),
+  
 
     getUserGameData: publicProcedure
         .input(

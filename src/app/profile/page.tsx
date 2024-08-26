@@ -734,53 +734,6 @@ export default function UserProfile() {
                                     />
                                 </svg>
                             </button>
-
-                            <button
-                                className={`profile-select-button flex items-center gap-1   border-2 ${
-                                    keebShopCategory === "REVIEWS"
-                                        ? "border-green-500"
-                                        : "border-mediumGray"
-                                } rounded-md   py-2 pl-6 text-green-500  `}
-                                onClick={() => setKeebShopCategory("REVIEWS")}
-                            >
-                                <span className="profile-select-button-text">
-                                    Reviews
-                                </span>
-
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="profile-select-button-arrow w-5"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                >
-                                    <path
-                                        d="M15.0001 10.5001V15.0001M15.0001 15.0001H10.5001M15.0001 15.0001L9.00024 9M7.20024 20H16.8002C17.9203 20 18.4804 20 18.9082 19.782C19.2845 19.5903 19.5905 19.2843 19.7823 18.908C20.0002 18.4802 20.0002 17.9201 20.0002 16.8V7.2C20.0002 6.0799 20.0002 5.51984 19.7823 5.09202C19.5905 4.71569 19.2845 4.40973 18.9082 4.21799C18.4804 4 17.9203 4 16.8002 4H7.20024C6.08014 4 5.52009 4 5.09226 4.21799C4.71594 4.40973 4.40998 4.71569 4.21823 5.09202C4.00024 5.51984 4.00024 6.07989 4.00024 7.2V16.8C4.00024 17.9201 4.00024 18.4802 4.21823 18.908C4.40998 19.2843 4.71594 19.5903 5.09226 19.782C5.52009 20 6.08014 20 7.20024 20Z"
-                                        stroke="currentColor"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                    />
-                                </svg>
-
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="profile-select-button-square w-2"
-                                    viewBox="0 0 24 24"
-                                    fill="currentColor"
-                                >
-                                    <rect
-                                        x="4"
-                                        y="4"
-                                        width="16"
-                                        height="16"
-                                        rx="2"
-                                        stroke="currentColor"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                    />
-                                </svg>
-                            </button>
                             <button
                                 className={`profile-select-button flex items-center gap-1   border-2 ${
                                     keebShopCategory === "TRANSACTIONS"
@@ -808,6 +761,52 @@ export default function UserProfile() {
                                         strokeLinejoin="round"
                                     />
                                 </svg>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="profile-select-button-square w-2"
+                                    viewBox="0 0 24 24"
+                                    fill="currentColor"
+                                >
+                                    <rect
+                                        x="4"
+                                        y="4"
+                                        width="16"
+                                        height="16"
+                                        rx="2"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    />
+                                </svg>
+                            </button>
+                            <button
+                                className={`profile-select-button flex items-center gap-1   border-2 ${
+                                    keebShopCategory === "REVIEWS"
+                                        ? "border-green-500"
+                                        : "border-mediumGray"
+                                } rounded-md   py-2 pl-6 text-green-500  `}
+                                onClick={() => setKeebShopCategory("REVIEWS")}
+                            >
+                                <span className="profile-select-button-text">
+                                    Reviews
+                                </span>
+
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="profile-select-button-arrow w-5"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                >
+                                    <path
+                                        d="M15.0001 10.5001V15.0001M15.0001 15.0001H10.5001M15.0001 15.0001L9.00024 9M7.20024 20H16.8002C17.9203 20 18.4804 20 18.9082 19.782C19.2845 19.5903 19.5905 19.2843 19.7823 18.908C20.0002 18.4802 20.0002 17.9201 20.0002 16.8V7.2C20.0002 6.0799 20.0002 5.51984 19.7823 5.09202C19.5905 4.71569 19.2845 4.40973 18.9082 4.21799C18.4804 4 17.9203 4 16.8002 4H7.20024C6.08014 4 5.52009 4 5.09226 4.21799C4.71594 4.40973 4.40998 4.71569 4.21823 5.09202C4.00024 5.51984 4.00024 6.07989 4.00024 7.2V16.8C4.00024 17.9201 4.00024 18.4802 4.21823 18.908C4.40998 19.2843 4.71594 19.5903 5.09226 19.782C5.52009 20 6.08014 20 7.20024 20Z"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    />
+                                </svg>
+
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     className="profile-select-button-square w-2"
@@ -1025,19 +1024,20 @@ export default function UserProfile() {
                         keebShopCategory === "LISTINGS" && (
                             <ManageListings userId={sessionData.user.id} />
                         )}
-                    {toggle === "MARKETPLACE" && keebShopCategory === "OFFERS" && (
-                        <DisplayOffers userId={sessionData.user.id} />
-                    )}
                     {toggle === "MARKETPLACE" &&
-                        keebShopCategory === "REVIEWS" && (
-                            <DisplayProfileReviews
-                                userId={sessionData.user.id}
-                            />
+                        keebShopCategory === "OFFERS" && (
+                            <DisplayOffers userId={sessionData.user.id} />
                         )}
                     {toggle === "MARKETPLACE" &&
                         keebShopCategory === "TRANSACTIONS" && (
                             <DisplayTransactions userId={sessionData.user.id} />
                         )}
+                        {toggle === "MARKETPLACE" &&
+                            keebShopCategory === "REVIEWS" && (
+                                <DisplayProfileReviews
+                                    userId={sessionData.user.id}
+                                />
+                            )}
                     {toggle === "KEEBSHARE" &&
                         keebShareCategory === "FAVORITES" && (
                             <DisplayFavoritePosts

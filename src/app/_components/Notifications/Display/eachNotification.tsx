@@ -86,7 +86,7 @@ export default function EachNotificationCard({
     return (
         <div className="relative w-full">
             <Link
-                className=" mb-2 flex w-full gap-2 rounded-md bg-white/5 p-2 text-xs text-mediumGray ease-in hover:bg-white/10 "
+                className=" flex w-full gap-2 rounded-md bg-white/5 p-2 text-xs text-mediumGray ease-in hover:bg-white/10 "
                 aria-label="notification"
                 href={notificationLink}
                 onClick={() => {

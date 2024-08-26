@@ -131,7 +131,7 @@ model Keeb {
     userId String
 
     user User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-    Game Game[]
+    games Game[]
 }
 
 model Listing {
@@ -194,11 +194,11 @@ model ListingTransaction {
     sellerId  String
     listingId String?
 
-    buyer   User      @relation("BuyerRelation", fields: [buyerId], references: [id], onDelete: Cascade)
-    seller  User      @relation("SellerRelation", fields: [sellerId], references: [id], onDelete: Cascade)
-    listing Listing?  @relation(fields: [listingId], references: [id])
-    Message Message[]
-    Review  Review[]
+    buyer    User      @relation("BuyerRelation", fields: [buyerId], references: [id], onDelete: Cascade)
+    seller   User      @relation("SellerRelation", fields: [sellerId], references: [id], onDelete: Cascade)
+    listing  Listing?  @relation(fields: [listingId], references: [id])
+    messages Message[]
+    reviews  Review[]
 }
 
 model Message {
@@ -283,7 +283,7 @@ model Review {
     createdAt  DateTime @default(now())
     updatedAt  DateTime @updatedAt
     type       String
-    // BUYER SELLER
+    // BUYER SELLER --- refers to recipient
 
     userId        String
     recipientId   String
