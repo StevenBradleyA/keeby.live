@@ -109,7 +109,8 @@ export default function CreateReview({
                                         </h2>
                                         <p className=" flex-shrink-0">:D</p>
                                     </div>
-                                    <h3 className="mt-2 text-sm text-green-500">
+
+                                    <h3 className="mt-2 text-sm text-green-500 w-full text-center">
                                         no users to review
                                     </h3>
                                 </div>

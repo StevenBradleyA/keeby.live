@@ -90,7 +90,7 @@ export default function CreateReviewForm({
                 },
             });
             void utils.review.getAllEligibleByUserId.invalidate();
-            // todo get all invalidate here
+            void utils.review.getAllReceivedAndSentByUserId.invalidate();
             closeModal();
         },
     });
@@ -178,7 +178,7 @@ export default function CreateReviewForm({
                 <textarea
                     value={text}
                     onChange={(e) => setText(e.target.value)}
-                    className=" h-48 w-full rounded-md bg-mediumGray p-2 resize-none "
+                    className=" h-48 w-full rounded-md bg-mediumGray p-2 resize-none hover:opacity-80 "
                     placeholder={`Describe your experience with the ${type === "BUYER" ? "buyer" : "seller"}`}
                 ></textarea>
                 {enableErrorDisplay && errors.text && (

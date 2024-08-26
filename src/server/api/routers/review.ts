@@ -65,18 +65,18 @@ export const reviewRouter = createTRPCRouter({
             return { reviewsForSellers, reviewsForBuyers };
         }),
 
-    getAllReceivedByUserId: publicProcedure
-        .input(z.string())
-        .query(({ input: userId, ctx }) => {
-            return ctx.prisma.review.findMany({
-                where: { sellerId: userId },
-                include: {
-                    user: {
-                        select: { username: true, profile: true },
-                    },
-                },
-            });
-        }),
+    // getAllReceivedByUserId: publicProcedure
+    //     .input(z.string())
+    //     .query(({ input: userId, ctx }) => {
+    //         return ctx.prisma.review.findMany({
+    //             where: { sellerId: userId },
+    //             include: {
+    //                 user: {
+    //                     select: { username: true, profile: true },
+    //                 },
+    //             },
+    //         });
+    //     }),
     getAllReceivedAndSentByUserId: publicProcedure
         .input(z.string())
         .query(async ({ input: userId, ctx }) => {
@@ -174,7 +174,6 @@ export const reviewRouter = createTRPCRouter({
             // todo tag unlocks
             // review below 5 stars give the recipient the unlock - wet pancakes
             // then notify  about new tags new tag ... unlocked!
-
         }),
 
     update: protectedProcedure
