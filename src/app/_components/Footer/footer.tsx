@@ -15,7 +15,7 @@ export default function Footer() {
     const { data: session } = useSession();
 
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const { footerInViewRef, setPageNumber, pageNumber } = useGlobalState();
+    const { footerInViewRef, setPageNumber } = useGlobalState();
     const pathname = usePathname();
 
     const openModal = () => {
@@ -27,20 +27,13 @@ export default function Footer() {
     };
 
     useEffect(() => {
-        // Initialize the page number within the ref if it's not already set
         if (pathname.includes("/share") || pathname.includes("/marketplace")) {
             const observer = new IntersectionObserver(
                 (entries) => {
                     entries.forEach((entry) => {
                         if (entry.isIntersecting) {
-                            // console.log("Footer is in view");
                             setPageNumber((prev: number) => prev + 1);
                         }
-
-                        // } else {
-                        // Perform actions when footer is out of view
-                        // console.log("Footer is out of view");
-                        // }
                     });
                 },
                 { threshold: 0.1 },
@@ -56,7 +49,7 @@ export default function Footer() {
                 }
             };
         }
-    }, [footerInViewRef]);
+    }, [footerInViewRef, pathname, setPageNumber]);
 
     useEffect(() => {
         if (pathname.includes("/share") || pathname.includes("/marketplace")) {
@@ -66,37 +59,38 @@ export default function Footer() {
 
     return (
         <div
-            className=" w-full bg-darkGray px-20 pt-10 text-mediumGray"
+            className=" w-full bg-darkGray p-2 laptop:px-20  laptop:pt-10 text-mediumGray text-xs tablet:text-sm laptop:text-base"
             ref={footerInViewRef}
         >
-            <div className="flex w-full justify-between">
-                <div className="flex w-96 flex-col">
-                    <Link
-                        className="flex items-center hover:opacity-75 "
-                        href={"/"}
-                        aria-label="Go to the homepage"
-                    >
-                        <Image
-                            alt="hacktime logo"
-                            src={title}
-                            width={200}
-                            height={200}
-                            className=" h-12 object-contain"
-                        />
-                        <Image
-                            alt="hacktime logo"
-                            src={keebo}
-                            width={200}
-                            height={200}
-                            className=" h-9 w-9 object-contain"
-                        />
-                    </Link>
-
-                    <p className="mt-3 flex w-96 flex-wrap">
-                        Keeby is the one place for everything mechanical
-                        keyboard.
-                    </p>
-                    <div className="mt-3 flex items-center gap-3">
+            <div className="flex w-full justify-between ">
+                <div className="flex w-full laptop:w-96 laptop:flex-col laptop:items-start items-center justify-between flex-wrap gap-3">
+                    <div className="w-full">
+                        <Link
+                            className="flex items-center hover:opacity-75 w-full "
+                            href={"/"}
+                            aria-label="Go to the homepage"
+                        >
+                            <Image
+                                alt="homepage logo"
+                                src={title}
+                                width={200}
+                                height={200}
+                                className=" w-auto h-8 laptop:h-12 object-contain"
+                            />
+                            <Image
+                                alt="keeby mascot"
+                                src={keebo}
+                                width={200}
+                                height={200}
+                                className=" h-6 w-6 laptop:h-9 laptop:w-9 object-contain"
+                            />
+                        </Link>
+                        <p className="mt-3 w-full">
+                            Keeby is the one place for everything mechanical
+                            keyboard.
+                        </p>
+                    </div>
+                    <div className="laptop:mt-3 flex items-center gap-3 ">
                         <a
                             href="https://www.youtube.com/@KeebyLive?sub_confirmation=1"
                             target="_blank"
@@ -196,7 +190,7 @@ export default function Footer() {
                     </div>
                 </div>
 
-                <div className="flex gap-12">
+                <div className="hidden laptop:flex gap-12 ">
                     <div className="flex flex-col gap-1">
                         <h2 className="text-green-500">Explore</h2>
 
@@ -266,7 +260,7 @@ export default function Footer() {
                             href="/contact"
                             aria-label="contact us for support"
                             className="ease-in hover:text-green-500"
-                            >
+                        >
                             Contact Us
                         </Link>
                         {session && (
@@ -284,7 +278,7 @@ export default function Footer() {
                             href="/frequently-asked-questions"
                             aria-label="frequently asked questions"
                             className="ease-in hover:text-green-500"
-                            >
+                        >
                             FAQ
                         </Link>
                     </div>
@@ -319,7 +313,129 @@ export default function Footer() {
                 </div>
             </div>
 
-            <div className="mt-5 flex justify-between border-t-2 border-mediumGray py-5">
+            <div className="flex w-full laptop:hidden justify-between gap-10 mt-5 flex-wrap ">
+                <div className="flex flex-col gap-1 ">
+                    <h2 className="text-green-500">Explore</h2>
+
+                    <Link
+                        href="/shop"
+                        aria-label="shop keyboard products"
+                        className="ease-in hover:text-green-500"
+                    >
+                        Keeb Shop
+                    </Link>
+                    <Link
+                        href="/share"
+                        aria-label="share your keyboards with others"
+                        className="ease-in hover:text-green-500"
+                    >
+                        Keeb Share
+                    </Link>
+                    <Link
+                        href="/"
+                        aria-label="Play keeb type!"
+                        className="ease-in hover:text-green-500"
+                    >
+                        Keeb Type
+                    </Link>
+                    <Link
+                        href="/marketplace"
+                        aria-label="look at mechanical keyboard listings"
+                        className="ease-in hover:text-green-500"
+                    >
+                        Marketplace
+                    </Link>
+                </div>
+                <div className="flex flex-col gap-1 ">
+                    <h2 className="text-green-500">Keeby Users</h2>
+                    <Link
+                        href="/profile"
+                        aria-label="profile"
+                        className="ease-in hover:text-green-500"
+                    >
+                        Profile
+                    </Link>
+                    <Link
+                        href="/how-keeby-works"
+                        aria-label="learn how keeby works"
+                        className="ease-in hover:text-green-500"
+                    >
+                        How Keeby works
+                    </Link>
+                    <Link
+                        href="/scam-prevention"
+                        aria-label="prevent marketplace scams"
+                        className="ease-in hover:text-green-500"
+                    >
+                        Scam Prevention
+                    </Link>
+                    <Link
+                        href="/profile/messages"
+                        aria-label="See your messages"
+                        className="ease-in hover:text-green-500"
+                    >
+                        Messages
+                    </Link>
+                </div>
+                <div className="flex flex-col gap-1 ">
+                    <h2 className="text-green-500">Help</h2>
+                    <Link
+                        href="/contact"
+                        aria-label="contact us for support"
+                        className="ease-in hover:text-green-500"
+                    >
+                        Contact Us
+                    </Link>
+                    {session && (
+                        <div>
+                            <button
+                                onClick={() => void signOut()}
+                                aria-label="Sign out of your account"
+                                className="ease-in hover:text-green-500 p-0 m-0"
+                            >
+                                Sign Out
+                            </button>
+                        </div>
+                    )}
+                    <Link
+                        href="/frequently-asked-questions"
+                        aria-label="frequently asked questions"
+                        className="ease-in hover:text-green-500"
+                    >
+                        FAQ
+                    </Link>
+                </div>
+                <div className="flex flex-col gap-1 ">
+                    <h2 className="text-green-500">Company</h2>
+                    <Link
+                        href="/about"
+                        aria-label="Learn about Keeby!"
+                        className="ease-in hover:text-green-500"
+                    >
+                        About
+                    </Link>
+                    <Link
+                        href="/newsletter"
+                        aria-label="Want to join our Newsletter?"
+                        className="ease-in hover:text-green-500"
+                    >
+                        Newsletter
+                    </Link>
+                    <button
+                        onClick={openModal}
+                        className="ease-in hover:text-green-500"
+                        aria-label="Want to Support Keeby?"
+                    >
+                        Support Keeby
+                    </button>
+
+                    <ModalDialog isOpen={isModalOpen} onClose={closeModal}>
+                        <SupportMe />
+                    </ModalDialog>
+                </div>
+            </div>
+
+            <div className="mt-5  justify-between border-t-2 border-mediumGray py-5 hidden laptop:flex">
                 <div className="flex  items-center gap-2">
                     <div>Built for enthusiasts |</div>
 
@@ -333,7 +449,7 @@ export default function Footer() {
                             e.preventDefault();
                             window.open("https://www.hacktime.dev", "_blank");
                         }}
-                        className="powered-by flex gap-2 transition-colors duration-400 ease-custom-cubic hover:text-green-500"
+                        className="powered-by flex items-center gap-2 transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                     >
                         powered by Hacktime
                         <Image
@@ -367,6 +483,57 @@ export default function Footer() {
                     >
                         Cookie
                     </Link>
+                </div>
+            </div>
+
+            <div className="mt-3 justify-between border-t-2 border-mediumGray py-3 flex flex-col laptop:hidden">
+                <div className="flex gap-2">
+                    <Link
+                        href="/terms-of-service"
+                        aria-label="privacy"
+                        className="ease-in hover:text-green-500"
+                    >
+                        Terms
+                    </Link>
+                    <Link
+                        href="/privacy-policy"
+                        aria-label="privacy"
+                        className="ease-in hover:text-green-500"
+                    >
+                        Privacy
+                    </Link>
+                    <Link
+                        href="/cookie-policy"
+                        aria-label="privacy"
+                        className="ease-in hover:text-green-500"
+                    >
+                        Cookie
+                    </Link>
+                </div>
+                <div className="flex  items-center gap-2 mt-3">
+                    <div>Built for enthusiasts |</div>
+
+                    <a
+                        href="https://www.hacktime.dev"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        role="button"
+                        aria-label="Follow on LinkedIn"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            window.open("https://www.hacktime.dev", "_blank");
+                        }}
+                        className="powered-by flex items-center gap-2 transition-colors duration-400 ease-custom-cubic hover:text-green-500"
+                    >
+                        powered by Hacktime
+                        <Image
+                            alt="hacktime logo"
+                            src={hacktime}
+                            width={200}
+                            height={200}
+                            className="png-green powered-by-logo w-4 h-4 laptop:h-6 laptop:w-6 "
+                        />
+                    </a>
                 </div>
             </div>
         </div>

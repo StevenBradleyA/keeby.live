@@ -223,19 +223,22 @@ export default function Navigation() {
         };
     }, [isMenuOpen, isSecondaryMenuOpen, handleOutsideClick]);
 
-    console.log(notificationCount);
-
     return (
-        <nav className="fixed top-0 left-0 right-0 px-14 py-9 flex justify-between items-center z-50">
+        <nav className="fixed top-0 left-0 right-0 p-2  desktop:px-14 desktop:py-9 flex justify-between items-center z-50 overflow-hidden text-xs laptop:text-sm">
             <Link
                 href={"/"}
                 aria-label="home button"
                 className="hover:opacity-75 ease-in"
             >
-                <Image alt="home" className="w-72" src={home} />
+                <Image
+                    alt="home"
+                    className="w-32 laptop:w-72 h-auto"
+                    src={home}
+                    priority
+                />
             </Link>
             <motion.button
-                className=" flex items-center relative h-10 w-20 "
+                className=" flex items-center relative w-12 h-6  laptop:h-10 laptop:w-20 "
                 ref={menuButtonRef}
                 whileHover={isMenuOpen ? "openHover" : "hover"}
                 initial="initial"
@@ -250,12 +253,12 @@ export default function Navigation() {
                 animate={isMenuOpen ? "open" : "initial"}
             >
                 <motion.div
-                    className="bg-white/30 text-green-500 absolute right-5  rounded-full p-1 rotate-180 "
+                    className="bg-white/30 text-green-500 absolute right-[10px] laptop:right-[22px] rounded-full p-1 rotate-180 "
                     variants={circleArrow}
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="w-6 h-6  "
+                        className="w-4 h-4 laptop:w-6 laptop:h-6  "
                         viewBox="0 0 24 24"
                         fill="none"
                     >
@@ -270,12 +273,12 @@ export default function Navigation() {
                 </motion.div>
 
                 <motion.div
-                    className="bg-white/30 text-green-500 absolute right-5 rounded-full p-1"
+                    className="bg-white/30 text-green-500 absolute right-[10px] laptop:right-[22px] rounded-full p-1"
                     variants={circleX}
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="w-6 h-6  text-red-500"
+                        className=" w-4 h-4 laptop:w-6 laptop:h-6  text-red-500"
                         viewBox="2 2 20 20"
                         fill="none"
                     >
@@ -291,7 +294,7 @@ export default function Navigation() {
 
                 <motion.svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="w-24 h-24 text-mediumGray absolute -right-2 "
+                    className="w-16 h-16 laptop:w-24 laptop:h-24 text-mediumGray absolute -right-2 "
                     viewBox="-24 0 50 24"
                     version="1.1"
                 >
@@ -316,7 +319,7 @@ export default function Navigation() {
             <AnimatePresence>
                 {isMenuOpen && (
                     <motion.div
-                        className="fixed top-28 right-14 w-[600px] h-[100px] bottom-0 bg-black/90 rounded-lg flex justify-between items-center px-5 text-sm text-mediumGray z-50"
+                        className="fixed top-12 right-1 laptop:top-28 laptop:right-14 w-[360px] laptop:w-[600px] laptop:h-[100px] h-[80px] bottom-0 bg-black/90 rounded-lg flex justify-between items-center px-2 laptop:px-5  text-mediumGray z-50"
                         ref={menuRef}
                         variants={menuAppear}
                         initial="hidden"
@@ -333,13 +336,14 @@ export default function Navigation() {
                                 className="flex flex-col items-center relative h-full bg-none"
                                 whileHover="hover"
                                 initial="initial"
+                                whileTap="hover"
                             >
                                 <div className="h-[65%] flex-col flex justify-end relative flex-shrink-0">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         version="1.1"
                                         viewBox="0 0 1280 769"
-                                        className="h-12 w-20 z-30 text-green-500 "
+                                        className="w-12 h-8 laptop:h-12 laptop:w-20 z-30 text-green-500 "
                                         fill="currentColor"
                                     >
                                         <path
@@ -364,7 +368,10 @@ export default function Navigation() {
                                     </motion.svg>
                                 </div>
 
-                                <h2 className="h-full ">Keeb Type</h2>
+                                <h2 className="h-full hidden laptop:flex">
+                                    Keeb Type
+                                </h2>
+                                <h2 className="h-full laptop:hidden">Type</h2>
 
                                 <motion.div
                                     variants={lineHover}
@@ -388,7 +395,7 @@ export default function Navigation() {
                                         xmlns="http://www.w3.org/2000/svg"
                                         version="1.1"
                                         viewBox="100 100 1080 569"
-                                        className="h-12 w-20 z-30 text-green-500 "
+                                        className="w-12 h-8 laptop:h-12 laptop:w-20 z-30 text-green-500 "
                                         fill="none"
                                     >
                                         <path
@@ -408,7 +415,11 @@ export default function Navigation() {
                                     </motion.svg>
                                 </div>
 
-                                <h2 className="h-full">Marketplace</h2>
+                                <h2 className="h-full hidden laptop:flex">
+                                    Marketplace
+                                </h2>
+                                <h2 className="h-full laptop:hidden">Market</h2>
+
                                 <motion.div
                                     variants={lineHover}
                                     className="bg-green-500 w-full h-1"
@@ -431,7 +442,7 @@ export default function Navigation() {
                                         xmlns="http://www.w3.org/2000/svg"
                                         version="1.1"
                                         viewBox="50 140 1188 625"
-                                        className="h-12 w-20 z-30  "
+                                        className="w-12 h-8 laptop:h-12 laptop:w-20 z-30  "
                                         fill="none"
                                     >
                                         <g>
@@ -524,7 +535,7 @@ export default function Navigation() {
                                 <div className="h-[65%] flex-col flex justify-end relative flex-shrink-0">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
-                                        className="h-12 w-20 z-10 text-green-500  "
+                                        className="w-12 h-8 laptop:h-12 laptop:w-20 z-10 text-green-500  "
                                         viewBox="100 100 1080 569"
                                         fill="none"
                                     >
@@ -590,7 +601,7 @@ export default function Navigation() {
                                 <div className="h-[65%] flex-col flex justify-end relative flex-shrink-0">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
-                                        className="h-12 w-20 z-30 text-green-500  "
+                                        className="w-12 h-8 laptop:h-12 laptop:w-20 z-30 text-green-500  "
                                         viewBox="-30 -60 1200 380"
                                         fill="none"
                                     >
@@ -640,7 +651,7 @@ export default function Navigation() {
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
-                                    className="w-6 h-8 "
+                                    className="w-4 h-6 laptop:w-6 laptop:h-8 "
                                     viewBox="0 0 24 24"
                                     fill="none"
                                 >
@@ -667,7 +678,7 @@ export default function Navigation() {
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
-                                    className="w-6 h-8 "
+                                    className="w-4 h-6 laptop:w-6 laptop:h-8 "
                                     viewBox="0 0 24 24"
                                     fill="none"
                                 >
@@ -681,8 +692,34 @@ export default function Navigation() {
                                 </svg>
                             </Link>
                         </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
-                        {/*    {sessionData === null ? (
+            <AnimatePresence>
+                {isSecondaryMenuOpen && (
+                    <motion.div
+                        className="bg-black/90 rounded-lg fixed top-36 laptop:top-60 right-1 laptop:right-14 w-[360px] laptop:w-[400px] h-[400px] overflow-y-auto p-3"
+                        ref={secondaryMenuRef}
+                        variants={secondaryMenuAppear}
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                    >
+                        <NotificationCheck
+                            setIsMenuOpen={setIsMenuOpen}
+                            setIsSecondaryMenuOpen={setIsSecondaryMenuOpen}
+                            session={sessionData}
+                        />
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </nav>
+    );
+}
+
+{
+    /*    {sessionData === null ? (
                             <motion.button
                                 onClick={() => void signIn()}
                                 aria-label="share your keyboard with others"
@@ -807,29 +844,5 @@ export default function Navigation() {
                                     <h2>Profile</h2>
                                 </motion.div>
                             </Link>
-                        )} */}
-                    </motion.div>
-                )}
-            </AnimatePresence>
-
-            <AnimatePresence>
-                {isSecondaryMenuOpen && (
-                    <motion.div
-                        className="bg-black/90 rounded-lg fixed top-60 right-14 w-[400px] h-[400px] overflow-y-auto p-3"
-                        ref={secondaryMenuRef}
-                        variants={secondaryMenuAppear}
-                        initial="hidden"
-                        animate="visible"
-                        exit="exit"
-                    >
-                        <NotificationCheck
-                            setIsMenuOpen={setIsMenuOpen}
-                            setIsSecondaryMenuOpen={setIsSecondaryMenuOpen}
-                            session={sessionData}
-                        />
-                    </motion.div>
-                )}
-            </AnimatePresence>
-        </nav>
-    );
+                        )} */
 }
