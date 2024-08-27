@@ -5,8 +5,7 @@ import {
     protectedProcedure,
 } from "~/server/api/trpc";
 import { removeFileFromS3 } from "../utils";
-import type { Images, Prisma, Post } from "@prisma/client";
-import { id } from "date-fns/locale";
+import type { Images, Prisma } from "@prisma/client";
 
 type CreateData = {
     title: string;
@@ -82,16 +81,14 @@ interface PostPage {
     images: Images[];
     user: UserWithPosts;
 }
-type ExtendedPost = Post & {
-    images: Images[];
-    _count: {
-        comments: number;
-        postLikes: number;
-    };
-    previewIndex?: number;
-};
-
-// todo potentially not update user if posgt id matches userId so they dont gain points for liking their own stuff.. this would prevent farming
+// type ExtendedPost = Post & {
+//     images: Images[];
+//     _count: {
+//         comments: number;
+//         postLikes: number;
+//     };
+//     previewIndex?: number;
+// };
 
 export const postRouter = createTRPCRouter({
     getAll: publicProcedure
@@ -123,7 +120,7 @@ export const postRouter = createTRPCRouter({
                 ].filter((obj) => Object.keys(obj).length > 0),
             };
 
-            return ctx.prisma.post.findMany({
+            return ctx.db.post.findMany({
                 where: {
                     ...whereFilters,
                 },
@@ -131,6 +128,7 @@ export const postRouter = createTRPCRouter({
                     id: true,
                     title: true,
                     userId: true,
+                    text: true,
                     images: {
                         where: {
                             resourceType: "POSTPREVIEW",

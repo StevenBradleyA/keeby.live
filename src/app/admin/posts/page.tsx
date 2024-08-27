@@ -1,20 +1,16 @@
 "use client";
-import Image from "next/image";
-import Link from "next/link";
-import hackerman from "@public/Admin/admin-black.png";
 import { api } from "~/trpc/react";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { debounce } from "lodash";
-import EachAdminPost from "~/app/_components/Admin/Posts";
 import Footer from "~/app/_components/Footer/footer";
 import LoadingSpinner from "~/app/_components/Loading";
 import NotFound from "~/app/not-found";
 import AdminHeader from "~/app/_components/Admin/adminHeader";
+import EachAdminPost from "~/app/_components/Posts/Display/Admin/eachAdminPost.tsx";
 
 export default function AdminPosts() {
     const { data: session } = useSession();
-    const accessDenied = !session || !session.user.isAdmin;
 
     const [searchQuery, setSearchQuery] = useState<string>("");
     const [debouncedSearchQuery, setDebouncedSearchQuery] =
@@ -63,14 +59,12 @@ export default function AdminPosts() {
                             />
                         </div>
                     </div>
-                    <div className="mt-10  flex justify-center">
-                        <div className="flex w-2/3 flex-wrap gap-10">
-                            {posts &&
-                                posts.length > 0 &&
-                                posts.map((post) => (
-                                    <EachAdminPost post={post} key={post.id} />
-                                ))}
-                        </div>
+                    <div className="flex w-full flex-wrap gap-5 px-3 laptop:px-16">
+                        {posts &&
+                            posts.length > 0 &&
+                            posts.map((post) => (
+                                <EachAdminPost post={post} key={post.id} />
+                            ))}
                     </div>
                     <div className="mt-96">
                         <Footer />
