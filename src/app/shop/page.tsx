@@ -11,7 +11,7 @@ export default function Shop() {
 
     return (
         <>
-            <div className="px-16 mt-40 flex flex-col w-full items-center">
+            <div className="px-16 mt-40 flex flex-col w-full items-center z-30 relative">
                 <div className="flex desktop:w-3/4 gap-3 h-72">
                     <div className="w-[35rem] bg-mediumGray rounded-3xl shadow-lg h-full"></div>
                     <div className="flex w-96 h-full flex-col gap-3">
@@ -29,9 +29,10 @@ export default function Shop() {
                     </div>
                 </div>
             </div>
+            <div className="fixed top-0 bg-dark z-20 left-0 right-0 w-full h-40"></div>
             <PickParams />
 
-            <div className="w-full flex px-16 gap-10">
+            <div className="w-full flex px-16 gap-10 mt-2">
                 <SubPickParams />
                 <div className="w-full bg-purple-500/20 h-[200rem]"></div>
             </div>

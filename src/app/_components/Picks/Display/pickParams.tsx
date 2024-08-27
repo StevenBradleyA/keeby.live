@@ -27,7 +27,7 @@ export default function PickParams() {
     };
 
     return (
-        <div className="w-full flex flex-col mt-12 sticky top-40 px-16">
+        <div className="w-full flex flex-col mt-12 sticky top-40 px-16 bg-dark">
             <div className="w-full flex gap-10">
                 <div className="flex gap-5 w-full justify-center ">
                     <button

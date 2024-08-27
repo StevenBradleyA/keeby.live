@@ -120,11 +120,18 @@ select:-webkit-autofill:focus {
     filter: invert(48%) sepia(5%) saturate(3277%) hue-rotate(72deg)
         brightness(116%) contrast(126%);
 }
+/* --------------         SCROLL BAR          --------------  */
 
-/* --------------                            --------------  */
-/* --------------                            --------------  */
+.hidden-scrollbar {
+    -ms-overflow-style: none; 
+    scrollbar-width: none; /* Firefox */
+    overflow: auto; /* Ensure scroll functionality */
+}
 
-/* --------------                            --------------  */
+/* Hide scrollbar for Chrome, Safari and Opera */
+.hidden-scrollbar::-webkit-scrollbar {
+    display: none;
+}
 
 /* --------------         ADMIN          --------------  */
 /* --------------         ADMIN          --------------  */
@@ -2363,9 +2370,6 @@ input[type="checkbox"]:hover {
 /* --------------     END MESSAGES    --------------  */
 /* --------------     END MESSAGES    --------------  */
 /* --------------     END MESSAGES    --------------  */
-
-
-
 
 /* --------------     404    --------------  */
 /* --------------     404    --------------  */

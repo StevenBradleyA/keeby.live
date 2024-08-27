@@ -333,7 +333,7 @@ model Shop {
     assemblyType String?
     soundType    String?
     // KEYCAP OPTIONALS
-    materialType String?
+    keycapMaterial String?
     profileType  String?
     // SWITCH OPTIONALS
     switchType   String?
