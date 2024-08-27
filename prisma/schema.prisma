@@ -311,14 +311,33 @@ model Session {
 
 model Shop {
     id       String  @id @default(cuid())
-    name     String
+    title    String
     link     String
     image    String
+    category String
+    // SWITCH KEYCAP DESKMAT KEYBOARD LUBE STABILIZER ACCESSORY
     price    Int
     featured Boolean @default(false)
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+
+    description String?
+    color       String?
+    // works for deskmats, caps, switches, keyboards, etc...
+
+    // KEYBOARD OPTIONALS
+    caseMaterial String?
+    layoutType   String?
+    pcbType      String?
+    assemblyType String?
+    soundType    String?
+    // KEYCAP OPTIONALS
+    materialType String?
+    profileType  String?
+    // SWITCH OPTIONALS
+    switchType   String?
+    preLubed     Boolean?
 
     comments    Comment[]
     favorites   Favorites[]

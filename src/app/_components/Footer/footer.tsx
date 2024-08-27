@@ -440,14 +440,17 @@ export default function Footer() {
                     <div>Built for enthusiasts |</div>
 
                     <a
-                        href="https://www.hacktime.dev"
+                        href="https://www.steven-anderson.com"
                         target="_blank"
                         rel="noopener noreferrer"
                         role="button"
                         aria-label="Follow on LinkedIn"
                         onClick={(e) => {
                             e.preventDefault();
-                            window.open("https://www.hacktime.dev", "_blank");
+                            window.open(
+                                "https://www.steven-anderson.com",
+                                "_blank",
+                            );
                         }}
                         className="powered-by flex items-center gap-2 transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                     >
@@ -514,14 +517,17 @@ export default function Footer() {
                     <div>Built for enthusiasts |</div>
 
                     <a
-                        href="https://www.hacktime.dev"
+                        href="https://www.steven-anderson.com"
                         target="_blank"
                         rel="noopener noreferrer"
                         role="button"
                         aria-label="Follow on LinkedIn"
                         onClick={(e) => {
                             e.preventDefault();
-                            window.open("https://www.hacktime.dev", "_blank");
+                            window.open(
+                                "https://www.steven-anderson.com",
+                                "_blank",
+                            );
                         }}
                         className="powered-by flex items-center gap-2 transition-colors duration-400 ease-custom-cubic hover:text-green-500"
                     >

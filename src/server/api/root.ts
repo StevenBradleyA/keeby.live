@@ -59,6 +59,7 @@ import { messageRouter } from "./routers/message";
 import { notificationRouter } from "./routers/notification";
 import { ticketRouter } from "./routers/ticket";
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
+import { shopRouter } from "./routers/shop";
 
 /**
  * This is the primary router for your server.
@@ -78,6 +79,7 @@ export const appRouter = createTRPCRouter({
     post: postRouter,
     rank: rankRouter,
     review: reviewRouter,
+    shop: shopRouter,
     tag: tagRouter,
     ticket: ticketRouter,
     transaction: transactionRouter,

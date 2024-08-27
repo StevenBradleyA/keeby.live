@@ -74,7 +74,6 @@ export const userRouter = createTRPCRouter({
             where: { id: input },
         });
     }),
-  
 
     getUserGameData: publicProcedure
         .input(
@@ -226,7 +225,7 @@ export const userRouter = createTRPCRouter({
             });
             if (userInfo) {
                 const averageStarRating = await ctx.db.review.aggregate({
-                    where: { sellerId: userInfo.id },
+                    where: { recipientId: userInfo.id },
                     _avg: { starRating: true },
                 });
 
@@ -276,8 +275,6 @@ export const userRouter = createTRPCRouter({
                 return providers.length > 0
                     ? providers
                     : "No providers found for this user";
-
-              
             } catch (error) {
                 // Handle any errors that occur during the database query
                 console.error("Error checking username:", error);
@@ -525,7 +522,7 @@ export const userRouter = createTRPCRouter({
                     }
                 }
 
-                return ctx.prisma.user.update({
+                return ctx.db.user.update({
                     where: { id: input },
                     data: { profile: null },
                 });
@@ -559,7 +556,6 @@ export const userRouter = createTRPCRouter({
                     }
 
                     try {
-                        // here we are waiting for all promises and capturing those that are rejected
                         const results =
                             await Promise.allSettled(removeFilePromises);
                         const errors = results.filter(
@@ -576,126 +572,11 @@ export const userRouter = createTRPCRouter({
                         console.error("An unexpected error occurred:", err);
                     }
                 }
-                return ctx.prisma.user.delete({
+                return ctx.db.user.delete({
                     where: { id: id },
                 });
             } else {
                 throw new Error("Invalid userId");
             }
         }),
-
-    // getPayPalAccessToken: publicProcedure
-    //     .input(
-    //         z.object({
-    //             authorizationCode: z.string(),
-    //         })
-    //     )
-    //     .mutation(async ({ input }) => {
-    //         const { authorizationCode } = input;
-    //         const clientId = env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
-    //         const clientSecret = env.PAYPAL_SECRET;
-    //         const basicAuth = Buffer.from(
-    //             `${clientId}:${clientSecret}`
-    //         ).toString("base64");
-
-    //         try {
-    //             const tokenResponse = await fetch(
-    //                 "https://api-m.sandbox.paypal.com/v1/oauth2/token",
-    //                 {
-    //                     method: "POST",
-    //                     headers: {
-    //                         Authorization: `Basic ${basicAuth}`,
-    //                         "Content-Type": "application/x-www-form-urlencoded",
-    //                     },
-    //                     body: new URLSearchParams({
-    //                         grant_type: "authorization_code",
-    //                         code: authorizationCode,
-    //                     }),
-    //                 }
-    //             );
-
-    //             const tokenData = (await tokenResponse.json()) as TokenData;
-
-    //             return tokenData;
-    //         } catch (error) {
-    //             console.error("Failed to exchange authorization code:", error);
-    //             throw new Error("Failed to exchange authorization code.");
-    //         }
-    //     }),
-
-    // verifyUser: protectedProcedure
-    //     .input(
-    //         z.object({
-    //             userId: z.string(),
-    //             access: z.string(),
-    //             refresh: z.string(),
-    //         })
-    //     )
-    //     .mutation(async ({ input, ctx }) => {
-    //         const { userId, access, refresh } = input;
-
-    //         try {
-    //             const userInfoResponse = await fetch(
-    //                 "https://api-m.sandbox.paypal.com/v1/identity/openidconnect/userinfo?schema=openid",
-    //                 {
-    //                     method: "GET",
-    //                     headers: {
-    //                         Authorization: `Bearer ${access}`,
-    //                         "Content-Type": "application/x-www-form-urlencoded",
-    //                     },
-    //                 }
-    //             );
-
-    //                 const userInfo =
-    //                     (await userInfoResponse.json()) as UserInfoData;
-    //                 console.log("\n\n\n hey \n\n\n", userInfo);
-
-    //                 if (!userInfoResponse.ok) {
-    //                     throw new Error(
-    //                         `Failed to fetch user info from PayPal`
-    //                     );
-    //                 }
-    //                 // do i save the refresh token? and the user_id from paypal?
-    //                 // that way later when i need to send a payout I just get a new access token and send them the amount to the paypal userId?
-    //                 if (
-    //                     userInfo &&
-    //                     tokenData.refresh_token &&
-    //                     userInfo.user_id
-    //                 ) {
-    //                     const updateUser = await ctx.db.user.update({
-    //                         where: { id: userId },
-    //                         data: {
-    //                             isModerator: true,
-    //                             refreshToken: tokenData.refresh_token,
-    //                             paypalId: userInfo.user_id,
-    //                         },
-    //                     });
-    //                     return { userInfo, updateUser, tokenData };
-    //                 }
-    //                 return { userInfo, tokenData };
-    //             }
-
-    //             // return data;
-    //         } catch (error) {
-    //             console.error("Failed to get user info");
-    //             throw new Error("Failed to get user info");
-    //         }
-    //     }),
-
-    // verifyTesting: protectedProcedure
-    //     .input(
-    //         z.object({
-    //             userId: z.string(),
-    //         })
-    //     )
-    //     .mutation(async ({ input, ctx }) => {
-    //         const { userId } = input;
-
-    //         return await ctx.db.user.update({
-    //             where: { id: userId },
-    //             data: {
-    //                 isModerator: true,
-    //             },
-    //         });
-    //     }),
 });
