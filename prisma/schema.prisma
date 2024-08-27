@@ -40,6 +40,7 @@ model Comment {
 
     listingId String?
     postId    String?
+    shopId    String?
 
     user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -49,10 +50,12 @@ model Comment {
 
     listing Listing? @relation(fields: [listingId], references: [id], onDelete: Cascade)
     post    Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
+    shop    Shop?    @relation(fields: [shopId], references: [id], onDelete: Cascade)
 
     @@unique([userId, id])
     @@index([listingId], name: "idxCommentListingId")
     @@index([postId], name: "idxCommentPostId")
+    @@index([shopId], name: "idxCommentShopId")
 }
 
 model CommentLike {
@@ -67,10 +70,12 @@ model CommentLike {
 }
 
 model Favorites {
-    id        String  @id @default(cuid())
-    userId    String
+    id     String @id @default(cuid())
+    userId String
+
     listingId String?
     postId    String?
+    shopId    String?
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -78,10 +83,12 @@ model Favorites {
     user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
     listing Listing? @relation(fields: [listingId], references: [id], onDelete: Cascade)
     post    Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
+    shop    Shop?    @relation(fields: [shopId], references: [id], onDelete: Cascade)
 
     @@unique([userId, listingId, postId])
     @@index([listingId], name: "idxUserFavoritesListingId")
     @@index([postId], name: "idxUserFavoritesPostId")
+    @@index([shopId], name: "idxUserFavoritesShopId")
 }
 
 model Game {
@@ -130,7 +137,7 @@ model Keeb {
 
     userId String
 
-    user User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
     games Game[]
 }
 
@@ -294,6 +301,47 @@ model Review {
     transaction ListingTransaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
 }
 
+model Session {
+    id           String   @id @default(cuid())
+    sessionToken String   @unique
+    userId       String
+    expires      DateTime
+    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Shop {
+    id       String  @id @default(cuid())
+    name     String
+    link     String
+    image    String
+    price    Int
+    featured Boolean @default(false)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    comments    Comment[]
+    favorites   Favorites[]
+    shopRatings ShopRating[]
+}
+
+model ShopRating {
+    id     String  @id @default(cuid())
+    rating Int
+    text   String?
+
+    userId    String
+    shopId    String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+    shop Shop @relation(fields: [shopId], references: [id], onDelete: Cascade)
+
+    @@unique([userId, shopId])
+    @@index([shopId], name: "idxShopRatingShopId")
+}
+
 model Tag {
     id          String @id @default(cuid())
     name        String @unique
@@ -314,14 +362,6 @@ model Ticket {
     updatedAt DateTime @updatedAt
 
     user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model Session {
-    id           String   @id @default(cuid())
-    sessionToken String   @unique
-    userId       String
-    expires      DateTime
-    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
@@ -366,6 +406,7 @@ model User {
     tickets            Ticket[]
     buyerTransactions  ListingTransaction[] @relation("BuyerRelation")
     sellerTransactions ListingTransaction[] @relation("SellerRelation")
+    shopRatings        ShopRating[]
 }
 
 model VerificationToken {

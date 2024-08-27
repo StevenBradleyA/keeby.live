@@ -319,7 +319,7 @@ export default function Navigation() {
             <AnimatePresence>
                 {isMenuOpen && (
                     <motion.div
-                        className="fixed top-12 right-1 laptop:top-28 laptop:right-14 w-[360px] laptop:w-[600px] laptop:h-[100px] h-[80px] bottom-0 bg-black/90 rounded-lg flex justify-between items-center px-2 laptop:px-5  text-mediumGray z-50"
+                        className="fixed top-12 right-1 laptop:top-28 laptop:right-14 w-[360px] laptop:w-[600px] laptop:h-[100px] h-[80px] bottom-0 bg-black/90 rounded-lg flex justify-between items-center px-2 laptop:px-5  text-mediumGray z-40"
                         ref={menuRef}
                         variants={menuAppear}
                         initial="hidden"
