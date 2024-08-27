@@ -13,9 +13,9 @@ export default function ArrowPopup() {
                     <path
                         d="M7 17L17 7M17 7H8M17 7V16"
                         stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                     />
                 </svg>
             </motion.div>

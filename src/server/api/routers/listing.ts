@@ -93,13 +93,13 @@ interface ListingPage extends Listing {
     favoriteId?: string;
 }
 
-type ExtendedListing = Listing & {
-    images: Images[];
-    _count: {
-        comments: number;
-    };
-    previewIndex: number;
-};
+// type ExtendedListing = Listing & {
+//     images: Images[];
+//     _count: {
+//         comments: number;
+//     };
+//     previewIndex: number;
+// };
 
 export const listingRouter = createTRPCRouter({
     getAll: publicProcedure
@@ -131,7 +131,7 @@ export const listingRouter = createTRPCRouter({
                 ].filter((obj) => Object.keys(obj).length > 0),
             };
 
-            return ctx.prisma.listing.findMany({
+            return ctx.db.listing.findMany({
                 where: {
                     ...whereFilters,
                 },
@@ -145,6 +145,7 @@ export const listingRouter = createTRPCRouter({
                         },
                     },
                 },
+                take: 50,
             });
         }),
     getAllByUserId: publicProcedure
@@ -205,12 +206,6 @@ export const listingRouter = createTRPCRouter({
                         },
                     },
                 },
-                // todo add this when db is reset
-                // orderBy: {
-                //     favorites: {
-                //         createdAt: "desc",
-                //     },
-                // },
             });
 
             return allUserListings;
@@ -871,9 +866,11 @@ export const listingRouter = createTRPCRouter({
                     "You don't have the right, O you don't have the right",
                 );
             }
-            const transactionCheck = await ctx.db.listingTransaction.findUnique({
-                where: {id: transactionId}
-            })
+            const transactionCheck = await ctx.db.listingTransaction.findUnique(
+                {
+                    where: { id: transactionId },
+                },
+            );
 
             const listingCheck = await ctx.db.listing.findUnique({
                 where: { id: listingId },

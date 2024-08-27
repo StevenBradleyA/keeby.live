@@ -1,6 +1,5 @@
 "use client";
 import { api } from "~/trpc/react";
-import EachAdminListing from "~/app/_components/Admin/Listings";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { debounce } from "lodash";
@@ -8,6 +7,7 @@ import Footer from "~/app/_components/Footer/footer";
 import LoadingSpinner from "~/app/_components/Loading";
 import NotFound from "~/app/not-found";
 import AdminHeader from "~/app/_components/Admin/adminHeader";
+import EachAdminListing from "~/app/_components/Listings/Display/Admin/eachAdminListing.tsx";
 
 export default function AdminListings() {
     const { data: session, status } = useSession();
@@ -16,14 +16,14 @@ export default function AdminListings() {
     const [debouncedSearchQuery, setDebouncedSearchQuery] =
         useState<string>("");
 
-    const { data: listings } = api.listing.getAll.useQuery({
+    const { data: listings, isLoading } = api.listing.getAll.useQuery({
         searchQuery: debouncedSearchQuery,
     });
 
     useEffect(() => {
         const handler = debounce(() => {
             setDebouncedSearchQuery(searchQuery);
-        }, 300);
+        }, 1000);
 
         handler();
         return () => {
@@ -41,6 +41,14 @@ export default function AdminListings() {
 
     if (!session || !session.user.isAdmin) {
         return <NotFound />;
+    }
+
+    if (isLoading) {
+        return (
+            <div className="mt-40 flex w-full justify-center text-red-500">
+                <LoadingSpinner size="20px" />
+            </div>
+        );
     }
 
     return (
