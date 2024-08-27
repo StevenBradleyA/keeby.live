@@ -1,5 +1,6 @@
 import Footer from "../_components/Footer/footer";
 import PickParams from "../_components/Picks/Display/pickParams";
+import SubPickParams from "../_components/Picks/Display/subPickParams";
 
 export default function Shop() {
     // click a param
@@ -27,12 +28,15 @@ export default function Shop() {
                         </div>
                     </div>
                 </div>
-                <div className="w-full flex justify-center mt-5">
-                    <PickParams />
-                </div>
+            </div>
+            <PickParams />
+
+            <div className="w-full flex px-16 gap-10">
+                <SubPickParams />
+                <div className="w-full bg-purple-500/20 h-[200rem]"></div>
             </div>
 
-            <div className="mt-10">
+            <div className="mt-10 z-40 relative">
                 <Footer />
             </div>
         </>

@@ -27,51 +27,53 @@ export default function PickParams() {
     };
 
     return (
-        <>
-            <div className="flex gap-3">
-                <button
-                    onClick={() => handleCategorySelect("keyboards")}
-                    className="flex flex-col items-center gap-1"
-                >
-                    <div className="rounded-full h-10 w-10 bg-green-500 shadow-lg"></div>
-                    <h3>keyboards</h3>
-                </button>
-                <button
-                    onClick={() => handleCategorySelect("keycaps")}
-                    className="flex flex-col items-center gap-1"
-                >
-                    <div className="rounded-full h-10 w-10 bg-green-500 shadow-lg"></div>
-                    <h3>Keycaps</h3>
-                </button>
-                <button
-                    onClick={() => handleCategorySelect("switches")}
-                    className="flex flex-col items-center gap-1"
-                >
-                    <div className="rounded-full h-10 w-10 bg-green-500 shadow-lg"></div>
-                    <h3>Switches</h3>
-                </button>
-                <button
-                    onClick={() => handleCategorySelect("deskmats")}
-                    className="flex flex-col items-center gap-1"
-                >
-                    <div className="rounded-full h-10 w-10 bg-green-500 shadow-lg"></div>
-                    <h3>deskmats</h3>
-                </button>
-                <button
-                    onClick={() => handleCategorySelect("lube")}
-                    className="flex flex-col items-center gap-1"
-                >
-                    <div className="rounded-full h-10 w-10 bg-green-500 shadow-lg"></div>
-                    <h3>Lube</h3>
-                </button>
-                <button
-                    onClick={() => handleCategorySelect("accessories")}
-                    className="flex flex-col items-center gap-1"
-                >
-                    <div className="rounded-full h-10 w-10 bg-green-500 shadow-lg"></div>
-                    <h3>Accessories</h3>
-                </button>
+        <div className="w-full flex flex-col mt-12 sticky top-40 px-16">
+            <div className="w-full flex gap-10">
+                <div className="flex gap-5 w-full justify-center ">
+                    <button
+                        onClick={() => handleCategorySelect("keyboards")}
+                        className="flex flex-col items-center gap-1 hover:opacity-80"
+                    >
+                        <div className="rounded-full h-10 w-10 bg-green-500 shadow-lg"></div>
+                        <h3>Keyboards</h3>
+                    </button>
+                    <button
+                        onClick={() => handleCategorySelect("keycaps")}
+                        className="flex flex-col items-center gap-1 hover:opacity-80"
+                    >
+                        <div className="rounded-full h-10 w-10 bg-green-500 shadow-lg"></div>
+                        <h3>Keycaps</h3>
+                    </button>
+                    <button
+                        onClick={() => handleCategorySelect("switches")}
+                        className="flex flex-col items-center gap-1 hover:opacity-80"
+                    >
+                        <div className="rounded-full h-10 w-10 bg-green-500 shadow-lg"></div>
+                        <h3>Switches</h3>
+                    </button>
+                    <button
+                        onClick={() => handleCategorySelect("deskmats")}
+                        className="flex flex-col items-center gap-1 hover:opacity-80"
+                    >
+                        <div className="rounded-full h-10 w-10 bg-green-500 shadow-lg"></div>
+                        <h3>Deskmats</h3>
+                    </button>
+                    <button
+                        onClick={() => handleCategorySelect("lube")}
+                        className="flex flex-col items-center gap-1 hover:opacity-80"
+                    >
+                        <div className="rounded-full h-10 w-10 bg-green-500 shadow-lg"></div>
+                        <h3>Lube</h3>
+                    </button>
+                    <button
+                        onClick={() => handleCategorySelect("accessories")}
+                        className="flex flex-col items-center gap-1 hover:opacity-80"
+                    >
+                        <div className="rounded-full h-10 w-10 bg-green-500 shadow-lg"></div>
+                        <h3>Accessories</h3>
+                    </button>
+                </div>
             </div>
-        </>
+        </div>
     );
 }
