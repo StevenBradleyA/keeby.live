@@ -6,19 +6,45 @@ import {
 } from "~/server/api/trpc";
 
 export const ticketRouter = createTRPCRouter({
-    getAll: publicProcedure.query(({ ctx }) => {
-        return ctx.db.ticket.findMany({
-            include: {
-                user: {
-                    select: {
-                        id: true,
-                        username: true,
-                        profile: true,
+    getAll: publicProcedure
+        .input(
+            z.object({
+                typeQuery: z.string().optional(),
+            }),
+        )
+        .query(({ input, ctx }) => {
+            const { typeQuery } = input;
+            const whereFilters = {
+                AND: [
+                    typeQuery
+                        ? {
+                              OR: [
+                                  {
+                                      type: {
+                                          contains: typeQuery,
+                                      },
+                                  },
+                              ],
+                          }
+                        : {},
+                ].filter((obj) => Object.keys(obj).length > 0),
+            };
+            return ctx.db.ticket.findMany({
+                where: {
+                    ...whereFilters,
+                },
+                include: {
+                    user: {
+                        select: {
+                            id: true,
+                            username: true,
+                            profile: true,
+                        },
                     },
                 },
-            },
-        });
-    }),
+                take: 50,
+            });
+        }),
 
     create: protectedProcedure
         .input(

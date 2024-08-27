@@ -27,8 +27,8 @@ export default function EachAdminUser({ user }: EachAdminUserProps) {
 
     const { mutate } = api.user.delete.useMutation({
         onSuccess: () => {
-            toast.success("User Removed!", {
-                icon: "☠️",
+            toast.success("User terminated ggez", {
+                icon: "🧹",
                 style: {
                     borderRadius: "10px",
                     background: "#333",
@@ -41,8 +41,8 @@ export default function EachAdminUser({ user }: EachAdminUserProps) {
     const { mutate: deleteProfilePic } = api.user.deleteUserProfile.useMutation(
         {
             onSuccess: () => {
-                toast.success("Profile Pic Removed!", {
-                    icon: "☠️",
+                toast.success("Profile image rekt ggez", {
+                    icon: "🧹",
                     style: {
                         borderRadius: "10px",
                         background: "#333",
@@ -55,7 +55,7 @@ export default function EachAdminUser({ user }: EachAdminUserProps) {
     );
 
     const handleDeleteUser = () => {
-        if (session?.user.isAdmin) {
+        if (session && session.user.isAdmin) {
             const data = {
                 id: user.id,
                 profile: user.profile ? user.profile : undefined,
@@ -66,7 +66,7 @@ export default function EachAdminUser({ user }: EachAdminUserProps) {
     };
 
     const handleDeleteProfile = () => {
-        if (session?.user.isAdmin) {
+        if (session && session.user.isAdmin) {
             const data = user.id;
 
             deleteProfilePic(data);
@@ -74,34 +74,35 @@ export default function EachAdminUser({ user }: EachAdminUserProps) {
     };
 
     return (
-        <div className=" h-[40vh] w-1/3 rounded-xl bg-black/30 p-5 text-sm text-failure shadow-xl">
-            <div className="absolute right-2 top-2 flex items-center justify-center rounded-md bg-failure px-4 py-1 text-black">
+        <div className="h-80 w-80 rounded-xl bg-darkGray shadow-lg p-3 text-xs relative flex flex-col items-center justify-end">
+            <div className="absolute right-2 top-2 flex items-center justify-center rounded-md bg-black/30 px-2 p-1">
                 {user.internetPoints}
             </div>
 
-            <div className="flex h-1/4 flex-col items-center justify-center p-5 text-lg text-failure">
-                <h1>{user.username}</h1>
-                <h1 className="text-sm text-mediumGray">{user.email}</h1>
-                <h1 className="text-sm text-mediumGray">{user.selectedTag}</h1>
+            <div className="flex flex-col items-center justify-center  mt-3">
+                <h2 className="p-2 text-failure bg-black/30 rounded-md">
+                    {user.username}
+                </h2>
+                <h3 className="mt-1">{user.email}</h3>
             </div>
 
-            <div className="relative flex h-1/2 w-full justify-center">
+            <div className="relative mt-8">
                 <Image
                     alt="user preview"
                     src={user.profile ? user.profile : defaultProfile}
                     width={500}
                     height={500}
-                    className="h-full w-1/2 rounded-md object-cover"
+                    className=" w-36 h-36 rounded-md"
                 />
                 {user.profile && confirmDeleteProfile && (
-                    <div className="absolute -top-6 right-[10%] flex gap-3 text-sm">
+                    <div className="absolute -top-7 -right-16 flex gap-3 ">
                         <button
                             onClick={handleDeleteProfile}
-                            className="text-failure hover:text-red-400"
-                        >{`XXXX`}</button>
+                            className="bg-black/30 py-1 px-2 rounded-md hover:bg-failure"
+                        >{`Delete forever`}</button>
                         <button
                             onClick={() => setConfirmDeleteProfile(false)}
-                            className="text-failure hover:text-red-400"
+                            className="bg-black/30 py-1 px-2 rounded-md hover:bg-green-500"
                         >
                             {`Cancel`}
                         </button>
@@ -109,19 +110,19 @@ export default function EachAdminUser({ user }: EachAdminUserProps) {
                 )}
                 {user.profile && !confirmDeleteProfile && (
                     <button
-                        className="absolute -top-6 right-[18%] text-failure hover:text-red-400"
+                        className="absolute -top-6 -right-6 bg-failure rounded-md hover:opacity-80 "
                         onClick={() => setConfirmDeleteProfile(true)}
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            className="w-6 "
+                            className="w-5 h-5 text-black"
                             viewBox="0 0 24 24"
                             fill="none"
                         >
                             <path
-                                d="M6 7V18C6 19.1046 6.89543 20 8 20H16C17.1046 20 18 19.1046 18 18V7M6 7H5M6 7H8M18 7H19M18 7H16M10 11V16M14 11V16M8 7V5C8 3.89543 8.89543 3 10 3H14C15.1046 3 16 3.89543 16 5V7M8 7H16"
+                                d="M16 8L8 16M8.00001 8L16 16"
                                 stroke="currentColor"
-                                strokeWidth="2"
+                                strokeWidth="1.5"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
                             />
@@ -130,27 +131,27 @@ export default function EachAdminUser({ user }: EachAdminUserProps) {
                 )}
             </div>
 
-            <div className="relative h-1/4 w-full text-black  ">
+            <div className="relative h-full flex flex-col items-center justify-end w-full text-black  ">
                 {!confirmDelete ? (
                     <button
-                        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform rounded-md bg-failure px-4 py-2 hover:bg-red-400 "
+                        className=" rounded-md bg-failure px-4 py-2 hover:bg-red-400 "
                         onClick={() => setConfirmDelete(true)}
                     >
                         {`C:\\\\> Delete`}
                     </button>
                 ) : (
-                    <div className="absolute left-1/2 top-1/2 flex w-full -translate-x-1/2 -translate-y-1/2 transform justify-center gap-5 ">
+                    <div className="flex  gap-5 ">
+                        <button
+                            className=" rounded-md bg-failure px-2 py-2 hover:bg-red-400 "
+                            onClick={handleDeleteUser}
+                        >
+                            {`Delete forever`}
+                        </button>
                         <button
                             className=" rounded-md bg-green-500 px-2 py-2 hover:bg-green-400 "
                             onClick={() => setConfirmDelete(false)}
                         >
                             {`C:\\\\> Abort`}
-                        </button>
-                        <button
-                            className=" rounded-md bg-failure px-2 py-2 hover:bg-red-400 "
-                            onClick={handleDeleteUser}
-                        >
-                            {`C:\\\\> XXXX`}
                         </button>
                     </div>
                 )}

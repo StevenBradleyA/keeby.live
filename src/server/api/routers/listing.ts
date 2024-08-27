@@ -93,14 +93,6 @@ interface ListingPage extends Listing {
     favoriteId?: string;
 }
 
-// type ExtendedListing = Listing & {
-//     images: Images[];
-//     _count: {
-//         comments: number;
-//     };
-//     previewIndex: number;
-// };
-
 export const listingRouter = createTRPCRouter({
     getAll: publicProcedure
         .input(

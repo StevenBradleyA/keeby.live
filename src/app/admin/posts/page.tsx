@@ -10,7 +10,7 @@ import AdminHeader from "~/app/_components/Admin/adminHeader";
 import EachAdminPost from "~/app/_components/Posts/Display/Admin/eachAdminPost.tsx";
 
 export default function AdminPosts() {
-    const { data: session } = useSession();
+    const { data: session, status } = useSession();
 
     const [searchQuery, setSearchQuery] = useState<string>("");
     const [debouncedSearchQuery, setDebouncedSearchQuery] =
@@ -23,7 +23,7 @@ export default function AdminPosts() {
     useEffect(() => {
         const handler = debounce(() => {
             setDebouncedSearchQuery(searchQuery);
-        }, 300);
+        }, 1000);
 
         handler();
         return () => {

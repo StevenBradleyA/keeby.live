@@ -7,19 +7,19 @@ import {
 import { env } from "~/env.mjs";
 import { compare } from "bcryptjs";
 import { removeFileFromS3 } from "../utils";
-import bcrypt from "bcryptjs";
+// import bcrypt from "bcryptjs";
 
-interface TokenData {
-    scope: string;
-    access_token: string;
-    token_type: string;
-    expires_in: string;
-    refresh_token: string;
-    nonce: string;
-}
-interface UserInfoData {
-    user_id: string;
-}
+// interface TokenData {
+//     scope: string;
+//     access_token: string;
+//     token_type: string;
+//     expires_in: string;
+//     refresh_token: string;
+//     nonce: string;
+// }
+// interface UserInfoData {
+//     user_id: string;
+// }
 
 interface UserWithGamesAndRank {
     rank: {
@@ -66,6 +66,7 @@ export const userRouter = createTRPCRouter({
                     internetPoints: true,
                     selectedTag: true,
                 },
+                take: 50,
             });
         }),
 

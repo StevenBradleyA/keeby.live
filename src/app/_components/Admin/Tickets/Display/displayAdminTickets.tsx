@@ -21,11 +21,11 @@ export default function EachAdminTicket({ ticket }: EachAdminTicketProps) {
 
     return (
         <>
-            <div className="h-64 w-96 rounded-xl bg-black/30 p-5 text-sm text-failure shadow-xl">
+            <div className="h-64 w-96 rounded-xl bg-black/30 p-5 text-xs text-failure shadow-lg">
                 <h1 className="break-words break-all border-b border-red-400 pb-2">
                     {ticket.email}
                 </h1>
-                <p className="bg- mt-3 h-40 w-full overflow-y-auto rounded-md border border-red-400 p-3 text-failure">
+                <p className=" mt-3 h-40 w-full overflow-y-auto rounded-md border border-red-400 p-3 text-white">
                     {ticket.text}
                 </p>
             </div>
@@ -35,7 +35,7 @@ export default function EachAdminTicket({ ticket }: EachAdminTicketProps) {
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="text-white-500 relative bottom-1 w-8 text-red-500 transition-colors duration-400 ease-custom-cubic hover:text-white "
+                    className="text-white-500 relative bottom-1 w-8 text-mediumGray  ease-in hover:text-white "
                     viewBox="0 0 24 24"
                     fill="currentColor"
                 >

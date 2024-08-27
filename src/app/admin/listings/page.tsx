@@ -16,7 +16,7 @@ export default function AdminListings() {
     const [debouncedSearchQuery, setDebouncedSearchQuery] =
         useState<string>("");
 
-    const { data: listings, isLoading } = api.listing.getAll.useQuery({
+    const { data: listings } = api.listing.getAll.useQuery({
         searchQuery: debouncedSearchQuery,
     });
 
@@ -43,14 +43,6 @@ export default function AdminListings() {
         return <NotFound />;
     }
 
-    if (isLoading) {
-        return (
-            <div className="mt-40 flex w-full justify-center text-red-500">
-                <LoadingSpinner size="20px" />
-            </div>
-        );
-    }
-
     return (
         <>
             {session && session.user.isAdmin && (
@@ -67,17 +59,15 @@ export default function AdminListings() {
                             />
                         </div>
                     </div>
-                    <div className="mt-10  flex justify-center">
-                        <div className="flex h-10 w-2/3 gap-10">
-                            {listings &&
-                                listings.length > 0 &&
-                                listings.map((listing) => (
-                                    <EachAdminListing
-                                        listing={listing}
-                                        key={listing.id}
-                                    />
-                                ))}
-                        </div>
+                    <div className="mt-10  flex w-full flex-wrap laptop:px-16 px-3">
+                        {listings &&
+                            listings.length > 0 &&
+                            listings.map((listing) => (
+                                <EachAdminListing
+                                    listing={listing}
+                                    key={listing.id}
+                                />
+                            ))}
                     </div>
                     <div className="mt-96">
                         <Footer />

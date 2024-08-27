@@ -11,7 +11,7 @@ interface EachPost {
     id: string;
     title: string;
     userId: string;
-    text?: string;
+    text: string | null;
     images: Images[];
 }
 interface EachAdminPostProps {

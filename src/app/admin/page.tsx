@@ -201,7 +201,7 @@ export default function Admin() {
                         </div>
                     </div>
 
-                    <div className="mt-96">
+                    <div className="mt-80">
                         <Footer />
                     </div>
                 </>

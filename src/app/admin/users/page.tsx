@@ -23,7 +23,7 @@ export default function AdminUsers() {
     useEffect(() => {
         const handler = debounce(() => {
             setDebouncedSearchQuery(searchQuery);
-        }, 300);
+        }, 1000);
 
         handler();
         return () => {
@@ -59,15 +59,14 @@ export default function AdminUsers() {
                             />
                         </div>
                     </div>
-                    <div className="mt-10  flex justify-center">
-                        <div className="flex w-2/3 gap-10">
-                            {users &&
-                                users.length > 0 &&
-                                users.map((user) => (
-                                    <EachAdminUser user={user} key={user.id} />
-                                ))}
-                        </div>
+                    <div className="mt-10  w-full flex gap-3 px-3 laptop:px-16 flex-wrap">
+                        {users &&
+                            users.length > 0 &&
+                            users.map((user) => (
+                                <EachAdminUser user={user} key={user.id} />
+                            ))}
                     </div>
+
                     <div className="mt-96">
                         <Footer />
                     </div>
