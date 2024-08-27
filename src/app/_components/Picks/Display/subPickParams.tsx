@@ -111,13 +111,13 @@ export default function SubPickParams() {
         updateQueryParams({
             priceOrder: "",
             color: "",
-            keycapMaterial: "",
+            layoutType: "",
             pcbType: "",
             assemblyType: "",
             caseMaterial: "",
-            layoutType: "",
-            profileType: "",
             soundType: "",
+            profileType: "",
+            keycapMaterial: "",
             switchType: "",
         });
     };

@@ -465,6 +465,15 @@ export default function Footer() {
                     </a>
                 </div>
                 <div className="flex gap-5">
+                    {session && session.user.isAdmin && (
+                        <Link
+                            href="/admin"
+                            aria-label="admin"
+                            className="ease-in hover:text-green-500"
+                        >
+                            Admin
+                        </Link>
+                    )}
                     <Link
                         href="/terms-of-service"
                         aria-label="privacy"
@@ -491,23 +500,32 @@ export default function Footer() {
 
             <div className="mt-3 justify-between border-t-2 border-mediumGray py-3 flex flex-col laptop:hidden">
                 <div className="flex gap-2">
+                    {session && session.user.isAdmin && (
+                        <Link
+                            href="/admin"
+                            aria-label="admin"
+                            className="ease-in hover:text-green-500"
+                        >
+                            Admin
+                        </Link>
+                    )}
                     <Link
                         href="/terms-of-service"
-                        aria-label="privacy"
+                        aria-label="Read our terms"
                         className="ease-in hover:text-green-500"
                     >
                         Terms
                     </Link>
                     <Link
                         href="/privacy-policy"
-                        aria-label="privacy"
+                        aria-label="Learn about your privacy"
                         className="ease-in hover:text-green-500"
                     >
                         Privacy
                     </Link>
                     <Link
                         href="/cookie-policy"
-                        aria-label="privacy"
+                        aria-label="Learn about our cookies"
                         className="ease-in hover:text-green-500"
                     >
                         Cookie

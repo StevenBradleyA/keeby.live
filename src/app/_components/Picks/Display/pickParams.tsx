@@ -23,7 +23,19 @@ export default function PickParams() {
     };
 
     const handleCategorySelect = (type: string) => {
-        updateQueryParams({ category: category === type ? "" : type });
+        updateQueryParams({
+            category: category === type ? "" : type,
+            priceOrder: "",
+            color: "",
+            layoutType: "",
+            pcbType: "",
+            assemblyType: "",
+            caseMaterial: "",
+            soundType: "",
+            profileType: "",
+            keycapMaterial: "",
+            switchType: "",
+        });
     };
 
     return (

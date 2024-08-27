@@ -462,7 +462,7 @@ export default function UserProfile() {
                                 width={800}
                                 height={800}
                                 priority={true}
-                                className=" h-[92%] w-full border-2 border-mediumGray"
+                                className=" h-[92%] w-full border-2 border-mediumGray object-cover"
                             />
 
                             {toggle === "MARKETPLACE" && (

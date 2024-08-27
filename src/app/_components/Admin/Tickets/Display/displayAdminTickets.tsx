@@ -1,3 +1,4 @@
+"use client";
 import type { Ticket } from "@prisma/client";
 import ModalDialog from "~/app/_components/Context/Modal";
 import { useState } from "react";
