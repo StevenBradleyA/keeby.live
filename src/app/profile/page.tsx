@@ -28,7 +28,7 @@ import DisplayOffers from "~/app/_components/Offers/Display/displayOffers";
 import DisplayTransactions from "~/app/_components/Transactions/Display";
 import keebo from "@public/Profile/keebo.png";
 import LoadingSpinner from "~/app/_components/Loading";
-import DisplayProfileNotifications from "~/app/_components/Notifications/Display/displayProfileNotifications";
+// import DisplayProfileNotifications from "~/app/_components/Notifications/Display/displayProfileNotifications";
 import DisplayProfileReviews from "~/app/_components/Reviews/Display/displayProfileReviews";
 import Footer from "../_components/Footer/footer";
 import { useMobile } from "../_components/Context/Mobile";

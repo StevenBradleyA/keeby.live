@@ -548,13 +548,13 @@ export const userRouter = createTRPCRouter({
                     },
                 });
 
+                if (profile) {
+                    await removeFileFromS3(profile);
+                }
                 if (images.length > 0) {
                     const removeFilePromises = images.map((image) =>
                         removeFileFromS3(image.link),
                     );
-                    if (profile) {
-                        await removeFileFromS3(profile);
-                    }
 
                     try {
                         const results =
