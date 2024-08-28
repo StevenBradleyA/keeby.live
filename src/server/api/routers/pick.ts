@@ -5,6 +5,7 @@ import {
     protectedProcedure,
 } from "~/server/api/trpc";
 import { removeFileFromS3 } from "../utils";
+import type { Prisma, Pick } from "@prisma/client";
 
 interface CreatePickData {
     title: string;
@@ -44,6 +45,15 @@ interface UpdateNoImage {
     preLubed?: boolean;
 }
 
+interface GetAllPicks extends Pick {
+    _count: {
+        comments: number;
+        favorites: number;
+    };
+    isFavorited?: boolean;
+    favoriteId?: string;
+}
+
 export const pickRouter = createTRPCRouter({
     getAll: publicProcedure
         .input(
@@ -79,6 +89,127 @@ export const pickRouter = createTRPCRouter({
                 },
                 take: 50,
             });
+        }),
+
+    getAllPicksWithParams: publicProcedure
+        .input(
+            z.object({
+                userId: z.string().optional(),
+                search: z.string().optional(),
+                page: z.string().optional(),
+                category: z.string().optional(),
+                color: z.string().optional(),
+                priceOrder: z.string().optional(),
+                layoutType: z.string().optional(),
+                pcbType: z.string().optional(),
+                assemblyType: z.string().optional(),
+                caseMaterial: z.string().optional(),
+                soundType: z.string().optional(),
+                switchType: z.string().optional(),
+                preLubed: z.string().optional(),
+                keycapMaterial: z.string().optional(),
+                profileType: z.string().optional(),
+            }),
+        )
+        .query(async ({ ctx, input }) => {
+            const {
+                userId,
+                search,
+                page,
+                category,
+                color,
+                priceOrder,
+                layoutType,
+                pcbType,
+                assemblyType,
+                caseMaterial,
+                soundType,
+                switchType,
+                preLubed,
+                keycapMaterial,
+                profileType,
+            } = input;
+
+            const limit = 30;
+            const currentPage = parseInt(page || "1", 10);
+            const cumulativeTake = currentPage * limit;
+
+            const whereFilters: Prisma.PickWhereInput = {
+                AND: [
+                    category ? { category } : {},
+                    color ? { color } : {},
+                    pcbType ? { pcbType } : {},
+                    soundType ? { soundType } : {},
+                    assemblyType ? { assemblyType } : {},
+                    layoutType ? { layoutType } : {},
+                    caseMaterial ? { caseMaterial } : {},
+                    keycapMaterial ? { keycapMaterial } : {},
+                    profileType ? { profileType } : {},
+                    switchType ? { switchType } : {},
+                    preLubed ? { preLubed: preLubed === "true" } : {},
+                    search
+                        ? {
+                              OR: [
+                                  {
+                                      title: {
+                                          contains: search,
+                                      },
+                                  },
+                                  {
+                                      AND: [
+                                          { description: { not: null } },
+                                          { description: { contains: search } },
+                                      ],
+                                  },
+                              ],
+                          }
+                        : {},
+                ].filter((obj) => Object.keys(obj).length > 0),
+            };
+
+            const picks: GetAllPicks[] = await ctx.db.pick.findMany({
+                where: whereFilters,
+                include: {
+                    _count: {
+                        select: {
+                            comments: true,
+                            favorites: true,
+                        },
+                    },
+                },
+
+                orderBy: priceOrder
+                    ? priceOrder === "low"
+                        ? [{ price: "asc" }, { createdAt: "desc" }]
+                        : [{ price: "desc" }, { createdAt: "desc" }]
+                    : [{ createdAt: "desc" }],
+                take: cumulativeTake,
+            });
+
+            if (userId) {
+                const favoritesMap = new Map(
+                    await ctx.db.favorites
+                        .findMany({
+                            where: {
+                                userId: userId,
+                                pickId: {
+                                    in: picks.map((pick) => pick.id),
+                                },
+                            },
+                            select: { pickId: true, id: true },
+                        })
+                        .then((results) =>
+                            results.map((result) => [result.pickId, result.id]),
+                        ),
+                );
+
+                picks.forEach((pick) => {
+                    pick.isFavorited = favoritesMap.has(pick.id);
+                    pick.favoriteId = favoritesMap.get(pick.id);
+                });
+            }
+
+            return picks;
         }),
 
     create: protectedProcedure

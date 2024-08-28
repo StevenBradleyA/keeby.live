@@ -1,11 +1,31 @@
 import Footer from "../_components/Footer/footer";
+import DisplayPicks from "../_components/Picks/Display/displayPicks";
 import PickParams from "../_components/Picks/Display/pickParams";
 import SubPickParams from "../_components/Picks/Display/subPickParams";
 
-export default function Shop() {
+export default function Shop({
+    searchParams,
+}: {
+    searchParams?: {
+        category: string;
+        color: string;
+        priceOrder: string;
+        layoutType: string;
+        caseMaterial: string;
+        assemblyType: string;
+        pcbType: string;
+        soundType: string; 
+        switchType: string;
+        preLubed: string; 
+        keycapMaterial: string;
+        profileType: string;
+        page: string;
+        search: string;
+    };
+}) {
+    // add search and params
     // click a param
     // sub params show up...
-
     // really simply just shows links
     // we should add some cool featured listings later and stuff but for now let's just get products showing up...
 
@@ -34,7 +54,9 @@ export default function Shop() {
 
             <div className="w-full flex px-16 gap-10 mt-2">
                 <SubPickParams />
-                <div className="w-full bg-purple-500/20 h-[200rem]"></div>
+                <div className="w-full min-h-[100rem] overflow-y-auto">
+                    <DisplayPicks searchParams={searchParams} />
+                </div>
             </div>
 
             <div className="mt-10 z-40 relative">
