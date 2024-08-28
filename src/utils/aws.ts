@@ -1,12 +1,10 @@
-import { S3 } from "aws-sdk";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import type { PutObjectCommandOutput } from "@aws-sdk/client-s3";
 import { env } from "~/env.mjs";
-
-// npm install aws-sdk
-// $ npx aws-sdk-js-codemod -t v2-to-v3 PATH...
 
 const BUCKET_NAME = env.NEXT_PUBLIC_BUCKET_NAME;
 
-export const s3 = new S3({
+export const s3Client = new S3Client({
     region: env.NEXT_PUBLIC_REGION,
     credentials: {
         accessKeyId: env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID,
@@ -20,11 +18,7 @@ const getUniqueFilename = (filename: string): string => {
     const ext = filename.split(".").pop()?.toLowerCase();
     return `${timestamp}-${randomString}.${ext || ""}`;
 };
-
-const uploadFileToS3 = async (
-    base64Data: string | Buffer
-    // acl = "public-read"
-): Promise<string> => {
+const uploadFileToS3 = async (base64Data: string | Buffer): Promise<string> => {
     const uniqueFilename = getUniqueFilename("image.jpg");
 
     const buffer = Buffer.isBuffer(base64Data)
@@ -44,19 +38,30 @@ const uploadFileToS3 = async (
         contentType = contentTypeMap[extension] || defaultContentType;
     }
 
-    const params: S3.PutObjectRequest = {
+    const params = {
         Bucket: BUCKET_NAME,
         Key: uniqueFilename,
         Body: buffer,
         ContentType: contentType,
     };
-    const uploadResult = await s3.upload(params).promise();
 
-    if (!uploadResult || !uploadResult.Location) {
-        throw new Error("Failed to upload file to S3");
+    const command = new PutObjectCommand(params);
+
+    try {
+        const uploadResult: PutObjectCommandOutput =
+            await s3Client.send(command);
+
+        if (!uploadResult || !uploadResult.ETag) {
+            throw new Error("Failed to upload file to S3");
+        }
+
+        const location = `https://s3.us-west-2.amazonaws.com/${BUCKET_NAME}/${uniqueFilename}`;
+
+        return location;
+    } catch (error) {
+        console.error("Error uploading file to S3:", error);
+        throw error;
     }
-
-    return uploadResult.Location;
 };
 
 export { uploadFileToS3 };

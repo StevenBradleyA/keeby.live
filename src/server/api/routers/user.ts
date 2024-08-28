@@ -7,21 +7,19 @@ import {
 import { env } from "~/env.mjs";
 import { compare } from "bcryptjs";
 import { removeFileFromS3 } from "../utils";
-import fetch from "node-fetch";
-// import type { Response } from "node-fetch";
-// npm i node-fetch
-// npm install --save-dev @types/node-fetch
-interface TokenData {
-    scope: string;
-    access_token: string;
-    token_type: string;
-    expires_in: string;
-    refresh_token: string;
-    nonce: string;
-}
-interface UserInfoData {
-    user_id: string;
-}
+// import bcrypt from "bcryptjs";
+
+// interface TokenData {
+//     scope: string;
+//     access_token: string;
+//     token_type: string;
+//     expires_in: string;
+//     refresh_token: string;
+//     nonce: string;
+// }
+// interface UserInfoData {
+//     user_id: string;
+// }
 
 interface UserWithGamesAndRank {
     rank: {
@@ -43,7 +41,7 @@ export const userRouter = createTRPCRouter({
         .input(
             z.object({
                 searchQuery: z.string().optional(),
-            })
+            }),
         )
         .query(({ input, ctx }) => {
             const { searchQuery } = input;
@@ -56,7 +54,7 @@ export const userRouter = createTRPCRouter({
                 };
             }
 
-            return ctx.prisma.user.findMany({
+            return ctx.db.user.findMany({
                 where: {
                     ...whereFilters,
                 },
@@ -68,28 +66,15 @@ export const userRouter = createTRPCRouter({
                     internetPoints: true,
                     selectedTag: true,
                 },
+                take: 50,
             });
         }),
 
     getOneUser: publicProcedure.input(z.string()).query(({ input, ctx }) => {
-        return ctx.prisma.user.findUnique({
+        return ctx.db.user.findUnique({
             where: { id: input },
         });
     }),
-    // todo lets get rid of get seller and add into first listing route
-    getSeller: publicProcedure
-        .input(z.string())
-        .query(async ({ input, ctx }) => {
-            const seller = await ctx.prisma.user.findUnique({
-                where: { id: input },
-                select: { profile: true, username: true, selectedTag: true },
-            });
-            const allSellerStars = await ctx.prisma.review.aggregate({
-                where: { sellerId: input },
-                _avg: { starRating: true },
-            });
-            return { seller, allSellerStars };
-        }),
 
     getUserGameData: publicProcedure
         .input(
@@ -98,7 +83,7 @@ export const userRouter = createTRPCRouter({
                 mode: z.string(),
                 keebId: z.string(),
                 isTotalData: z.boolean(),
-            })
+            }),
         )
         .query(async ({ input, ctx }) => {
             const { userId, mode, keebId, isTotalData } = input;
@@ -113,7 +98,7 @@ export const userRouter = createTRPCRouter({
                   };
 
             const userWithGameResultsAndRank: UserWithGamesAndRank | null =
-                await ctx.prisma.user.findUnique({
+                await ctx.db.user.findUnique({
                     where: { id: userId },
                     select: {
                         rank: {
@@ -155,11 +140,11 @@ export const userRouter = createTRPCRouter({
                 averageAccuracy =
                     allGameResults.reduce(
                         (acc, game) => acc + game.accuracy,
-                        0
+                        0,
                     ) / totalGamesPlayed;
             }
             // todo going to have to make a separate non keeb dependant query to get this rank
-            const allRankedGames = await ctx.prisma.user.findUnique({
+            const allRankedGames = await ctx.db.user.findUnique({
                 where: { id: userId },
                 select: {
                     games: {
@@ -173,7 +158,7 @@ export const userRouter = createTRPCRouter({
             });
 
             if (allRankedGames && allRankedGames.games.length > 10) {
-                const topGames = await ctx.prisma.game.findMany({
+                const topGames = await ctx.db.game.findMany({
                     where: {
                         userId: userId,
                         mode: "Speed", //todo change later for other ranked modes
@@ -200,7 +185,7 @@ export const userRouter = createTRPCRouter({
     getUserPublic: publicProcedure
         .input(z.string())
         .query(async ({ input, ctx }) => {
-            const userInfo = await ctx.prisma.user.findUnique({
+            const userInfo = await ctx.db.user.findUnique({
                 where: { username: input },
                 select: {
                     id: true,
@@ -240,8 +225,8 @@ export const userRouter = createTRPCRouter({
                 },
             });
             if (userInfo) {
-                const averageStarRating = await ctx.prisma.review.aggregate({
-                    where: { sellerId: userInfo.id },
+                const averageStarRating = await ctx.db.review.aggregate({
+                    where: { recipientId: userInfo.id },
                     _avg: { starRating: true },
                 });
 
@@ -252,7 +237,7 @@ export const userRouter = createTRPCRouter({
     getUserTags: publicProcedure
         .input(z.string())
         .query(async ({ input, ctx }) => {
-            return await ctx.prisma.user.findUnique({
+            return await ctx.db.user.findUnique({
                 where: { id: input },
                 select: {
                     tags: {
@@ -265,15 +250,47 @@ export const userRouter = createTRPCRouter({
             });
         }),
 
+    providerCheck: publicProcedure
+        .input(z.string())
+        .mutation(async ({ input, ctx }) => {
+            try {
+                // Check if the username exists in the database
+                const user = await ctx.db.user.findFirst({
+                    where: { email: input },
+                    include: {
+                        accounts: {
+                            select: {
+                                provider: true,
+                            },
+                        },
+                    },
+                });
+
+                if (!user) {
+                    return "Invalid credentials";
+                }
+                // If user exists, return the provider names
+                const providers = user.accounts.map(
+                    (account) => account.provider,
+                );
+                return providers.length > 0
+                    ? providers
+                    : "No providers found for this user";
+            } catch (error) {
+                // Handle any errors that occur during the database query
+                console.error("Error checking username:", error);
+                throw new Error("Error checking username");
+            }
+        }),
+
     usernameCheck: publicProcedure
         .input(z.string())
         .query(async ({ input, ctx }) => {
             try {
                 // Check if the username exists in the database
-                const user = await ctx.prisma.user.findFirst({
+                const user = await ctx.db.user.findFirst({
                     where: { username: input },
                 });
-
                 // Return true if the user exists, false otherwise
                 return Boolean(user);
             } catch (error) {
@@ -282,6 +299,7 @@ export const userRouter = createTRPCRouter({
                 throw new Error("Error checking username");
             }
         }),
+
     update: protectedProcedure
         .input(
             z.object({
@@ -292,11 +310,11 @@ export const userRouter = createTRPCRouter({
                     .array(
                         z.object({
                             link: z.string(),
-                        })
+                        }),
                     )
                     .optional(),
                 selectedTag: z.string().optional(),
-            })
+            }),
         )
         .mutation(async ({ input, ctx }) => {
             const { userId, username, images, selectedTag, isNewsletter } =
@@ -316,7 +334,7 @@ export const userRouter = createTRPCRouter({
             } = {};
 
             if (images && images[0]) {
-                const checkUserProfile = await ctx.prisma.user.findUnique({
+                const checkUserProfile = await ctx.db.user.findUnique({
                     where: { id: userId },
                     select: {
                         profile: true,
@@ -348,7 +366,7 @@ export const userRouter = createTRPCRouter({
                 (images && images[0]) ||
                 isNewsletter !== undefined
             ) {
-                return await ctx.prisma.user.update({
+                return await ctx.db.user.update({
                     where: { id: userId },
                     data: {
                         ...userData,
@@ -361,7 +379,7 @@ export const userRouter = createTRPCRouter({
             z.object({
                 userId: z.string(),
                 isNewsletter: z.boolean(),
-            })
+            }),
         )
         .mutation(async ({ input, ctx }) => {
             const { userId, isNewsletter } = input;
@@ -371,7 +389,7 @@ export const userRouter = createTRPCRouter({
             if (sessionUserId !== userId) {
                 throw new Error("Invalid userId");
             }
-            await ctx.prisma.user.update({
+            await ctx.db.user.update({
                 where: { id: userId },
                 data: {
                     isNewsletter: isNewsletter,
@@ -388,13 +406,13 @@ export const userRouter = createTRPCRouter({
                     .array(
                         z.object({
                             link: z.string(),
-                        })
+                        }),
                     )
                     .optional(),
                 name: z.string(),
                 switches: z.string(),
                 keycaps: z.string(),
-            })
+            }),
         )
         .mutation(async ({ input, ctx }) => {
             const { userId, username, images, name, switches, keycaps } = input;
@@ -412,7 +430,7 @@ export const userRouter = createTRPCRouter({
                 ...(images && images[0] ? { profile: images[0].link } : {}),
             };
 
-            const result = await ctx.prisma.$transaction(async (prisma) => {
+            const result = await ctx.db.$transaction(async (prisma) => {
                 const createKeeb = await prisma.keeb.create({
                     data: { name, switches, keycaps, userId },
                 });
@@ -448,7 +466,7 @@ export const userRouter = createTRPCRouter({
             z.object({
                 userId: z.string(),
                 selectedTag: z.string(),
-            })
+            }),
         )
         .mutation(async ({ input, ctx }) => {
             const { userId, selectedTag } = input;
@@ -459,7 +477,7 @@ export const userRouter = createTRPCRouter({
                 throw new Error("Invalid userId");
             }
 
-            return await ctx.prisma.user.update({
+            return await ctx.db.user.update({
                 where: { id: userId },
                 data: {
                     selectedTag: selectedTag,
@@ -475,7 +493,7 @@ export const userRouter = createTRPCRouter({
                 throw new Error("Not Signed In");
             }
             if (correct) {
-                const updatedUser = await ctx.prisma.user.update({
+                const updatedUser = await ctx.db.user.update({
                     where: { id: ctx.session.user.id },
                     data: {
                         isAdmin: true,
@@ -491,7 +509,7 @@ export const userRouter = createTRPCRouter({
         .input(z.string())
         .mutation(async ({ input, ctx }) => {
             if (ctx.session.user.isAdmin) {
-                const checkUserProfile = await ctx.prisma.user.findUnique({
+                const checkUserProfile = await ctx.db.user.findUnique({
                     where: { id: input },
                     select: {
                         profile: true,
@@ -505,7 +523,7 @@ export const userRouter = createTRPCRouter({
                     }
                 }
 
-                return ctx.prisma.user.update({
+                return ctx.db.user.update({
                     where: { id: input },
                     data: { profile: null },
                 });
@@ -519,164 +537,47 @@ export const userRouter = createTRPCRouter({
             z.object({
                 id: z.string(),
                 profile: z.string().optional(),
-            })
+            }),
         )
         .mutation(async ({ input, ctx }) => {
             const { id, profile } = input;
             if (ctx.session.user.isAdmin) {
-                const images = await ctx.prisma.images.findMany({
+                const images = await ctx.db.images.findMany({
                     where: {
                         userId: id,
                     },
                 });
 
+                if (profile) {
+                    await removeFileFromS3(profile);
+                }
                 if (images.length > 0) {
                     const removeFilePromises = images.map((image) =>
-                        removeFileFromS3(image.link)
+                        removeFileFromS3(image.link),
                     );
-                    if (profile) {
-                        await removeFileFromS3(profile);
-                    }
 
                     try {
-                        // here we are waiting for all promises and capturing those that are rejected
-                        const results = await Promise.allSettled(
-                            removeFilePromises
-                        );
+                        const results =
+                            await Promise.allSettled(removeFilePromises);
                         const errors = results.filter(
-                            (result) => result.status === "rejected"
+                            (result) => result.status === "rejected",
                         );
 
                         if (errors.length > 0) {
                             console.error(
                                 "Errors occurred while removing files from S3:",
-                                errors
+                                errors,
                             );
                         }
                     } catch (err) {
                         console.error("An unexpected error occurred:", err);
                     }
                 }
-                return ctx.prisma.user.delete({
+                return ctx.db.user.delete({
                     where: { id: id },
                 });
             } else {
                 throw new Error("Invalid userId");
             }
         }),
-
-    // getPayPalAccessToken: publicProcedure
-    //     .input(
-    //         z.object({
-    //             authorizationCode: z.string(),
-    //         })
-    //     )
-    //     .mutation(async ({ input }) => {
-    //         const { authorizationCode } = input;
-    //         const clientId = env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
-    //         const clientSecret = env.PAYPAL_SECRET;
-    //         const basicAuth = Buffer.from(
-    //             `${clientId}:${clientSecret}`
-    //         ).toString("base64");
-
-    //         try {
-    //             const tokenResponse = await fetch(
-    //                 "https://api-m.sandbox.paypal.com/v1/oauth2/token",
-    //                 {
-    //                     method: "POST",
-    //                     headers: {
-    //                         Authorization: `Basic ${basicAuth}`,
-    //                         "Content-Type": "application/x-www-form-urlencoded",
-    //                     },
-    //                     body: new URLSearchParams({
-    //                         grant_type: "authorization_code",
-    //                         code: authorizationCode,
-    //                     }),
-    //                 }
-    //             );
-
-    //             const tokenData = (await tokenResponse.json()) as TokenData;
-
-    //             return tokenData;
-    //         } catch (error) {
-    //             console.error("Failed to exchange authorization code:", error);
-    //             throw new Error("Failed to exchange authorization code.");
-    //         }
-    //     }),
-
-    // verifyUser: protectedProcedure
-    //     .input(
-    //         z.object({
-    //             userId: z.string(),
-    //             access: z.string(),
-    //             refresh: z.string(),
-    //         })
-    //     )
-    //     .mutation(async ({ input, ctx }) => {
-    //         const { userId, access, refresh } = input;
-
-    //         try {
-    //             const userInfoResponse = await fetch(
-    //                 "https://api-m.sandbox.paypal.com/v1/identity/openidconnect/userinfo?schema=openid",
-    //                 {
-    //                     method: "GET",
-    //                     headers: {
-    //                         Authorization: `Bearer ${access}`,
-    //                         "Content-Type": "application/x-www-form-urlencoded",
-    //                     },
-    //                 }
-    //             );
-
-    //                 const userInfo =
-    //                     (await userInfoResponse.json()) as UserInfoData;
-    //                 console.log("\n\n\n hey \n\n\n", userInfo);
-
-    //                 if (!userInfoResponse.ok) {
-    //                     throw new Error(
-    //                         `Failed to fetch user info from PayPal`
-    //                     );
-    //                 }
-    //                 // do i save the refresh token? and the user_id from paypal?
-    //                 // that way later when i need to send a payout I just get a new access token and send them the amount to the paypal userId?
-    //                 if (
-    //                     userInfo &&
-    //                     tokenData.refresh_token &&
-    //                     userInfo.user_id
-    //                 ) {
-    //                     const updateUser = await ctx.prisma.user.update({
-    //                         where: { id: userId },
-    //                         data: {
-    //                             isVerified: true,
-    //                             refreshToken: tokenData.refresh_token,
-    //                             paypalId: userInfo.user_id,
-    //                         },
-    //                     });
-    //                     return { userInfo, updateUser, tokenData };
-    //                 }
-    //                 return { userInfo, tokenData };
-    //             }
-
-    //             // return data;
-    //         } catch (error) {
-    //             console.error("Failed to get user info");
-    //             throw new Error("Failed to get user info");
-    //         }
-    //     }),
-
-    // verifyTesting: protectedProcedure
-    //     .input(
-    //         z.object({
-    //             userId: z.string(),
-    //         })
-    //     )
-    //     .mutation(async ({ input, ctx }) => {
-    //         const { userId } = input;
-
-    //         return await ctx.prisma.user.update({
-    //             where: { id: userId },
-    //             data: {
-    //                 isVerified: true,
-    //             },
-    //         });
-    //     }),
 });

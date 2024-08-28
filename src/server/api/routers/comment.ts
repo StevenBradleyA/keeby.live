@@ -14,7 +14,7 @@ export const commentRouter = createTRPCRouter({
                 userId: z.string().optional(),
                 cursor: z.string().nullish(),
                 limit: z.number().min(1).max(100).nullish(),
-            })
+            }),
         )
         .query(async ({ ctx, input }) => {
             const { typeId, userId, type, cursor } = input;
@@ -24,7 +24,7 @@ export const commentRouter = createTRPCRouter({
             const commentType =
                 type === "listing" ? { listingId: typeId } : { postId: typeId };
 
-            const comments = await ctx.prisma.comment.findMany({
+            const comments = await ctx.db.comment.findMany({
                 where: {
                     ...commentType,
                     parentId: null,
@@ -49,11 +49,11 @@ export const commentRouter = createTRPCRouter({
                 (a, b) =>
                     b._count.commentLike +
                     b._count.replies -
-                    (a._count.commentLike + a._count.replies)
+                    (a._count.commentLike + a._count.replies),
             );
 
             if (userId) {
-                const userLikes = await ctx.prisma.commentLike.findMany({
+                const userLikes = await ctx.db.commentLike.findMany({
                     where: {
                         userId: userId,
                     },
@@ -66,7 +66,7 @@ export const commentRouter = createTRPCRouter({
                 const commentsWithLikes = popularComments.map((comment) => ({
                     ...comment,
                     isLiked: userLikes.some(
-                        (like) => like.commentId === comment.id
+                        (like) => like.commentId === comment.id,
                     ),
                 }));
 
@@ -97,13 +97,13 @@ export const commentRouter = createTRPCRouter({
                 type: z.string(),
                 userId: z.string().optional(),
                 parentId: z.string(),
-            })
+            }),
         )
         .query(async ({ ctx, input }) => {
             const { typeId, type, userId, parentId } = input;
 
             if (type === "listing") {
-                const allComments = await ctx.prisma.comment.findMany({
+                const allComments = await ctx.db.comment.findMany({
                     where: {
                         listingId: typeId,
                         parentId: parentId,
@@ -120,7 +120,7 @@ export const commentRouter = createTRPCRouter({
                     },
                 });
                 if (userId) {
-                    const userLikes = await ctx.prisma.commentLike.findMany({
+                    const userLikes = await ctx.db.commentLike.findMany({
                         where: {
                             userId: userId,
                         },
@@ -130,7 +130,7 @@ export const commentRouter = createTRPCRouter({
                     const commentsWithLikes = allComments.map((comment) => ({
                         ...comment,
                         isLiked: userLikes.some(
-                            (like) => like.commentId === comment.id
+                            (like) => like.commentId === comment.id,
                         ),
                     }));
 
@@ -139,7 +139,7 @@ export const commentRouter = createTRPCRouter({
 
                 return allComments;
             } else if (type === "post") {
-                const allComments = await ctx.prisma.comment.findMany({
+                const allComments = await ctx.db.comment.findMany({
                     where: {
                         postId: typeId,
                         parentId: parentId,
@@ -156,7 +156,7 @@ export const commentRouter = createTRPCRouter({
                     },
                 });
                 if (userId) {
-                    const userLikes = await ctx.prisma.commentLike.findMany({
+                    const userLikes = await ctx.db.commentLike.findMany({
                         where: {
                             userId: userId,
                         },
@@ -166,7 +166,7 @@ export const commentRouter = createTRPCRouter({
                     const commentsWithLikes = allComments.map((comment) => ({
                         ...comment,
                         isLiked: userLikes.some(
-                            (like) => like.commentId === comment.id
+                            (like) => like.commentId === comment.id,
                         ),
                     }));
 
@@ -183,21 +183,21 @@ export const commentRouter = createTRPCRouter({
                 userId: z.string(),
                 typeId: z.string(),
                 type: z.string(),
-            })
+            }),
         )
         .mutation(async ({ input, ctx }) => {
             const { text, userId, typeId, type } = input;
 
             if (ctx.session.user.id === input.userId) {
                 if (type === "listing") {
-                    const newComment = await ctx.prisma.comment.create({
+                    const newComment = await ctx.db.comment.create({
                         data: {
                             text: text,
                             userId: userId,
                             listingId: typeId,
                         },
                     });
-                    const listingCheck = await ctx.prisma.listing.findUnique({
+                    const listingCheck = await ctx.db.listing.findUnique({
                         where: {
                             id: typeId,
                         },
@@ -207,7 +207,7 @@ export const commentRouter = createTRPCRouter({
                         },
                     });
                     if (listingCheck) {
-                        await ctx.prisma.notification.create({
+                        await ctx.db.notification.create({
                             data: {
                                 userId: listingCheck.sellerId,
                                 text: `New Comment on ${listingCheck.title}!`,
@@ -220,7 +220,7 @@ export const commentRouter = createTRPCRouter({
                     return newComment;
                 }
                 if (type === "post") {
-                    const newComment = await ctx.prisma.comment.create({
+                    const newComment = await ctx.db.comment.create({
                         data: {
                             text: text,
                             userId: userId,
@@ -228,7 +228,7 @@ export const commentRouter = createTRPCRouter({
                         },
                     });
 
-                    const postCheck = await ctx.prisma.post.findUnique({
+                    const postCheck = await ctx.db.post.findUnique({
                         where: {
                             id: typeId,
                         },
@@ -238,7 +238,7 @@ export const commentRouter = createTRPCRouter({
                         },
                     });
                     if (postCheck) {
-                        await ctx.prisma.notification.create({
+                        await ctx.db.notification.create({
                             data: {
                                 userId: postCheck.userId,
                                 text: `New Comment on ${postCheck.title}!`,
@@ -264,7 +264,7 @@ export const commentRouter = createTRPCRouter({
                 typeId: z.string(),
                 parentId: z.string(),
                 referencedUser: z.string().optional(),
-            })
+            }),
         )
         .mutation(async ({ input, ctx }) => {
             const { text, userId, type, typeId, parentId, referencedUser } =
@@ -275,7 +275,7 @@ export const commentRouter = createTRPCRouter({
             }
 
             if (type === "listing") {
-                const newComment = await ctx.prisma.comment.create({
+                const newComment = await ctx.db.comment.create({
                     data: {
                         text: text,
                         userId: userId,
@@ -284,7 +284,7 @@ export const commentRouter = createTRPCRouter({
                         referencedUser: referencedUser || null,
                     },
                 });
-                const listingCheck = await ctx.prisma.listing.findUnique({
+                const listingCheck = await ctx.db.listing.findUnique({
                     where: {
                         id: typeId,
                     },
@@ -294,7 +294,7 @@ export const commentRouter = createTRPCRouter({
                     },
                 });
                 if (listingCheck) {
-                    await ctx.prisma.notification.create({
+                    await ctx.db.notification.create({
                         data: {
                             userId: listingCheck.sellerId,
                             text: `New Comment on ${listingCheck.title}!`,
@@ -308,7 +308,7 @@ export const commentRouter = createTRPCRouter({
             }
 
             if (type === "post") {
-                const newComment = await ctx.prisma.comment.create({
+                const newComment = await ctx.db.comment.create({
                     data: {
                         text: text,
                         userId: userId,
@@ -317,7 +317,7 @@ export const commentRouter = createTRPCRouter({
                         referencedUser: referencedUser || null,
                     },
                 });
-                const postCheck = await ctx.prisma.post.findUnique({
+                const postCheck = await ctx.db.post.findUnique({
                     where: {
                         id: typeId,
                     },
@@ -327,7 +327,7 @@ export const commentRouter = createTRPCRouter({
                     },
                 });
                 if (postCheck) {
-                    await ctx.prisma.notification.create({
+                    await ctx.db.notification.create({
                         data: {
                             userId: postCheck.userId,
                             text: `New Comment on ${postCheck.title}!`,
@@ -346,11 +346,11 @@ export const commentRouter = createTRPCRouter({
                 id: z.string(),
                 text: z.string(),
                 userId: z.string(),
-            })
+            }),
         )
         .mutation(async ({ input, ctx }) => {
             if (ctx.session.user.id === input.userId) {
-                const updatedComment = await ctx.prisma.comment.update({
+                const updatedComment = await ctx.db.comment.update({
                     where: {
                         id: input.id,
                     },
@@ -369,24 +369,35 @@ export const commentRouter = createTRPCRouter({
                 id: z.string(),
                 userId: z.string(),
                 parentId: z.string().optional(),
-            })
+            }),
         )
         .mutation(async ({ input, ctx }) => {
             const { id, parentId, userId } = input;
-            if (ctx.session.user.id === userId || ctx.session.user.isAdmin) {
-                // Top-level comment
-                if (!parentId) {
-                    await ctx.prisma.comment.deleteMany({
-                        where: { parentId: id },
-                    });
-                    return ctx.prisma.comment.delete({ where: { id: id } });
-                } else {
-                    // Not a top-level comment
-                    return ctx.prisma.comment.delete({ where: { id: id } });
-                }
+            if (
+                !(userId === ctx.session?.user.id || ctx.session?.user.isAdmin)
+            ) {
+                throw new Error(
+                    "You are not authorized to perform this action.",
+                );
             }
+            // Top-level comment
+            if (!parentId) {
+                await ctx.db.comment.deleteMany({
+                    where: { parentId: id },
+                });
 
-            throw new Error("Invalid userId");
+                await ctx.db.comment.delete({ where: { id: id } });
+                return {
+                    success: true,
+                    message: "Comments successfully deleted.",
+                };
+            } else {
+                // Not a top-level comment
+                await ctx.db.comment.delete({ where: { id: id } });
+                return {
+                    success: true,
+                    message: "Comment successfully deleted.",
+                };
+            }
         }),
-
 });

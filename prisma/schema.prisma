@@ -3,8 +3,8 @@ generator client {
 }
 
 datasource db {
-    provider = "postgresql"
     // provider = "sqlite"
+    provider = "postgresql"
     url      = env("DATABASE_URL")
 }
 
@@ -40,6 +40,7 @@ model Comment {
 
     listingId String?
     postId    String?
+    pickId    String?
 
     user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -49,10 +50,12 @@ model Comment {
 
     listing Listing? @relation(fields: [listingId], references: [id], onDelete: Cascade)
     post    Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
+    pick    Pick?    @relation(fields: [pickId], references: [id], onDelete: Cascade)
 
     @@unique([userId, id])
     @@index([listingId], name: "idxCommentListingId")
     @@index([postId], name: "idxCommentPostId")
+    @@index([pickId], name: "idxCommentPickId")
 }
 
 model CommentLike {
@@ -67,18 +70,25 @@ model CommentLike {
 }
 
 model Favorites {
-    id        String  @id @default(cuid())
-    userId    String
+    id     String @id @default(cuid())
+    userId String
+
     listingId String?
     postId    String?
+    pickId    String?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
     user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
     listing Listing? @relation(fields: [listingId], references: [id], onDelete: Cascade)
     post    Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
+    pick    Pick?    @relation(fields: [pickId], references: [id], onDelete: Cascade)
 
     @@unique([userId, listingId, postId])
     @@index([listingId], name: "idxUserFavoritesListingId")
     @@index([postId], name: "idxUserFavoritesPostId")
+    @@index([pickId], name: "idxUserFavoritesPickId")
 }
 
 model Game {
@@ -112,8 +122,8 @@ model Images {
     listingId String?
     postId    String?
 
-    listing Listing? @relation(fields: [listingId], references: [id])
-    post    Post?    @relation(fields: [postId], references: [id])
+    listing Listing? @relation(fields: [listingId], references: [id], onDelete: Cascade)
+    post    Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
 
     @@index([listingId], name: "idxImagesListingId")
     @@index([postId], name: "idxImagesPostId")
@@ -127,8 +137,8 @@ model Keeb {
 
     userId String
 
-    user User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-    Game Game[]
+    user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    games Game[]
 }
 
 model Listing {
@@ -144,9 +154,8 @@ model Listing {
     layoutType   String
     assemblyType String
     pcbType      String
-
-    status String @default("ACTIVE")
-    // ACTIVE, SOLD, PENDING
+    status       String  @default("ACTIVE")
+    // ACTIVE, SOLD
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -157,20 +166,18 @@ model Listing {
     seller User  @relation("Seller", fields: [sellerId], references: [id], onDelete: Cascade)
     buyer  User? @relation("Buyer", fields: [buyerId], references: [id])
 
-    reviews            Review[]
-    favorites          Favorites[]
-    listingTransaction ListingTransaction[]
-    listingOffer       ListingOffer[]
-    images             Images[]
+    // reviews            Review[]
+    favorites Favorites[]
+
     comments           Comment[]
+    images             Images[]
+    listingOffer       ListingOffer[]
+    listingTransaction ListingTransaction[]
 }
 
 model ListingOffer {
-    id    String @id @default(cuid())
-    price Int
-
-    status    String
-    // PENDING, ACCEPTED
+    id        String   @id @default(cuid())
+    price     Int
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
@@ -178,26 +185,27 @@ model ListingOffer {
     buyerId   String
 
     listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
-    buyer   User    @relation(fields: [buyerId], references: [id])
+    buyer   User    @relation(fields: [buyerId], references: [id], onDelete: Cascade)
 }
 
 model ListingTransaction {
     id          String @id @default(cuid())
-    payed       Int
     agreedPrice Int
+    status      String @default("ACCEPTED")
+    // ACCEPTED REVOKED
 
-    status        String
-    // PAYED REFUNDED
-    paypalOrderId String
-    transactionId String
-    createdAt     DateTime @default(now())
-    updatedAt     DateTime @updatedAt
-    buyerId       String
-    listingId     String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
-    buyer   User      @relation(fields: [buyerId], references: [id], onDelete: Cascade)
-    listing Listing   @relation(fields: [listingId], references: [id], onDelete: Cascade)
-    Message Message[]
+    buyerId   String
+    sellerId  String
+    listingId String?
+
+    buyer    User      @relation("BuyerRelation", fields: [buyerId], references: [id], onDelete: Cascade)
+    seller   User      @relation("SellerRelation", fields: [sellerId], references: [id], onDelete: Cascade)
+    listing  Listing?  @relation(fields: [listingId], references: [id])
+    messages Message[]
+    reviews  Review[]
 }
 
 model Message {
@@ -210,9 +218,9 @@ model Message {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    user               User               @relation("messageOwner", fields: [userId], references: [id])
-    recipient          User               @relation("messageRecipient", fields: [recipientId], references: [id])
-    listingTransaction ListingTransaction @relation(fields: [listingTransactionId], references: [id])
+    user               User               @relation("messageOwner", fields: [userId], references: [id], onDelete: Cascade)
+    recipient          User               @relation("messageRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
+    listingTransaction ListingTransaction @relation(fields: [listingTransactionId], references: [id], onDelete: Cascade)
 
     @@index([userId], name: "idxMessageSenderId")
     @@index([recipientId], name: "idxMessageRecipientId")
@@ -220,18 +228,73 @@ model Message {
 }
 
 model Notification {
-    id        String   @id @default(cuid())
-    text      String
-    type      String
-    typeId    String?
-    status    String
+    id     String  @id @default(cuid())
+    text   String
+    type   String
+    // MESSAGE 
+    typeId String?
+    status String
     // READ, UNREAD
+
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
     userId String
 
     user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Pick {
+    id       String  @id @default(cuid())
+    title    String
+    link     String
+    image    String
+    category String
+    // keyboards, switches, keycaps, deskmats, lube, accessories
+    price    Float
+    featured Boolean @default(false)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    description String?
+
+    color String?
+    // works for deskmats, caps, switches, keyboards
+
+    // KEYBOARD OPTIONALS
+    caseMaterial   String?
+    layoutType     String?
+    pcbType        String?
+    assemblyType   String?
+    soundType      String?
+    // KEYCAP OPTIONALS
+    keycapMaterial String?
+    profileType    String?
+    // SWITCH OPTIONALS
+    switchType     String?
+    preLubed       Boolean?
+
+    comments    Comment[]
+    favorites   Favorites[]
+    pickRatings PickRating[]
+}
+
+model PickRating {
+    id     String  @id @default(cuid())
+    rating Int
+    text   String?
+
+    userId    String
+    pickId    String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+    pick Pick @relation(fields: [pickId], references: [id], onDelete: Cascade)
+
+    @@unique([userId, pickId])
+    @@index([pickId], name: "idxPickRatingPickId")
 }
 
 model Post {
@@ -258,7 +321,7 @@ model PostLike {
     postId String
 
     user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-    post Post @relation(fields: [postId], references: [id])
+    post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
 
     @@unique([userId, postId])
 }
@@ -279,14 +342,24 @@ model Review {
     starRating Int
     createdAt  DateTime @default(now())
     updatedAt  DateTime @updatedAt
+    type       String
+    // BUYER SELLER --- refers to recipient
 
-    sellerId  String
-    userId    String
-    listingId String
+    userId        String
+    recipientId   String
+    transactionId String
 
-    seller  User    @relation("SellerRelation", fields: [sellerId], references: [id], onDelete: Cascade)
-    user    User    @relation("UserRelation", fields: [userId], references: [id], onDelete: Cascade)
-    listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+    recipient   User               @relation("ReviewRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
+    user        User               @relation("UserRelation", fields: [userId], references: [id], onDelete: Cascade)
+    transaction ListingTransaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+}
+
+model Session {
+    id           String   @id @default(cuid())
+    sessionToken String   @unique
+    userId       String
+    expires      DateTime
+    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Tag {
@@ -298,22 +371,17 @@ model Tag {
 }
 
 model Ticket {
-    id        String   @id @default(cuid())
-    userId    String
-    text      String
-    email     String
+    id     String @id @default(cuid())
+    userId String
+    type   String
+    // help bug feature praise
+    text   String
+    email  String
+
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    user User @relation(fields: [userId], references: [id])
-}
-
-model Session {
-    id           String   @id @default(cuid())
-    sessionToken String   @unique
-    userId       String
-    expires      DateTime
-    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
@@ -329,49 +397,36 @@ model User {
     selectedTag    String?
     paypalEmail    String?
 
-    isVerified   Boolean @default(false)
     isAdmin      Boolean @default(false)
     hasProfile   Boolean @default(false)
+    isModerator  Boolean @default(false)
     isNewsletter Boolean @default(false)
     isBanned     Boolean @default(false)
 
-    accounts                Account[]
-    sessions                Session[]
-    favorites               Favorites[]
-    posts                   Post[]
-    comments                Comment[]
-    images                  Images[]
-    games                   Game[]
-    keebs                   Keeb[]
-    commentLike             CommentLike[]
-    review                  Review[]                  @relation("UserRelation")
-    reviewsReceived         Review[]                  @relation("SellerRelation")
-    postLike                PostLike[]
-    tags                    Tag[]                     @relation("UserTags")
-    transactions            ListingTransaction[]
-    rank                    Rank?                     @relation(fields: [rankId], references: [id])
-    sellerListings          Listing[]                 @relation("Seller")
-    buyerListings           Listing[]                 @relation("Buyer")
-    listingOffer            ListingOffer[]
-    sentMessages            Message[]                 @relation("messageOwner")
-    receivedMessages        Message[]                 @relation("messageRecipient")
-    verificationTransaction VerificationTransaction[]
-    notifications           Notification[]
-    tickets                 Ticket[]
-}
-
-model VerificationTransaction {
-    id    String @id @default(cuid())
-    price Int
-
-    status        String
-    paypalOrderId String
-    transactionId String
-    createdAt     DateTime @default(now())
-    updatedAt     DateTime @updatedAt
-    userId        String
-
-    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+    accounts           Account[]
+    sessions           Session[]
+    favorites          Favorites[]
+    posts              Post[]
+    comments           Comment[]
+    images             Images[]
+    games              Game[]
+    keebs              Keeb[]
+    commentLike        CommentLike[]
+    reviews            Review[]             @relation("UserRelation")
+    reviewsReceived    Review[]             @relation("ReviewRecipient")
+    postLike           PostLike[]
+    tags               Tag[]                @relation("UserTags")
+    rank               Rank?                @relation(fields: [rankId], references: [id])
+    sellerListings     Listing[]            @relation("Seller")
+    buyerListings      Listing[]            @relation("Buyer")
+    listingOffer       ListingOffer[]
+    sentMessages       Message[]            @relation("messageOwner")
+    receivedMessages   Message[]            @relation("messageRecipient")
+    notifications      Notification[]
+    tickets            Ticket[]
+    buyerTransactions  ListingTransaction[] @relation("BuyerRelation")
+    sellerTransactions ListingTransaction[] @relation("SellerRelation")
+    pickRatings        PickRating[]
 }
 
 model VerificationToken {

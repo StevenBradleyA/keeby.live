@@ -9,7 +9,7 @@ export const notificationRouter = createTRPCRouter({
     getCountByUserId: publicProcedure
         .input(z.string())
         .query(async ({ ctx, input: userId }) => {
-            return await ctx.prisma.notification.count({
+            return await ctx.db.notification.count({
                 where: {
                     userId: userId,
                 },
@@ -19,7 +19,7 @@ export const notificationRouter = createTRPCRouter({
     getAllByUserId: publicProcedure
         .input(z.string())
         .query(async ({ ctx, input: userId }) => {
-            return await ctx.prisma.notification.findMany({
+            return await ctx.db.notification.findMany({
                 where: {
                     userId: userId,
                 },
@@ -28,7 +28,7 @@ export const notificationRouter = createTRPCRouter({
     getOfferNotificationsByUserId: publicProcedure
         .input(z.string())
         .query(async ({ ctx, input: userId }) => {
-            return await ctx.prisma.notification.findFirst({
+            return await ctx.db.notification.findFirst({
                 where: {
                     userId: userId,
                     type: "OFFER",
@@ -42,7 +42,7 @@ export const notificationRouter = createTRPCRouter({
                 id: z.string(),
                 userId: z.string(),
                 status: z.string(),
-            })
+            }),
         )
         .mutation(async ({ input, ctx }) => {
             const { id, userId, status } = input;
@@ -51,7 +51,7 @@ export const notificationRouter = createTRPCRouter({
                 throw new Error("Invalid credentials");
             }
 
-            return await ctx.prisma.notification.update({
+            return await ctx.db.notification.update({
                 where: {
                     id: id,
                 },
@@ -66,7 +66,7 @@ export const notificationRouter = createTRPCRouter({
             z.object({
                 id: z.string(),
                 userId: z.string(),
-            })
+            }),
         )
         .mutation(async ({ input, ctx }) => {
             const { id, userId } = input;
@@ -75,7 +75,7 @@ export const notificationRouter = createTRPCRouter({
                 throw new Error("Invalid credentials");
             }
 
-            return await ctx.prisma.notification.delete({
+            return await ctx.db.notification.delete({
                 where: {
                     id: id,
                 },

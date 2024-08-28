@@ -9,7 +9,7 @@ export const messageRouter = createTRPCRouter({
     getAllByUserId: publicProcedure
         .input(z.string())
         .query(async ({ ctx, input: userId }) => {
-            return await ctx.prisma.message.findMany({
+            return await ctx.db.message.findMany({
                 where: {
                     OR: [{ userId: userId }, { recipientId: userId }],
                 },
@@ -24,7 +24,6 @@ export const messageRouter = createTRPCRouter({
                         select: {
                             username: true,
                             profile: true,
-                            paypalEmail: true,
                         },
                     },
                     listingTransaction: {
@@ -39,7 +38,7 @@ export const messageRouter = createTRPCRouter({
                     },
                 },
                 orderBy: {
-                    createdAt: "asc",
+                    createdAt: "desc",
                 },
                 distinct: ["listingTransactionId"],
             });
@@ -48,7 +47,7 @@ export const messageRouter = createTRPCRouter({
     getAllByTransactionId: publicProcedure
         .input(z.string())
         .query(async ({ ctx, input: transactionId }) => {
-            return await ctx.prisma.message.findMany({
+            return await ctx.db.message.findMany({
                 where: {
                     listingTransactionId: transactionId,
                 },
@@ -71,7 +70,7 @@ export const messageRouter = createTRPCRouter({
                 recipientId: z.string(),
                 userId: z.string(),
                 listingTransactionId: z.string(),
-            })
+            }),
         )
         .mutation(async ({ input, ctx }) => {
             const { text, userId, recipientId, listingTransactionId } = input;
@@ -83,7 +82,7 @@ export const messageRouter = createTRPCRouter({
                 throw new Error("Cannot send message to yourself");
             }
 
-            await ctx.prisma.message.create({
+            await ctx.db.message.create({
                 data: {
                     text: text,
                     userId: userId,
@@ -92,7 +91,7 @@ export const messageRouter = createTRPCRouter({
                 },
             });
 
-            await ctx.prisma.notification.create({
+            await ctx.db.notification.create({
                 data: {
                     userId: recipientId,
                     text: `You received a new message!`,

@@ -4,19 +4,8 @@ import {
     publicProcedure,
     protectedProcedure,
 } from "~/server/api/trpc";
-import type { Post, Images, Listing } from "@prisma/client";
+import type { Post, Images } from "@prisma/client";
 
-interface ListingImage {
-    id: string;
-    link: string;
-}
-
-type ExtendedListing = Listing & {
-    _count: {
-        comments: number;
-    };
-    images: ListingImage[];
-};
 type ExtendedPost = Post & {
     _count: {
         comments: number;
@@ -31,12 +20,12 @@ export const favoriteRouter = createTRPCRouter({
             z.object({
                 userId: z.string(),
                 listingId: z.string(),
-            })
+            }),
         )
         .query(async ({ ctx, input }) => {
             const { userId, listingId } = input;
 
-            const isFavorited = await ctx.prisma.favorites.findFirst({
+            const isFavorited = await ctx.db.favorites.findFirst({
                 where: {
                     userId: userId,
                     listingId: listingId,
@@ -52,12 +41,12 @@ export const favoriteRouter = createTRPCRouter({
             z.object({
                 userId: z.string(),
                 postId: z.string(),
-            })
+            }),
         )
         .query(async ({ ctx, input }) => {
             const { userId, postId } = input;
 
-            const isFavorited = await ctx.prisma.favorites.findFirst({
+            const isFavorited = await ctx.db.favorites.findFirst({
                 where: {
                     userId: userId,
                     postId: postId,
@@ -69,51 +58,14 @@ export const favoriteRouter = createTRPCRouter({
             return isFavorited;
         }),
 
-    getAllFavoriteListings: publicProcedure
-        .input(
-            z.object({
-                userId: z.string(),
-            })
-        )
-        .query(async ({ ctx, input }) => {
-            return ctx.prisma.favorites
-                .findMany({
-                    where: {
-                        userId: input.userId,
-                        listingId: { not: null },
-                        postId: null,
-                    },
-                    select: {
-                        listing: {
-                            include: {
-                                _count: {
-                                    select: { comments: true },
-                                },
-                                images: {
-                                    where: { resourceType: "LISTINGPREVIEW" },
-                                    select: { id: true, link: true },
-                                },
-                            },
-                        },
-                    },
-                })
-                .then((favorites) => {
-                    if (favorites.length === 0) {
-                        return null;
-                    }
-                    return favorites.map(
-                        (favorite) => favorite.listing as ExtendedListing
-                    );
-                });
-        }),
     getAllFavoritePosts: publicProcedure
         .input(
             z.object({
                 userId: z.string(),
-            })
+            }),
         )
         .query(async ({ ctx, input }) => {
-            const posts = await ctx.prisma.favorites
+            const posts = await ctx.db.favorites
                 .findMany({
                     where: {
                         userId: input.userId,
@@ -136,7 +88,7 @@ export const favoriteRouter = createTRPCRouter({
                         return null;
                     }
                     return favorites.map(
-                        (favorite) => favorite.post as ExtendedPost
+                        (favorite) => favorite.post as ExtendedPost,
                     );
                 });
 
@@ -167,29 +119,41 @@ export const favoriteRouter = createTRPCRouter({
             z.object({
                 userId: z.string(),
                 listingId: z.string(),
-            })
+            }),
         )
         .mutation(async ({ ctx, input }) => {
             const { userId, listingId } = input;
             if (ctx.session.user.id !== userId) {
                 throw new Error(
-                    "You must be logged in to perform this action."
+                    "You don't have the right, O you don't have the right",
                 );
             }
 
-            await ctx.prisma.favorites.create({
+            const existingFavorite = await ctx.db.favorites.findFirst({
+                where: {
+                    userId: userId,
+                    listingId: listingId,
+                },
+            });
+
+            if (existingFavorite) {
+                throw new Error("You have already favorited this post.");
+            }
+
+            await ctx.db.favorites.create({
                 data: {
                     userId: userId,
                     listingId: listingId,
                 },
             });
-            const listingCheck = await ctx.prisma.listing.findUnique({
+
+            const listingCheck = await ctx.db.listing.findUnique({
                 where: {
                     id: listingId,
                 },
             });
             if (listingCheck) {
-                await ctx.prisma.user.update({
+                await ctx.db.user.update({
                     where: {
                         id: listingCheck.sellerId,
                     },
@@ -200,35 +164,51 @@ export const favoriteRouter = createTRPCRouter({
                     },
                 });
             }
+            return {
+                success: true,
+                message: "Post successfully favorited.",
+            };
         }),
     createPostFavorite: protectedProcedure
         .input(
             z.object({
                 userId: z.string(),
                 postId: z.string(),
-            })
+            }),
         )
         .mutation(async ({ ctx, input }) => {
             const { userId, postId } = input;
             if (ctx.session.user.id !== userId) {
                 throw new Error(
-                    "You must be logged in to perform this action."
+                    "You must be logged in to perform this action.",
                 );
             }
-            await ctx.prisma.favorites.create({
+
+            const existingFavorite = await ctx.db.favorites.findFirst({
+                where: {
+                    userId: userId,
+                    postId: postId,
+                },
+            });
+
+            if (existingFavorite) {
+                throw new Error("You have already favorited this post.");
+            }
+
+            await ctx.db.favorites.create({
                 data: {
                     userId: userId,
                     postId: postId,
                 },
             });
 
-            const postCheck = await ctx.prisma.post.findUnique({
+            const postCheck = await ctx.db.post.findUnique({
                 where: {
                     id: postId,
                 },
             });
             if (postCheck) {
-                await ctx.prisma.user.update({
+                await ctx.db.user.update({
                     where: {
                         id: postCheck.userId,
                     },
@@ -239,36 +219,55 @@ export const favoriteRouter = createTRPCRouter({
                     },
                 });
             }
+            return {
+                success: true,
+                message: "Post successfully favorited.",
+            };
         }),
     deleteListingFavorite: protectedProcedure
         .input(
             z.object({
-                id: z.string(),
                 userId: z.string(),
                 listingId: z.string(),
-            })
+            }),
         )
         .mutation(async ({ ctx, input }) => {
-            const { id, userId, listingId } = input;
+            const { userId, listingId } = input;
 
-            if (ctx.session.user.id !== userId) {
+            if (
+                !(userId === ctx.session?.user.id || ctx.session?.user.isAdmin)
+            ) {
                 throw new Error(
-                    "You must be logged in to perform this action."
+                    "You are not authorized to perform this action.",
                 );
             }
-            await ctx.prisma.favorites.delete({
+
+            const favorite = await ctx.db.favorites.findFirst({
                 where: {
-                    id: id,
+                    listingId: listingId,
+                    userId: userId,
+                },
+                select: {
+                    id: true,
                 },
             });
 
-            const listingCheck = await ctx.prisma.listing.findUnique({
+            if (!favorite) {
+                throw new Error("Favorite not found.");
+            }
+
+            await ctx.db.favorites.delete({
+                where: {
+                    id: favorite.id,
+                },
+            });
+            const listingCheck = await ctx.db.listing.findUnique({
                 where: {
                     id: listingId,
                 },
             });
             if (listingCheck) {
-                await ctx.prisma.user.update({
+                await ctx.db.user.update({
                     where: {
                         id: listingCheck.sellerId,
                     },
@@ -279,35 +278,56 @@ export const favoriteRouter = createTRPCRouter({
                     },
                 });
             }
+
+            return {
+                success: true,
+                message: "Favorite successfully removed.",
+            };
         }),
     deletePostFavorite: protectedProcedure
         .input(
             z.object({
-                id: z.string(),
                 userId: z.string(),
                 postId: z.string(),
-            })
+            }),
         )
         .mutation(async ({ ctx, input }) => {
-            const { id, userId, postId } = input;
+            const { userId, postId } = input;
 
-            if (ctx.session.user.id !== userId) {
+            if (
+                !(userId === ctx.session?.user.id || ctx.session?.user.isAdmin)
+            ) {
                 throw new Error(
-                    "You must be logged in to perform this action."
+                    "You are not authorized to perform this action.",
                 );
             }
-            await ctx.prisma.favorites.delete({
+
+            const favorite = await ctx.db.favorites.findFirst({
                 where: {
-                    id: id,
+                    postId: postId,
+                    userId: userId,
+                },
+                select: {
+                    id: true,
                 },
             });
-            const postCheck = await ctx.prisma.post.findUnique({
+
+            if (!favorite) {
+                throw new Error("Favorite not found.");
+            }
+
+            await ctx.db.favorites.delete({
+                where: {
+                    id: favorite.id,
+                },
+            });
+            const postCheck = await ctx.db.post.findUnique({
                 where: {
                     id: postId,
                 },
             });
             if (postCheck) {
-                await ctx.prisma.user.update({
+                await ctx.db.user.update({
                     where: {
                         id: postCheck.userId,
                     },
@@ -318,5 +338,48 @@ export const favoriteRouter = createTRPCRouter({
                     },
                 });
             }
+
+            return {
+                success: true,
+                message: "Favorite successfully removed.",
+            };
         }),
 });
+
+// getAllFavoriteListings: publicProcedure
+//     .input(
+//         z.object({
+//             userId: z.string(),
+//         }),
+//     )
+//     .query(async ({ ctx, input }) => {
+//         return ctx.prisma.favorites
+//             .findMany({
+//                 where: {
+//                     userId: input.userId,
+//                     listingId: { not: null },
+//                     postId: null,
+//                 },
+//                 select: {
+//                     listing: {
+//                         include: {
+//                             _count: {
+//                                 select: { comments: true },
+//                             },
+//                             images: {
+//                                 where: { resourceType: "LISTINGPREVIEW" },
+//                                 select: { id: true, link: true },
+//                             },
+//                         },
+//                     },
+//                 },
+//             })
+//             .then((favorites) => {
+//                 if (favorites.length === 0) {
+//                     return null;
+//                 }
+//                 return favorites.map(
+//                     (favorite) => favorite.listing as ExtendedListing,
+//                 );
+//             });
+//     }),

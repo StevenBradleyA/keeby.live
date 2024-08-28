@@ -13,7 +13,7 @@ export const keebRouter = createTRPCRouter({
     getAllByUserId: publicProcedure
         .input(z.string())
         .query(({ ctx, input }) => {
-            return ctx.prisma.keeb.findMany({
+            return ctx.db.keeb.findMany({
                 where: {
                     userId: input,
                 },
@@ -26,11 +26,11 @@ export const keebRouter = createTRPCRouter({
                 switches: z.string(),
                 keycaps: z.string(),
                 userId: z.string(),
-            })
+            }),
         )
         .mutation(async ({ input, ctx }) => {
             if (ctx.session.user.id === input.userId) {
-                const createKeeb = await ctx.prisma.keeb.create({
+                const createKeeb = await ctx.db.keeb.create({
                     data: input,
                 });
 
@@ -47,11 +47,11 @@ export const keebRouter = createTRPCRouter({
                 switches: z.string(),
                 keycaps: z.string(),
                 userId: z.string(),
-            })
+            }),
         )
         .mutation(async ({ input, ctx }) => {
             if (ctx.session.user.id === input.userId) {
-                const updatedKeeb = await ctx.prisma.keeb.update({
+                const updatedKeeb = await ctx.db.keeb.update({
                     where: { id: input.id },
                     data: input,
                 });
@@ -66,7 +66,7 @@ export const keebRouter = createTRPCRouter({
             z.object({
                 id: z.string(),
                 userId: z.string(),
-            })
+            }),
         )
         .mutation(async ({ input, ctx }) => {
             const { id, userId } = input;
@@ -74,7 +74,7 @@ export const keebRouter = createTRPCRouter({
             if (ctx.session.user.id === userId) {
                 // we can't just delete a keeb we have to check to make sure they have more than one keeb
                 // then we have to find a different keeb id and return it
-                const keebs = await ctx.prisma.keeb.findMany({
+                const keebs = await ctx.db.keeb.findMany({
                     where: { userId: userId },
                 });
 
@@ -83,11 +83,11 @@ export const keebRouter = createTRPCRouter({
 
                     if (!newKeeb) {
                         throw new Error(
-                            "Unable to find a new keyboard to assign."
+                            "Unable to find a new keyboard to assign.",
                         );
                     }
 
-                    await ctx.prisma.keeb.delete({
+                    await ctx.db.keeb.delete({
                         where: { id: id },
                     });
 

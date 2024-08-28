@@ -1,4 +1,3 @@
-import { createTRPCRouter } from "~/server/api/trpc";
 import { commentRouter } from "./routers/comment";
 import { keebRouter } from "./routers/keeb";
 import { postRouter } from "./routers/post";
@@ -15,12 +14,9 @@ import { transactionRouter } from "./routers/transaction";
 import { messageRouter } from "./routers/message";
 import { notificationRouter } from "./routers/notification";
 import { ticketRouter } from "./routers/ticket";
+import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
+import { pickRouter } from "./routers/pick";
 
-/**
- * This is the primary router for your server.
- *
- * All routers added in /api/routers should be manually added here.
- */
 export const appRouter = createTRPCRouter({
     comment: commentRouter,
     favorite: favoriteRouter,
@@ -31,6 +27,7 @@ export const appRouter = createTRPCRouter({
     message: messageRouter,
     notification: notificationRouter,
     offer: offerRouter,
+    pick: pickRouter,
     post: postRouter,
     rank: rankRouter,
     review: reviewRouter,
@@ -40,5 +37,6 @@ export const appRouter = createTRPCRouter({
     user: userRouter,
 });
 
-// export type definition of API
 export type AppRouter = typeof appRouter;
+
+export const createCaller = createCallerFactory(appRouter);

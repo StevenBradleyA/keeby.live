@@ -9,7 +9,7 @@ export const offerRouter = createTRPCRouter({
     getAllByUserId: publicProcedure
         .input(z.string())
         .query(async ({ input: userId, ctx }) => {
-            const offersSent = await ctx.prisma.listingOffer.findMany({
+            const offersSent = await ctx.db.listingOffer.findMany({
                 where: {
                     buyerId: userId,
                     listing: {
@@ -35,7 +35,7 @@ export const offerRouter = createTRPCRouter({
                 },
             });
 
-            const offersReceived = await ctx.prisma.listing.findMany({
+            const offersReceived = await ctx.db.listing.findMany({
                 where: {
                     sellerId: userId,
                     listingOffer: {
@@ -50,7 +50,6 @@ export const offerRouter = createTRPCRouter({
                         select: {
                             id: true,
                             price: true,
-                            status: true,
                             createdAt: true,
                             updatedAt: true,
                             listingId: true,
@@ -76,7 +75,7 @@ export const offerRouter = createTRPCRouter({
                 buyerId: z.string(),
                 buyerUsername: z.string(),
                 sellerId: z.string(),
-            })
+            }),
         )
         .mutation(async ({ input, ctx }) => {
             const { price, listingId, buyerId, sellerId } = input;
@@ -88,16 +87,21 @@ export const offerRouter = createTRPCRouter({
                 throw new Error("Cannot send offer to your own listing");
             }
 
-            const listingCheck = await ctx.prisma.listing.findUnique({
+            const listingCheck = await ctx.db.listing.findUnique({
                 where: {
                     id: listingId,
                 },
             });
-            if (listingCheck?.status === "SOLD") {
+
+            if (!listingCheck) {
+                throw new Error("Can't find listing");
+            }
+
+            if (listingCheck.status === "SOLD") {
                 return { pendingOffer: true };
             }
 
-            const offerCheck = await ctx.prisma.listingOffer.findMany({
+            const offerCheck = await ctx.db.listingOffer.findMany({
                 where: {
                     listingId: listingId,
                     buyerId: buyerId,
@@ -106,16 +110,15 @@ export const offerRouter = createTRPCRouter({
             if (offerCheck && offerCheck.length > 0) {
                 return { pendingOffer: true };
             } else {
-                const createOffer = await ctx.prisma.listingOffer.create({
+                const createOffer = await ctx.db.listingOffer.create({
                     data: {
                         price: price,
-                        status: "PENDING",
                         listingId: listingId,
                         buyerId: buyerId,
                     },
                 });
                 if (createOffer && listingCheck) {
-                    await ctx.prisma.notification.create({
+                    await ctx.db.notification.create({
                         data: {
                             userId: listingCheck.sellerId,
                             text: `Offer Received for ${listingCheck.title}!`,
@@ -130,69 +133,6 @@ export const offerRouter = createTRPCRouter({
             }
         }),
 
-    update: protectedProcedure
-        .input(
-            z.object({
-                id: z.string(),
-                listingId: z.string(),
-                buyerId: z.string(),
-                sellerId: z.string(),
-            })
-        )
-        .mutation(async ({ input, ctx }) => {
-            const { id, listingId, buyerId, sellerId } = input;
-
-            if (ctx.session.user.id !== sellerId) {
-                throw new Error(
-                    "You do not have the necessary permissions to perform this action."
-                );
-            }
-
-            const buyer = await ctx.prisma.user.findUnique({
-                where: {
-                    id: buyerId,
-                },
-            });
-
-            if (buyer && buyer.email) {
-                //todo send buyer email here
-
-                await ctx.prisma.listing.update({
-                    where: {
-                        id: listingId,
-                    },
-                    data: {
-                        status: "PENDING",
-                    },
-                });
-                await ctx.prisma.listingOffer.update({
-                    where: {
-                        id: id,
-                    },
-                    data: {
-                        status: "ACCEPTED",
-                    },
-                });
-                const listingCheck = await ctx.prisma.listing.findUnique({
-                    where: { id: listingId },
-                });
-
-                if (listingCheck) {
-                    await ctx.prisma.notification.create({
-                        data: {
-                            userId: buyerId,
-                            text: `Your offer was accepted for ${listingCheck.title}!`,
-                            type: "OFFER",
-                            status: "UNREAD",
-                        },
-                    });
-                }
-
-                return "Successfully Updated";
-            }
-            throw new Error("Buyer does not exist or has no valid email.");
-        }),
-
     delete: protectedProcedure
         .input(
             z.object({
@@ -201,21 +141,21 @@ export const offerRouter = createTRPCRouter({
                 buyerId: z.string(),
                 listingId: z.string(),
                 listingStatus: z.string(),
-            })
+            }),
         )
         .mutation(async ({ input, ctx }) => {
             const { id, sellerId, buyerId, listingStatus, listingId } = input;
 
             if (ctx.session.user.id !== sellerId && !ctx.session.user.isAdmin) {
                 throw new Error(
-                    "You do not have the necessary permissions to perform this action."
+                    "You do not have the necessary permissions to perform this action.",
                 );
             }
-            const listingCheck = await ctx.prisma.listing.findUnique({
+            const listingCheck = await ctx.db.listing.findUnique({
                 where: { id: listingId },
             });
 
-            const buyer = await ctx.prisma.user.findUnique({
+            const buyer = await ctx.db.user.findUnique({
                 where: {
                     id: buyerId,
                 },
@@ -224,12 +164,12 @@ export const offerRouter = createTRPCRouter({
             if (buyer && buyer.email) {
                 //todo send buyer email here
 
-                await ctx.prisma.listingOffer.delete({
+                await ctx.db.listingOffer.delete({
                     where: { id: id },
                 });
 
                 if (listingStatus === "ACTIVE" && listingCheck) {
-                    await ctx.prisma.notification.create({
+                    await ctx.db.notification.create({
                         data: {
                             userId: buyerId,
                             text: `Seller Rejected your offer for ${listingCheck.title}. Try a higher price!`,
@@ -238,29 +178,6 @@ export const offerRouter = createTRPCRouter({
                             status: "UNREAD",
                         },
                     });
-                }
-
-                if (listingStatus === "PENDING" && listingCheck) {
-                    await ctx.prisma.listing.update({
-                        where: {
-                            id: listingId,
-                        },
-                        data: {
-                            status: "ACTIVE",
-                        },
-                    });
-
-                    await ctx.prisma.notification.create({
-                        data: {
-                            userId: buyerId,
-                            text: `You waited too long to pay. Seller has revoked your accepted offer.`,
-                            type: "OFFERREJECT",
-                            typeId: listingId,
-                            status: "UNREAD",
-                        },
-                    });
-
-                    return "Deleted and Active";
                 }
 
                 return "Successfully Deleted";
