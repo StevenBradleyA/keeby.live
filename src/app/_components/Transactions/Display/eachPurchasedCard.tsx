@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import type { ListingTransaction } from "@prisma/client";
 import Link from "next/link";
 
@@ -16,8 +16,6 @@ interface Listing {
 export default function EachPurchasedTransactionCard({
     transaction,
 }: EachOfferViewCardProps) {
-    const now = new Date();
-
     return (
         <>
             <div className="flex w-96 flex-col text-xs rounded-2xl bg-darkGray shadow-lg  p-5 font-poppins text-green-500  ">

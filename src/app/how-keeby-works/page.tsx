@@ -79,9 +79,9 @@ export default function HowKeebyWorks() {
                                 arrange payment and shipping details. We
                                 recommend all transactions only occur through
                                 paypal as they have a strong dispute resolution
-                                support so you don't get scammed. Please protect
+                                support so you don&apos;t get scammed. Please protect
                                 yourself as both a buyer and a seller by reading
-                                and following{" "}
+                                and following
                                 <Link
                                     href="/scam-prevention"
                                     aria-label="learn how to prevent scams"
@@ -97,7 +97,7 @@ export default function HowKeebyWorks() {
                             <p>
                                 Want to see cool mechanical keyboards for sale
                                 in your inbox everyday? I know my wallet
-                                doesn't! Sign up here{" "}
+                                doesn&apos;t! Sign up here{" "}
                                 <Link
                                     href="/newsletter"
                                     aria-label="Sign up for our newsletter"
@@ -127,7 +127,7 @@ export default function HowKeebyWorks() {
                             <p className="mt-2">
                                 Check out links to products and companies I like
                                 to use for building and buying keyboards. All of
-                                these links are to companies I've used before.
+                                these links are to companies I&apos;ve used before.
                                 Keeby does not sell any keyboard products.
                             </p>
                             <h2 className=" mt-2 text-xl text-hotPink">
@@ -135,7 +135,7 @@ export default function HowKeebyWorks() {
                             </h2>
                             <p>
                                 Currently none of the links are affliate, but we
-                                would love to work with you! If we've used and
+                                would love to work with you! If we&apos;ve used and
                                 like your product we would be honored to promote
                                 and work with you!
                             </p>

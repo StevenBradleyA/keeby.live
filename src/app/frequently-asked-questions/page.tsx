@@ -9,8 +9,8 @@ import keebo from "@public/Profile/keebo.png";
 export default function FrequentlyAskedQuestions() {
     const commonBuyerRef = useRef<HTMLDivElement | null>(null);
     const commonSellerRef = useRef<HTMLDivElement | null>(null);
-    const generalRef = useRef<HTMLDivElement | null>(null);
-    const typeRef = useRef<HTMLDivElement | null>(null);
+    // const generalRef = useRef<HTMLDivElement | null>(null);
+    // const typeRef = useRef<HTMLDivElement | null>(null);
 
     const [openToggle, setOpenToggle] = useState("");
 

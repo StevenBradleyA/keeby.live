@@ -4,7 +4,6 @@ import heic2any from "heic2any";
 import { useEffect, useState } from "react";
 import { uploadFileToS3 } from "~/utils/aws";
 import Image from "next/image";
-import defaultProfile from "@public/Images/defaultProfile.png";
 import toast from "react-hot-toast";
 import LoadingSpinner from "~/app/_components/Loading";
 import type { ChangeEvent } from "react";

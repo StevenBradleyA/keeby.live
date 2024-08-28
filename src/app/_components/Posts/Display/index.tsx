@@ -1,7 +1,7 @@
 import Image from "next/image";
 import defaultProfile from "@public/Images/defaultProfile.png";
 import type { Images } from "@prisma/client";
-import DisplayYouTubePostPreview from "./DisplayPosts/DisplayPostPreviews/displayYouTubePreview";
+import DisplayYouTubePostPreview from "./Previews/displayYouTubePreview";
 import { formatDistance } from "date-fns";
 import Link from "next/link";
 import UserPostPreviews from "./userPostPreviews";
@@ -222,7 +222,7 @@ export default async function DisplayPostPage({ post }: DisplayPostPageProps) {
                 </div>
 
                 <div className=" w-full self-start min-h-[120vh] overflow-hidden rounded-xl bg-mediumGray p-3 text-black ">
-                    <PostPagePreviews postId={post.id}/>
+                    <PostPagePreviews postId={post.id} />
                 </div>
             </div>
             <div className="mt-96 w-full">

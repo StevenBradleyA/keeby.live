@@ -1,5 +1,4 @@
 "use client";
-
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -10,16 +9,6 @@ type Category =
     | "deskmats"
     | "lube"
     | "accessories";
-
-// const subParams: Record<Category, string[]> = {
-//     keyboards: ["60%", "65%", "75%", "TKL", "Full-size", "Alice", "Ortho"],
-//     keycaps: ["PBT", "ABS", "Dye-sublimated", "Double-shot"],
-//     switches: ["Linear", "Tactile", "Clicky"],
-//     deskmats: ["Large", "Medium", "Small"],
-//     lube: ["205g0", "3204", "105", "Tribosys"],
-//     accessories: ["Wrist Rests", "Switch Pullers", "Keycap Pullers"],
-// };
-// split full
 
 export default function SubPickParams() {
     const searchParams = useSearchParams();
@@ -49,7 +38,7 @@ export default function SubPickParams() {
     const keycapMaterial = searchParams.get("keycapMaterial") || "";
     const profileType = searchParams.get("profileType") || "";
 
-    const page = parseInt(searchParams.get("page") || "1");
+    // const page = parseInt(searchParams.get("page") || "1");
     // param state management
 
     const updateQueryParams = (params: Record<string, string | number>) => {

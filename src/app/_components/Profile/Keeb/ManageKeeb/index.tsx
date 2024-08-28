@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { api } from "~/trpc/react";
 import type { Keeb } from "@prisma/client";
-import { deleteCookie, hasCookie, setCookie } from "cookies-next";
+import { setCookie } from "cookies-next";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import defaultProfile from "@public/Images/defaultProfile.png";
