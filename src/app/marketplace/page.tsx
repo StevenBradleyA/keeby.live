@@ -22,7 +22,7 @@ export default function KeebShopHome({
         <>
             <Suspense
                 fallback={
-                    <div className="mt-44 ml-20">
+                    <div className="mt-48 flex w-full justify-center">
                         <LoadingSpinner size="20px" />
                     </div>
                 }
