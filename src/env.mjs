@@ -47,7 +47,6 @@ export const env = createEnv({
         NEXT_PUBLIC_AWS_ACCESS_KEY_ID: z.string(),
         NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY: z.string(),
         NEXT_PUBLIC_REGION: z.string(),
-        NEXT_PUBLIC_PAYPAL_CLIENT_ID: z.string(),
     },
 
     /**
@@ -79,7 +78,6 @@ export const env = createEnv({
         NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY:
             process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY,
         NEXT_PUBLIC_REGION: process.env.NEXT_PUBLIC_REGION,
-        NEXT_PUBLIC_PAYPAL_CLIENT_ID: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
     },
     /**
      * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.
