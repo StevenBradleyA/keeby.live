@@ -1,3 +1,4 @@
+'use client'
 import { api } from "~/trpc/react";
 import LoadingSpinner from "~/app/_components/Loading";
 import DisplayAllGameStats from "./gameStatsConfigurator";
