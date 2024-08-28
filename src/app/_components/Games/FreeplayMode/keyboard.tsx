@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import type { KeyboardEvent, MutableRefObject } from "react";
 import { themeStyles } from "../Theme/themeStyles";
 import type { ThemeName } from "../Theme/themeStyles";
-import Image from "next/image";
-import keebo from "@public/Profile/keebo.png";
 
 interface FreePlayKeyboardProps {
     setTypedText: (typedText: string | ((prevText: string) => string)) => void;

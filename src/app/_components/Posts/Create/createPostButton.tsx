@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import ModalDialog from "../../Context/Modal";
-import CreatePostModal from ".";
+import CreatePostModal from "./createPostModal";
 import { motion } from "framer-motion";
 
 export default function CreatePostButton() {

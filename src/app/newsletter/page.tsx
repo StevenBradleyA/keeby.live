@@ -1,13 +1,11 @@
 "use client";
 import { signIn, useSession } from "next-auth/react";
-
 import Footer from "../_components/Footer/footer";
-
 import { api } from "~/trpc/react";
 import toast from "react-hot-toast";
 
 export default function Newsletter() {
-    const { data: sessionData, status, update } = useSession();
+    const { data: sessionData, update } = useSession();
     const utils = api.useUtils();
 
     const { mutate } = api.user.updateNewsletter.useMutation({
@@ -315,7 +313,8 @@ export default function Newsletter() {
                             )}
 
                             <h1 className="text-lg">
-                                Newsletter - Want to see awesome keyboard listings in your inbox?
+                                Newsletter - Want to see awesome keyboard
+                                listings in your inbox?
                             </h1>
                         </div>
                         <div className="mt-5 flex justify-center gap-10">

@@ -2,7 +2,6 @@
 import type { Images, Listing } from "@prisma/client";
 import type { Session } from "next-auth";
 import { useEffect, useState } from "react";
-import { signIn } from "next-auth/react";
 import { api } from "~/trpc/react";
 import ModalDialog from "~/app/_components/Context/Modal";
 import SignInModal from "~/app/_components/Modal/signInModal";
@@ -100,7 +99,7 @@ export default function ListingPageFavorite({
     useEffect(() => {
         setIsFakeFavorited(listing.isFavorited ?? false);
         setFavoriteCount(listing._count.favorites ?? 0);
-    }, [listing.isFavorited, listing._count.favorites]);
+    }, [listing.isFavorited, listing._count.favorites, favoriteCount]);
 
     return (
         <>

@@ -1,8 +1,6 @@
 "use client";
-
 import { useSession } from "next-auth/react";
 import { signIn } from "next-auth/react";
-import { motion } from "framer-motion";
 import Image from "next/image";
 import keebo from "@public/Profile/keebo.png";
 import defaultProfile from "@public/Images/defaultProfile.png";

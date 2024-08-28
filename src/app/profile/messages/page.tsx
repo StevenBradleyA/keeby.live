@@ -1,6 +1,5 @@
 "use client";
 import { signIn, useSession } from "next-auth/react";
-import DisplayMessages from "~/app/_components/Messages/Display/displayMessages";
 import keebo from "@public/Profile/keebo.png";
 import Image from "next/image";
 import LoadingSpinner from "~/app/_components/Loading";
@@ -19,7 +18,6 @@ export default function MessageCheck() {
     }
 
     return sessionData && sessionData.user ? (
-        // <DisplayMessages userId={sessionData.user.id} />
         <GetAllMessages userId={sessionData.user.id} />
     ) : (
         <>

@@ -2,7 +2,7 @@
 import type { Images } from "@prisma/client";
 import Image from "next/image";
 import { useState } from "react";
-import DisplayYouTubePostPreview from "./DisplayPosts/DisplayPostPreviews/displayYouTubePreview";
+import DisplayYouTubePostPreview from "./Previews/displayYouTubePreview";
 
 interface EachPostProps {
     post: EachPost;

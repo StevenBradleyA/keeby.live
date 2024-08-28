@@ -13,7 +13,7 @@ interface ErrorsObj {
 }
 
 export default function ContactUs() {
-    const { data: sessionData, status, update } = useSession();
+    const { data: sessionData, update } = useSession();
     const utils = api.useUtils();
 
     const [text, setText] = useState<string>("");
@@ -58,6 +58,7 @@ export default function ContactUs() {
             sessionData &&
             sessionData.user.id
         ) {
+            setIsSubmitting(true);
             const data = {
                 userId: sessionData.user.id,
                 text: text,
@@ -66,6 +67,7 @@ export default function ContactUs() {
             };
             mutate(data);
         }
+        setIsSubmitting(false);
     };
     useEffect(() => {
         const errorsObj: ErrorsObj = {};
@@ -193,10 +195,10 @@ export default function ContactUs() {
                                                 Thank you for the love!
                                             </h2>
                                             <p>
-                                                Your kind words mean the world!
+                                               {` Your kind words mean the world!
                                                 I made keeby to share my passion
                                                 with others, so I'm very happy
-                                                you're enjoying the site.
+                                                you're enjoying the site.`}
                                             </p>
                                         </>
                                     )}

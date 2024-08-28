@@ -5,7 +5,6 @@ type EachWordProps = {
     index: number;
     activeWordIndex: number;
 };
-// word active or word or word error
 
 export default function EachWord({
     word,
@@ -18,7 +17,11 @@ export default function EachWord({
             key={index}
         >
             {word.split("").map((letter, i) => (
-                <EachLetter key={i} letter={letter} i={i} isActive={index === activeWordIndex} />
+                <EachLetter
+                    key={i}
+                    letter={letter}
+                    isActive={index === activeWordIndex}
+                />
             ))}
         </div>
     );
