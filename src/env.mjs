@@ -24,8 +24,8 @@ export const env = createEnv({
         ),
         DISCORD_CLIENT_ID: z.string(),
         DISCORD_CLIENT_SECRET: z.string(),
-        REDDIT_CLIENT_ID: z.string(),
-        REDDIT_CLIENT_SECRET: z.string(),
+        // REDDIT_CLIENT_ID: z.string(),
+        // REDDIT_CLIENT_SECRET: z.string(),
         GOOGLE_CLIENT_ID: z.string(),
         GOOGLE_CLIENT_SECRET: z.string(),
         GITHUB_CLIENT_ID: z.string(),
@@ -34,8 +34,6 @@ export const env = createEnv({
         AWS_ACCESS_KEY_ID: z.string(),
         AWS_SECRET_ACCESS_KEY: z.string(),
         REGION: z.string(),
-        // PAYPAL_CLIENT_ID: z.string(),
-        // PAYPAL_SECRET: z.string(),
         POGWORD: z.string(),
     },
 
@@ -56,7 +54,7 @@ export const env = createEnv({
      * You can't destruct `process.env` as a regular object in the Next.js edge runtimes (e.g.
      * middlewares) or client-side so we need to destruct manually.
      */
-  
+
     runtimeEnv: {
         DATABASE_URL: process.env.DATABASE_URL,
         NODE_ENV: process.env.NODE_ENV,
@@ -68,15 +66,13 @@ export const env = createEnv({
         GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
         GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
         GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
-        REDDIT_CLIENT_ID: process.env.REDDIT_CLIENT_ID,
-        REDDIT_CLIENT_SECRET: process.env.REDDIT_CLIENT_SECRET,
+        // REDDIT_CLIENT_ID: process.env.REDDIT_CLIENT_ID,
+        // REDDIT_CLIENT_SECRET: process.env.REDDIT_CLIENT_SECRET,
         AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
         AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
         BUCKET_NAME: process.env.BUCKET_NAME,
         REGION: process.env.REGION,
         POGWORD: process.env.POGWORD,
-        // PAYPAL_CLIENT_ID: process.env.PAYPAL_CLIENT_ID,
-        // PAYPAL_SECRET: process.env.PAYPAL_SECRET,
         NEXT_PUBLIC_BUCKET_NAME: process.env.NEXT_PUBLIC_BUCKET_NAME,
         NEXT_PUBLIC_AWS_ACCESS_KEY_ID:
             process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID,
