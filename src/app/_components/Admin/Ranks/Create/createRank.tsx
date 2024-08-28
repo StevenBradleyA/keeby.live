@@ -1,3 +1,4 @@
+"use client";
 import { api } from "~/trpc/react";
 import toast from "react-hot-toast";
 import { useState } from "react";
@@ -5,36 +6,27 @@ import { useSession } from "next-auth/react";
 import { uploadFileToS3 } from "~/utils/aws";
 import Image from "next/image";
 import defaultProfile from "@public/Images/defaultProfile.png";
+import LoadingSpinner from "~/app/_components/Loading";
 
-interface AdminUpdateRankProps {
-    rank: EachRank;
-    closeModal: () => void;
-}
-interface EachRank {
-    id: string;
-    name: string;
-    minWpm: number;
-    maxWpm: number;
-    standing: number;
-    image: string;
-}
-
-export default function AdminUpdateRank({
-    rank,
+export default function AdminCreateRank({
     closeModal,
-}: AdminUpdateRankProps) {
+}: {
+    closeModal: () => void;
+}) {
     const { data: session } = useSession();
     const utils = api.useUtils();
 
-    const [rankName, setRankName] = useState<string>(rank.name);
-    const [minWpm, setMinWpm] = useState<number>(rank.minWpm);
-    const [maxWpm, setMaxWpm] = useState<number>(rank.maxWpm);
-    const [standing, setStanding] = useState<number>(rank.standing);
-    const [imageFiles, setImageFiles] = useState<File[]>([]);
+    const [rankName, setRankName] = useState<string>("");
+    const [minWpm, setMinWpm] = useState<number>(0);
+    const [standing, setStanding] = useState<number>(0);
 
-    const { mutate: updateRank } = api.rank.update.useMutation({
+    const [maxWpm, setMaxWpm] = useState<number>(0);
+    const [imageFiles, setImageFiles] = useState<File[]>([]);
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+    const { mutate: createRank } = api.rank.create.useMutation({
         onSuccess: () => {
-            toast.success("Rank Updated!", {
+            toast.success("Rank Created!", {
                 style: {
                     borderRadius: "10px",
                     background: "#333",
@@ -46,13 +38,16 @@ export default function AdminUpdateRank({
         },
     });
 
-    const handleUpdateRank = async (e: React.FormEvent) => {
+    const handleCreateRank = async (e: React.FormEvent) => {
         e.preventDefault();
         if (
-            session?.user.isAdmin &&
+            session &&
+            session.user.isAdmin &&
             rankName.length > 0 &&
-            imageFiles.length > 0
+            imageFiles.length > 0 &&
+            !isSubmitting
         ) {
+            setIsSubmitting(true);
             const imagePromises = imageFiles.map((file) => {
                 return new Promise<string>((resolve, reject) => {
                     const reader = new FileReader();
@@ -83,24 +78,25 @@ export default function AdminUpdateRank({
             }
 
             const data = {
-                id: rank.id,
                 name: rankName,
                 minWpm: minWpm,
-                maxWpm: maxWpm,
                 standing: standing,
-                oldImage: rank.image,
+                maxWpm: maxWpm,
                 image: imageUrlArr.map((imageUrl) => ({
                     link: imageUrl || "",
                 })),
             };
-
-            updateRank(data);
+            setIsSubmitting(false);
+            createRank(data);
+        } else {
+            setIsSubmitting(false);
         }
     };
 
     return (
-        <form className="flex w-full flex-col items-center gap-10 ">
-            <div className="flex w-full flex-col gap-1">
+        <form className="flex h-[500px] w-[600px] flex-col items-center text-white text-sm ">
+            <h1 className="text-lg">Create a Rank</h1>
+            <div className="flex w-full flex-col gap-1 mt-5">
                 <label htmlFor="NameInput" className="text-mediumGray">
                     Name
                 </label>
@@ -108,12 +104,13 @@ export default function AdminUpdateRank({
                     id="NameInput"
                     value={rankName}
                     onChange={(e) => setRankName(e.target.value)}
-                    className="h-10 w-full rounded-md bg-mediumGray p-1 "
+                    className="h-10 w-full rounded-md bg-mediumGray p-1 hover:opacity-80"
                     placeholder="Name"
+                    required
                 />
             </div>
 
-            <div className="flex w-full justify-between  gap-10">
+            <div className="flex w-full justify-between  gap-10 mt-5">
                 <div className="flex flex-col gap-1">
                     <label htmlFor="minWpmInput" className="text-mediumGray">
                         MinWpm
@@ -126,6 +123,7 @@ export default function AdminUpdateRank({
                         onChange={(e) => setMinWpm(Math.floor(+e.target.value))}
                         className="h-10 w-full rounded-md bg-mediumGray p-1"
                         placeholder="minWpm"
+                        required
                     />
                 </div>
                 <div className="flex flex-col gap-1">
@@ -140,6 +138,7 @@ export default function AdminUpdateRank({
                         onChange={(e) => setMaxWpm(Math.floor(+e.target.value))}
                         className="h-10 w-full rounded-md bg-mediumGray p-1"
                         placeholder="maxWpm"
+                        required
                     />
                 </div>
                 <div className="flex flex-col gap-1">
@@ -154,13 +153,14 @@ export default function AdminUpdateRank({
                         onChange={(e) => setStanding(+e.target.value)}
                         className="h-10 w-full rounded-md bg-mediumGray p-1"
                         placeholder="standing"
+                        required
                     />
                 </div>
             </div>
 
-            <div className=" flex items-center justify-between gap-10">
+            <div className=" flex items-center justify-between gap-10 mt-10 ">
                 {imageFiles && imageFiles[0] ? (
-                    <div className="relative h-32 w-32">
+                    <div className="relative h-28 w-48">
                         <Image
                             className="h-full w-full rounded-md object-cover"
                             alt="profile"
@@ -179,7 +179,7 @@ export default function AdminUpdateRank({
                         </button>
                     </div>
                 ) : (
-                    <div className=" h-32 w-32 ">
+                    <div className=" h-28 w-48 ">
                         <Image
                             src={defaultProfile}
                             alt="profile"
@@ -189,7 +189,7 @@ export default function AdminUpdateRank({
                     </div>
                 )}
 
-                <div className="relative  flex flex-col gap-1">
+                <div className="relative  flex flex-col gap-1 hover:opacity-80">
                     <input
                         name="profileImage"
                         id="profileImageInput"
@@ -205,20 +205,29 @@ export default function AdminUpdateRank({
                             }
                         }}
                     />
-                    <button className="h-32 w-32 rounded-md bg-failure text-black ">
+                    <button className="h-28 w-48 rounded-md bg-failure text-black ">
                         <span className=" text-center">Choose Image</span>
                     </button>
                 </div>
             </div>
 
             <button
-                className=" w-1/2 rounded-md border-2 border-[#ff0000] bg-darkGray bg-opacity-60 px-6 py-2 text-failure hover:bg-failure hover:bg-opacity-100 hover:text-black"
+                className=" mt-10 rounded-md border-2 border-[#ff0000] bg-darkGray bg-opacity-60 px-6 py-2 text-failure hover:bg-failure hover:bg-opacity-100 hover:text-black"
                 onClick={(e) => {
                     e.preventDefault();
-                    void handleUpdateRank(e);
+                    void handleCreateRank(e);
                 }}
             >
-                Submit
+                {isSubmitting ? (
+                    <div className="flex items-center gap-1 justify-center">
+                        Uploading
+                        <div className="w-6">
+                            <LoadingSpinner size="16px" />
+                        </div>
+                    </div>
+                ) : (
+                    "Create Rank"
+                )}
             </button>
         </form>
     );

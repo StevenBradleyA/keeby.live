@@ -1,18 +1,18 @@
 "use client";
-import type { Pick } from "@prisma/client";
+import type { Rank } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import ModalDialog from "~/app/_components/Context/Modal";
 import { api } from "~/trpc/react";
-import UpdatePick from "./updatePick";
+import AdminUpdateRank from "./updateRank";
 
 interface ManagePickProps {
-    pick: Pick;
+    rank: Rank;
     closeModal: () => void;
 }
 
-export default function ManagePickModal({ pick, closeModal }: ManagePickProps) {
+export default function ManageRankModal({ rank, closeModal }: ManagePickProps) {
     const { data: session } = useSession();
     const [isDelete, setIsDelete] = useState<boolean>(false);
     const [isDeleteFinal, setIsDeleteFinal] = useState<boolean>(false);
@@ -29,9 +29,9 @@ export default function ManagePickModal({ pick, closeModal }: ManagePickProps) {
     const utils = api.useUtils();
 
     // server
-    const { mutate } = api.pick.delete.useMutation({
+    const { mutate } = api.rank.delete.useMutation({
         onSuccess: () => {
-            toast.success("Pick destroyed ggez", {
+            toast.success("Rank destroyed ggez", {
                 icon: "🧹",
                 style: {
                     borderRadius: "10px",
@@ -39,16 +39,17 @@ export default function ManagePickModal({ pick, closeModal }: ManagePickProps) {
                     color: "#ff0000",
                 },
             });
-            void utils.listing.getAllByUserId.invalidate();
+            void utils.rank.getAll.invalidate();
             closeModal();
         },
     });
 
     // helpers
-    const handleDeleteListing = () => {
+    const handleDeleteRank = () => {
         if (session && session.user.isAdmin) {
             const data = {
-                id: pick.id,
+                id: rank.id,
+                image: rank.image,
             };
 
             mutate(data);
@@ -77,7 +78,7 @@ export default function ManagePickModal({ pick, closeModal }: ManagePickProps) {
                     {!isDeleteFinal ? (
                         <>
                             <h1 className="flex justify-center w-full text-center">
-                                Are you sure you want to delete {pick.title}?
+                                Are you sure you want to delete {rank.name}?
                             </h1>
                             <div className="flex gap-5 justify-center mt-5">
                                 <button
@@ -97,12 +98,12 @@ export default function ManagePickModal({ pick, closeModal }: ManagePickProps) {
                     ) : (
                         <>
                             <h1 className="flex justify-center w-full text-center">
-                                Last chance, your pick will be gone forever!
+                                Last chance, this rank will be gone forever!
                             </h1>
                             <div className="flex gap-5 justify-center mt-5">
                                 <button
                                     className="rounded-md  px-4 py-1  text-white bg-mediumGray/30 hover:bg-red-500/10 hover:text-red-500 ease-in flex items-center "
-                                    onClick={handleDeleteListing}
+                                    onClick={handleDeleteRank}
                                 >
                                     Delete Forever
                                 </button>
@@ -119,7 +120,7 @@ export default function ManagePickModal({ pick, closeModal }: ManagePickProps) {
             )}
 
             <ModalDialog isOpen={isEditOpen} onClose={closeEditModal}>
-                <UpdatePick closeModal={closeEditModal} pick={pick} />
+                <AdminUpdateRank rank={rank} closeModal={closeEditModal} />
             </ModalDialog>
         </>
     );

@@ -1,18 +1,18 @@
 "use client";
-import type { Pick } from "@prisma/client";
+import type { Tag } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import ModalDialog from "~/app/_components/Context/Modal";
 import { api } from "~/trpc/react";
-import UpdatePick from "./updatePick";
+import AdminUpdateTag from "./updateTag";
 
 interface ManagePickProps {
-    pick: Pick;
+    tag: Tag;
     closeModal: () => void;
 }
 
-export default function ManagePickModal({ pick, closeModal }: ManagePickProps) {
+export default function ManageTagModal({ tag, closeModal }: ManagePickProps) {
     const { data: session } = useSession();
     const [isDelete, setIsDelete] = useState<boolean>(false);
     const [isDeleteFinal, setIsDeleteFinal] = useState<boolean>(false);
@@ -29,9 +29,9 @@ export default function ManagePickModal({ pick, closeModal }: ManagePickProps) {
     const utils = api.useUtils();
 
     // server
-    const { mutate } = api.pick.delete.useMutation({
+    const { mutate } = api.tag.delete.useMutation({
         onSuccess: () => {
-            toast.success("Pick destroyed ggez", {
+            toast.success("Tag destroyed ggez", {
                 icon: "🧹",
                 style: {
                     borderRadius: "10px",
@@ -45,12 +45,9 @@ export default function ManagePickModal({ pick, closeModal }: ManagePickProps) {
     });
 
     // helpers
-    const handleDeleteListing = () => {
+    const handleDeleteTag = () => {
         if (session && session.user.isAdmin) {
-            const data = {
-                id: pick.id,
-            };
-
+            const data = tag.id;
             mutate(data);
         }
     };
@@ -73,11 +70,11 @@ export default function ManagePickModal({ pick, closeModal }: ManagePickProps) {
                     </button>
                 </div>
             ) : (
-                <div className="p-5 w-[300px] ">
+                <div className="p-5 w-[300px] text-white ">
                     {!isDeleteFinal ? (
                         <>
                             <h1 className="flex justify-center w-full text-center">
-                                Are you sure you want to delete {pick.title}?
+                                Are you sure you want to delete {tag.name}?
                             </h1>
                             <div className="flex gap-5 justify-center mt-5">
                                 <button
@@ -97,12 +94,12 @@ export default function ManagePickModal({ pick, closeModal }: ManagePickProps) {
                     ) : (
                         <>
                             <h1 className="flex justify-center w-full text-center">
-                                Last chance, your pick will be gone forever!
+                                Last chance, this tag will be gone forever!
                             </h1>
                             <div className="flex gap-5 justify-center mt-5">
                                 <button
                                     className="rounded-md  px-4 py-1  text-white bg-mediumGray/30 hover:bg-red-500/10 hover:text-red-500 ease-in flex items-center "
-                                    onClick={handleDeleteListing}
+                                    onClick={handleDeleteTag}
                                 >
                                     Delete Forever
                                 </button>
@@ -119,7 +116,7 @@ export default function ManagePickModal({ pick, closeModal }: ManagePickProps) {
             )}
 
             <ModalDialog isOpen={isEditOpen} onClose={closeEditModal}>
-                <UpdatePick closeModal={closeEditModal} pick={pick} />
+                <AdminUpdateTag tag={tag} closeModal={closeModal} />
             </ModalDialog>
         </>
     );

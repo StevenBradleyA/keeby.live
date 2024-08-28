@@ -6,11 +6,9 @@ import {
 } from "~/server/api/trpc";
 import { removeFileFromS3 } from "../utils";
 
-// todo assign tags at certain ranks in keeb type
-
 export const rankRouter = createTRPCRouter({
     getAll: publicProcedure.query(({ ctx }) => {
-        return ctx.prisma.rank.findMany();
+        return ctx.db.rank.findMany();
     }),
 
     create: protectedProcedure
@@ -27,20 +25,43 @@ export const rankRouter = createTRPCRouter({
                 standing: z.number(),
             }),
         )
-        .mutation(({ ctx, input }) => {
-            if (ctx.session.user.isAdmin && input.image[0]) {
-                return ctx.prisma.rank.create({
-                    data: {
-                        name: input.name,
-                        image: input.image[0].link,
-                        minWpm: input.minWpm,
-                        maxWpm: input.maxWpm,
-                        standing: input.standing,
-                    },
-                });
+        .mutation(async ({ ctx, input }) => {
+            const { name, minWpm, maxWpm, image, standing } = input;
+
+            if (!ctx.session.user.isAdmin) {
+                throw new Error(
+                    "You don't have the right, O you don't have the right",
+                );
             }
 
-            throw new Error("You must be admin to perform this action.");
+            if (image && image[0]) {
+                await ctx.db.rank.create({
+                    data: {
+                        name: name,
+                        image: image[0].link,
+                        minWpm: minWpm,
+                        maxWpm: maxWpm,
+                        standing: standing,
+                    },
+                });
+
+                const tagCheck = await ctx.db.tag.findFirst({
+                    where: {
+                        name: name,
+                    },
+                });
+
+                if (!tagCheck) {
+                    await ctx.db.tag.create({
+                        data: {
+                            name: name,
+                            description: `Unlocked when a user reaches rank ${name}`,
+                        },
+                    });
+                }
+
+                return "successfully created new rank";
+            }
         }),
 
     update: protectedProcedure
@@ -51,22 +72,29 @@ export const rankRouter = createTRPCRouter({
                 maxWpm: z.number(),
                 minWpm: z.number(),
                 standing: z.number(),
-                oldImage: z.string(),
-                image: z.array(
-                    z.object({
-                        link: z.string(),
-                    }),
-                ),
+                image: z.string(),
+                images: z
+                    .array(
+                        z.object({
+                            link: z.string(),
+                        }),
+                    )
+                    .optional(),
             }),
         )
         .mutation(async ({ input, ctx }) => {
-            const { id, name, minWpm, maxWpm, image, oldImage, standing } =
-                input;
+            const { id, name, minWpm, maxWpm, images, image, standing } = input;
 
-            if (ctx.session.user.isAdmin && image[0]) {
-                await removeFileFromS3(oldImage);
+            if (!ctx.session.user.isAdmin) {
+                throw new Error(
+                    "You don't have the right, O you don't have the right",
+                );
+            }
 
-                return await ctx.db.rank.update({
+            if (images && images[0]) {
+                await removeFileFromS3(image);
+
+                await ctx.db.rank.update({
                     where: {
                         id: id,
                     },
@@ -75,12 +103,24 @@ export const rankRouter = createTRPCRouter({
                         minWpm: minWpm,
                         maxWpm: maxWpm,
                         standing: standing,
-                        image: image[0].link,
+                        image: images[0].link,
                     },
                 });
+                return "successfully updated";
+            } else {
+                await ctx.db.rank.update({
+                    where: {
+                        id: id,
+                    },
+                    data: {
+                        name: name,
+                        minWpm: minWpm,
+                        maxWpm: maxWpm,
+                        standing: standing,
+                    },
+                });
+                return "successfully updated";
             }
-
-            throw new Error("Invalid userId");
         }),
 
     delete: protectedProcedure
@@ -92,14 +132,17 @@ export const rankRouter = createTRPCRouter({
         )
         .mutation(async ({ input, ctx }) => {
             const { id, image } = input;
-            if (ctx.session.user.isAdmin) {
-                await removeFileFromS3(image);
 
-                return ctx.prisma.rank.delete({
-                    where: { id: id },
-                });
-            } else {
-                throw new Error("Invalid userId");
+            if (!ctx.session.user.isAdmin) {
+                throw new Error(
+                    "You don't have the right, O you don't have the right",
+                );
             }
+
+            await removeFileFromS3(image);
+
+            return ctx.db.rank.delete({
+                where: { id: id },
+            });
         }),
 });

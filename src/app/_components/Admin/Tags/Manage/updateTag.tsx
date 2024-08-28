@@ -1,3 +1,4 @@
+"use client";
 import { api } from "~/trpc/react";
 import toast from "react-hot-toast";
 import { useState } from "react";
@@ -58,7 +59,7 @@ export default function AdminUpdateTag({
     };
 
     return (
-        <form className="flex w-[400px] flex-col items-center gap-10 ">
+        <form className="flex w-[400px] flex-col items-center gap-10 text-white">
             <div className="flex w-full flex-col gap-1">
                 <label htmlFor="NameInput" className="text-mediumGray">
                     Name
@@ -88,7 +89,7 @@ export default function AdminUpdateTag({
             </div>
 
             <button
-                className=" flex w-1/2 justify-center rounded-md border-2 border-[#ff0000] bg-darkGray bg-opacity-60 px-6 py-2 text-failure hover:bg-failure hover:bg-opacity-100 hover:text-black"
+                className=" flex  justify-center rounded-md border-2 border-[#ff0000] bg-darkGray bg-opacity-60 px-6 py-2 text-failure hover:bg-failure hover:bg-opacity-100 hover:text-black"
                 onClick={(e) => {
                     e.preventDefault();
                     void handleUpdateTag(e);

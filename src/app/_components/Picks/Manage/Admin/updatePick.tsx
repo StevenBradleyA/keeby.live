@@ -881,10 +881,12 @@ export default function UpdatePick({ closeModal, pick }: UpdatePickProps) {
                     ) : (
                         <div className="w-32 h-24 bg-black rounded-lg overflow-hidden ">
                             <Image
-                                src={defaultProfile}
+                                src={pick.image}
                                 alt="profile"
                                 className="h-full w-full object-cover "
                                 priority
+                                width={400}
+                                height={400}
                             />
                         </div>
                     )}
