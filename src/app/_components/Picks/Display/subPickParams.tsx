@@ -27,7 +27,7 @@ export default function SubPickParams() {
     const layoutType = searchParams.get("layoutType") || "";
     const caseMaterial = searchParams.get("caseMaterial") || "";
 
-    const assemblyType = searchParams.get("assemblyType") || "";
+    // const assemblyType = searchParams.get("assemblyType") || "";
     const pcbType = searchParams.get("pcbType") || "";
     // const soundType = searchParams.get("soundType") || "";
 
@@ -71,9 +71,9 @@ export default function SubPickParams() {
     const handleCaseSelect = (type: string) => {
         updateQueryParams({ caseMaterial: caseMaterial === type ? "" : type });
     };
-    const handleAssemblySelect = (type: string) => {
-        updateQueryParams({ assemblyType: assemblyType === type ? "" : type });
-    };
+    // const handleAssemblySelect = (type: string) => {
+    //     updateQueryParams({ assemblyType: assemblyType === type ? "" : type });
+    // };
     const handlePcbSelect = (type: string) => {
         updateQueryParams({ pcbType: pcbType === type ? "" : type });
     };
