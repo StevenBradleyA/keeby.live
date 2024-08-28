@@ -71,22 +71,22 @@ export default function CreatePick({ closeModal }: { closeModal: () => void }) {
 
     // server interactions --
 
-    // const { mutate } = api.pick.create.useMutation({
-    //     onSuccess: async () => {
-    //         try {
-    //             toast.success("Pick posted!", {
-    //                 style: {
-    //                     borderRadius: "10px",
-    //                     background: "#333",
-    //                     color: "#fff",
-    //                 },
-    //             });
-    //             void utils.pick.getAll.invalidate();
-    //         } catch (error) {
-    //             console.error("Error while navigating:", error);
-    //         }
-    //     },
-    // });
+    const { mutate } = api.pick.create.useMutation({
+        onSuccess: () => {
+            try {
+                toast.success("Pick uploaded!", {
+                    style: {
+                        borderRadius: "10px",
+                        background: "#333",
+                        color: "#fff",
+                    },
+                });
+                void utils.pick.getAll.invalidate();
+            } catch (error) {
+                console.error("Error while navigating:", error);
+            }
+        },
+    });
 
     // helpers --
 
@@ -430,6 +430,11 @@ export default function CreatePick({ closeModal }: { closeModal: () => void }) {
                                 </button>
                             </div>
                         </div>
+                        {enableErrorDisplay && errors.image && (
+                            <p className="text-xs text-red-400">
+                                {errors.image}
+                            </p>
+                        )}
                     </div>
                     <div className="flex flex-col w-1/2 text-black gap-2">
                         <div className="flex flex-col ">
