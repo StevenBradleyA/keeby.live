@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import LoadingSpinner from "~/app/_components/Loading";
 
-const DynamicHeader = dynamic(
+const ProfilePlus = dynamic(
     () => import("../_components/Profile/User/Update/profilePlus"),
     {
         loading: () => (
@@ -16,5 +16,5 @@ const DynamicHeader = dynamic(
 );
 
 export default function ProfilePlusPage() {
-    return <DynamicHeader />;
+    return <ProfilePlus />;
 }

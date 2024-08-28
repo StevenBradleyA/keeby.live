@@ -1,12 +1,27 @@
 "use client";
 import { useEffect, useState } from "react";
 import { debounce } from "lodash";
-import CreatePostButton from "../../Create/createPostButton";
+
 import ResetArrowSvg from "~/app/_components/Svgs/reset";
 import NotificationSvg from "~/app/_components/Svgs/notification";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useGlobalState } from "~/app/_components/Context/GlobalState/globalState";
 import BinaryRain from "~/app/_components/Matrix/binaryRain";
+
+import dynamic from "next/dynamic";
+import LoadingSpinner from "~/app/_components/Loading";
+
+const CreatePostButton = dynamic(
+    () => import("../../Create/createPostButton"),
+    {
+        loading: () => (
+            <div className="mt-60 flex w-full justify-center text-green-500">
+                <LoadingSpinner size="20px" />
+            </div>
+        ),
+        ssr: false,
+    },
+);
 
 export default function SharePreviewFilters() {
     const router = useRouter();
