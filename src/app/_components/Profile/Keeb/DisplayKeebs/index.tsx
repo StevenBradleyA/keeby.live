@@ -1,3 +1,4 @@
+'use client'
 import { api } from "~/trpc/react";
 import EachDisplayKeebCard from "./eachDisplayKeebCard";
 import Image from "next/image";
