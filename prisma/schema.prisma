@@ -251,15 +251,15 @@ model Pick {
     image    String
     category String
     // keyboards, switches, keycaps, deskmats, lube, accessories
-    price    Int
+    price    Float
     featured Boolean @default(false)
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
     description String?
-    
-    color       String?
+
+    color String?
     // works for deskmats, caps, switches, keyboards
 
     // KEYBOARD OPTIONALS

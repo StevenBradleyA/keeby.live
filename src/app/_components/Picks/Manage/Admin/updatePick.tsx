@@ -17,7 +17,6 @@ interface UpdatePickProps {
 }
 
 interface ErrorsObj {
-    image?: string;
     title?: string;
     link?: string;
     category?: string;
@@ -319,9 +318,6 @@ export default function UpdatePick({ closeModal, pick }: UpdatePickProps) {
         }
         if (price <= 0) {
             errorsObj.price = "Please provide a price";
-        }
-        if (imageFiles.length <= 0) {
-            errorsObj.image = "Please provide an image";
         }
 
         setErrors(errorsObj);
