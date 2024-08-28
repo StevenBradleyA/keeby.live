@@ -40,7 +40,7 @@ model Comment {
 
     listingId String?
     postId    String?
-    shopId    String?
+    pickId    String?
 
     user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -50,12 +50,12 @@ model Comment {
 
     listing Listing? @relation(fields: [listingId], references: [id], onDelete: Cascade)
     post    Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
-    shop    Shop?    @relation(fields: [shopId], references: [id], onDelete: Cascade)
+    pick    Pick?    @relation(fields: [pickId], references: [id], onDelete: Cascade)
 
     @@unique([userId, id])
     @@index([listingId], name: "idxCommentListingId")
     @@index([postId], name: "idxCommentPostId")
-    @@index([shopId], name: "idxCommentShopId")
+    @@index([pickId], name: "idxCommentPickId")
 }
 
 model CommentLike {
@@ -75,7 +75,7 @@ model Favorites {
 
     listingId String?
     postId    String?
-    shopId    String?
+    pickId    String?
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -83,12 +83,12 @@ model Favorites {
     user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
     listing Listing? @relation(fields: [listingId], references: [id], onDelete: Cascade)
     post    Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
-    shop    Shop?    @relation(fields: [shopId], references: [id], onDelete: Cascade)
+    pick    Pick?    @relation(fields: [pickId], references: [id], onDelete: Cascade)
 
     @@unique([userId, listingId, postId])
     @@index([listingId], name: "idxUserFavoritesListingId")
     @@index([postId], name: "idxUserFavoritesPostId")
-    @@index([shopId], name: "idxUserFavoritesShopId")
+    @@index([pickId], name: "idxUserFavoritesPickId")
 }
 
 model Game {
@@ -244,6 +244,59 @@ model Notification {
     user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+model Pick {
+    id       String  @id @default(cuid())
+    title    String
+    link     String
+    image    String
+    category String
+    // keyboards, switches, keycaps, deskmats, lube, accessories
+    price    Int
+    featured Boolean @default(false)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    description String?
+    
+    color       String?
+    // works for deskmats, caps, switches, keyboards
+
+    // KEYBOARD OPTIONALS
+    caseMaterial   String?
+    layoutType     String?
+    pcbType        String?
+    assemblyType   String?
+    soundType      String?
+    // KEYCAP OPTIONALS
+    keycapMaterial String?
+    profileType    String?
+    // SWITCH OPTIONALS
+    switchType     String?
+    preLubed       Boolean?
+
+    comments    Comment[]
+    favorites   Favorites[]
+    pickRatings PickRating[]
+}
+
+model PickRating {
+    id     String  @id @default(cuid())
+    rating Int
+    text   String?
+
+    userId    String
+    pickId    String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+    pick Pick @relation(fields: [pickId], references: [id], onDelete: Cascade)
+
+    @@unique([userId, pickId])
+    @@index([pickId], name: "idxPickRatingPickId")
+}
+
 model Post {
     id        String   @id @default(cuid())
     title     String
@@ -307,58 +360,6 @@ model Session {
     userId       String
     expires      DateTime
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model Shop {
-    id       String  @id @default(cuid())
-    title    String
-    link     String
-    image    String
-    category String
-    // SWITCH KEYCAP DESKMAT KEYBOARD LUBE STABILIZER ACCESSORY
-    price    Int
-    featured Boolean @default(false)
-
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    description String?
-    color       String?
-    // works for deskmats, caps, switches, keyboards, etc...
-
-    // KEYBOARD OPTIONALS
-    caseMaterial String?
-    layoutType   String?
-    pcbType      String?
-    assemblyType String?
-    soundType    String?
-    // KEYCAP OPTIONALS
-    keycapMaterial String?
-    profileType  String?
-    // SWITCH OPTIONALS
-    switchType   String?
-    preLubed     Boolean?
-
-    comments    Comment[]
-    favorites   Favorites[]
-    shopRatings ShopRating[]
-}
-
-model ShopRating {
-    id     String  @id @default(cuid())
-    rating Int
-    text   String?
-
-    userId    String
-    shopId    String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-    shop Shop @relation(fields: [shopId], references: [id], onDelete: Cascade)
-
-    @@unique([userId, shopId])
-    @@index([shopId], name: "idxShopRatingShopId")
 }
 
 model Tag {
@@ -425,7 +426,7 @@ model User {
     tickets            Ticket[]
     buyerTransactions  ListingTransaction[] @relation("BuyerRelation")
     sellerTransactions ListingTransaction[] @relation("SellerRelation")
-    shopRatings        ShopRating[]
+    pickRatings        PickRating[]
 }
 
 model VerificationToken {

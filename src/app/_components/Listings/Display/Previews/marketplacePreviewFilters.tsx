@@ -338,15 +338,15 @@ export default function MarketplacePreviewFilters() {
                                     </button>
                                     <button
                                         onClick={() =>
-                                            handleAssemblySelect("unassembled")
+                                            handleAssemblySelect("barebones")
                                         }
                                         className={` ease-in hover:text-white  ${
-                                            assemblyType === "unassembled"
+                                            assemblyType === "barebones"
                                                 ? "border-b border-white text-white"
                                                 : "border-b border-white border-opacity-0"
                                         }`}
                                     >
-                                        unassembled
+                                        barebones
                                     </button>
 
                                     <h2 className="text-green-500">PCB:</h2>
@@ -985,17 +985,17 @@ export default function MarketplacePreviewFilters() {
 //                             <button
 //                                 onClick={() =>
 //                                     handleAssemblyTypeSelect(
-//                                         "unassembled",
+//                                         "barebones",
 //                                     )
 //                                 }
 //                                 className={`transition-colors duration-400 ease-custom-cubic hover:text-white  ${
 //                                     assemblyType ===
-//                                     "unassembled"
+//                                     "barebones"
 //                                         ? "border-b border-white text-white"
 //                                         : "border-b border-white border-opacity-0"
 //                                 }`}
 //                             >
-//                                 unassembled
+//                                 barebones
 //                             </button>
 //                         </div>
 

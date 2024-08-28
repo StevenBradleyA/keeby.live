@@ -90,7 +90,7 @@ export default function CreateListing() {
 
     // server interactions --
     const { mutate } = api.listing.create.useMutation({
-        onSuccess: async (data) => {
+        onSuccess: (data) => {
             toast.success("Keyboard Listed!", {
                 style: {
                     borderRadius: "10px",
@@ -217,7 +217,7 @@ export default function CreateListing() {
         }
     };
 
-// monitoring
+    // monitoring
     useEffect(() => {
         const maxFileSize = 8 * 1024 * 1024;
         const errorsObj: ErrorsObj = {};
@@ -695,8 +695,8 @@ export default function CreateListing() {
                                             <option value="assembled">
                                                 Assembled
                                             </option>
-                                            <option value="unassembled">
-                                                Unassembled
+                                            <option value="barebones">
+                                                Barebones
                                             </option>
                                         </select>
                                         {enableErrorDisplay &&

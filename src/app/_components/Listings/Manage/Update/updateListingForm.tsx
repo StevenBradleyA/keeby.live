@@ -717,8 +717,8 @@ export default function UpdateListingForm({
                                         <option value="assembled">
                                             Assembled
                                         </option>
-                                        <option value="unassembled">
-                                            Unassembled
+                                        <option value="barebones">
+                                            Barebones
                                         </option>
                                     </select>
                                     {enableErrorDisplay &&
