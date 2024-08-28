@@ -51,13 +51,14 @@
  * for Docker builds.
  */
 // next.config.js
+// experimental: {
+//     appDir: true,
+// },
+
 await import("./src/env.mjs");
 
 /** @type {import("next").NextConfig} */
 const config = {
-    experimental: {
-        appDir: true,
-    },
     images: {
         domains: [
             "s3.us-west-2.amazonaws.com",

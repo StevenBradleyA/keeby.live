@@ -65,18 +65,6 @@ export const reviewRouter = createTRPCRouter({
             return { reviewsForSellers, reviewsForBuyers };
         }),
 
-    // getAllReceivedByUserId: publicProcedure
-    //     .input(z.string())
-    //     .query(({ input: userId, ctx }) => {
-    //         return ctx.prisma.review.findMany({
-    //             where: { sellerId: userId },
-    //             include: {
-    //                 user: {
-    //                     select: { username: true, profile: true },
-    //                 },
-    //             },
-    //         });
-    //     }),
     getAllReceivedAndSentByUserId: publicProcedure
         .input(z.string())
         .query(async ({ input: userId, ctx }) => {
@@ -216,3 +204,16 @@ export const reviewRouter = createTRPCRouter({
             return "Successfully deleted";
         }),
 });
+
+// getAllReceivedByUserId: publicProcedure
+//     .input(z.string())
+//     .query(({ input: userId, ctx }) => {
+//         return ctx.prisma.review.findMany({
+//             where: { sellerId: userId },
+//             include: {
+//                 user: {
+//                     select: { username: true, profile: true },
+//                 },
+//             },
+//         });
+//     }),

@@ -39,10 +39,10 @@ type GameResultsResponse = {
 
 export const gameRouter = createTRPCRouter({
     getAll: publicProcedure.query(({ ctx }) => {
-        return ctx.prisma.game.findMany();
+        return ctx.db.game.findMany();
     }),
     getByKeebId: publicProcedure.input(z.string()).query(({ input, ctx }) => {
-        return ctx.prisma.game.findMany({
+        return ctx.db.game.findMany({
             where: { keebId: input },
         });
     }),

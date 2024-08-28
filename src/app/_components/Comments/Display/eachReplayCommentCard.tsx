@@ -34,6 +34,7 @@ interface ReplyContents {
     listingId: string | null;
     postId: string | null;
     parentId: string | null;
+    pickId: string | null;
     referencedUser: string | null;
     _count: CommentLike;
     isLiked?: boolean;

@@ -49,7 +49,7 @@ export const transactionRouter = createTRPCRouter({
 
             return { sold, purchased };
         }),
-    //! NOTIFY BUYER AND SELLER THAT THEY CAN NOW REVIEW
+    // NOTIFY BUYER AND SELLER THAT THEY CAN NOW REVIEW
     createBuyerDriven: protectedProcedure
         .input(
             z.object({

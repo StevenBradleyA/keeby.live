@@ -35,6 +35,7 @@ interface CommentContents {
     userId: string;
     listingId: string | null;
     postId: string | null;
+    pickId: string | null;
     parentId: string | null;
     referencedUser: string | null;
     user: CommentUser;

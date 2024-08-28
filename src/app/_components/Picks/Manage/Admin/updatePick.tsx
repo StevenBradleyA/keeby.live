@@ -456,11 +456,6 @@ export default function UpdatePick({ closeModal, pick }: UpdatePickProps) {
                                 </button>
                             </div>
                         </div>
-                        {enableErrorDisplay && errors.image && (
-                            <p className="text-xs text-red-400">
-                                {errors.image}
-                            </p>
-                        )}
                     </div>
                     <div className="flex flex-col w-1/2 text-black gap-2">
                         <div className="flex flex-col ">

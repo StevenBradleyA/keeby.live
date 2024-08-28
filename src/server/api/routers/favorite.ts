@@ -4,19 +4,8 @@ import {
     publicProcedure,
     protectedProcedure,
 } from "~/server/api/trpc";
-import type { Post, Images, Listing } from "@prisma/client";
+import type { Post, Images } from "@prisma/client";
 
-interface ListingImage {
-    id: string;
-    link: string;
-}
-
-type ExtendedListing = Listing & {
-    _count: {
-        comments: number;
-    };
-    images: ListingImage[];
-};
 type ExtendedPost = Post & {
     _count: {
         comments: number;
@@ -69,43 +58,6 @@ export const favoriteRouter = createTRPCRouter({
             return isFavorited;
         }),
 
-    // getAllFavoriteListings: publicProcedure
-    //     .input(
-    //         z.object({
-    //             userId: z.string(),
-    //         }),
-    //     )
-    //     .query(async ({ ctx, input }) => {
-    //         return ctx.prisma.favorites
-    //             .findMany({
-    //                 where: {
-    //                     userId: input.userId,
-    //                     listingId: { not: null },
-    //                     postId: null,
-    //                 },
-    //                 select: {
-    //                     listing: {
-    //                         include: {
-    //                             _count: {
-    //                                 select: { comments: true },
-    //                             },
-    //                             images: {
-    //                                 where: { resourceType: "LISTINGPREVIEW" },
-    //                                 select: { id: true, link: true },
-    //                             },
-    //                         },
-    //                     },
-    //                 },
-    //             })
-    //             .then((favorites) => {
-    //                 if (favorites.length === 0) {
-    //                     return null;
-    //                 }
-    //                 return favorites.map(
-    //                     (favorite) => favorite.listing as ExtendedListing,
-    //                 );
-    //             });
-    //     }),
     getAllFavoritePosts: publicProcedure
         .input(
             z.object({
@@ -393,3 +345,41 @@ export const favoriteRouter = createTRPCRouter({
             };
         }),
 });
+
+// getAllFavoriteListings: publicProcedure
+//     .input(
+//         z.object({
+//             userId: z.string(),
+//         }),
+//     )
+//     .query(async ({ ctx, input }) => {
+//         return ctx.prisma.favorites
+//             .findMany({
+//                 where: {
+//                     userId: input.userId,
+//                     listingId: { not: null },
+//                     postId: null,
+//                 },
+//                 select: {
+//                     listing: {
+//                         include: {
+//                             _count: {
+//                                 select: { comments: true },
+//                             },
+//                             images: {
+//                                 where: { resourceType: "LISTINGPREVIEW" },
+//                                 select: { id: true, link: true },
+//                             },
+//                         },
+//                     },
+//                 },
+//             })
+//             .then((favorites) => {
+//                 if (favorites.length === 0) {
+//                     return null;
+//                 }
+//                 return favorites.map(
+//                     (favorite) => favorite.listing as ExtendedListing,
+//                 );
+//             });
+//     }),

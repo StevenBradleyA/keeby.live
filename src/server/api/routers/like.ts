@@ -15,7 +15,7 @@ export const likeRouter = createTRPCRouter({
             }),
         )
         .query(({ input, ctx }) => {
-            return ctx.prisma.commentLike.findMany({
+            return ctx.db.commentLike.findMany({
                 where: {
                     userId: input.userId,
                 },

@@ -21,8 +21,8 @@ interface PostData {
     userId: string;
     title: string;
     tag: string;
-    link?: string;
-    text?: string;
+    link?: string | null;
+    text?: string | null;
     preview?: { source: string; index: number; id: string };
     images?: Images[];
 }
@@ -53,9 +53,7 @@ export default function UpdatePostForm({
     post,
     closeModal,
 }: UpdateListingFormProps) {
-
-// todo test and fix pls
-
+    // todo test and fix pls
 
     const utils = api.useUtils();
     const { data: session, status } = useSession();
