@@ -82,22 +82,7 @@ View current database and manually update data
  Escrow Service holds the payment from the buyer until the product is delivered and inspected by the buyer. If the product
  matches the descriptiion, the payment is released to the seller. If there are issues, the funds can be refunded to the buyer.
 
-  implement return policy
-
-  If seller is highly rated can skip verification
-
-
-  I don't wanna be the middle man
-  I don't wanna care about shit if something goes wrong. if there is a problem you pay me. I don't care
-  cleanest big dick way to deal with seller gets charged and buyer gets charged. It is up to the community to play by the rules
-  You don't sell the keyboard you get fined
-  Have to BD energy scamming is not tolerated. This is a mutual party agreement. I will not tolerate dealing with scams. Both will be charged the full price of the keyboard.
-  Have to run a transaction on both to process fees before shipment. I hope this never happens but it forces people to play by the rules.
-  7 day dispute windown no returns
-  Buyer communication is key trusting their commity public ratings
-
- $1 transaction fee for listing
- %3 or 5% fee
+  
 
   contractual agreement.
 
