@@ -7,12 +7,11 @@ import NotificationSvg from "~/app/_components/Svgs/notification";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useGlobalState } from "~/app/_components/Context/GlobalState/globalState";
 import BinaryRain from "~/app/_components/Matrix/binaryRain";
-
 import dynamic from "next/dynamic";
 import LoadingSpinner from "~/app/_components/Loading";
 
 const CreatePostButton = dynamic(
-    () => import("../../Create/createPostButton"),
+    () => import("~/app/_components/Posts/Create/createPostButton"),
     {
         loading: () => (
             <div className="mt-60 flex w-full justify-center text-green-500">
@@ -234,7 +233,8 @@ export default function SharePreviewFilters() {
                             {isSearchFocus && (
                                 <div className="absolute -bottom-10 -left-10 -top-10 -right-10 z-10  ">
                                     <BinaryRain
-                                        textColor="#22c55e"
+                                        matrix="#22c55e"
+                                        matrixBackground="rgba(0, 0, 0, 0.1)"
                                         fontSize={10}
                                         letters="010110"
                                     />

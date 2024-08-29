@@ -32,14 +32,14 @@ export default function ScholarMode({
 
     // typing
     const [prompt, setPrompt] = useState<string[]>([]);
-    console.log("PROMPT CHECK B", prompt);
+    // console.log("PROMPT CHECK B", prompt);
     const [totalUserInput, setTotalUserInput] = useState<string>("");
     const [userInput, setUserInput] = useState<string>("");
     const [activeWordIndex, setActiveWordIndex] = useState<number>(0);
     const [wordStatus, setWordStatus] = useState<boolean[]>(
         new Array(prompt.length).fill(false),
     );
-    console.log("WORD STATUS CHECH", wordStatus);
+    // console.log("WORD STATUS CHECH", wordStatus);
     const [extraCharacters, setExtraCharacters] = useState<string[]>(
         new Array(prompt.length).fill(""),
     );
@@ -62,8 +62,10 @@ export default function ScholarMode({
 
     const { mutate: createGame } = api.game.create.useMutation({
         onSuccess: (data) => {
-            setFinishedGameId(data.gameId);
-            if (data.averageWpm) setRankWpm(data.averageWpm);
+            if (data) {
+                setFinishedGameId(data.gameId);
+                if (data.averageWpm) setRankWpm(data.averageWpm);
+            }
         },
     });
 
@@ -155,6 +157,7 @@ export default function ScholarMode({
     };
 
     const handleNextGame = () => {
+        setFinishedGameId("");
         setGameOver(false);
         setTrigger((prev) => prev + 1);
         setTotalUserInput("");
@@ -321,11 +324,7 @@ export default function ScholarMode({
                     <div
                         className={`relative flex w-full flex-wrap gap-2 px-10 text-2xl ${
                             styles.textColor
-                        } ${
-                            prompt.length <= 10
-                                ? "justify-center"
-                                : "justify-start"
-                        }`}
+                        } justify-center`}
                     >
                         {prompt.map((word, index) => (
                             <div className="flex" key={index}>

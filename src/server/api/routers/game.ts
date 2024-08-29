@@ -119,8 +119,8 @@ export const gameRouter = createTRPCRouter({
         }),
 
     // todo add fun tags like hitting sub 1 wpm or something speedy speed boi or speed demon
-    // todo 300 wpm no accuracy or something --
-
+    // todo 300 wpm no accuracy or something -- storm trooper aim -- eurobeat intensifies idkkk
+    // this needs to only be in speed mode... we don't want rank or tag assignment if not
     create: protectedProcedure
         .input(
             z.object({
@@ -134,168 +134,191 @@ export const gameRouter = createTRPCRouter({
         )
         .mutation(async ({ input, ctx }) => {
             const { wpm, pureWpm, accuracy, mode, userId, keebId } = input;
-
-            console.log("\n\n\n", wpm, "\n\n\n\n");
-            console.log("\n\n\n", pureWpm, "\n\n\n\n");
-            console.log("\n\n\n", accuracy, "\n\n\n\n");
-            console.log("\n\n\n", mode, "\n\n\n\n");
-            console.log("\n\n\n", userId, "\n\n\n\n");
-            console.log("\n\n\n", keebId, "\n\n\n\n");
-
-            // todo fix the fucking keebId again lmaooooooo
-
-            // we should probably just do a keebId check
-
+            let validKeebId = keebId;
             let rankChange = false;
-            if (
-                ctx.session.user.hasProfile &&
-                ctx.session.user.id === input.userId
-            ) {
-                const createData = {
-                    wpm,
-                    pureWpm,
-                    accuracy,
-                    mode,
-                    userId,
-                    keebId,
-                };
 
-                const newGame = await ctx.db.game.create({
-                    data: createData,
+            if (
+                !ctx.session.user.hasProfile ||
+                ctx.session.user.id !== userId
+            ) {
+                throw new Error(
+                    "You don't have the right, O you don't have the right",
+                );
+            }
+
+            const keebCheck = await ctx.db.keeb.findFirst({
+                where: {
+                    id: keebId,
+                },
+            });
+
+            if (!keebCheck) {
+                const newKeeb = await ctx.db.keeb.findFirst({
+                    where: {
+                        userId: userId,
+                    },
                 });
 
-                const player = await ctx.db.user.findUnique({
-                    where: { id: userId },
-                    select: {
-                        rank: {
-                            select: {
-                                id: true,
-                                name: true,
-                            },
+                if (newKeeb) {
+                    validKeebId = newKeeb.id;
+                } else {
+                    // Handle the case where the user has no valid keebs
+                    throw new Error("No valid keyboard found for this user.");
+                }
+            }
+
+            const createData = {
+                wpm,
+                pureWpm,
+                accuracy,
+                mode,
+                userId,
+                keebId: validKeebId,
+            };
+
+            const newGame = await ctx.db.game.create({
+                data: createData,
+            });
+
+            const player = await ctx.db.user.findUnique({
+                where: { id: userId },
+                select: {
+                    rank: {
+                        select: {
+                            id: true,
+                            name: true,
                         },
-                        _count: {
-                            select: {
-                                games: true,
-                            },
+                    },
+                    _count: {
+                        select: {
+                            games: true,
+                        },
+                    },
+                },
+            });
+            if (!player) {
+                throw new Error("User ID not found");
+            }
+
+            if (player && (player.rank === null || player._count.games < 10)) {
+                const unranked = await ctx.db.rank.findUnique({
+                    where: {
+                        name: "Unranked",
+                    },
+                    select: {
+                        id: true,
+                    },
+                });
+
+                if (unranked) {
+                    await ctx.db.user.update({
+                        where: { id: userId },
+                        data: { rankId: unranked.id },
+                    });
+                }
+            }
+
+            if (player && player._count.games >= 10) {
+                const topGames = await ctx.db.game.findMany({
+                    where: {
+                        userId: userId,
+                        mode: "speed",
+                    },
+                    orderBy: {
+                        wpm: "desc",
+                    },
+                    take: 10,
+                });
+                let averageWpm = 0;
+
+                if (topGames.length > 0) {
+                    averageWpm =
+                        topGames.reduce((acc, game) => acc + game.wpm, 0) /
+                        topGames.length;
+                } else {
+                    // Handle the case where there are no games (optional)
+                    throw new Error("No games found for the user.");
+                }
+
+                if (isNaN(averageWpm)) {
+                    throw new Error(
+                        "Average WPM calculation resulted in an invalid number.",
+                    );
+                }
+
+                const ranks = await ctx.db.rank.findMany({
+                    where: {
+                        minWpm: {
+                            lte: averageWpm,
+                        },
+                        maxWpm: {
+                            gte: averageWpm,
                         },
                     },
                 });
-                if (!player) {
-                    throw new Error("User ID not found");
-                }
 
-                if (
-                    player &&
-                    (player.rank === null || player._count.games < 10)
-                ) {
-                    const unranked = await ctx.db.rank.findUnique({
-                        where: {
-                            name: "Unranked",
-                        },
-                        select: {
-                            id: true,
-                        },
-                    });
+                // Assuming ranks are exclusive and the query returns exactly one rank
+                if (ranks.length === 1 && ranks[0]) {
+                    const userRankId = ranks[0].id;
+                    const userRankName = ranks[0].name;
 
-                    if (unranked) {
+                    if (player.rank && player.rank.id !== userRankId) {
+                        // Update user's rank
                         await ctx.db.user.update({
                             where: { id: userId },
-                            data: { rankId: unranked.id },
+                            data: { rankId: userRankId },
                         });
-                    }
-                }
 
-                if (player && player._count.games >= 10) {
-                    const topGames = await ctx.db.game.findMany({
-                        where: {
-                            userId: userId,
-                            mode: "Speed",
-                        },
-                        orderBy: {
-                            wpm: "desc",
-                        },
-                        take: 10,
-                    });
+                        rankChange = true;
 
-                    const averageWpm =
-                        topGames.reduce((acc, game) => acc + game.wpm, 0) /
-                        topGames.length;
-
-                    const ranks = await ctx.db.rank.findMany({
-                        where: {
-                            minWpm: {
-                                lte: averageWpm,
+                        // find tag associated with rank
+                        const existingRankTag = await ctx.db.tag.findUnique({
+                            where: {
+                                name: userRankName,
                             },
-                            maxWpm: {
-                                gte: averageWpm,
-                            },
-                        },
-                    });
-
-                    // Assuming ranks are exclusive and the query returns exactly one rank
-                    if (ranks.length === 1 && ranks[0]) {
-                        const userRankId = ranks[0].id;
-                        const userRankName = ranks[0].name;
-
-                        if (player.rank && player.rank.id !== userRankId) {
-                            // Update user's rank
-                            await ctx.db.user.update({
-                                where: { id: userId },
-                                data: { rankId: userRankId },
-                            });
-
-                            rankChange = true;
-
-                            // find tag associated with rank
-                            const existingRankTag = await ctx.db.tag.findUnique(
+                        });
+                        if (existingRankTag) {
+                            // check if user owns tag...
+                            const doesUserOwnTag = await ctx.db.user.findUnique(
                                 {
-                                    where: {
-                                        name: userRankName,
+                                    where: { id: userId },
+                                    select: {
+                                        tags: {
+                                            where: {
+                                                id: existingRankTag.id,
+                                            },
+                                            select: {
+                                                id: true,
+                                            },
+                                        },
                                     },
                                 },
                             );
-                            if (existingRankTag) {
-                                // check if user owns tag...
-                                const doesUserOwnTag =
-                                    await ctx.db.user.findUnique({
-                                        where: { id: userId },
-                                        select: {
-                                            tags: {
-                                                where: {
-                                                    id: existingRankTag.id,
-                                                },
-                                                select: {
-                                                    id: true,
-                                                },
+
+                            if (
+                                doesUserOwnTag &&
+                                doesUserOwnTag.tags.length === 0
+                            ) {
+                                // If the user does not already have this tag, associate the tag with the user
+                                await ctx.db.user.update({
+                                    where: { id: userId },
+                                    data: {
+                                        tags: {
+                                            connect: {
+                                                id: existingRankTag.id,
                                             },
                                         },
-                                    });
+                                    },
+                                });
 
-                                if (
-                                    doesUserOwnTag &&
-                                    doesUserOwnTag.tags.length === 0
-                                ) {
-                                    // If the user does not already have this tag, associate the tag with the user
-                                    await ctx.db.user.update({
-                                        where: { id: userId },
-                                        data: {
-                                            tags: {
-                                                connect: {
-                                                    id: existingRankTag.id,
-                                                },
-                                            },
-                                        },
-                                    });
-
-                                    await ctx.db.notification.create({
-                                        data: {
-                                            userId: userId,
-                                            text: `New tag unlocked!`,
-                                            type: "TAG",
-                                            status: "UNREAD",
-                                        },
-                                    });
-                                }
+                                await ctx.db.notification.create({
+                                    data: {
+                                        userId: userId,
+                                        text: `New tag unlocked!`,
+                                        type: "TAG",
+                                        status: "UNREAD",
+                                    },
+                                });
                             }
                         }
                     }
@@ -309,7 +332,5 @@ export const gameRouter = createTRPCRouter({
 
                 return { gameId: newGame.id, rankChange: rankChange };
             }
-
-            throw new Error("Invalid userId");
         }),
 });

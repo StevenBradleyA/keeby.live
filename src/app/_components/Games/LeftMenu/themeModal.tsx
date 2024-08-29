@@ -1,15 +1,14 @@
 "use client";
 import { setCookie } from "cookies-next";
+import { useGlobalState } from "../../Context/GlobalState/globalState";
 
 interface ThemeModalProps {
-    setTheme: (mode: string) => void;
     closeThemeModal: () => void;
 }
 
-export default function ThemeModal({
-    setTheme,
-    closeThemeModal,
-}: ThemeModalProps) {
+export default function ThemeModal({ closeThemeModal }: ThemeModalProps) {
+    const { theme, setTheme } = useGlobalState();
+
     const handleThemeChange = (newTheme: string) => {
         setCookie("theme", newTheme, {
             maxAge: 60 * 60 * 24 * 365,
