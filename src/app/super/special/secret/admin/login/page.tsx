@@ -49,7 +49,8 @@ export default function SuperSpecialSecretAdminLogin() {
         <>
             <div className="fixed z-10 top-0 bottom-0 left-0 right-0">
                 <BinaryRain
-                    textColor="#22c55e"
+                    matrix="#22c55e"
+                    matrixBackground="rgba(0, 0, 0, 0.1)"
                     fontSize={16}
                     letters="010110"
                 />

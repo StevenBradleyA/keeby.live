@@ -1,4 +1,5 @@
 "use client";
+
 import { signIn, useSession } from "next-auth/react";
 import { useState } from "react";
 import { themeStyles } from "../Theme/themeStyles";
@@ -21,9 +22,6 @@ interface LeftMenuProps {
     gameLength: number;
     setGameLength: (gameLength: number) => void;
     theme: string;
-    setTheme: (theme: string) => void;
-    keebId: string;
-    setKeebId: (keebId: string) => void;
     scholarType: string;
     setScholarType: (scholarType: string) => void;
     setGameOver: (gameOver: boolean) => void;
@@ -35,9 +33,6 @@ export default function LeftMenu({
     gameLength,
     setGameLength,
     theme,
-    setTheme,
-    keebId,
-    setKeebId,
     scholarType,
     setScholarType,
     setGameOver,
@@ -394,10 +389,7 @@ export default function LeftMenu({
             </ModalDialog>
 
             <ModalDialog isOpen={isThemeModalOpen} onClose={closeThemeModal}>
-                <ThemeModal
-                    setTheme={setTheme}
-                    closeThemeModal={closeThemeModal}
-                />
+                <ThemeModal closeThemeModal={closeThemeModal} />
             </ModalDialog>
             <ModalDialog
                 isOpen={isCategoryModalOpen}
@@ -427,8 +419,6 @@ export default function LeftMenu({
                         setGameOver={setGameOver}
                         closeKeebModal={closeKeebModal}
                         userId={session.user.id}
-                        setKeebId={setKeebId}
-                        keebId={keebId}
                     />
                 )}
             </ModalDialog>

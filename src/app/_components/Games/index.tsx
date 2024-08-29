@@ -19,14 +19,17 @@ export default function KeebType() {
     // race against the clock mode?
 
     const cookies = getCookies();
-    const [mode, setMode] = useState<string>("Speed");
-    const { theme, setTheme } = useGlobalState();
-    const [keebId, setKeebId] = useState<string>("");
+    const [mode, setMode] = useState<string>("speed");
+    const { theme, setTheme, keebId, setKeebId } = useGlobalState();
+    // const [keebId, setKeebId] = useState<string>("");
     const [gameOver, setGameOver] = useState<boolean>(false);
+
+    // we should make keebId and setKeebId a global variable as well so we can set it in different components...
+    // that'd be so poggers babe
 
     // mode specific
     const [gameLength, setGameLength] = useState<number>(20);
-    const [scholarType, setScholarType] = useState<string>("Vocab");
+    const [scholarType, setScholarType] = useState<string>("vocab");
     // const [letterSelect, setLetterSelect] = useState<string>("Cycle");
     // git gud game mode where all words start with a certain letter and cycles
     const styles = themeStyles[theme as ThemeName] || themeStyles["KEEBY"];
@@ -38,13 +41,15 @@ export default function KeebType() {
         if (cookies.gameLength) {
             setGameLength(+cookies.gameLength);
         }
-
         if (cookies.keebId) {
             setKeebId(cookies.keebId);
         }
+        // we will set a cookie at the end of profile-plus...
     }, [cookies]);
 
-    // todo change the padding so the end results fill the whole page but the
+    // okay so we have some problems lmaooo
+    // we probably want to run something that will verify our keyboard Id when the page is refreshed...
+    // todo if we delete a keeb are we reassigning our keebId??? also you need to check that profile plus needs to set us some juicy cookies...
 
     return (
         <>
@@ -55,9 +60,6 @@ export default function KeebType() {
                     gameLength={gameLength}
                     setGameLength={setGameLength}
                     theme={theme}
-                    setTheme={setTheme}
-                    keebId={keebId}
-                    setKeebId={setKeebId}
                     scholarType={scholarType}
                     setScholarType={setScholarType}
                     setGameOver={setGameOver}

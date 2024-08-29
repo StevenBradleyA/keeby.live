@@ -38,7 +38,13 @@ export interface ThemeStyle {
     keebSpecialBottom: string;
     screen: string;
     mousepad: string;
+    matrix: string;
+    matrixLetters: string;
+    matrixFade: string;
+    matrixBackground: string;
 }
+
+// we need to refactor all our themes to work with tailwind config so there is less reuuse of variables and rename variables as well
 
 export const themeStyles: Record<ThemeName, ThemeStyle> = {
     KEEBY: {
@@ -72,6 +78,10 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
         keebSpecialBottom: "#66756d",
         screen: "screen-keeby",
         mousepad: "deskmat-keeby",
+        matrix: "rgba(134, 239, 172)",
+        matrixFade: "#222",
+        matrixLetters: "KEEBYFOREVER",
+        matrixBackground: "rgba(34, 34, 34, 0.2)",
     },
     KEEBYRED: {
         title: "",
@@ -104,6 +114,10 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
         keebSpecialBottom: "#b71c1c",
         screen: "screen-red",
         mousepad: "deskmat-keeby-red",
+        matrix: "rgba(239, 68, 68)",
+        matrixFade: "#222",
+        matrixLetters: "KEEBYFOREVER",
+        matrixBackground: "rgba(34, 34, 34, 0.2)",
     },
     // matrix
     // --bg-color: #000000;
@@ -147,6 +161,10 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
         keebSpecialBottom: "#004d00",
         screen: "screen-hackerman",
         mousepad: "deskmat-sliding-grid",
+        matrix: "rgba(21, 255, 0, 1)",
+        matrixFade: "rgba(0, 0, 0, 1)",
+        matrixLetters: "011010",
+        matrixBackground: "rgba(0, 0, 0, 0.1)",
     },
     PIGGY: {
         title: "png-white",
@@ -179,6 +197,10 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
         keebSpecialBottom: "#FFDDDD",
         screen: "screen-pink",
         mousepad: "deskmat-piggy",
+        matrix: "rgba(250, 180, 169, 1)",
+        matrixFade: "#fcd5ce",
+        matrixLetters: "piggyPIGGY",
+        matrixBackground: "rgba(252, 213, 206, 0.1)",
     },
     PRIMEAGEN: {
         title: "png-primeagen",
@@ -211,6 +233,10 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
         keebSpecialBottom: "#9487a3",
         screen: "screen-purple",
         mousepad: "deskmat-primeagen",
+        matrix: "#c4a7e7",
+        matrixFade: "#1f1d27",
+        matrixLetters: "KEEBYFOREVER",
+        matrixBackground: "rgba(31, 29, 39, 0.1)",
     },
     HIPYO: {
         title: "png-hipyo",
@@ -243,6 +269,10 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
         keebSpecialBottom: "#1a1a1a",
         screen: "screen-hackerman",
         mousepad: "deskmat-light-purple",
+        matrix: "#9575CD",
+        matrixFade: "#222",
+        matrixLetters: "KEEBYFOREVER",
+        matrixBackground: "rgba(106, 76, 147, 0.1)",
     },
     BANANA: {
         title: "png-white",
@@ -275,6 +305,10 @@ export const themeStyles: Record<ThemeName, ThemeStyle> = {
         keebSpecialBottom: "#FFE135",
         screen: "screen-light-brown",
         mousepad: "deskmat-banana",
+        matrix: "#fdd835",
+        matrixFade: "#FDF4C9",
+        matrixBackground: "rgba(253, 244, 201, 0.1)",
+        matrixLetters: "BANANA",
     },
 };
 // night runner

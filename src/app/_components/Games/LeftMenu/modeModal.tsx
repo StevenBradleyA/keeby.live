@@ -45,7 +45,7 @@ export default function ModeModal({
                             fill="currentColor"
                         />
                     </svg>
-                    Speed
+                    Ranked
                 </button>
                 <button
                     onClick={() => handleModeChange("scholar")}

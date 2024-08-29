@@ -2,13 +2,11 @@
 import { setCookie } from "cookies-next";
 import type { ThemeStyle } from "../Theme/themeStyles";
 import { api } from "~/trpc/react";
-import { useEffect } from "react";
 import LoadingSpinner from "../../Loading";
+import { useGlobalState } from "../../Context/GlobalState/globalState";
 
 interface KeebModalProps {
     setGameOver: (gameOver: boolean) => void;
-    setKeebId: (keebId: string) => void;
-    keebId: string;
     styles: ThemeStyle;
     closeKeebModal: () => void;
     userId: string;
@@ -16,16 +14,16 @@ interface KeebModalProps {
 
 export default function KeebModal({
     userId,
-    setKeebId,
-    keebId,
     styles,
     closeKeebModal,
     setGameOver,
 }: KeebModalProps) {
+    const { keebId, setKeebId } = useGlobalState();
+
     const { data: keebData, isLoading } =
         api.keeb.getAllByUserId.useQuery(userId);
 
-    const handleKeebChange = (newKeeb: string, newKeebId: string) => {
+    const handleKeebChange = (newKeebId: string) => {
         setCookie("keebId", newKeebId, {
             maxAge: 60 * 60 * 24 * 365,
             path: "/",
@@ -35,16 +33,8 @@ export default function KeebModal({
         closeKeebModal();
     };
 
-    useEffect(() => {
-        if (keebId === "") {
-            if (keebData) {
-                setKeebId(keebData[0] ? keebData[0].id : "");
-            }
-        }
-    }, [keebId, setKeebId, keebData]);
-
     if (isLoading) return <LoadingSpinner size="20px" />;
-    
+
     return (
         <>
             <div className="flex flex-col gap-5 w-[400px] h-[300px]">
@@ -54,7 +44,7 @@ export default function KeebModal({
                         <button
                             key={e.id}
                             className={` w-full items-center rounded-lg hover:brightness-110 ease-in flex justify-center text-white ${styles.backgroundColor} p-3 ${keebId === e.id ? `border-2 ${styles.border}` : ""}`}
-                            onClick={() => handleKeebChange(e.name, e.id)}
+                            onClick={() => handleKeebChange(e.id)}
                         >
                             {e.name}
                         </button>

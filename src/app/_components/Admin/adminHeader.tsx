@@ -19,7 +19,8 @@ export default function AdminHeader() {
 
                     <div className=" absolute bottom-0 left-0 right-0 top-0  ">
                         <BinaryRain
-                            textColor="#FF004D"
+                            matrix="#FF004D"
+                            matrixBackground="rgba(0, 0, 0, 0.1)"
                             fontSize={12}
                             letters="blackhat"
                         />
