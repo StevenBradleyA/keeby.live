@@ -7,7 +7,7 @@ interface ThemeModalProps {
 }
 
 export default function ThemeModal({ closeThemeModal }: ThemeModalProps) {
-    const { theme, setTheme } = useGlobalState();
+    const { setTheme } = useGlobalState();
 
     const handleThemeChange = (newTheme: string) => {
         setCookie("theme", newTheme, {

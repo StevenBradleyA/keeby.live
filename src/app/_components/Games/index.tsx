@@ -20,7 +20,7 @@ export default function KeebType() {
 
     const cookies = getCookies();
     const [mode, setMode] = useState<string>("speed");
-    const { theme, setTheme, keebId, setKeebId } = useGlobalState();
+    const { theme, keebId, setKeebId } = useGlobalState();
     // const [keebId, setKeebId] = useState<string>("");
     const [gameOver, setGameOver] = useState<boolean>(false);
 
