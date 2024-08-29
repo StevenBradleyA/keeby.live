@@ -10,6 +10,8 @@ import Link from "next/link";
 interface StateContextType {
     theme: string;
     setTheme: React.Dispatch<React.SetStateAction<string>>;
+    keebId: string;
+    setKeebId: React.Dispatch<React.SetStateAction<string>>;
     footerInViewRef: React.RefObject<HTMLDivElement>;
     pageNumber: number;
     setPageNumber: React.Dispatch<React.SetStateAction<number>>;
@@ -37,6 +39,9 @@ const GlobalStateProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     const cookies = getCookies();
     const { data: session } = useSession();
     const [theme, setTheme] = useState<string>("KEEBY");
+    const [keebId, setKeebId] = useState<string>("");
+    // todo force an assignment at the end of profile-plus... can just make a useeffect right?
+
     const [pageNumber, setPageNumber] = useState<number>(1);
     const [listingPageImageIndex, setListingPageImageIndex] =
         useState<number>(0);
@@ -91,6 +96,8 @@ const GlobalStateProvider: React.FC<ThemeProviderProps> = ({ children }) => {
         setPageNumber,
         listingPageImageIndex,
         setListingPageImageIndex,
+        keebId,
+        setKeebId,
     };
     return (
         <GlobalStateContext.Provider value={value}>

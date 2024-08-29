@@ -61,42 +61,45 @@ export default function SpeedMode({
 
     const { mutate: createGame } = api.game.create.useMutation({
         onSuccess: (data) => {
-            setFinishedGameId(data.gameId);
-            if (data.averageWpm) setRankWpm(data.averageWpm);
-            if (data.rankChange === true) {
-                toast.success("Rank Up!", {
-                    position: "bottom-center",
-                    style: {
-                        borderRadius: "10px",
-                        background: "#333",
-                        color: "rgb(34 197 94)",
-                        padding: "12px",
-                        fontSize: "1.25rem",
-                    },
-                    iconTheme: {
-                        primary: "black",
-                        secondary: "rgb(34 197 94)",
-                    },
-                    duration: 3000,
-                });
+            if (data) {
+                setFinishedGameId(data.gameId);
+                if (data.averageWpm) setRankWpm(data.averageWpm);
 
-                setTimeout(() => {
-                    toast.success("New Tag Unlocked!", {
+                if (data.rankChange === true) {
+                    toast.success("Rank Up!", {
                         position: "bottom-center",
                         style: {
                             borderRadius: "10px",
                             background: "#333",
-                            color: "#ffdd57",
+                            color: "rgb(34 197 94)",
                             padding: "12px",
                             fontSize: "1.25rem",
                         },
                         iconTheme: {
                             primary: "black",
-                            secondary: "#ffdd57",
+                            secondary: "rgb(34 197 94)",
                         },
                         duration: 3000,
                     });
-                }, 3500);
+
+                    setTimeout(() => {
+                        toast.success("New Tag Unlocked!", {
+                            position: "bottom-center",
+                            style: {
+                                borderRadius: "10px",
+                                background: "#333",
+                                color: "#ffdd57",
+                                padding: "12px",
+                                fontSize: "1.25rem",
+                            },
+                            iconTheme: {
+                                primary: "black",
+                                secondary: "#ffdd57",
+                            },
+                            duration: 3000,
+                        });
+                    }, 3500);
+                }
             }
         },
     });
