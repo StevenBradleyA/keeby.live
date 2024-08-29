@@ -19,7 +19,7 @@ export default function KeebType() {
     // race against the clock mode?
 
     const cookies = getCookies();
-    const [mode, setMode] = useState<string>("speed");
+    const [mode, setMode] = useState<string>("ranked");
     const { theme, keebId, setKeebId } = useGlobalState();
     // const [keebId, setKeebId] = useState<string>("");
     const [gameOver, setGameOver] = useState<boolean>(false);
@@ -66,7 +66,7 @@ export default function KeebType() {
                 />
             </div>
 
-            {mode === "speed" && (
+            {mode === "ranked" && (
                 <div className="w-full z-20 ">
                     <SpeedMode
                         gameLength={gameLength}
@@ -78,7 +78,7 @@ export default function KeebType() {
                     />
                 </div>
             )}
-            {mode === "scholar" && (
+            {mode === "wisdom" && (
                 <div className="w-full z-20 px-60 ">
                     <ScholarMode
                         setGameOver={setGameOver}

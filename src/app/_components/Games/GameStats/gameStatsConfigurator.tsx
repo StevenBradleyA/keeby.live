@@ -11,7 +11,7 @@ export default function GameStatsConfigurator({
     userId,
     keebData,
 }: DisplayAllGameStatsProps) {
-    const [mode, setMode] = useState<string>("Speed");
+    const [mode, setMode] = useState<string>("ranked");
     const [keebId, setKeebId] = useState<string>(
         keebData[0] ? keebData[0].id : ""
     );

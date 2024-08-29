@@ -118,9 +118,9 @@ export const gameRouter = createTRPCRouter({
             return { gameResults, allGameResults, averageWpm, averageAccuracy };
         }),
 
-    // todo add fun tags like hitting sub 1 wpm or something speedy speed boi or speed demon
+    // todo add fun tags like hitting sub 1 wpm or something rankedy ranked boi or ranked demon
     // todo 300 wpm no accuracy or something -- storm trooper aim -- eurobeat intensifies idkkk
-    // this needs to only be in speed mode... we don't want rank or tag assignment if not
+    // this needs to only be in ranked mode... we don't want rank or tag assignment if not
     create: protectedProcedure
         .input(
             z.object({
@@ -222,7 +222,7 @@ export const gameRouter = createTRPCRouter({
                 const topGames = await ctx.db.game.findMany({
                     where: {
                         userId: userId,
-                        mode: "speed",
+                        mode: "ranked",
                     },
                     orderBy: {
                         wpm: "desc",

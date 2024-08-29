@@ -161,7 +161,7 @@ export const userRouter = createTRPCRouter({
                 const topGames = await ctx.db.game.findMany({
                     where: {
                         userId: userId,
-                        mode: "Speed", //todo change later for other ranked modes
+                        mode: "ranked", //todo change later for other ranked modes
                     },
                     orderBy: {
                         wpm: "desc",

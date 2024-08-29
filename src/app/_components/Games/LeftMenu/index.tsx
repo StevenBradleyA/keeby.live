@@ -167,7 +167,7 @@ export default function LeftMenu({
                 Mode
             </button>
 
-            {mode === "speed" && (
+            {mode === "ranked" && (
                 <>
                     <button
                         className=" flex flex-col items-center justify-center hover:opacity-70"
@@ -189,7 +189,7 @@ export default function LeftMenu({
                 </>
             )}
 
-            {mode === "scholar" && (
+            {mode === "wisdom" && (
                 <>
                     <button
                         className=" flex flex-col items-center justify-center hover:opacity-70"
