@@ -430,35 +430,30 @@ export const userRouter = createTRPCRouter({
                 ...(images && images[0] ? { profile: images[0].link } : {}),
             };
 
-            const result = await ctx.db.$transaction(async (prisma) => {
-                const createKeeb = await prisma.keeb.create({
-                    data: { name, switches, keycaps, userId },
-                });
-
-                // let's check if 'Novice' tag exists or create it if it doesn't
-                const noviceTag = await prisma.tag.upsert({
-                    where: { name: "Novice" },
-                    update: {},
-                    create: {
-                        name: "Novice",
-                        description: "Just getting started.",
-                    },
-                });
-
-                // Connect that 'Novice' tag to the user
-                const updatedUser = await prisma.user.update({
-                    where: { id: userId },
-                    data: {
-                        ...updateData,
-                        tags: { connect: { id: noviceTag.id } },
-                        selectedTag: noviceTag.name,
-                    },
-                });
-
-                return { createKeeb, updatedUser };
+            const createKeeb = await ctx.db.keeb.create({
+                data: { name, switches, keycaps, userId },
             });
 
-            return result;
+            // let's check if 'Novice' tag exists or create it if it doesn't
+            const noviceTag = await ctx.db.tag.upsert({
+                where: { name: "Novice" },
+                update: {},
+                create: {
+                    name: "Novice",
+                    description: "Just getting started.",
+                },
+            });
+
+            const updatedUser = await ctx.db.user.update({
+                where: { id: userId },
+                data: {
+                    ...updateData,
+                    tags: { connect: { id: noviceTag.id } },
+                    selectedTag: noviceTag.name,
+                },
+            });
+
+            return { createKeeb, updatedUser };
         }),
 
     updateUserTag: protectedProcedure
@@ -581,3 +576,33 @@ export const userRouter = createTRPCRouter({
             }
         }),
 });
+
+// const result = await ctx.db.$transaction(async (prisma) => {
+//     const createKeeb = await prisma.keeb.create({
+//         data: { name, switches, keycaps, userId },
+//     });
+
+//     // let's check if 'Novice' tag exists or create it if it doesn't
+//     const noviceTag = await prisma.tag.upsert({
+//         where: { name: "Novice" },
+//         update: {},
+//         create: {
+//             name: "Novice",
+//             description: "Just getting started.",
+//         },
+//     });
+
+//     // Connect that 'Novice' tag to the user
+//     const updatedUser = await prisma.user.update({
+//         where: { id: userId },
+//         data: {
+//             ...updateData,
+//             tags: { connect: { id: noviceTag.id } },
+//             selectedTag: noviceTag.name,
+//         },
+//     });
+
+//     return { createKeeb, updatedUser };
+// });
+
+// return result;

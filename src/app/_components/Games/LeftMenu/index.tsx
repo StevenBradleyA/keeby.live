@@ -149,7 +149,7 @@ export default function LeftMenu({
 
     return (
         <div
-            className={`flex flex-col rounded-xl  border-opacity-50 ${styles.backgroundColor}  p-5 ${styles.hit} w-full h-full gap-3`}
+            className={`flex flex-col rounded-xl  border-opacity-50 ${styles.backgroundColor}  p-5 ${styles.hit} w-full h-full gap-3 overflow-y-auto hidden-scrollbar`}
         >
             <button
                 className=" flex flex-col items-center justify-center hover:opacity-70 ease-in"
