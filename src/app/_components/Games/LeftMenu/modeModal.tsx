@@ -31,8 +31,8 @@ export default function ModeModal({
         <>
             <div className="flex gap-5 text-xl">
                 <button
-                    onClick={() => handleModeChange("speed")}
-                    className={` w-40 h-48 ${styles.backgroundColor} rounded-lg hover:brightness-110 ease-in ${mode === "speed" ? `border-2 ${styles.border}` : ""} relative flex items-end justify-center p-5`}
+                    onClick={() => handleModeChange("ranked")}
+                    className={` w-40 h-48 ${styles.backgroundColor} rounded-lg hover:brightness-110 ease-in ${mode === "ranked" ? `border-2 ${styles.border}` : ""} relative flex items-end justify-center p-5`}
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -48,8 +48,8 @@ export default function ModeModal({
                     Ranked
                 </button>
                 <button
-                    onClick={() => handleModeChange("scholar")}
-                    className={` w-40 h-48 ${styles.backgroundColor} rounded-lg hover:brightness-110 ease-in ${mode === "scholar" ? `border-2 ${styles.border}` : ""}  flex items-end justify-center p-5 relative`}
+                    onClick={() => handleModeChange("wisdom")}
+                    className={` w-40 h-48 ${styles.backgroundColor} rounded-lg hover:brightness-110 ease-in ${mode === "wisdom" ? `border-2 ${styles.border}` : ""}  flex items-end justify-center p-5 relative`}
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"

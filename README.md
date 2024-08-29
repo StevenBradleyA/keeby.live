@@ -82,7 +82,7 @@ View current database and manually update data
  Escrow Service holds the payment from the buyer until the product is delivered and inspected by the buyer. If the product
  matches the descriptiion, the payment is released to the seller. If there are issues, the funds can be refunded to the buyer.
 
-  
+
 
   contractual agreement.
 
@@ -113,13 +113,13 @@ really clean UI like monkey type
 TYPING GAME ------------------------------------------------
 - anti copy paste idk gonna look into anticheat
 
-Going to want to switch between speed mode - quote mode - learn mode (learn about mechanical keyboards?  ) - hackerman mode
+Going to want to switch between ranked mode - quote mode - learn mode (learn about mechanical keyboards?  ) - hackerman mode
 
 (vocabulary enhancement option later gives terms and definitiions )
 (maybe change quote length or nah?)
 
 what metrics do we want to show? Top WPM with keyboard...
-Stats button pulls down a graph with all your top speed wpm plotted on a graph
+Stats button pulls down a graph with all your top ranked wpm plotted on a graph
 
 Typing game should defo have a rank based on the top percentage of users
 - average of top ten fastest

@@ -239,11 +239,8 @@ export default function DisplayAllGameStats({
                                             setMode(e.target.value)
                                         }
                                     >
-                                        <option value="Speed">Speed</option>
-                                        <option value="Quote">Quote</option>
-                                        <option value="hacktime">
-                                            It&apos;s Hacking Time
-                                        </option>
+                                        <option value="ranked">Ranked</option>
+                                        <option value="wisdom">Scholar</option>
                                     </select>
                                 </div>
                             </>

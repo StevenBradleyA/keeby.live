@@ -14,26 +14,24 @@ export default function GameResultsDynamicBackground() {
 
     return (
         <>
-            <div
-                className={`absolute -left-5 -top-12 overflow-hidden h-[80%] z-0 -right-5 ${
-                    theme === "KEEBY" ||
-                    theme === "KEEBYRED" ||
-                    theme === "HACKERMAN"
-                        ? "block"
-                        : "hidden"
-                }`}
-            >
-                <BinaryRain
-                    key={`${styles.matrix}-${styles.matrixBackground}-${styles.matrixLetters}`}
-                    matrix={`${styles.matrix}`}
-                    matrixBackground={`${styles.matrixBackground}`}
-                    fontSize={10}
-                    letters={`${styles.matrixLetters}`}
-                />
-            </div>
-            <div
-                className={` absolute -left-5 -right-5 -top-12 h-[80%] z-10 bg-gradient-to-b from-[rgba(0,0,0,0)] to-[${styles.matrixFade}] `}
-            ></div>
+            {(theme === "KEEBY" ||
+                theme === "KEEBYRED" ||
+                theme === "HACKERMAN") && (
+                <>
+                    <div className="absolute -left-5 -top-12 overflow-hidden h-[80%] z-0 -right-5">
+                        <BinaryRain
+                            key={`${styles.matrix}-${styles.matrixBackground}-${styles.matrixLetters}`}
+                            matrix={`${styles.matrix}`}
+                            matrixBackground={`${styles.matrixBackground}`}
+                            fontSize={10}
+                            letters={`${styles.matrixLetters}`}
+                        />
+                    </div>
+                    <div
+                        className={` absolute -left-5 -right-5 -top-12 h-[80%] z-10 bg-gradient-to-b from-[rgba(0,0,0,0)] ${styles.matrixFade} `}
+                    ></div>
+                </>
+            )}
 
             {theme === "PRIMEAGEN" && (
                 <div className=" absolute -left-5 -top-12  h-[60%] z-0 -right-5  flex justify-center items-end opacity-70">
