@@ -15,6 +15,8 @@ import { api } from "~/trpc/react";
 import heic2any from "heic2any";
 import type { ChangeEvent } from "react";
 import CroppedImage from "~/app/_components/Profile/Cropper/croppingImage";
+import { useGlobalState } from "~/app/_components/Context/GlobalState/globalState";
+import { setCookie } from "cookies-next";
 
 interface ErrorsObj {
     image?: string;
@@ -47,6 +49,7 @@ export default function ProfilePlus() {
     const utils = api.useUtils();
     const router = useRouter();
     const hasProfile = session?.user.hasProfile;
+    const { setKeebId } = useGlobalState();
 
     // form state --
     const [username, setUsername] = useState("");
@@ -72,8 +75,19 @@ export default function ProfilePlus() {
     );
 
     const { mutate } = api.user.updateNewUser.useMutation({
-        onSuccess: async () => {
+        onSuccess: async (data) => {
             try {
+                await update();
+                void utils.user.invalidate();
+
+                if (data && data.createKeeb.id) {
+                    setKeebId(data.createKeeb.id);
+                    setCookie("keebId", data.createKeeb.id, {
+                        maxAge: 60 * 60 * 24 * 365,
+                        path: "/",
+                    });
+                }
+
                 toast.success("Profile complete!", {
                     icon: "👏",
                     style: {
@@ -82,8 +96,7 @@ export default function ProfilePlus() {
                         color: "#fff",
                     },
                 });
-                void utils.user.invalidate();
-                await update();
+
                 void router.push("/play/profile");
             } catch (error) {
                 console.error("Error while navigating:", error);
