@@ -120,7 +120,8 @@ export default function UserProfile() {
                                 {isHackType ? (
                                     <div className="absolute -bottom-10 -left-10 -top-10 -right-10">
                                         <BinaryRain
-                                            textColor="#22c55e"
+                                            matrix="#22c55e"
+                                            matrixBackground="rgba(0, 0, 0, 0.1)"
                                             fontSize={10}
                                             letters="keebypoggers01011"
                                         />

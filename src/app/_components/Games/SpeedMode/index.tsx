@@ -141,7 +141,6 @@ export default function SpeedMode({
                 accuracy: accuracy,
                 mode: mode,
             };
-            console.log("data check", data);
             createGame(data);
         }
 
@@ -193,6 +192,7 @@ export default function SpeedMode({
     };
 
     const handleNextGame = () => {
+        setFinishedGameId('')
         setGameOver(false);
         setTrigger((prev) => prev + 1);
         setTotalUserInput("");
@@ -349,11 +349,7 @@ export default function SpeedMode({
                     <div
                         className={`relative flex w-full flex-wrap gap-2 px-10 text-2xl ${
                             styles.textColor
-                        } ${
-                            gameLength === 10
-                                ? "justify-center"
-                                : "justify-start"
-                        }`}
+                        } justify-center`}
                     >
                         {prompt.map((word, index) => (
                             <div className="flex" key={index}>

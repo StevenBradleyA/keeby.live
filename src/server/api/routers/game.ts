@@ -120,7 +120,7 @@ export const gameRouter = createTRPCRouter({
 
     // todo add fun tags like hitting sub 1 wpm or something speedy speed boi or speed demon
     // todo 300 wpm no accuracy or something -- storm trooper aim -- eurobeat intensifies idkkk
-
+    // this needs to only be in speed mode... we don't want rank or tag assignment if not
     create: protectedProcedure
         .input(
             z.object({

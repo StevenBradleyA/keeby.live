@@ -22,7 +22,6 @@ interface LeftMenuProps {
     gameLength: number;
     setGameLength: (gameLength: number) => void;
     theme: string;
-    setTheme: (theme: string) => void;
     scholarType: string;
     setScholarType: (scholarType: string) => void;
     setGameOver: (gameOver: boolean) => void;
@@ -34,7 +33,6 @@ export default function LeftMenu({
     gameLength,
     setGameLength,
     theme,
-    setTheme,
     scholarType,
     setScholarType,
     setGameOver,
@@ -391,10 +389,7 @@ export default function LeftMenu({
             </ModalDialog>
 
             <ModalDialog isOpen={isThemeModalOpen} onClose={closeThemeModal}>
-                <ThemeModal
-                    setTheme={setTheme}
-                    closeThemeModal={closeThemeModal}
-                />
+                <ThemeModal closeThemeModal={closeThemeModal} />
             </ModalDialog>
             <ModalDialog
                 isOpen={isCategoryModalOpen}

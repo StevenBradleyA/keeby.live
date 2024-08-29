@@ -44,7 +44,7 @@ export default function KeebType() {
         if (cookies.keebId) {
             setKeebId(cookies.keebId);
         }
-        // we will set a cookie at the end of profile-plus... 
+        // we will set a cookie at the end of profile-plus...
     }, [cookies]);
 
     // okay so we have some problems lmaooo
@@ -60,7 +60,6 @@ export default function KeebType() {
                     gameLength={gameLength}
                     setGameLength={setGameLength}
                     theme={theme}
-                    setTheme={setTheme}
                     scholarType={scholarType}
                     setScholarType={setScholarType}
                     setGameOver={setGameOver}

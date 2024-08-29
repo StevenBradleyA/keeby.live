@@ -2,13 +2,15 @@
 import { useEffect, useRef } from "react";
 
 interface BinaryRainProps {
-    textColor: string;
+    matrix: string;
+    matrixBackground: string; 
     fontSize: number;
     letters: string;
 }
 
 export default function BinaryRain({
-    textColor,
+    matrix,
+    matrixBackground,
     fontSize,
     letters,
 }: BinaryRainProps) {
@@ -32,12 +34,13 @@ export default function BinaryRain({
         let frame = 1;
 
         const clear = () => {
-            ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
+            ctx.fillStyle = matrixBackground;
+            // ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
             ctx.fillRect(0, 0, width, height);
         };
 
         const showLetters = () => {
-            ctx.fillStyle = textColor;
+            ctx.fillStyle = matrix;
             ctx.font = `${fontSize}px Gotham`;
 
             drops.forEach((drop, i) => {
@@ -81,7 +84,7 @@ export default function BinaryRain({
         return () => {
             window.removeEventListener("resize", resizeHandler);
         };
-    }, [textColor, letters, fontSize]);
+    }, [matrix, matrixBackground, letters, fontSize]);
 
     return (
         <>
