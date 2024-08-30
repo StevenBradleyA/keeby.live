@@ -2,10 +2,10 @@
 import Image from "next/image";
 import offlineRank from "@public/Ranks/offline.png";
 import keeboOffline from "@public/Profile/keebo-offline.png";
+import defaultProfile from "@public/Images/defaultProfile.png";
 import { themeStyles } from "../Theme/themeStyles";
 import type { ThemeName } from "../Theme/themeStyles";
 import GameResultsDynamicBackground from "./gameResultsDynamicBackground";
-
 import {
     Legend,
     Line,
@@ -14,6 +14,7 @@ import {
     Tooltip,
     XAxis,
 } from "recharts";
+import type { Session } from "next-auth";
 
 interface SpeedModeResultsProps {
     mode: string;
@@ -27,6 +28,7 @@ interface SpeedModeResultsProps {
     totalGames: number;
     totalAverageAccuracy: number;
     totalAverageWpm: number;
+    session: Session | null;
 }
 
 interface Keeb {
@@ -76,6 +78,7 @@ export default function SpeedModeResults({
     totalGames,
     totalAverageAccuracy,
     totalAverageWpm,
+    session,
 }: SpeedModeResultsProps) {
     const styles = themeStyles[theme as ThemeName] || themeStyles["KEEBY"];
 
@@ -141,15 +144,20 @@ export default function SpeedModeResults({
                          {`${Math.round(offlineAccuracy)}%`}
                     </div>
                     <div className="mt-6 flex h-36 w-full gap-5 ">
-                        <div className="h-full w-1/2">
-                            <Image
-                                alt="profile"
-                                src={keeboOffline}
-                                width={400}
-                                height={400}
-                                className="h-full w-full rounded-md object-cover"
-                            />
-                        </div>
+                        <Image
+                            alt="profile"
+                            src={
+                                session
+                                    ? session.user.profile
+                                        ? session.user.profile
+                                        : defaultProfile
+                                    : keeboOffline
+                            }
+                            width={400}
+                            height={400}
+                            className=" w-12 h-12 laptop:w-28 laptop:h-28 desktop:w-36 desktop:h-36 rounded-md object-contain "
+                        />
+
                         <div className="flex h-full w-1/2 flex-col justify-between laptop:text-sm desktop:text-base">
                             <h2
                                 className={`border-b-2 ${styles.border} border-opacity-50 ${styles.textColor} `}

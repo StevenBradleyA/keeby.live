@@ -48,7 +48,7 @@ export default function KeebType() {
 
     return (
         <>
-            <div className="absolute top-40 bottom-0 w-[10%] z-30 ">
+            <div className="absolute top-40 left-3 laptop:left-5 desktop:left-16 bottom-0 w-[10%] z-30 ">
                 <LeftMenu
                     mode={mode}
                     setMode={setMode}
@@ -62,7 +62,7 @@ export default function KeebType() {
             </div>
 
             {mode === "ranked" && (
-                <div className="w-full z-20 ">
+                <div className="w-full z-20 pl-20 laptop:pl-32 desktop:pl-60">
                     <SpeedMode
                         gameLength={gameLength}
                         setGameOver={setGameOver}
@@ -74,7 +74,7 @@ export default function KeebType() {
                 </div>
             )}
             {mode === "scholar" && (
-                <div className="w-full z-20 px-60 ">
+                <div className="w-full z-20 pl-20 laptop:pl-32 desktop:pl-60 ">
                     <ScholarMode
                         setGameOver={setGameOver}
                         gameOver={gameOver}
