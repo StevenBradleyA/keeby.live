@@ -143,7 +143,7 @@ export const userRouter = createTRPCRouter({
                         0,
                     ) / totalGamesPlayed;
             }
-            // todo going to have to make a separate non keeb dependant query to get this rank
+
             const allRankedGames = await ctx.db.user.findUnique({
                 where: { id: userId },
                 select: {
@@ -161,7 +161,7 @@ export const userRouter = createTRPCRouter({
                 const topGames = await ctx.db.game.findMany({
                     where: {
                         userId: userId,
-                        mode: "ranked", //todo change later for other ranked modes
+                        mode: "ranked", 
                     },
                     orderBy: {
                         wpm: "desc",

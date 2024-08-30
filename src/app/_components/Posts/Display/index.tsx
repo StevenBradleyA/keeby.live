@@ -10,9 +10,9 @@ import PostPagePreviews from "./additionalPostPreviews";
 import Footer from "../../Footer/footer";
 import EachPostLike from "./eachPostLike";
 import EachPostFavorite from "./eachPostFavorite";
-import EachPostImage from "./eachPostImage";
 import { getServerAuthSession } from "~/server/auth";
 import DisplayComments from "../../Comments/Display/displayComments";
+import PostPageImageDisplay from "./postPageImageDisplay";
 
 interface DisplayPostPageProps {
     post: PostPage;
@@ -148,7 +148,7 @@ export default async function DisplayPostPage({ post }: DisplayPostPageProps) {
                                 </div>
                                 {(post.images.length > 0 || post.link) && (
                                     <div className="w-full h-[400px] ">
-                                        <EachPostImage post={post} />
+                                        <PostPageImageDisplay post={post} />
                                     </div>
                                 )}
 

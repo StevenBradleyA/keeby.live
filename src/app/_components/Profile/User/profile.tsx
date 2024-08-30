@@ -68,7 +68,6 @@ export default function UserProfile() {
     // keebtype
     const [keebTypeCategory, setKeebTypeCategory] = useState<string>("STATS");
 
-    // const { data: keebData } = api.keeb.getAll.useQuery();
 
     const handleRetroMode = () => {
         setIsRetro(!isRetro);

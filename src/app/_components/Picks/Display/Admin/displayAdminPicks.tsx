@@ -87,7 +87,7 @@ export default function DisplayAdminPicks() {
                             </svg>
                         </button>
                     </div>
-                    <div className="mt-10 flex w-full px-3 laptop:px-16 ">
+                    <div className="mt-10 flex w-full px-3 laptop:px-16 gap-5 ">
                         {picks &&
                             picks.length > 0 &&
                             picks.map((pick) => (

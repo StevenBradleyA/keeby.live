@@ -51,7 +51,7 @@ export default function EachPostImage({ post }: EachPostProps) {
                     {post.images.length > 1 && (
                         <>
                             <button
-                                className="absolute right-2 top-1/2 z-10  -translate-y-1/2 rotate-90 rounded-full p-2 text-green-500 transition ease-in hover:opacity-70 bg-white/20"
+                                className="absolute right-2 top-1/2 z-10  -translate-y-1/2 rotate-90 rounded-full p-2 text-green-500 transition ease-in hover:opacity-70 bg-darkGray/80"
                                 onClick={() => {
                                     setImageIndex(
                                         (prev) =>
@@ -71,7 +71,7 @@ export default function EachPostImage({ post }: EachPostProps) {
                                 </svg>
                             </button>
                             <button
-                                className="absolute left-2 top-1/2 z-10  -translate-y-1/2 -rotate-90 rounded-full p-2 text-green-500 transition ease-in hover:opacity-70 bg-white/20"
+                                className="absolute left-2 top-1/2 z-10  -translate-y-1/2 -rotate-90 rounded-full p-2 text-green-500 transition ease-in hover:opacity-70 bg-darkGray/80"
                                 onClick={() => {
                                     if (imageIndex === 0) {
                                         setImageIndex(post.images.length - 1);
