@@ -240,7 +240,7 @@ export default function DisplayAllGameStats({
                                         }
                                     >
                                         <option value="ranked">Ranked</option>
-                                        <option value="wisdom">Scholar</option>
+                                        <option value="scholar">Scholar</option>
                                     </select>
                                 </div>
                             </>

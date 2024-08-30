@@ -1,7 +1,5 @@
 "use client";
 import LeftMenu from "~/app/_components/Games/LeftMenu";
-// import RightMenu from "~/app/_components/Games/RightMenu";
-import SpeedMode from "~/app/_components/Games/SpeedMode";
 import { useState, useEffect } from "react";
 import { getCookies } from "cookies-next";
 import { themeStyles } from "~/app/_components/Games/Theme/themeStyles";
@@ -10,28 +8,28 @@ import ScholarMode from "~/app/_components/Games/ScholarMode";
 import FreeplayMode from "~/app/_components/Games/FreeplayMode";
 import HacktimeMode from "~/app/_components/Games/HacktimeMode";
 import { useGlobalState } from "../Context/GlobalState/globalState";
+import SpeedMode from "./SpeedMode/speedMode";
 
 export default function KeebType() {
+    // mode ideas
     // letter mode where you can select a letter and all the words have that letter
     // ---- also for letter mode itd be cool if it auto cycles between letters -- cycle mode --- or you can select a letter
     // type faster mode -- practice typing words all at once
     // listen type -- hear words via ai text to speech then type them
     // race against the clock mode?
+    // git gud game mode where all words start with a certain letter and cycles
+    // const [letterSelect, setLetterSelect] = useState<string>("Cycle");
 
     const cookies = getCookies();
+
+    // state
     const [mode, setMode] = useState<string>("ranked");
     const { theme, keebId, setKeebId } = useGlobalState();
-    // const [keebId, setKeebId] = useState<string>("");
     const [gameOver, setGameOver] = useState<boolean>(false);
-
-    // we should make keebId and setKeebId a global variable as well so we can set it in different components...
-    // that'd be so poggers babe
 
     // mode specific
     const [gameLength, setGameLength] = useState<number>(20);
     const [scholarType, setScholarType] = useState<string>("vocab");
-    // const [letterSelect, setLetterSelect] = useState<string>("Cycle");
-    // git gud game mode where all words start with a certain letter and cycles
     const styles = themeStyles[theme as ThemeName] || themeStyles["KEEBY"];
 
     useEffect(() => {
@@ -44,11 +42,8 @@ export default function KeebType() {
         if (cookies.keebId) {
             setKeebId(cookies.keebId);
         }
-        // we will set a cookie at the end of profile-plus...
     }, [cookies]);
 
-    // okay so we have some problems lmaooo
-    // we probably want to run something that will verify our keyboard Id when the page is refreshed...
     // todo if we delete a keeb are we reassigning our keebId??? also you need to check that profile plus needs to set us some juicy cookies...
 
     return (
@@ -78,7 +73,7 @@ export default function KeebType() {
                     />
                 </div>
             )}
-            {mode === "wisdom" && (
+            {mode === "scholar" && (
                 <div className="w-full z-20 px-60 ">
                     <ScholarMode
                         setGameOver={setGameOver}

@@ -4,38 +4,6 @@ import {
     publicProcedure,
     protectedProcedure,
 } from "~/server/api/trpc";
-import type { Game } from "@prisma/client";
-
-type GameResult = Game & {
-    keeb: {
-        id: string;
-        name: string;
-        keycaps: string;
-        switches: string;
-    } | null;
-    user: {
-        rank: {
-            name: string;
-            image: string;
-            minWpm: number;
-            maxWpm: number;
-            standing: number;
-        } | null;
-    };
-};
-
-type GameStatistics = {
-    id: string;
-    wpm: number;
-    accuracy: number;
-};
-
-type GameResultsResponse = {
-    gameResults: GameResult | null;
-    allGameResults: GameStatistics[];
-    averageWpm: number;
-    averageAccuracy: number;
-};
 
 export const gameRouter = createTRPCRouter({
     getAll: publicProcedure.query(({ ctx }) => {
@@ -47,80 +15,9 @@ export const gameRouter = createTRPCRouter({
         });
     }),
 
-    getGameResults: publicProcedure
-        .input(
-            z.object({
-                id: z.string(),
-                userId: z.string(),
-                mode: z.string(),
-                keebId: z.string(),
-            }),
-        )
-        .query(async ({ input, ctx }): Promise<GameResultsResponse> => {
-            const { id, userId, mode, keebId } = input;
-
-            const gameResults = await ctx.db.game.findUnique({
-                where: { id: id },
-                include: {
-                    keeb: {
-                        select: {
-                            id: true,
-                            name: true,
-                            keycaps: true,
-                            switches: true,
-                        },
-                    },
-                    user: {
-                        select: {
-                            rank: {
-                                select: {
-                                    name: true,
-                                    image: true,
-                                    minWpm: true,
-                                    maxWpm: true,
-                                    standing: true,
-                                },
-                            },
-                        },
-                    },
-                },
-            });
-
-            const allGameResults = await ctx.db.game.findMany({
-                where: {
-                    userId: userId,
-                    mode: mode,
-                    keebId: keebId,
-                },
-                select: {
-                    id: true,
-                    wpm: true,
-                    accuracy: true,
-                },
-            });
-
-            const totalGamesPlayed = allGameResults.length;
-
-            let averageWpm = 0;
-            let averageAccuracy = 0;
-
-            if (totalGamesPlayed > 0) {
-                averageWpm =
-                    allGameResults.reduce((acc, game) => acc + game.wpm, 0) /
-                    totalGamesPlayed;
-                averageAccuracy =
-                    allGameResults.reduce(
-                        (acc, game) => acc + game.accuracy,
-                        0,
-                    ) / totalGamesPlayed;
-            }
-
-            return { gameResults, allGameResults, averageWpm, averageAccuracy };
-        }),
-
     // todo add fun tags like hitting sub 1 wpm or something rankedy ranked boi or ranked demon
     // todo 300 wpm no accuracy or something -- storm trooper aim -- eurobeat intensifies idkkk
-    // this needs to only be in ranked mode... we don't want rank or tag assignment if not
+
     create: protectedProcedure
         .input(
             z.object({
@@ -136,6 +33,10 @@ export const gameRouter = createTRPCRouter({
             const { wpm, pureWpm, accuracy, mode, userId, keebId } = input;
             let validKeebId = keebId;
             let rankChange = false;
+            let totalGamesPlayed = 0;
+            let rankedAverageWpm = 0;
+            let totalAverageWpm = 0;
+            let totalAverageAccuracy = 0;
 
             if (
                 !ctx.session.user.hasProfile ||
@@ -180,27 +81,63 @@ export const gameRouter = createTRPCRouter({
                 data: createData,
             });
 
-            const player = await ctx.db.user.findUnique({
-                where: { id: userId },
-                select: {
-                    rank: {
+            // the game is created here...
+
+            const gameResults = await ctx.db.game.findUnique({
+                where: { id: newGame.id },
+                include: {
+                    keeb: {
                         select: {
                             id: true,
                             name: true,
+                            keycaps: true,
+                            switches: true,
                         },
                     },
-                    _count: {
+                    user: {
                         select: {
-                            games: true,
+                            rank: {
+                                select: {
+                                    id: true,
+                                    name: true,
+                                    image: true,
+                                    minWpm: true,
+                                    maxWpm: true,
+                                    standing: true,
+                                },
+                            },
+                            _count: {
+                                select: {
+                                    games: true,
+                                },
+                            },
                         },
                     },
                 },
             });
-            if (!player) {
-                throw new Error("User ID not found");
-            }
 
-            if (player && (player.rank === null || player._count.games < 10)) {
+            const aggregatedResults = await ctx.db.game.aggregate({
+                where: {
+                    userId: userId,
+                    mode: mode,
+                    keebId: keebId,
+                },
+                _avg: {
+                    wpm: true,
+                    accuracy: true,
+                },
+                _count: true,
+            });
+
+            totalGamesPlayed = aggregatedResults._count;
+            totalAverageWpm = aggregatedResults._avg?.wpm || 0;
+            totalAverageAccuracy = aggregatedResults._avg?.accuracy || 0;
+
+            if (
+                gameResults &&
+                (gameResults.user.rank === null ||
+                    gameResults.user._count.games < 10)
+            ) {
                 const unranked = await ctx.db.rank.findUnique({
                     where: {
                         name: "Unranked",
@@ -218,7 +155,7 @@ export const gameRouter = createTRPCRouter({
                 }
             }
 
-            if (player && player._count.games >= 10) {
+            if (gameResults && gameResults.user._count.games >= 10) {
                 const topGames = await ctx.db.game.findMany({
                     where: {
                         userId: userId,
@@ -229,10 +166,9 @@ export const gameRouter = createTRPCRouter({
                     },
                     take: 10,
                 });
-                let averageWpm = 0;
 
                 if (topGames.length > 0) {
-                    averageWpm =
+                    rankedAverageWpm =
                         topGames.reduce((acc, game) => acc + game.wpm, 0) /
                         topGames.length;
                 } else {
@@ -240,29 +176,31 @@ export const gameRouter = createTRPCRouter({
                     throw new Error("No games found for the user.");
                 }
 
-                if (isNaN(averageWpm)) {
+                if (isNaN(rankedAverageWpm)) {
                     throw new Error(
-                        "Average WPM calculation resulted in an invalid number.",
+                        "Average ranked WPM calculation resulted in an invalid number.",
                     );
                 }
 
                 const ranks = await ctx.db.rank.findMany({
                     where: {
                         minWpm: {
-                            lte: averageWpm,
+                            lte: rankedAverageWpm,
                         },
                         maxWpm: {
-                            gte: averageWpm,
+                            gte: rankedAverageWpm,
                         },
                     },
                 });
 
-                // Assuming ranks are exclusive and the query returns exactly one rank
                 if (ranks.length === 1 && ranks[0]) {
                     const userRankId = ranks[0].id;
                     const userRankName = ranks[0].name;
 
-                    if (player.rank && player.rank.id !== userRankId) {
+                    if (
+                        gameResults.user.rank &&
+                        gameResults.user.rank.id !== userRankId
+                    ) {
                         // Update user's rank
                         await ctx.db.user.update({
                             where: { id: userId },
@@ -270,6 +208,16 @@ export const gameRouter = createTRPCRouter({
                         });
 
                         rankChange = true;
+
+                        // Update the rank in gameResults
+                        gameResults.user.rank = {
+                            id: userRankId,
+                            name: userRankName,
+                            image: ranks[0].image,
+                            minWpm: ranks[0].minWpm,
+                            maxWpm: ranks[0].maxWpm,
+                            standing: ranks[0].standing,
+                        };
 
                         // find tag associated with rank
                         const existingRankTag = await ctx.db.tag.findUnique({
@@ -322,15 +270,16 @@ export const gameRouter = createTRPCRouter({
                             }
                         }
                     }
-
-                    return {
-                        gameId: newGame.id,
-                        averageWpm: averageWpm,
-                        rankChange: rankChange,
-                    };
                 }
 
-                return { gameId: newGame.id, rankChange: rankChange };
+                return {
+                    gameResults,
+                    totalAverageWpm,
+                    totalAverageAccuracy,
+                    rankChange,
+                    totalGamesPlayed,
+                    rankedAverageWpm,
+                };
             }
         }),
 });

@@ -4,8 +4,7 @@ import type { ThemeName } from "../Theme/themeStyles";
 import { useEffect, useRef, useState } from "react";
 import { useStopwatch } from "react-use-precision-timer";
 import { api } from "~/trpc/react";
-import SpeedModeResults from "../SpeedMode/results";
-import OfflineGameResults from "../GameStats/offlineGameResults";
+import SpeedModeResults from "../SpeedMode/speedModeResults";
 import ScholarGenerator from "./scholarGenerator";
 
 interface ScholarModeProps {
@@ -15,6 +14,40 @@ interface ScholarModeProps {
     keebId: string;
     theme: string;
     scholarType: string;
+}
+interface Keeb {
+    id: string;
+    name: string;
+    keycaps: string;
+    switches: string;
+}
+
+interface User {
+    rank: {
+        id: string;
+        name: string;
+        image: string;
+        minWpm: number;
+        maxWpm: number;
+        standing: number;
+    } | null;
+    _count: {
+        games: number;
+    };
+}
+
+interface GameResults {
+    id: string;
+    accuracy: number;
+    createdAt: Date;
+    updatedAt: Date;
+    keeb: Keeb | null;
+    keebId: string | null;
+    mode: string;
+    pureWpm: number;
+    user: User;
+    userId: string;
+    wpm: number;
 }
 
 export default function ScholarMode({
@@ -46,8 +79,6 @@ export default function ScholarMode({
     const [trigger, setTrigger] = useState<number>(0);
 
     // game
-    const [finishedGameId, setFinishedGameId] = useState<string>("");
-    const [rankWpm, setRankWpm] = useState<number>(0);
     const [isVisualPaused, setIsVisualPaused] = useState<boolean>(false);
     const [isRunning, setIsRunning] = useState<boolean>(false);
     const inputRef = useRef<HTMLInputElement>(null);
@@ -57,47 +88,63 @@ export default function ScholarMode({
     const [offlineWpm, setOfflineWpm] = useState<number>(0);
     const [offlineAccuracy, setOfflineAccuracy] = useState<number>(0);
     const [offlinePureWpm, setOfflinePureWpm] = useState<number>(0);
+    // stats from create
+    const [rankedAverageWpm, setRankedAverageWpm] = useState<number>(0);
+    const [totalGames, setTotalGames] = useState<number>(0);
+    const [totalAverageAccuracy, setTotalAverageAccuracy] = useState<number>(0);
+    const [totalAverageWpm, setTotalAverageWpm] = useState<number>(0);
+    const [gameResults, setGameResults] = useState<GameResults | null>(null);
 
     const stopwatch = useStopwatch();
 
+    // I do want to add a keeb assignment case here. so if a cookie expires we can use our keeb check in the create and pass a boolean flag here. then we can reassign a cookie and get everything back on track efficiently.
     const { mutate: createGame } = api.game.create.useMutation({
         onSuccess: (data) => {
             if (data) {
-                setFinishedGameId(data.gameId);
-                if (data.averageWpm) setRankWpm(data.averageWpm);
+                setRankedAverageWpm(data.rankedAverageWpm);
+                setTotalGames(data.totalGamesPlayed);
+                setTotalAverageAccuracy(data.totalAverageAccuracy);
+                setTotalAverageWpm(data.totalAverageWpm);
+                setGameResults(data.gameResults);
             }
         },
     });
 
     const handleSubmitGame = () => {
-        if (gameOver && session?.user.id && keebId) {
-            // wpm
-            const totalTypedWords = totalUserInput.trim().split(" ");
-            const correctlyTypedWords = totalTypedWords.filter(
-                (word, index) => wordStatus[index],
-            );
+        // wpm - total number of characters in the correctly typed words (including spaces), divided by 5 and normalised to 60 seconds.
+        // pure wpm - calculated just like wpm, but also includes incorrect words.
+        // accuracy - percentage of correctly pressed keys.
 
-            const totalCorrectlyTypedCharacters =
-                correctlyTypedWords.join(" ").length;
+        // wpm
+        const totalTypedWords = totalUserInput.trim().split(" ");
+        const correctlyTypedWords = totalTypedWords.filter(
+            (word, index) => wordStatus[index],
+        );
 
-            // pure wpm
-            const totalTypedCharacters = totalUserInput.length;
+        const totalCorrectlyTypedCharacters =
+            correctlyTypedWords.join(" ").length;
 
-            // accuracy
-            const totalPromptCharacters = prompt.join(" ").trim().length;
+        // pure wpm
+        const totalTypedCharacters = totalUserInput.length;
 
-            // calculations
-            const timeInSeconds = stopwatch.getElapsedRunningTime() / 1000;
-            const timeInMinutes = timeInSeconds / 60;
-            const pureWpm = totalTypedCharacters / 5 / timeInMinutes;
-            const wpm = totalCorrectlyTypedCharacters / 5 / timeInMinutes;
-            const accuracy =
-                (totalCorrectlyTypedCharacters / totalPromptCharacters) * 100;
+        // accuracy
+        const totalPromptCharacters = prompt.join(" ").trim().length;
 
-            // wpm - total number of characters in the correctly typed words (including spaces), divided by 5 and normalised to 60 seconds.
-            // pure wpm - calculated just like wpm, but also includes incorrect words.
-            // accuracy - percentage of correctly pressed keys.
+        // calculations
+        const timeInSeconds = stopwatch.getElapsedRunningTime() / 1000;
+        const timeInMinutes = timeInSeconds / 60;
+        const pureWpm = totalTypedCharacters / 5 / timeInMinutes;
+        const wpm = totalCorrectlyTypedCharacters / 5 / timeInMinutes;
+        const accuracy =
+            (totalCorrectlyTypedCharacters / totalPromptCharacters) * 100;
 
+        setOfflinePureWpm(totalTypedCharacters / 5 / timeInMinutes);
+        setOfflineWpm(totalCorrectlyTypedCharacters / 5 / timeInMinutes);
+        setOfflineAccuracy(
+            (totalCorrectlyTypedCharacters / totalPromptCharacters) * 100,
+        );
+
+        if (gameOver && session && session.user.id && keebId) {
             const data = {
                 userId: session.user.id,
                 keebId: keebId,
@@ -106,34 +153,8 @@ export default function ScholarMode({
                 accuracy: accuracy,
                 mode: mode,
             };
+
             createGame(data);
-        }
-
-        // offline
-        if (gameOver && session === null) {
-            // wpm
-            const totalTypedWords = totalUserInput.trim().split(" ");
-            const correctlyTypedWords = totalTypedWords.filter(
-                (word, index) => wordStatus[index],
-            );
-            const totalCorrectlyTypedCharacters =
-                correctlyTypedWords.join(" ").length;
-
-            // pure wpm
-            const totalTypedCharacters = totalUserInput.length;
-
-            // accuracy
-            const totalPromptCharacters = prompt.join(" ").trim().length;
-
-            // calculations
-            const timeInSeconds = stopwatch.getElapsedRunningTime() / 1000;
-            const timeInMinutes = timeInSeconds / 60;
-            setOfflinePureWpm(totalTypedCharacters / 5 / timeInMinutes);
-
-            setOfflineWpm(totalCorrectlyTypedCharacters / 5 / timeInMinutes);
-            setOfflineAccuracy(
-                (totalCorrectlyTypedCharacters / totalPromptCharacters) * 100,
-            );
         }
     };
 
@@ -157,7 +178,6 @@ export default function ScholarMode({
     };
 
     const handleNextGame = () => {
-        setFinishedGameId("");
         setGameOver(false);
         setTrigger((prev) => prev + 1);
         setTotalUserInput("");
@@ -471,7 +491,7 @@ export default function ScholarMode({
                 </div>
             )}
 
-            {gameOver && finishedGameId && session && session.user && (
+            {gameOver && (
                 <div className={`flex w-full flex-col ${styles.hit}`}>
                     <div
                         className={`z-10 flex w-full justify-between rounded-lg border-2 ${styles.border} border-opacity-50 ${styles.backgroundColor} bg-opacity-30 px-5 py-2`}
@@ -496,59 +516,24 @@ export default function ScholarMode({
                                 />
                             </svg>
                         </button>
-                        <div className="flex items-center">Non-ranked mode</div>
+                        {/* <div className="flex items-center">Non-ranked mode</div> */}
                     </div>
                     <SpeedModeResults
-                        gameId={finishedGameId}
-                        userId={session.user.id}
                         mode={mode}
-                        keebId={keebId}
-                        wpmIntervals={wpmIntervals}
-                        rankWpm={rankWpm}
                         theme={theme}
+                        wpmIntervals={wpmIntervals}
+                        offlineAccuracy={offlineAccuracy}
+                        offlinePureWpm={offlinePureWpm}
+                        offlineWpm={offlineWpm}
+                        rankedAverageWpm={rankedAverageWpm}
+                        totalGames={totalGames}
+                        totalAverageAccuracy={totalAverageAccuracy}
+                        totalAverageWpm={totalAverageWpm}
+                        gameResults={gameResults}
                     />
                 </div>
             )}
 
-            {gameOver && session === null && (
-                <div className={`flex w-full flex-col ${styles.hit}`}>
-                    <div
-                        className={`z-10 flex w-full rounded-lg border-2 ${styles.border} border-opacity-50 ${styles.backgroundColor} justify-between bg-opacity-30 px-5 py-2`}
-                    >
-                        <button
-                            onClick={handleNextGame}
-                            className={`flex items-center ${styles.hoverText}`}
-                        >
-                            Next Game
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                className="w-7 -rotate-90   "
-                                fill="none"
-                            >
-                                <path
-                                    d="M7 10L12 15L17 10"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                />
-                            </svg>
-                        </button>
-                        <div className="flex items-center">
-                            Offline mode. Sign in to save your progress
-                        </div>
-                    </div>
-                    <OfflineGameResults
-                        mode={mode}
-                        offlineAccuracy={offlineAccuracy}
-                        offlinePureWpm={offlinePureWpm}
-                        offlineWpm={offlineWpm}
-                        wpmIntervals={wpmIntervals}
-                        theme={theme}
-                    />
-                </div>
-            )}
             {!gameOver && (
                 <div className="mt-20 flex w-full justify-center gap-10">
                     <button
