@@ -308,6 +308,7 @@ export default function UpdatePostForm({
                 <div className="mt-2 flex w-full items-center justify-between">
                     <div className="flex gap-5 ">
                         <button
+                            type="button"
                             onClick={(e) => {
                                 e.preventDefault();
                                 setShowLinkInput(!showLinkInput);
@@ -328,14 +329,20 @@ export default function UpdatePostForm({
                             </svg>
                         </button>
 
-                        <button className="relative keeb-share-image-button text-black hover:text-mediumGray ">
+                        <button
+                            type="button"
+                            className="relative keeb-share-image-button text-black hover:text-mediumGray "
+                        >
                             <input
                                 id="imageUploadInput"
                                 className="absolute left-0 top-0 w-8 opacity-0  "
                                 type="file"
                                 multiple
                                 accept="image/png, image/jpg, image/jpeg, image/heic, image/heif"
-                                onChange={(e) => void handleImageChange(e)}
+                                onChange={(e) => {
+                                    e.preventDefault();
+                                    void handleImageChange(e);
+                                }}
                             />
 
                             <svg

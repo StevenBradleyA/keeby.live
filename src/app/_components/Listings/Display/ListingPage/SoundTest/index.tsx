@@ -25,7 +25,7 @@ export default function ListingSoundTest({ soundTest }: ListingSoundTestProps) {
 
 const extractVideoIdFromLink = (link: string): string | null => {
     const regExp =
-        /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|shorts\/|&v=)([^#\&\?]*).*/;
     const match = link.match(regExp);
 
     if (match && match[2] && match[2].length === 11) {

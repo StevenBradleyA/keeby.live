@@ -1,10 +1,5 @@
 "use client";
 
-
-
-
-
-
 import type { Images, Listing } from "@prisma/client";
 import { api } from "~/trpc/react";
 import heic2any from "heic2any";
@@ -552,9 +547,15 @@ export default function UpdateListingForm({
                                     type="file"
                                     multiple
                                     accept="image/png, image/jpg, image/jpeg, image/heic, image/heif"
-                                    onChange={(e) => void handleImageChange(e)}
+                                    onChange={(e) => {
+                                        e.preventDefault();
+                                        void handleImageChange(e);
+                                    }}
                                 />
-                                <button className="h-28 w-full rounded-md bg-green-500">
+                                <button
+                                    type="button"
+                                    className="h-28 w-full rounded-md bg-green-500"
+                                >
                                     <span className=" text-center text-black">
                                         Choose Files
                                     </span>

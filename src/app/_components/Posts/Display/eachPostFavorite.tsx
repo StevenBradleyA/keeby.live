@@ -34,10 +34,7 @@ interface Count {
     favorites: number;
 }
 
-export default function EachPostFavorite({
-    post,
-    session,
-}: EachPostProps) {
+export default function EachPostFavorite({ post, session }: EachPostProps) {
     // We are using optimistic UI updates here as a balance to keep SEO optimization for posts
 
     const [isFakeFavorited, setIsFakeFavorited] = useState<boolean>(false);
@@ -95,7 +92,7 @@ export default function EachPostFavorite({
     useEffect(() => {
         setIsFakeFavorited(post.isFavorited ?? false);
         setFavoriteCount(post._count.favorites ?? 0);
-    }, [post.isFavorited, post._count.favorites]);
+    }, []);
 
     return (
         <>
