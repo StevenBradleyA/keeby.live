@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useState } from "react";
 import { api } from "~/trpc/react";
 import type { Keeb } from "@prisma/client";
@@ -52,10 +53,6 @@ export default function ManageKeeb({
                 },
             });
             if (data.newKeebName && data.newKeebId) {
-                setCookie("keeb", data.newKeebName, {
-                    maxAge: 60 * 60 * 24 * 365,
-                    path: "/",
-                });
                 setCookie("keebId", data.newKeebId, {
                     maxAge: 60 * 60 * 24 * 365,
                     path: "/",
