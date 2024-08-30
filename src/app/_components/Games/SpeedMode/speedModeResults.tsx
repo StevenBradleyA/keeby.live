@@ -1,10 +1,11 @@
+"use client";
 import Image from "next/image";
 import offlineRank from "@public/Ranks/offline.png";
 import keeboOffline from "@public/Profile/keebo-offline.png";
+import defaultProfile from "@public/Images/defaultProfile.png";
 import { themeStyles } from "../Theme/themeStyles";
 import type { ThemeName } from "../Theme/themeStyles";
-import GameResultsDynamicBackground from "../SpeedMode/gameResultsDynamicBackground";
-
+import GameResultsDynamicBackground from "./gameResultsDynamicBackground";
 import {
     Legend,
     Line,
@@ -13,24 +14,72 @@ import {
     Tooltip,
     XAxis,
 } from "recharts";
+import type { Session } from "next-auth";
 
-interface OfflineGameResultsProps {
+interface SpeedModeResultsProps {
     mode: string;
+    theme: string;
     offlineWpm: number;
     offlineAccuracy: number;
     offlinePureWpm: number;
     wpmIntervals: number[];
-    theme: string;
+    gameResults: GameResults | null;
+    rankedAverageWpm: number;
+    totalGames: number;
+    totalAverageAccuracy: number;
+    totalAverageWpm: number;
+    session: Session | null;
 }
 
-export default function OfflineGameResults({
+interface Keeb {
+    id: string;
+    name: string;
+    keycaps: string;
+    switches: string;
+}
+
+interface User {
+    rank: {
+        id: string;
+        name: string;
+        image: string;
+        minWpm: number;
+        maxWpm: number;
+        standing: number;
+    } | null;
+    _count: {
+        games: number;
+    };
+}
+
+interface GameResults {
+    id: string;
+    accuracy: number;
+    createdAt: Date;
+    updatedAt: Date;
+    keeb: Keeb | null;
+    keebId: string | null;
+    mode: string;
+    pureWpm: number;
+    user: User;
+    userId: string;
+    wpm: number;
+}
+
+export default function SpeedModeResults({
+    theme,
     mode,
     offlineWpm,
     offlinePureWpm,
     offlineAccuracy,
     wpmIntervals,
-    theme,
-}: OfflineGameResultsProps) {
+    gameResults,
+    rankedAverageWpm,
+    totalGames,
+    totalAverageAccuracy,
+    totalAverageWpm,
+    session,
+}: SpeedModeResultsProps) {
     const styles = themeStyles[theme as ThemeName] || themeStyles["KEEBY"];
 
     const calculateAveragedWpmIntervals = (wpmIntervals: number[]) => {
@@ -95,35 +144,50 @@ export default function OfflineGameResults({
                          {`${Math.round(offlineAccuracy)}%`}
                     </div>
                     <div className="mt-6 flex h-36 w-full gap-5 ">
-                        <div className="h-full w-1/2">
-                            <Image
-                                alt="profile"
-                                src={keeboOffline}
-                                width={400}
-                                height={400}
-                                className="h-full w-full rounded-md object-cover"
-                            />
-                        </div>
+                        <Image
+                            alt="profile"
+                            src={
+                                session
+                                    ? session.user.profile
+                                        ? session.user.profile
+                                        : defaultProfile
+                                    : keeboOffline
+                            }
+                            width={400}
+                            height={400}
+                            className=" w-12 h-12 laptop:w-28 laptop:h-28 desktop:w-36 desktop:h-36 rounded-md object-contain "
+                        />
+
                         <div className="flex h-full w-1/2 flex-col justify-between laptop:text-sm desktop:text-base">
                             <h2
                                 className={`border-b-2 ${styles.border} border-opacity-50 ${styles.textColor} `}
                             >
                                 Games Played
                             </h2>
-                            <div className={`${styles.pause}`}>---</div>
+                            <div className={`${styles.pause}`}>
+                                {totalGames > 0 ? totalGames : "---"}
+                            </div>
                             <h2
                                 className={`border-b-2 ${styles.border} border-opacity-50 ${styles.textColor} `}
                             >
                                 Avg WPM
                             </h2>
 
-                            <div className={`${styles.pause}`}>---</div>
+                            <div className={`${styles.pause}`}>
+                                {totalAverageWpm > 0
+                                    ? Math.round(totalAverageWpm)
+                                    : "---"}
+                            </div>
                             <h2
                                 className={`border-b-2 ${styles.border} border-opacity-50 ${styles.textColor} `}
                             >
                                 Avg Accurary
                             </h2>
-                            <div className={`${styles.pause}`}>---</div>
+                            <div className={`${styles.pause}`}>
+                                {totalAverageAccuracy > 0
+                                    ? Math.round(totalAverageAccuracy)
+                                    : "---"}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -180,7 +244,9 @@ export default function OfflineGameResults({
                             <p
                                 className={`flex justify-center rounded-lg border-2 ${styles.border} border-opacity-50 ${styles.backgroundColor} bg-opacity-30 px-3 py-2 desktop:mt-1 `}
                             >
-                                ---
+                                {gameResults && gameResults.keeb
+                                    ? gameResults.keeb.name
+                                    : "---"}
                             </p>
                         </div>
 
@@ -200,7 +266,9 @@ export default function OfflineGameResults({
                                     <p
                                         className={`mt-1 flex justify-center ${styles.pause}`}
                                     >
-                                        {`top --- %`}
+                                        {gameResults && gameResults.user.rank
+                                            ? `top ${gameResults.user.rank.standing} %`
+                                            : `top --- %`}
                                     </p>
                                     <h2
                                         className={`mt-3 flex justify-center border-b-2 ${styles.border} border-opacity-50 ${styles.textColor}`}
@@ -210,7 +278,9 @@ export default function OfflineGameResults({
                                     <p
                                         className={`mt-1 flex justify-center gap-1 ${styles.pause}`}
                                     >
-                                        ---
+                                        {gameResults && gameResults.user.rank
+                                            ? gameResults.user.rank.minWpm
+                                            : "---"}
                                     </p>
                                 </div>
                                 <div
@@ -225,7 +295,9 @@ export default function OfflineGameResults({
                                     <div
                                         className={`mt-1 flex justify-center ${styles.pause}`}
                                     >
-                                        ---
+                                        {rankedAverageWpm > 0
+                                            ? Math.round(rankedAverageWpm)
+                                            : "---"}
                                     </div>
                                     <h2
                                         className={`mt-3 flex justify-center border-b-2 ${styles.border} border-opacity-50 ${styles.textColor}`}
@@ -235,22 +307,33 @@ export default function OfflineGameResults({
                                     <p
                                         className={`mt-1 flex justify-center ${styles.pause}`}
                                     >
-                                        ---
+                                        {gameResults && gameResults.user.rank
+                                            ? gameResults.user.rank.maxWpm ===
+                                              999999
+                                                ? "---"
+                                                : gameResults.user.rank.maxWpm
+                                            : "---"}
                                     </p>
                                 </div>
                             </div>
                             <p
-                                className={`mt-3 flex w-full justify-center rounded-lg border-2 ${styles.border} border-opacity-50 ${styles.backgroundColor} bg-opacity-30 px-3 py-2  `}
+                                className={`mt-3 flex w-full justify-center rounded-lg border-2 ${styles.border} border-opacity-50 ${styles.backgroundColor} bg-opacity-30 px-3 py-2 `}
                             >
-                                ---
+                                {gameResults && gameResults.user.rank
+                                    ? gameResults.user.rank.name
+                                    : "---"}
                             </p>
 
                             <Image
                                 alt="profile"
-                                src={offlineRank}
+                                src={
+                                    gameResults && gameResults.user.rank
+                                        ? gameResults.user.rank.image
+                                        : offlineRank
+                                }
                                 width={400}
                                 height={400}
-                                className="mt-3 h-20 w-full rounded-md object-contain "
+                                className="mt-3 w-44 object-contain "
                             />
                         </div>
                     </div>

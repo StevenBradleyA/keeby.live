@@ -219,6 +219,9 @@ export const listingRouter = createTRPCRouter({
                     id: {
                         not: listingId,
                     },
+                    status: {
+                        not: "SOLD",
+                    },
                 },
                 include: {
                     _count: {
@@ -337,6 +340,7 @@ export const listingRouter = createTRPCRouter({
                                   ],
                               }
                             : {},
+                        { status: { not: "SOLD" } },
                     ].filter((obj) => Object.keys(obj).length > 0),
                 };
 
@@ -428,6 +432,7 @@ export const listingRouter = createTRPCRouter({
                                   ],
                               }
                             : {},
+                        { status: { not: "SOLD" } },
                     ].filter((obj) => Object.keys(obj).length > 0),
                 };
 

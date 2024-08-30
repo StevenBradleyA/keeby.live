@@ -4,7 +4,7 @@ import KeebType from "./_components/Games";
 export default function Home() {
     return (
         <div className="w-full h-screen overflow-hidden">
-            <div className="h-[95%] w-full flex px-10 pt-40 gap-10 relative ">
+            <div className="h-[95%] w-full flex px-3 laptop:px-16 pt-40 gap-10 relative ">
                 <KeebType />
             </div>
 

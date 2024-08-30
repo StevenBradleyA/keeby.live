@@ -1,14 +1,4 @@
 "use client";
-import YouTube from "react-youtube";
-
-interface YouTubePlayerOptions {
-    height: string;
-    width: string;
-    playerVars: {
-        autoplay: 0 | 1;
-        controls: 0 | 1;
-    };
-}
 
 interface DisplayYouTubePostPreview {
     link: string;
@@ -19,23 +9,17 @@ export default function DisplayYouTubePostPreview({
 }: DisplayYouTubePostPreview) {
     const videoId = extractVideoIdFromLink(link);
 
-    const opts: YouTubePlayerOptions = {
-        height: "100%",
-        width: "100%",
-        playerVars: {
-            autoplay: 0,
-            controls: 1,
-        },
-    };
-
     return (
         <div className="h-full w-full">
             {videoId && (
-                <YouTube
-                    videoId={videoId}
-                    opts={opts}
+                <iframe
+                    width="100%"
+                    height="100%"
+                    src={`https://www.youtube.com/embed/${videoId}`}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
                     className="h-full w-full"
-                />
+                ></iframe>
             )}
         </div>
     );
