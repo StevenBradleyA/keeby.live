@@ -35,7 +35,6 @@ export default function ListingPageFavorite({
     const utils = api.useUtils();
     // state optimistic UI
     const [isFakeFavorited, setIsFakeFavorited] = useState<boolean>(false);
-    const [favoriteCount, setFavoriteCount] = useState<number>(0);
     const [isSignInModalOpen, setIsSignInModalOpen] = useState<boolean>(false);
 
     // server interactions
@@ -62,7 +61,6 @@ export default function ListingPageFavorite({
         if (session && session.user.id && listing.id) {
             // Optimistic UI update
             setIsFakeFavorited(false);
-            setFavoriteCount((count) => count - 1);
 
             const data = {
                 userId: session.user.id,
@@ -79,7 +77,6 @@ export default function ListingPageFavorite({
         if (session && session.user.id && listing.id) {
             // Optimistic UI update
             setIsFakeFavorited(true);
-            setFavoriteCount((count) => count + 1);
 
             const data = {
                 userId: session.user.id,
@@ -98,8 +95,7 @@ export default function ListingPageFavorite({
 
     useEffect(() => {
         setIsFakeFavorited(listing.isFavorited ?? false);
-        setFavoriteCount(listing._count.favorites ?? 0);
-    }, [listing.isFavorited, listing._count.favorites, favoriteCount]);
+    }, []);
 
     return (
         <>

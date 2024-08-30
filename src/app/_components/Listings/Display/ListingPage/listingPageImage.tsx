@@ -3,16 +3,23 @@
 import Image from "next/image";
 import { useGlobalState } from "../../../Context/GlobalState/globalState";
 import type { Images } from "@prisma/client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ModalDialogueNoStyling from "../../../Context/Modal/noStylingModal";
+import { usePathname } from "next/navigation";
 
 interface ListingPageImageProps {
     images: Images[];
 }
 
 export default function ListingPageImage({ images }: ListingPageImageProps) {
+    const pathname = usePathname();
+
     const { listingPageImageIndex, setListingPageImageIndex } =
         useGlobalState();
+
+    useEffect(() => {
+        setListingPageImageIndex(0);
+    }, [pathname]);
 
     const [isImageModalOpen, setIsImageModalOpen] = useState<boolean>(false);
 

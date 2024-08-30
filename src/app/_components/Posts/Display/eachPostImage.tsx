@@ -2,7 +2,20 @@
 import type { Images } from "@prisma/client";
 import Image from "next/image";
 import { useState } from "react";
-import DisplayYouTubePostPreview from "./Previews/displayYouTubePreview";
+import LoadingSpinner from "../../Loading";
+import dynamic from "next/dynamic";
+
+const DisplayYouTubePostPreview = dynamic(
+    () => import("./Previews/displayYouTubePreview"),
+    {
+        loading: () => (
+            <div className="mt-60 flex w-full justify-center text-green-500">
+                <LoadingSpinner size="20px" />
+            </div>
+        ),
+        ssr: false,
+    },
+);
 
 interface EachPostProps {
     post: EachPost;
