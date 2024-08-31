@@ -34,10 +34,7 @@ interface Count {
     favorites: number;
 }
 
-export default function EachPostLike({
-    post,
-    session,
-}: EachPostProps) {
+export default function EachPostLike({ post, session }: EachPostProps) {
     // We are using optimistic UI updates here as a balance to keep SEO optimization for posts
 
     const [isFakeLiked, setIsFakeLiked] = useState<boolean>(false);
@@ -97,7 +94,7 @@ export default function EachPostLike({
     useEffect(() => {
         setIsFakeLiked(post.isLiked ?? false);
         setLikeCount(post._count.postLikes ?? 0);
-    }, [post.isLiked, post._count.postLikes]);
+    }, []);
 
     return (
         <>

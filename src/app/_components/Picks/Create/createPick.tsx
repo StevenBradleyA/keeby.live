@@ -132,7 +132,6 @@ export default function CreatePick({ closeModal }: { closeModal: () => void }) {
         const value = event.target.value;
         setCategory(value);
         // resets
-        setDescription("");
         setColor("");
         setCaseMaterial("");
         setLayoutType("");

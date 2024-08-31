@@ -1,5 +1,4 @@
 import type { Images, Listing } from "@prisma/client";
-import ListingSoundTest from "./SoundTest";
 import ListingPageFavorite from "./listingPageFavorite";
 import CreateComment from "~/app/_components/Comments/Create";
 import DisplayComments from "../../../Comments/Display/displayComments";
@@ -14,6 +13,18 @@ import { formatDistance } from "date-fns";
 import SellerStarRating from "./sellerStarRating";
 import Link from "next/link";
 import ListingPagePreviews from "./listingPagePreviews";
+import dynamic from "next/dynamic";
+import LoadingSpinner from "~/app/_components/Loading";
+import ListingPageTitle from "./listingPageTitle";
+
+const ListingSoundTest = dynamic(() => import("./SoundTest"), {
+    loading: () => (
+        <div className="mt-60 flex w-full justify-center text-green-500">
+            <LoadingSpinner size="20px" />
+        </div>
+    ),
+    ssr: false,
+});
 
 interface DisplayListingPageProps {
     listing: ListingWithImagesAndCount;
@@ -42,10 +53,6 @@ export default async function DisplayListingPage({
 }: DisplayListingPageProps) {
     const session = await getServerAuthSession();
 
-    const currentListingNameArr = listing.title.split(" ");
-    const smallTitle = currentListingNameArr.pop();
-    const bigTitle = currentListingNameArr.join(" ");
-
     const postDate = new Date(listing.createdAt);
     const now = new Date();
     const timeAgo = formatDistance(postDate, now, { addSuffix: true });
@@ -58,15 +65,11 @@ export default async function DisplayListingPage({
                         <ListingPagePhotoSideBar images={listing.images} />
                     </div>
                     <div className="flex h-full w-full flex-col items-center  gap-5 laptop:gap-10">
-                        <div className="flex w-full justify-center rounded-xl bg-darkGray shadow-lg ">
-                            <h1 className=" listing-page-title-big  px-5 font-titillium text-5xl ">
-                                {bigTitle}
+                        <div className="flex w-full justify-center rounded-xl bg-darkGray shadow-lg relative py-2">
+                            <h1 className="text-5xl font-titillium opacity-0">
+                                {listing.title}
                             </h1>
-                            {currentListingNameArr.length > 0 && (
-                                <h1 className="listing-page-title-small relative right-4 top-7 font-yellowTail text-4xl">
-                                    {smallTitle}
-                                </h1>
-                            )}
+                            <ListingPageTitle title={listing.title} />
                         </div>
 
                         <div className="relative flex h-[58%] flex-shrink-0 w-full justify-center rounded-xl bg-black/30 shadow-lg  ">

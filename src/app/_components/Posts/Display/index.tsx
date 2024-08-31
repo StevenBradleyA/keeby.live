@@ -1,7 +1,6 @@
 import Image from "next/image";
 import defaultProfile from "@public/Images/defaultProfile.png";
 import type { Images } from "@prisma/client";
-import DisplayYouTubePostPreview from "./Previews/displayYouTubePreview";
 import { formatDistance } from "date-fns";
 import Link from "next/link";
 import UserPostPreviews from "./userPostPreviews";
@@ -10,9 +9,23 @@ import PostPagePreviews from "./additionalPostPreviews";
 import Footer from "../../Footer/footer";
 import EachPostLike from "./eachPostLike";
 import EachPostFavorite from "./eachPostFavorite";
-import EachPostImage from "./eachPostImage";
 import { getServerAuthSession } from "~/server/auth";
 import DisplayComments from "../../Comments/Display/displayComments";
+import PostPageImageDisplay from "./postPageImageDisplay";
+import LoadingSpinner from "../../Loading";
+import dynamic from "next/dynamic";
+
+const DisplayYouTubePostPreview = dynamic(
+    () => import("./Previews/displayYouTubePreview"),
+    {
+        loading: () => (
+            <div className="mt-60 flex w-full justify-center text-green-500">
+                <LoadingSpinner size="20px" />
+            </div>
+        ),
+        ssr: false,
+    },
+);
 
 interface DisplayPostPageProps {
     post: PostPage;
@@ -148,7 +161,7 @@ export default async function DisplayPostPage({ post }: DisplayPostPageProps) {
                                 </div>
                                 {(post.images.length > 0 || post.link) && (
                                     <div className="w-full h-[400px] ">
-                                        <EachPostImage post={post} />
+                                        <PostPageImageDisplay post={post} />
                                     </div>
                                 )}
 

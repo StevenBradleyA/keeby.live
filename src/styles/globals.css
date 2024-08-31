@@ -123,7 +123,7 @@ select:-webkit-autofill:focus {
 /* --------------         SCROLL BAR          --------------  */
 
 .hidden-scrollbar {
-    -ms-overflow-style: none; 
+    -ms-overflow-style: none;
     scrollbar-width: none; /* Firefox */
     overflow: auto; /* Ensure scroll functionality */
 }
@@ -132,10 +132,6 @@ select:-webkit-autofill:focus {
 .hidden-scrollbar::-webkit-scrollbar {
     display: none;
 }
-
-
-
-
 
 /* --------------         ADMIN          --------------  */
 /* --------------         ADMIN          --------------  */
@@ -211,7 +207,6 @@ select:-webkit-autofill:focus {
     }
 }
 
-
 /* skeleton pulsing */
 .skeleton {
     background-color: #e0e0e0;
@@ -229,7 +224,6 @@ select:-webkit-autofill:focus {
         background-color: #e0e0e0;
     }
 }
-
 
 /* ---------    FREE PLAY   ----------  */
 /* ---------    FREE PLAY   ----------  */
@@ -1829,6 +1823,20 @@ input[type="checkbox"]:hover {
 /* --------------         KEEB SHARE          --------------  */
 /* --------------         KEEB SHARE          --------------  */
 /* --------------         KEEB SHARE          --------------  */
+
+.share-link {
+}
+
+.share-link-arrow {
+    transform: rotate(0);
+    transition: transform 0.4s cubic-bezier(0.35, 0, 0, 1);
+}
+
+
+.share-link:hover .share-link-arrow{
+    transform: rotate(45deg);
+
+}
 
 .keeb-share-preview-button {
     overflow: hidden;

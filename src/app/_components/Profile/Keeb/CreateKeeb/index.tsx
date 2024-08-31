@@ -1,3 +1,4 @@
+"use client";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -84,7 +85,7 @@ export default function CreateKeeb({ closeModal, userId }: CreateKeebProps) {
 
     return (
         <>
-            <form className="flex w-96 flex-col  ">
+            <form className="flex w-[400px] flex-col text-white ">
                 <div className="flex items-center">
                     <Image
                         alt="keeb"
@@ -117,29 +118,29 @@ export default function CreateKeeb({ closeModal, userId }: CreateKeebProps) {
                 <input
                     value={keyboard}
                     onChange={(e) => setKeyboard(e.target.value)}
-                    className="mt-5 h-10 w-full rounded-md bg-mediumGray p-1 "
+                    className="mt-5 h-10 w-full rounded-md bg-mediumGray p-1 hover:opacity-80 "
                     placeholder="Name"
                 ></input>
                 {enableErrorDisplay && errors.keyboard && (
-                    <p className="text-sm text-red-400">{errors.keyboard}</p>
+                    <p className="text-xs text-red-400">{errors.keyboard}</p>
                 )}
                 <input
                     value={switches}
                     onChange={(e) => setSwitches(e.target.value)}
-                    className="mt-5 h-10 w-full rounded-md bg-mediumGray p-1 "
+                    className="mt-5 h-10 w-full rounded-md bg-mediumGray p-1 hover:opacity-80"
                     placeholder="Switches"
                 ></input>
                 {enableErrorDisplay && errors.switches && (
-                    <p className="text-sm text-red-400">{errors.switches}</p>
+                    <p className="text-xs text-red-400">{errors.switches}</p>
                 )}
                 <input
                     value={keycaps}
                     onChange={(e) => setKeycaps(e.target.value)}
-                    className="mt-5 h-10 w-full rounded-md bg-mediumGray p-1 "
+                    className="mt-5 h-10 w-full rounded-md bg-mediumGray p-1 hover:opacity-80"
                     placeholder="Keycaps"
                 ></input>
                 {enableErrorDisplay && errors.keycaps && (
-                    <p className="text-sm text-red-400">{errors.keycaps}</p>
+                    <p className="text-xs text-red-400">{errors.keycaps}</p>
                 )}
                 <div className="flex justify-center">
                     <button

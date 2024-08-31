@@ -267,7 +267,6 @@ export default function Footer() {
                             <div>
                                 <button
                                     onClick={() => void signOut()}
-                                    aria-label="Sign out of your account"
                                     className="ease-in hover:text-green-500 p-0 m-0"
                                 >
                                     Sign Out

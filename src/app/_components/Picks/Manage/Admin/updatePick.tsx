@@ -158,7 +158,6 @@ export default function UpdatePick({ closeModal, pick }: UpdatePickProps) {
         const value = event.target.value;
         setCategory(value);
         // resets
-        setDescription("");
         setColor("");
         setCaseMaterial("");
         setLayoutType("");

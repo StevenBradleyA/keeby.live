@@ -55,7 +55,7 @@ export default function Shop({
                 <div className="fixed top-0 bg-dark z-20 left-0 right-0 w-full h-40"></div>
                 <PickParams />
 
-                <div className="w-full flex px-16 gap-10 mt-2">
+                <div className="w-full flex px-16 gap-10 mt-5">
                     <SubPickParams />
                     <div className="w-full min-h-[100rem] overflow-y-auto">
                         <DisplayPicks searchParams={searchParams} />

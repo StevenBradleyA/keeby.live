@@ -63,7 +63,6 @@ export default function DisplayAllGameStats({
         }
     };
 
-    console.log("um", gameData);
 
     return gameData &&
         gameData.userWithGameResultsAndRank &&

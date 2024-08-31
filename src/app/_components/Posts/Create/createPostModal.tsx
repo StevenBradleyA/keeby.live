@@ -346,16 +346,20 @@ export default function CreatePostModal({ closeModal }: CreatePostModalProps) {
                                     </svg>
                                 </button>
 
-                                <button className="relative keeb-share-image-button text-black hover:text-mediumGray ">
+                                <button
+                                    className="relative keeb-share-image-button text-black hover:text-mediumGray "
+                                    type="button"
+                                >
                                     <input
                                         id="imageUploadInput"
                                         className="absolute left-0 top-0 w-8 opacity-0  "
                                         type="file"
                                         multiple
                                         accept="image/png, image/jpg, image/jpeg, image/heic, image/heif"
-                                        onChange={(e) =>
-                                            void handleImageChange(e)
-                                        }
+                                        onChange={(e) => {
+                                            e.preventDefault();
+                                            void handleImageChange(e);
+                                        }}
                                     />
 
                                     <svg

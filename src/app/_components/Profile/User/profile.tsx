@@ -66,9 +66,7 @@ export default function UserProfile() {
         useState<string>("FAVORITES");
 
     // keebtype
-    const [keebTypeCategory, setKeebTypeCategory] = useState<string>("STATS");
-
-    // const { data: keebData } = api.keeb.getAll.useQuery();
+    const [keebTypeCategory, setKeebTypeCategory] = useState<string>("KEEBS");
 
     const handleRetroMode = () => {
         setIsRetro(!isRetro);
@@ -913,14 +911,14 @@ export default function UserProfile() {
                         <div className="mt-10 flex  w-full justify-evenly border-2 border-mediumGray p-5">
                             <button
                                 className={`profile-select-button flex items-center gap-1   border-2 ${
-                                    keebTypeCategory === "STATS"
+                                    keebTypeCategory === "KEEBS"
                                         ? "border-green-500"
                                         : "border-mediumGray"
                                 } rounded-md   py-2 pl-6 text-green-500  `}
-                                onClick={() => setKeebTypeCategory("STATS")}
+                                onClick={() => setKeebTypeCategory("KEEBS")}
                             >
                                 <span className="profile-select-button-text">
-                                    Stats
+                                    My Keebs
                                 </span>
 
                                 <svg
@@ -960,14 +958,14 @@ export default function UserProfile() {
 
                             <button
                                 className={`profile-select-button flex items-center gap-1   border-2 ${
-                                    keebTypeCategory === "KEEBS"
+                                    keebTypeCategory === "STATS"
                                         ? "border-green-500"
                                         : "border-mediumGray"
                                 } rounded-md   py-2 pl-6 text-green-500  `}
-                                onClick={() => setKeebTypeCategory("KEEBS")}
+                                onClick={() => setKeebTypeCategory("STATS")}
                             >
                                 <span className="profile-select-button-text">
-                                    My Keebs
+                                    Stats
                                 </span>
 
                                 <svg
@@ -1042,13 +1040,13 @@ export default function UserProfile() {
                             <ManagePosts userId={sessionData.user.id} />
                         )}
 
+                    {toggle === "KEEBTYPE" && keebTypeCategory === "KEEBS" && (
+                        <DisplayProfileKeebs userId={sessionData.user.id} />
+                    )}
                     {toggle === "KEEBTYPE" && keebTypeCategory === "STATS" && (
                         <DisplayAllGameStatsCheck
                             userId={sessionData.user.id}
                         />
-                    )}
-                    {toggle === "KEEBTYPE" && keebTypeCategory === "KEEBS" && (
-                        <DisplayProfileKeebs userId={sessionData.user.id} />
                     )}
                 </div>
             </div>
