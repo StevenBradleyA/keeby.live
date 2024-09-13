@@ -15,6 +15,65 @@ export const gameRouter = createTRPCRouter({
         });
     }),
 
+    getAllGames: publicProcedure
+        .input(
+            z.object({
+                id: z.string().optional(),
+                page: z.string().optional(),
+            }),
+        )
+        .query(async ({ input, ctx }) => {
+            const { id, page } = input;
+
+            const limit = 12;
+            const currentPage = parseInt(page || "1", 10);
+            const cumulativeTake = currentPage * limit;
+
+            const getLeaderboards = await ctx.db.game.findMany({
+                include: {
+                    user: {
+                        select: {
+                            username: true,
+                        },
+                    },
+                },
+                orderBy: {
+                    wpm: "desc",
+                },
+                take: cumulativeTake,
+            });
+
+            if (id) {
+                const userTopWpm = await ctx.db.game.findFirst({
+                    where: { id: id },
+                    orderBy: {
+                        wpm: "desc",
+                    },
+                    select: {
+                        wpm: true,
+                    },
+                });
+                if (userTopWpm) {
+                    const userRankNumber =
+                        (await ctx.db.game.count({
+                            where: {
+                                wpm: {
+                                    gt: userTopWpm.wpm,
+                                },
+                            },
+                        })) + 1;
+                    return {
+                        getLeaderboards,
+                        userRankNumber,
+                    };
+                }
+            }
+
+            return {
+                getLeaderboards,
+            };
+        }),
+
     // todo add fun tags like hitting sub 1 wpm or something rankedy ranked boi or ranked demon
     // todo 300 wpm no accuracy or something -- storm trooper aim -- eurobeat intensifies idkkk
 
