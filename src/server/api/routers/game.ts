@@ -15,50 +15,50 @@ export const gameRouter = createTRPCRouter({
         });
     }),
 
-    getAllGames: publicProcedure
+    getLeaderboards: publicProcedure
         .input(
             z.object({
                 id: z.string().optional(),
-                page: z.string().optional(),
+                page: z.number(),
             }),
         )
         .query(async ({ input, ctx }) => {
             const { id, page } = input;
 
-            const limit = 12;
-            const currentPage = parseInt(page || "1", 10);
-            const cumulativeTake = currentPage * limit;
+            const limit = 50;
+            const cumulativeTake = page * limit;
 
-            const getLeaderboards = await ctx.db.game.findMany({
-                include: {
-                    user: {
-                        select: {
-                            username: true,
-                        },
-                    },
+            const getLeaderboards = await ctx.db.user.findMany({
+                select: {
+                    id: true,
+                    username: true,
+                    rankedWpm: true,
                 },
+
                 orderBy: {
-                    wpm: "desc",
+                    rankedWpm: "desc",
                 },
                 take: cumulativeTake,
             });
 
             if (id) {
-                const userTopWpm = await ctx.db.game.findFirst({
+                const user = await ctx.db.user.findUnique({
                     where: { id: id },
-                    orderBy: {
-                        wpm: "desc",
-                    },
                     select: {
-                        wpm: true,
+                        rankedWpm: true,
                     },
                 });
-                if (userTopWpm) {
+
+                if (
+                    user &&
+                    user.rankedWpm &&
+                    typeof user.rankedWpm === "number"
+                ) {
                     const userRankNumber =
-                        (await ctx.db.game.count({
+                        (await ctx.db.user.count({
                             where: {
-                                wpm: {
-                                    gt: userTopWpm.wpm,
+                                rankedWpm: {
+                                    gt: user.rankedWpm,
                                 },
                             },
                         })) + 1;
@@ -263,7 +263,10 @@ export const gameRouter = createTRPCRouter({
                         // Update user's rank
                         await ctx.db.user.update({
                             where: { id: userId },
-                            data: { rankId: userRankId },
+                            data: {
+                                rankId: userRankId,
+                                rankedWpm: rankedAverageWpm,
+                            },
                         });
 
                         rankChange = true;

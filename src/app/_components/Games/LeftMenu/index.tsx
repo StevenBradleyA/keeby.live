@@ -431,7 +431,7 @@ export default function LeftMenu({
                 isOpen={isLeaderboardModalOpen}
                 onClose={closeLeaderboardModal}
             >
-                <LeaderboardModal />
+                <LeaderboardModal session={session ? session : null} />
             </ModalDialog>
 
             <ModalDialog isOpen={isRanksModalOpen} onClose={closeRanksModal}>

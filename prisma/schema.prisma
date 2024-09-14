@@ -392,10 +392,10 @@ model User {
     internetPoints Int       @default(0)
     image          String?
     profile        String?
+    rankedWpm      Int?
     rankId         String?
     username       String?   @unique
     selectedTag    String?
-    paypalEmail    String?
 
     isAdmin      Boolean @default(false)
     hasProfile   Boolean @default(false)
