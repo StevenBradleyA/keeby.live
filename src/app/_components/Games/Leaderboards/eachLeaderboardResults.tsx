@@ -1,23 +1,32 @@
 "use client";
 
+import Link from "next/link";
+
 interface EachLeaderboardResultsProps {
     leaderboard: EachLeaderboard;
-    ranknumber: number;
+    rankNumber: number;
 }
 
 interface EachLeaderboard {
     id: string;
-    username: string;
-    rankedWpm: number;
+    username: string | null;
+    rankedWpm: number | null;
 }
 
 export default function EachLeaderboardResults({
     leaderboard,
+    rankNumber,
 }: EachLeaderboardResultsProps) {
     return (
         <>
-            <div>{leaderboard.username}</div>
-            <div>#{leaderboard.rankedWpm}</div>
+            <div>#{rankNumber + 1}</div>
+            <Link
+                href={`/profile/public/${leaderboard.username}`}
+                className="hover:underline"
+            >
+                {leaderboard.username}
+            </Link>
+            <div>{leaderboard.rankedWpm} wpm</div>
         </>
     );
 }

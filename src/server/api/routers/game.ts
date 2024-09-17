@@ -26,7 +26,8 @@ export const gameRouter = createTRPCRouter({
             const { id, page } = input;
 
             const limit = 50;
-            const cumulativeTake = page * limit;
+            const skip = (page - 1) * limit;
+            // const cumulativeTake = page * limit;
 
             const getLeaderboards = await ctx.db.user.findMany({
                 select: {
@@ -34,11 +35,16 @@ export const gameRouter = createTRPCRouter({
                     username: true,
                     rankedWpm: true,
                 },
-
+                where: {
+                    rankedWpm: {
+                        not: null,
+                    },
+                },
                 orderBy: {
                     rankedWpm: "desc",
                 },
-                take: cumulativeTake,
+                take: limit,
+                skip: skip,
             });
 
             if (id) {
@@ -65,6 +71,7 @@ export const gameRouter = createTRPCRouter({
                     return {
                         getLeaderboards,
                         userRankNumber,
+                        userScore: user.rankedWpm,
                     };
                 }
             }
@@ -72,6 +79,40 @@ export const gameRouter = createTRPCRouter({
             return {
                 getLeaderboards,
             };
+        }),
+
+    getUserRank: publicProcedure
+        .input(
+            z.object({
+                id: z.string(),
+            }),
+        )
+        .query(async ({ input, ctx }) => {
+            const { id } = input;
+
+            const user = await ctx.db.user.findUnique({
+                where: { id: id },
+                select: {
+                    profile: true,
+                    username: true,
+                    rankedWpm: true,
+                },
+            });
+
+            if (user && user.rankedWpm && typeof user.rankedWpm === "number") {
+                const userRankNumber =
+                    (await ctx.db.user.count({
+                        where: {
+                            rankedWpm: {
+                                gt: user.rankedWpm,
+                            },
+                        },
+                    })) + 1;
+                return {
+                    userRankNumber,
+                    user,
+                };
+            }
         }),
 
     // todo add fun tags like hitting sub 1 wpm or something rankedy ranked boi or ranked demon
