@@ -44,8 +44,15 @@ export default function LeaderboardModal({
 
     if (isLoading && page === 1) {
         return (
-            <div>
-                <LoadingSpinner size="12px" />
+            <div className="w-[50vw] laptop:w-[30vw] h-[60vh] text-xs flex flex-col">
+                <div className=" flex w-full justify-center">
+                    <div className=" rounded-lg p-3 flex flex-col items-center mt-3 min-w-[33%] min-h-[150px] skeleton-dark-glow  "></div>
+                </div>
+                <div className="flex w-full justify-between p-2 rounded-lg mt-2 h-8 skeleton-dark-glow"></div>
+                <div className="flex w-full justify-between p-2 rounded-lg mt-2 h-8 skeleton-dark-glow"></div>
+                <div className="flex w-full justify-between p-2 rounded-lg mt-2 h-8 skeleton-dark-glow"></div>
+                <div className="flex w-full justify-between p-2 rounded-lg mt-2 h-8 skeleton-dark-glow"></div>
+                <div className="flex w-full justify-between p-2 rounded-lg mt-2 h-8 skeleton-dark-glow"></div>
             </div>
         );
     }

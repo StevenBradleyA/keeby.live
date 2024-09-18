@@ -33,11 +33,18 @@ export default function KeebModal({
         closeKeebModal();
     };
 
-    if (isLoading) return <LoadingSpinner size="20px" />;
+    if (isLoading)
+        return (
+            <div className="flex flex-col gap-5 w-[400px] h-[50vh]">
+                <div className="skeleton-dark-glow h-12 rounded-lg"></div>
+                <div className="skeleton-dark-glow h-12 rounded-lg"></div>
+                <div className="skeleton-dark-glow h-12 rounded-lg"></div>
+            </div>
+        );
 
     return (
         <>
-            <div className="flex flex-col gap-5 w-[400px] h-[300px]">
+            <div className="flex flex-col gap-5 w-[400px] h-[50vh]">
                 {keebData &&
                     keebData.length > 0 &&
                     keebData.map((e) => (
