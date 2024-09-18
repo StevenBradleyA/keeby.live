@@ -15,6 +15,7 @@ import {
     XAxis,
 } from "recharts";
 import type { Session } from "next-auth";
+import RankResults from "./rankResults";
 
 interface SpeedModeResultsProps {
     mode: string;
@@ -316,13 +317,12 @@ export default function SpeedModeResults({
                                     </p>
                                 </div>
                             </div>
-                            <p
-                                className={`mt-3 flex w-full justify-center rounded-lg border-2 ${styles.border} border-opacity-50 ${styles.backgroundColor} bg-opacity-30 px-3 py-2 `}
-                            >
-                                {gameResults && gameResults.user.rank
-                                    ? gameResults.user.rank.name
-                                    : "---"}
-                            </p>
+                            <RankResults
+                                gameResults={gameResults}
+                                styles={styles}
+                                session={session}
+                                totalGamesPlayed={totalGames}
+                            />
 
                             <Image
                                 alt="profile"
@@ -333,7 +333,7 @@ export default function SpeedModeResults({
                                 }
                                 width={400}
                                 height={400}
-                                className="mt-3 w-44 object-contain "
+                                className="mt-3 w-44 object-contain rounded-md "
                             />
                         </div>
                     </div>

@@ -44,12 +44,6 @@ export default function KeebType() {
         }
     }, [cookies]);
 
-    // todo if we delete a keeb are we reassigning our keebId??? also you need to check that profile plus needs to set us some juicy cookies...
-
-
-    console.log(mode)
-
-
     return (
         <>
             <div className="absolute top-40 left-3 laptop:left-5 desktop:left-16 bottom-0 w-[10%] z-30 ">

@@ -384,5 +384,12 @@ export const gameRouter = createTRPCRouter({
                     rankedAverageWpm,
                 };
             }
+            return {
+                gameResults,
+                totalAverageWpm,
+                totalAverageAccuracy,
+                rankChange,
+                totalGamesPlayed,
+            };
         }),
 });
