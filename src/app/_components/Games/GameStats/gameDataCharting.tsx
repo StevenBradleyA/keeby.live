@@ -39,7 +39,7 @@ export default function GameDataCharting({ gameData }: GameDataChartingProps) {
     return (
         <>
             {gameData && gameData.userWithGameResultsAndRank ? (
-                <div className="w-full bg-black/10 p-10 rounded-lg min-h-[300px]">
+                <div className="w-full bg-black/10 p-10 rounded-lg h-full">
                     <ResponsiveContainer width="100%" height="100%">
                         <LineChart
                             data={gameData.userWithGameResultsAndRank.games}
@@ -89,7 +89,7 @@ export default function GameDataCharting({ gameData }: GameDataChartingProps) {
                     </ResponsiveContainer>
                 </div>
             ) : (
-                <div className="w-full bg-black/10 p-10 rounded-lg min-h-[300px]"></div>
+                <div className="w-full bg-black/10 p-10 rounded-lg h-full"></div>
             )}
         </>
     );

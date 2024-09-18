@@ -27,7 +27,6 @@ import AsciiArt from "~/app/_components/Profile/ThreeScenes/asciiArt";
 import DisplayOffers from "~/app/_components/Offers/Display/displayOffers";
 import DisplayTransactions from "~/app/_components/Transactions/Display";
 import keebo from "@public/Profile/keebo.png";
-import LoadingSpinner from "~/app/_components/Loading";
 import DisplayProfileReviews from "~/app/_components/Reviews/Display/displayProfileReviews";
 import Footer from "~/app/_components/Footer/footer";
 import TitleScripts from "~/app/_components/TitleScripts";

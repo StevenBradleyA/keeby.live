@@ -2,7 +2,6 @@
 import { setCookie } from "cookies-next";
 import type { ThemeStyle } from "../Theme/themeStyles";
 import { api } from "~/trpc/react";
-import LoadingSpinner from "../../Loading";
 import { useGlobalState } from "../../Context/GlobalState/globalState";
 
 interface KeebModalProps {

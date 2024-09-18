@@ -1,18 +1,14 @@
 "use client";
 import { api } from "~/trpc/react";
-import DisplayAllGameStats from "./gameStatsConfigurator";
+import PlayerStatsKeebCheck from "./playerStatsKeebCheck";
 
-export default function DisplayAllGameStatsCheck({
-    userId,
-}: {
-    userId: string;
-}) {
+export default function PlayerStatsModalCheck({ userId }: { userId: string }) {
     const { data: keebData } = api.keeb.getAllByUserId.useQuery(userId);
 
     return (
         <>
             {keebData && keebData.length > 0 && (
-                <DisplayAllGameStats userId={userId} keebData={keebData} />
+                <PlayerStatsKeebCheck userId={userId} keebData={keebData} />
             )}
         </>
     );

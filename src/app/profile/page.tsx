@@ -1,7 +1,5 @@
 "use client";
-
 import dynamic from "next/dynamic";
-import LoadingSpinner from "~/app/_components/Loading";
 
 const Profile = dynamic(() => import("../_components/Profile/User/profile"), {
     loading: () => (

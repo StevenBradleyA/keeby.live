@@ -8,15 +8,15 @@ export default function SignIn() {
     return (
         <>
             <div className="w-full flex justify-center mt-60">
-                <div className=" rounded-2xl w-full  largeLaptop:w-2/3 desktop:w-1/2  bg-darkGray flex overflow-hidden shadow-2xl relative ">
-                    <div className="w-1/2  h-full p-10 flex flex-col items-center justify-center">
+                <div className="  rounded-2xl w-full  largeLaptop:w-2/3 desktop:w-1/2  bg-darkGray flex overflow-hidden shadow-2xl relative ">
+                    <div className="hidden tablet:w-1/2  h-full p-10 tablet:flex flex-col items-center justify-center">
                         <Image
                             src={login}
                             alt="login"
                             className="w-60 h-60 object-contain"
                         />
                     </div>
-                    <div className="w-1/2 p-20 flex flex-col items-center relative">
+                    <div className=" w-full tablet:w-2/3 laptop:w-1/2 p-20 flex flex-col items-center relative">
                         <AuthProviders />
                     </div>
                 </div>

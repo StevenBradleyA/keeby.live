@@ -15,6 +15,8 @@ import LeaderboardModal from "../Leaderboards/leaderboardModal";
 import RanksModal from "../GameStats/ranksModal";
 import ImproveAtTyping from "../../Guide/improveAtTyping";
 import LearnAboutKeyboards from "../../Guide/learnAboutKeyboards";
+import Image from "next/image";
+import keebo from "@public/Profile/keebo.png";
 
 interface LeftMenuProps {
     mode: string;
@@ -89,9 +91,7 @@ export default function LeftMenu({
     };
 
     const openKeebModal = () => {
-        if (session && session.user) {
-            setIsKeebModalOpen(true);
-        }
+        setIsKeebModalOpen(true);
     };
 
     const closeKeebModal = () => {
@@ -228,15 +228,15 @@ export default function LeftMenu({
                 </svg>
                 Theme
             </button>
-
-            <button
-                className=" flex flex-col items-center justify-center hover:opacity-70"
-                onClick={() => {
-                    if (session && session.user && session.user.hasProfile) {
+            {/* if (session && session.user && session.user.hasProfile) {
                         openKeebModal();
                     } else {
                         void signIn();
-                    }
+                    } */}
+            <button
+                className=" flex flex-col items-center justify-center hover:opacity-70"
+                onClick={() => {
+                    openKeebModal();
                 }}
             >
                 <svg
@@ -413,13 +413,65 @@ export default function LeftMenu({
                 />
             </ModalDialog>
             <ModalDialog isOpen={isKeebModalOpen} onClose={closeKeebModal}>
-                {session?.user.id && (
+                {session && session.user.id && session.user.hasProfile ? (
                     <KeebModal
                         styles={styles}
                         setGameOver={setGameOver}
                         closeKeebModal={closeKeebModal}
                         userId={session.user.id}
                     />
+                ) : (
+                    <div className="flex flex-col gap-5 w-[400px] h-[50vh] justify-center">
+                        <div className=" w-full flex justify-center">
+                            <div className="flex flex-col items-center">
+                                <div className="flex items-end gap-2">
+                                    <h1 className="text-base text-green-500">
+                                        Sign in to see your keyboard profiles
+                                    </h1>
+                                    <Image
+                                        alt="keebo"
+                                        src={keebo}
+                                        className="h-10 w-10 object-contain"
+                                    />
+                                </div>
+                                <div className=" mt-3 flex justify-center">
+                                    <button
+                                        className="text-sm keeb-share-preview-button flex items-center gap-2 rounded-md bg-green-500 py-2 pr-4 text-black "
+                                        style={{
+                                            boxShadow: "0 0 20px #22C55E",
+                                        }}
+                                        onClick={() => void signIn()}
+                                    >
+                                        <svg
+                                            className="keeb-share-preview-button-arrow w-4"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                stroke="currentColor"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth="3"
+                                                d="M3.515 12h16.97m0 0L13.01 4.525M20.485 12l-7.475 7.476"
+                                            ></path>
+                                        </svg>
+                                        <span className="keeb-share-preview-button-text">
+                                            {`Let's Go `}
+                                        </span>
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor"
+                                            className="keeb-share-preview-button-circle w-2"
+                                            viewBox="0 0 32 32"
+                                        >
+                                            <circle cx="16" cy="16" r="16" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 )}
             </ModalDialog>
 
@@ -431,7 +483,10 @@ export default function LeftMenu({
                 isOpen={isLeaderboardModalOpen}
                 onClose={closeLeaderboardModal}
             >
-                <LeaderboardModal session={session ? session : null} isOpen={isLeaderboardModalOpen}/>
+                <LeaderboardModal
+                    session={session ? session : null}
+                    isOpen={isLeaderboardModalOpen}
+                />
             </ModalDialog>
 
             <ModalDialog isOpen={isRanksModalOpen} onClose={closeRanksModal}>
