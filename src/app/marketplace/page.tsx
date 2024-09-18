@@ -2,7 +2,6 @@ import Footer from "../_components/Footer/footer";
 import GetAllPreviewListings from "../_components/Listings/Display/Previews/getAllPreviewListings";
 import MarketplacePreviewFilters from "../_components/Listings/Display/Previews/marketplacePreviewFilters";
 import { Suspense } from "react";
-import LoadingSpinner from "../_components/Loading";
 
 export default function KeebShopHome({
     searchParams,
@@ -22,8 +21,14 @@ export default function KeebShopHome({
         <>
             <Suspense
                 fallback={
-                    <div className="mt-48 flex w-full justify-center">
-                        <LoadingSpinner size="20px" />
+                    <div className="mt-48 flex w-full gap-10 px-2 tablet:px-5 desktop:px-16 ">
+                        <div className="w-1/4 tablet:h-[68vh] desktop:h-[72vh] rounded-3xl skeleton-dark-glow overflow-hidden "></div>
+                        <div className="w-3/4 flex gap-5 h-[60vh] flex-wrap">
+                            <div className="skeleton-dark-glow h-48 w-72 desktop:h-64 desktop:w-96 rounded-2xl "></div>
+                            <div className="skeleton-dark-glow h-48 w-72 desktop:h-64 desktop:w-96 rounded-2xl "></div>
+                            <div className="skeleton-dark-glow h-48 w-72 desktop:h-64 desktop:w-96 rounded-2xl "></div>
+                            <div className="skeleton-dark-glow h-48 w-72 desktop:h-64 desktop:w-96 rounded-2xl "></div>
+                        </div>
                     </div>
                 }
             >
