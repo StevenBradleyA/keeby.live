@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import type { Keeb } from "@prisma/client";
 import DisplayAllGameStats from "./displayAllGameStats";
@@ -13,10 +14,10 @@ export default function GameStatsConfigurator({
 }: DisplayAllGameStatsProps) {
     const [mode, setMode] = useState<string>("ranked");
     const [keebId, setKeebId] = useState<string>(
-        keebData[0] ? keebData[0].id : ""
+        keebData[0] ? keebData[0].id : "",
     );
     const [keeb, setKeeb] = useState<string>(
-        keebData[0] ? keebData[0].name : ""
+        keebData[0] ? keebData[0].name : "",
     );
 
     return (

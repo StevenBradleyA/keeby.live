@@ -22,6 +22,7 @@ import { removeFileFromS3 } from "../utils";
 // }
 
 interface UserWithGamesAndRank {
+    rankedWpm: number | null;
     rank: {
         name: string;
         image: string;
@@ -101,6 +102,7 @@ export const userRouter = createTRPCRouter({
                 await ctx.db.user.findUnique({
                     where: { id: userId },
                     select: {
+                        rankedWpm: true,
                         rank: {
                             select: {
                                 name: true,
@@ -131,7 +133,6 @@ export const userRouter = createTRPCRouter({
             const totalGamesPlayed = allGameResults.length;
             let averageWpm = 0;
             let averageAccuracy = 0;
-            let rankedWpm = 0;
 
             if (totalGamesPlayed > 0) {
                 averageWpm =
@@ -144,41 +145,31 @@ export const userRouter = createTRPCRouter({
                     ) / totalGamesPlayed;
             }
 
-            const allRankedGames = await ctx.db.user.findUnique({
-                where: { id: userId },
-                select: {
-                    games: {
-                        select: {
-                            id: true,
-                            wpm: true,
-                            accuracy: true,
+            if (
+                userWithGameResultsAndRank &&
+                userWithGameResultsAndRank.rankedWpm &&
+                typeof userWithGameResultsAndRank.rankedWpm === "number"
+            ) {
+                const userRankNumber =
+                    (await ctx.db.user.count({
+                        where: {
+                            rankedWpm: {
+                                gt: userWithGameResultsAndRank.rankedWpm,
+                            },
                         },
-                    },
-                },
-            });
-
-            if (allRankedGames && allRankedGames.games.length > 10) {
-                const topGames = await ctx.db.game.findMany({
-                    where: {
-                        userId: userId,
-                        mode: "ranked", 
-                    },
-                    orderBy: {
-                        wpm: "desc",
-                    },
-                    take: 10,
-                });
-
-                rankedWpm =
-                    topGames.reduce((acc, game) => acc + game.wpm, 0) /
-                    topGames.length;
+                    })) + 1;
+                return {
+                    userRankNumber,
+                    userWithGameResultsAndRank,
+                    averageWpm,
+                    averageAccuracy,
+                };
             }
 
             return {
                 userWithGameResultsAndRank,
                 averageWpm,
                 averageAccuracy,
-                rankedWpm,
             };
         }),
 

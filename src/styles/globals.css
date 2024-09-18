@@ -120,6 +120,8 @@ select:-webkit-autofill:focus {
     filter: invert(48%) sepia(5%) saturate(3277%) hue-rotate(72deg)
         brightness(116%) contrast(126%);
 }
+
+
 /* --------------         SCROLL BAR          --------------  */
 
 .hidden-scrollbar {
@@ -131,6 +133,59 @@ select:-webkit-autofill:focus {
 /* Hide scrollbar for Chrome, Safari and Opera */
 .hidden-scrollbar::-webkit-scrollbar {
     display: none;
+}
+
+/* --------------         SKELETON          --------------  */
+
+
+
+.skeleton {
+    background-color: rgba(0, 0, 0, 0.1); 
+    animation: skeletonPulse 1.5s infinite ease-in-out;
+}
+
+@keyframes skeletonPulse {
+    0% {
+        background-color: rgba(0, 0, 0, 0.1); 
+    }
+    50% {
+        background-color: rgba(0, 0, 0, 0.15);
+    }
+    100% {
+        background-color: rgba(0, 0, 0, 0.1); 
+    }
+}
+
+
+.skeleton-dark-push {
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.1) 25%, rgba(0, 0, 0, 0.15) 50%, rgba(0, 0, 0, 0.1) 75%);
+    background-size: 200% 100%;
+    animation: skeletonSidePulse 1.8s infinite ease-in-out;
+    border-radius: 4px; 
+}
+
+@keyframes skeletonSidePulse {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+.skeleton-dark-glow {
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.12) 25%, rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0.12) 75%);
+    background-size: 300% 100%;
+    animation: skeletonGlow 2s infinite linear;
+    border-radius: 4px;
+}
+
+@keyframes skeletonGlow {
+    0% {
+        background-position: 300% 0;
+    }
+    100% {
+        background-position: -300% 0;
+    }
 }
 
 /* --------------         ADMIN          --------------  */
@@ -208,12 +263,11 @@ select:-webkit-autofill:focus {
 }
 
 /* skeleton pulsing */
-.skeleton {
+.skeleton-light-Gray {
     background-color: #e0e0e0;
-    border-radius: 4px;
-    animation: skeletonPulse 1.5s infinite ease-in-out;
+    animation: skeletonPulseLightGray 1.5s infinite ease-in-out;
 }
-@keyframes skeletonPulse {
+@keyframes skeletonPulseLightGray {
     0% {
         background-color: #e0e0e0;
     }
@@ -224,6 +278,9 @@ select:-webkit-autofill:focus {
         background-color: #e0e0e0;
     }
 }
+
+
+
 
 /* ---------    FREE PLAY   ----------  */
 /* ---------    FREE PLAY   ----------  */

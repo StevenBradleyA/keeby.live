@@ -1,6 +1,6 @@
-'use client'
+"use client";
 import { api } from "~/trpc/react";
-import LoadingSpinner from "~/app/_components/Loading";
+// import LoadingSpinner from "~/app/_components/Loading";
 import DisplayAllGameStats from "./gameStatsConfigurator";
 
 export default function DisplayAllGameStatsCheck({
@@ -8,15 +8,9 @@ export default function DisplayAllGameStatsCheck({
 }: {
     userId: string;
 }) {
-    const { data: keebData, isLoading } =
-        api.keeb.getAllByUserId.useQuery(userId);
+    const { data: keebData } = api.keeb.getAllByUserId.useQuery(userId);
 
-    if (isLoading)
-        return (
-            <div className="mt-44">
-                <LoadingSpinner size="40px" />
-            </div>
-        );
+
     return (
         <>
             {keebData && keebData.length > 0 && (
