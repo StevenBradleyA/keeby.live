@@ -79,9 +79,9 @@ export default function HowKeebyWorks() {
                                 arrange payment and shipping details. We
                                 recommend all transactions only occur through
                                 paypal as they have a strong dispute resolution
-                                support so you don&apos;t get scammed. Please protect
-                                yourself as both a buyer and a seller by reading
-                                and following
+                                support so you don&apos;t get scammed. Please
+                                protect yourself as both a buyer and a seller by
+                                reading and following
                                 <Link
                                     href="/scam-prevention"
                                     aria-label="learn how to prevent scams"
@@ -127,17 +127,18 @@ export default function HowKeebyWorks() {
                             <p className="mt-2">
                                 Check out links to products and companies I like
                                 to use for building and buying keyboards. All of
-                                these links are to companies I&apos;ve used before.
-                                Keeby does not sell any keyboard products.
+                                these links are to companies I&apos;ve used
+                                before. Keeby does not sell any keyboard
+                                products.
                             </p>
                             <h2 className=" mt-2 text-xl text-hotPink">
                                 Affiliate Links
                             </h2>
                             <p>
                                 Currently none of the links are affliate, but we
-                                would love to work with you! If we&apos;ve used and
-                                like your product we would be honored to promote
-                                and work with you!
+                                would love to work with you! If we&apos;ve used
+                                and like your product we would be honored to
+                                promote and work with you!
                             </p>
 
                             <h2 className=" mt-5 text-3xl">KEEBTYPE </h2>
@@ -149,24 +150,23 @@ export default function HowKeebyWorks() {
                             <h2 className=" mt-2 text-xl text-hotPink">
                                 Statistics
                             </h2>
-                            <p>Wpm is calculated like this</p>
-                            <h2 className=" mt-2 text-xl text-hotPink">
-                                Speed Mode
-                            </h2>
-                            <p>Wpm is calculated like this</p>
-                            <h2 className=" mt-2 text-xl text-hotPink">
-                                Scholar Mode
-                            </h2>
-                            <p>Wpm is calculated like this</p>
-                            <h2 className=" mt-2 text-xl text-hotPink">
-                                Freeplay mode
-                            </h2>
-                            <p>Wpm is calculated like this</p>
-
-                            <h2 className=" mt-2 text-xl text-hotPink">
-                                Ranks
-                            </h2>
-                            <p>Wpm is calculated like this</p>
+                            <p>
+                                Wpm: Total number of characters in the correctly
+                                typed words (including spaces), divided by 5 and
+                                adjusted to a 60-second timeframe.
+                            </p>
+                            <p>
+                                Pure Wpm: Similar to WPM, but also includes
+                                incorrect words.
+                            </p>
+                            <p>
+                                Ranked Score: The average speed across your top
+                                10 fastest ranked games.
+                            </p>
+                            <p>
+                                Accuracy: The percentage of keys pressed
+                                correctly.
+                            </p>
                         </div>
 
                         <div className="mt-10 flex w-full justify-center bg-hotPink p-2 text-2xl text-lightYellow">
