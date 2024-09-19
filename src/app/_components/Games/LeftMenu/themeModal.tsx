@@ -141,12 +141,12 @@ export default function ThemeModal({ closeThemeModal }: ThemeModalProps) {
                 </button>
                 <button
                     onClick={() => handleThemeChange("BANANA")}
-                    className={` w-full items-center rounded-lg hover:brightness-110 ease-in flex justify-between text-white hover:bg-[#FFFBEA] hover:bg-opacity-10 p-2`}
+                    className={` w-full items-center rounded-lg hover:brightness-110 ease-in flex justify-between text-white  hover:bg-opacity-10 p-2 hover:bg-yellow-300/10`}
                 >
                     banana
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="w-8 h-8 text-[#FFFBEA]"
+                        className="w-8 h-8 text-white"
                         viewBox="0 0 24 24"
                         fill="none"
                     >
@@ -162,35 +162,35 @@ export default function ThemeModal({ closeThemeModal }: ThemeModalProps) {
                         <g>
                             <path
                                 d="M18 15H19"
-                                stroke="gray"
+                                stroke="yellow"
                                 strokeWidth="2"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
                             />
                             <path
                                 d="M9 15H15"
-                                stroke="#8A6201"
+                                stroke="yellow"
                                 strokeWidth="2"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
                             />
                             <path
                                 d="M6 15H5"
-                                stroke="gray"
+                                stroke="yellow"
                                 strokeWidth="2"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
                             />
                             <path
                                 d="M5 12H19"
-                                stroke="#8A6201"
+                                stroke="#AED581"
                                 strokeWidth="2"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
                             />
                             <path
                                 d="M5 9H19"
-                                stroke="#8A6201"
+                                stroke="white"
                                 strokeWidth="2"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
@@ -200,12 +200,12 @@ export default function ThemeModal({ closeThemeModal }: ThemeModalProps) {
                 </button>
                 <button
                     onClick={() => handleThemeChange("HACKERMAN")}
-                    className={` w-full items-center rounded-lg hover:brightness-110 ease-in flex justify-between text-white hover:bg-[#FFFBEA] hover:bg-opacity-10 p-2`}
+                    className={` w-full items-center rounded-lg hover:brightness-110 ease-in flex justify-between text-white hover:bg-black hover:bg-opacity-10 p-2`}
                 >
                     hackerman
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="w-8 h-8 text-[#FFFBEA]"
+                        className="w-8 h-8 text-[#15ff00]"
                         viewBox="0 0 24 24"
                         fill="none"
                     >
@@ -221,35 +221,35 @@ export default function ThemeModal({ closeThemeModal }: ThemeModalProps) {
                         <g>
                             <path
                                 d="M18 15H19"
-                                stroke="gray"
+                                stroke="#616161"
                                 strokeWidth="2"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
                             />
                             <path
                                 d="M9 15H15"
-                                stroke="#8A6201"
+                                stroke="black"
                                 strokeWidth="2"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
                             />
                             <path
                                 d="M6 15H5"
-                                stroke="gray"
+                                stroke="#616161"
                                 strokeWidth="2"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
                             />
                             <path
                                 d="M5 12H19"
-                                stroke="#8A6201"
+                                stroke="black"
                                 strokeWidth="2"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
                             />
                             <path
                                 d="M5 9H19"
-                                stroke="#8A6201"
+                                stroke="black"
                                 strokeWidth="2"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
@@ -259,12 +259,12 @@ export default function ThemeModal({ closeThemeModal }: ThemeModalProps) {
                 </button>
                 <button
                     onClick={() => handleThemeChange("HIPYO")}
-                    className={` w-full items-center rounded-lg hover:brightness-110 ease-in flex justify-between text-white hover:bg-[#FFFBEA] hover:bg-opacity-10 p-2`}
+                    className={` w-full items-center rounded-lg hover:brightness-110 ease-in flex justify-between text-white hover:bg-[#6A4C93] hover:bg-opacity-10 p-2`}
                 >
                     hipyo
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="w-8 h-8 text-[#FFFBEA]"
+                        className="w-8 h-8 text-[#6A4C93]"
                         viewBox="0 0 24 24"
                         fill="none"
                     >
@@ -287,7 +287,7 @@ export default function ThemeModal({ closeThemeModal }: ThemeModalProps) {
                             />
                             <path
                                 d="M9 15H15"
-                                stroke="#8A6201"
+                                stroke="#9575CD"
                                 strokeWidth="2"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
@@ -301,14 +301,14 @@ export default function ThemeModal({ closeThemeModal }: ThemeModalProps) {
                             />
                             <path
                                 d="M5 12H19"
-                                stroke="#8A6201"
+                                stroke="#9575CD"
                                 strokeWidth="2"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
                             />
                             <path
                                 d="M5 9H19"
-                                stroke="#8A6201"
+                                stroke="#9575CD"
                                 strokeWidth="2"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
@@ -318,12 +318,12 @@ export default function ThemeModal({ closeThemeModal }: ThemeModalProps) {
                 </button>
                 <button
                     onClick={() => handleThemeChange("PIGGY")}
-                    className={` w-full items-center rounded-lg hover:brightness-110 ease-in flex justify-between text-white hover:bg-[#FFFBEA] hover:bg-opacity-10 p-2`}
+                    className={` w-full items-center rounded-lg hover:brightness-110 ease-in flex justify-between text-white hover:bg-[#E78EA9] hover:bg-opacity-10 p-2`}
                 >
                     piggy
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="w-8 h-8 text-[#FFFBEA]"
+                        className="w-8 h-8 text-[#E78EA9]"
                         viewBox="0 0 24 24"
                         fill="none"
                     >
@@ -346,7 +346,7 @@ export default function ThemeModal({ closeThemeModal }: ThemeModalProps) {
                             />
                             <path
                                 d="M9 15H15"
-                                stroke="#8A6201"
+                                stroke="white"
                                 strokeWidth="2"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
@@ -360,14 +360,14 @@ export default function ThemeModal({ closeThemeModal }: ThemeModalProps) {
                             />
                             <path
                                 d="M5 12H19"
-                                stroke="#8A6201"
+                                stroke="white"
                                 strokeWidth="2"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
                             />
                             <path
                                 d="M5 9H19"
-                                stroke="#8A6201"
+                                stroke="white"
                                 strokeWidth="2"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
@@ -377,12 +377,12 @@ export default function ThemeModal({ closeThemeModal }: ThemeModalProps) {
                 </button>
                 <button
                     onClick={() => handleThemeChange("PRIMEAGEN")}
-                    className={` w-full items-center rounded-lg hover:brightness-110 ease-in flex justify-between text-white hover:bg-[#FFFBEA] hover:bg-opacity-10 p-2`}
+                    className={` w-full items-center rounded-lg hover:brightness-110 ease-in flex justify-between text-white hover:bg-[#9ccfd8] hover:bg-opacity-10 p-2`}
                 >
                     primeagen
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="w-8 h-8 text-[#FFFBEA]"
+                        className="w-8 h-8 text-[#9ccfd8]"
                         viewBox="0 0 24 24"
                         fill="none"
                     >
@@ -398,35 +398,35 @@ export default function ThemeModal({ closeThemeModal }: ThemeModalProps) {
                         <g>
                             <path
                                 d="M18 15H19"
-                                stroke="gray"
+                                stroke="#e0def4"
                                 strokeWidth="2"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
                             />
                             <path
                                 d="M9 15H15"
-                                stroke="#8A6201"
+                                stroke="#e0def4"
                                 strokeWidth="2"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
                             />
                             <path
                                 d="M6 15H5"
-                                stroke="gray"
+                                stroke="#e0def4"
                                 strokeWidth="2"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
                             />
                             <path
                                 d="M5 12H19"
-                                stroke="#8A6201"
+                                stroke="#c4a7e7"
                                 strokeWidth="2"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
                             />
                             <path
                                 d="M5 9H19"
-                                stroke="#8A6201"
+                                stroke="#9ccfd8"
                                 strokeWidth="2"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
