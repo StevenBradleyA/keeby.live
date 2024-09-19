@@ -84,12 +84,12 @@ export default function KeebType() {
                 </div>
             )}
             {mode === "freeplay" && (
-                <div className="w-full z-20 px-80 ">
+                <div className="w-full z-20 pl-20 laptop:pl-32 desktop:pl-60 -mt-12 desktop:mt-0 ">
                     <FreeplayMode theme={theme} />
                 </div>
             )}
             {mode === "hackingTime" && (
-                <div className="w-full h-full z-20 px-96 pb-20">
+                <div className="w-full h-full z-20 px-40 desktop:px-96 pb-20">
                     <HacktimeMode />
                 </div>
             )}

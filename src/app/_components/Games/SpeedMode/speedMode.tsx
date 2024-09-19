@@ -26,6 +26,7 @@ interface Keeb {
 }
 
 interface User {
+    rankedWpm: number | null;
     rank: {
         id: string;
         name: string;
@@ -90,7 +91,7 @@ export default function SpeedMode({
     const [offlineAccuracy, setOfflineAccuracy] = useState<number>(0);
     const [offlinePureWpm, setOfflinePureWpm] = useState<number>(0);
     // stats from create
-    const [rankedAverageWpm, setRankedAverageWpm] = useState<number>(0);
+    // const [rankedAverageWpm, setRankedAverageWpm] = useState<number>(0);
     const [totalGames, setTotalGames] = useState<number>(0);
     const [totalAverageAccuracy, setTotalAverageAccuracy] = useState<number>(0);
     const [totalAverageWpm, setTotalAverageWpm] = useState<number>(0);
@@ -102,7 +103,7 @@ export default function SpeedMode({
     const { mutate: createGame } = api.game.create.useMutation({
         onSuccess: (data) => {
             if (data) {
-                setRankedAverageWpm(data.rankedAverageWpm);
+                // setRankedAverageWpm(data.rankedAverageWpm);
                 setTotalGames(data.totalGamesPlayed);
                 setTotalAverageAccuracy(data.totalAverageAccuracy);
                 setTotalAverageWpm(data.totalAverageWpm);
@@ -549,7 +550,7 @@ export default function SpeedMode({
                         offlineAccuracy={offlineAccuracy}
                         offlinePureWpm={offlinePureWpm}
                         offlineWpm={offlineWpm}
-                        rankedAverageWpm={rankedAverageWpm}
+                        // rankedAverageWpm={rankedAverageWpm}
                         totalGames={totalGames}
                         totalAverageAccuracy={totalAverageAccuracy}
                         totalAverageWpm={totalAverageWpm}

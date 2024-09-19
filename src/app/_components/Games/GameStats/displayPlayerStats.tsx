@@ -106,8 +106,9 @@ export default function DisplayPlayerStats({
                                 <p className="text-sm text-green-500">
                                     {gameData.userWithGameResultsAndRank
                                         .rankedWpm
-                                        ? gameData.userWithGameResultsAndRank
-                                              .rankedWpm
+                                        ? gameData.userWithGameResultsAndRank.rankedWpm.toFixed(
+                                              1,
+                                          )
                                         : "---"}
                                 </p>
                             </div>

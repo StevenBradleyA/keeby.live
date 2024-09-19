@@ -25,7 +25,6 @@ interface SpeedModeResultsProps {
     offlinePureWpm: number;
     wpmIntervals: number[];
     gameResults: GameResults | null;
-    rankedAverageWpm: number;
     totalGames: number;
     totalAverageAccuracy: number;
     totalAverageWpm: number;
@@ -40,6 +39,7 @@ interface Keeb {
 }
 
 interface User {
+    rankedWpm: number | null;
     rank: {
         id: string;
         name: string;
@@ -75,7 +75,6 @@ export default function SpeedModeResults({
     offlineAccuracy,
     wpmIntervals,
     gameResults,
-    rankedAverageWpm,
     totalGames,
     totalAverageAccuracy,
     totalAverageWpm,
@@ -136,7 +135,7 @@ export default function SpeedModeResults({
                             </span>{" "}
                             {Math.round(offlinePureWpm)}
                         </p>
-                        <h2 className="text-mediumGray">Accuracy</h2>
+                        <h2 className={`${styles.textColor}`}>Accuracy</h2>
                     </div>
 
                     <div
@@ -290,14 +289,17 @@ export default function SpeedModeResults({
                                     <h2
                                         className={`flex justify-center border-b-2 ${styles.border} border-opacity-50 ${styles.textColor} `}
                                     >
-                                        Rank
+                                        Score
                                     </h2>
 
                                     <div
                                         className={`mt-1 flex justify-center ${styles.pause}`}
                                     >
-                                        {rankedAverageWpm > 0
-                                            ? Math.round(rankedAverageWpm)
+                                        {gameResults &&
+                                        gameResults.user.rankedWpm
+                                            ? gameResults.user.rankedWpm.toFixed(
+                                                  1,
+                                              )
                                             : "---"}
                                     </div>
                                     <h2

@@ -16,6 +16,8 @@ export default function GameResultsDynamicBackground() {
         <>
             {(theme === "KEEBY" ||
                 theme === "KEEBYRED" ||
+                theme === "BANANA" ||
+                theme === "HIPYO" ||
                 theme === "HACKERMAN") && (
                 <>
                     <div className="absolute -left-5 -top-12 overflow-hidden h-[80%] z-0 -right-5">

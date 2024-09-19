@@ -104,7 +104,9 @@ export default function DisplayAllGameStats({
                         <h3 className="text-xs">Ranked Score</h3>
                         <p className="text-lg text-green-500">
                             {gameData.userWithGameResultsAndRank.rankedWpm
-                                ? gameData.userWithGameResultsAndRank.rankedWpm
+                                ? gameData.userWithGameResultsAndRank.rankedWpm.toFixed(
+                                      1,
+                                  )
                                 : "---"}
                         </p>
                     </div>

@@ -196,6 +196,7 @@ export const gameRouter = createTRPCRouter({
                     },
                     user: {
                         select: {
+                            rankedWpm: true,
                             rank: {
                                 select: {
                                     id: true,
@@ -281,7 +282,12 @@ export const gameRouter = createTRPCRouter({
                         "Average ranked WPM calculation resulted in an invalid number.",
                     );
                 }
-
+                await ctx.db.user.update({
+                    where: { id: userId },
+                    data: {
+                        rankedWpm: rankedAverageWpm,
+                    },
+                });
                 const ranks = await ctx.db.rank.findMany({
                     where: {
                         minWpm: {
@@ -306,7 +312,6 @@ export const gameRouter = createTRPCRouter({
                             where: { id: userId },
                             data: {
                                 rankId: userRankId,
-                                rankedWpm: rankedAverageWpm,
                             },
                         });
 
